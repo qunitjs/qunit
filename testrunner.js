@@ -1,3 +1,16 @@
+/*
+ * QUnit - jQuery unit testrunner
+ * 
+ * http://docs.jquery.com/QUnit
+ *
+ * Copyright (c) 2008 John Resig, Jörn Zaefferer
+ * Dual licensed under the MIT (MIT-LICENSE.txt)
+ * and GPL (GPL-LICENSE.txt) licenses.
+ *
+ * $Date$
+ * $Rev$
+ */
+
 var _config = {
 	fixture: null,
 	Test: [],
