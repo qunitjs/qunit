@@ -7,8 +7,7 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  *
- * $Date$
- * $Rev$
+ * $Id$
  */
 
 var _config = {
