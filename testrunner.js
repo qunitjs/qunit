@@ -126,7 +126,15 @@ function test(name, callback, nowait) {
 		}
 	});
 	synchronize(function() {
-		reset();
+		try {
+			reset();
+		} catch(e) {
+			if( typeof console != "undefined" && console.error && console.warn ) {
+				console.error("reset() failed, following Test " + name + ", exception and reset fn follows");
+				console.error(e);
+				console.warn(reset.toString());
+			}
+		}
 		
 		// don't output pause tests
 		if(nowait) return;
