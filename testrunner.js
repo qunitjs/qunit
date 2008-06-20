@@ -378,11 +378,11 @@ function url(value) {
 
 /**
  * Checks that the first two arguments are equal, with an optional message.
- * Prints out both expected and actual values on failure.
+ * Prints out both actual and expected values.
  *
- * Prefered to ok( expected == actual, message )
+ * Prefered to ok( actual == expected, message )
  *
- * @example equals( "Expected 2 characters.", v.formatMessage("Expected {0} characters.", 2) );
+ * @example equals( $.format("Expected {0} characters.", 2), "Expected 2 characters." );
  *
  * @param Object actual
  * @param Object expected
