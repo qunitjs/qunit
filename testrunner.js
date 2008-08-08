@@ -91,14 +91,13 @@ function validTest( name ) {
 
 function runTest() {
 	_config.blocking = false;
-	var time = new Date();
+	var started = +new Date;
 	_config.fixture = document.getElementById('main').innerHTML;
 	_config.ajaxSettings = jQuery.ajaxSettings;
 	synchronize(function() {
-		time = new Date() - time;
-		jQuery("<div>").html(['<p class="result">Tests completed in ',
-			time, ' milliseconds.<br/>',
-			_config.stats.bad, ' tests of ', _config.stats.all, ' failed.</p>']
+		jQuery('<p id="testresult" class="result">').html(['Tests completed in ',
+			+new Date - started, ' milliseconds.<br/>',
+			'<span class="bad">', _config.stats.bad, '</span> tests of <span class="all">', _config.stats.all, '</span> failed.</p>']
 			.join(''))
 			.appendTo("body");
 		jQuery("#banner").addClass(_config.stats.bad ? "fail" : "pass");
