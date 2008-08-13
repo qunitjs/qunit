@@ -381,7 +381,7 @@ function url(value) {
  *
  * Prefered to ok( actual == expected, message )
  *
- * @example equals( $.format("Expected {0} characters.", 2), "Expected 2 characters." );
+ * @example equals( $.format("Received {0} bytes.", 2), "Received 2 bytes." );
  *
  * @param Object actual
  * @param Object expected
