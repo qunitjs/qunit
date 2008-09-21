@@ -10,67 +10,55 @@
  * $Id$
  */
 
-var _config = {
-	fixture: null,
+(function($) {
+	
+var config = {
 	Test: [],
 	stats: {
 		all: 0,
 		bad: 0
 	},
 	queue: [],
-	blocking: true,
-	timeout: null,
-	expected: null,
-	currentModule: null,
-	asyncTimeout: 2 // seconds for async timeout
+	// block until document ready
+	blocking: true
 };
 
-_config.filters = location.search.length > 1 && //restrict modules/tests by get parameters
-		jQuery.map( location.search.slice(1).split('&'), decodeURIComponent );
+//restrict modules/tests by get parameters
+config.filters = location.search.length > 1 && $.map( location.search.slice(1).split('&'), decodeURIComponent );
 
 var isLocal = !!(window.location.protocol == 'file:');
 
-jQuery(function() {
-	jQuery('#userAgent').html(navigator.userAgent);
+$(function() {
+	$('#userAgent').html(navigator.userAgent);
 	runTest();	
 });
 
 function synchronize(callback) {
-	_config.queue[_config.queue.length] = callback;
-	if(!_config.blocking) {
+	config.queue.push(callback);
+	if(!config.blocking) {
 		process();
 	}
 }
 
 function process() {
-	while(_config.queue.length && !_config.blocking) {
-		var call = _config.queue[0];
-		_config.queue = _config.queue.slice(1);
-		call();
+	while(config.queue.length && !config.blocking) {
+		config.queue.shift()();
 	}
 }
 
 function stop(allowFailure) {
-	_config.blocking = true;
-	var handler = allowFailure ? start : function() {
-		ok( false, "Test timed out" );
-		start();
-	};
-	// Disabled, caused too many random errors
-	//_config.timeout = setTimeout(handler, _config.asyncTimeout * 1000);
+	config.blocking = true;
 }
 function start() {
 	// A slight delay, to avoid any current callbacks
-	setTimeout(function(){
-		if(_config.timeout)
-			clearTimeout(_config.timeout);
-		_config.blocking = false;
+	setTimeout(function() {
+		config.blocking = false;
 		process();
 	}, 13);
 }
 
 function validTest( name ) {
-	var filters = _config.filters;
+	var filters = config.filters;
 	if( !filters )
 		return true;
 
@@ -90,24 +78,24 @@ function validTest( name ) {
 }
 
 function runTest() {
-	_config.blocking = false;
+	config.blocking = false;
 	var started = +new Date;
-	_config.fixture = document.getElementById('main').innerHTML;
-	_config.ajaxSettings = jQuery.ajaxSettings;
+	config.fixture = document.getElementById('main').innerHTML;
+	config.ajaxSettings = $.ajaxSettings;
 	synchronize(function() {
-		jQuery('<p id="testresult" class="result">').html(['Tests completed in ',
+		$('<p id="testresult" class="result">').html(['Tests completed in ',
 			+new Date - started, ' milliseconds.<br/>',
-			'<span class="bad">', _config.stats.bad, '</span> tests of <span class="all">', _config.stats.all, '</span> failed.</p>']
+			'<span class="bad">', config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> failed.</p>']
 			.join(''))
 			.appendTo("body");
-		jQuery("#banner").addClass(_config.stats.bad ? "fail" : "pass");
+		$("#banner").addClass(config.stats.bad ? "fail" : "pass");
 	});
 }
 
 function test(name, callback, nowait) {
-	if(_config.currentModule)
-		name = _config.currentModule + " module: " + name;
-	var lifecycle = _config.moduleLifecycle || {
+	if(config.currentModule)
+		name = config.currentModule + " module: " + name;
+	var lifecycle = config.moduleLifecycle || {
 		setup: function() {},
 		teardown: function() {}
 	};
@@ -116,7 +104,7 @@ function test(name, callback, nowait) {
 		return;
 		
 	synchronize(function() {
-		_config.Test = [];
+		config.Test = [];
 		try {
 			lifecycle.setup();
 			callback();
@@ -127,7 +115,7 @@ function test(name, callback, nowait) {
 				console.error(e);
 				console.warn(callback.toString());
 			}
-			_config.Test.push( [ false, "Died on test #" + (_config.Test.length+1) + ": " + e.message ] );
+			config.Test.push( [ false, "Died on test #" + (config.Test.length+1) + ": " + e.message ] );
 		}
 	});
 	synchronize(function() {
@@ -144,26 +132,26 @@ function test(name, callback, nowait) {
 		// don't output pause tests
 		if(nowait) return;
 		
-		if(_config.expected && _config.expected != _config.Test.length) {
-			_config.Test.push( [ false, "Expected " + _config.expected + " assertions, but " + _config.Test.length + " were run" ] );
+		if(config.expected && config.expected != config.Test.length) {
+			config.Test.push( [ false, "Expected " + config.expected + " assertions, but " + config.Test.length + " were run" ] );
 		}
-		_config.expected = null;
+		config.expected = null;
 		
 		var good = 0, bad = 0;
 		var ol = document.createElement("ol");
 		ol.style.display = "none";
 		var li = "", state = "pass";
-		for ( var i = 0; i < _config.Test.length; i++ ) {
+		for ( var i = 0; i < config.Test.length; i++ ) {
 			var li = document.createElement("li");
-			li.className = _config.Test[i][0] ? "pass" : "fail";
-			li.appendChild( document.createTextNode(_config.Test[i][1]) );
+			li.className = config.Test[i][0] ? "pass" : "fail";
+			li.appendChild( document.createTextNode(config.Test[i][1]) );
 			ol.appendChild( li );
 			
-			_config.stats.all++;
-			if ( !_config.Test[i][0] ) {
+			config.stats.all++;
+			if ( !config.Test[i][0] ) {
 				state = "fail";
 				bad++;
-				_config.stats.bad++;
+				config.stats.bad++;
 			} else good++;
 		}
 	
@@ -171,19 +159,19 @@ function test(name, callback, nowait) {
 		li.className = state;
 	
 		var b = document.createElement("strong");
-		b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + _config.Test.length + ")</b>";
+		b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.Test.length + ")</b>";
 		b.onclick = function(){
 			var n = this.nextSibling;
-			if ( jQuery.css( n, "display" ) == "none" )
+			if ( $.css( n, "display" ) == "none" )
 				n.style.display = "block";
 			else
 				n.style.display = "none";
 		};
-		jQuery(b).dblclick(function(event) {
-			var target = jQuery(event.target).filter("strong").clone();
+		$(b).dblclick(function(event) {
+			var target = $(event.target).filter("strong").clone();
 			if ( target.length ) {
 				target.children().remove();
-				location.href = location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent(jQuery.trim(target.text()));
+				location.href = location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent($.trim(target.text()));
 			}
 		});
 		li.appendChild( b );
@@ -195,32 +183,32 @@ function test(name, callback, nowait) {
 
 // call on start of module test to prepend name to all tests
 function module(name, lifecycle) {
-	_config.currentModule = name;
-	_config.moduleLifecycle = lifecycle;
+	config.currentModule = name;
+	config.moduleLifecycle = lifecycle;
 }
 
 /**
  * Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
  */
 function expect(asserts) {
-	_config.expected = asserts;
+	config.expected = asserts;
 }
 
 /**
  * Resets the test setup. Useful for tests that modify the DOM.
  */
 function reset() {
-	jQuery("#main").html( _config.fixture );
-	jQuery.event.global = {};
-	jQuery.ajaxSettings = jQuery.extend({}, _config.ajaxSettings);
+	$("#main").html( config.fixture );
+	$.event.global = {};
+	$.ajaxSettings = $.extend({}, config.ajaxSettings);
 }
 
 /**
  * Asserts true.
- * @example ok( jQuery("a").size() > 5, "There must be at least 5 anchors" );
+ * @example ok( $("a").size() > 5, "There must be at least 5 anchors" );
  */
 function ok(a, msg) {
-	_config.Test.push( [ !!a, msg ] );
+	config.Test.push( [ !!a, msg ] );
 }
 
 /**
@@ -235,9 +223,9 @@ function isSet(a, b, msg) {
 	} else
 		ret = false;
 	if ( !ret )
-		_config.Test.push( [ ret, msg + " expected: " + serialArray(b) + " result: " + serialArray(a) ] );
+		config.Test.push( [ ret, msg + " expected: " + serialArray(b) + " result: " + serialArray(a) ] );
 	else 
-		_config.Test.push( [ ret, msg ] );
+		config.Test.push( [ ret, msg ] );
 }
 
 /**
@@ -257,7 +245,7 @@ function isObj(a, b, msg) {
 	} else
 		ret = false;
 
-    _config.Test.push( [ ret, msg ] );
+    config.Test.push( [ ret, msg ] );
 }
 
 function serialArray( a ) {
@@ -362,7 +350,7 @@ function q() {
  * @result returns true if "//[a]" return two elements with the IDs 'foo' and 'baar'
  */
 function t(a,b,c) {
-	var f = jQuery(b);
+	var f = $(b);
 	var s = "";
 	for ( var i = 0; i < f.length; i++ )
 		s += (s && ",") + '"' + f[i].id + '"';
@@ -397,7 +385,7 @@ function url(value) {
 function equals(actual, expected, message) {
 	var result = expected == actual;
 	message = message || (result ? "okay" : "failed");
-	_config.Test.push( [ result, result ? message + ": " + expected : message + " expected: " + expected + " actual: " + actual ] );
+	config.Test.push( [ result, result ? message + ": " + expected : message + " expected: " + expected + " actual: " + actual ] );
 }
 
 /**
@@ -409,12 +397,37 @@ function equals(actual, expected, message) {
  * @param String type
  */
 function triggerEvent( elem, type, event ) {
-	if ( jQuery.browser.mozilla || jQuery.browser.opera ) {
+	if ( $.browser.mozilla || $.browser.opera ) {
 		event = document.createEvent("MouseEvents");
 		event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
 			0, 0, 0, 0, 0, false, false, false, false, 0, null);
 		elem.dispatchEvent( event );
-	} else if ( jQuery.browser.msie ) {
+	} else if ( $.browser.msie ) {
 		elem.fireEvent("on"+type);
 	}
 }
+
+// public API as global methods
+$.extend(window, {
+	test: test,
+	module: module,
+	expect: expect,
+	ok: ok,
+	equals: equals,
+	start: start,
+	stop: stop,
+	reset: reset,
+	isLocal: isLocal,
+	// legacy methods below
+	isSet: isSet,
+	isObj: isObj,
+	compare: compare,
+	compare2: compare2,
+	serialArray: serialArray,
+	q: q,
+	t: t,
+	url: url,
+	triggerEvent: triggerEvent
+});
+
+})(jQuery);
