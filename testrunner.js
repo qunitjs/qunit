@@ -107,14 +107,20 @@ function runTest() {
 function test(name, callback, nowait) {
 	if(_config.currentModule)
 		name = _config.currentModule + " module: " + name;
-		
+	var lifecycle = _config.moduleLifecycle || {
+		setup: function() {},
+		teardown: function() {}
+	};
+	
 	if ( !validTest(name) )
 		return;
 		
 	synchronize(function() {
 		_config.Test = [];
 		try {
+			lifecycle.setup();
 			callback();
+			lifecycle.teardown();
 		} catch(e) {
 			if( typeof console != "undefined" && console.error && console.warn ) {
 				console.error("Test " + name + " died, exception and test follows");
@@ -188,8 +194,9 @@ function test(name, callback, nowait) {
 }
 
 // call on start of module test to prepend name to all tests
-function module(moduleName) {
-	_config.currentModule = moduleName;
+function module(name, lifecycle) {
+	_config.currentModule = name;
+	_config.moduleLifecycle = lifecycle;
 }
 
 /**
