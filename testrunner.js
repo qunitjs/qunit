@@ -95,10 +95,10 @@ function runTest() {
 function test(name, callback, nowait) {
 	if(config.currentModule)
 		name = config.currentModule + " module: " + name;
-	var lifecycle = config.moduleLifecycle || {
+	var lifecycle = $.extend({
 		setup: function() {},
 		teardown: function() {}
-	};
+	}, config.moduleLifecycle);
 	
 	if ( !validTest(name) )
 		return;
