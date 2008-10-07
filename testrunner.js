@@ -28,7 +28,7 @@ config.filters = location.search.length > 1 && $.map( location.search.slice(1).s
 
 var isLocal = !!(window.location.protocol == 'file:');
 
-$(function() {
+$(window).load(function() {
 	$('#userAgent').html(navigator.userAgent);
 	runTest();	
 });
