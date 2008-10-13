@@ -230,6 +230,23 @@ function ok(a, msg) {
  * Asserts that two arrays are the same
  */
 function isSet(a, b, msg) {
+	function serialArray( a ) {
+		var r = [];
+		
+		if ( a && a.length )
+	        for ( var i = 0; i < a.length; i++ ) {
+	            var str = a[i].nodeName;
+	            if ( str ) {
+	                str = str.toLowerCase();
+	                if ( a[i].id )
+	                    str += "#" + a[i].id;
+	            } else
+	                str = a[i];
+	            r.push( str );
+	        }
+	
+		return "[ " + r.join(", ") + " ]";
+	}
 	var ret = true;
 	if ( a && b && a.length != undefined && a.length == b.length ) {
 		for ( var i = 0; i < a.length; i++ )
@@ -261,90 +278,6 @@ function isObj(a, b, msg) {
 		ret = false;
 
     config.Test.push( [ ret, msg ] );
-}
-
-function serialArray( a ) {
-	var r = [];
-	
-	if ( a && a.length )
-        for ( var i = 0; i < a.length; i++ ) {
-            var str = a[i].nodeName;
-            if ( str ) {
-                str = str.toLowerCase();
-                if ( a[i].id )
-                    str += "#" + a[i].id;
-            } else
-                str = a[i];
-            r.push( str );
-        }
-
-	return "[ " + r.join(", ") + " ]";
-}
-
-function flatMap(a, block) {
-	var result = [];
-	$.each(a, function() {
-		var x = block.apply(this, arguments);
-		if (x !== false)
-			result.push(x);
-	})
-	return result;
-}
-
-function serialObject( a ) {
-	return "{ " + flatMap(a, function(key, value) {
-		return key + ": " + value;
-	}).join(", ") + " }";
-}
-
-function compare(a, b, msg) {
-	var ret = true;
-	if ( a && b && a.length != undefined && a.length == b.length ) {
-		for ( var i = 0; i < a.length; i++ )
-			for(var key in a[i]) {
-				if (a[i][key].constructor == Array) {
-					for (var arrayKey in a[i][key]) {
-						if (a[i][key][arrayKey] != b[i][key][arrayKey]) {
-							ret = false;
-						}
-					}
-				} else if (a[i][key] != b[i][key]) {
-					ret = false
-				}
-			}
-	} else
-		ret = false;
-	ok( ret, msg + " expected: " + serialArray(b) + " result: " + serialArray(a) );
-}
-
-function compare2(a, b, msg) {
-	var ret = true;
-	if ( a && b ) {
-		for(var key in a) {
-			if (a[key].constructor == Array) {
-				for (var arrayKey in a[key]) {
-					if (a[key][arrayKey] != b[key][arrayKey]) {
-						ret = false;
-					}
-				}
-			} else if (a[key] != b[key]) {
-				ret = false
-			}
-		}
-		for(key in b) {
-			if (b[key].constructor == Array) {
-				for (var arrayKey in b[key]) {
-					if (a[key][arrayKey] != b[key][arrayKey]) {
-						ret = false;
-					}
-				}
-			} else if (a[key] != b[key]) {
-				ret = false
-			}
-		}
-	} else
-		ret = false;
-	ok( ret, msg + " expected: " + serialObject(b) + " result: " + serialObject(a) );
 }
 
 /**
@@ -569,9 +502,15 @@ $.extend(window, {
 	// legacy methods below
 	isSet: isSet,
 	isObj: isObj,
-	compare: compare,
-	compare2: compare2,
-	serialArray: serialArray,
+	compare: function() {
+		throw "compare is deprecated - use same() instead";
+	},
+	compare2: function() {
+		throw "compare2 is deprecated - use same() instead";
+	},
+	serialArray: function() {
+		throw "serialArray is deprecated - use jsDump.parse() instead";
+	},
 	q: q,
 	t: t,
 	url: url,
