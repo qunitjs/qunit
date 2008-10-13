@@ -30,6 +30,10 @@ var isLocal = !!(window.location.protocol == 'file:');
 
 $(window).load(function() {
 	$('#userAgent').html(navigator.userAgent);
+	var head = $('<div class="testrunner-toolbar"><label for="filter">Hide passed tests</label></div>').insertAfter("#userAgent");
+	$('<input type="checkbox" id="filter" />').attr("disabled", true).prependTo(head).click(function() {
+		$('li.pass')[this.checked ? 'hide' : 'show']();
+	});
 	runTest();	
 });
 
@@ -177,7 +181,11 @@ function test(name, callback, nowait) {
 		li.appendChild( b );
 		li.appendChild( ol );
 	
-		document.getElementById("tests").appendChild( li );		
+		document.getElementById("tests").appendChild( li );
+		
+		if(bad) {
+			$("#filter").attr("disabled", null);
+		}
 	});
 }
 
