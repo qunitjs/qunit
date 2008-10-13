@@ -542,7 +542,9 @@ $.extend(window, {
 	stop: stop,
 	reset: reset,
 	isLocal: isLocal,
-	same: equiv,
+	same: function(a, b, message) {
+		ok( equiv(a, b), message );
+	},
 	// legacy methods below
 	isSet: isSet,
 	isObj: isObj,
