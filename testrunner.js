@@ -407,6 +407,130 @@ function triggerEvent( elem, type, event ) {
 	}
 }
 
+// Test for multiple JavaScript variables or literals recursive equivalence.
+// All variables or literals passed as arguments are verified 2 by 2, e.g.
+// a1 with a2, a2 with a3, a3 with a4 and so on up to the last argument.
+// By transition we can confirm that all arguments are equivalent.
+//
+//      NOTE:
+//          Ensures a deep and recursive equivalence.
+//          Identical references will always be equivalent, whatever it is.
+//          When comparing JavaScript native type: ensures also a type checking.
+//          Be blind about functions equivalence.
+//          Do not chain through JavaScript's prototype's chain inheritance.
+//          It is only possible to compare "public" object properties.
+//          Two objects are considered equivalent if they got the same
+//              properties and their properties' values are equivalent.
+//              EVEN IF their constructor are different!!!
+//        
+//              Though having:
+//
+//                  function Car(year) {
+//                      this.year = year;
+//                      this.isOld = function() {
+//                          return year > 10;
+//                      }
+//                  }
+//          
+//                  function Human(year) {
+//                      this.year = year;
+//                      this.isOld = function() {
+//                          return year > 80;
+//                      }
+//                  }
+//          
+//                  var o1 = new Car(30);
+//                  var o2 = new Human(30);
+//
+//              o1 and o2 are equivalent because their properties and their
+//                  respective values are equals.
+//              Their functions are ignored and cannot be compared.
+//
+//      ALGO:
+//          Uses the && (guard) to stop execution as soon as possible
+//          between each single comparisons (within loop and recursive calls).
+//
+// author: Philippe Rathé <prathe@gmail.com>
+//
+function equiv() {
+    var args = Array.prototype.slice.apply(arguments);
+    var equals = true; // equals until we can explicitely say it's not!
+    var a, b; // compares 2 by 2 by transition up to the last argument.
+
+    if (args.length < 2) {
+        return true; // nothing to compare with
+    }
+
+    a = args[0];
+    b = args[1];
+
+    return (function (a, b) {
+        if (typeof a !== typeof b) {
+            return false;
+        }
+
+        // Try to optimize the algo speed if ever both a and b are references
+        // pointing to the same object (function, array, object)
+        if (a === b) {
+            return true;
+        }
+            
+        // NOTE:
+        //      Must test if it's an array before testing if it is an object,
+        //      because an array is also an object in JavaScript!
+        if (a instanceof Array) {
+            if (a.length !== b.length) {
+                return false;
+            }
+
+            for (var i = 0; i < a.length; i++) {
+                equals = equals && equiv(a[i], b[i]);
+            }
+
+            return equals;
+        }
+        
+        // null  is also an  object  in JavaScript.
+        // We must verify here that it equals to null explicitely.
+        // Otherwise when iterating over the properties of the null object,
+        // which does not exists, it can mistakely equals the {} object also.
+        if (a === null) {
+            return b === null;
+        }
+
+        if (typeof a === "object") {
+            // Verify properties equivalence in both ways:
+
+            // Everything in a should be in b and equivalent and ...
+            for (i in a) {
+                if (a.hasOwnProperty(i)) {
+                    equals = equals && equiv(a[i], b[i]);
+                }
+            }
+
+            // ... everything in b should be in a and equivalent
+            for (i in b) {
+                if (b.hasOwnProperty(i)) {
+                    equals = equals && equiv(b[i], a[i]);
+                }
+            }
+
+            return equals;
+        }
+
+        if (typeof a === "function") {
+            // Skip functions
+            return true;
+        }
+
+        // Compares Number, String, Boolean or undefined
+        // with type checking ('===' instead of '==')
+        return a === b;
+
+    }(a, b)) && equiv.apply(this, args.splice(1)); // next (1..n)
+}
+
+
 // public API as global methods
 $.extend(window, {
 	test: test,
@@ -418,6 +542,7 @@ $.extend(window, {
 	stop: stop,
 	reset: reset,
 	isLocal: isLocal,
+	same: equiv,
 	// legacy methods below
 	isSet: isSet,
 	isObj: isObj,
