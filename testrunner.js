@@ -388,7 +388,7 @@ function equals(actual, expected, message) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	config.Test.push( [ result, result ? message + ": " + expected : message + " expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual) ] );
+	config.Test.push( [ result, result ? message + ": " + expected : message + ", expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual) ] );
 }
 
 /**
