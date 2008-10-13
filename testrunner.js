@@ -50,12 +50,19 @@ function process() {
 	}
 }
 
-function stop(allowFailure) {
+function stop(timeout) {
 	config.blocking = true;
+	if (timeout)
+		config.timeout = setTimeout(function() {
+			ok( false, "Test timed out" );
+			start();
+		}, timeout);
 }
 function start() {
 	// A slight delay, to avoid any current callbacks
 	setTimeout(function() {
+		if(config.timeout)
+			clearTimeout(config.timeout);
 		config.blocking = false;
 		process();
 	}, 13);
