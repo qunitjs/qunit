@@ -358,93 +358,86 @@ function triggerEvent( elem, type, event ) {
 	}
 }
 
-// Test for multiple JavaScript variables or literals recursive equivalence.
+// Test for equality any JavaScript type.
+// http://philrathe.com/articles/equiv
+// Test suites: http://philrathe.com/tests/equiv
+// Author: Philippe Rathé <prathe@gmail.com>
+
+// A note about the function name "equiv". "equals" is usually used in test
+// suites to test types like number, boolean and string. Because of the way
+// JavaSript represents internally objects, in particular the object literal
+// notation, because of closures and because you can have a function wherever
+// you can have a value, in some case, we can not confirm that two objects are equal,
+// but instead we would say they are equivalent, if they appears equals from the properties
+// we can reach without knowing about those we cannot.
+
 // All variables or literals passed as arguments are verified 2 by 2, e.g.
 // a1 with a2, a2 with a3, a3 with a4 and so on up to the last argument.
 // By transition we can confirm that all arguments are equivalent.
-//
-//      NOTE:
-//          Ensures a deep and recursive equivalence.
-//          Identical references will always be equivalent, whatever it is.
-//          When comparing JavaScript native type: ensures also a type checking.
-//          Be blind about functions equivalence.
-//          Do not chain through JavaScript's prototype's chain inheritance.
-//          It is only possible to compare "public" object properties.
-//          Two objects are considered equivalent if they got the same
-//              properties and their properties' values are equivalent.
-//              EVEN IF their constructor are different!!!
-//        
-//              Though having:
-//
-//                  function Car(year) {
-//                      this.year = year;
-//                      this.isOld = function() {
-//                          return year > 10;
-//                      }
-//                  }
-//          
-//                  function Human(year) {
-//                      this.year = year;
-//                      this.isOld = function() {
-//                          return year > 80;
-//                      }
-//                  }
-//          
-//                  var o1 = new Car(30);
-//                  var o2 = new Human(30);
-//
-//              o1 and o2 are equivalent because their properties and their
-//                  respective values are equals.
-//              Their functions are ignored and cannot be compared.
-//
-//      ALGO:
-//          Uses the && (guard) to stop execution as soon as possible
-//          between each single comparisons (within loop and recursive calls).
-//
-// author: Philippe Rathé <prathe@gmail.com>
+
+//  BEHAVIOR:
+//      Ensures a deep equivalence of any type. Return true when equivalent, false otherwise.
+//      When comparing JavaScript native type: ensures also a type checking.
+//      Skip anonymous functions, except if they are passed by reference.
+//      Two objects are considered equivalent if they got the same properties and
+//          their properties' values are equivalent. EVEN IF their constructor are different!!!
+//      There is no way to compare instances, except if they are passed by reference.
+//      It is only possible to compare "public" object properties, not those enclosed.
+//      Do not chain through JavaScript's prototype's chain inheritance.
+//      Stop testing as soon as a difference is detected. 
+
+//      Uses the && (guard) to stop execution as soon as possible
+//      between each single comparisons (within loops and recursive calls).
+
+// About passing arguments:
+//      when < 2   : return true
+//      when 2     : return true if 1st equals 2nd
+//      when > 2   : return true 1st equals 2nd, and 2nd equals 3rd,
+//                      and 3rd equals 4th ... ans so on.
 //
 function equiv() {
     var args = Array.prototype.slice.apply(arguments);
-    var equals = true; // equals until we can explicitely say it's not!
-    var a, b; // compares 2 by 2 by transition up to the last argument.
+    var eq = true; // equivalent until we can explicitely say it's not!
+    var a, b; // compares a and b (1st and 2nd argument)
+    var len; // for iterating array's length memoization
 
     if (args.length < 2) {
-        return true; // nothing to compare with
+        return true; // nothing to compare together
     }
 
     a = args[0];
     b = args[1];
 
     return (function (a, b) {
-        if (typeof a !== typeof b) {
-            return false;
-        }
-
         // Try to optimize the algo speed if ever both a and b are references
-        // pointing to the same object (function, array, object)
+        // pointing to the same object (e..g. only for functions, arrays and objects)
         if (a === b) {
             return true;
         }
             
+        // Don't lose time and prevent further wrong type manipulation.
+        if (typeof a !== typeof b) {
+            return false;
+        }
+
         // NOTE:
         //      Must test if it's an array before testing if it is an object,
         //      because an array is also an object in JavaScript!
         if (a instanceof Array) {
-            if (a.length !== b.length) {
+            len = a.length;
+            if (len !== b.length) { // safe and faster
                 return false;
             }
-
-            for (var i = 0; i < a.length; i++) {
-                equals = equals && equiv(a[i], b[i]);
+            for (var i = 0; i < len; i++) {
+                eq = eq && equiv(a[i], b[i]);
             }
-
-            return equals;
+            return eq;
         }
         
-        // null  is also an  object  in JavaScript.
+        // null is also an object in JavaScript.
         // We must verify here that it equals to null explicitely.
         // Otherwise when iterating over the properties of the null object,
-        // which does not exists, it can mistakely equals the {} object also.
+        // which does not exists can mistakely equals the {} object also.
         if (a === null) {
             return b === null;
         }
@@ -453,33 +446,44 @@ function equiv() {
             // Verify properties equivalence in both ways:
 
             // Everything in a should be in b and equivalent and ...
-            for (i in a) {
+            for (var i in a) {
                 if (a.hasOwnProperty(i)) {
-                    equals = equals && equiv(a[i], b[i]);
+                    eq = eq && equiv(a[i], b[i]);
                 }
             }
 
             // ... everything in b should be in a and equivalent
-            for (i in b) {
+            for (var i in b) {
                 if (b.hasOwnProperty(i)) {
-                    equals = equals && equiv(b[i], a[i]);
+                    eq = eq && equiv(b[i], a[i]);
                 }
             }
 
-            return equals;
+            return eq;
         }
 
         if (typeof a === "function") {
-            // Skip functions
+            // Skip anonymous functions or "non equal" functions references.
+            // If a and b were passed by reference and were pointing to the same object,
+            // a === b would have caught it sooner in the code.
             return true;
         }
 
-        // Compares Number, String, Boolean or undefined
+        // NaN is a number in JavaScript.
+        // Because this statement is false: 0/0 === 0/0,
+        // we must use the isNaN function which is the only way to know a number is NaN.
+        // Note that it isn't the case with the Infinity number, and that 1/0 === 2/0.
+        if (typeof a === "number" && isNaN(a)) {
+            return isNaN(b);
+        }
+
+        // Compares Number, String, Boolean or undefined here
         // with type checking ('===' instead of '==')
         return a === b;
 
-    }(a, b)) && equiv.apply(this, args.splice(1)); // next (1..n)
+    }(a, b)) && equiv.apply(this, args.splice(1, args.length -1)); // apply transition with (1..n) arguments
 }
+
 
 
 // public API as global methods
