@@ -13,20 +13,52 @@
 (function($) {
 	
 var config = {
-	Test: [],
 	stats: {
 		all: 0,
 		bad: 0
 	},
 	queue: [],
 	// block until document ready
-	blocking: true
+	blocking: true,
+	//restrict modules/tests by get parameters
+	filters: location.search.length > 1 && $.map( location.search.slice(1).split('&'), decodeURIComponent ),
+	isLocal: !!(window.location.protocol == 'file:')
 };
 
-//restrict modules/tests by get parameters
-config.filters = location.search.length > 1 && $.map( location.search.slice(1).split('&'), decodeURIComponent );
-
-var isLocal = !!(window.location.protocol == 'file:');
+// public API as global methods
+$.extend(window, {
+	test: test,
+	module: module,
+	expect: expect,
+	ok: ok,
+	equals: equals,
+	start: start,
+	stop: stop,
+	reset: reset,
+	isLocal: config.isLocal,
+	same: function(a, b, message) {
+		push(equiv(a, b), a, b, message);
+	},
+	QUnit: {
+		equiv: equiv
+	},
+	// legacy methods below
+	isSet: isSet,
+	isObj: isObj,
+	compare: function() {
+		throw "compare is deprecated - use same() instead";
+	},
+	compare2: function() {
+		throw "compare2 is deprecated - use same() instead";
+	},
+	serialArray: function() {
+		throw "serialArray is deprecated - use jsDump.parse() instead";
+	},
+	q: q,
+	t: t,
+	url: url,
+	triggerEvent: triggerEvent
+});
 
 $(window).load(function() {
 	$('#userAgent').html(navigator.userAgent);
@@ -103,7 +135,7 @@ function runTest() {
 	});
 }
 
-function test(name, callback, nowait) {
+function test(name, callback) {
 	if(config.currentModule)
 		name = config.currentModule + " module: " + name;
 	var lifecycle = $.extend({
@@ -115,7 +147,8 @@ function test(name, callback, nowait) {
 		return;
 		
 	synchronize(function() {
-		config.Test = [];
+		config.assertions = [];
+		config.expected = null;
 		try {
 			lifecycle.setup();
 			callback();
@@ -126,7 +159,10 @@ function test(name, callback, nowait) {
 				console.error(e);
 				console.warn(callback.toString());
 			}
-			config.Test.push( [ false, "Died on test #" + (config.Test.length+1) + ": " + e.message ] );
+			config.assertions.push( {
+				result: false,
+				message: "Died on test #" + (config.assertions.length + 1) + ": " + e.message
+			});
 		}
 	});
 	synchronize(function() {
@@ -140,56 +176,37 @@ function test(name, callback, nowait) {
 			}
 		}
 		
-		// don't output pause tests
-		if(nowait) return;
-		
-		if(config.expected && config.expected != config.Test.length) {
-			config.Test.push( [ false, "Expected " + config.expected + " assertions, but " + config.Test.length + " were run" ] );
+		if(config.expected && config.expected != config.assertions.length) {
+			config.assertions.push({
+				result: false,
+				message: "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run"
+			});
 		}
-		config.expected = null;
 		
 		var good = 0, bad = 0;
-		var ol = document.createElement("ol");
-		ol.style.display = "none";
-		var li = "", state = "pass";
-		for ( var i = 0; i < config.Test.length; i++ ) {
-			var li = document.createElement("li");
-			li.className = config.Test[i][0] ? "pass" : "fail";
-			li.appendChild( document.createTextNode(config.Test[i][1]) );
-			ol.appendChild( li );
-			
-			config.stats.all++;
-			if ( !config.Test[i][0] ) {
-				state = "fail";
-				bad++;
-				config.stats.bad++;
-			} else good++;
+		var ol  = $("<ol/>").hide();
+		config.stats.all += config.assertions.length;
+		for ( var i = 0; i < config.assertions.length; i++ ) {
+			var assertion = config.assertions[i];
+			$("<li/>").addClass(assertion.result ? "pass" : "fail").text(assertion.message || "(no message)").appendTo(ol);
+			assertion.result ? good++ : bad++;
 		}
+		config.stats.bad += bad;
 	
-		var li = document.createElement("li");
-		li.className = state;
-	
-		var b = document.createElement("strong");
-		b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.Test.length + ")</b>";
-		b.onclick = function(){
-			var n = this.nextSibling;
-			if ( $.css( n, "display" ) == "none" )
-				n.style.display = "block";
-			else
-				n.style.display = "none";
-		};
-		$(b).dblclick(function(event) {
+		var b = $("<strong/>").html(name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.assertions.length + ")</b>")
+		.click(function(){
+			$(this).next().toggle();
+		})
+		.dblclick(function(event) {
 			var target = $(event.target).filter("strong").clone();
 			if ( target.length ) {
 				target.children().remove();
 				location.href = location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent($.trim(target.text()));
 			}
 		});
-		li.appendChild( b );
-		li.appendChild( ol );
-	
-		document.getElementById("tests").appendChild( li );
 		
+		$("<li/>").addClass(bad ? "fail" : "pass").append(b).append(ol).appendTo("#tests");
+	
 		if(bad) {
 			$("#filter").attr("disabled", null);
 		}
@@ -223,7 +240,10 @@ function reset() {
  * @example ok( $("a").size() > 5, "There must be at least 5 anchors" );
  */
 function ok(a, msg) {
-	config.Test.push( [ !!a, msg ] );
+	config.assertions.push({
+		result: !!a,
+		message: msg
+	});
 }
 
 /**
@@ -254,10 +274,10 @@ function isSet(a, b, msg) {
 				ret = false;
 	} else
 		ret = false;
-	if ( !ret )
-		config.Test.push( [ ret, msg + " expected: " + serialArray(b) + " result: " + serialArray(a) ] );
-	else 
-		config.Test.push( [ ret, msg ] );
+	config.assertions.push({
+		result: ret,
+		message: !ret ? (msg + " expected: " + serialArray(b) + " result: " + serialArray(a)) : msg
+	});
 }
 
 /**
@@ -277,7 +297,10 @@ function isObj(a, b, msg) {
 	} else
 		ret = false;
 
-    config.Test.push( [ ret, msg ] );
+    config.assertions.push({
+		result: ret,
+		message: msg
+	});
 }
 
 /**
@@ -336,7 +359,10 @@ function equals(actual, expected, message) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	config.Test.push( [ result, result ? message + ": " + expected : message + ", expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual) ] );
+	config.assertions.push({
+		result: result,
+		message: result ? message + ": " + expected : message + ", expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual)
+	});
 }
 
 /**
@@ -483,43 +509,6 @@ function equiv() {
 
     }(a, b)) && equiv.apply(this, args.splice(1, args.length -1)); // apply transition with (1..n) arguments
 }
-
-
-
-// public API as global methods
-$.extend(window, {
-	test: test,
-	module: module,
-	expect: expect,
-	ok: ok,
-	equals: equals,
-	start: start,
-	stop: stop,
-	reset: reset,
-	isLocal: isLocal,
-	same: function(a, b, message) {
-		push(equiv(a, b), a, b, message);
-	},
-	QUnit: {
-		equiv: equiv
-	},
-	// legacy methods below
-	isSet: isSet,
-	isObj: isObj,
-	compare: function() {
-		throw "compare is deprecated - use same() instead";
-	},
-	compare2: function() {
-		throw "compare2 is deprecated - use same() instead";
-	},
-	serialArray: function() {
-		throw "serialArray is deprecated - use jsDump.parse() instead";
-	},
-	q: q,
-	t: t,
-	url: url,
-	triggerEvent: triggerEvent
-});
 
 })(jQuery);
 
