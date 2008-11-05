@@ -385,47 +385,31 @@ function triggerEvent( elem, type, event ) {
 }
 
 // Test for equality any JavaScript type.
-// http://philrathe.com/articles/equiv
+// Discussions and reference: http://philrathe.com/articles/equiv
 // Test suites: http://philrathe.com/tests/equiv
 // Author: Philippe Rathé <prathe@gmail.com>
-
-// A note about the function name "equiv". "equals" is usually used in test
-// suites to test types like number, boolean and string. Because of the way
-// JavaSript represents internally objects, in particular the object literal
-// notation, because of closures and because you can have a function wherever
-// you can have a value, in some case, we can not confirm that two objects are equal,
-// but instead we would say they are equivalent, if they appears equals from the properties
-// we can reach without knowing about those we cannot.
-
-// All variables or literals passed as arguments are verified 2 by 2, e.g.
-// a1 with a2, a2 with a3, a3 with a4 and so on up to the last argument.
-// By transition we can confirm that all arguments are equivalent.
-
-//  BEHAVIOR:
-//      Ensures a deep equivalence of any type. Return true when equivalent, false otherwise.
-//      When comparing JavaScript native type: ensures also a type checking.
-//      Skip anonymous functions, except if they are passed by reference.
-//      Two objects are considered equivalent if they got the same properties and
-//          their properties' values are equivalent. EVEN IF their constructor are different!!!
-//      There is no way to compare instances, except if they are passed by reference.
-//      It is only possible to compare "public" object properties, not those enclosed.
-//      Do not chain through JavaScript's prototype's chain inheritance.
-//      Stop testing as soon as a difference is detected. 
-
-//      Uses the && (guard) to stop execution as soon as possible
-//      between each single comparisons (within loops and recursive calls).
 
 // About passing arguments:
 //      when < 2   : return true
 //      when 2     : return true if 1st equals 2nd
 //      when > 2   : return true 1st equals 2nd, and 2nd equals 3rd,
-//                      and 3rd equals 4th ... ans so on.
+//                      and 3rd equals 4th ... ans so on (by transition)
 //
+
+// Stack of constructors that enables us to skip or abort on functions value.
+var objectCallerConstructorStack = [];
 function equiv() {
+    // we will need to use the array splice method,
+    // so we need to convert arguments into a true array.
     var args = Array.prototype.slice.apply(arguments);
-    var eq = true; // equivalent until we can explicitely say it's not!
     var a, b; // compares a and b (1st and 2nd argument)
+    var i; // for iterating over objects convenience
     var len; // for iterating array's length memoization
+    // Memoized objects' properties.
+    // Allow us to test for equivalence only in one way,
+    // then to compare properties to make sure no one is missing.
+    var aProperties, bProperties;
+
 
     if (args.length < 2) {
         return true; // nothing to compare together
@@ -435,64 +419,144 @@ function equiv() {
     b = args[1];
 
     return (function (a, b) {
+
         // Try to optimize the algo speed if ever both a and b are references
         // pointing to the same object (e..g. only for functions, arrays and objects)
         if (a === b) {
             return true;
         }
-            
-        // Don't lose time and prevent further wrong type manipulation.
+        
+        // Must test for the null value before testing for the type of an object,
+        // because null is also an object. Trapping null or undefined values here
+        // is a good to avoid to much validations further in the code.
+        if (a === null || b === null || typeof a === "undefined" || typeof b === "undefined") {
+            return false; // Anyway (a === b) would have already caught it.
+        }
+
+        // Don't lose time and prevent further wrong type manipulation or unexpected results.
         if (typeof a !== typeof b) {
             return false;
         }
 
-        // NOTE:
-        //      Must test if it's an array before testing if it is an object,
-        //      because an array is also an object in JavaScript!
+        // Must test if it's an array before testing for the type of an object,
+        // because an array is also an object.
         if (a instanceof Array) {
+
+            // Make sure b is also an array.
+            // At this point b can be an object.
+            // Prevent further arrays operation on object.
+            if ( ! (b instanceof Array)) {
+                return false;
+            }
+
             len = a.length;
             if (len !== b.length) { // safe and faster
                 return false;
             }
-            for (var i = 0; i < len; i++) {
-                eq = eq && equiv(a[i], b[i]);
+            for (i = 0; i < len; i++) {
+                if( ! equiv(a[i], b[i])) {
+                    return false;
+                }
             }
-            return eq;
+            return true;
         }
         
-        // null is also an object in JavaScript.
-        // We must verify here that it equals to null explicitely.
-        // Otherwise when iterating over the properties of the null object,
-        // which does not exists can mistakely equals the {} object also.
-        if (a === null) {
-            return b === null;
+        // NOTE:
+        //      Must test if it's a date before testing if it is an object,
+        //      because a date is also an object.
+        //      We don't need to check if b is also an instance of Date because
+        //      the "different type check" sooner in the code would have caught it and
+        //      return false by evaluating ("object" !== "number") (or conversely) to true.
+        if (a instanceof Date) {
+            return a.valueOf() === b.valueOf();
         }
 
+        // NOTE:
+        //      Using toSource() to compare regexp only works in FF. It was working as well as the above.
+        //      Must verify the constructor of a regexp before verifying it is an object.
+        //      Notice those confusing true statements:
+        //          var a = /./;
+        //          a instanceof Object; // => true
+        //          a instanceof RegExp; // => true
+        //          typeof a === "function"; // => false in IE and Opera, true in FF and Safari
+        //
+        // There is 3 possible modifier for regular expressions (g, m and i)
+        // The source property only returns the regular expression string without the modifier.
+        if (a instanceof RegExp) {
+            return b instanceof RegExp &&
+                a.source === b.source &&
+                a.global === b.global &&
+                a.ignoreCase === b.ignoreCase &&
+                a.multiline === b.multiline;
+        }
+
+        // typeof on some types returns sometimes unexpected type that we deals with.
+        // We could have used instanceof instead of typeof but it comes with
+        // other problems as mentioned above when testing for the RegExp constructor.
+        // We explicitely don't use hasOwnProperty when iterating on the properties of
+        // an object to allow a deeper equivalence (e.g. for instances particularly)
         if (typeof a === "object") {
-            // Verify properties equivalence in both ways:
+            // Different constructors means a and b can't be equivalent instances.
+            // We don't have any choice of comparing them in both ways because of inheritance
+            // otherwise {} could be mistaken with []
+            // NOTE this:
+            //      var a = [];
+            //      a instanceof Array;  // true
+            //      a instanceof Object; // true
+            if ( a.constructor !== b.constructor) {
+                return false;
+            }
 
-            // Everything in a should be in b and equivalent and ...
-            for (var i in a) {
-                if (a.hasOwnProperty(i)) {
-                    eq = eq && equiv(a[i], b[i]);
+            // Stack constructors before iterating over its properties
+            objectCallerConstructorStack.push(a.constructor);
+
+            aProperties = [];
+            bProperties = [];
+
+            // NOTE:
+            //      We only need to compare propertie's equivalence in one way
+            //      and ensures that all properties of a and b are the same.
+
+            // Verify a's properties with b's properties equivalence.
+            // Stack a's properties
+            
+            for (i in a) {
+                aProperties.push(i);
+                if (!equiv(a[i], b[i])) {
+                    // Unstack current constructor when finished with the object
+                    objectCallerConstructorStack.pop();
+                    return false;
                 }
             }
 
-            // ... everything in b should be in a and equivalent
-            for (var i in b) {
-                if (b.hasOwnProperty(i)) {
-                    eq = eq && equiv(b[i], a[i]);
-                }
+            // Stack also b's properties
+            for (i in b) {
+                bProperties.push(i);
             }
 
-            return eq;
+            // Unstack current constructor when finished with the object
+            objectCallerConstructorStack.pop();
+
+            // Ensures properties's name in both ways.
+            // Must sort them because they may not be always in the same order!
+            return equiv(aProperties.sort(), bProperties.sort());
         }
 
-        if (typeof a === "function") {
-            // Skip anonymous functions or "non equal" functions references.
-            // If a and b were passed by reference and were pointing to the same object,
-            // a === b would have caught it sooner in the code.
-            return true;
+        // NOTE:
+        //      Using the typeof operator will also catch a RegExp instance.
+        //      Take no risk.
+        if (a instanceof Function) {
+            // BEHAVIOR when comparing functions.
+            //      Being here means that a and b were were not the same references.
+            //      At this level, functions won't be compared at all.
+            //      - skip when they are properties of instances (not instantiates from the Object construtor)
+            //      - abort otherwise
+            //
+            //      To Determine if a function is anonymous we use a regexp on the function sources.
+            var currentObjectCallerConstructor =
+                    objectCallerConstructorStack[objectCallerConstructorStack.length - 1];
+            return currentObjectCallerConstructor !== Object &&
+                    typeof currentObjectCallerConstructor !== "undefined";
         }
 
         // NaN is a number in JavaScript.
@@ -503,9 +567,14 @@ function equiv() {
             return isNaN(b);
         }
 
-        // Compares Number, String, Boolean or undefined here
-        // with type checking ('===' instead of '==')
-        return a === b;
+        // Compares Number, String or Boolean
+        // Because sooner we have already tried:
+        //          a === b (then return if it is the case)
+        //            and
+        //  typeof a !== typeof b (then return false if it is the case)
+        // at this time a and b should be of the same type, but hold different values.
+        // We can safely return false instead of returning a === b
+        return false;
 
     }(a, b)) && equiv.apply(this, args.splice(1, args.length -1)); // apply transition with (1..n) arguments
 }
