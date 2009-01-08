@@ -196,6 +196,13 @@ var equiv = function () {
 
     return innerEquiv;
 }(); // equiv
+
+var GETParams = $.map( location.search.slice(1).split('&'), decodeURIComponent ),
+	ngindex = $.inArray("noglobals", GETParams),
+	noglobals = ngindex !== -1;
+
+if( noglobals )
+	GETParams.splice( ngindex, 1 );
 	
 var config = {
 	stats: {
@@ -206,7 +213,7 @@ var config = {
 	// block until document ready
 	blocking: true,
 	//restrict modules/tests by get parameters
-	filters: location.search.length > 1 && $.map( location.search.slice(1).split('&'), decodeURIComponent ),
+	filters: GETParams,
 	isLocal: !!(window.location.protocol == 'file:')
 };
 
@@ -286,14 +293,14 @@ function start() {
 }
 
 function validTest( name ) {
-	var filters = config.filters;
-	if( !filters )
-		return true;
-
-	var i = filters.length,
+	var i = config.filters.length,
 		run = false;
+
+	if( !i )
+		return true;
+	
 	while( i-- ){
-		var filter = filters[i],
+		var filter = config.filters[i],
 			not = filter.charAt(0) == '!';
 		if( not ) 
 			filter = filter.slice(1);
@@ -317,6 +324,31 @@ function runTest() {
 			.join(''))
 			.appendTo("body");
 		$("#banner").addClass(config.stats.bad ? "fail" : "pass");
+	});
+}
+
+var pollution;
+
+function saveGlobal(){
+	pollution = [ ];
+	
+	if( noglobals )
+		for( var key in window )
+			pollution.push(key);
+}
+function checkPollution( name ){
+	var old = pollution;
+	saveGlobal();
+	
+	if( pollution.length > old.length ){
+		ok( false, "Introduced global variables: " + diff(old, pollution).join(", ") );
+		config.expected++;
+	}
+}
+
+function diff( clean, dirty ){
+	return $.grep( dirty, function(name){
+		return $.inArray( name, clean ) == -1;
 	});
 }
 
@@ -345,7 +377,10 @@ function test(name, callback) {
 	})
 	synchronize(function() {
 		try {
+			if( !pollution )
+				saveGlobal();
 			callback();
+			checkPollution();
 		} catch(e) {
 			if( typeof console != "undefined" && console.error && console.warn ) {
 				console.error("Test " + name + " died, exception and test follows");
@@ -356,6 +391,8 @@ function test(name, callback) {
 				result: false,
 				message: "Died on test #" + (config.assertions.length + 1) + ": " + e.message
 			});
+			// else next test will carry the responsibility
+			saveGlobal();
 		}
 	});
 	synchronize(function() {
