@@ -330,14 +330,22 @@ function test(name, callback) {
 	
 	if ( !validTest(name) )
 		return;
-		
+	
 	synchronize(function() {
 		config.assertions = [];
 		config.expected = null;
 		try {
 			lifecycle.setup();
+		} catch(e) {
+			config.assertions.push( {
+				result: false,
+				message: "Setup failed on " + name + ": " + e.message
+			});
+		}
+	})
+	synchronize(function() {
+		try {
 			callback();
-			lifecycle.teardown();
 		} catch(e) {
 			if( typeof console != "undefined" && console.error && console.warn ) {
 				console.error("Test " + name + " died, exception and test follows");
@@ -350,6 +358,16 @@ function test(name, callback) {
 			});
 		}
 	});
+	synchronize(function() {
+		try {
+			lifecycle.teardown();
+		} catch(e) {
+			config.assertions.push( {
+				result: false,
+				message: "Teardown failed on " + name + ": " + e.message
+			});
+		}
+	})
 	synchronize(function() {
 		try {
 			reset();
