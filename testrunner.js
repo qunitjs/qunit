@@ -341,7 +341,7 @@ function checkPollution( name ){
 	saveGlobal();
 	
 	if( pollution.length > old.length ){
-		ok( false, "Introduced global variables: " + diff(old, pollution).join(", ") );
+		ok( false, "Introduced global variable(s): " + diff(old, pollution).join(", ") );
 		config.expected++;
 	}
 }
@@ -367,6 +367,8 @@ function test(name, callback) {
 		config.assertions = [];
 		config.expected = null;
 		try {
+			if( !pollution )
+				saveGlobal();
 			lifecycle.setup();
 		} catch(e) {
 			config.assertions.push( {
@@ -377,10 +379,7 @@ function test(name, callback) {
 	})
 	synchronize(function() {
 		try {
-			if( !pollution )
-				saveGlobal();
 			callback();
-			checkPollution();
 		} catch(e) {
 			if( typeof console != "undefined" && console.error && console.warn ) {
 				console.error("Test " + name + " died, exception and test follows");
@@ -397,6 +396,7 @@ function test(name, callback) {
 	});
 	synchronize(function() {
 		try {
+			checkPollution();
 			lifecycle.teardown();
 		} catch(e) {
 			config.assertions.push( {
