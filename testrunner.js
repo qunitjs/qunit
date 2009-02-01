@@ -254,10 +254,14 @@ $.extend(window, {
 
 $(window).load(function() {
 	$('#userAgent').html(navigator.userAgent);
-	var head = $('<div class="testrunner-toolbar"><label for="filter">Hide passed tests</label></div>').insertAfter("#userAgent");
-	$('<input type="checkbox" id="filter" />').attr("disabled", true).prependTo(head).click(function() {
+	var head = $('<div class="testrunner-toolbar"><label for="filter-pass">Hide passed tests</label></div>').insertAfter("#userAgent");
+	$('<input type="checkbox" id="filter-pass" />').attr("disabled", true).prependTo(head).click(function() {
 		$('li.pass')[this.checked ? 'hide' : 'show']();
 	});
+	$('<input type="checkbox" id="filter-missing">').attr("disabled", true).appendTo(head).click(function() {
+		$("li.fail:contains('missing test - untested code is broken code')").parent('ol').parent('li.fail')[this.checked ? 'hide' : 'show']();
+	});
+	$("#filter-missing").after('<label for="filter-missing">Hide missing tests (untested code is broken code)</label>');
 	runTest();	
 });
 
@@ -448,7 +452,8 @@ function test(name, callback) {
 		$("<li/>").addClass(bad ? "fail" : "pass").append(b).append(ol).appendTo("#tests");
 	
 		if(bad) {
-			$("#filter").attr("disabled", null);
+			$("#filter-pass").attr("disabled", null);
+			$("#filter-missing").attr("disabled", null);
 		}
 	});
 }
