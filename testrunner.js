@@ -256,6 +256,16 @@ $.extend(window, {
 });
 
 $(window).load(function() {
+	
+	if (!$("#header, #banner, #userAgent, #tests").length) {
+		$('body').prepend(
+			'<h1 id="header">' + document.title + '</h1>' +
+			'<h2 id="banner"></h2>' +
+			'<h2 id="userAgent"></h2>' +
+			'<ol id="tests"></ol>'
+		);
+	}
+	
 	$('#userAgent').html(navigator.userAgent);
 	var head = $('<div class="testrunner-toolbar"><label for="filter-pass">Hide passed tests</label></div>').insertAfter("#userAgent");
 	$('<input type="checkbox" id="filter-pass" />').attr("disabled", true).prependTo(head).click(function() {
