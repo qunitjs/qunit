@@ -372,7 +372,7 @@ function diff( clean, dirty ){
 
 function test(name, callback) {
 	if(config.currentModule)
-		name = config.currentModule + " module: " + name;
+		name = config.currentModule + " module: <span>" + name + "</span>";
 	var lifecycle = $.extend({
 		setup: function() {},
 		teardown: function() {}
