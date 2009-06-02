@@ -12,7 +12,7 @@
 
 (function($) {
 
-// Tests for equality any JavaScript type and structure without unexpected results.
+// Test for equality any JavaScript type.
 // Discussions and reference: http://philrathe.com/articles/equiv
 // Test suites: http://philrathe.com/tests/equiv
 // Author: Philippe Rathé <prathe@gmail.com>
@@ -21,15 +21,16 @@ var equiv = function () {
     var innerEquiv; // the real equiv function
     var callers = []; // stack to decide between skip/abort functions
 
+
     // Determine what is o.
     function hoozit(o) {
-        if (typeof o === "string") {
+        if (o.constructor === String) {
             return "string";
-
-        } else if (typeof o === "boolean") {
+            
+        } else if (o.constructor === Boolean) {
             return "boolean";
 
-        } else if (typeof o === "number") {
+        } else if (o.constructor === Number) {
 
             if (isNaN(o)) {
                 return "nan";
@@ -64,6 +65,8 @@ var equiv = function () {
 
         } else if (o instanceof Function) {
             return "function";
+        } else {
+            return undefined;
         }
     }
 
@@ -78,12 +81,19 @@ var equiv = function () {
             }
         }
     }
-
+    
     var callbacks = function () {
 
         // for string, boolean, number and null
         function useStrictEquality(b, a) {
-            return a === b;
+            if (b instanceof a.constructor || a instanceof b.constructor) {
+                // to catch short annotaion VS 'new' annotation of a declaration
+                // e.g. var i = 1;
+                //      var j = new Number(1);
+                return a == b;
+            } else {
+                return a === b;
+            }
         }
 
         return {
@@ -182,10 +192,8 @@ var equiv = function () {
         return (function (a, b) {
             if (a === b) {
                 return true; // catch the most you can
-
-            } else if (typeof a !== typeof b || a === null || b === null || typeof a === "undefined" || typeof b === "undefined") {
+            } else if (a === null || b === null || typeof a === "undefined" || typeof b === "undefined" || hoozit(a) !== hoozit(b)) {
                 return false; // don't lose time with error prone cases
-
             } else {
                 return bindCallbacks(a, callbacks, [b, a]);
             }
@@ -195,7 +203,8 @@ var equiv = function () {
     };
 
     return innerEquiv;
-}(); // equiv
+
+}();
 
 var GETParams = $.map( location.search.slice(1).split('&'), decodeURIComponent ),
 	ngindex = $.inArray("noglobals", GETParams),
