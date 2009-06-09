@@ -346,7 +346,7 @@ function runTest() {
 	synchronize(function() {
 		$('<p id="testresult" class="result"/>').html(['Tests completed in ',
 			+new Date - started, ' milliseconds.<br/>',
-			'<span class="bad">', config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> failed.']
+			'<span class="bad">', config.stats.all - config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> passed, ', config.stats.bad,' failed.']
 			.join(''))
 			.appendTo("body");
 		$("#banner").addClass(config.stats.bad ? "fail" : "pass");
