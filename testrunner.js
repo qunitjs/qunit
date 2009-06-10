@@ -405,11 +405,7 @@ function test(name, callback) {
 		try {
 			callback();
 		} catch(e) {
-			if( typeof console != "undefined" && console.error && console.warn ) {
-				console.error("Test " + name + " died, exception and test follows");
-				console.error(e);
-				console.warn(callback.toString());
-			}
+			fail("Test " + name + " died, exception and test follows", e, callback);
 			QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message );
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -427,11 +423,7 @@ function test(name, callback) {
 		try {
 			reset();
 		} catch(e) {
-			if( typeof console != "undefined" && console.error && console.warn ) {
-				console.error("reset() failed, following Test " + name + ", exception and reset fn follows");
-				console.error(e);
-				console.warn(reset.toString());
-			}
+			fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
 		}
 		
 		if(config.expected && config.expected != config.assertions.length) {
@@ -467,6 +459,16 @@ function test(name, callback) {
 			$("#filter-missing").attr("disabled", null);
 		}
 	});
+}
+
+function fail(message, exception, callback) {
+	if( typeof console != "undefined" && console.error && console.warn ) {
+		console.error(message);
+		console.error(exception);
+		console.warn(callback.toString());
+	} else if (window.opera && opera.postError) {
+		opera.postError(message, exception, callback.toString);
+	}
 }
 
 // call on start of module test to prepend name to all tests
