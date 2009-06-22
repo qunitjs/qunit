@@ -656,7 +656,7 @@ function triggerEvent( elem, type, event ) {
 	};
 	function join( pre, arr, post ){
 		var s = jsDump.separator(),
-			base = jsDump.indent();
+			base = jsDump.indent(),
 			inner = jsDump.indent(1);
 		if( arr.join )
 			arr = arr.join( ',' + s + inner );
