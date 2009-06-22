@@ -400,7 +400,7 @@ function test(name, callback) {
 		} catch(e) {
 			QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 		}
-	})
+	});
 	synchronize(function() {
 		try {
 			callback();
@@ -418,7 +418,7 @@ function test(name, callback) {
 		} catch(e) {
 			QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 		}
-	})
+	});
 	synchronize(function() {
 		try {
 			reset();
