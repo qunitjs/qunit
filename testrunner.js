@@ -389,6 +389,8 @@ function test(name, callback) {
 	
 	if ( !validTest(name) )
 		return;
+		
+	var testEnvironment = {};
 	
 	synchronize(function() {
 		config.assertions = [];
@@ -396,14 +398,14 @@ function test(name, callback) {
 		try {
 			if( !pollution )
 				saveGlobal();
-			lifecycle.setup();
+			lifecycle.setup.call(testEnvironment);
 		} catch(e) {
 			QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 		}
 	});
 	synchronize(function() {
 		try {
-			callback();
+			callback.call(testEnvironment);
 		} catch(e) {
 			fail("Test " + name + " died, exception and test follows", e, callback);
 			QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message );
@@ -414,7 +416,7 @@ function test(name, callback) {
 	synchronize(function() {
 		try {
 			checkPollution();
-			lifecycle.teardown();
+			lifecycle.teardown.call(testEnvironment);
 		} catch(e) {
 			QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 		}
