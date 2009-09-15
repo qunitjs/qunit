@@ -206,8 +206,13 @@ var equiv = function () {
 
 }();
 
-var GETParams = $.map( location.search.slice(1).split('&'), decodeURIComponent );
+var GETParams = $.map( location.search.slice(1).split('&'), decodeURIComponent ),
+	ngindex = $.inArray("noglobals", GETParams),
+	noglobals = ngindex !== -1;
 
+if( noglobals )
+	GETParams.splice( ngindex, 1 );
+	
 var config = {
 	stats: {
 		all: 0,
@@ -354,8 +359,9 @@ var pollution;
 function saveGlobal(){
 	pollution = [ ];
 	
-	for( var key in window )
-		pollution.push(key);
+	if( noglobals )
+		for( var key in window )
+			pollution.push(key);
 }
 function checkPollution( name ){
 	var old = pollution;
@@ -409,8 +415,8 @@ function test(name, callback) {
 	});
 	synchronize(function() {
 		try {
-			lifecycle.teardown.call(testEnvironment);
 			checkPollution();
+			lifecycle.teardown.call(testEnvironment);
 		} catch(e) {
 			QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 		}
