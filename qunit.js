@@ -147,10 +147,11 @@ var QUnit = {
 				tests.appendChild( li );
 
 				if ( bad ) {
-					var pass = id("qunit-filter-pass"), missing = id("qunit-filter-missing");
-					if ( pass && missing ) {
-						pass.disabled = null;
-						missing.disabled = null;
+					var toolbar = id("qunit-testrunner-toolbar");
+					if ( toolbar ) {
+						toolbar.style.display = "block";
+						id("qunit-filter-pass").disabled = null;
+						id("qunit-filter-missing").disabled = null;
 					}
 				}
 
@@ -201,7 +202,7 @@ var QUnit = {
 	},
 	
 	same: function(a, b, message) {
-		push(QUnit.equiv(a, b), a, b, message);
+		push(equiv(a, b), a, b, message);
 	},
 	
 	start: function start() {
@@ -262,6 +263,9 @@ var QUnit = {
 			elem.fireEvent("on"+type);
 		}
 	},
+	
+	// Expose the equiv method
+	equiv: equiv,
 	
 	// Logging callbacks
 	done: function done(failures, total) {},
@@ -324,6 +328,8 @@ addEvent(window, "load", function() {
 	
 	var toolbar = id("qunit-testrunner-toolbar");
 	if ( toolbar ) {
+		toolbar.style.display = "none";
+		
 		var filter = document.createElement("input");
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
@@ -427,7 +433,7 @@ function validTest( name ) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
+	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual) );
 }
 
 function synchronize( callback ) {
@@ -516,7 +522,7 @@ function id(name) {
 // Discussions and reference: http://philrathe.com/articles/equiv
 // Test suites: http://philrathe.com/tests/equiv
 // Author: Philippe Rathé <prathe@gmail.com>
-QUnit.equiv = function () {
+var equiv = function () {
 
     var innerEquiv; // the real equiv function
     var callers = []; // stack to decide between skip/abort functions
@@ -716,7 +722,7 @@ QUnit.equiv = function () {
  * @author Ariel Flesler
  * @link {http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html}
  */
-QUnit.jsDump = (function() {
+var jsDump = (function() {
 	function quote( str ) {
 		return '"' + str.toString().replace(/"/g, '\\"') + '"';
 	};
