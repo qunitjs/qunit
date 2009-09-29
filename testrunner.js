@@ -147,8 +147,11 @@ var QUnit = {
 				tests.appendChild( li );
 
 				if ( bad ) {
-					id("filter-pass").disabled = null;
-					id("filter-missing").disabled = null;
+					var pass = id("filter-pass"), missing = id("filter-missing");
+					if ( pass && missing ) {
+						pass.disabled = null;
+						missing.disabled = null;
+					}
 				}
 
 			} else {
