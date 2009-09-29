@@ -274,26 +274,6 @@ extend(window, {
 
 addEvent(window, "load", function(){
 	
-	if ( !document.getElementById("header") ) {
-		var header = document.createElement("h1");
-		header.id = "header";
-		header.innerHTML = document.title;
-
-		var banner = document.createElement("h2");
-		banner.id = "banner";
-
-		var userAgent = document.createElement("h2");
-		userAgent.id = "userAgent";
-
-		var ol = document.createElement("ol");
-		ol.id = "tests";
-
-		document.body.insertBefore( ol, document.body.firstChild );
-		document.body.insertBefore( userAgent, document.body.firstChild );
-		document.body.insertBefore( banner, document.body.firstChild );
-		document.body.insertBefore( header, document.body.firstChild );
-	}
-
 	var userAgent = document.getElementById("userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
@@ -344,32 +324,37 @@ addEvent(window, "load", function(){
 	runTest();	
 });
 
-function synchronize(callback) {
-	config.queue.push(callback);
-	if(!config.blocking) {
+function synchronize( callback ) {
+	config.queue.push( callback );
+
+	if( !config.blocking ) {
 		process();
 	}
 }
 
 function process() {
-	while(config.queue.length && !config.blocking) {
+	while ( config.queue.length && !config.blocking ) {
 		config.queue.shift()();
 	}
 }
 
 function stop(timeout) {
 	config.blocking = true;
-	if (timeout)
+
+	if ( timeout ) {
 		config.timeout = setTimeout(function() {
 			QUnit.ok( false, "Test timed out" );
 			start();
 		}, timeout);
+	}
 }
 function start() {
 	// A slight delay, to avoid any current callbacks
 	setTimeout(function() {
-		if(config.timeout)
+		if ( config.timeout ) {
 			clearTimeout(config.timeout);
+		}
+
 		config.blocking = false;
 		process();
 	}, 13);
@@ -379,44 +364,60 @@ function validTest( name ) {
 	var i = config.filters.length,
 		run = false;
 
-	if( !i )
+	if ( !i ) {
 		return true;
+	}
 	
-	while( i-- ){
+	while ( i-- ) {
 		var filter = config.filters[i],
 			not = filter.charAt(0) == '!';
-		if( not ) 
+
+		if ( not ) {
 			filter = filter.slice(1);
-		if( name.indexOf(filter) != -1 )
+		}
+
+		if ( name.indexOf(filter) !== -1 ) {
 			return !not;
-		if( not )
+		}
+
+		if ( not ) {
 			run = true;
+		}
 	}
+
 	return run;
 }
 
 function runTest() {
+	var started = +new Date,
+		main = document.getElementById('main');
+
 	config.blocking = false;
-	var started = +new Date;
-	config.fixture = document.getElementById('main').innerHTML;
+
+	if ( main ) {
+		config.fixture = main.innerHTML;
+	}
 
 	if ( window.jQuery ) {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
 	synchronize(function() {
-		var html = ['Tests completed in ',
+		var banner = document.getElementById("banner"),
+			html = ['Tests completed in ',
 			+new Date - started, ' milliseconds.<br/>',
 			'<span class="bad">', config.stats.all - config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> passed, ', config.stats.bad,' failed.'].join('');
 
-		var result = document.createElement("p");
-		result.id = "testresult";
-		result.className = "result";
-		result.innerHTML = html;
-		document.body.appendChild( result );
+		if ( banner ) {
+			var result = document.createElement("p");
+			result.id = "testresult";
+			result.className = "result";
+			result.innerHTML = html;
+			document.body.appendChild( result );
 
-		document.getElementById("banner").className +=
-			" " + (config.stats.bad ? "fail" : "pass");
+			banner.className +=
+				" " + (config.stats.bad ? "fail" : "pass");
+		}
 
 		QUnit.done( config.stats.bad, config.stats.all );
 	});
@@ -487,6 +488,7 @@ function test(name, callback) {
 			QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 		}
 	});
+
 	synchronize(function() {
 		try {
 			callback.call(testEnvironment);
@@ -497,6 +499,7 @@ function test(name, callback) {
 			saveGlobal();
 		}
 	});
+
 	synchronize(function() {
 		try {
 			checkPollution();
@@ -505,6 +508,7 @@ function test(name, callback) {
 			QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 		}
 	});
+
 	synchronize(function() {
 		try {
 			reset();
@@ -516,61 +520,81 @@ function test(name, callback) {
 			QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
 		}
 		
-		var good = 0, bad = 0;
-		var ol  = document.createElement("ol");
-		ol.style.display = "none";
+		var good = 0, bad = 0,
+			tests = document.getElementById("tests");
+
 		config.stats.all += config.assertions.length;
-		for ( var i = 0; i < config.assertions.length; i++ ) {
-			var assertion = config.assertions[i];
-			var li = document.createElement("li");
-			li.className = assertion.result ? "pass" : "fail";
-			li.innerHTML = assertion.message || "(no message)";
-			ol.appendChild( li );
-			assertion.result ? good++ : bad++;
-		}
-		config.stats.bad += bad;
-		
-		var b = document.createElement("strong");
-		b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.assertions.length + ")</b>";
-		addEvent(b, "click", function(){
-			var next = b.nextSibling, display = next.style.display;
-			next.style.display = display === "none" ? "block" : "none";
-		});
-		addEvent(b, "dblclick", function(e){
-			var target = (e || window.event).target;
-			if ( target.nodeName.toLowerCase() === "strong" ) {
-				var text = "", node = target.firstChild;
 
-				while ( node.nodeType === 3 ) {
-					text += node.nodeValue;
-					node = node.nextSibling;
+		if ( tests ) {
+			var ol  = document.createElement("ol");
+			ol.style.display = "none";
+
+			for ( var i = 0; i < config.assertions.length; i++ ) {
+				var assertion = config.assertions[i];
+
+				var li = document.createElement("li");
+				li.className = assertion.result ? "pass" : "fail";
+				li.innerHTML = assertion.message || "(no message)";
+				ol.appendChild( li );
+
+				if ( assertion.result ) {
+					good++;
+				} else {
+					bad++;
+					config.stats.bad++;
 				}
-
-				text = text.replace(/(^\s*|\s*$)/g, "");
-
-				location.href = location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent(text);
 			}
-		});
+		
+			var b = document.createElement("strong");
+			b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.assertions.length + ")</b>";
+			addEvent(b, "click", function(){
+				var next = b.nextSibling, display = next.style.display;
+				next.style.display = display === "none" ? "block" : "none";
+			});
+			addEvent(b, "dblclick", function(e){
+				var target = (e || window.event).target;
+				if ( target.nodeName.toLowerCase() === "strong" ) {
+					var text = "", node = target.firstChild;
+	
+					while ( node.nodeType === 3 ) {
+						text += node.nodeValue;
+						node = node.nextSibling;
+					}
 
-		var li = document.createElement("li");
-		li.className = bad ? "fail" : "pass";
-		li.appendChild( b );
-		li.appendChild( ol );
-		document.getElementById("tests").appendChild( li );
+					text = text.replace(/(^\s*|\s*$)/g, "");
 
-		if(bad) {
-			document.getElementById("filter-pass").disabled = null;
-			document.getElementById("filter-missing").disabled = null;
+					location.href = location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent(text);
+				}
+			});
+
+			var li = document.createElement("li");
+			li.className = bad ? "fail" : "pass";
+			li.appendChild( b );
+			li.appendChild( ol );
+			tests.appendChild( li );
+
+			if ( bad ) {
+				document.getElementById("filter-pass").disabled = null;
+				document.getElementById("filter-missing").disabled = null;
+			}
+
+		} else {
+			for ( var i = 0; i < config.assertions.length; i++ ) {
+				if ( !config.assertions[i].result ) {
+					config.stats.bad++;
+				}
+			}
 		}
 	});
 }
 
 function fail(message, exception, callback) {
-	if( typeof console != "undefined" && console.error && console.warn ) {
+	if ( typeof console !== "undefined" && console.error && console.warn ) {
 		console.error(message);
 		console.error(exception);
 		console.warn(callback.toString());
-	} else if (window.opera && opera.postError) {
+
+	} else if ( window.opera && opera.postError ) {
 		opera.postError(message, exception, callback.toString);
 	}
 }
@@ -597,7 +621,10 @@ function reset() {
 		jQuery.event.global = {};
 		jQuery.ajaxSettings = extend({}, config.ajaxSettings);
 	} else {
-		document.getElementById("main").innerHTML = config.fixture;
+		var main = document.getElementById("main");
+		if ( main ) {
+			main.innerHTML = config.fixture;
+		}
 	}
 }
 
@@ -621,27 +648,36 @@ function isSet(a, b, msg) {
 	function serialArray( a ) {
 		var r = [];
 		
-		if ( a && a.length )
-	        for ( var i = 0; i < a.length; i++ ) {
-	            var str = a[i].nodeName;
-	            if ( str ) {
-	                str = str.toLowerCase();
-	                if ( a[i].id )
-	                    str += "#" + a[i].id;
-	            } else
-	                str = a[i];
-	            r.push( str );
+		if ( a && a.length ) {
+	        	for ( var i = 0; i < a.length; i++ ) {
+	            		var str = a[i].nodeName;
+	            		if ( str ) {
+	                		str = str.toLowerCase();
+	                		if ( a[i].id ) {
+	                    			str += "#" + a[i].id;
+					}
+	            		} else {
+	                		str = a[i];
+				}
+	            		r.push( str );
+			}
 	        }
 	
 		return "[ " + r.join(", ") + " ]";
 	}
+
 	var ret = true;
+
 	if ( a && b && a.length != undefined && a.length == b.length ) {
-		for ( var i = 0; i < a.length; i++ )
-			if ( a[i] != b[i] )
+		for ( var i = 0; i < a.length; i++ ) {
+			if ( a[i] != b[i] ) {
 				ret = false;
-	} else
+			}
+		}
+	} else {
 		ret = false;
+	}
+
 	QUnit.ok( ret, !ret ? (msg + " expected: " + serialArray(b) + " result: " + serialArray(a)) : msg );
 }
 
@@ -652,17 +688,22 @@ function isObj(a, b, msg) {
 	var ret = true;
 	
 	if ( a && b ) {
-		for ( var i in a )
-			if ( a[i] != b[i] )
+		for ( var i in a ) {
+			if ( a[i] != b[i] ) {
 				ret = false;
+			}
+		}
 
-		for ( i in b )
-			if ( a[i] != b[i] )
+		for ( i in b ) {
+			if ( a[i] != b[i] ) {
 				ret = false;
-	} else
+			}
+		}
+	} else {
 		ret = false;
+	}
 
-    QUnit.ok( ret, msg );
+	QUnit.ok( ret, msg );
 }
 
 /**
@@ -672,8 +713,11 @@ function isObj(a, b, msg) {
  */
 function q() {
 	var r = [];
-	for ( var i = 0; i < arguments.length; i++ )
+
+	for ( var i = 0; i < arguments.length; i++ ) {
 		r.push( document.getElementById( arguments[i] ) );
+	}
+
 	return r;
 }
 
@@ -683,10 +727,12 @@ function q() {
  * @result returns true if "//[a]" return two elements with the IDs 'foo' and 'baar'
  */
 function t(a,b,c) {
-	var f = jQuery(b);
-	var s = "";
-	for ( var i = 0; i < f.length; i++ )
+	var f = jQuery(b), s = "";
+
+	for ( var i = 0; i < f.length; i++ ) {
 		s += (s && ",") + '"' + f[i].id + '"';
+	}
+
 	isSet(f, q.apply(q,c), a + " (" + b + ")");
 }
 
@@ -738,6 +784,7 @@ function triggerEvent( elem, type, event ) {
 		event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
 			0, 0, 0, 0, 0, false, false, false, false, 0, null);
 		elem.dispatchEvent( event );
+
 	} else if ( elem.fireEvent ) {
 		elem.fireEvent("on"+type);
 	}
