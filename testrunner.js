@@ -240,11 +240,6 @@ var QUnit = {
 			jQuery("#main").html( config.fixture );
 			jQuery.event.global = {};
 			jQuery.ajaxSettings = extend({}, config.ajaxSettings);
-		} else {
-			var main = id("main");
-			if ( main ) {
-				main.innerHTML = config.fixture;
-			}
 		}
 	},
 	
