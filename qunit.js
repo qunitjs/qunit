@@ -202,7 +202,7 @@ var QUnit = {
 	},
 	
 	same: function(a, b, message) {
-		push(equiv(a, b), a, b, message);
+		push(QUnit.equiv(a, b), a, b, message);
 	},
 	
 	start: function start() {
@@ -263,9 +263,6 @@ var QUnit = {
 			elem.fireEvent("on"+type);
 		}
 	},
-	
-	// Expose the equiv method
-	equiv: equiv,
 	
 	// Logging callbacks
 	done: function done(failures, total) {},
@@ -433,7 +430,7 @@ function validTest( name ) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + jsDump.parse(expected) + " result: " + jsDump.parse(actual) );
+	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
 }
 
 function synchronize( callback ) {
@@ -522,7 +519,7 @@ function id(name) {
 // Discussions and reference: http://philrathe.com/articles/equiv
 // Test suites: http://philrathe.com/tests/equiv
 // Author: Philippe Rathé <prathe@gmail.com>
-var equiv = function () {
+QUnit.equiv = function () {
 
     var innerEquiv; // the real equiv function
     var callers = []; // stack to decide between skip/abort functions
@@ -722,7 +719,7 @@ var equiv = function () {
  * @author Ariel Flesler
  * @link {http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html}
  */
-var jsDump = (function() {
+QUnit.jsDump = (function() {
 	function quote( str ) {
 		return '"' + str.toString().replace(/"/g, '\\"') + '"';
 	};
