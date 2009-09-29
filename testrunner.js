@@ -90,7 +90,7 @@ var QUnit = {
 			}
 
 			var good = 0, bad = 0,
-				tests = id("tests");
+				tests = id("qunit-tests");
 
 			config.stats.all += config.assertions.length;
 
@@ -147,7 +147,7 @@ var QUnit = {
 				tests.appendChild( li );
 
 				if ( bad ) {
-					var pass = id("filter-pass"), missing = id("filter-missing");
+					var pass = id("qunit-filter-pass"), missing = id("qunit-filter-missing");
 					if ( pass && missing ) {
 						pass.disabled = null;
 						missing.disabled = null;
@@ -325,17 +325,17 @@ extend(window, QUnit);
 window.QUnit = QUnit;
 
 addEvent(window, "load", function() {
-	var userAgent = id("userAgent");
+	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
 
 		var toolbar = document.createElement("div");
-		toolbar.className = "testrunner-toolbar";
+		toolbar.className = "qunit-testrunner-toolbar";
 		userAgent.parentNode.insertBefore( toolbar, userAgent );
 
 		var filter = document.createElement("input");
 		filter.type = "checkbox";
-		filter.id = "filter-pass";
+		filter.id = "qunit-filter-pass";
 		filter.disabled = true;
 		addEvent( filter, "click", function() {
 			var li = document.getElementsByTagName("li");
@@ -354,7 +354,7 @@ addEvent(window, "load", function() {
 
 		var missing = document.createElement("input");
 		missing.type = "checkbox";
-		missing.id = "filter-missing";
+		missing.id = "qunit-filter-missing";
 		missing.disabled = true;
 		addEvent( missing, "click", function() {
 			var li = document.getElementsByTagName("li");
@@ -386,14 +386,14 @@ addEvent(window, "load", function() {
 	}
 
 	synchronize(function() {
-		var banner = id("banner"),
+		var banner = id("qunit-banner"),
 			html = ['Tests completed in ',
 			+new Date - started, ' milliseconds.<br/>',
 			'<span class="bad">', config.stats.all - config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> passed, ', config.stats.bad,' failed.'].join('');
 
 		if ( banner ) {
 			var result = document.createElement("p");
-			result.id = "testresult";
+			result.id = "qunit-testresult";
 			result.className = "result";
 			result.innerHTML = html;
 			document.body.appendChild( result );
