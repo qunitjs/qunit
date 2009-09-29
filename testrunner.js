@@ -252,7 +252,9 @@ extend(window, {
 		equiv: equiv,
 		ok: ok,
 		done: function(failures, total){},
-		log: function(result, message){}
+		log: function(result, message){},
+		testLog: function(name){},
+		moduleLog: function(name){}
 	},
 	// legacy methods below
 	isSet: isSet,
@@ -459,7 +461,9 @@ function diff( clean, dirty ){
 	return results;
 }
 
-function test(name, callback) {
+function test(testName, callback) {
+	var name = testName;
+
 	if ( config.currentModule ) {
 		name = config.currentModule + " module: " + name;
 	}
@@ -476,6 +480,8 @@ function test(name, callback) {
 	var testEnvironment = {};
 	
 	synchronize(function() {
+		QUnit.testLog( testName );
+
 		config.assertions = [];
 		config.expected = null;
 		try {
@@ -603,6 +609,10 @@ function fail(message, exception, callback) {
 function module(name, lifecycle) {
 	config.currentModule = name;
 	config.moduleLifecycle = lifecycle;
+
+	synchronize(function() {
+		QUnit.moduleLog( name );
+	});
 }
 
 /**
