@@ -12,7 +12,7 @@ h2#qunit-banner { height: 2em; border-bottom: 1px solid white; }
 h2#qunit-banner.pass { background-color: green; }
 h2#qunit-banner.fail { background-color: red; }
 
-div.qunit-testrunner-toolbar { background: #eee; border-top: 1px solid black; padding: 10px; }
+div#qunit-testrunner-toolbar { background: #eee; border-top: 1px solid black; padding: 10px; }
 
 ol#qunit-tests li strong { cursor:pointer; }
 

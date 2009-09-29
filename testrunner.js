@@ -328,11 +328,10 @@ addEvent(window, "load", function() {
 	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
-
-		var toolbar = document.createElement("div");
-		toolbar.className = "qunit-testrunner-toolbar";
-		userAgent.parentNode.insertBefore( toolbar, userAgent );
-
+	}
+	
+	var toolbar = id("qunit-testrunner-toolbar");
+	if ( toolbar ) {
 		var filter = document.createElement("input");
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
