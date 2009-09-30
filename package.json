@@ -13,7 +13,7 @@
 	"url": "http://docs.jquery.com/QUnit",
 	"license": {
 		"name": "MIT",
-		"url": "http://www.opensource.org/licenses/mit-license.php",
+		"url": "http://www.opensource.org/licenses/mit-license.php"
 	},
 	"description": "An easy-to-use JavaScript Unit Testing framework.",
 	"keywords": [ "testing", "unit", "jquery" ],
