@@ -313,9 +313,15 @@ var config = {
 	QUnit.isLocal = !!(location.protocol === 'file:');
 })();
 
-// public API as global methods
-extend(window, QUnit);
-window.QUnit = QUnit;
+// Expose the API as global variables, unless an 'exports'
+// object exists, in that case we assume we're in CommonJS
+if ( typeof exports === "undefined" || typeof require === "undefined" ) {
+	extend(window, QUnit);
+	window.QUnit = QUnit;
+} else {
+	extend(exports, QUnit);
+	exports.QUnit = QUnit;
+}
 
 addEvent(window, "load", function() {
 	var userAgent = id("qunit-userAgent");
