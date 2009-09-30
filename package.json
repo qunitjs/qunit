@@ -17,5 +17,5 @@
 	},
 	"description": "An easy-to-use JavaScript Unit Testing framework.",
 	"keywords": [ "testing", "unit", "jquery" ],
-	"lib": "."
+	"lib": "qunit"
 }
