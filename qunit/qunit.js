@@ -370,11 +370,9 @@ addEvent(window, "load", function() {
 		toolbar.appendChild( label );
 	}
 
-	var started = +new Date,
-		main = id('main');
+	config.started = +new Date;
 
-	config.blocking = false;
-
+	var main = id('main');
 	if ( main ) {
 		config.fixture = main.innerHTML;
 	}
@@ -383,26 +381,35 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-	synchronize(function() {
-		var banner = id("qunit-banner"),
-			html = ['Tests completed in ',
-			+new Date - started, ' milliseconds.<br/>',
-			'<span class="bad">', config.stats.all - config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> passed, ', config.stats.bad,' failed.'].join('');
+	start();
+});
 
-		if ( banner ) {
-			var result = document.createElement("p");
+function done() {
+	var banner = id("qunit-banner"),
+		tests = id("qunit-tests"),
+		html = ['Tests completed in ',
+		+new Date - config.started, ' milliseconds.<br/>',
+		'<span class="bad">', config.stats.all - config.stats.bad, '</span> tests of <span class="all">', config.stats.all, '</span> passed, ', config.stats.bad,' failed.'].join('');
+
+	if ( banner ) {
+		banner.className += " " + (config.stats.bad ? "fail" : "pass");
+	}
+
+	if ( tests ) {	
+		var result = id("qunit-testresult");
+
+		if ( !result ) {
+			result = document.createElement("p");
 			result.id = "qunit-testresult";
 			result.className = "result";
-			result.innerHTML = html;
-			document.body.appendChild( result );
-
-			banner.className +=
-				" " + (config.stats.bad ? "fail" : "pass");
+			tests.parentNode.insertBefore( result, tests.nextSibling );
 		}
 
-		QUnit.done( config.stats.bad, config.stats.all );
-	});
-});
+		result.innerHTML = html;
+	}
+
+	QUnit.done( config.stats.bad, config.stats.all );
+}
 
 function validTest( name ) {
 	var i = config.filters.length,
@@ -448,6 +455,10 @@ function synchronize( callback ) {
 function process() {
 	while ( config.queue.length && !config.blocking ) {
 		config.queue.shift()();
+	}
+
+	if ( !config.queue.length ) {
+		done();
 	}
 }
 
