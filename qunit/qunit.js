@@ -99,6 +99,11 @@ var QUnit = {
 				QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message );
 				// else next test will carry the responsibility
 				saveGlobal();
+
+				// Restart the tests if they're blocking
+				if ( config.blocking ) {
+					start();
+				}
 			}
 		});
 
