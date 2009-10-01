@@ -16,6 +16,7 @@ var QUnit = {
 	init: function init() {
 		config = {
 			stats: { all: 0, bad: 0 },
+			moduleStats: { all: 0, bad: 0 },
 			started: +new Date,
 			blocking: false,
 			assertions: [],
@@ -44,33 +45,38 @@ var QUnit = {
 	// call on start of module test to prepend name to all tests
 	module: function module(name, lifecycle) {
 		config.currentModule = name;
-		config.moduleLifecycle = lifecycle;
 
 		synchronize(function() {
-			QUnit.moduleLog( name );
+			if ( config.currentModule ) {
+				QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
+			}
+
+			config.currentModule = name;
+			config.moduleLifecycle = lifecycle;
+			config.moduleStats = { all: 0, bad: 0 };
+
+			QUnit.moduleStart( name );
 		});
 	},
 	
 	test: function test(testName, callback) {
-		var name = testName;
+		var name = testName, lifecycle, testEnvironment = {};
 
 		if ( config.currentModule ) {
 			name = config.currentModule + " module: " + name;
 		}
 
-		var lifecycle = extend({
-			setup: function() {},
-			teardown: function() {}
-		}, config.moduleLifecycle);
-
 		if ( !validTest(name) ) {
 			return;
 		}
 
-		var testEnvironment = {};
-
 		synchronize(function() {
-			QUnit.testLog( testName );
+			QUnit.testStart( testName );
+
+			lifecycle = extend({
+				setup: function() {},
+				teardown: function() {}
+			}, config.moduleLifecycle);
 
 			config.assertions = [];
 			config.expected = null;
@@ -120,6 +126,7 @@ var QUnit = {
 				tests = id("qunit-tests");
 
 			config.stats.all += config.assertions.length;
+			config.moduleStats.all += config.assertions.length;
 
 			if ( tests ) {
 				var ol  = document.createElement("ol");
@@ -138,6 +145,7 @@ var QUnit = {
 					} else {
 						bad++;
 						config.stats.bad++;
+						config.moduleStats.bad++;
 					}
 				}
 
@@ -186,10 +194,23 @@ var QUnit = {
 				for ( var i = 0; i < config.assertions.length; i++ ) {
 					if ( !config.assertions[i].result ) {
 						config.stats.bad++;
+						config.moduleStats.bad++;
 					}
 				}
 			}
+
+			QUnit.testDone( testName, bad, config.assertions.length );
+
+			if ( !window.setTimeout && !config.queue.length ) {
+				done();
+			}
 		});
+
+		if ( window.setTimeout && !config.doneTimer ) {
+			config.doneTimer = window.setTimeout(function(){
+				synchronize( done );
+			}, 13);
+		}
 	},
 	
 	/**
@@ -294,8 +315,10 @@ var QUnit = {
 	// Logging callbacks
 	done: function done(failures, total) {},
 	log: function log(result, message) {},
-	testLog: function testLog(name) {},
-	moduleLog: function moduleLog(name) {}
+	testStart: function testStart(name) {},
+	testDone: function testDone(name, failures, total) {},
+	moduleStart: function moduleStart(name) {},
+	moduleDone: function moduleDone(name, failures, total) {}
 };
 
 // Maintain internal state
@@ -405,6 +428,24 @@ addEvent(window, "load", function() {
 });
 
 function done() {
+	if ( config.doneTimer && window.clearTimeout ) {
+		window.clearTimeout( config.doneTimer );
+		config.doneTimer = null;
+	}
+
+	if ( config.queue.length ) {
+		config.doneTimer = window.setTimeout(function(){
+			synchronize( done );
+		}, 13);
+
+		return;
+	}
+
+	// Log the last module results
+	if ( config.currentModule ) {
+		QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
+	}
+
 	var banner = id("qunit-banner"),
 		tests = id("qunit-tests"),
 		html = ['Tests completed in ',
@@ -475,10 +516,6 @@ function synchronize( callback ) {
 function process() {
 	while ( config.queue.length && !config.blocking ) {
 		config.queue.shift()();
-	}
-
-	if ( !config.queue.length ) {
-		done();
 	}
 }
 
