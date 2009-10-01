@@ -6,8 +6,6 @@
  * Copyright (c) 2009 John Resig, Jörn Zaefferer
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
- *
- * $Id$
  */
 
 (function(window) {
