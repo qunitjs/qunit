@@ -11,6 +11,35 @@
 (function(window) {
 
 var QUnit = {
+
+	// Initialize the configuration options
+	init: function init() {
+		config = {
+			stats: { all: 0, bad: 0 },
+			started: +new Date,
+			blocking: false,
+			assertions: [],
+			pollution: [],
+			filters: [],
+			queue: []
+		};
+
+		var tests = id("qunit-tests"),
+			banner = id("qunit-banner"),
+			result = id("qunit-testresult");
+
+		if ( tests ) {
+			tests.innerHTML = "";
+		}
+
+		if ( banner ) {
+			banner.className = "";
+		}
+
+		if ( result ) {
+			result.parentNode.removeChild( result );
+		}
+	},
 	
 	// call on start of module test to prepend name to all tests
 	module: function module(name, lifecycle) {
@@ -271,20 +300,8 @@ var QUnit = {
 
 // Maintain internal state
 var config = {
-	// Logging the passes and failures
-	stats: {
-		all: 0,
-		bad: 0
-	},
-
 	// The queue of tests to run
 	queue: [],
-	
-	// The log of global variables to check against
-	pollution: [],
-	
-	// queue of test assertions
-	assertions: [],
 
 	// block until document ready
 	blocking: true
@@ -322,6 +339,11 @@ if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 }
 
 addEvent(window, "load", function() {
+	// Initialize the config, saving the execution queue
+	var queue = config.queue;
+	QUnit.init();
+	config.queue = queue;
+
 	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
@@ -369,8 +391,6 @@ addEvent(window, "load", function() {
 		label.innerHTML = "Hide missing tests (untested code is broken code)";
 		toolbar.appendChild( label );
 	}
-
-	config.started = +new Date;
 
 	var main = id('main');
 	if ( main ) {
