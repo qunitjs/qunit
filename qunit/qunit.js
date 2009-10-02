@@ -89,9 +89,7 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 			}
-		});
 
-		synchronize(function() {
 			try {
 				callback.call(testEnvironment);
 			} catch(e) {
@@ -114,9 +112,7 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 			}
-		});
 
-		synchronize(function() {
 			try {
 				reset();
 			} catch(e) {
@@ -213,7 +209,11 @@ var QUnit = {
 
 		if ( window.setTimeout && !config.doneTimer ) {
 			config.doneTimer = window.setTimeout(function(){
-				synchronize( done );
+				if ( !config.queue.length ) {
+					done();
+				} else {
+					synchronize( done );
+				}
 			}, 13);
 		}
 	},
@@ -440,7 +440,11 @@ function done() {
 
 	if ( config.queue.length ) {
 		config.doneTimer = window.setTimeout(function(){
-			synchronize( done );
+			if ( !config.queue.length ) {
+				done();
+			} else {
+				synchronize( done );
+			}
 		}, 13);
 
 		return;
@@ -512,10 +516,6 @@ function push(result, actual, expected, message) {
 
 function synchronize( callback ) {
 	config.queue.push( callback );
-
-	if ( !config.blocking ) {
-		process();
-	}
 }
 
 function process() {

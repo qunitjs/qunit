@@ -41,7 +41,7 @@ var state;
 
 module("teardown and stop", {
 	teardown: function() {
-		ok(state == "done");
+		equals(state, "done", "Test teardown.");
 	}
 });
 
@@ -52,7 +52,7 @@ test("teardown must be called after test ended", function() {
 	setTimeout(function() {
 		state = "done";
 		start();
-	}, 0);
+	}, 13);
 });
 
 module("save scope", {
