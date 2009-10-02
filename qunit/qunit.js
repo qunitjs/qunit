@@ -19,6 +19,7 @@ var QUnit = {
 			moduleStats: { all: 0, bad: 0 },
 			started: +new Date,
 			blocking: false,
+			autorun: false,
 			assertions: [],
 			pollution: [],
 			filters: [],
@@ -366,11 +367,17 @@ if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 	exports.QUnit = QUnit;
 }
 
+if ( typeof document === "undefined" || document.readyState === "complete" ) {
+	config.autorun = true;
+}
+
 addEvent(window, "load", function() {
 	// Initialize the config, saving the execution queue
-	var queue = config.queue;
+	var oldconfig = extend({}, config);
 	QUnit.init();
-	config.queue = queue;
+	extend(config, oldconfig);
+
+	config.blocking = false;
 
 	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
@@ -450,6 +457,8 @@ function done() {
 		return;
 	}
 
+	config.autorun = true;
+
 	// Log the last module results
 	if ( config.currentModule ) {
 		QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
@@ -516,6 +525,10 @@ function push(result, actual, expected, message) {
 
 function synchronize( callback ) {
 	config.queue.push( callback );
+
+	if ( config.autorun && !config.blocking ) {
+		process();
+	}
 }
 
 function process() {
