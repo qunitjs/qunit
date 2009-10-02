@@ -59,13 +59,22 @@ var QUnit = {
 			QUnit.moduleStart( name );
 		});
 	},
+
+	asyncTest: function asyncTest(testName, expected, callback) {
+		if ( arguments.length === 2 ) {
+			callback = expected;
+			expected = 0;
+		}
+
+		QUnit.test(testName, expected, callback, true);
+	},
 	
-	test: function test(testName, callback) {
+	test: function test(testName, expected, callback, async) {
 		var name = testName, lifecycle, testEnvironment = {};
 
-		if ( arguments.length === 3 ) {
-			config.expected = callback;
-			callback = arguments[2];
+		if ( arguments.length === 2 ) {
+			callback = expected;
+			expected = null;
 		}
 
 		if ( config.currentModule ) {
@@ -86,6 +95,12 @@ var QUnit = {
 
 			config.assertions = [];
 			config.expected = null;
+
+			if ( arguments.length >= 3 ) {
+				config.expected = callback;
+				callback = arguments[2];
+			}
+
 			try {
 				if ( !config.pollution ) {
 					saveGlobal();
@@ -94,6 +109,10 @@ var QUnit = {
 				lifecycle.setup.call(testEnvironment);
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
+			}
+
+			if ( async ) {
+				QUnit.stop();
 			}
 
 			try {

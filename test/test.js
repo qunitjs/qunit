@@ -65,6 +65,27 @@ test("teardown must be called after test ended", function() {
 	}, 13);
 });
 
+module("asyncTest");
+
+asyncTest("asyncTest", function() {
+	expect(2);
+	ok(true);
+	setTimeout(function() {
+		state = "done";
+		ok(true);
+		start();
+	}, 13);
+});
+
+asyncTest("asyncTest", 2, function() {
+	ok(true);
+	setTimeout(function() {
+		state = "done";
+		ok(true);
+		start();
+	}, 13);
+});
+
 module("save scope", {
 	setup: function() {
 		this.foo = "bar";
