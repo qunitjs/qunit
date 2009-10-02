@@ -21,7 +21,6 @@ var QUnit = {
 			blocking: false,
 			autorun: false,
 			assertions: [],
-			pollution: [],
 			filters: [],
 			queue: []
 		};
@@ -566,7 +565,7 @@ function saveGlobal() {
 	
 	if ( config.noglobals ) {
 		for ( var key in window ) {
-			config.pollution.push(key);
+			config.pollution.push( key );
 		}
 	}
 }
@@ -575,24 +574,32 @@ function checkPollution( name ) {
 	var old = config.pollution;
 	saveGlobal();
 	
-	if ( config.pollution.length > old.length ) {
-		ok( false, "Introduced global variable(s): " + diff(old, config.pollution).join(", ") );
+	var newGlobals = diff( old, config.pollution );
+	if ( newGlobals.length > 0 ) {
+		ok( false, "Introduced global variable(s): " + newGlobals.join(", ") );
+		config.expected++;
+	}
+
+	var deletedGlobals = diff( config.pollution, old );
+	if ( deletedGlobals.length > 0 ) {
+		ok( false, "Deleted global variable(s): " + deletedGlobals.join(", ") );
 		config.expected++;
 	}
 }
 
-function diff( clean, dirty ) {
-	var results = [];
-
-	for ( var i = 0; i < dirty.length; i++ ) {
-		for ( var c = 0; c < clean.length; c++ ) {
-			if ( clean[c] === dirty[i] ) {
-				results.push( clean[c] );
+// returns a new Array with the elements that are in a but not in b
+function diff( a, b ) {
+	var result = a.slice();
+	for ( var i = 0; i < result.length; i++ ) {
+		for ( var j = 0; j < b.length; j++ ) {
+			if ( result[i] === b[j] ) {
+				result.splice(i, 1);
+				i--;
+				break;
 			}
 		}
 	}
-
-	return results;
+	return result;
 }
 
 function fail(message, exception, callback) {
