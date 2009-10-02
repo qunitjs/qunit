@@ -218,6 +218,7 @@ var QUnit = {
 			} else {
 				for ( var i = 0; i < config.assertions.length; i++ ) {
 					if ( !config.assertions[i].result ) {
+						bad++;
 						config.stats.bad++;
 						config.moduleStats.bad++;
 					}
