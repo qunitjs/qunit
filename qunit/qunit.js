@@ -63,6 +63,11 @@ var QUnit = {
 	test: function test(testName, callback) {
 		var name = testName, lifecycle, testEnvironment = {};
 
+		if ( arguments.length === 3 ) {
+			config.expected = callback;
+			callback = arguments[2];
+		}
+
 		if ( config.currentModule ) {
 			name = config.currentModule + " module: " + name;
 		}
