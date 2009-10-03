@@ -43,7 +43,7 @@ var QUnit = {
 	},
 	
 	// call on start of module test to prepend name to all tests
-	module: function module(name, lifecycle) {
+	module: function module(name, testEnvironment) {
 
 		synchronize(function() {
 			if ( config.currentModule ) {
@@ -51,7 +51,7 @@ var QUnit = {
 			}
 
 			config.currentModule = name;
-			config.moduleLifecycle = lifecycle;
+			config.moduleTestEnvironment = testEnvironment;
 			config.moduleStats = { all: 0, bad: 0 };
 
 			QUnit.moduleStart( name );
@@ -68,7 +68,7 @@ var QUnit = {
 	},
 	
 	test: function test(testName, expected, callback, async) {
-		var name = testName, lifecycle, testEnvironment = {};
+		var name = testName, testEnvironment = {};
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -86,10 +86,10 @@ var QUnit = {
 		synchronize(function() {
 			QUnit.testStart( testName );
 
-			lifecycle = extend({
+			testEnvironment = extend({
 				setup: function() {},
 				teardown: function() {}
-			}, config.moduleLifecycle);
+			}, config.moduleTestEnvironment);
 
 			config.assertions = [];
 			config.expected = null;
@@ -104,7 +104,7 @@ var QUnit = {
 					saveGlobal();
 				}
 
-				lifecycle.setup.call(testEnvironment);
+				testEnvironment.setup.call(testEnvironment);
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 			}
@@ -131,7 +131,7 @@ var QUnit = {
 		synchronize(function() {
 			try {
 				checkPollution();
-				lifecycle.teardown.call(testEnvironment);
+				testEnvironment.teardown.call(testEnvironment);
 			} catch(e) {
 				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 			}
