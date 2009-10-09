@@ -137,7 +137,7 @@ var QUnit = {
 			}
 
 			try {
-				reset();
+				QUnit.reset();
 			} catch(e) {
 				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
 			}
