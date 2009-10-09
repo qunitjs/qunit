@@ -305,7 +305,7 @@ var QUnit = {
 		if ( timeout && window.setTimeout ) {
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
-				start();
+				QUnit.start();
 			}, timeout);
 		}
 	},
@@ -459,7 +459,7 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-	start();
+	QUnit.start();
 });
 
 function done() {
