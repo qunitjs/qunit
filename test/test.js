@@ -24,13 +24,14 @@ test("module with setup", function() {
 	ok(true);
 });
 
+var state;
+
 module("setup/teardown test", {
 	setup: function() {
-		window.fail = true;
+		state = true;
 		ok(true);
 	},
 	teardown: function() {
-		delete window.fail;
 		ok(true);
 	}
 });
@@ -47,7 +48,8 @@ test("module without setup/teardown", function() {
 	ok(true);
 });
 
-var state;
+if (typeof setTimeout !== 'undefined') {
+state = 'fail';
 
 module("teardown and stop", {
 	teardown: function() {
@@ -56,7 +58,6 @@ module("teardown and stop", {
 });
 
 test("teardown must be called after test ended", function() {
-	
 	expect(1);
 	stop();
 	setTimeout(function() {
@@ -64,7 +65,9 @@ test("teardown must be called after test ended", function() {
 		start();
 	}, 13);
 });
+} // end setTimeout tests
 
+if (typeof asyncTest !== 'undefined') {
 module("asyncTest");
 
 asyncTest("asyncTest", function() {
@@ -85,6 +88,7 @@ asyncTest("asyncTest", 2, function() {
 		start();
 	}, 13);
 });
+} // end asyncTest tests
 
 module("save scope", {
 	setup: function() {
