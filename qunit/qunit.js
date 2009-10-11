@@ -54,7 +54,7 @@ var QUnit = {
 			config.moduleTestEnvironment = testEnvironment;
 			config.moduleStats = { all: 0, bad: 0 };
 
-			QUnit.moduleStart( name );
+			QUnit.moduleStart( name, testEnvironment );
 		});
 	},
 
@@ -346,7 +346,7 @@ var QUnit = {
 	log: function log(result, message) {},
 	testStart: function testStart(name) {},
 	testDone: function testDone(name, failures, total) {},
-	moduleStart: function moduleStart(name) {},
+	moduleStart: function moduleStart(name, testEnvironment) {},
 	moduleDone: function moduleDone(name, failures, total) {}
 };
 
