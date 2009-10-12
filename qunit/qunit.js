@@ -372,6 +372,10 @@ var config = {
 			i--;
 			config.noglobals = true;
 		}
+		else if ( GETParams[i].search('=') != -1 ) {
+		  GETParams.splice( i, 1 );
+			i--;
+		}
 	}
 	
 	// restrict modules/tests by get parameters
