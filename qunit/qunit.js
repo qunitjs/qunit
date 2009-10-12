@@ -364,7 +364,6 @@ var config = {
 (function() {
 	var location = window.location || { search: "", protocol: "file:" },
 		GETParams = location.search.slice(1).split('&');
-
 	for ( var i = 0; i < GETParams.length; i++ ) {
 		GETParams[i] = decodeURIComponent( GETParams[i] );
 		if ( GETParams[i] === "noglobals" ) {
