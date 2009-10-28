@@ -44,6 +44,7 @@ var QUnit = {
 	
 	// call on start of module test to prepend name to all tests
 	module: function module(name, testEnvironment) {
+		config.currentModule = name;
 
 		synchronize(function() {
 			if ( config.currentModule ) {
