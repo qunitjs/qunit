@@ -134,3 +134,22 @@ test("testEnvironment reset for next test",function() {
 	same(this.options, {recipe:"soup",ingredients:["hamster","onions","carrots"]}, "Is this a bug or a feature? Could do a deep copy") ;
 });
 
+
+function makeurl() {
+  var testEnv = QUnit.current_testEnvironment;
+  var url = testEnv.url || 'http://example.com/search';
+  var q   = testEnv.q   || 'a search test';
+  return url + '?q='+encodeURIComponent(q);
+}
+
+test("makeurl working",function() {
+  equals( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
+});
+
+module("testEnvironment with makeurl settings",{
+  url:'http://google.com/',
+  q:'another_search_test'
+});
+test("makeurl working with settings from testEnvironment",function() {
+  equals( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
+});

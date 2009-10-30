@@ -91,7 +91,10 @@ var QUnit = {
 				setup: function() {},
 				teardown: function() {}
 			}, config.moduleTestEnvironment);
-
+			
+			// allow utility functions to access the current test environment
+			QUnit.current_testEnvironment = testEnvironment;
+			
 			config.assertions = [];
 			config.expected = null;
 
