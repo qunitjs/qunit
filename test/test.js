@@ -156,3 +156,8 @@ module("testEnvironment with makeurl settings",{
 test("makeurl working with settings from testEnvironment",function() {
   equals( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
 });
+test("each test can extend the module testEnvironment", {
+	q:'hamstersoup'
+}, function() {
+	equals( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
+});

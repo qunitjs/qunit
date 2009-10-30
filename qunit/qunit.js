@@ -69,10 +69,15 @@ var QUnit = {
 	},
 	
 	test: function test(testName, expected, callback, async) {
-		var name = testName, testEnvironment = {};
+		var name = testName, testEnvironment, testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
+			expected = null;
+		}
+		// is 2nd argument a testEnvironment?
+		if ( expected && typeof expected === 'object') {
+			testEnvironmentArg =  expected;
 			expected = null;
 		}
 
@@ -91,7 +96,10 @@ var QUnit = {
 				setup: function() {},
 				teardown: function() {}
 			}, config.moduleTestEnvironment);
-			
+			if (testEnvironmentArg) {
+				extend(testEnvironment,testEnvironmentArg);
+			}
+
 			// allow utility functions to access the current test environment
 			QUnit.current_testEnvironment = testEnvironment;
 			
