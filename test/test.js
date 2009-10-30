@@ -135,6 +135,8 @@ test("testEnvironment reset for next test",function() {
 });
 
 
+module("testEnvironment tests");
+
 function makeurl() {
   var testEnv = QUnit.current_testEnvironment;
   var url = testEnv.url || 'http://example.com/search';
@@ -143,6 +145,7 @@ function makeurl() {
 }
 
 test("makeurl working",function() {
+	equals( QUnit.current_testEnvironment, this, 'The current testEnvironment is global');
   equals( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
 
