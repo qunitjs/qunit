@@ -364,15 +364,15 @@ var config = {
 (function() {
 	var location = window.location || { search: "", protocol: "file:" },
 		GETParams = location.search.slice(1).split('&');
+
 	for ( var i = 0; i < GETParams.length; i++ ) {
 		GETParams[i] = decodeURIComponent( GETParams[i] );
 		if ( GETParams[i] === "noglobals" ) {
 			GETParams.splice( i, 1 );
 			i--;
 			config.noglobals = true;
-		}
-		else if ( GETParams[i].search('=') != -1 ) {
-		  GETParams.splice( i, 1 );
+		} else if ( GETParams[i].search('=') > -1 ) {
+			GETParams.splice( i, 1 );
 			i--;
 		}
 	}
