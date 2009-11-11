@@ -887,21 +887,31 @@ QUnit.jsDump = (function() {
 				   this.parsers.error;
 		},
 		typeOf:function( obj ) {
-			var type = typeof obj,
-				f = 'function';//we'll use it 3 times, save it
-			return type != 'object' && type != f ? type :
-				!obj ? 'null' :
-				obj.exec ? 'regexp' :// some browsers (FF) consider regexps functions
-				obj.getHours ? 'date' :
-				obj.scrollBy ?  'window' :
-				obj.nodeName == '#document' ? 'document' :
-				obj.nodeName ? 'node' :
-				obj.item ? 'nodelist' : // Safari reports nodelists as functions
-				obj.callee ? 'arguments' :
-				obj.call || obj.constructor != Array && //an array would also fall on this hack
-					(obj+'').indexOf(f) != -1 ? f : //IE reports functions like alert, as objects
-				'length' in obj ? 'array' :
-				type;
+			var type;
+			if ( obj === null ) {
+				type = "null";
+			} else if (typeof obj === "undefined") {
+				type = "undefined";
+			} else if (QUnit.is("RegExp", obj)) {
+				type = "regexp";
+			} else if (QUnit.is("Date", obj)) {
+				type = "date";
+			} else if (QUnit.is("Function", obj)) {
+				type = "function";
+			} else if (QUnit.is("Array", obj)) {
+				type = "array";
+			} else if (QUnit.is("Window", obj) || QUnit.is("global", obj)) {
+				type = "window";
+			} else if (QUnit.is("HTMLDocument", obj)) {
+				type = "document";
+			} else if (QUnit.is("HTMLCollection", obj) || QUnit.is("NodeList", obj)) {
+				type = "nodelist";
+			} else if (/^\[object HTML/.test(Object.prototype.toString.call( obj ))) {
+				type = "node";
+			} else {
+				type = typeof obj;
+			}
+			return type;
 		},
 		separator:function() {
 			return this.multiline ?	this.HTML ? '<br />' : '\n' : this.HTML ? '&nbsp;' : ' ';
