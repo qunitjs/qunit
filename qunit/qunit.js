@@ -342,6 +342,11 @@ var QUnit = {
 		}
 	},
 	
+	// Safe object type checking
+	is: function( type, obj ) {
+		return Object.prototype.toString.call( obj ) === "[object "+ type +"]";
+	},
+	
 	// Logging callbacks
 	done: function done(failures, total) {},
 	log: function log(result, message) {},
@@ -652,13 +657,13 @@ QUnit.equiv = function () {
 
     // Determine what is o.
     function hoozit(o) {
-        if (o.constructor === String) {
+        if (QUnit.is("String", o)) {
             return "string";
             
-        } else if (o.constructor === Boolean) {
+        } else if (QUnit.is("Boolean", o)) {
             return "boolean";
 
-        } else if (o.constructor === Number) {
+        } else if (QUnit.is("Number", o)) {
 
             if (isNaN(o)) {
                 return "nan";
@@ -674,24 +679,24 @@ QUnit.equiv = function () {
             return "null";
 
         // consider: typeof [] === object
-        } else if (o instanceof Array) {
+        } else if (QUnit.is( "Array", o)) {
             return "array";
         
         // consider: typeof new Date() === object
-        } else if (o instanceof Date) {
+        } else if (QUnit.is( "Date", o)) {
             return "date";
 
         // consider: /./ instanceof Object;
         //           /./ instanceof RegExp;
         //          typeof /./ === "function"; // => false in IE and Opera,
         //                                          true in FF and Safari
-        } else if (o instanceof RegExp) {
+        } else if (QUnit.is( "RegExp", o)) {
             return "regexp";
 
         } else if (typeof o === "object") {
             return "object";
 
-        } else if (o instanceof Function) {
+        } else if (QUnit.is( "Function", o)) {
             return "function";
         } else {
             return undefined;
