@@ -13,7 +13,7 @@
 var QUnit = {
 
 	// Initialize the configuration options
-	init: function init() {
+	init: function() {
 		config = {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
@@ -43,7 +43,7 @@ var QUnit = {
 	},
 	
 	// call on start of module test to prepend name to all tests
-	module: function module(name, testEnvironment) {
+	module: function(name, testEnvironment) {
 		config.currentModule = name;
 
 		synchronize(function() {
@@ -59,7 +59,7 @@ var QUnit = {
 		});
 	},
 
-	asyncTest: function asyncTest(testName, expected, callback) {
+	asyncTest: function(testName, expected, callback) {
 		if ( arguments.length === 2 ) {
 			callback = expected;
 			expected = 0;
@@ -68,7 +68,7 @@ var QUnit = {
 		QUnit.test(testName, expected, callback, true);
 	},
 	
-	test: function test(testName, expected, callback, async) {
+	test: function(testName, expected, callback, async) {
 		var name = testName, testEnvironment, testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
@@ -257,7 +257,7 @@ var QUnit = {
 	/**
 	 * Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
 	 */
-	expect: function expect(asserts) {
+	expect: function(asserts) {
 		config.expected = asserts;
 	},
 
@@ -265,7 +265,7 @@ var QUnit = {
 	 * Asserts true.
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
-	ok: function ok(a, msg) {
+	ok: function(a, msg) {
 		QUnit.log(a, msg);
 
 		config.assertions.push({
@@ -286,7 +286,7 @@ var QUnit = {
 	 * @param Object expected
 	 * @param String message (optional)
 	 */
-	equals: function equals(actual, expected, message) {
+	equals: function(actual, expected, message) {
 		push(expected == actual, actual, expected, message);
 	},
 	
@@ -294,7 +294,7 @@ var QUnit = {
 		push(QUnit.equiv(a, b), a, b, message);
 	},
 	
-	start: function start() {
+	start: function() {
 		// A slight delay, to avoid any current callbacks
 		if ( window.setTimeout ) {
 			window.setTimeout(function() {
@@ -311,7 +311,7 @@ var QUnit = {
 		}
 	},
 	
-	stop: function stop(timeout) {
+	stop: function(timeout) {
 		config.blocking = true;
 
 		if ( timeout && window.setTimeout ) {
@@ -325,7 +325,7 @@ var QUnit = {
 	/**
 	 * Resets the test setup. Useful for tests that modify the DOM.
 	 */
-	reset: function reset() {
+	reset: function() {
 		if ( window.jQuery ) {
 			jQuery("#main").html( config.fixture );
 			jQuery.event.global = {};
@@ -341,7 +341,7 @@ var QUnit = {
 	 * @param DOMElement elem
 	 * @param String type
 	 */
-	triggerEvent: function triggerEvent( elem, type, event ) {
+	triggerEvent: function( elem, type, event ) {
 		if ( document.createEvent ) {
 			event = document.createEvent("MouseEvents");
 			event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
@@ -359,12 +359,12 @@ var QUnit = {
 	},
 	
 	// Logging callbacks
-	done: function done(failures, total) {},
-	log: function log(result, message) {},
-	testStart: function testStart(name) {},
-	testDone: function testDone(name, failures, total) {},
-	moduleStart: function moduleStart(name, testEnvironment) {},
-	moduleDone: function moduleDone(name, failures, total) {}
+	done: function(failures, total) {},
+	log: function(result, message) {},
+	testStart: function(name) {},
+	testDone: function(name, failures, total) {},
+	moduleStart: function(name, testEnvironment) {},
+	moduleDone: function(name, failures, total) {}
 };
 
 // Maintain internal state
