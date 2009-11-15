@@ -430,7 +430,7 @@ addEvent(window, "load", function() {
 		toolbar.appendChild( filter );
 
 		var label = document.createElement("label");
-		label.setAttribute("for", "filter-pass");
+		label.setAttribute("for", "qunit-filter-pass");
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
 
@@ -449,7 +449,7 @@ addEvent(window, "load", function() {
 		toolbar.appendChild( missing );
 
 		label = document.createElement("label");
-		label.setAttribute("for", "filter-missing");
+		label.setAttribute("for", "qunit-filter-missing");
 		label.innerHTML = "Hide missing tests (untested code is broken code)";
 		toolbar.appendChild( label );
 	}
