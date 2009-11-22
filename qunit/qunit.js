@@ -104,12 +104,7 @@ var QUnit = {
 			QUnit.current_testEnvironment = testEnvironment;
 			
 			config.assertions = [];
-			config.expected = null;
-
-			if ( arguments.length >= 3 ) {
-				config.expected = callback;
-				callback = arguments[2];
-			}
+			config.expected = expected;
 
 			try {
 				if ( !config.pollution ) {
