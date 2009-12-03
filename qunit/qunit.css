@@ -2,8 +2,8 @@ h1#qunit-header { padding: 15px; font-size: large; background-color: #06b; color
 h1#qunit-header a { color: white; }
 
 h2#qunit-banner { height: 2em; border-bottom: 1px solid white; background-color: #eee; margin: 0; font-family: 'trebuchet ms', verdana, arial; }
-h2#qunit-banner.pass { background-color: green; }
-h2#qunit-banner.fail { background-color: red; }
+h2.qunit-pass { background-color: green !important; }
+h2.qunit-fail { background-color: red !important; }
 
 h2#qunit-userAgent { padding: 10px; background-color: #eee; color: black; margin: 0; font-size: small; font-weight: normal; font-family: 'trebuchet ms', verdana, arial; font-size: 10pt; }
 
