@@ -189,7 +189,7 @@ var QUnit = {
 				});
 				
 				addEvent(b, "dblclick", function(e) {
-					var target = (e || window.event).target;
+					var target = e ? e.target : window.event.srcElement;
 					if ( target.nodeName.toLowerCase() === "strong" ) {
 						var text = "", node = target.firstChild;
 
