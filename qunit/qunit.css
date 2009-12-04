@@ -83,3 +83,9 @@ h2#qunit-userAgent {
 p#qunit-testresult{
 	margin:2em 0.5em 0.5em 2em;
 }
+strong b.fail{
+	color:#710909;
+	}
+strong b.pass{
+	color:#5E740B;
+	}
