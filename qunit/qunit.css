@@ -25,16 +25,17 @@ ol#qunit-tests li ol{
 	padding:0.5em;
 	background-color:#fff;
 }
-ol#qunit-tests li ol li{
+ol#qunit-tests li li{
 	border-bottom:none;
 	margin:0.5em;
 	background-color:#fff;
 }
-ol#qunit-tests li ol li.pass{
+
+ol#qunit-tests li li.pass{
 	border-left:32px solid #C6E746;
 	background-color:#fff;
 }
-ol#qunit-tests li ol li.fail{
+ol#qunit-tests li li.fail{
 	border-left:32px solid #EE5757;
 	background-color:#fff;
 }
@@ -61,8 +62,11 @@ h2#qunit-banner{
 h2#qunit-banner.pass{
 	background-color:#C6E746;
 }
-h2#qunit-banner.fail {
+h2#qunit-banner.fail, #qunit-testrunner-toolbar {
 	background-color:#EE5757;
+}
+#qunit-testrunner-toolbar {
+	padding:0 0 0.5em 2em;
 }
 h2#qunit-userAgent {
 	background-color:#2b81af;
