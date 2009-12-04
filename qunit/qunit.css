@@ -34,16 +34,21 @@ ol#qunit-tests li li{
 ol#qunit-tests li li.pass{
 	border-left:32px solid #C6E746;
 	background-color:#fff;
+	color:#5E740B;
+	
 }
 ol#qunit-tests li li.fail{
 	border-left:32px solid #EE5757;
 	background-color:#fff;
+	color:#710909;
 }
 ol#qunit-tests li.pass{
 	background-color:#C6E746;
+	color:#5E740B;
 }
 ol#qunit-tests li.fail{
 	background-color:#EE5757;
+	color:#000;
 }
 ol#qunit-tests li strong {
 	cursor:pointer;
