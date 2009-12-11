@@ -12,8 +12,10 @@ ol#qunit-tests {
 	font-size: smaller;
 }
 ol#qunit-tests li{
-	padding:0.5em;
-	border-bottom:3px solid #fff;	
+	padding:0.2em 0.5em;
+	border-bottom:3px solid #fff;
+	font-size:small;
+	list-style-position:inside;
 }
 ol#qunit-tests li ol{
 	margin-top:0.5em;
@@ -42,8 +44,10 @@ ol#qunit-tests li li.fail{
 	color:#710909;
 }
 ol#qunit-tests li.pass{
-	background-color:#C6E746;
-	color:#5E740B;
+	/*background-color:#C6E746;*/
+	background-color:#D2E0E6;
+	/*color:#5E740B;*/
+	color:#528CE0;
 }
 ol#qunit-tests li.fail{
 	background-color:#EE5757;
