@@ -275,18 +275,34 @@ var QUnit = {
 	 *
 	 * Prefered to ok( actual == expected, message )
 	 *
-	 * @example equals( format("Received {0} bytes.", 2), "Received 2 bytes." );
+	 * @example equal( format("Received {0} bytes.", 2), "Received 2 bytes." );
 	 *
 	 * @param Object actual
 	 * @param Object expected
 	 * @param String message (optional)
 	 */
-	equals: function(actual, expected, message) {
+	equal: function(actual, expected, message) {
 		push(expected == actual, actual, expected, message);
 	},
+
+	notEqual: function(actual, expected, message) {
+		push(expected != actual, actual, expected, message);
+	},
 	
-	same: function(a, b, message) {
+	deepEqual: function(a, b, message) {
 		push(QUnit.equiv(a, b), a, b, message);
+	},
+
+	notDeepEqual: function(a, b, message) {
+		push(!QUnit.equiv(a, b), a, b, message);
+	},
+
+	strictEqual: function(actual, expected, message) {
+		push(expected === actual, actual, expected, message);
+	},
+
+	notStrictEqual: function(actual, expected, message) {
+		push(expected !== actual, actual, expected, message);
 	},
 	
 	start: function() {
@@ -361,6 +377,10 @@ var QUnit = {
 	moduleStart: function(name, testEnvironment) {},
 	moduleDone: function(name, failures, total) {}
 };
+
+// Backwards compatibility, deprecated
+QUnit.equals = QUnit.equal;
+QUnit.same = QUnit.deepEqual;
 
 // Maintain internal state
 var config = {
