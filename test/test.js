@@ -53,7 +53,7 @@ state = 'fail';
 
 module("teardown and stop", {
 	teardown: function() {
-		equals(state, "done", "Test teardown.");
+		equal(state, "done", "Test teardown.");
 	}
 });
 
@@ -127,12 +127,12 @@ module("save scope", {
 		this.foo = "bar";
 	},
 	teardown: function() {
-		same(this.foo, "bar");
+		deepEqual(this.foo, "bar");
 	}
 });
 test("scope check", function() {
 	expect(2);
-	same(this.foo, "bar");
+	deepEqual(this.foo, "bar");
 });
 
 module("simple testEnvironment setup", {
@@ -140,13 +140,13 @@ module("simple testEnvironment setup", {
 	bugid: "#5311" // example of meta-data
 });
 test("scope check", function() {
-	same(this.foo, "bar");
+	deepEqual(this.foo, "bar");
 });
 test("modify testEnvironment",function() {
 	this.foo="hamster";
 });
 test("testEnvironment reset for next test",function() {
-	same(this.foo, "bar");
+	deepEqual(this.foo, "bar");
 });
 
 module("testEnvironment with object", {
@@ -156,14 +156,14 @@ module("testEnvironment with object", {
 	}
 });
 test("scope check", function() {
-	same(this.options, {recipe:"soup",ingredients:["hamster","onions"]}) ;
+	deepEqual(this.options, {recipe:"soup",ingredients:["hamster","onions"]}) ;
 });
 test("modify testEnvironment",function() {
 	// since we do a shallow copy, the testEnvironment can be modified
 	this.options.ingredients.push("carrots");
 });
 test("testEnvironment reset for next test",function() {
-	same(this.options, {recipe:"soup",ingredients:["hamster","onions","carrots"]}, "Is this a bug or a feature? Could do a deep copy") ;
+	deepEqual(this.options, {recipe:"soup",ingredients:["hamster","onions","carrots"]}, "Is this a bug or a feature? Could do a deep copy") ;
 });
 
 
@@ -177,8 +177,8 @@ function makeurl() {
 }
 
 test("makeurl working",function() {
-	equals( QUnit.current_testEnvironment, this, 'The current testEnvironment is global');
-  equals( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
+	equal( QUnit.current_testEnvironment, this, 'The current testEnvironment is global');
+  equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
 
 module("testEnvironment with makeurl settings",{
@@ -186,12 +186,12 @@ module("testEnvironment with makeurl settings",{
   q:'another_search_test'
 });
 test("makeurl working with settings from testEnvironment",function() {
-  equals( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
+  equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
 });
 test("each test can extend the module testEnvironment", {
 	q:'hamstersoup'
 }, function() {
-	equals( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
+	equal( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
 });
 
 module("jsDump");
