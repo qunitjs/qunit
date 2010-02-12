@@ -827,6 +827,7 @@ QUnit.equiv = function () {
 
                     if ( ! innerEquiv(a[i], b[i])) {
                         eq = false;
+                        break;
                     }
                 }
 
