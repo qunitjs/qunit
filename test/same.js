@@ -1352,6 +1352,61 @@ test("Complex Instances Nesting (with function value in literals and/or in neste
 });
 
 
+test('object with references to self wont loop', function(){
+    var circularA = {
+        abc:null
+    }, circularB = {
+        abc:null
+    };
+    circularA.abc = circularA;
+    circularB.abc = circularB;
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambigous test)");
+    
+    circularA.def = 1;
+    circularB.def = 1;
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambigous test)");
+    
+    circularA.def = 1;
+    circularB.def = 0;
+    equals(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object (unambigous test)");
+});
+
+test('array with references to self wont loop', function(){
+    var circularA = [], 
+        circularB = [];
+    circularA.push(circularA);
+    circularB.push(circularB);
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambigous test)");
+    
+    circularA.push( 'abc' );
+    circularB.push( 'abc' );
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambigous test)");
+    
+    circularA.push( 'hello' );
+    circularB.push( 'goodbye' );
+    equals(QUnit.equiv(circularA, circularB), false, "Should not repeat test on array (unambigous test)");
+});
+
+test('mixed object/array with references to self wont loop', function(){
+    var circularA = [{abc:null}], 
+        circularB = [{abc:null}];
+    circularA[0].abc = circularA;
+    circularB[0].abc = circularB;
+    
+    circularA.push(circularA);
+    circularB.push(circularB);
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambigous test)");
+    
+    circularA[0].def = 1;
+    circularB[0].def = 1;
+    equals(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambigous test)");
+    
+    circularA[0].def = 1;
+    circularB[0].def = 0;
+    equals(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambigous test)");
+});
+
+
 test("Test that must be done at the end because they extend some primitive's prototype", function() {
     // Try that a function looks like our regular expression.
     // This tests if we check that a and b are really both instance of RegExp
