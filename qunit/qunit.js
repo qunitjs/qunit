@@ -18,6 +18,7 @@ var QUnit = {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
 			started: +new Date,
+			updateRate: 1000,
 			blocking: false,
 			autorun: false,
 			assertions: [],
@@ -590,8 +591,16 @@ function synchronize( callback ) {
 }
 
 function process() {
+	var start = (new Date()).getTime();
+
 	while ( config.queue.length && !config.blocking ) {
-		config.queue.shift()();
+		if ( config.updateRate <= 0 || (((new Date()).getTime() - start) < config.updateRate) ) {
+			config.queue.shift()();
+
+		} else {
+			setTimeout( process, 13 );
+			break;
+		}
 	}
 }
 
