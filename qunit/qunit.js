@@ -1060,9 +1060,9 @@ QUnit.jsDump = (function() {
 			name:'name',
 			'class':'className'
 		},
-		HTML:true,//if true, entities are escaped ( <, >, \t, space and \n )
+		HTML:false,//if true, entities are escaped ( <, >, \t, space and \n )
 		indentChar:'   ',//indentation unit
-		multiline:true //if true, items in a collection, are separated by a \n, else just a space.
+		multiline:false //if true, items in a collection, are separated by a \n, else just a space.
 	};
 
 	return jsDump;

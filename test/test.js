@@ -161,3 +161,11 @@ test("each test can extend the module testEnvironment", {
 }, function() {
 	equals( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
 });
+
+module("jsDump");
+test("jsDump output", function() {
+	equals( QUnit.jsDump.parse([1, 2]), "[ 1, 2 ]" );
+	equals( QUnit.jsDump.parse({top: 5, left: 0}), "{ \"top\": 5, \"left\": 0 }" );
+	equals( QUnit.jsDump.parse(document.getElementById("qunit-header")), "<h1 id=\"qunit-header\"></h1>" );
+	equals( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[ <h1 id=\"qunit-header\"></h1> ]" );
+})
