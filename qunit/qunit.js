@@ -579,7 +579,7 @@ function validTest( name ) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
+	QUnit.ok( result, result ? message + ": " + QUnit.jsDump.parse(expected) : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
 }
 
 function synchronize( callback ) {
