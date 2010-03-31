@@ -957,11 +957,11 @@ QUnit.jsDump = (function() {
 				type = "array";
 			} else if (QUnit.is("Window", obj) || QUnit.is("global", obj)) {
 				type = "window";
-			} else if (QUnit.is("HTMLDocument", obj)) {
+			} else if (obj.nodeType === 9) {
 				type = "document";
 			} else if (QUnit.is("HTMLCollection", obj) || QUnit.is("NodeList", obj)) {
 				type = "nodelist";
-			} else if (/^\[object HTML/.test(Object.prototype.toString.call( obj ))) {
+			} else if (obj.nodeType) {
 				type = "node";
 			} else {
 				type = typeof obj;
