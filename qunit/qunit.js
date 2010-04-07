@@ -170,7 +170,6 @@ var QUnit = {
 					var li = document.createElement("li");
 					li.className = assertion.result ? "pass" : "fail";
 					li.innerHTML = assertion.message || "(no message)";
-//					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
 					ol.appendChild( li );
 
 					if ( assertion.result ) {
@@ -577,20 +576,6 @@ function validTest( name ) {
 
 	return run;
 }
-/*
-function escape(s) {
-	return ((s == null) ? "" : s).toString().replace(/&(?!\w+;)|["<>\\]/g, function(s) {
-		switch(s) {
-			case "&": return "&amp;";
-			case "\\": return "\\\\";;
-			case '"': return '\"';;
-			case "<": return "&lt;";
-			case ">": return "&gt;";
-			default: return s;
-		}
-	});
-}
-*/
 
 function escape(s) {
 	return ((s == null) ? "" : s).toString().replace(/[&"<>\\]/g, function(s) {
