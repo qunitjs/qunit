@@ -37,7 +37,7 @@ ol#qunit-tests li li.pass{
 	border-left:26px solid #C6E746;
 	background-color:#fff;
 	color:#5E740B;
-	}
+}
 ol#qunit-tests li li.fail{
 	border-left:26px solid #EE5757;
 	background-color:#fff;
@@ -50,6 +50,18 @@ ol#qunit-tests li.pass{
 ol#qunit-tests li.fail{
 	background-color:#EE5757;
 	color:#000;
+}
+ol#qunit-tests li.pass span.test-name{
+	color: #366097;
+}
+ol#qunit-tests li.fail span.test-name{
+	color: #000000;
+}
+ol#qunit-tests li.pass span.module-name{
+
+}
+ol#qunit-tests li.fail span.module-name{
+	color: #000000;
 }
 ol#qunit-tests li strong {
 	cursor:pointer;
@@ -113,7 +125,7 @@ p#qunit-testresult{
 }
 strong b.fail{
 	color:#710909;
-	}
+}
 strong b.pass{
 	color:#5E740B;
-	}
+}
