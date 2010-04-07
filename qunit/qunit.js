@@ -169,7 +169,8 @@ var QUnit = {
 
 					var li = document.createElement("li");
 					li.className = assertion.result ? "pass" : "fail";
-					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
+					li.innerHTML = assertion.message || "(no message)";
+//					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
 					ol.appendChild( li );
 
 					if ( assertion.result ) {
@@ -576,10 +577,39 @@ function validTest( name ) {
 
 	return run;
 }
+/*
+function escape(s) {
+	return ((s == null) ? "" : s).toString().replace(/&(?!\w+;)|["<>\\]/g, function(s) {
+		switch(s) {
+			case "&": return "&amp;";
+			case "\\": return "\\\\";;
+			case '"': return '\"';;
+			case "<": return "&lt;";
+			case ">": return "&gt;";
+			default: return s;
+		}
+	});
+}
+*/
+
+function escape(s) {
+	return ((s == null) ? "" : s).toString().replace(/[&"<>\\]/g, function(s) {
+		switch(s) {
+			case "&": return "&amp;";
+			case "\\": return "\\\\";;
+			case '"': return '\"';;
+			case "<": return "&lt;";
+			case ">": return "&gt;";
+			default: return s;
+		}
+	});
+}
 
 function push(result, actual, expected, message) {
-	message = message || (result ? "okay" : "failed");
-	QUnit.ok( result, result ? message + ": " + QUnit.jsDump.parse(expected) : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
+	message = escape(message) || (result ? "okay" : "failed");
+	message = '<span class="test-message">' + message + "</span>";
+	expected = '<span class="test-expected">' + escape(QUnit.jsDump.parse(expected)) + "</span>";
+	QUnit.ok( result, result ? message + ": " + expected : message + ", expected: " + expected + " result: " + '<span class="test-actual">' + escape(QUnit.jsDump.parse(actual)) + "</span>");
 }
 
 function synchronize( callback ) {
