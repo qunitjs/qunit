@@ -578,7 +578,8 @@ function validTest( name ) {
 }
 
 function escape(s) {
-	return ((s == null) ? "" : s).toString().replace(/[&"<>\\]/g, function(s) {
+	s = s === null ? "" : s + "";
+	return s.replace(/[&"<>\\]/g, function(s) {
 		switch(s) {
 			case "&": return "&amp;";
 			case "\\": return "\\\\";;
