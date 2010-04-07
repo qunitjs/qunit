@@ -71,7 +71,7 @@ var QUnit = {
 	},
 	
 	test: function(testName, expected, callback, async) {
-		var name = testName, testEnvironment, testEnvironmentArg;
+		var name = '<span class="test-name">' + testName + '</span>', testEnvironment, testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -84,7 +84,7 @@ var QUnit = {
 		}
 
 		if ( config.currentModule ) {
-			name = config.currentModule + " module: " + name;
+			name = '<span class="module-name">' + config.currentModule + "</span> : " + name;
 		}
 
 		if ( !validTest(name) ) {
