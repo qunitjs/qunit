@@ -306,12 +306,12 @@ var QUnit = {
 		push(expected != actual, actual, expected, message);
 	},
 	
-	deepEqual: function(a, b, message) {
-		push(QUnit.equiv(a, b), a, b, message);
+	deepEqual: function(actual, expected, message) {
+		push(QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
-	notDeepEqual: function(a, b, message) {
-		push(!QUnit.equiv(a, b), a, b, message);
+	notDeepEqual: function(actual, expected, message) {
+		push(!QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
 	strictEqual: function(actual, expected, message) {
