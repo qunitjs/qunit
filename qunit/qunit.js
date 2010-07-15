@@ -107,6 +107,16 @@ var QUnit = {
 			
 			config.assertions = [];
 			config.expected = expected;
+			
+			var tests = id("qunit-tests");
+			if (tests) {
+				var b = document.createElement("strong");
+					b.innerHTML = "Running " + name;
+				var li = document.createElement("li");
+					li.appendChild( b );
+					li.id = "current-test-output";
+				tests.appendChild( li )
+			}
 
 			try {
 				if ( !config.pollution ) {
@@ -212,11 +222,12 @@ var QUnit = {
 					}
 				});
 
-				var li = document.createElement("li");
+				var li = id("current-test-output");
+				li.id = "";
 				li.className = bad ? "fail" : "pass";
+				li.removeChild( li.firstChild );
 				li.appendChild( b );
 				li.appendChild( ol );
-				tests.appendChild( li );
 
 				if ( bad ) {
 					var toolbar = id("qunit-testrunner-toolbar");
