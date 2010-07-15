@@ -14,17 +14,18 @@ var QUnit = {
 
 	// Initialize the configuration options
 	init: function() {
-		config = {
+		extend(config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
 			started: +new Date,
 			updateRate: 1000,
 			blocking: false,
+			autostart: true,
 			autorun: false,
 			assertions: [],
 			filters: [],
 			queue: []
-		};
+		});
 
 		var tests = id("qunit-tests"),
 			banner = id("qunit-banner"),
@@ -116,7 +117,9 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 			}
+    });
 
+    synchronize(function() {
 			if ( async ) {
 				QUnit.stop();
 			}
@@ -143,7 +146,9 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 			}
+    });
 
+    synchronize(function() {
 			try {
 				QUnit.reset();
 			} catch(e) {
@@ -426,6 +431,8 @@ if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 	exports.QUnit = QUnit;
 }
 
+QUnit.config = config;
+
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
 	config.autorun = true;
 }
@@ -495,7 +502,9 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-	QUnit.start();
+	if (config.autostart) {
+		QUnit.start();
+	}
 });
 
 function done() {
@@ -592,6 +601,8 @@ function escape(s) {
 }
 
 function push(result, actual, expected, message) {
+	message = message || (result ? "okay" : "failed");
+	QUnit.ok( result, result ? message + ": " + QUnit.jsDump.parse(expected) : message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
 	message = escape(message) || (result ? "okay" : "failed");
 	message = '<span class="test-message">' + message + "</span>";
 	expected = '<span class="test-expected">' + escape(QUnit.jsDump.parse(expected)) + "</span>";
