@@ -20,6 +20,7 @@ var QUnit = {
 			started: +new Date,
 			updateRate: 1000,
 			blocking: false,
+			autostart: true,
 			autorun: false,
 			assertions: [],
 			filters: [],
@@ -501,7 +502,9 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-	QUnit.start();
+	if (config.autostart) {
+		QUnit.start();
+	}
 });
 
 function done() {
