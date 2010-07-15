@@ -14,7 +14,7 @@ var QUnit = {
 
 	// Initialize the configuration options
 	init: function() {
-		config = {
+		extend(config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
 			started: +new Date,
@@ -24,7 +24,7 @@ var QUnit = {
 			assertions: [],
 			filters: [],
 			queue: []
-		};
+		});
 
 		var tests = id("qunit-tests"),
 			banner = id("qunit-banner"),
@@ -388,7 +388,7 @@ QUnit.equals = QUnit.equal;
 QUnit.same = QUnit.deepEqual;
 
 // Maintain internal state
-var config = {
+var config = QUnit.config = {
 	// The queue of tests to run
 	queue: [],
 
