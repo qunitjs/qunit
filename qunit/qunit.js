@@ -388,7 +388,7 @@ QUnit.equals = QUnit.equal;
 QUnit.same = QUnit.deepEqual;
 
 // Maintain internal state
-var config = QUnit.config = {
+var config = {
 	// The queue of tests to run
 	queue: [],
 
@@ -429,6 +429,8 @@ if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 	extend(exports, QUnit);
 	exports.QUnit = QUnit;
 }
+
+QUnit.config = config;
 
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
 	config.autorun = true;
