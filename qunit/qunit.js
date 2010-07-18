@@ -185,7 +185,8 @@ var QUnit = {
 
 					var li = document.createElement("li");
 					li.className = assertion.result ? "pass" : "fail";
-					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
+					li.innerHTML = assertion.message || "(no message)";
+//					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
 					ol.appendChild( li );
 
 					if ( assertion.result ) {
@@ -600,7 +601,10 @@ function validTest( name ) {
 
 function push(result, actual, expected, message) {
 	message = message || (result ? "okay" : "failed");
-	QUnit.ok( result, message + ", expected: " + QUnit.jsDump.parse(expected) + " result: " + QUnit.jsDump.parse(actual) );
+	message = '<span class="test-message">' + message + "</span>";
+	expected = '<span class="test-expected">' + QUnit.jsDump.parse(expected) + "</span>";
+	actual = '<span class="test-actual">' + QUnit.jsDump.parse(actual) + "</span>";
+	QUnit.ok( result, message + ", expected: " + expected + " result: " + actual );
 }
 
 function synchronize( callback ) {

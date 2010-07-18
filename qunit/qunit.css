@@ -63,6 +63,15 @@ ol#qunit-tests li.pass span.module-name{
 ol#qunit-tests li.fail span.module-name{
 	color: #000000;
 }
+ol#qunit-tests li li.fail span.test-actual {
+	color: #EE5757;
+}
+ol#qunit-tests li li.pass span.test-expected {
+	color: #999999;
+}
+ol#qunit-tests li li.fail span.test-expected {
+	color: green;
+}
 ol#qunit-tests li strong {
 	cursor:pointer;
 }
