@@ -87,7 +87,7 @@ var QUnit = {
 			name = '<span class="module-name">' + config.currentModule + "</span>: " + name;
 		}
 
-		if ( !validTest(name) ) {
+		if ( !validTest(config.currentModule + ": " + testName) ) {
 			return;
 		}
 
@@ -208,19 +208,11 @@ var QUnit = {
 				
 				addEvent(b, "dblclick", function(e) {
 					var target = e && e.target ? e.target : window.event.srcElement;
-					if ( target.nodeName.toLowerCase() === "strong" ) {
-						var text = "", node = target.firstChild;
-
-						while ( node.nodeType === 3 ) {
-							text += node.nodeValue;
-							node = node.nextSibling;
-						}
-
-						text = text.replace(/(^\s*|\s*$)/g, "");
-
-						if ( window.location ) {
-							window.location.href = window.location.href.match(/^(.+?)(\?.*)?$/)[1] + "?" + encodeURIComponent(text);
-						}
+					if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+						target = target.parentNode;
+					}
+					if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+						window.location.href = window.location.href.match(/^(.+?)(\?.*)?(\#.*)?$/)[1] + "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
 					}
 				});
 
@@ -1090,5 +1082,25 @@ QUnit.jsDump = (function() {
 
 	return jsDump;
 })();
+
+// from Sizzle.js
+function getText( elems ) {
+	var ret = "", elem;
+
+	for ( var i = 0; elems[i]; i++ ) {
+		elem = elems[i];
+
+		// Get the text from text nodes and CDATA nodes
+		if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
+			ret += elem.nodeValue;
+
+		// Traverse everything else, except comment nodes
+		} else if ( elem.nodeType !== 8 ) {
+			ret += getText( elem.childNodes );
+		}
+	}
+
+	return ret;
+};
 
 })(this);
