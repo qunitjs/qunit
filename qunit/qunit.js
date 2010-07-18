@@ -84,7 +84,7 @@ var QUnit = {
 		}
 
 		if ( config.currentModule ) {
-			name = '<span class="module-name">' + config.currentModule + "</span> : " + name;
+			name = '<span class="module-name">' + config.currentModule + "</span>: " + name;
 		}
 
 		if ( !validTest(name) ) {
