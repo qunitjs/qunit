@@ -271,6 +271,7 @@ var QUnit = {
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
 	ok: function(a, msg) {
+		msg = escapeHtml(msg);
 		QUnit.log(a, msg);
 
 		config.assertions.push({
@@ -590,12 +591,33 @@ function validTest( name ) {
 	return run;
 }
 
+function escapeHtml(s) {
+	s = s === null ? "" : s + "";
+	return s.replace(/[\&"<>\\]/g, function(s) {
+		switch(s) {
+			case "&": return "&amp;";
+			case "\\": return "\\\\";;
+			case '"': return '\"';;
+			case "<": return "&lt;";
+			case ">": return "&gt;";
+			default: return s;
+		}
+	});
+}
+
 function push(result, actual, expected, message) {
-	message = message || (result ? "okay" : "failed");
+	message = escapeHtml(message) || (result ? "okay" : "failed");
 	message = '<span class="test-message">' + message + "</span>";
-	expected = '<span class="test-expected">' + QUnit.jsDump.parse(expected) + "</span>";
-	actual = '<span class="test-actual">' + QUnit.jsDump.parse(actual) + "</span>";
-	QUnit.ok( result, message + ", expected: " + expected + " result: " + actual );
+	expected = '<span class="test-expected">' + escapeHtml(QUnit.jsDump.parse(expected)) + "</span>";
+	actual = '<span class="test-actual">' + escapeHtml(QUnit.jsDump.parse(actual)) + "</span>";
+	var output = message + ", expected: " + expected + " result: " + actual;
+	
+	// can't use ok, as that would double-escape messages
+	QUnit.log(result, output);
+	config.assertions.push({
+		result: !!result,
+		message: output
+	});
 }
 
 function synchronize( callback ) {
