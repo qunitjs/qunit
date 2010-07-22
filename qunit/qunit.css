@@ -69,6 +69,9 @@ ol#qunit-tests li li.fail span.test-actual {
 ol#qunit-tests li li.pass span.test-expected {
 	color: #999999;
 }
+ol#qunit-tests li li.pass span.test-actual {
+	color: #999999;
+}
 ol#qunit-tests li li.fail span.test-expected {
 	color: green;
 }
