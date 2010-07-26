@@ -178,7 +178,6 @@ var QUnit = {
 
 			if ( tests ) {
 				var ol  = document.createElement("ol");
-				ol.style.display = "none";
 
 				for ( var i = 0; i < config.assertions.length; i++ ) {
 					var assertion = config.assertions[i];
@@ -195,6 +194,9 @@ var QUnit = {
 						config.stats.bad++;
 						config.moduleStats.bad++;
 					}
+				}
+				if (bad == 0) {
+					ol.style.display = "none";
 				}
 
 				var b = document.createElement("strong");
