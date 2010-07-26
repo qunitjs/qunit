@@ -96,9 +96,9 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 			}
-    });
-
-    synchronize(function() {
+	    });
+	
+	    synchronize(function() {
 			if ( async ) {
 				QUnit.stop();
 			}
@@ -125,9 +125,9 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 			}
-    });
-
-    synchronize(function() {
+	    });
+	
+	    synchronize(function() {
 			try {
 				QUnit.reset();
 			} catch(e) {
