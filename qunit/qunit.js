@@ -211,7 +211,7 @@ var QUnit = {
 						target = target.parentNode;
 					}
 					if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-						window.location.href = window.location.href.match(/^(.+?)(\?.*)?(\#.*)?$/)[1] + "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
+						window.location.search = "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
 					}
 				});
 
