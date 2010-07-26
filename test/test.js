@@ -211,3 +211,19 @@ test("basics", function() {
 		actual = QUnit.diff("the quick brown fox jumped over", "the quick fox jumps over").replace(/^\s+/, '').replace(/\s+$/, '');
 	equal(actual, expected); 
 });
+
+module("assertions");
+test("raises", function() {
+	function thrower1() {
+		throw 'Errored!';
+	}
+	function thrower2() {
+		throw new TypeError("Type!");
+	}
+	function thrower3() {
+		throw {message:"Custom!"};
+	}
+	raises(thrower1, 'Errored!', 'throwing string');
+	raises(thrower2, 'Type!', 'throwing TypeError instance');
+	raises(thrower3, 'Custom!', 'throwing custom object');
+});

@@ -1406,7 +1406,6 @@ test('mixed object/array with references to self wont loop', function(){
     equals(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambigous test)");
 });
 
-
 test("Test that must be done at the end because they extend some primitive's prototype", function() {
     // Try that a function looks like our regular expression.
     // This tests if we check that a and b are really both instance of RegExp
@@ -1421,3 +1420,20 @@ test("Test that must be done at the end because they extend some primitive's pro
     equals(QUnit.equiv(function () {}, re), false, "Same conversely, but ensures that function and regexp are distinct because their constructor are different");
 });
 
+module("testers");
+
+test("raises", function() {
+	function thrower1() {
+		throw 'Errored!';
+	}
+	function thrower2() {
+		throw new TypeError("Type!");
+	}
+	function thrower3() {
+		var e = {message:"Custom!"};
+		throw e;
+	}
+	raises(thrower1, 'Errored!', 'throwing string');
+	raises(thrower2, 'Type!', 'throwing TypeError instance');
+	raises(thrower3, 'Custom!', 'throwing custom object');
+});
