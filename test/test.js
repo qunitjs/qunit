@@ -203,3 +203,11 @@ test("jsDump output", function() {
 		equals( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[ <h1 id=\"qunit-header\"></h1> ]" );
 	}
 });
+
+module("diff");
+test("basics", function() {
+	var expected = "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over",
+		// for some reason, the diff output has some misleading whitespace; doesn't matter when outputting html
+		actual = QUnit.diff("the quick brown fox jumped over", "the quick fox jumps over").replace(/^\s+/, '').replace(/\s+$/, '');
+	equal(actual, expected); 
+});
