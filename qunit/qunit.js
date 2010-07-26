@@ -381,6 +381,7 @@ var QUnit = {
 	},
 	
 	// Logging callbacks
+	begin: function() {},
 	done: function(failures, total) {},
 	log: function(result, message) {},
 	testStart: function(name, testEnvironment) {},
@@ -443,6 +444,8 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 }
 
 addEvent(window, "load", function() {
+	QUnit.begin();
+	
 	// Initialize the config, saving the execution queue
 	var oldconfig = extend({}, config);
 	QUnit.init();
