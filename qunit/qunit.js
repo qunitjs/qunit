@@ -330,8 +330,6 @@ var QUnit = {
 	reset: function() {
 		if ( window.jQuery ) {
 			jQuery("#main").html( config.fixture );
-			jQuery.event.global = {};
-			jQuery.ajaxSettings = extend({}, config.ajaxSettings);
 		}
 	}
 };
