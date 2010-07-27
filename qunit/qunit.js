@@ -553,10 +553,6 @@ addEvent(window, "load", function() {
 		config.fixture = main.innerHTML;
 	}
 
-	if ( window.jQuery ) {
-		config.ajaxSettings = window.jQuery.ajaxSettings;
-	}
-
 	if (config.autostart) {
 		QUnit.start();
 	}
