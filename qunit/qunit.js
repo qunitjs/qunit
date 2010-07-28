@@ -328,8 +328,9 @@ var QUnit = {
 	 * Resets the test setup. Useful for tests that modify the DOM.
 	 */
 	reset: function() {
-		if ( window.jQuery ) {
-			jQuery("#main").html( config.fixture );
+		var main = id('main') || id('qunit-fixture');
+		if ( main ) {
+			main.innerHTML = config.fixture;
 		}
 	}
 };
@@ -548,7 +549,7 @@ addEvent(window, "load", function() {
 		toolbar.appendChild( label );
 	}
 
-	var main = id('main');
+	var main = id('main') || id('qunit-fixture');
 	if ( main ) {
 		config.fixture = main.innerHTML;
 	}

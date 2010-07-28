@@ -227,3 +227,11 @@ test("raises", function() {
 	raises(thrower2, 'Type!', 'throwing TypeError instance');
 	raises(thrower3, 'Custom!', 'throwing custom object');
 });
+
+module("fixture");
+test("setup", function() {
+	document.getElementById("qunit-fixture").innerHTML = "foobar";
+});
+test("basics", function() {
+	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
+});
