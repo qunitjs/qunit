@@ -322,17 +322,8 @@ var QUnit = {
 				QUnit.start();
 			}, timeout);
 		}
-	},
-	
-	/**
-	 * Resets the test setup. Useful for tests that modify the DOM.
-	 */
-	reset: function() {
-		var main = id('main') || id('qunit-fixture');
-		if ( main ) {
-			main.innerHTML = config.fixture;
-		}
 	}
+
 };
 
 // Backwards compatibility, deprecated
@@ -415,6 +406,15 @@ extend(QUnit, {
 
 		if ( result ) {
 			result.parentNode.removeChild( result );
+		}
+	},
+	
+	/**
+	 * Resets the test setup. Useful for tests that modify the DOM.
+	 */
+	reset: function() {
+		if ( window.jQuery ) {
+			jQuery("#main, #qunit-fixture").html( config.fixture );
 		}
 	},
 	
