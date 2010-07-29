@@ -168,7 +168,7 @@ var QUnit = {
 				}
 
 				var b = document.createElement("strong");
-				b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.assertions.length + ")</b>";
+				b.innerHTML = name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + config.assertions.length + ")</b>";
 				
 				addEvent(b, "click", function() {
 					var next = b.nextSibling, display = next.style.display;
