@@ -203,3 +203,37 @@ test("jsDump output", function() {
 		equals( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[ <h1 id=\"qunit-header\"></h1> ]" );
 	}
 });
+
+module("diff");
+test("basics", function() {
+	var expected = "<em>the</em> quick <del>brown </del> fox <del>jumped </del><del><strong>over</strong> </del><ins>jumps </ins><ins><strong>o</strong>ver </ins>",
+		// for some reason, the diff output has some misleading whitespace; doesn't matter when outputting html
+		actual = QUnit.diff("<em>the</em> quick brown fox jumped <strong>over</strong>", "<em>the</em> quick fox jumps <strong>o</strong>ver").replace(/^\s+/, '').replace(/\s+$/, '');
+	equal(actual, expected); 
+});
+
+module("assertions");
+test("raises", function() {
+	function thrower1() {
+		throw 'Errored!';
+	}
+	function thrower2() {
+		throw new TypeError("Type!");
+	}
+	function thrower3() {
+		throw {message:"Custom!"};
+	}
+	raises(thrower1, 'Errored!', 'throwing string');
+	raises(thrower2, 'Type!', 'throwing TypeError instance');
+	raises(thrower3, 'Custom!', 'throwing custom object');
+});
+
+/* currently fixture reset depends on jQuery's html() method, can't test that, yet
+module("fixture");
+test("setup", function() {
+	document.getElementById("qunit-fixture").innerHTML = "foobar";
+});
+test("basics", function() {
+	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
+});
+*/

@@ -1406,7 +1406,6 @@ test('mixed object/array with references to self wont loop', function(){
     equals(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambigous test)");
 });
 
-
 test("Test that must be done at the end because they extend some primitive's prototype", function() {
     // Try that a function looks like our regular expression.
     // This tests if we check that a and b are really both instance of RegExp
@@ -1420,4 +1419,3 @@ test("Test that must be done at the end because they extend some primitive's pro
     // between RegExp and Function constructor because typeof on a RegExpt instance is "function"
     equals(QUnit.equiv(function () {}, re), false, "Same conversely, but ensures that function and regexp are distinct because their constructor are different");
 });
-
