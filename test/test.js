@@ -206,9 +206,9 @@ test("jsDump output", function() {
 
 module("diff");
 test("basics", function() {
-	var expected = "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over",
+	var expected = "<em>the</em> quick <del>brown </del> fox <del>jumped </del><del><strong>over</strong> </del><ins>jumps </ins><ins><strong>o</strong>ver </ins>",
 		// for some reason, the diff output has some misleading whitespace; doesn't matter when outputting html
-		actual = QUnit.diff("the quick brown fox jumped over", "the quick fox jumps over").replace(/^\s+/, '').replace(/\s+$/, '');
+		actual = QUnit.diff("<em>the</em> quick brown fox jumped <strong>over</strong>", "<em>the</em> quick fox jumps <strong>o</strong>ver").replace(/^\s+/, '').replace(/\s+$/, '');
 	equal(actual, expected); 
 });
 
