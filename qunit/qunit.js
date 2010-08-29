@@ -505,6 +505,10 @@ addEvent(window, "load", function() {
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
 	}
+	var banner = id("qunit-header");
+	if ( banner ) {
+		banner.innerHTML = '<a href="' + location.href + '">' + banner.innerHTML + '</a>'; 
+	}
 	
 	var toolbar = id("qunit-testrunner-toolbar");
 	if ( toolbar ) {
