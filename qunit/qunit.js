@@ -218,15 +218,7 @@ var QUnit = {
 			}
 		});
 
-		if ( window.setTimeout && !config.doneTimer ) {
-			config.doneTimer = window.setTimeout(function(){
-				if ( !config.queue.length ) {
-					done();
-				} else {
-					synchronize( done );
-				}
-			}, 13);
-		}
+		synchronize( done );
 	},
 	
 	/**
