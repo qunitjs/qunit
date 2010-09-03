@@ -194,6 +194,23 @@ test("each test can extend the module testEnvironment", {
 	equal( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
 });
 
+(function() {
+	var reset = QUnit.reset;
+	function afterTest() {
+		ok( false, "reset should not modify test status" );
+	}
+	module("reset");
+	test("reset runs assertions", function() {
+		QUnit.reset = function() {
+			afterTest();
+			reset.apply( this, arguments );
+		};
+	});
+	test("reset runs assertions2", function() {
+		QUnit.reset = reset;
+	});
+})();
+
 module("jsDump");
 test("jsDump output", function() {
 	equals( QUnit.jsDump.parse([1, 2]), "[ 1, 2 ]" );

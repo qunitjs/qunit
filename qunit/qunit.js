@@ -128,12 +128,6 @@ var QUnit = {
 	    });
 	
 	    synchronize(function() {
-			try {
-				QUnit.reset();
-			} catch(e) {
-				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
-			}
-
 			if ( config.expected && config.expected != config.assertions.length ) {
 				QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
 			}
@@ -209,6 +203,12 @@ var QUnit = {
 						config.moduleStats.bad++;
 					}
 				}
+			}
+
+			try {
+				QUnit.reset();
+			} catch(e) {
+				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
 			}
 
 			QUnit.testDone( testName, bad, config.assertions.length );
