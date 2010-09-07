@@ -84,7 +84,7 @@ var QUnit = {
 				var li = document.createElement("li");
 					li.appendChild( b );
 					li.id = "current-test-output";
-				tests.appendChild( li )
+				tests.appendChild( li );
 			}
 
 			try {
@@ -1255,7 +1255,7 @@ QUnit.diff = (function() {
 		}
 		
 		return str;
-	}
+	};
 })();
 
 })(this);
