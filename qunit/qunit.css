@@ -83,6 +83,39 @@
 	-webkit-box-shadow: inset 0px 2px 13px #999;
 }
 
+#qunit-tests table {
+	border-collapse: collapse;
+}
+
+#qunit-tests th {
+	font-weight: normal;
+	text-align: right;
+	vertical-align: top;
+	padding-right: .5em;
+}
+
+#qunit-tests td {
+	vertical-align: top;
+}
+
+#qunit-tests pre {
+	margin: 0;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+#qunit-tests del {
+	background-color: #e0f2be;
+	color: #374e0c;
+	text-decoration: none;
+}
+
+#qunit-tests ins {
+	background-color: #ffcaca;
+	color: #500;
+	text-decoration: none;
+}
+
 /*** Test Counts */
 
 #qunit-tests b.counts                       { color: black; }
