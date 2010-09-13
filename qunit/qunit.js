@@ -152,7 +152,7 @@ var QUnit = {
 
 					var li = document.createElement("li");
 					li.className = assertion.result ? "pass" : "fail";
-					li.innerHTML = assertion.message || "(no message)";
+					li.innerHTML = assertion.message || (assertion.result ? "okay" : "failed");
 					ol.appendChild( li );
 
 					if ( assertion.result ) {
@@ -635,7 +635,10 @@ function validTest( name ) {
 }
 
 function escapeHtml(s) {
-	s = s === null ? "" : s + "";
+	if (!s) {
+		return "";
+	}
+	s = s + "";
 	return s.replace(/[\&"<>\\]/g, function(s) {
 		switch(s) {
 			case "&": return "&amp;";
