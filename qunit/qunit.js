@@ -653,10 +653,10 @@ function push(result, actual, expected, message) {
 	message = '<span class="test-message">' + message + "</span>";
 	expected = escapeHtml(QUnit.jsDump.parse(expected));
 	actual = escapeHtml(QUnit.jsDump.parse(actual));
-	var output = message + '<table><tr><th>Expected: </th><td class="test-expected"><pre>' + expected + '</pre></td></tr>';
+	var output = message + '<table><tr class="test-expected"><th>Expected: </th><td><pre>' + expected + '</pre></td></tr>';
 	if (actual != expected) {
-		output += '<tr><th>Result: </th><td class="test-actual"><pre>' + actual + '</pre></td></tr>';
-		output += '<tr><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
+		output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
+		output += '<tr class="test-diff"><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
 	}
 	output += "</table>";
 	

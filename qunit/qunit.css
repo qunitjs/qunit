@@ -85,13 +85,13 @@
 
 #qunit-tests table {
 	border-collapse: collapse;
+	margin-top: .2em;
 }
 
 #qunit-tests th {
-	font-weight: normal;
 	text-align: right;
 	vertical-align: top;
-	padding-right: .5em;
+	padding: 0 .5em 0 0;
 }
 
 #qunit-tests td {
