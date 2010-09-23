@@ -168,7 +168,7 @@ var QUnit = {
 				}
 
 				var b = document.createElement("strong");
-				b.innerHTML = name + " <b style='color:black;'>(<b class='fail'>" + bad + "</b>, <b class='pass'>" + good + "</b>, " + config.assertions.length + ")</b>";
+				b.innerHTML = name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + config.assertions.length + ")</b>";
 				
 				addEvent(b, "click", function() {
 					var next = b.nextSibling, display = next.style.display;
@@ -218,15 +218,7 @@ var QUnit = {
 			}
 		});
 
-		if ( window.setTimeout && !config.doneTimer ) {
-			config.doneTimer = window.setTimeout(function(){
-				if ( !config.queue.length ) {
-					done();
-				} else {
-					synchronize( done );
-				}
-			}, 13);
-		}
+		synchronize( done );
 	},
 	
 	/**
@@ -504,6 +496,10 @@ addEvent(window, "load", function() {
 	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
+	}
+	var banner = id("qunit-header");
+	if ( banner ) {
+		banner.innerHTML = '<a href="' + location.href + '">' + banner.innerHTML + '</a>'; 
 	}
 	
 	var toolbar = id("qunit-testrunner-toolbar");
