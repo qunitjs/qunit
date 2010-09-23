@@ -131,7 +131,7 @@ var QUnit = {
 			try {
 				QUnit.reset();
 			} catch(e) {
-				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
+				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, QUnit.reset);
 			}
 
 			if ( config.expected && config.expected != config.assertions.length ) {
