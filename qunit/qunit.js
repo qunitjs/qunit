@@ -188,6 +188,7 @@ var QUnit = {
 				var li = id("current-test-output");
 				li.id = "";
 				li.className = bad ? "fail" : "pass";
+				li.style.display = resultDisplayStyle(!bad);
 				li.removeChild( li.firstChild );
 				li.appendChild( b );
 				li.appendChild( ol );
@@ -632,6 +633,10 @@ function validTest( name ) {
 	}
 
 	return run;
+}
+
+function resultDisplayStyle(passed) {
+	return passed && id("qunit-filter-pass").checked ? 'none' : '';
 }
 
 function escapeHtml(s) {
