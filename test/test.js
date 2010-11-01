@@ -220,7 +220,6 @@ test("raises", function() {
 	raises(thrower3, 'Custom!', 'throwing custom object');
 });
 
-/* currently fixture reset depends on jQuery's html() method, can't test that, yet
 module("fixture");
 test("setup", function() {
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
@@ -228,4 +227,3 @@ test("setup", function() {
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
 });
-*/
