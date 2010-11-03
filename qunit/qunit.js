@@ -234,11 +234,15 @@ var QUnit = {
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
 	ok: function(a, msg) {
+		a = !!a;
+		var details = {
+			result: a,
+			message: msg
+		};
 		msg = escapeHtml(msg);
-		QUnit.log(a, msg);
-
+		QUnit.log(a, msg, details);
 		config.assertions.push({
-			result: !!a,
+			result: a,
 			message: msg
 		});
 	},
@@ -478,6 +482,13 @@ extend(QUnit, {
 	},
 	
 	push: function(result, actual, expected, message) {
+		var details = {
+			result: result,
+			message: message,
+			actual: actual,
+			expected: expected
+		};
+		
 		message = escapeHtml(message) || (result ? "okay" : "failed");
 		message = '<span class="test-message">' + message + "</span>";
 		expected = escapeHtml(QUnit.jsDump.parse(expected));
@@ -487,8 +498,8 @@ extend(QUnit, {
 			output += ' result: <span class="test-actual">' + actual + '</span>, diff: ' + QUnit.diff(expected, actual);
 		}
 		
-		// can't use ok, as that would double-escape messages
-		QUnit.log(result, output);
+		QUnit.log(result, message, details);
+		
 		config.assertions.push({
 			result: !!result,
 			message: output
