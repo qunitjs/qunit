@@ -256,27 +256,27 @@ var QUnit = {
 	 * @param String message (optional)
 	 */
 	equal: function(actual, expected, message) {
-		push(expected == actual, actual, expected, message);
+		QUnit.push(expected == actual, actual, expected, message);
 	},
 
 	notEqual: function(actual, expected, message) {
-		push(expected != actual, actual, expected, message);
+		QUnit.push(expected != actual, actual, expected, message);
 	},
 	
 	deepEqual: function(actual, expected, message) {
-		push(QUnit.equiv(actual, expected), actual, expected, message);
+		QUnit.push(QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
 	notDeepEqual: function(actual, expected, message) {
-		push(!QUnit.equiv(actual, expected), actual, expected, message);
+		QUnit.push(!QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
 	strictEqual: function(actual, expected, message) {
-		push(expected === actual, actual, expected, message);
+		QUnit.push(expected === actual, actual, expected, message);
 	},
 
 	notStrictEqual: function(actual, expected, message) {
-		push(expected !== actual, actual, expected, message);
+		QUnit.push(expected !== actual, actual, expected, message);
 	},
 
 	raises: function(fn,  message) {
@@ -477,6 +477,24 @@ extend(QUnit, {
 		return undefined;
 	},
 	
+	push: function(result, actual, expected, message) {
+		message = escapeHtml(message) || (result ? "okay" : "failed");
+		message = '<span class="test-message">' + message + "</span>";
+		expected = escapeHtml(QUnit.jsDump.parse(expected));
+		actual = escapeHtml(QUnit.jsDump.parse(actual));
+		var output = message + ', expected: <span class="test-expected">' + expected + '</span>';
+		if (actual != expected) {
+			output += ' result: <span class="test-actual">' + actual + '</span>, diff: ' + QUnit.diff(expected, actual);
+		}
+		
+		// can't use ok, as that would double-escape messages
+		QUnit.log(result, output);
+		config.assertions.push({
+			result: !!result,
+			message: output
+		});
+	},
+	
 	// Logging callbacks
 	begin: function() {},
 	done: function(failures, total) {},
@@ -657,24 +675,6 @@ function escapeHtml(s) {
 			case ">": return "&gt;";
 			default: return s;
 		}
-	});
-}
-
-function push(result, actual, expected, message) {
-	message = escapeHtml(message) || (result ? "okay" : "failed");
-	message = '<span class="test-message">' + message + "</span>";
-	expected = escapeHtml(QUnit.jsDump.parse(expected));
-	actual = escapeHtml(QUnit.jsDump.parse(actual));
-	var output = message + ', expected: <span class="test-expected">' + expected + '</span>';
-	if (actual != expected) {
-		output += ' result: <span class="test-actual">' + actual + '</span>, diff: ' + QUnit.diff(expected, actual);
-	}
-	
-	// can't use ok, as that would double-escape messages
-	QUnit.log(result, output);
-	config.assertions.push({
-		result: !!result,
-		message: output
 	});
 }
 

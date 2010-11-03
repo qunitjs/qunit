@@ -225,3 +225,15 @@ test("setup", function() {
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
 });
+
+module("custom assertions");
+(function() {
+	function mod2(value, expected, message) {
+		var actual = value % 2;
+		QUnit.push(actual == expected, actual, expected, message);
+	}
+	test("mod2", function() {
+		mod2(2, 0, "2 % 2 == 0");
+		mod2(3, 1, "3 % 2 == 1");
+	})
+})();
