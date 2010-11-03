@@ -17,10 +17,11 @@ var QUnit = {
 		config.currentModule = name;
 
 		synchronize(function() {
-			if ( config.currentModule ) {
+			if ( config.previousModule ) {
 				QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
 			}
 
+			config.previousModule = config.currentModule;
 			config.currentModule = name;
 			config.moduleTestEnvironment = testEnvironment;
 			config.moduleStats = { all: 0, bad: 0 };
