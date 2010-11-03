@@ -237,3 +237,20 @@ module("custom assertions");
 		mod2(3, 1, "3 % 2 == 1");
 	})
 })();
+
+(function() {
+	var reset = QUnit.reset;
+	function afterTest() {
+		ok( false, "reset should not modify test status" );
+	}
+	module("reset");
+	test("reset runs assertions", function() {
+		QUnit.reset = function() {
+			afterTest();
+			reset.apply( this, arguments );
+		};
+	});
+	test("reset runs assertions2", function() {
+		QUnit.reset = reset;
+	});
+})();
