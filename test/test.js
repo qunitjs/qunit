@@ -70,7 +70,7 @@ module("async setup test", {
 	setup: function() {
 	  stop();
 		setTimeout(function(){
-	    ok(true);
+			ok(true);
 			start();
 		}, 500);
 	}
@@ -84,10 +84,10 @@ asyncTest("module with async setup", function() {
 
 module("async teardown test", {
 	teardown: function() {
-  	stop();
+		stop();
 		setTimeout(function(){
-	    ok(true);
-		  start();
+			ok(true);
+			start();
 		}, 500);
 	}
 });
@@ -97,9 +97,8 @@ asyncTest("module with async teardown", function() {
 	ok(true);
 	start();
 });
-} // end setTimeout tests
+}
 
-if (typeof asyncTest !== 'undefined') {
 module("asyncTest");
 
 asyncTest("asyncTest", function() {
@@ -120,7 +119,6 @@ asyncTest("asyncTest", 2, function() {
 		start();
 	}, 13);
 });
-} // end asyncTest tests
 
 module("save scope", {
 	setup: function() {
