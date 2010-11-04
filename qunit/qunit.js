@@ -537,7 +537,13 @@ addEvent(window, "load", function() {
 	}
 	var banner = id("qunit-header");
 	if ( banner ) {
-		banner.innerHTML = '<a href="' + location.href + '">' + banner.innerHTML + '</a>'; 
+		var paramsIndex = location.href.lastIndexOf(location.search);
+		if ( paramsIndex > -1 ) {
+			var mainPageLocation = location.href.slice(0, paramsIndex);
+			if ( mainPageLocation != location.href ) {
+				banner.innerHTML = '<a href="' + mainPageLocation + '">' + banner.innerHTML + '</a>';
+			}
+		}
 	}
 	
 	var toolbar = id("qunit-testrunner-toolbar");
