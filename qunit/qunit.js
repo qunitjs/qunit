@@ -673,7 +673,7 @@ function validTest( name ) {
 }
 
 function resultDisplayStyle(passed) {
-	return passed && id("qunit-filter-pass").checked ? 'none' : '';
+	return passed && id("qunit-filter-pass") && id("qunit-filter-pass").checked ? 'none' : '';
 }
 
 function escapeHtml(s) {
