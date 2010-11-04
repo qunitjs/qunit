@@ -20,10 +20,13 @@
 
 #qunit-header {
 	padding: 0.5em 0 0.5em 1em;
-	
-	color: #fff;
-	text-shadow: rgba(0, 0, 0, 0.5) 4px 4px 1px;
+
+	color: #8699a4;
 	background-color: #0d3349;
+
+	font-size: 1.5em;
+	line-height: 1em;
+	font-weight: normal;
 	
 	border-radius: 15px 15px 0 0;
 	-moz-border-radius: 15px 15px 0 0;
@@ -33,7 +36,12 @@
 
 #qunit-header a {
 	text-decoration: none;
-	color: white;
+	color: #c2ccd1;
+}
+
+#qunit-header a:hover,
+#qunit-header a:focus {
+	color: #fff;
 }
 
 #qunit-banner {

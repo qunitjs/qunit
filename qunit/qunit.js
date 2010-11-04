@@ -537,7 +537,16 @@ addEvent(window, "load", function() {
 	}
 	var banner = id("qunit-header");
 	if ( banner ) {
-		banner.innerHTML = '<a href="' + location.href + '">' + banner.innerHTML + '</a>'; 
+		var paramsIndex = location.href.lastIndexOf(location.search);
+		if ( paramsIndex > -1 ) {
+			var mainPageLocation = location.href.slice(0, paramsIndex);
+			if ( mainPageLocation == location.href ) {
+				banner.innerHTML = '<a href=""> ' + banner.innerHTML + '</a> ';
+			} else {
+				var testName = decodeURIComponent(location.search.slice(1));
+				banner.innerHTML = '<a href="' + mainPageLocation + '">' + banner.innerHTML + '</a> &#8250; <a href="">' + testName + '</a>';
+			}
+		}
 	}
 	
 	var toolbar = id("qunit-testrunner-toolbar");
