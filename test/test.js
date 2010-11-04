@@ -196,7 +196,7 @@ module("jsDump");
 test("jsDump output", function() {
 	equals( QUnit.jsDump.parse([1, 2]), "[ 1, 2 ]" );
 	equals( QUnit.jsDump.parse({top: 5, left: 0}), "{ \"top\": 5, \"left\": 0 }" );
-	if (typeof document !== 'undefined') {
+	if (typeof document !== 'undefined' && document.getElementById("qunit-header")) {
 		equals( QUnit.jsDump.parse(document.getElementById("qunit-header")), "<h1 id=\"qunit-header\"></h1>" );
 		equals( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[ <h1 id=\"qunit-header\"></h1> ]" );
 	}
