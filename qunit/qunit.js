@@ -129,6 +129,10 @@ var QUnit = {
 	    });
 	
 	    synchronize(function() {
+			if ( config.expected && config.expected != config.assertions.length ) {
+				QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
+			}
+			
 			var good = 0, bad = 0,
 				tests = id("qunit-tests");
 
@@ -207,10 +211,6 @@ var QUnit = {
 				QUnit.reset();
 			} catch(e) {
 				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, QUnit.reset);
-			}
-
-			if ( config.expected && config.expected != config.assertions.length ) {
-				QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
 			}
 
 			QUnit.testDone( testName, bad, config.assertions.length );
