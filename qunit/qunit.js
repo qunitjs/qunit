@@ -10,6 +10,10 @@
 
 (function(window) {
 
+var defined = {
+    setTimeout: (typeof window.setTimeout !== "undefined")
+}
+
 var QUnit = {
 
 	// call on start of module test to prepend name to all tests
@@ -214,10 +218,6 @@ var QUnit = {
 			}
 
 			QUnit.testDone( testName, bad, config.assertions.length );
-
-			if ( !window.setTimeout && !config.queue.length ) {
-				done();
-			}
 		});
 
 		synchronize( done );
@@ -296,7 +296,7 @@ var QUnit = {
 
 	start: function() {
 		// A slight delay, to avoid any current callbacks
-		if ( typeof window.setTimeout !== "undefined" ) {
+	        if ( defined.setTimeout ) {
 			window.setTimeout(function() {
 				if ( config.timeout ) {
 					clearTimeout(config.timeout);
@@ -314,7 +314,7 @@ var QUnit = {
 	stop: function(timeout) {
 		config.blocking = true;
 
-		if ( timeout && window.setTimeout ) {
+		if ( timeout && defined.setTimeout ) {
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
 				QUnit.start();
@@ -608,16 +608,18 @@ function done() {
 		config.doneTimer = null;
 	}
 
-	if ( config.queue.length ) {
+        if ( config.queue.length ) {
+	    if( defined.setTimeout ) {
 		config.doneTimer = window.setTimeout(function(){
-			if ( !config.queue.length ) {
-				done();
-			} else {
-				synchronize( done );
-			}
+		    if ( !config.queue.length ) {
+			done();
+		    } else {
+			synchronize( done );
+		    }
 		}, 13);
+	    }
 
-		return;
+	    return;
 	}
 
 	config.autorun = true;
@@ -718,7 +720,7 @@ function process() {
 			config.queue.shift()();
 
 		} else {
-			setTimeout( process, 13 );
+			window.setTimeout( process, 13 );
 			break;
 		}
 	}
