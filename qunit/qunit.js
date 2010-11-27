@@ -11,7 +11,7 @@
 (function(window) {
 
 var defined = {
-    setTimeout: (typeof window.setTimeout !== "undefined")
+    setTimeout: typeof window.setTimeout !== "undefined"
 }
 
 var QUnit = {
@@ -1026,7 +1026,7 @@ QUnit.jsDump = (function() {
 				type = "date";
 			} else if (QUnit.is("Function", obj)) {
 				type = "function";
-			} else if (obj.setInterval && obj.document && !obj.nodeType) {
+			} else if (typeof obj.setInterval !== undefined && typeof obj.document !== "undefined" && typeof obj.nodeType === "undefined") {
 				type = "window";
 			} else if (obj.nodeType === 9) {
 				type = "document";
@@ -1080,31 +1080,31 @@ QUnit.jsDump = (function() {
 					ret += ' ' + name;
 				ret += '(';
 				
-				ret = [ ret, this.parse( fn, 'functionArgs' ), '){'].join('');
-				return join( ret, this.parse(fn,'functionCode'), '}' );
+				ret = [ ret, QUnit.jsDump.parse( fn, 'functionArgs' ), '){'].join('');
+				return join( ret, QUnit.jsDump.parse(fn,'functionCode'), '}' );
 			},
 			array: array,
 			nodelist: array,
 			arguments: array,
 			object:function( map ) {
 				var ret = [ ];
-				this.up();
+				QUnit.jsDump.up();
 				for ( var key in map )
-					ret.push( this.parse(key,'key') + ': ' + this.parse(map[key]) );
-				this.down();
+					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(map[key]) );
+				QUnit.jsDump.down();
 				return join( '{', ret, '}' );
 			},
 			node:function( node ) {
-				var open = this.HTML ? '&lt;' : '<',
-					close = this.HTML ? '&gt;' : '>';
+				var open = QUnit.jsDump.HTML ? '&lt;' : '<',
+					close = QUnit.jsDump.HTML ? '&gt;' : '>';
 					
 				var tag = node.nodeName.toLowerCase(),
 					ret = open + tag;
 					
-				for ( var a in this.DOMAttrs ) {
-					var val = node[this.DOMAttrs[a]];
+				for ( var a in QUnit.jsDump.DOMAttrs ) {
+					var val = node[QUnit.jsDump.DOMAttrs[a]];
 					if ( val )
-						ret += ' ' + a + '=' + this.parse( val, 'attribute' );
+						ret += ' ' + a + '=' + QUnit.jsDump.parse( val, 'attribute' );
 				}
 				return ret + close + open + '/' + tag + close;
 			},
