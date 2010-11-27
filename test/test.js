@@ -180,8 +180,8 @@ test("makeurl working",function() {
 });
 
 module("testEnvironment with makeurl settings", {
-	url:'http://google.com/',
-q:'another_search_test'
+	url: 'http://google.com/',
+	q: 'another_search_test'
 });
 test("makeurl working with settings from testEnvironment", function() {
 	equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
@@ -218,7 +218,7 @@ test("raises", function() {
 	raises(thrower3, 'Custom!', 'throwing custom object');
 });
 
-if(typeof document !== "undefined") {
+if (typeof document !== "undefined") {
 
 module("fixture");
 test("setup", function() {

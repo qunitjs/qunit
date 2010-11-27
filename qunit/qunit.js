@@ -608,18 +608,18 @@ function done() {
 		config.doneTimer = null;
 	}
 
-        if ( config.queue.length ) {
-	    if( defined.setTimeout ) {
-		config.doneTimer = window.setTimeout(function(){
-		    if ( !config.queue.length ) {
-			done();
-		    } else {
-			synchronize( done );
-		    }
-		}, 13);
-	    }
+	if ( config.queue.length ) {
+		if ( defined.setTimeout ) {
+			config.doneTimer = window.setTimeout(function(){
+				if ( !config.queue.length ) {
+					done();
+				} else {
+					synchronize( done );
+				}
+			}, 13);
+		}
 
-	    return;
+		return;
 	}
 
 	config.autorun = true;
@@ -718,7 +718,6 @@ function process() {
 	while ( config.queue.length && !config.blocking ) {
 		if ( config.updateRate <= 0 || (((new Date()).getTime() - start) < config.updateRate) ) {
 			config.queue.shift()();
-
 		} else {
 			window.setTimeout( process, 13 );
 			break;
