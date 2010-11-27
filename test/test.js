@@ -97,7 +97,6 @@ asyncTest("module with async teardown", function() {
 	ok(true);
 	start();
 });
-}
 
 module("asyncTest");
 
@@ -119,6 +118,7 @@ asyncTest("asyncTest", 2, function() {
 		start();
 	}, 13);
 });
+}
 
 module("save scope", {
 	setup: function() {
@@ -218,6 +218,8 @@ test("raises", function() {
 	raises(thrower3, 'Custom!', 'throwing custom object');
 });
 
+if(typeof document !== "undefined") {
+
 module("fixture");
 test("setup", function() {
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
@@ -225,6 +227,8 @@ test("setup", function() {
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
 });
+
+}
 
 module("custom assertions");
 (function() {
