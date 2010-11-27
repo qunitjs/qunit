@@ -494,10 +494,12 @@ extend(QUnit, {
 		message = '<span class="test-message">' + message + "</span>";
 		expected = escapeHtml(QUnit.jsDump.parse(expected));
 		actual = escapeHtml(QUnit.jsDump.parse(actual));
-		var output = message + ', expected: <span class="test-expected">' + expected + '</span>';
+		var output = message + '<table><tr class="test-expected"><th>Expected: </th><td><pre>' + expected + '</pre></td></tr>';
 		if (actual != expected) {
-			output += ' result: <span class="test-actual">' + actual + '</span>, diff: ' + QUnit.diff(expected, actual);
+			output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
+			output += '<tr class="test-diff"><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
 		}
+		output += "</table>";
 		
 		QUnit.log(result, message, details);
 		
@@ -1131,8 +1133,8 @@ QUnit.jsDump = (function() {
 			'class':'className'
 		},
 		HTML:false,//if true, entities are escaped ( <, >, \t, space and \n )
-		indentChar:'   ',//indentation unit
-		multiline:false //if true, items in a collection, are separated by a \n, else just a space.
+		indentChar:'  ',//indentation unit
+		multiline:true //if true, items in a collection, are separated by a \n, else just a space.
 	};
 
 	return jsDump;
