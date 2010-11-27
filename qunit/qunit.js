@@ -296,7 +296,7 @@ var QUnit = {
 
 	start: function() {
 		// A slight delay, to avoid any current callbacks
-	        if ( defined.setTimeout ) {
+		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
 				if ( config.timeout ) {
 					clearTimeout(config.timeout);
