@@ -498,6 +498,13 @@ extend(QUnit, {
 			output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
 			output += '<tr class="test-diff"><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
 		}
+		if (!result) {
+			var source = sourceFromStacktrace();
+			if (source) {
+				details.source = source;
+				output += '<tr class="test-source"><th>Source: </th><td><pre>' + source +'</pre></td></tr>';
+			}
+		}
 		output += "</table>";
 		
 		QUnit.log(result, message, details);
@@ -663,6 +670,22 @@ function validTest( name ) {
 	}
 
 	return run;
+}
+
+// so far supports only Firefox, Chrome and Opera (buggy)
+// could be extended in the future to use something like https://github.com/csnover/TraceKit
+function sourceFromStacktrace() {
+	try {
+		throw new Error();
+	} catch ( e ) {
+		if (e.stacktrace) {
+			// Opera
+			return e.stacktrace.split("\n")[6];
+		} else if (e.stack) {
+			// Firefox, Chrome
+			return e.stack.split("\n")[4];
+		}
+	}
 }
 
 function resultDisplayStyle(passed) {
