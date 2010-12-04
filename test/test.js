@@ -24,6 +24,10 @@ test("module with setup", function() {
 	ok(true);
 });
 
+test("module with setup, expect in test call", 2, function() {
+	ok(true);
+});
+
 var state;
 
 module("setup/teardown test", {

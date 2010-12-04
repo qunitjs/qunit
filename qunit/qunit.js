@@ -39,7 +39,6 @@ Test.prototype = {
 		QUnit.current_testEnvironment = this.testEnvironment;
 		
 		config.assertions = [];
-		config.expected = this.expected;
 		
 		var tests = id("qunit-tests");
 		if (tests) {
@@ -63,6 +62,7 @@ Test.prototype = {
 		}
 	},
 	run: function() {
+		config.current = this;
 		if ( this.async ) {
 			QUnit.stop();
 		}
@@ -92,8 +92,8 @@ Test.prototype = {
 		}
 	},
 	finish: function() {
-		if ( config.expected && config.expected != config.assertions.length ) {
-			QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
+		if ( this.expected && this.expected != config.assertions.length ) {
+			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + config.assertions.length + " were run" );
 		}
 		
 		var good = 0, bad = 0,
@@ -250,7 +250,7 @@ var QUnit = {
 	 * Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
 	 */
 	expect: function(asserts) {
-		config.expected = asserts;
+		config.current.expected = asserts;
 	},
 
 	/**
@@ -772,13 +772,13 @@ function checkPollution( name ) {
 	var newGlobals = diff( old, config.pollution );
 	if ( newGlobals.length > 0 ) {
 		ok( false, "Introduced global variable(s): " + newGlobals.join(", ") );
-		config.expected++;
+		config.current.expected++;
 	}
 
 	var deletedGlobals = diff( config.pollution, old );
 	if ( deletedGlobals.length > 0 ) {
 		ok( false, "Deleted global variable(s): " + deletedGlobals.join(", ") );
-		config.expected++;
+		config.current.expected++;
 	}
 }
 
