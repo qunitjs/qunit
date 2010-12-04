@@ -14,6 +14,172 @@ var defined = {
     setTimeout: typeof window.setTimeout !== "undefined"
 }
 
+var Test = function(name, testName, expected, testEnvironmentArg, async, callback) {
+	this.name = name;
+	this.testName = testName;
+	this.expected = expected;
+	this.testEnvironmentArg = testEnvironmentArg;
+	this.async = async;
+	this.callback = callback;
+};
+Test.prototype = {
+	setup: function() {
+		this.testEnvironment = extend({
+			setup: function() {},
+			teardown: function() {}
+		}, config.moduleTestEnvironment);
+		if (this.testEnvironmentArg) {
+			extend(this.testEnvironment, this.testEnvironmentArg);
+		}
+
+		QUnit.testStart( this.testName, this.testEnvironment );
+
+		// allow utility functions to access the current test environment
+		// TODO why??
+		QUnit.current_testEnvironment = this.testEnvironment;
+		
+		config.assertions = [];
+		config.expected = this.expected;
+		
+		var tests = id("qunit-tests");
+		if (tests) {
+			var b = document.createElement("strong");
+				b.innerHTML = "Running " + this.name;
+			var li = document.createElement("li");
+				li.appendChild( b );
+				li.id = "current-test-output";
+			tests.appendChild( li );
+		}
+
+		try {
+			if ( !config.pollution ) {
+				saveGlobal();
+			}
+
+			this.testEnvironment.setup.call(this.testEnvironment);
+		} catch(e) {
+			// TODO use testName instead of name for no-markup message?
+			QUnit.ok( false, "Setup failed on " + this.name + ": " + e.message );
+		}
+	},
+	run: function() {
+		if ( this.async ) {
+			QUnit.stop();
+		}
+
+		try {
+			this.callback.call(this.testEnvironment);
+		} catch(e) {
+			// TODO use testName instead of name for no-markup message?
+			fail("Test " + this.name + " died, exception and test follows", e, callback);
+			QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
+			// else next test will carry the responsibility
+			saveGlobal();
+
+			// Restart the tests if they're blocking
+			if ( config.blocking ) {
+				start();
+			}
+		}
+	},
+	teardown: function() {
+		try {
+			checkPollution();
+			this.testEnvironment.teardown.call(this.testEnvironment);
+		} catch(e) {
+			// TODO use testName instead of name for no-markup message?
+			QUnit.ok( false, "Teardown failed on " + this.name + ": " + e.message );
+		}
+	},
+	finish: function() {
+		if ( config.expected && config.expected != config.assertions.length ) {
+			QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
+		}
+		
+		var good = 0, bad = 0,
+			tests = id("qunit-tests");
+
+		config.stats.all += config.assertions.length;
+		config.moduleStats.all += config.assertions.length;
+
+		if ( tests ) {
+			var ol  = document.createElement("ol");
+
+			for ( var i = 0; i < config.assertions.length; i++ ) {
+				var assertion = config.assertions[i];
+
+				var li = document.createElement("li");
+				li.className = assertion.result ? "pass" : "fail";
+				li.innerHTML = assertion.message || (assertion.result ? "okay" : "failed");
+				ol.appendChild( li );
+
+				if ( assertion.result ) {
+					good++;
+				} else {
+					bad++;
+					config.stats.bad++;
+					config.moduleStats.bad++;
+				}
+			}
+			if (bad == 0) {
+				ol.style.display = "none";
+			}
+
+			var b = document.createElement("strong");
+			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + config.assertions.length + ")</b>";
+			
+			addEvent(b, "click", function() {
+				var next = b.nextSibling, display = next.style.display;
+				next.style.display = display === "none" ? "block" : "none";
+			});
+			
+			addEvent(b, "dblclick", function(e) {
+				var target = e && e.target ? e.target : window.event.srcElement;
+				if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+					target = target.parentNode;
+				}
+				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+					window.location.search = "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
+				}
+			});
+
+			var li = id("current-test-output");
+			li.id = "";
+			li.className = bad ? "fail" : "pass";
+			li.style.display = resultDisplayStyle(!bad);
+			li.removeChild( li.firstChild );
+			li.appendChild( b );
+			li.appendChild( ol );
+
+			if ( bad ) {
+				var toolbar = id("qunit-testrunner-toolbar");
+				if ( toolbar ) {
+					toolbar.style.display = "block";
+					id("qunit-filter-pass").disabled = null;
+				}
+			}
+
+		} else {
+			for ( var i = 0; i < config.assertions.length; i++ ) {
+				if ( !config.assertions[i].result ) {
+					bad++;
+					config.stats.bad++;
+					config.moduleStats.bad++;
+				}
+			}
+		}
+
+		try {
+			QUnit.reset();
+		} catch(e) {
+			// TODO use testName instead of name for no-markup message?
+			fail("reset() failed, following Test " + this.name + ", exception and reset fn follows", e, QUnit.reset);
+		}
+
+		QUnit.testDone( this.testName, bad, config.assertions.length );
+	}
+}
+
 var QUnit = {
 
 	// call on start of module test to prepend name to all tests
@@ -44,7 +210,7 @@ var QUnit = {
 	},
 	
 	test: function(testName, expected, callback, async) {
-		var name = '<span class="test-name">' + testName + '</span>', testEnvironment, testEnvironmentArg;
+		var name = '<span class="test-name">' + testName + '</span>', testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -63,162 +229,20 @@ var QUnit = {
 		if ( !validTest(config.currentModule + ": " + testName) ) {
 			return;
 		}
-
+		
+		var test = new Test(name, testName, expected, testEnvironmentArg, async, callback);
 		synchronize(function() {
-
-			testEnvironment = extend({
-				setup: function() {},
-				teardown: function() {}
-			}, config.moduleTestEnvironment);
-			if (testEnvironmentArg) {
-				extend(testEnvironment,testEnvironmentArg);
-			}
-
-			QUnit.testStart( testName, testEnvironment );
-
-			// allow utility functions to access the current test environment
-			QUnit.current_testEnvironment = testEnvironment;
-			
-			config.assertions = [];
-			config.expected = expected;
-			
-			var tests = id("qunit-tests");
-			if (tests) {
-				var b = document.createElement("strong");
-					b.innerHTML = "Running " + name;
-				var li = document.createElement("li");
-					li.appendChild( b );
-					li.id = "current-test-output";
-				tests.appendChild( li );
-			}
-
-			try {
-				if ( !config.pollution ) {
-					saveGlobal();
-				}
-
-				testEnvironment.setup.call(testEnvironment);
-			} catch(e) {
-				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
-			}
-	    });
-	
-	    synchronize(function() {
-			if ( async ) {
-				QUnit.stop();
-			}
-
-			try {
-				callback.call(testEnvironment);
-			} catch(e) {
-				fail("Test " + name + " died, exception and test follows", e, callback);
-				QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
-				// else next test will carry the responsibility
-				saveGlobal();
-
-				// Restart the tests if they're blocking
-				if ( config.blocking ) {
-					start();
-				}
-			}
+			test.setup();
 		});
-
 		synchronize(function() {
-			try {
-				checkPollution();
-				testEnvironment.teardown.call(testEnvironment);
-			} catch(e) {
-				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
-			}
-	    });
-	
-	    synchronize(function() {
-			if ( config.expected && config.expected != config.assertions.length ) {
-				QUnit.ok( false, "Expected " + config.expected + " assertions, but " + config.assertions.length + " were run" );
-			}
-			
-			var good = 0, bad = 0,
-				tests = id("qunit-tests");
-
-			config.stats.all += config.assertions.length;
-			config.moduleStats.all += config.assertions.length;
-
-			if ( tests ) {
-				var ol  = document.createElement("ol");
-
-				for ( var i = 0; i < config.assertions.length; i++ ) {
-					var assertion = config.assertions[i];
-
-					var li = document.createElement("li");
-					li.className = assertion.result ? "pass" : "fail";
-					li.innerHTML = assertion.message || (assertion.result ? "okay" : "failed");
-					ol.appendChild( li );
-
-					if ( assertion.result ) {
-						good++;
-					} else {
-						bad++;
-						config.stats.bad++;
-						config.moduleStats.bad++;
-					}
-				}
-				if (bad == 0) {
-					ol.style.display = "none";
-				}
-
-				var b = document.createElement("strong");
-				b.innerHTML = name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + config.assertions.length + ")</b>";
-				
-				addEvent(b, "click", function() {
-					var next = b.nextSibling, display = next.style.display;
-					next.style.display = display === "none" ? "block" : "none";
-				});
-				
-				addEvent(b, "dblclick", function(e) {
-					var target = e && e.target ? e.target : window.event.srcElement;
-					if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
-						target = target.parentNode;
-					}
-					if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-						window.location.search = "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
-					}
-				});
-
-				var li = id("current-test-output");
-				li.id = "";
-				li.className = bad ? "fail" : "pass";
-				li.style.display = resultDisplayStyle(!bad);
-				li.removeChild( li.firstChild );
-				li.appendChild( b );
-				li.appendChild( ol );
-
-				if ( bad ) {
-					var toolbar = id("qunit-testrunner-toolbar");
-					if ( toolbar ) {
-						toolbar.style.display = "block";
-						id("qunit-filter-pass").disabled = null;
-					}
-				}
-
-			} else {
-				for ( var i = 0; i < config.assertions.length; i++ ) {
-					if ( !config.assertions[i].result ) {
-						bad++;
-						config.stats.bad++;
-						config.moduleStats.bad++;
-					}
-				}
-			}
-
-			try {
-				QUnit.reset();
-			} catch(e) {
-				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, QUnit.reset);
-			}
-
-			QUnit.testDone( testName, bad, config.assertions.length );
+			test.run();
 		});
-
+		synchronize(function() {
+			test.teardown();
+		});
+		synchronize(function() {
+			test.finish();
+		});
 		synchronize( done );
 	},
 	
@@ -376,6 +400,7 @@ extend(QUnit, {
 
 	// Initialize the configuration options
 	init: function() {
+		// TODO move test-specific properties to Test: expected, assertions, anything else?
 		extend(config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
