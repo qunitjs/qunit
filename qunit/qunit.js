@@ -11,7 +11,8 @@
 (function(window) {
 
 var defined = {
-    setTimeout: typeof window.setTimeout !== "undefined"
+	setTimeout: typeof window.setTimeout !== "undefined",
+	sessionStorage: typeof window.sessionStorage !== "undefined"
 }
 
 var testId = 0;
@@ -81,7 +82,7 @@ Test.prototype = {
 			this.callback.call(this.testEnvironment);
 		} catch(e) {
 			// TODO use testName instead of name for no-markup message?
-			fail("Test " + this.name + " died, exception and test follows", e, callback);
+			fail("Test " + this.name + " died, exception and test follows", e, this.callback);
 			QUnit.ok( false, "Died on test #" + (this.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -131,6 +132,10 @@ Test.prototype = {
 					config.moduleStats.bad++;
 				}
 			}
+
+			// store result when possible
+			defined.sessionStorage && sessionStorage.setItem("qunit-" + this.testName, bad);
+
 			if (bad == 0) {
 				ol.style.display = "none";
 			}
@@ -193,8 +198,7 @@ Test.prototype = {
 		synchronize(function() {
 			test.init();
 		});
-		// TODO defer only when previous test run passed
-		synchronize(function() {
+		function run() {
 			// each of these can by async
 			synchronize(function() {
 				test.setup();
@@ -208,7 +212,14 @@ Test.prototype = {
 			synchronize(function() {
 				test.finish();
 			});
-		});
+		}
+		// defer when previous test run passed, if storage is available
+		var bad = defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.testName);
+		if (bad) {
+			run();
+		} else {
+			synchronize(run);
+		};
 	}
 	
 }
