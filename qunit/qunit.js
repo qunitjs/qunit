@@ -21,9 +21,11 @@ var Test = function(name, testName, expected, testEnvironmentArg, async, callbac
 	this.testEnvironmentArg = testEnvironmentArg;
 	this.async = async;
 	this.callback = callback;
+	this.assertions = [];
 };
 Test.prototype = {
 	setup: function() {
+		config.current = this;
 		this.testEnvironment = extend({
 			setup: function() {},
 			teardown: function() {}
@@ -37,8 +39,6 @@ Test.prototype = {
 		// allow utility functions to access the current test environment
 		// TODO why??
 		QUnit.current_testEnvironment = this.testEnvironment;
-		
-		config.assertions = [];
 		
 		var tests = id("qunit-tests");
 		if (tests) {
@@ -62,7 +62,6 @@ Test.prototype = {
 		}
 	},
 	run: function() {
-		config.current = this;
 		if ( this.async ) {
 			QUnit.stop();
 		}
@@ -72,7 +71,7 @@ Test.prototype = {
 		} catch(e) {
 			// TODO use testName instead of name for no-markup message?
 			fail("Test " + this.name + " died, exception and test follows", e, callback);
-			QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
+			QUnit.ok( false, "Died on test #" + (this.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
 			// else next test will carry the responsibility
 			saveGlobal();
 
@@ -92,21 +91,21 @@ Test.prototype = {
 		}
 	},
 	finish: function() {
-		if ( this.expected && this.expected != config.assertions.length ) {
-			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + config.assertions.length + " were run" );
+		if ( this.expected && this.expected != this.assertions.length ) {
+			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
 		}
 		
 		var good = 0, bad = 0,
 			tests = id("qunit-tests");
 
-		config.stats.all += config.assertions.length;
-		config.moduleStats.all += config.assertions.length;
+		config.stats.all += this.assertions.length;
+		config.moduleStats.all += this.assertions.length;
 
 		if ( tests ) {
 			var ol  = document.createElement("ol");
 
-			for ( var i = 0; i < config.assertions.length; i++ ) {
-				var assertion = config.assertions[i];
+			for ( var i = 0; i < this.assertions.length; i++ ) {
+				var assertion = this.assertions[i];
 
 				var li = document.createElement("li");
 				li.className = assertion.result ? "pass" : "fail";
@@ -126,7 +125,7 @@ Test.prototype = {
 			}
 
 			var b = document.createElement("strong");
-			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + config.assertions.length + ")</b>";
+			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
 			
 			addEvent(b, "click", function() {
 				var next = b.nextSibling, display = next.style.display;
@@ -160,8 +159,8 @@ Test.prototype = {
 			}
 
 		} else {
-			for ( var i = 0; i < config.assertions.length; i++ ) {
-				if ( !config.assertions[i].result ) {
+			for ( var i = 0; i < this.assertions.length; i++ ) {
+				if ( !this.assertions[i].result ) {
 					bad++;
 					config.stats.bad++;
 					config.moduleStats.bad++;
@@ -176,7 +175,7 @@ Test.prototype = {
 			fail("reset() failed, following Test " + this.name + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
-		QUnit.testDone( this.testName, bad, config.assertions.length );
+		QUnit.testDone( this.testName, bad, this.assertions.length );
 	}
 }
 
@@ -265,7 +264,7 @@ var QUnit = {
 		};
 		msg = escapeHtml(msg);
 		QUnit.log(a, msg, details);
-		config.assertions.push({
+		config.current.assertions.push({
 			result: a,
 			message: msg
 		});
@@ -400,7 +399,6 @@ extend(QUnit, {
 
 	// Initialize the configuration options
 	init: function() {
-		// TODO move test-specific properties to Test: expected, assertions, anything else?
 		extend(config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
@@ -409,7 +407,6 @@ extend(QUnit, {
 			blocking: false,
 			autostart: true,
 			autorun: false,
-			assertions: [],
 			filters: [],
 			queue: []
 		});
@@ -534,7 +531,7 @@ extend(QUnit, {
 		
 		QUnit.log(result, message, details);
 		
-		config.assertions.push({
+		config.current.assertions.push({
 			result: !!result,
 			message: output
 		});
