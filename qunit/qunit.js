@@ -14,6 +14,8 @@ var defined = {
     setTimeout: typeof window.setTimeout !== "undefined"
 }
 
+var testId = 0;
+
 var Test = function(name, testName, expected, testEnvironmentArg, async, callback) {
 	this.name = name;
 	this.testName = testName;
@@ -24,12 +26,31 @@ var Test = function(name, testName, expected, testEnvironmentArg, async, callbac
 	this.assertions = [];
 };
 Test.prototype = {
+	init: function() {
+		var tests = id("qunit-tests");
+		if (tests) {
+			var b = document.createElement("strong");
+				b.innerHTML = "Running " + this.name;
+			var li = document.createElement("li");
+				li.appendChild( b );
+				li.id = this.id = "test-output" + testId++;
+			tests.appendChild( li );
+		}
+	},
 	setup: function() {
+		if (this.module != this.previousModule) {
+			if ( this.previousModule ) {
+				QUnit.moduleDone( this.module, config.moduleStats.bad, config.moduleStats.all );
+			}
+			config.moduleStats = { all: 0, bad: 0 };
+			QUnit.moduleStart( this.module, this.moduleTestEnvironment );
+		}
+
 		config.current = this;
 		this.testEnvironment = extend({
 			setup: function() {},
 			teardown: function() {}
-		}, config.moduleTestEnvironment);
+		}, this.moduleTestEnvironment);
 		if (this.testEnvironmentArg) {
 			extend(this.testEnvironment, this.testEnvironmentArg);
 		}
@@ -40,16 +61,6 @@ Test.prototype = {
 		// TODO why??
 		QUnit.current_testEnvironment = this.testEnvironment;
 		
-		var tests = id("qunit-tests");
-		if (tests) {
-			var b = document.createElement("strong");
-				b.innerHTML = "Running " + this.name;
-			var li = document.createElement("li");
-				li.appendChild( b );
-				li.id = "current-test-output";
-			tests.appendChild( li );
-		}
-
 		try {
 			if ( !config.pollution ) {
 				saveGlobal();
@@ -142,8 +153,7 @@ Test.prototype = {
 				}
 			});
 
-			var li = id("current-test-output");
-			li.id = "";
+			var li = id(this.id);
 			li.className = bad ? "fail" : "pass";
 			li.style.display = resultDisplayStyle(!bad);
 			li.removeChild( li.firstChild );
@@ -176,27 +186,40 @@ Test.prototype = {
 		}
 
 		QUnit.testDone( this.testName, bad, this.assertions.length );
+	},
+	
+	queue: function() {
+		var test = this;
+		synchronize(function() {
+			test.init();
+		});
+		// TODO defer only when previous test run passed
+		synchronize(function() {
+			// each of these can by async
+			synchronize(function() {
+				test.setup();
+			});
+			synchronize(function() {
+				test.run();
+			});
+			synchronize(function() {
+				test.teardown();
+			});
+			synchronize(function() {
+				test.finish();
+			});
+		});
 	}
+	
 }
 
 var QUnit = {
 
 	// call on start of module test to prepend name to all tests
 	module: function(name, testEnvironment) {
+		config.previousModule = config.currentModule;
 		config.currentModule = name;
-
-		synchronize(function() {
-			if ( config.previousModule ) {
-				QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
-			}
-
-			config.previousModule = config.currentModule;
-			config.currentModule = name;
-			config.moduleTestEnvironment = testEnvironment;
-			config.moduleStats = { all: 0, bad: 0 };
-
-			QUnit.moduleStart( name, testEnvironment );
-		});
+		config.currentModuleTestEnviroment = testEnvironment;
 	},
 
 	asyncTest: function(testName, expected, callback) {
@@ -230,18 +253,10 @@ var QUnit = {
 		}
 		
 		var test = new Test(name, testName, expected, testEnvironmentArg, async, callback);
-		synchronize(function() {
-			test.setup();
-		});
-		synchronize(function() {
-			test.run();
-		});
-		synchronize(function() {
-			test.teardown();
-		});
-		synchronize(function() {
-			test.finish();
-		});
+		test.previousModule = config.previousModule;
+		test.module = config.currentModule;
+		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
+		test.queue();
 		synchronize( done );
 	},
 	
