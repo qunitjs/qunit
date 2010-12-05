@@ -122,9 +122,6 @@
 #qunit-tests b.failed {
 	color: #710909;
 }
-#qunit-tests li.fail .counts {
-	color: #;
-}
 #qunit-tests li.fail .failed {
 	color: #E48989;
 }
