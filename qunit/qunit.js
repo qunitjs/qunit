@@ -12,7 +12,13 @@
 
 var defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
-	sessionStorage: typeof window.sessionStorage !== "undefined"
+	sessionStorage: (function() {
+		try {
+		  return ('sessionStorage' in window) && window.sessionStorage !== null;
+		} catch(e) {
+		  return false;
+		}
+  })()
 }
 
 var testId = 0;
