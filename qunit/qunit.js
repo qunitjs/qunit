@@ -763,7 +763,7 @@ function process() {
 			break;
 		}
 	}
-  if (!config.block && !config.queue.length) {
+  if (!config.blocking && !config.queue.length) {
     done();
   }
 }
