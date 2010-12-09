@@ -341,10 +341,10 @@ var QUnit = {
 	raises: function(fn,  message) {
 		try {
 			fn();
-			ok( false, message );
+			QUnit.ok( false, message );
 		}
 		catch (e) {
-			ok( true, message );
+			QUnit.ok( true, message );
 		}
 	},
 
@@ -763,7 +763,7 @@ function process() {
 			break;
 		}
 	}
-  if (!config.block && !config.queue.length) {
+  if (!config.blocking && !config.queue.length) {
     done();
   }
 }
