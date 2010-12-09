@@ -45,10 +45,11 @@ Test.prototype = {
 		}
 	},
 	setup: function() {
-		if (this.module != this.previousModule) {
+		if (this.module != config.previousModule) {
 			if ( this.previousModule ) {
 				QUnit.moduleDone( this.module, config.moduleStats.bad, config.moduleStats.all );
 			}
+			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
 			QUnit.moduleStart( this.module, this.moduleTestEnvironment );
 		}
@@ -274,7 +275,6 @@ var QUnit = {
 		test.module = config.currentModule;
 		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
 		test.queue();
-		synchronize( done );
 	},
 	
 	/**
@@ -646,25 +646,6 @@ addEvent(window, "load", function() {
 });
 
 function done() {
-	if ( config.doneTimer && window.clearTimeout ) {
-		window.clearTimeout( config.doneTimer );
-		config.doneTimer = null;
-	}
-
-	if ( config.queue.length ) {
-		if ( defined.setTimeout ) {
-			config.doneTimer = window.setTimeout(function(){
-				if ( !config.queue.length ) {
-					done();
-				} else {
-					synchronize( done );
-				}
-			}, 13);
-		}
-
-		return;
-	}
-
 	config.autorun = true;
 
 	// Log the last module results
@@ -782,6 +763,9 @@ function process() {
 			break;
 		}
 	}
+  if (!config.block && !config.queue.length) {
+    done();
+  }
 }
 
 function saveGlobal() {
