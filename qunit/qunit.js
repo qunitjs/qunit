@@ -467,9 +467,9 @@ extend(QUnit, {
 	 */
 	reset: function() {
 		if ( window.jQuery ) {
-			jQuery( "#main, #qunit-fixture" ).html( config.fixture );
+			jQuery( "#qunit-main, #qunit-fixture" ).html( config.fixture );
 		} else {
-			var main = id( 'main' ) || id( 'qunit-fixture' );
+			var main = id( 'qunit-main' ) || id( 'qunit-fixture' );
 			if ( main ) {
 				main.innerHTML = config.fixture;
 			}
@@ -635,7 +635,7 @@ addEvent(window, "load", function() {
 		toolbar.appendChild( label );
 	}
 
-	var main = id('main') || id('qunit-fixture');
+	var main = id('qunit-main') || id('qunit-fixture');
 	if ( main ) {
 		config.fixture = main.innerHTML;
 	}
