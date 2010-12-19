@@ -1335,7 +1335,7 @@ test("Complex Instances Nesting (with function value in literals and/or in neste
 
     var b1 = new B(function () {});
     var b2 = new B(function () {});
-    equals(QUnit.equiv(a1, a2), true);
+    equals(QUnit.equiv(b1, b2), true);
 
     var c1 = new C(function () {});
     var c2 = new C(function () {});
