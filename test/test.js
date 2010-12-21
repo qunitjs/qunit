@@ -207,19 +207,45 @@ test("jsDump output", function() {
 });
 
 module("assertions");
-test("raises", function() {
-	function thrower1() {
-		throw 'Errored!';
+test("raises",function() {
+	function CustomError( message ) {
+		this.message = message;
 	}
-	function thrower2() {
-		throw new TypeError("Type!");
-	}
-	function thrower3() {
-		throw {message:"Custom!"};
-	}
-	raises(thrower1, 'Errored!', 'throwing string');
-	raises(thrower2, 'Type!', 'throwing TypeError instance');
-	raises(thrower3, 'Custom!', 'throwing custom object');
+	
+	CustomError.prototype.toString = function() {
+		return this.message;	
+	};
+	
+
+	
+	raises(
+		function() {
+			throw new CustomError();
+		},
+		CustomError,
+		'raised error is an instance of CustomError'
+	);
+	
+	raises(
+		function() {
+			throw new CustomError("some error description");
+		},
+		/description/,
+		"raised error message contains 'description'"
+	);
+	
+	raises(
+		function() {
+			throw new CustomError("some error description");
+		},
+		function( err ) {
+			if ( (err instanceof CustomError) && /description/.test(err) ) {
+				return true;
+			}
+		},
+		"custom validation function"		
+	);	
+		
 });
 
 if (typeof document !== "undefined") {
