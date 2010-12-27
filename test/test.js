@@ -216,7 +216,18 @@ test("raises",function() {
 		return this.message;	
 	};
 	
-
+	raises(
+		function() {
+			throw "error"
+		}
+	);
+	
+	raises(
+		function() {
+			throw "error"
+		},
+		'raises with just a message, no expected'
+	);
 	
 	raises(
 		function() {
