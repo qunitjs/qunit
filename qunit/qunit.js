@@ -754,7 +754,6 @@ function synchronize( callback ) {
 
 function process() {
 	var start = (new Date()).getTime();
-
 	while ( config.queue.length && !config.blocking ) {
 		if ( config.updateRate <= 0 || (((new Date()).getTime() - start) < config.updateRate) ) {
 			config.queue.shift()();
@@ -763,7 +762,7 @@ function process() {
 			break;
 		}
 	}
-  if (!config.block && !config.queue.length) {
+  if (!config.blocking && !config.queue.length) {
     done();
   }
 }

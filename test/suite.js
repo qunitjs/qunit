@@ -26,7 +26,7 @@ var stop_watch = {
 
     QUnit.init();
     QUnit.config.blocking = true;
-    QUnit.config.autorun = true;
+    QUnit.config.autorun = false;
     QUnit.config.updateRate = 0;
 
     // Hack for Rhino's error objects
