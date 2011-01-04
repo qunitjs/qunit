@@ -372,6 +372,15 @@ var QUnit = {
 	},
 
 	start: function() {
+		config.semaphore--;
+		if (config.semaphore > 0) {
+			// don't start until equal number of stop-calls
+			return;
+		}
+		if (config.semaphore < 0) {
+			// ignore if start is called more often then stop
+			config.semaphore = 0;
+		}
 		// A slight delay, to avoid any current callbacks
 		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
@@ -389,9 +398,11 @@ var QUnit = {
 	},
 	
 	stop: function(timeout) {
+		config.semaphore++;
 		config.blocking = true;
 
 		if ( timeout && defined.setTimeout ) {
+			clearTimeout(config.timeout);
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
 				QUnit.start();
@@ -463,7 +474,8 @@ extend(QUnit, {
 			autostart: true,
 			autorun: false,
 			filters: [],
-			queue: []
+			queue: [],
+			semaphore: 0
 		});
 
 		var tests = id("qunit-tests"),
