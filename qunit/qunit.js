@@ -3,9 +3,9 @@
  * 
  * http://docs.jquery.com/QUnit
  *
- * Copyright (c) 2009 John Resig, Jörn Zaefferer
+ * Copyright (c) 2011 John Resig, Jörn Zaefferer
  * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
+ * or GPL (GPL-LICENSE.txt) licenses.
  */
 
 (function(window) {
