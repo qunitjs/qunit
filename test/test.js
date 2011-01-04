@@ -72,7 +72,7 @@ test("teardown must be called after test ended", function() {
 
 module("async setup test", {
 	setup: function() {
-	  stop();
+		stop();
 		setTimeout(function(){
 			ok(true);
 			start();
