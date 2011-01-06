@@ -46,8 +46,8 @@ Test.prototype = {
 	},
 	setup: function() {
 		if (this.module != config.previousModule) {
-			if ( this.previousModule ) {
-				QUnit.moduleDone( this.module, config.moduleStats.bad, config.moduleStats.all );
+			if ( config.previousModule ) {
+				QUnit.moduleDone( config.previousModule, config.moduleStats.bad, config.moduleStats.all );
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
@@ -235,7 +235,6 @@ var QUnit = {
 
 	// call on start of module test to prepend name to all tests
 	module: function(name, testEnvironment) {
-		config.previousModule = config.currentModule;
 		config.currentModule = name;
 		config.currentModuleTestEnviroment = testEnvironment;
 	},
@@ -271,7 +270,6 @@ var QUnit = {
 		}
 		
 		var test = new Test(name, testName, expected, testEnvironmentArg, async, callback);
-		test.previousModule = config.previousModule;
 		test.module = config.currentModule;
 		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
 		test.queue();
