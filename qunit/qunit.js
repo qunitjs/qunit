@@ -85,8 +85,7 @@ Test.prototype = {
 
 			this.testEnvironment.setup.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			QUnit.ok( false, "Setup failed on " + this.name + ": " + e.message );
+			QUnit.ok( false, "Setup failed on " + this.testName + ": " + e.message );
 		}
 	},
 	run: function() {
@@ -97,8 +96,7 @@ Test.prototype = {
 		try {
 			this.callback.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			fail("Test " + this.name + " died, exception and test follows", e, this.callback);
+			fail("Test " + this.testName + " died, exception and test follows", e, this.callback);
 			QUnit.ok( false, "Died on test #" + (this.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -114,8 +112,7 @@ Test.prototype = {
 			checkPollution();
 			this.testEnvironment.teardown.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			QUnit.ok( false, "Teardown failed on " + this.name + ": " + e.message );
+			QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
 		}
 	},
 	finish: function() {
@@ -202,8 +199,7 @@ Test.prototype = {
 		try {
 			QUnit.reset();
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			fail("reset() failed, following Test " + this.name + ", exception and reset fn follows", e, QUnit.reset);
+			fail("reset() failed, following Test " + this.testName + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
 		QUnit.testDone( {
