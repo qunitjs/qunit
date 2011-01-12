@@ -178,14 +178,6 @@ Test.prototype = {
 			li.appendChild( b );
 			li.appendChild( ol );
 
-			if ( bad ) {
-				var toolbar = id("qunit-testrunner-toolbar");
-				if ( toolbar ) {
-					toolbar.style.display = "block";
-					id("qunit-filter-pass").disabled = null;
-				}
-			}
-
 		} else {
 			for ( var i = 0; i < this.assertions.length; i++ ) {
 				if ( !this.assertions[i].result ) {
@@ -663,12 +655,9 @@ addEvent(window, "load", function() {
 	
 	var toolbar = id("qunit-testrunner-toolbar");
 	if ( toolbar ) {
-		toolbar.style.display = "none";
-		
 		var filter = document.createElement("input");
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
-		filter.disabled = true;
 		addEvent( filter, "click", function() {
 			var li = document.getElementsByTagName("li");
 			for ( var i = 0; i < li.length; i++ ) {
@@ -676,7 +665,13 @@ addEvent(window, "load", function() {
 					li[i].style.display = filter.checked ? "none" : "";
 				}
 			}
+			if ( defined.sessionStorage ) {
+				sessionStorage.setItem("qunit-filter-passed-tests", filter.checked ? "true" : "");
+			}
 		});
+		if ( defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
+			filter.checked = true;
+		}
 		toolbar.appendChild( filter );
 
 		var label = document.createElement("label");
