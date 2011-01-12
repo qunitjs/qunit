@@ -3,9 +3,9 @@
  * 
  * http://docs.jquery.com/QUnit
  *
- * Copyright (c) 2009 John Resig, Jörn Zaefferer
+ * Copyright (c) 2011 John Resig, Jörn Zaefferer
  * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
+ * or GPL (GPL-LICENSE.txt) licenses.
  */
 
 (function(window) {
@@ -46,12 +46,19 @@ Test.prototype = {
 	},
 	setup: function() {
 		if (this.module != config.previousModule) {
-			if ( this.previousModule ) {
-				QUnit.moduleDone( this.module, config.moduleStats.bad, config.moduleStats.all );
+			if ( config.previousModule ) {
+				QUnit.moduleDone( {
+					name: config.previousModule,
+					failed: config.moduleStats.bad,
+					passed: config.moduleStats.all - config.moduleStats.bad,
+					total: config.moduleStats.all
+				} );
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
-			QUnit.moduleStart( this.module, this.moduleTestEnvironment );
+			QUnit.moduleStart( {
+				name: this.module
+			} );
 		}
 
 		config.current = this;
@@ -63,7 +70,9 @@ Test.prototype = {
 			extend(this.testEnvironment, this.testEnvironmentArg);
 		}
 
-		QUnit.testStart( this.testName, this.testEnvironment );
+		QUnit.testStart( {
+			name: this.testName
+		} );
 
 		// allow utility functions to access the current test environment
 		// TODO why??
@@ -76,8 +85,7 @@ Test.prototype = {
 
 			this.testEnvironment.setup.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			QUnit.ok( false, "Setup failed on " + this.name + ": " + e.message );
+			QUnit.ok( false, "Setup failed on " + this.testName + ": " + e.message );
 		}
 	},
 	run: function() {
@@ -85,11 +93,14 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
+		if ( config.notrycatch ) {
+			this.callback.call(this.testEnvironment);
+			return;
+		}
 		try {
 			this.callback.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			fail("Test " + this.name + " died, exception and test follows", e, this.callback);
+			fail("Test " + this.testName + " died, exception and test follows", e, this.callback);
 			QUnit.ok( false, "Died on test #" + (this.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -105,8 +116,7 @@ Test.prototype = {
 			checkPollution();
 			this.testEnvironment.teardown.call(this.testEnvironment);
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			QUnit.ok( false, "Teardown failed on " + this.name + ": " + e.message );
+			QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
 		}
 	},
 	finish: function() {
@@ -172,14 +182,6 @@ Test.prototype = {
 			li.appendChild( b );
 			li.appendChild( ol );
 
-			if ( bad ) {
-				var toolbar = id("qunit-testrunner-toolbar");
-				if ( toolbar ) {
-					toolbar.style.display = "block";
-					id("qunit-filter-pass").disabled = null;
-				}
-			}
-
 		} else {
 			for ( var i = 0; i < this.assertions.length; i++ ) {
 				if ( !this.assertions[i].result ) {
@@ -193,11 +195,15 @@ Test.prototype = {
 		try {
 			QUnit.reset();
 		} catch(e) {
-			// TODO use testName instead of name for no-markup message?
-			fail("reset() failed, following Test " + this.name + ", exception and reset fn follows", e, QUnit.reset);
+			fail("reset() failed, following Test " + this.testName + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
-		QUnit.testDone( this.testName, bad, this.assertions.length );
+		QUnit.testDone( {
+			name: this.testName,
+			failed: bad,
+			passed: this.assertions.length - bad,
+			total: this.assertions.length
+		} );
 	},
 	
 	queue: function() {
@@ -235,7 +241,6 @@ var QUnit = {
 
 	// call on start of module test to prepend name to all tests
 	module: function(name, testEnvironment) {
-		config.previousModule = config.currentModule;
 		config.currentModule = name;
 		config.currentModuleTestEnviroment = testEnvironment;
 	},
@@ -271,7 +276,6 @@ var QUnit = {
 		}
 		
 		var test = new Test(name, testName, expected, testEnvironmentArg, async, callback);
-		test.previousModule = config.previousModule;
 		test.module = config.currentModule;
 		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
 		test.queue();
@@ -295,7 +299,7 @@ var QUnit = {
 			message: msg
 		};
 		msg = escapeHtml(msg);
-		QUnit.log(a, msg, details);
+		QUnit.log(details);
 		config.current.assertions.push({
 			result: a,
 			message: msg
@@ -338,17 +342,49 @@ var QUnit = {
 		QUnit.push(expected !== actual, actual, expected, message);
 	},
 
-	raises: function(fn,  message) {
+	raises: function(block, expected, message) {
+		var actual, ok = false;
+	
+		if (typeof expected === 'string') {
+			message = expected;
+			expected = null;
+		}
+	
 		try {
-			fn();
-			QUnit.ok( false, message );
+			block();
+		} catch (e) {
+			actual = e;
 		}
-		catch (e) {
-			QUnit.ok( true, message );
+	
+		if (actual) {
+			// we don't want to validate thrown error
+			if (!expected) {
+				ok = true;
+			// expected is a regexp	
+			} else if (QUnit.objectType(expected) === "regexp") {
+				ok = expected.test(actual);
+			// expected is a constructor	
+			} else if (actual instanceof expected) {
+				ok = true;
+			// expected is a validation function which returns true is validation passed	
+			} else if (expected.call({}, actual) === true) {
+				ok = true;
+			}
 		}
+			
+		QUnit.ok(ok, message);
 	},
 
 	start: function() {
+		config.semaphore--;
+		if (config.semaphore > 0) {
+			// don't start until equal number of stop-calls
+			return;
+		}
+		if (config.semaphore < 0) {
+			// ignore if start is called more often then stop
+			config.semaphore = 0;
+		}
 		// A slight delay, to avoid any current callbacks
 		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
@@ -366,9 +402,11 @@ var QUnit = {
 	},
 	
 	stop: function(timeout) {
+		config.semaphore++;
 		config.blocking = true;
 
 		if ( timeout && defined.setTimeout ) {
+			clearTimeout(config.timeout);
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
 				QUnit.start();
@@ -402,6 +440,10 @@ var config = {
 			GETParams.splice( i, 1 );
 			i--;
 			config.noglobals = true;
+		} else if ( GETParams[i] === "notrycatch" ) {
+			GETParams.splice( i, 1 );
+			i--;
+			config.notrycatch = true;
 		} else if ( GETParams[i].search('=') > -1 ) {
 			GETParams.splice( i, 1 );
 			i--;
@@ -440,7 +482,8 @@ extend(QUnit, {
 			autostart: true,
 			autorun: false,
 			filters: [],
-			queue: []
+			queue: [],
+			semaphore: 0
 		});
 
 		var tests = id("qunit-tests"),
@@ -561,7 +604,7 @@ extend(QUnit, {
 		}
 		output += "</table>";
 		
-		QUnit.log(result, message, details);
+		QUnit.log(details);
 		
 		config.current.assertions.push({
 			result: !!result,
@@ -569,14 +612,21 @@ extend(QUnit, {
 		});
 	},
 	
-	// Logging callbacks
+	// Logging callbacks; all receive a single argument with the listed properties
+	// run test/logs.html for any related changes
 	begin: function() {},
-	done: function(failures, total) {},
-	log: function(result, message) {},
-	testStart: function(name, testEnvironment) {},
-	testDone: function(name, failures, total) {},
-	moduleStart: function(name, testEnvironment) {},
-	moduleDone: function(name, failures, total) {}
+	// done: { failed, passed, total, runtime }
+	done: function() {},
+	// log: { result, actual, expected, message }
+	log: function() {},
+	// testStart: { name }
+	testStart: function() {},
+	// testDone: { name, failed, passed, total }
+	testDone: function() {},
+	// moduleStart: { name }
+	moduleStart: function() {},
+	// moduleDone: { name, failed, passed, total }
+	moduleDone: function() {}
 });
 
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
@@ -584,7 +634,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 }
 
 addEvent(window, "load", function() {
-	QUnit.begin();
+	QUnit.begin({});
 	
 	// Initialize the config, saving the execution queue
 	var oldconfig = extend({}, config);
@@ -613,12 +663,9 @@ addEvent(window, "load", function() {
 	
 	var toolbar = id("qunit-testrunner-toolbar");
 	if ( toolbar ) {
-		toolbar.style.display = "none";
-		
 		var filter = document.createElement("input");
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
-		filter.disabled = true;
 		addEvent( filter, "click", function() {
 			var li = document.getElementsByTagName("li");
 			for ( var i = 0; i < li.length; i++ ) {
@@ -626,7 +673,13 @@ addEvent(window, "load", function() {
 					li[i].style.display = filter.checked ? "none" : "";
 				}
 			}
+			if ( defined.sessionStorage ) {
+				sessionStorage.setItem("qunit-filter-passed-tests", filter.checked ? "true" : "");
+			}
 		});
+		if ( defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
+			filter.checked = true;
+		}
 		toolbar.appendChild( filter );
 
 		var label = document.createElement("label");
@@ -650,14 +703,30 @@ function done() {
 
 	// Log the last module results
 	if ( config.currentModule ) {
-		QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
+		QUnit.moduleDone( {
+			name: config.currentModule,
+			failed: config.moduleStats.bad,
+			passed: config.moduleStats.all - config.moduleStats.bad,
+			total: config.moduleStats.all
+		} );
 	}
 
 	var banner = id("qunit-banner"),
 		tests = id("qunit-tests"),
-		html = ['Tests completed in ',
-		+new Date - config.started, ' milliseconds.<br/>',
-		'<span class="passed">', config.stats.all - config.stats.bad, '</span> tests of <span class="total">', config.stats.all, '</span> passed, <span class="failed">', config.stats.bad,'</span> failed.'].join('');
+		runtime = +new Date - config.started,
+		passed = config.stats.all - config.stats.bad,
+		html = [
+			'Tests completed in ',
+			runtime,
+			' milliseconds.<br/>',
+			'<span class="passed">',
+			passed,
+			'</span> tests of <span class="total">',
+			config.stats.all,
+			'</span> passed, <span class="failed">',
+			config.stats.bad,
+			'</span> failed.'
+		].join('');
 
 	if ( banner ) {
 		banner.className = (config.stats.bad ? "qunit-fail" : "qunit-pass");
@@ -676,7 +745,12 @@ function done() {
 		result.innerHTML = html;
 	}
 
-	QUnit.done( config.stats.bad, config.stats.all );
+	QUnit.done( {
+		failed: config.stats.bad,
+		passed: passed, 
+		total: config.stats.all,
+		runtime: runtime
+	} );
 }
 
 function validTest( name ) {

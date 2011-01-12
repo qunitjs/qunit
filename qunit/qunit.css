@@ -49,7 +49,9 @@
 }
 
 #qunit-testrunner-toolbar {
-	padding: 0em 0 0.5em 2em;
+	padding: 0.5em 0 0.5em 2em;
+	color: #5E740B;
+	background-color: #eee;
 }
 
 #qunit-userAgent {
@@ -169,8 +171,7 @@
 #qunit-tests .fail .test-actual             { color: #EE5757; }
 #qunit-tests .fail .test-expected           { color: green;   }
 
-#qunit-banner.qunit-fail, 
-#qunit-testrunner-toolbar                   { background-color: #EE5757; }
+#qunit-banner.qunit-fail                    { background-color: #EE5757; }
 
 
 /** Footer */
