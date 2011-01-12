@@ -6,23 +6,6 @@ if (typeof require != "undefined") {
 	load("../qunit/qunit.js");
 }
 
-var stop_watch = {
-	start_time: null,
-	stop_time: null,
-	
-	start: function() {
-		this.start_time = new Date();
-	},
-	
-	stop: function() {
-		this.stop_time = new Date();
-	},
-	
-	elapsed_seconds: function() {
-		return ( this.stop_time.getMilliseconds() - this.start_time.getMilliseconds() ) / 1000;
-	}
-};
-
 (function() {
 
     QUnit.init();
@@ -30,41 +13,32 @@ var stop_watch = {
     QUnit.config.updateRate = 0;
 
     var current_test_assertions = [];
-    var totals = { pass: 0, fail: 0};
-
-    QUnit.testDone = function(name, fail_count, total_count) {
-		if (fail_count > 0) {
-		    print("FAIL - " + name);
-		    for(var i = 0; i < current_test_assertions.length; i++) {
+    QUnit.testDone = function(result) {
+		if (result.failed) {
+		    print("FAIL - " + result.name);
+		    for (var i = 0; i < current_test_assertions.length; i++) {
 				print("    " + current_test_assertions[i]);
 			}
-		    totals.fail = totals.fail + 1;
 		} else {
-		    print("PASS - " + name);
-		    totals.pass = totals.pass + 1;
+		    print("PASS - " + result.name);
 		}
 		current_test_assertions = [];
     };
 
-	QUnit.log = function(result, message, details) {
-		details.message = details.message || "";
-
+	QUnit.log = function(details) {
 		var type = (typeof details.expected !== "undefined") ? "EQ" : "OK";
-		var outcome = result ? "PASS" : "FAIL";
+		var outcome = details.result ? "PASS" : "FAIL";
 		var response = "";
-		if (!result && typeof details.expected !== "undefined") {
+		if (!details.result && typeof details.expected !== "undefined") {
 			response = "Expected: " + details.expected + ", Actual: " + details.actual;
 		}
-
-		current_test_assertions.push([outcome, type, details.message, response].join("|"));
+		current_test_assertions.push([outcome, type, details.message || "", response].join("|"));
     };
 
-    QUnit.done = function() {
-		stop_watch.stop();
-
+    QUnit.done = function(result) {
 		print("----------------------------------------");
-		print(" PASS: " + totals.pass + "  FAIL: " + totals.fail + "  TOTAL: " + (totals.pass + totals.fail));
-		print(" Finished in " + stop_watch.elapsed_seconds() + " seconds.");
+		print(" PASS: " + result.passed + "  FAIL: " + result.failed + "  TOTAL: " + result.total);
+		print(" Finished in " + result.runtime + " milliseconds.");
 		print("----------------------------------------");
     };
 
@@ -80,5 +54,4 @@ if (typeof require != "undefined") {
 	load("same.js");
 }
 
-stop_watch.start();
 QUnit.start();
