@@ -93,6 +93,10 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
+		if ( config.notrycatch ) {
+			this.callback.call(this.testEnvironment);
+			return;
+		}
 		try {
 			this.callback.call(this.testEnvironment);
 		} catch(e) {
@@ -436,6 +440,10 @@ var config = {
 			GETParams.splice( i, 1 );
 			i--;
 			config.noglobals = true;
+		} else if ( GETParams[i] === "notrycatch" ) {
+			GETParams.splice( i, 1 );
+			i--;
+			config.notrycatch = true;
 		} else if ( GETParams[i].search('=') > -1 ) {
 			GETParams.splice( i, 1 );
 			i--;
