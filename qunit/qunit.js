@@ -47,11 +47,18 @@ Test.prototype = {
 	setup: function() {
 		if (this.module != config.previousModule) {
 			if ( config.previousModule ) {
-				QUnit.moduleDone( config.previousModule, config.moduleStats.bad, config.moduleStats.all );
+				QUnit.moduleDone( {
+					name: config.previousModule,
+					failed: config.moduleStats.bad,
+					passed: config.moduleStats.all - config.moduleStats.bad,
+					total: config.moduleStats.all
+				} );
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
-			QUnit.moduleStart( this.module, this.moduleTestEnvironment );
+			QUnit.moduleStart( {
+				name: this.module
+			} );
 		}
 
 		config.current = this;
@@ -63,7 +70,9 @@ Test.prototype = {
 			extend(this.testEnvironment, this.testEnvironmentArg);
 		}
 
-		QUnit.testStart( this.testName, this.testEnvironment );
+		QUnit.testStart( {
+			name: this.testName
+		} );
 
 		// allow utility functions to access the current test environment
 		// TODO why??
@@ -197,7 +206,12 @@ Test.prototype = {
 			fail("reset() failed, following Test " + this.name + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
-		QUnit.testDone( this.testName, bad, this.assertions.length );
+		QUnit.testDone( {
+			name: this.testName,
+			failed: bad,
+			passed: this.assertions.length - bad,
+			total: this.assertions.length
+		} );
 	},
 	
 	queue: function() {
@@ -293,7 +307,7 @@ var QUnit = {
 			message: msg
 		};
 		msg = escapeHtml(msg);
-		QUnit.log(a, msg, details);
+		QUnit.log(details);
 		config.current.assertions.push({
 			result: a,
 			message: msg
@@ -594,7 +608,7 @@ extend(QUnit, {
 		}
 		output += "</table>";
 		
-		QUnit.log(result, message, details);
+		QUnit.log(details);
 		
 		config.current.assertions.push({
 			result: !!result,
@@ -602,14 +616,21 @@ extend(QUnit, {
 		});
 	},
 	
-	// Logging callbacks
+	// Logging callbacks; all receive a single argument with the listed properties
+	// run test/logs.html for any related changes
 	begin: function() {},
-	done: function(failures, total) {},
-	log: function(result, message) {},
-	testStart: function(name, testEnvironment) {},
-	testDone: function(name, failures, total) {},
-	moduleStart: function(name, testEnvironment) {},
-	moduleDone: function(name, failures, total) {}
+	// done: { failed, passed, total, runtime }
+	done: function() {},
+	// log: { result, actual, expected, message }
+	log: function() {},
+	// testStart: { name }
+	testStart: function() {},
+	// testDone: { name, failed, passed, total }
+	testDone: function() {},
+	// moduleStart: { name }
+	moduleStart: function() {},
+	// moduleDone: { name, failed, passed, total }
+	moduleDone: function() {}
 });
 
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
@@ -617,7 +638,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 }
 
 addEvent(window, "load", function() {
-	QUnit.begin();
+	QUnit.begin({});
 	
 	// Initialize the config, saving the execution queue
 	var oldconfig = extend({}, config);
@@ -683,14 +704,30 @@ function done() {
 
 	// Log the last module results
 	if ( config.currentModule ) {
-		QUnit.moduleDone( config.currentModule, config.moduleStats.bad, config.moduleStats.all );
+		QUnit.moduleDone( {
+			name: config.currentModule,
+			failed: config.moduleStats.bad,
+			passed: config.moduleStats.all - config.moduleStats.bad,
+			total: config.moduleStats.all
+		} );
 	}
 
 	var banner = id("qunit-banner"),
 		tests = id("qunit-tests"),
-		html = ['Tests completed in ',
-		+new Date - config.started, ' milliseconds.<br/>',
-		'<span class="passed">', config.stats.all - config.stats.bad, '</span> tests of <span class="total">', config.stats.all, '</span> passed, <span class="failed">', config.stats.bad,'</span> failed.'].join('');
+		runtime = +new Date - config.started,
+		passed = config.stats.all - config.stats.bad,
+		html = [
+			'Tests completed in ',
+			runtime,
+			' milliseconds.<br/>',
+			'<span class="passed">',
+			passed,
+			'</span> tests of <span class="total">',
+			config.stats.all,
+			'</span> passed, <span class="failed">',
+			config.stats.bad,
+			'</span> failed.'
+		].join('');
 
 	if ( banner ) {
 		banner.className = (config.stats.bad ? "qunit-fail" : "qunit-pass");
@@ -709,7 +746,12 @@ function done() {
 		result.innerHTML = html;
 	}
 
-	QUnit.done( config.stats.bad, config.stats.all );
+	QUnit.done( {
+		failed: config.stats.bad,
+		passed: passed, 
+		total: config.stats.all,
+		runtime: runtime
+	} );
 }
 
 function validTest( name ) {
