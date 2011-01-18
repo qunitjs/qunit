@@ -15,31 +15,35 @@ if (typeof require != "undefined") {
     var current_test_assertions = [];
     QUnit.testDone = function(result) {
 		if (result.failed) {
-		    print("FAIL - " + result.name);
+		    print("\u001B[31m✖ " + result.name);
 		    for (var i = 0; i < current_test_assertions.length; i++) {
 				print("    " + current_test_assertions[i]);
 			}
+			print("\u001B[39m");
 		} else {
-		    print("PASS - " + result.name);
+		    print("✔ " + result.name);
 		}
 		current_test_assertions = [];
     };
 
 	QUnit.log = function(details) {
-		var type = (typeof details.expected !== "undefined") ? "EQ" : "OK";
-		var outcome = details.result ? "PASS" : "FAIL";
-		var response = "";
-		if (!details.result && typeof details.expected !== "undefined") {
-			response = "Expected: " + details.expected + ", Actual: " + details.actual;
+		if (details.result)
+			return;
+		var response = details.message || "";
+		if (typeof details.expected !== "undefined") {
+			if (response) {
+				response += ", ";
+			}
+			response = "expected: " + details.expected + ", but was: " + details.actual;
 		}
-		current_test_assertions.push([outcome, type, details.message || "", response].join("|"));
+		current_test_assertions.push("Failed assertion: " + response);
     };
 
     QUnit.done = function(result) {
-		print("----------------------------------------");
+		print("------------------------------------");
 		print(" PASS: " + result.passed + "  FAIL: " + result.failed + "  TOTAL: " + result.total);
 		print(" Finished in " + result.runtime + " milliseconds.");
-		print("----------------------------------------");
+		print("------------------------------------");
     };
 
 })();
