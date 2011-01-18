@@ -36,6 +36,12 @@ if (typeof require != "undefined") {
 			}
 			response = "expected: " + details.expected + ", but was: " + details.actual;
 		}
+		// TODO nice to have, but no source in Rhino and useless eval call in nodejs
+		/*
+		if (details.source) {
+			response += " at\n" + details.source;
+		}
+		*/
 		current_test_assertions.push("Failed assertion: " + response);
     };
 
