@@ -325,6 +325,14 @@ var QUnit = {
 	notEqual: function(actual, expected, message) {
 		QUnit.push(expected != actual, actual, expected, message);
 	},
+
+	match: function(actual, regexp, message) {
+	        QUnit.push(regexp.test(actual), actual, 'Match with: ' + regexp, message);
+	},
+
+	notMatch: function(actual, regexp, message) {
+	        QUnit.push(!regexp.test(actual), actual, 'No match with: ' + regexp, message);
+	},
 	
 	deepEqual: function(actual, expected, message) {
 		QUnit.push(QUnit.equiv(actual, expected), actual, expected, message);
