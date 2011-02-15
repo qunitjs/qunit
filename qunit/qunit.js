@@ -486,9 +486,9 @@ extend(QUnit, {
 			semaphore: 0
 		});
 
-		var tests = id("qunit-tests"),
-			banner = id("qunit-banner"),
-			result = id("qunit-testresult");
+		var tests = id( "qunit-tests" ),
+			banner = id( "qunit-banner" ),
+			result = id( "qunit-testresult" );
 
 		if ( tests ) {
 			tests.innerHTML = "";
@@ -500,6 +500,14 @@ extend(QUnit, {
 
 		if ( result ) {
 			result.parentNode.removeChild( result );
+		}
+		
+		if ( tests ) {
+			result = document.createElement( "p" );
+			result.id = "qunit-testresult";
+			result.className = "result";
+			tests.parentNode.insertBefore( result, tests );
+			result.innerHTML = 'Running...<br/>&nbsp;';
 		}
 	},
 	
@@ -733,11 +741,7 @@ function done() {
 	}
 
 	if ( tests ) {	
-		var result = document.createElement("p");
-		result.id = "qunit-testresult";
-		result.className = "result";
-		tests.parentNode.insertBefore( result, tests.nextSibling );
-		result.innerHTML = html;
+		id( "qunit-testresult" ).innerHTML = html;
 	}
 
 	QUnit.done( {
