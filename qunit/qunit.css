@@ -74,6 +74,10 @@
 	list-style-position: inside;
 }
 
+#qunit-tests.hidepass li.pass {
+	display: none;
+}
+
 #qunit-tests li strong {
 	cursor: pointer;
 }

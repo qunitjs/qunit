@@ -177,7 +177,6 @@ Test.prototype = {
 
 			var li = id(this.id);
 			li.className = bad ? "fail" : "pass";
-			li.style.display = resultDisplayStyle(!bad);
 			li.removeChild( li.firstChild );
 			li.appendChild( b );
 			li.appendChild( ol );
@@ -675,11 +674,12 @@ addEvent(window, "load", function() {
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
 		addEvent( filter, "click", function() {
-			var li = document.getElementsByTagName("li");
-			for ( var i = 0; i < li.length; i++ ) {
-				if ( li[i].className.indexOf("pass") > -1 ) {
-					li[i].style.display = filter.checked ? "none" : "";
-				}
+			var ol = document.getElementById("qunit-tests")
+			if ( filter.checked ) {
+				ol.className = ol.className + " hidepass";
+			} else {
+				var tmp = " " + ol.className.replace( /[\n\t\r]/g, " " ) + " ";
+				ol.className = tmp.replace(/ hidepass /, " ");
 			}
 			if ( defined.sessionStorage ) {
 				sessionStorage.setItem("qunit-filter-passed-tests", filter.checked ? "true" : "");
@@ -794,10 +794,6 @@ function sourceFromStacktrace() {
 			return e.stack.split("\n")[4];
 		}
 	}
-}
-
-function resultDisplayStyle(passed) {
-	return passed && id("qunit-filter-pass") && id("qunit-filter-pass").checked ? 'none' : '';
 }
 
 function escapeHtml(s) {
