@@ -733,15 +733,10 @@ function done() {
 	}
 
 	if ( tests ) {	
-		var result = id("qunit-testresult");
-
-		if ( !result ) {
-			result = document.createElement("p");
-			result.id = "qunit-testresult";
-			result.className = "result";
-			tests.parentNode.insertBefore( result, tests.nextSibling );
-		}
-
+		var result = document.createElement("p");
+		result.id = "qunit-testresult";
+		result.className = "result";
+		tests.parentNode.insertBefore( result, tests.nextSibling );
 		result.innerHTML = html;
 	}
 
