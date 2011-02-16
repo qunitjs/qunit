@@ -674,7 +674,7 @@ addEvent(window, "load", function() {
 		filter.type = "checkbox";
 		filter.id = "qunit-filter-pass";
 		addEvent( filter, "click", function() {
-			var ol = document.getElementById("qunit-tests")
+			var ol = document.getElementById("qunit-tests");
 			if ( filter.checked ) {
 				ol.className = ol.className + " hidepass";
 			} else {
@@ -687,6 +687,8 @@ addEvent(window, "load", function() {
 		});
 		if ( defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
 			filter.checked = true;
+			var ol = document.getElementById("qunit-tests");
+			ol.className = ol.className + " hidepass";
 		}
 		toolbar.appendChild( filter );
 
