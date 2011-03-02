@@ -40,6 +40,7 @@ Test.prototype = {
 				b.innerHTML = "Running " + this.name;
 			var li = document.createElement("li");
 				li.appendChild( b );
+				li.className = "running";
 				li.id = this.id = "test-output" + testId++;
 			tests.appendChild( li );
 		}
@@ -151,7 +152,7 @@ Test.prototype = {
 			}
 
 			// store result when possible
-			defined.sessionStorage && sessionStorage.setItem("qunit-" + this.testName, bad);
+			QUnit.config.reorder && defined.sessionStorage && sessionStorage.setItem("qunit-" + this.testName, bad);
 
 			if (bad == 0) {
 				ol.style.display = "none";
@@ -226,7 +227,7 @@ Test.prototype = {
 			});
 		}
 		// defer when previous test run passed, if storage is available
-		var bad = defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.testName);
+		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.testName);
 		if (bad) {
 			run();
 		} else {
@@ -425,7 +426,11 @@ var config = {
 	queue: [],
 
 	// block until document ready
-	blocking: true
+	blocking: true,
+	
+	// by default, run previously failed tests first
+	// very useful in combination with "Hide passed tests" checked
+	reorder: true
 };
 
 // Load paramaters

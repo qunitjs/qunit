@@ -74,7 +74,7 @@
 	list-style-position: inside;
 }
 
-#qunit-tests.hidepass li.pass {
+#qunit-tests.hidepass li.pass, #qunit-tests.hidepass li.running  {
 	display: none;
 }
 
