@@ -431,27 +431,29 @@ var config = {
 // Load paramaters
 (function() {
 	var location = window.location || { search: "", protocol: "file:" },
-		GETParams = location.search.slice(1).split('&');
+		params = location.search.slice( 1 ).split( "&" ),
+		length = params.length,
+		urlParams = {
+			flags: [],
+			pairs: {}
+		},
+		current;
 
-	for ( var i = 0; i < GETParams.length; i++ ) {
-		GETParams[i] = decodeURIComponent( GETParams[i] );
-		if ( GETParams[i] === "noglobals" ) {
-			GETParams.splice( i, 1 );
-			i--;
-			config.noglobals = true;
-		} else if ( GETParams[i] === "notrycatch" ) {
-			GETParams.splice( i, 1 );
-			i--;
-			config.notrycatch = true;
-		} else if ( GETParams[i].search('=') > -1 ) {
-			GETParams.splice( i, 1 );
-			i--;
+	for ( var i = 0; i < length; i++ ) {
+		current = params[ i ].split( "=" );
+		current[ 0 ] = decodeURIComponent( current[ 0 ] );
+		current[ 1 ] = decodeURIComponent( current[ 1 ] );
+		if ( current[ 1 ] === "" ) {
+			config[ current[ 0 ] ] = true;
+			urlParams.flags.push( current[ 0 ] );
+		} else {
+			urlParams.pairs[ current[ 0 ] ] = current[ 1 ];
 		}
 	}
-	
-	// restrict modules/tests by get parameters
-	config.filters = GETParams;
-	
+
+	QUnit.urlParams = urlParams;
+	config.filter = urlParams.pairs.filter;
+
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = !!(location.protocol === 'file:');
 })();
@@ -480,7 +482,7 @@ extend(QUnit, {
 			blocking: false,
 			autostart: true,
 			autorun: false,
-			filters: [],
+			filter: "",
 			queue: [],
 			semaphore: 0
 		});
@@ -755,28 +757,24 @@ function done() {
 }
 
 function validTest( name ) {
-	var i = config.filters.length,
+	var filter = config.filter,
 		run = false;
 
-	if ( !i ) {
+	if ( !filter ) {
 		return true;
 	}
-	
-	while ( i-- ) {
-		var filter = config.filters[i],
-			not = filter.charAt(0) == '!';
 
-		if ( not ) {
-			filter = filter.slice(1);
-		}
+	not = filter.charAt( 0 ) === "!";
+	if ( not ) {
+		filter = filter.slice( 1 );
+	}
 
-		if ( name.indexOf(filter) !== -1 ) {
-			return !not;
-		}
+	if ( name.indexOf( filter ) !== -1 ) {
+		return !not;
+	}
 
-		if ( not ) {
-			run = true;
-		}
+	if ( not ) {
+		run = true;
 	}
 
 	return run;
