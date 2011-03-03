@@ -171,7 +171,7 @@ Test.prototype = {
 					target = target.parentNode;
 				}
 				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-					window.location.search = "?" + encodeURIComponent(getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, ""));
+					window.location = QUnit.url({ filter: getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, "") });
 				}
 			});
 
@@ -411,8 +411,18 @@ var QUnit = {
 				QUnit.start();
 			}, timeout);
 		}
-	}
+	},
 
+	url: function( params ) {
+		params = extend( extend( {}, QUnit.urlParams ), params );
+		var querystring = "?",
+			key;
+		for ( key in params ) {
+			querystring += encodeURIComponent( key ) + "=" +
+				encodeURIComponent( params[ key ] ) + "&";
+		}
+		return window.location.pathname + querystring;
+	}
 };
 
 // Backwards compatibility, deprecated
@@ -425,7 +435,10 @@ var config = {
 	queue: [],
 
 	// block until document ready
-	blocking: true
+	blocking: true,
+
+	noglobals: false,
+	notrycatch: false
 };
 
 // Load paramaters
@@ -433,26 +446,22 @@ var config = {
 	var location = window.location || { search: "", protocol: "file:" },
 		params = location.search.slice( 1 ).split( "&" ),
 		length = params.length,
-		urlParams = {
-			flags: [],
-			pairs: {}
-		},
+		urlParams = {},
 		current;
 
 	for ( var i = 0; i < length; i++ ) {
 		current = params[ i ].split( "=" );
 		current[ 0 ] = decodeURIComponent( current[ 0 ] );
-		current[ 1 ] = decodeURIComponent( current[ 1 ] );
-		if ( current[ 1 ] === "" ) {
-			config[ current[ 0 ] ] = true;
-			urlParams.flags.push( current[ 0 ] );
-		} else {
-			urlParams.pairs[ current[ 0 ] ] = current[ 1 ];
+		// allow just a key to turn on a flag, e.g., test.html?noglobals
+		current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
+		urlParams[ current[ 0 ] ] = current[ 1 ];
+		if ( current[ 0 ] in config ) {
+			config[ current[ 0 ] ] = current[ 1 ];
 		}
 	}
 
 	QUnit.urlParams = urlParams;
-	config.filter = urlParams.pairs.filter;
+	config.filter = urlParams.filter;
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = !!(location.protocol === 'file:');
@@ -892,7 +901,11 @@ function fail(message, exception, callback) {
 
 function extend(a, b) {
 	for ( var prop in b ) {
-		a[prop] = b[prop];
+		if ( b[prop] === undefined ) {
+			delete a[prop];
+		} else {
+			a[prop] = b[prop];
+		}
 	}
 
 	return a;
