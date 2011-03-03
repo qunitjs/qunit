@@ -421,7 +421,7 @@ var QUnit = {
 			querystring += encodeURIComponent( key ) + "=" +
 				encodeURIComponent( params[ key ] ) + "&";
 		}
-		return window.location.pathname + querystring;
+		return window.location.pathname + querystring.slice( 0, -1 );
 	}
 };
 
@@ -449,14 +449,16 @@ var config = {
 		urlParams = {},
 		current;
 
-	for ( var i = 0; i < length; i++ ) {
-		current = params[ i ].split( "=" );
-		current[ 0 ] = decodeURIComponent( current[ 0 ] );
-		// allow just a key to turn on a flag, e.g., test.html?noglobals
-		current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-		urlParams[ current[ 0 ] ] = current[ 1 ];
-		if ( current[ 0 ] in config ) {
-			config[ current[ 0 ] ] = current[ 1 ];
+	if ( params[ 0 ] ) {
+		for ( var i = 0; i < length; i++ ) {
+			current = params[ i ].split( "=" );
+			current[ 0 ] = decodeURIComponent( current[ 0 ] );
+			// allow just a key to turn on a flag, e.g., test.html?noglobals
+			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
+			urlParams[ current[ 0 ] ] = current[ 1 ];
+			if ( current[ 0 ] in config ) {
+				config[ current[ 0 ] ] = current[ 1 ];
+			}
 		}
 	}
 
@@ -667,16 +669,14 @@ addEvent(window, "load", function() {
 	}
 	var banner = id("qunit-header");
 	if ( banner ) {
-		var paramsIndex = location.href.lastIndexOf(location.search);
-		if ( paramsIndex > -1 ) {
-			var mainPageLocation = location.href.slice(0, paramsIndex);
-			if ( mainPageLocation == location.href ) {
-				banner.innerHTML = '<a href=""> ' + banner.innerHTML + '</a> ';
-			} else {
-				var testName = decodeURIComponent(location.search.slice(1));
-				banner.innerHTML = '<a href="' + mainPageLocation + '">' + banner.innerHTML + '</a> &#8250; <a href="">' + testName + '</a>';
-			}
-		}
+		banner.innerHTML = '<a href="' + QUnit.url({ filter: undefined }) + '"> ' + banner.innerHTML + '</a> ' +
+			'<label><input name="noglobals" type="checkbox"' + ( config.noglobals ? ' checked="checked"' : '' ) + '>noglobals</label>' +
+			'<label><input name="notrycatch" type="checkbox"' + ( config.notrycatch ? ' checked="checked"' : '' ) + '>notrycatch</label>';
+		addEvent( banner, "change", function( event ) {
+			var params = {};
+			params[ event.target.name ] = event.target.checked ? true : undefined;
+			window.location = QUnit.url( params );
+		});
 	}
 	
 	var toolbar = id("qunit-testrunner-toolbar");
