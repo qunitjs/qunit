@@ -172,7 +172,7 @@ Test.prototype = {
 					target = target.parentNode;
 				}
 				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-					window.location = QUnit.url({ filter: getText([target]).replace(/\(.+\)$/, "").replace(/(^\s*|\s*$)/g, "") });
+					window.location = QUnit.url({ filter: getText([target]).replace(/\([^)]+\)$/, "").replace(/(^\s*|\s*$)/g, "") });
 				}
 			});
 
