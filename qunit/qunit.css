@@ -82,6 +82,16 @@
 	cursor: pointer;
 }
 
+#qunit-tests li a {
+	padding: 0.5em;
+	color: #c2ccd1;
+	text-decoration: none;
+}
+#qunit-tests li a:hover,
+#qunit-tests li a:focus {
+	color: #000;
+}
+
 #qunit-tests ol {
 	margin-top: 0.5em;
 	padding: 0.5em;
