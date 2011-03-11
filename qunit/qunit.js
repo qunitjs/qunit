@@ -418,17 +418,6 @@ var QUnit = {
 				QUnit.start();
 			}, timeout);
 		}
-	},
-
-	url: function( params ) {
-		params = extend( extend( {}, QUnit.urlParams ), params );
-		var querystring = "?",
-			key;
-		for ( key in params ) {
-			querystring += encodeURIComponent( key ) + "=" +
-				encodeURIComponent( params[ key ] ) + "&";
-		}
-		return window.location.pathname + querystring.slice( 0, -1 );
 	}
 };
 
@@ -641,6 +630,17 @@ extend(QUnit, {
 			result: !!result,
 			message: output
 		});
+	},
+	
+	url: function( params ) {
+		params = extend( extend( {}, QUnit.urlParams ), params );
+		var querystring = "?",
+			key;
+		for ( key in params ) {
+			querystring += encodeURIComponent( key ) + "=" +
+				encodeURIComponent( params[ key ] ) + "&";
+		}
+		return window.location.pathname + querystring.slice( 0, -1 );
 	},
 	
 	// Logging callbacks; all receive a single argument with the listed properties
