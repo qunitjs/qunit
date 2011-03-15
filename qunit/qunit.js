@@ -154,7 +154,7 @@ Test.prototype = {
 			// store result when possible
 			if ( QUnit.config.reorder && defined.sessionStorage ) {
 				if (bad) {
-					sessionStorage.setItem("qunit-" + this.testName, bad)
+					sessionStorage.setItem("qunit-" + this.module + "-" + this.testName, bad)
 				} else {
 					sessionStorage.removeItem("qunit-" + this.testName);
 				}
@@ -239,7 +239,7 @@ Test.prototype = {
 			});
 		}
 		// defer when previous test run passed, if storage is available
-		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.testName);
+		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.module + "-" + this.testName);
 		if (bad) {
 			run();
 		} else {
