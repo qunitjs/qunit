@@ -152,7 +152,13 @@ Test.prototype = {
 			}
 
 			// store result when possible
-			QUnit.config.reorder && defined.sessionStorage && sessionStorage.setItem("qunit-" + this.testName, bad);
+			if ( QUnit.config.reorder && defined.sessionStorage ) {
+				if (bad) {
+					sessionStorage.setItem("qunit-" + this.testName, bad)
+				} else {
+					sessionStorage.removeItem("qunit-" + this.testName);
+				}
+			}
 
 			if (bad == 0) {
 				ol.style.display = "none";
