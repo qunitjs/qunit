@@ -710,7 +710,11 @@ addEvent(window, "load", function() {
 				ol.className = tmp.replace(/ hidepass /, " ");
 			}
 			if ( defined.sessionStorage ) {
-				sessionStorage.setItem("qunit-filter-passed-tests", filter.checked ? "true" : "");
+				if (filter.checked) {
+					sessionStorage.setItem("qunit-filter-passed-tests",  "true");
+				} else {
+					sessionStorage.removeItem("qunit-filter-passed-tests");
+				}
 			}
 		});
 		if ( defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
