@@ -219,7 +219,7 @@ test("jsDump output", function() {
 	}
 	var obj = {};
 	obj.a = obj;
-	equals( QUnit.jsDump.parse(obj), '{\n  "a": #\n}' );
+	equals( QUnit.jsDump.parse(obj), '{\n  "a": [recursion]\n}' );
 });
 
 module("assertions");
