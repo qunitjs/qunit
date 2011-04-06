@@ -221,6 +221,13 @@ test("jsDump output", function() {
 	obj.a = obj;
 	equals( QUnit.jsDump.parse(obj), '{\n  "a": [recursion]\n}' );
 });
+test('jsDump parent/child recursion', function () {
+	var page = {p: 'page'},
+		widget = {w: 'widget'};
+	page.widget = widget;
+	widget.page = page;
+	equals( QUnit.jsDump.parse(page), '{\n  "p": "page",\n  "widget": {\n    "w": "widget",\n    "page": [recursion]\n  }\n}' );
+});
 
 module("assertions");
 test("raises",function() {

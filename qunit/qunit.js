@@ -1149,11 +1149,11 @@ QUnit.jsDump = (function() {
 	var reName = /^function (\w+)/;
 	
 	var jsDump = {
-		parse:function( obj, type ) { //type is used mostly internally, you can fix a (custom)type in advance
+		parse:function( obj, type, previous ) { //type is used mostly internally, you can fix a (custom)type in advance
 			var	parser = this.parsers[ type || this.typeOf(obj) ];
 			type = typeof parser;			
 			
-			return type == 'function' ? parser.call( this, obj ) :
+			return type == 'function' ? parser.call( this, obj, previous ) :
 				   type == 'string' ? parser :
 				   this.parsers.error;
 		},
@@ -1229,14 +1229,14 @@ QUnit.jsDump = (function() {
 			array: array,
 			nodelist: array,
 			arguments: array,
-			object:function( map ) {
+			object:function( map, previous ) {
 				var ret = [ ];
 				QUnit.jsDump.up();
 				for ( var key in map ) {
-					if ( map[key] == map ) {
-						ret.push(QUnit.jsDump.parse(key, 'key') + ': ' + '[recursion]' );
+					if ( map[key] == map || map[key] == previous ) {
+						ret.push( QUnit.jsDump.parse( key, 'key' ) + ': ' + '[recursion]' );
 					} else {
-						ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(map[key]) );
+						ret.push( QUnit.jsDump.parse( key, 'key' ) + ': ' + QUnit.jsDump.parse( map[key], undefined, map ) );
 					}
 				}
 				QUnit.jsDump.down();
