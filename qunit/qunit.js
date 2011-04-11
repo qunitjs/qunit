@@ -831,13 +831,15 @@ function escapeHtml(s) {
         return "";
     }
     s = s + "";
-    return s.replace(/[\&"<>\\]/g, function(s) {
+    return s.replace(/[\&"<>\\\n ]/g, function(s) {
         switch(s) {
             case "&": return "&amp;";
             case "\\": return "\\\\";
             case '"': return '\"';
             case "<": return "&lt;";
             case ">": return "&gt;";
+            case '\n': return '<br/>';
+            case ' ': return '&nbsp;';
             default: return s;
         }
     });
