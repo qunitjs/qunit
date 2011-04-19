@@ -1149,11 +1149,11 @@ QUnit.jsDump = (function() {
 	var reName = /^function (\w+)/;
 	
 	var jsDump = {
-		parse:function( obj, type ) { //type is used mostly internally, you can fix a (custom)type in advance
+		parse:function( obj, type, stack ) { //type is used mostly internally, you can fix a (custom)type in advance
 			var	parser = this.parsers[ type || this.typeOf(obj) ];
 			type = typeof parser;			
 			
-			return type == 'function' ? parser.call( this, obj ) :
+			return type == 'function' ? parser.call( this, obj, stack ) :
 				   type == 'string' ? parser :
 				   this.parsers.error;
 		},
@@ -1229,12 +1229,22 @@ QUnit.jsDump = (function() {
 			array: array,
 			nodelist: array,
 			arguments: array,
-			object:function( map ) {
+			object:function( map, stack ) {
 				var ret = [ ];
+				stack = stack || [ ];
+				stack.push(map);
 				QUnit.jsDump.up();
-				for ( var key in map )
-					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(map[key]) );
+				for ( var key in map ) {
+				    var val = map[key];
+                    var inStack = QUnit.jsDump.typeOf(val) != 'object' ? -1 :  inArray(val, stack);
+                    if (inStack == -1) {
+    					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
+					} else {
+    					ret.push( QUnit.jsDump.parse(key,'key') + ': recursion('+(inStack - stack.length)+')' );
+                    }
+                }
 				QUnit.jsDump.down();
+				stack.pop();
 				return join( '{', ret, '}' );
 			},
 			node:function( node ) {
@@ -1301,6 +1311,21 @@ function getText( elems ) {
 
 	return ret;
 };
+
+//from jquery.js
+function inArray( elem, array ) {
+	if ( array.indexOf ) {
+		return array.indexOf( elem );
+	}
+
+	for ( var i = 0, length = array.length; i < length; i++ ) {
+		if ( array[ i ] === elem ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
 
 /*
  * Javascript Diff Algorithm
