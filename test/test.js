@@ -296,6 +296,64 @@ module("custom assertions");
 	})
 })();
 
+
+module("recursions");
+
+function Wrap(x) {
+    this.wrap = x;
+    if (x == undefined)  this.first = true;
+}
+
+function chainwrap(depth, first, prev) {
+    depth = depth || 0;
+    var last = prev || new Wrap();
+    first = first || last;
+    
+    if (depth == 1) {
+        first.wrap = last;
+    } 
+    if (depth > 1) {
+        last = chainwrap(depth-1, first, new Wrap(last));
+    }
+    
+    return last;
+}
+
+test("check jsDump recursion", function() {
+    expect(4);
+
+    var noref = chainwrap(0);
+    var nodump = QUnit.jsDump.parse(noref);
+    equal(nodump, '{\n  "wrap": undefined,\n  "first": true\n}');
+
+    var selfref = chainwrap(1);
+    var selfdump = QUnit.jsDump.parse(selfref);
+    equal(selfdump, '{\n  "wrap": recursion(-1),\n  "first": true\n}');
+
+    var parentref = chainwrap(2);
+    var parentdump = QUnit.jsDump.parse(parentref);
+    equal(parentdump, '{\n  "wrap": {\n    "wrap": recursion(-2),\n    "first": true\n  }\n}');
+    
+    var circref = chainwrap(10);
+    var circdump = QUnit.jsDump.parse(circref);
+    ok(new RegExp("recursion\\(-10\\)").test(circdump), "(" +circdump + ") should show -10 recursion level");
+});
+
+test("check (deep-)equal recursion", function() {
+    var noRecursion = chainwrap(0);
+    equal(noRecursion, noRecursion, "I should be equal to me.");
+    deepEqual(noRecursion, noRecursion, "... and so in depth.");
+
+    var selfref = chainwrap(1);
+    equal(selfref, selfref, "Even so if I nest myself.");
+    deepEqual(selfref, selfref, "... into the depth.");
+
+    var circref = chainwrap(10);
+    equal(circref, circref, "Or hide that through some levels of indirection.");
+    deepEqual(circref, circref, "... and checked on all levels!");
+});
+
+
 (function() {
 	var reset = QUnit.reset;
 	function afterTest() {
