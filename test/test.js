@@ -353,12 +353,60 @@ test("check (deep-)equal recursion", function() {
     deepEqual(circref, circref, "... and checked on all levels!");
 });
 
-test("check circular function calls", function() {
-    var fn = function(){ return fn;}
-    fn.fn = fn;
+
+test('Circular reference with arrays', function() {
+
+    // pure array self-ref
+    var arr = [];
+    arr.push(arr);
     
-    equal(fn, fn(), "function call returns");
+    var arrdump = QUnit.jsDump.parse(arr);
+
+    equal(arrdump, '[\n  recursion(-1)\n]');
+    equal(arr, arr[0], 'no endless stack when trying to dump arrays with circular ref');
+
+
+    // mix obj-arr circular ref
+    var obj = {};
+    var childarr = [obj];
+    obj.childarr = childarr;
+    
+    var objdump = QUnit.jsDump.parse(obj);
+    var childarrdump = QUnit.jsDump.parse(childarr);
+    
+    equal(objdump, '{\n  "childarr": [\n    recursion(-2)\n  ]\n}');
+    equal(childarrdump, '[\n  {\n    "childarr": recursion(-2)\n  }\n]');
+    
+    equal(obj.childarr, childarr, 'no endless stack when trying to dump array/object mix with circular ref');
+    equal(childarr[0], obj, 'no endless stack when trying to dump array/object mix with circular ref');
+    
 });
+
+
+test('Circular reference - test reported by soniciq in #105', function() {
+    var MyObject = function() {};
+    MyObject.prototype.parent = function(obj) {
+        if (obj === undefined) { return this._parent; }
+        this._parent = obj;
+    };
+    MyObject.prototype.children = function(obj) {
+        if (obj === undefined) { return this._children; }
+        this._children = obj;
+    };
+
+    var a = new MyObject(),
+        b = new MyObject();
+
+    var barr = [b];
+    a.children(barr);
+    b.parent(a);
+
+    equal(a.children(), barr);
+    deepEqual(a.children(), [b]);
+});
+
+
+
 
 (function() {
 	var reset = QUnit.reset;
