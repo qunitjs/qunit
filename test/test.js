@@ -353,6 +353,12 @@ test("check (deep-)equal recursion", function() {
     deepEqual(circref, circref, "... and checked on all levels!");
 });
 
+test("check circular function calls", function() {
+    var fn = function(){ return fn;}
+    fn.fn = fn;
+    
+    equal(fn, fn(), "function call returns");
+});
 
 (function() {
 	var reset = QUnit.reset;
