@@ -1137,11 +1137,11 @@ QUnit.jsDump = (function() {
 			return pre + post;
 		return [ pre, inner + arr, base + post ].join(s);
 	};
-	function array( arr ) {
+	function array( arr, stack ) {
 		var i = arr.length,	ret = Array(i);					
 		this.up();
 		while ( i-- )
-			ret[i] = this.parse( arr[i] );				
+			ret[i] = this.parse( arr[i] , undefined , stack);				
 		this.down();
 		return join( '[', ret, ']' );
 	};
@@ -1150,12 +1150,24 @@ QUnit.jsDump = (function() {
 	
 	var jsDump = {
 		parse:function( obj, type, stack ) { //type is used mostly internally, you can fix a (custom)type in advance
+			stack = stack || [ ];
+
 			var	parser = this.parsers[ type || this.typeOf(obj) ];
 			type = typeof parser;			
-			
-			return type == 'function' ? parser.call( this, obj, stack ) :
-				   type == 'string' ? parser :
-				   this.parsers.error;
+
+            var inStack = inArray(obj, stack);
+            if (inStack != -1) {
+			    return 'recursion('+(inStack - stack.length)+')';
+            }
+            //else
+            if (type == 'function')  {
+    			stack.push(obj);
+                var res = parser.call( this, obj, stack );
+    			stack.pop();                    
+    			return res;
+            } 
+            // else 
+            return (type == 'string') ? parser : this.parsers.error;
 		},
 		typeOf:function( obj ) {
 			var type;
@@ -1231,20 +1243,12 @@ QUnit.jsDump = (function() {
 			arguments: array,
 			object:function( map, stack ) {
 				var ret = [ ];
-				stack = stack || [ ];
-				stack.push(map);
 				QUnit.jsDump.up();
 				for ( var key in map ) {
 				    var val = map[key];
-                    var inStack = QUnit.jsDump.typeOf(val) != 'object' ? -1 :  inArray(val, stack);
-                    if (inStack == -1) {
-    					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
-					} else {
-    					ret.push( QUnit.jsDump.parse(key,'key') + ': recursion('+(inStack - stack.length)+')' );
-                    }
+					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
                 }
 				QUnit.jsDump.down();
-				stack.pop();
 				return join( '{', ret, '}' );
 			},
 			node:function( node ) {
