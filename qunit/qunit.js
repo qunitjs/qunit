@@ -778,6 +778,11 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
+	if ( typeof document !== "undefined" && document.title ) {
+		// TODO what are the unicode codes for these? as-is fails if qunit.js isn't served with the right mimetype/charset
+		document.title = (config.stats.bad ? "✖" : "✔") + " " + document.title;
+	}
+
 	QUnit.done( {
 		failed: config.stats.bad,
 		passed: passed, 
