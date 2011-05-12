@@ -779,8 +779,9 @@ function done() {
 	}
 
 	if ( typeof document !== "undefined" && document.title ) {
-		// TODO what are the unicode codes for these? as-is fails if qunit.js isn't served with the right mimetype/charset
-		document.title = (config.stats.bad ? "✖" : "✔") + " " + document.title;
+		// show ✖ for good, ✔ for bad suite result in title
+		// use escape sequences in case file gets loaded with non-utf-8-charset
+		document.title = (config.stats.bad ? "\u2716" : "\u2714") + " " + document.title;
 	}
 
 	QUnit.done( {
