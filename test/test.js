@@ -312,3 +312,13 @@ module("custom assertions");
 		QUnit.reset = reset;
 	});
 })();
+
+module("noglobals", {
+	teardown: function() {
+		delete window.badGlobalVariableIntroducedInTest;
+	}
+});
+test("let teardown clean up globals", function() {
+	// this test will always pass if run without ?noglobals=true
+	window.badGlobalVariableIntroducedInTest = true;
+});

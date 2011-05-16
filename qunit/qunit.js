@@ -114,8 +114,8 @@ Test.prototype = {
 	},
 	teardown: function() {
 		try {
-			checkPollution();
 			this.testEnvironment.teardown.call(this.testEnvironment);
+			checkPollution();
 		} catch(e) {
 			QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
 		}
