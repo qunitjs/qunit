@@ -109,7 +109,7 @@ test("test2", 10, function() {
 });
 
 module("logs2");
-	
+
 test("test1", 9, function() {
 	equal(begin, 1);
 	equal(moduleStart, 2);
