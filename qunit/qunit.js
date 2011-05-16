@@ -800,7 +800,7 @@ function validTest( name ) {
 		return true;
 	}
 
-	not = filter.charAt( 0 ) === "!";
+	var not = filter.charAt( 0 ) === "!";
 	if ( not ) {
 		filter = filter.slice( 1 );
 	}
