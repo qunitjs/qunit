@@ -1144,10 +1144,10 @@ QUnit.jsDump = (function() {
 		return [ pre, inner + arr, base + post ].join(s);
 	};
 	function array( arr, stack ) {
-		var i = arr.length,	ret = Array(i);					
+		var i = arr.length, ret = Array(i);
 		this.up();
 		while ( i-- )
-			ret[i] = this.parse( arr[i] , undefined , stack);				
+			ret[i] = this.parse( arr[i] , undefined , stack);
 		this.down();
 		return join( '[', ret, ']' );
 	};
@@ -1157,23 +1157,21 @@ QUnit.jsDump = (function() {
 	var jsDump = {
 		parse:function( obj, type, stack ) { //type is used mostly internally, you can fix a (custom)type in advance
 			stack = stack || [ ];
-
-			var	parser = this.parsers[ type || this.typeOf(obj) ];
-			type = typeof parser;			
-
-            var inStack = inArray(obj, stack);
-            if (inStack != -1) {
-			    return 'recursion('+(inStack - stack.length)+')';
-            }
-            //else
-            if (type == 'function')  {
-    			stack.push(obj);
-                var res = parser.call( this, obj, stack );
-    			stack.pop();                    
-    			return res;
-            } 
-            // else 
-            return (type == 'string') ? parser : this.parsers.error;
+			var parser = this.parsers[ type || this.typeOf(obj) ];
+			type = typeof parser;
+			var inStack = inArray(obj, stack);
+			if (inStack != -1) {
+				return 'recursion('+(inStack - stack.length)+')';
+			}
+			//else
+			if (type == 'function')  {
+					stack.push(obj);
+					var res = parser.call( this, obj, stack );
+					stack.pop();                    
+					return res;
+			} 
+			// else 
+			return (type == 'string') ? parser : this.parsers.error;
 		},
 		typeOf:function( obj ) {
 			var type;
