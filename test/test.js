@@ -206,7 +206,7 @@ test("makeurl working with settings from testEnvironment", function() {
 test("each test can extend the module testEnvironment", {
 	q:'hamstersoup'
 }, function() {
-	equal( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');	
+	equal( makeurl(), 'http://google.com/?q=hamstersoup', 'url from module, q from test');
 });
 
 module("jsDump");
@@ -224,24 +224,24 @@ test("raises",function() {
 	function CustomError( message ) {
 		this.message = message;
 	}
-	
+
 	CustomError.prototype.toString = function() {
-		return this.message;	
+		return this.message;
 	};
-	
+
 	raises(
 		function() {
 			throw "error"
 		}
 	);
-	
+
 	raises(
 		function() {
 			throw "error"
 		},
 		'raises with just a message, no expected'
 	);
-	
+
 	raises(
 		function() {
 			throw new CustomError();
@@ -249,7 +249,7 @@ test("raises",function() {
 		CustomError,
 		'raised error is an instance of CustomError'
 	);
-	
+
 	raises(
 		function() {
 			throw new CustomError("some error description");
@@ -257,7 +257,7 @@ test("raises",function() {
 		/description/,
 		"raised error message contains 'description'"
 	);
-	
+
 	raises(
 		function() {
 			throw new CustomError("some error description");
@@ -267,9 +267,9 @@ test("raises",function() {
 				return true;
 			}
 		},
-		"custom validation function"		
-	);	
-		
+		"custom validation function"
+	);
+
 });
 
 if (typeof document !== "undefined") {
@@ -424,3 +424,13 @@ test('Circular reference - test reported by soniciq in #105', function() {
 		QUnit.reset = reset;
 	});
 })();
+
+module("noglobals", {
+	teardown: function() {
+		delete window.badGlobalVariableIntroducedInTest;
+	}
+});
+test("let teardown clean up globals", function() {
+	// this test will always pass if run without ?noglobals=true
+	window.badGlobalVariableIntroducedInTest = true;
+});
