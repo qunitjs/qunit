@@ -625,7 +625,7 @@ extend(QUnit, {
 			var source = sourceFromStacktrace();
 			if (source) {
 				details.source = source;
-				output += '<tr class="test-source"><th>Source: </th><td><pre>' + source +'</pre></td></tr>';
+				output += '<tr class="test-source"><th>Source: </th><td><pre>' + escapeHtml(source) + '</pre></td></tr>';
 			}
 		}
 		output += "</table>";
