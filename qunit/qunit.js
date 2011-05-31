@@ -450,6 +450,9 @@ var config = {
 	// very useful in combination with "Hide passed tests" checked
 	reorder: true,
 
+	// by default, modify document.title when suite is done
+	altertitle: true,
+
 	noglobals: false,
 	notrycatch: false
 };
@@ -791,8 +794,8 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( typeof document !== "undefined" && document.title ) {
-		// show ✖ for bad, ✔ for good suite result in title
+	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
+		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
 			(config.stats.bad ? "\u2716" : "\u2714"),
