@@ -779,7 +779,7 @@ function done() {
 	}
 
 	if ( typeof document !== "undefined" && document.title ) {
-		// show ✖ for good, ✔ for bad suite result in title
+		// show ✖ for bad, ✔ for good suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = (config.stats.bad ? "\u2716" : "\u2714") + " " + document.title;
 	}
