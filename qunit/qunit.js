@@ -444,7 +444,9 @@ var config = {
 	reorder: true,
 
 	noglobals: false,
-	notrycatch: false
+	notrycatch: false,
+	autorefresh: false,
+	autorefreshtime: 10
 };
 
 // Load paramaters
@@ -671,6 +673,10 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 }
 
 addEvent(window, "load", function() {
+	setInterval(function() {
+		if (config.autorefresh) { window.location.reload(); }
+	}, config.autorefreshtime * 1000);
+
 	QUnit.begin({});
 
 	// Initialize the config, saving the execution queue
@@ -688,7 +694,8 @@ addEvent(window, "load", function() {
 	if ( banner ) {
 		banner.innerHTML = '<a href="' + QUnit.url({ filter: undefined }) + '"> ' + banner.innerHTML + '</a> ' +
 			'<label><input name="noglobals" type="checkbox"' + ( config.noglobals ? ' checked="checked"' : '' ) + '>noglobals</label>' +
-			'<label><input name="notrycatch" type="checkbox"' + ( config.notrycatch ? ' checked="checked"' : '' ) + '>notrycatch</label>';
+			'<label><input name="notrycatch" type="checkbox"' + ( config.notrycatch ? ' checked="checked"' : '' ) + '>notrycatch</label>' +
+			'<label><input name="autorefresh" type="checkbox"' + ( config.autorefresh ? ' checked="checked"' : '' ) + '>autorefresh</label>';
 		addEvent( banner, "change", function( event ) {
 			var params = {};
 			params[ event.target.name ] = event.target.checked ? true : undefined;
