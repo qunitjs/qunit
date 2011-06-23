@@ -22,3 +22,6 @@ with it's stop/start facilities for testing asynchronous code.
 If you are interested in helping developing QUnit, you are in the right place.
 For related discussions, visit the
 [QUnit and Testing forum](http://forum.jquery.com/qunit-and-testing).
+
+Planning for a qunitjs.com site and other testing tools related work now happens
+on the [jQuery Testing Team planning wiki](http://jquerytesting.pbworks.com/w/page/41556026/FrontPage).
