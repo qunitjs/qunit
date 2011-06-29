@@ -1,5 +1,6 @@
 {
 	"name": "qunit",
+        "version": "1.5.0",
 	"author": {
 		"name": "John Resig",
 		"email": "jeresig@gmail.com",
