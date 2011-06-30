@@ -400,6 +400,9 @@ var QUnit = {
 		// A slight delay, to avoid any current callbacks
 		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
+				if(config.semaphore > 0){
+					return;
+				}
 				if ( config.timeout ) {
 					clearTimeout(config.timeout);
 				}
