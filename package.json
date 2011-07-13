@@ -1,11 +1,13 @@
 {
 	"name": "qunit",
-	"author": {
+	"author": "The jQuery Project",
+	"contributors": [
+	{
 		"name": "John Resig",
 		"email": "jeresig@gmail.com",
 		"url": "http://ejohn.org/"
 	},
-	"maintainer": {
+	{
 		"name": "Jörn Zaefferer",
 		"email": "joern.zaefferer@googlemail.com",
 		"url": "http://bassistance.de/"
