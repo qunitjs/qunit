@@ -389,8 +389,8 @@ var QUnit = {
 		QUnit.ok(ok, message);
 	},
 
-	start: function() {
-		config.semaphore--;
+	start: function(count) {
+		config.semaphore -= count || 1;
 		if (config.semaphore > 0) {
 			// don't start until equal number of stop-calls
 			return;
@@ -418,16 +418,17 @@ var QUnit = {
 		}
 	},
 
-	stop: function(timeout) {
-		config.semaphore++;
+	stop: function(count) {
+		config.semaphore += count || 1;
 		config.blocking = true;
 
-		if ( timeout && defined.setTimeout ) {
+		if ( config.testTimeout && defined.setTimeout ) {
 			clearTimeout(config.timeout);
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
+				config.semaphore = 1;
 				QUnit.start();
-			}, timeout);
+			}, config.testTimeout);
 		}
 	}
 };

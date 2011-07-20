@@ -70,6 +70,28 @@ test("teardown must be called after test ended", function() {
 	}, 13);
 });
 
+test("parameter passed to stop increments semaphore n times", function() {
+	expect(1);
+	stop(3);
+	setTimeout(function() {
+		state = "not enough starts";
+		start(), start();
+	}, 13);
+	setTimeout(function() {
+		state = "done";
+		start();
+	}, 15);
+});
+
+test("parameter passed to start decrements semaphore n times", function() {
+	expect(1);
+	stop(), stop(), stop();
+	setTimeout(function() {
+		state = "done";
+		start(3);
+	}, 18);
+});
+
 module("async setup test", {
 	setup: function() {
 		stop();
