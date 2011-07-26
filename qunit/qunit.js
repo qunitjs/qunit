@@ -444,7 +444,7 @@ var config = {
 	reorder: true,
 
 	// by default, modify document.title when suite is done
-	altertitle: false,
+	altertitle: true,
 
 	noglobals: false,
 	notrycatch: false
