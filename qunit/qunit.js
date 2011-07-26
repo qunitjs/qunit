@@ -444,7 +444,7 @@ var config = {
 	reorder: true,
 
 	// by default, modify document.title when suite is done
-	noaltertitle: false,
+	altertitle: false,
 
 	noglobals: false,
 	notrycatch: false
@@ -781,7 +781,7 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( !config.noaltertitle && typeof document !== "undefined" && document.title ) {
+	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
 		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = (config.stats.bad ? "\u2716" : "\u2714") + " " + document.title;
