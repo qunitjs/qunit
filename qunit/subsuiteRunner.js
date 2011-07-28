@@ -30,12 +30,12 @@ $.extend( QUnit, {
 	runSuite: function( suite ) {
 		var body = $( "body" ),
 			iframe = $( "<iframe>", { src: suite, class: "qunit-subsuite" } )
-				.appendTo( body );
+				.appendTo( body ),
+			iframeWin = iframe[0].contentWindow;
 
 		$( iframe ).bind( "load", function() {
 			var module, test,
-			iframeWin = iframe[0].contentWindow,
-			count = 0;
+				count = 0;
 
 			$.extend( iframeWin.QUnit, {
 				moduleStart: function( data ) {
@@ -56,21 +56,14 @@ $.extend( QUnit, {
 				},
 
 				done: function() {
-					// hide the iframe from the main page once the tests are done
-					// and start the wrapper test from the main page
-					//$( iframe ).hide();
+					// start the wrapper test from the main page
 					start();
 				}
 			});
 		});
-		this.runSuite = function(){
+		this.runSuite = function(suite){
 			iframe.attr('src', suite);
 		}
 	}
 });
-
-// generate an iframe to run the test suite and proxy the iframe's QUnit
-// to pass all test info to the main page
-
-
 }( jQuery, QUnit ) );
