@@ -652,6 +652,10 @@ extend(QUnit, {
 		return window.location.pathname + querystring.slice( 0, -1 );
 	},
 
+	extend: extend,
+	id: id,
+	addEvent: addEvent,
+
 	// Logging callbacks; all receive a single argument with the listed properties
 	// run test/logs.html for any related changes
 	begin: function() {},
