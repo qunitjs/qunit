@@ -441,7 +441,7 @@ var config = {
 
 	// by default, run previously failed tests first
 	// very useful in combination with "Hide passed tests" checked
-	reorder: false,
+	reorder: true,
 
 	noglobals: false,
 	notrycatch: false
