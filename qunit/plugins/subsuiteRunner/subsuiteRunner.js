@@ -11,7 +11,7 @@ QUnit.extend( QUnit, {
 		}
 		QUnit.done = function(){
 			subsuiteFrame.style.display = "none";
-		}
+		};
 	},
 
 	testStart: function( data ) {
