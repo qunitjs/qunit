@@ -442,6 +442,10 @@ var config = {
 	// block until document ready
 	blocking: true,
 
+	// when enabled, show only failing tests
+	// gets persisted through sessionStorage and can be changed in UI via checkbox
+	hidepassed: false,
+
 	// by default, run previously failed tests first
 	// very useful in combination with "Hide passed tests" checked
 	reorder: true,
@@ -724,7 +728,7 @@ addEvent(window, "load", function() {
 				}
 			}
 		});
-		if ( defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
+		if ( config.hidepassed || defined.sessionStorage && sessionStorage.getItem("qunit-filter-passed-tests") ) {
 			filter.checked = true;
 			var ol = document.getElementById("qunit-tests");
 			ol.className = ol.className + " hidepass";
