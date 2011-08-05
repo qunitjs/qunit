@@ -15,7 +15,7 @@ var defined = {
 	sessionStorage: (function() {
 		try {
 			return !!sessionStorage.getItem;
-		} catch(e){
+		} catch(e) {
 			return false;
 		}
   })()
@@ -400,7 +400,7 @@ var QUnit = {
 		// A slight delay, to avoid any current callbacks
 		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
-				if(config.semaphore > 0){
+				if (config.semaphore > 0) {
 					return;
 				}
 				if ( config.timeout ) {
@@ -1048,8 +1048,8 @@ QUnit.equiv = function () {
                 parents.push(a);
                 for (i = 0; i < len; i++) {
                     loop = false;
-                    for(j=0;j<parents.length;j++){
-                        if(parents[j] === a[i]){
+                    for (j=0;j<parents.length;j++) {
+                        if (parents[j] === a[i]) {
                             loop = true;//dont rewalk array
                         }
                     }
@@ -1079,8 +1079,8 @@ QUnit.equiv = function () {
 
                 for (i in a) { // be strict: don't ensures hasOwnProperty and go deep
                     loop = false;
-                    for(j=0;j<parents.length;j++){
-                        if(parents[j] === a[i])
+                    for (j=0;j<parents.length;j++) {
+                        if (parents[j] === a[i])
                             loop = true; //don't go down the same path twice
                     }
                     aProperties.push(i); // collect a's properties
@@ -1334,7 +1334,7 @@ function getText( elems ) {
  * QUnit.diff("the quick brown fox jumped over", "the quick fox jumps over") == "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over"
  */
 QUnit.diff = (function() {
-	function diff(o, n){
+	function diff(o, n) {
 		var ns = new Object();
 		var os = new Object();
 
@@ -1403,7 +1403,7 @@ QUnit.diff = (function() {
 		};
 	}
 
-	return function(o, n){
+	return function(o, n) {
 		o = o.replace(/\s+$/, '');
 		n = n.replace(/\s+$/, '');
 		var out = diff(o == "" ? [] : o.split(/\s+/), n == "" ? [] : n.split(/\s+/));
