@@ -419,6 +419,9 @@ var QUnit = {
 	stop: function(timeout) {
 		config.semaphore++;
 		config.blocking = true;
+		if ( timeout === undefined ) {
+			timeout = config.timeoutDuration;
+		}
 
 		if ( timeout && defined.setTimeout ) {
 			clearTimeout(config.timeout);
