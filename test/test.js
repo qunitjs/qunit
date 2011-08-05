@@ -135,6 +135,19 @@ test("sync", 2, function() {
 		start();
 	}, 125);
 });
+
+test("test synchronous calls to stop", 2, function() {
+    stop();
+    setTimeout(function(){
+        ok(true, 'first');
+        start();
+        stop();
+        setTimeout(function(){
+            ok(true, 'second');
+            start();
+        }, 150);
+    }, 150);
+});
 }
 
 module("save scope", {
