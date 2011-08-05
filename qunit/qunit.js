@@ -450,6 +450,9 @@ var config = {
 	// very useful in combination with "Hide passed tests" checked
 	reorder: true,
 
+	// by default, modify document.title when suite is done
+	altertitle: true,
+
 	noglobals: false,
 	notrycatch: false
 };
@@ -681,7 +684,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 	config.autorun = true;
 }
 
-addEvent(window, "load", function() {
+QUnit.load = function() {
 	QUnit.begin({});
 
 	// Initialize the config, saving the execution queue
@@ -749,7 +752,9 @@ addEvent(window, "load", function() {
 	if (config.autostart) {
 		QUnit.start();
 	}
-});
+};
+
+addEvent(window, "load", QUnit.load);
 
 function done() {
 	config.autorun = true;
@@ -789,8 +794,8 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( typeof document !== "undefined" && document.title ) {
-		// show ✖ for bad, ✔ for good suite result in title
+	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
+		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
 			(config.stats.bad ? "\u2716" : "\u2714"),
