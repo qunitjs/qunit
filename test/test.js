@@ -217,6 +217,9 @@ test("jsDump output", function() {
 		equals( QUnit.jsDump.parse(document.getElementById("qunit-header")), "<h1 id=\"qunit-header\"></h1>" );
 		equals( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
 	}
+	var obj = {};
+	obj.a = obj;
+	equals( QUnit.jsDump.parse(obj), '{\n  "a": #\n}' );
 });
 
 module("assertions");
