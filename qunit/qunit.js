@@ -681,7 +681,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 	config.autorun = true;
 }
 
-addEvent(window, "load", function() {
+QUnit.load = function() {
 	QUnit.begin({});
 
 	// Initialize the config, saving the execution queue
@@ -749,7 +749,9 @@ addEvent(window, "load", function() {
 	if (config.autostart) {
 		QUnit.start();
 	}
-});
+};
+
+addEvent(window, "load", QUnit.load);
 
 function done() {
 	config.autorun = true;
