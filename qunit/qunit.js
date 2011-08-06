@@ -1174,11 +1174,11 @@ QUnit.jsDump = (function() {
 			return pre + post;
 		return [ pre, inner + arr, base + post ].join(s);
 	};
-	function array( arr ) {
-		var i = arr.length,	ret = Array(i);
+	function array( arr, stack ) {
+		var i = arr.length, ret = Array(i);
 		this.up();
 		while ( i-- )
-			ret[i] = this.parse( arr[i] );
+			ret[i] = this.parse( arr[i] , undefined , stack);
 		this.down();
 		return join( '[', ret, ']' );
 	};
@@ -1186,13 +1186,23 @@ QUnit.jsDump = (function() {
 	var reName = /^function (\w+)/;
 
 	var jsDump = {
-		parse:function( obj, type ) { //type is used mostly internally, you can fix a (custom)type in advance
-			var	parser = this.parsers[ type || this.typeOf(obj) ];
+		parse:function( obj, type, stack ) { //type is used mostly internally, you can fix a (custom)type in advance
+			stack = stack || [ ];
+			var parser = this.parsers[ type || this.typeOf(obj) ];
 			type = typeof parser;
-
-			return type == 'function' ? parser.call( this, obj ) :
-					type == 'string' ? parser :
-					this.parsers.error;
+			var inStack = inArray(obj, stack);
+			if (inStack != -1) {
+				return 'recursion('+(inStack - stack.length)+')';
+			}
+			//else
+			if (type == 'function')  {
+					stack.push(obj);
+					var res = parser.call( this, obj, stack );
+					stack.pop();                    
+					return res;
+			} 
+			// else 
+			return (type == 'string') ? parser : this.parsers.error;
 		},
 		typeOf:function( obj ) {
 			var type;
@@ -1266,11 +1276,13 @@ QUnit.jsDump = (function() {
 			array: array,
 			nodelist: array,
 			arguments: array,
-			object:function( map ) {
+			object:function( map, stack ) {
 				var ret = [ ];
 				QUnit.jsDump.up();
-				for ( var key in map )
-					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(map[key]) );
+				for ( var key in map ) {
+				    var val = map[key];
+					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
+                }
 				QUnit.jsDump.down();
 				return join( '{', ret, '}' );
 			},
@@ -1338,6 +1350,21 @@ function getText( elems ) {
 
 	return ret;
 };
+
+//from jquery.js
+function inArray( elem, array ) {
+	if ( array.indexOf ) {
+		return array.indexOf( elem );
+	}
+
+	for ( var i = 0, length = array.length; i < length; i++ ) {
+		if ( array[ i ] === elem ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
 
 /*
  * Javascript Diff Algorithm
