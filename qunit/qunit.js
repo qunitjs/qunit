@@ -1382,13 +1382,13 @@ function inArray( elem, array ) {
  */
 QUnit.diff = (function() {
 	function diff(o, n) {
-		var ns = new Object();
-		var os = new Object();
+		var ns = {};
+		var os = {};
 
 		for (var i = 0; i < n.length; i++) {
 			if (ns[n[i]] == null)
 				ns[n[i]] = {
-					rows: new Array(),
+					rows: [],
 					o: null
 				};
 			ns[n[i]].rows.push(i);
@@ -1397,7 +1397,7 @@ QUnit.diff = (function() {
 		for (var i = 0; i < o.length; i++) {
 			if (os[o[i]] == null)
 				os[o[i]] = {
-					rows: new Array(),
+					rows: [],
 					n: null
 				};
 			os[o[i]].rows.push(i);
