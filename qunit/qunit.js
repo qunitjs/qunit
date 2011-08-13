@@ -453,8 +453,7 @@ var config = {
 	// by default, modify document.title when suite is done
 	altertitle: true,
 
-	noglobals: false,
-	notrycatch: false
+	urlConfig: ['noglobals', 'notrycatch']
 };
 
 // Load paramaters
@@ -472,9 +471,6 @@ var config = {
 			// allow just a key to turn on a flag, e.g., test.html?noglobals
 			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
 			urlParams[ current[ 0 ] ] = current[ 1 ];
-			if ( current[ 0 ] in config ) {
-				config[ current[ 0 ] ] = current[ 1 ];
-			}
 		}
 	}
 
@@ -694,15 +690,19 @@ QUnit.load = function() {
 
 	config.blocking = false;
 
+	var urlConfigHtml = '', len = config.urlConfig.length;
+	for ( var i = 0, val; i < len, val = config.urlConfig[i]; i++ ) {
+		config[val] = QUnit.urlParams[val];
+		urlConfigHtml += '<label><input name="' + val + '" type="checkbox"' + ( config[val] ? ' checked="checked"' : '' ) + '>' + val + '</label>';
+	}
+
 	var userAgent = id("qunit-userAgent");
 	if ( userAgent ) {
 		userAgent.innerHTML = navigator.userAgent;
 	}
 	var banner = id("qunit-header");
 	if ( banner ) {
-		banner.innerHTML = '<a href="' + QUnit.url({ filter: undefined }) + '"> ' + banner.innerHTML + '</a> ' +
-			'<label><input name="noglobals" type="checkbox"' + ( config.noglobals ? ' checked="checked"' : '' ) + '>noglobals</label>' +
-			'<label><input name="notrycatch" type="checkbox"' + ( config.notrycatch ? ' checked="checked"' : '' ) + '>notrycatch</label>';
+		banner.innerHTML = '<a href="' + QUnit.url({ filter: undefined }) + '"> ' + banner.innerHTML + '</a> ' + urlConfigHtml;
 		addEvent( banner, "change", function( event ) {
 			var params = {};
 			params[ event.target.name ] = event.target.checked ? true : undefined;
@@ -1382,13 +1382,13 @@ function inArray( elem, array ) {
  */
 QUnit.diff = (function() {
 	function diff(o, n) {
-		var ns = new Object();
-		var os = new Object();
+		var ns = {};
+		var os = {};
 
 		for (var i = 0; i < n.length; i++) {
 			if (ns[n[i]] == null)
 				ns[n[i]] = {
-					rows: new Array(),
+					rows: [],
 					o: null
 				};
 			ns[n[i]].rows.push(i);
@@ -1397,7 +1397,7 @@ QUnit.diff = (function() {
 		for (var i = 0; i < o.length; i++) {
 			if (os[o[i]] == null)
 				os[o[i]] = {
-					rows: new Array(),
+					rows: [],
 					n: null
 				};
 			os[o[i]].rows.push(i);
