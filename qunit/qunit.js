@@ -847,6 +847,10 @@ function sourceFromStacktrace() {
 		} else if (e.stack) {
 			// Firefox, Chrome
 			return e.stack.split("\n")[4];
+		} else if (e.sourceURL) {
+			// Safari, PhantomJS
+			// TODO sourceURL points at the 'throw new Error' line above, useless
+			//return e.sourceURL + ":" + e.line;
 		}
 	}
 }
