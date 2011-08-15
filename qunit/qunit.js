@@ -310,7 +310,7 @@ var QUnit = {
 			result: a,
 			message: msg
 		};
-		msg = escapeHtml(msg);
+		msg = escapeInnerText(msg);
 		QUnit.log(details);
 		config.current.assertions.push({
 			result: a,
@@ -618,10 +618,10 @@ extend(QUnit, {
 			expected: expected
 		};
 
-		message = escapeHtml(message) || (result ? "okay" : "failed");
+		message = escapeInnerText(message) || (result ? "okay" : "failed");
 		message = '<span class="test-message">' + message + "</span>";
-		expected = escapeHtml(QUnit.jsDump.parse(expected));
-		actual = escapeHtml(QUnit.jsDump.parse(actual));
+		expected = escapeInnerText(QUnit.jsDump.parse(expected));
+		actual = escapeInnerText(QUnit.jsDump.parse(actual));
 		var output = message + '<table><tr class="test-expected"><th>Expected: </th><td><pre>' + expected + '</pre></td></tr>';
 		if (actual != expected) {
 			output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
@@ -631,7 +631,7 @@ extend(QUnit, {
 			var source = sourceFromStacktrace();
 			if (source) {
 				details.source = source;
-				output += '<tr class="test-source"><th>Source: </th><td><pre>' + escapeHtml(source) + '</pre></td></tr>';
+				output += '<tr class="test-source"><th>Source: </th><td><pre>' + escapeInnerText(source) + '</pre></td></tr>';
 			}
 		}
 		output += "</table>";
@@ -851,16 +851,14 @@ function sourceFromStacktrace() {
 	}
 }
 
-function escapeHtml(s) {
+function escapeInnerText(s) {
 	if (!s) {
 		return "";
 	}
 	s = s + "";
-	return s.replace(/[\&"<>\\]/g, function(s) {
+	return s.replace(/[\&<>]/g, function(s) {
 		switch(s) {
 			case "&": return "&amp;";
-			case "\\": return "\\\\";
-			case '"': return '\"';
 			case "<": return "&lt;";
 			case ">": return "&gt;";
 			default: return s;
