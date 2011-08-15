@@ -1198,10 +1198,10 @@ QUnit.jsDump = (function() {
 			if (type == 'function')  {
 					stack.push(obj);
 					var res = parser.call( this, obj, stack );
-					stack.pop();                    
+					stack.pop();
 					return res;
-			} 
-			// else 
+			}
+			// else
 			return (type == 'string') ? parser : this.parsers.error;
 		},
 		typeOf:function( obj ) {
