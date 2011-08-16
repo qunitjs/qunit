@@ -48,7 +48,7 @@ Test.prototype = {
 	setup: function() {
 		if (this.module != config.previousModule) {
 			if ( config.previousModule ) {
-				runLoggingCallbacks('moduleDone', this, {
+				runLoggingCallbacks('moduleDone', QUnit, {
 					name: config.previousModule,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
@@ -57,7 +57,7 @@ Test.prototype = {
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
-			runLoggingCallbacks( 'moduleStart', this, {
+			runLoggingCallbacks( 'moduleStart', QUnit, {
 				name: this.module
 			} );
 		}
@@ -71,7 +71,7 @@ Test.prototype = {
 			extend(this.testEnvironment, this.testEnvironmentArg);
 		}
 
-		runLoggingCallbacks( 'testStart', this, {
+		runLoggingCallbacks( 'testStart', QUnit, {
 			name: this.testName
 		} );
 
@@ -210,7 +210,7 @@ Test.prototype = {
 			fail("reset() failed, following Test " + this.testName + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
-		runLoggingCallbacks( 'testDone', this, {
+		runLoggingCallbacks( 'testDone', QUnit, {
 			name: this.testName,
 			failed: bad,
 			passed: this.assertions.length - bad,
@@ -311,7 +311,7 @@ var QUnit = {
 			message: msg
 		};
 		msg = escapeHtml(msg);
-		runLoggingCallbacks( 'log', this, details );
+		runLoggingCallbacks( 'log', QUnit, details );
 		config.current.assertions.push({
 			result: a,
 			message: msg
@@ -657,7 +657,7 @@ extend(QUnit, {
 		}
 		output += "</table>";
 
-		runLoggingCallbacks( 'log', this, details );
+		runLoggingCallbacks( 'log', QUnit, details );
 
 		config.current.assertions.push({
 			result: !!result,
@@ -704,7 +704,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 }
 
 QUnit.load = function() {
-	runLoggingCallbacks( 'begin', this, {} );
+	runLoggingCallbacks( 'begin', QUnit, {} );
 
 	// Initialize the config, saving the execution queue
 	var oldconfig = extend({}, config);
@@ -780,7 +780,7 @@ function done() {
 
 	// Log the last module results
 	if ( config.currentModule ) {
-		runLoggingCallbacks( 'moduleDone', this, {
+		runLoggingCallbacks( 'moduleDone', QUnit, {
 			name: config.currentModule,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
@@ -822,7 +822,7 @@ function done() {
 		].join(" ");
 	}
 
-	runLoggingCallbacks( 'done', this, {
+	runLoggingCallbacks( 'done', QUnit, {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
@@ -997,6 +997,7 @@ function registerLoggingCallback(key){
 
 // Supports deprecated method of completely overwriting logging callbacks
 function runLoggingCallbacks(key, scope, args) {
+	//debugger;
 	var callback;
 	if ( QUnit.hasOwnProperty(key) ) {
 		QUnit[key].call(scope, args);
