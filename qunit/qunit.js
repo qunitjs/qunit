@@ -72,8 +72,9 @@ Test.prototype = {
 		}
 
 		runLoggingCallbacks( 'testStart', QUnit, {
-			name: this.testName
-		} );
+			name: this.testName,
+			module: this.module
+		});
 
 		// allow utility functions to access the current test environment
 		// TODO why??
@@ -212,6 +213,7 @@ Test.prototype = {
 
 		runLoggingCallbacks( 'testDone', QUnit, {
 			name: this.testName,
+			module: this.module,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length
