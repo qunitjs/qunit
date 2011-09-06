@@ -72,7 +72,8 @@ Test.prototype = {
 		}
 
 		QUnit.testStart( {
-			name: this.testName
+			name: this.testName,
+			module: this.module
 		} );
 
 		// allow utility functions to access the current test environment
@@ -212,6 +213,7 @@ Test.prototype = {
 
 		QUnit.testDone( {
 			name: this.testName,
+			module: this.module,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length
