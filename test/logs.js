@@ -13,41 +13,39 @@ var begin = 0,
 	testDoneContext,
 	logContext;
 
-QUnit.begin = function() {
+QUnit.begin(function() {
 	begin++;
-};
-QUnit.done = function() {
-};
-QUnit.moduleStart = function(context) {
+});
+QUnit.done(function() {
+});
+QUnit.moduleStart(function(context) {
 	moduleStart++;
 	moduleContext = context;
-};
-QUnit.moduleDone = function(context) {
+});
+QUnit.moduleDone(function(context) {
 	moduleDone++;
 	moduleDoneContext = context;
-};
-QUnit.testStart = function(context) {
+});
+QUnit.testStart(function(context) {
 	testStart++;
 	testContext = context;
-};
-QUnit.testDone = function(context) {
+});
+QUnit.testDone(function(context) {
 	testDone++;
 	testDoneContext = context;
-};
-QUnit.log = function(context) {
+});
+QUnit.log(function(context) {
 	log++;
 	logContext = context;
-};
+});
 
 var logs = ["begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done"];
 for (var i = 0; i < logs.length; i++) {
 	(function() {
-		var log = logs[i],
-			logger = QUnit[log];
-		QUnit[log] = function() {
+		var log = logs[i];
+		QUnit[log](function() {
 			console.log(log, arguments);
-			logger.apply(this, arguments);
-		};
+		});
 	})();
 }
 
