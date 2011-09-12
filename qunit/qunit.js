@@ -1018,8 +1018,6 @@ function runLoggingCallbacks(key, scope, args) {
 }
 
 // Test for equality any JavaScript type.
-// Discussions and reference: http://philrathe.com/articles/equiv
-// Test suites: http://philrathe.com/tests/equiv
 // Author: Philippe Rathé <prathe@gmail.com>
 QUnit.equiv = function () {
 
