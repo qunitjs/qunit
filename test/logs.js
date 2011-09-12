@@ -75,6 +75,7 @@ test("test1", 13, function() {
 	});
 	strictEqual(testDoneContext, undefined);
 	deepEqual(testContext, {
+		module: "logs1",
 		name: "test1"
 	});
 	strictEqual(moduleDoneContext, undefined);
@@ -92,12 +93,14 @@ test("test2", 10, function() {
 	equal(moduleDone, 0);
 
 	deepEqual(testDoneContext, {
+		module: "logs1",
 		name: "test1",
 		failed: 0,
 		passed: 13,
 		total: 13
 	});
 	deepEqual(testContext, {
+		module: "logs1",
 		name: "test2"
 	});
 	strictEqual(moduleDoneContext, undefined);
@@ -118,6 +121,7 @@ test("test1", 9, function() {
 	equal(moduleDone, 1);
 
 	deepEqual(testContext, {
+		module: "logs2",
 		name: "test1"
 	});
 	deepEqual(moduleDoneContext, {
@@ -140,6 +144,7 @@ test("test2", 8, function() {
 	equal(moduleDone, 1);
 
 	deepEqual(testContext, {
+		module: "logs2",
 		name: "test2"
 	});
 	deepEqual(moduleContext, {
