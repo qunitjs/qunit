@@ -675,7 +675,7 @@ extend(QUnit, {
 
 	extend: extend,
 	id: id,
-	addEvent: addEvent,
+	addEvent: addEvent
 });
 
 //QUnit.constructor is set to the empty F() above so that we can add to it's prototype later
@@ -696,7 +696,7 @@ extend(QUnit.constructor.prototype, {
 	// moduleStart: { name }
 	moduleStart: registerLoggingCallback('moduleStart'),
 	// moduleDone: { name, failed, passed, total }
-	moduleDone: registerLoggingCallback('moduleDone'),
+	moduleDone: registerLoggingCallback('moduleDone')
 });
 
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
