@@ -122,7 +122,7 @@ Test.prototype = {
 		}
 	},
 	finish: function() {
-		if (this.expected !== undefined && this.expected !== null && this.expected != this.assertions.length ) {
+		if ( this.expected != null && this.expected != this.assertions.length ) {
 			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
 		}
 
