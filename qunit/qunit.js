@@ -21,7 +21,9 @@ var defined = {
 	})()
 };
 
-var testId = 0;
+var	testId = 0,
+	toString = Object.prototype.toString,
+	hasOwn = Object.prototype.hasOwnProperty;
 
 var Test = function(name, testName, expected, testEnvironmentArg, async, callback) {
 	this.name = name;
@@ -607,8 +609,7 @@ extend(QUnit, {
 				return "null";
 		}
 
-		var type = Object.prototype.toString.call( obj )
-			.match(/^\[object\s(.*)\]$/)[1] || '';
+		var type = toString.call( obj ).match(/^\[object\s(.*)\]$/)[1] || '';
 
 		switch (type) {
 				case 'Number':
@@ -670,6 +671,9 @@ extend(QUnit, {
 		var querystring = "?",
 			key;
 		for ( key in params ) {
+			if ( !hasOwn.call( params, key ) ) {
+				continue;
+			}
 			querystring += encodeURIComponent( key ) + "=" +
 				encodeURIComponent( params[ key ] ) + "&";
 		}
@@ -925,6 +929,9 @@ function saveGlobal() {
 
 	if ( config.noglobals ) {
 		for ( var key in window ) {
+			if ( !hasOwn.call( window, key ) ) {
+				continue;
+			}
 			config.pollution.push( key );
 		}
 	}
@@ -1450,6 +1457,9 @@ QUnit.diff = (function() {
 		}
 
 		for (var i in ns) {
+			if ( !hasOwn.call( ns, i ) ) {
+				continue;
+			}
 			if (ns[i].rows.length == 1 && typeof(os[i]) != "undefined" && os[i].rows.length == 1) {
 				n[ns[i].rows[0]] = {
 					text: n[ns[i].rows[0]],
