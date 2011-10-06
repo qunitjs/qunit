@@ -1,7 +1,7 @@
 {
 	"name": "qunit",
 	"author": "The jQuery Project",
-	"version": "1.0.0pre",
+	"version": "1.0.0",
 	"contributors": [
 	{
 		"name": "John Resig",
