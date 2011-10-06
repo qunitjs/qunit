@@ -1,6 +1,7 @@
 {
 	"name": "qunit",
 	"author": "The jQuery Project",
+	"version": "1.0.0pre",
 	"contributors": [
 	{
 		"name": "John Resig",
@@ -14,7 +15,7 @@
 	}],
 	"url": "http://docs.jquery.com/QUnit",
 	"repositories"	: [{
-		"type": "git", 
+		"type": "git",
 		"url": "https://github.com/jquery/qunit.git"
 	}],
 	"license": {
