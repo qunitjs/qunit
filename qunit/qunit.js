@@ -1268,7 +1268,9 @@ QUnit.jsDump = (function() {
 				type = "document";
 			} else if (obj.nodeType) {
 				type = "node";
-			} else if (typeof obj === "object" && typeof obj.length === "number" && obj.length >= 0) {
+			} else if (Object.prototype.toString.call( obj ) == "[object Array]") {
+				type = "array";
+			} else if (Object.prototype.toString.call( obj ) == "[object NodeList]") {
 				type = "array";
 			} else {
 				type = typeof obj;
