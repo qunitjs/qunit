@@ -93,6 +93,7 @@ Test.prototype = {
 		}
 	},
 	run: function() {
+		config.current = this;
 		if ( this.async ) {
 			QUnit.stop();
 		}
@@ -116,6 +117,7 @@ Test.prototype = {
 		}
 	},
 	teardown: function() {
+		config.current = this;
 		try {
 			this.testEnvironment.teardown.call(this.testEnvironment);
 			checkPollution();
@@ -124,6 +126,7 @@ Test.prototype = {
 		}
 	},
 	finish: function() {
+		config.current = this;
 		if ( this.expected != null && this.expected != this.assertions.length ) {
 			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
 		}
@@ -247,7 +250,7 @@ Test.prototype = {
 		if (bad) {
 			run();
 		} else {
-			synchronize(run);
+			synchronize(run, true);
 		};
 	}
 
@@ -412,11 +415,11 @@ var QUnit = {
 				}
 
 				config.blocking = false;
-				process();
+				process(true);
 			}, 13);
 		} else {
 			config.blocking = false;
-			process();
+			process(true);
 		}
 	},
 
@@ -900,26 +903,28 @@ function escapeInnerText(s) {
 	});
 }
 
-function synchronize( callback ) {
+function synchronize( callback, last ) {
 	config.queue.push( callback );
 
 	if ( config.autorun && !config.blocking ) {
-		process();
+		process(last);
 	}
 }
 
-function process() {
+function process(last) {
 	var start = (new Date()).getTime();
+	config.depth = config.depth ? config.depth+1 : 1;
 
 	while ( config.queue.length && !config.blocking ) {
 		if ( config.updateRate <= 0 || (((new Date()).getTime() - start) < config.updateRate) ) {
 			config.queue.shift()();
 		} else {
-			window.setTimeout( process, 13 );
+			window.setTimeout( function(){process(last)}, 13 );
 			break;
 		}
 	}
-	if (!config.blocking && !config.queue.length) {
+	config.depth--;
+	if (last && !config.blocking && !config.queue.length && config.depth === 0) {
 		done();
 	}
 }
