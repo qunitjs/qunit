@@ -264,7 +264,7 @@ var QUnit = {
 	asyncTest: function(testName, expected, callback) {
 		if ( arguments.length === 2 ) {
 			callback = expected;
-			expected = 0;
+			expected = null;
 		}
 
 		QUnit.test(testName, expected, callback, true);
