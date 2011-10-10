@@ -916,7 +916,7 @@ function process(last) {
 	config.depth = config.depth ? config.depth+1 : 1;
 
 	while ( config.queue.length && !config.blocking ) {
-		if ( config.updateRate <= 0 || ( ( new Date().getTime() - start ) < config.updateRate ) ) {
+		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( new Date().getTime() - start ) < config.updateRate ) ) {
 			config.queue.shift()();
 		} else {
 			window.setTimeout( function(){
