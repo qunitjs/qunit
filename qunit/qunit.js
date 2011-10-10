@@ -911,9 +911,9 @@ function synchronize( callback, last ) {
 	}
 }
 
-function process(last) {
-	var start = (new Date()).getTime();
-	config.depth = config.depth ? config.depth+1 : 1;
+function process( last ) {
+	var start = new Date().getTime();
+	config.depth = config.depth ? config.depth + 1 : 1;
 
 	while ( config.queue.length && !config.blocking ) {
 		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( new Date().getTime() - start ) < config.updateRate ) ) {
