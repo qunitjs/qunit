@@ -13,7 +13,7 @@ if (typeof require != "undefined") {
     QUnit.config.updateRate = 0;
 
     var current_test_assertions = [];
-    QUnit.testDone = function(result) {
+    QUnit.testDone(function(result) {
 		if (result.failed) {
 		    print("\u001B[31m✖ " + result.name);
 		    for (var i = 0; i < current_test_assertions.length; i++) {
@@ -24,9 +24,9 @@ if (typeof require != "undefined") {
 		    print("✔ " + result.name);
 		}
 		current_test_assertions = [];
-    };
+    });
 
-	QUnit.log = function(details) {
+	QUnit.log(function(details) {
 		if (details.result)
 			return;
 		var response = details.message || "";
@@ -43,14 +43,14 @@ if (typeof require != "undefined") {
 		}
 		*/
 		current_test_assertions.push("Failed assertion: " + response);
-    };
+    });
 
-    QUnit.done = function(result) {
+    QUnit.done(function(result) {
 		print("------------------------------------");
 		print(" PASS: " + result.passed + "  FAIL: " + result.failed + "  TOTAL: " + result.total);
 		print(" Finished in " + result.runtime + " milliseconds.");
 		print("------------------------------------");
-    };
+    });
 
 })();
 
