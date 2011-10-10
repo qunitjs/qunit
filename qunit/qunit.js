@@ -1282,9 +1282,12 @@ QUnit.jsDump = (function() {
 				type = "document";
 			} else if (obj.nodeType) {
 				type = "node";
-			} else if (toString.call( obj ) === "[object Array]") {
-				type = "array";
-			} else if (toString.call( obj ) === "[object NodeList]") {
+			} else if (
+				// native arrays
+				toString.call( obj ) === "[object Array]" ||
+				// NodeList objects
+				( typeof obj.length === "number" && typeof obj.item !== "undefined" && ( obj.length ? obj.item(0) === obj[0] : ( obj.item( 0 ) === null && typeof obj[0] === "undefined" ) ) )
+			) {
 				type = "array";
 			} else {
 				type = typeof obj;
