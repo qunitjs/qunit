@@ -24,6 +24,7 @@ test("module with setup", function() {
 	ok(true);
 });
 
+
 test("module with setup, expect in test call", 2, function() {
 	ok(true);
 });
@@ -477,21 +478,21 @@ function testAfterDone(){
 	function secondAfterDoneTest(){
 		QUnit.config.done = [];
 		//QUnit.done = function(){};
-		//because when this does happen, the assertion count parameter doesn't actually 
+		//because when this does happen, the assertion count parameter doesn't actually
 		//work we use this test to check the assertion count.
 		module("check previous test's assertion counts");
 		test('count previous two test\'s assertions', function(){
 			var spans = document.getElementsByTagName('span'),
 			tests = [],
 			countNodes;
-		
+
 			//find these two tests
 			for (var i = 0; i < spans.length; i++) {
 				if (spans[i].innerHTML.indexOf(testName) !== -1) {
 					tests.push(spans[i]);
 				}
 			}
-		
+
 			//walk dom to counts
 			countNodes = tests[0].nextSibling.nextSibling.getElementsByTagName('b');
 			equal(countNodes[1].innerHTML, "99");
@@ -501,7 +502,7 @@ function testAfterDone(){
 	}
 	QUnit.config.done = [];
 	QUnit.done(secondAfterDoneTest);
-	
+
 	module("Synchronous test after load of page");
 
 	asyncTest('Async test', function(){
@@ -510,13 +511,13 @@ function testAfterDone(){
 			ok(i);
 		}
 	});
-		
+
 	test(testName, 99, function(){
 		for (i=1;i<100;i++) {
 			ok(i);
 		}
 	});
-	
+
 	//we need two of these types of tests in order to ensure that assertions
 	//don't move between tests.
 	test(testName + ' 2', 99, function(){
@@ -524,7 +525,7 @@ function testAfterDone(){
 			ok(i);
 		}
 	});
-	
+
 
 }
 
