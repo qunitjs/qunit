@@ -1,4 +1,30 @@
 
+1.1.0 / 2011-10-11
+==================
+
+  * Fixes #134 - Add a window.onerror handler. Makes uncaught errors actually fail the testsuite, instead of going by unnoticed.
+  * Whitespace cleanup
+  * Merge remote branch 'trevorparscal/master'
+  * Fixed IE compatibility issues with using toString on NodeList objects, which in some browsers results in [object Object] rather than [object NodeList]. Now using duck typing for NodeList objects based on the presence of length, length being a number, presence of item method (which will be typeof string in IE and function in others, so we just check that it's not undefined) and that item(0) returns the same value as [0], unless it's empty, in which case item(0) will return 0, while [0] would return undefined. Tested in IE6, IE8, Firefox 6, Safari 5 and Chrome 16.
+  * Update readme with basic notes on releases
+  * More whitespace/parens cleanup
+  * Check if setTimeout is available before trying to delay running the next task. Fixes #160
+  * Whitespace/formatting fix, remove unnecessary parens
+  * Use alias for Object.prototype.toString
+  * Merge remote branch 'trevorparscal/master'
+  * Merge remote branch 'wwalser/recursionBug'
+  * Default 'expected' to null in asyncTest(), same as in test() itself.
+  * Whitespace cleanup
+  * Merge remote branch 'mmchaney/master'
+  * Merge remote branch 'Krinkle/master'
+  * Using === instead of ==
+  * Added more strict array type detection for dump output, and allowed NodeList objects to be output as arrays
+  * Bump post-release version
+  * Fixes a bug where after an async test, assertions could move between test cases because of internal state (config.current) being incorrectly set
+  * Simplified check for assertion count and adjusted whitespace
+  * Redo of fixing issue #156 (Support Object.prototype extending environment). * QUnit.diff: Throws exception without this if Object.prototype is set (Property 'length' of undefined. Since Object.prototype.foo doesn't have a property 'rows') * QUnit.url: Without this fix, if Object.prototype.foo is set, the url will be set to ?foo=...&the=rest. * saveGlobals: Without this fix, whenever a member is added to Object.prototype, saveGlobals will think it was a global variable in this loop. --- This time using the call method instead of obj.hasOwnProperty(key), which may fail if the object has that as it's own property (touché!).
+  * Handle expect(0) as expected, i.e. expect(0); ok(true, foo); will cause a test to fail
+
 1.0.0 / 2011-10-06
 ==================
 
