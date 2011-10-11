@@ -789,6 +789,17 @@ QUnit.load = function() {
 
 addEvent(window, "load", QUnit.load);
 
+// addEvent(window, "error") gives us a useless event object
+window.onerror = function( message, file, line ) {
+	if ( QUnit.config.current ) {
+		ok( false, message + ", " + file + ":" + line );
+	} else {
+		test( "global failure", function() {
+			ok( false, message + ", " + file + ":" + line );
+		});
+	}
+};
+
 function done() {
 	config.autorun = true;
 
