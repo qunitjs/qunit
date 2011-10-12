@@ -521,7 +521,7 @@ function testAfterDone(){
 	//we need two of these types of tests in order to ensure that assertions
 	//don't move between tests.
 	test(testName + ' 2', 99, function(){
-		for (i=1;i<100;i++) {
+		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
 	});
