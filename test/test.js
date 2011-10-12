@@ -461,16 +461,6 @@ test('Circular reference - test reported by soniciq in #105', function() {
 	});
 })();
 
-module("noglobals", {
-	teardown: function() {
-		delete window.badGlobalVariableIntroducedInTest;
-	}
-});
-test("let teardown clean up globals", function() {
-	// this test will always pass if run without ?noglobals=true
-	window.badGlobalVariableIntroducedInTest = true;
-});
-
 if (typeof setTimeout !== 'undefined') {
 function testAfterDone(){
 	var testName = "ensure has correct number of assertions";
