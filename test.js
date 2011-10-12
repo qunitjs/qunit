@@ -60,7 +60,7 @@ function addLogging() {
     var i;
 
     if (result.failed) {
-      console.log('\u2716 ' + name);
+      console.log('Assertion Failed: ' + name);
 
       for (i = 0; i < current_test_assertions.length; i++) {
         console.log('    ' + current_test_assertions[i]);
@@ -91,7 +91,7 @@ function addLogging() {
   };
 
   QUnit.done = function(result){
-    console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. \u2714 ' + result.passed + ' \u2716 ' + result.failed + ' ');
+    console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
     window.qunitDone = result;
   };
 }
