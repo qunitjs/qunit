@@ -22,3 +22,16 @@ with it's stop/start facilities for testing asynchronous code.
 If you are interested in helping developing QUnit, you are in the right place.
 For related discussions, visit the
 [QUnit and Testing forum](http://forum.jquery.com/qunit-and-testing).
+
+Planning for a qunitjs.com site and other testing tools related work now happens
+on the [jQuery Testing Team planning wiki](http://jquerytesting.pbworks.com/w/page/41556026/FrontPage).
+
+Releases
+--------
+
+Install git-extras and run `git changelog` to update History.md.
+Update qunit/qunit.js|css to the release version, commit and tag, update them
+again to the next version, commit and push commits and tags.
+
+Put the 'v' in front of the tag (unlike the 1.1.0 release). Clean up the changelog,
+removing merge commits or whitespace cleanups.
