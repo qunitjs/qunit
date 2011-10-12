@@ -507,13 +507,13 @@ function testAfterDone(){
 
 	asyncTest('Async test', function(){
 		start();
-		for (i=1;i<100;i++) {
+		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
 	});
 
 	test(testName, 99, function(){
-		for (i=1;i<100;i++) {
+		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
 	});
