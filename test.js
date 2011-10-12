@@ -60,13 +60,11 @@ function addLogging() {
     var i;
 
     if (result.failed) {
-      console.log('\u001B[31m✖ ' + name);
+      console.log('\u2716 ' + name);
 
       for (i = 0; i < current_test_assertions.length; i++) {
         console.log('    ' + current_test_assertions[i]);
       }
-
-      console.log('\u001B[39m');
     }
 
     current_test_assertions = [];
@@ -93,7 +91,7 @@ function addLogging() {
   };
 
   QUnit.done = function(result){
-    console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. \u001B[32m✔ ' + result.passed + '\u001B[39m \u001B[31m✖ ' + result.failed + '\u001B[39m ');
+    console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. \u2714 ' + result.passed + ' \u2716 ' + result.failed + ' ');
     window.qunitDone = result;
   };
 }
