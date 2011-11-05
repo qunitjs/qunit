@@ -51,11 +51,11 @@ function addLogging() {
   var current_test_assertions = [];
   var module;
 
-  QUnit.moduleStart = function(context) {
+  QUnit.moduleStart(function(context) {
     module = context.name;
-  };
+  });
 
-  QUnit.testDone = function(result) {
+  QUnit.testDone(function(result) {
     var name = module + ': ' + result.name;
     var i;
 
@@ -68,9 +68,9 @@ function addLogging() {
     }
 
     current_test_assertions = [];
-  };
+  });
 
-  QUnit.log = function(details) {
+  QUnit.log(function(details) {
     var response;
 
     if (details.result) {
@@ -88,10 +88,10 @@ function addLogging() {
     }
 
     current_test_assertions.push('Failed assertion: ' + response);
-  };
+  });
 
-  QUnit.done = function(result){
+  QUnit.done(function(result){
     console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
     window.qunitDone = result;
-  };
+  });
 }
