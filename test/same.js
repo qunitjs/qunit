@@ -139,13 +139,13 @@ test("Objects Basics.", function() {
 
     // Objects with no prototype, created via Object.create(null), are used e.g. as dictionaries.
     // Being able to test equivalence against object literals is quite useful.
-    if (Object.create) {
-        equals(QUnit.equiv(Object.create(null), {}), true, "empty object with no prototype VS empty object");
+    if (typeof Object.create === 'function') {
+        equals(QUnit.equiv(Object.create(null), {}), true, "empty object without prototype VS empty object");
 
         var nonEmptyWithNoProto = Object.create(null);
         nonEmptyWithNoProto.foo = "bar";
 
-        equals(QUnit.equiv(nonEmptyWithNoProto, { foo: "bar" }), true, "nonempty object with no prototype VS empty object");
+        equals(QUnit.equiv(nonEmptyWithNoProto, { foo: "bar" }), true, "object without prototype VS object");
     }
 });
 
