@@ -22,8 +22,7 @@ var defined = {
 };
 
 var	testId = 0,
-	toString = Object.prototype.toString,
-	hasOwn = Object.prototype.hasOwnProperty;
+	toString = Object.prototype.toString;
 
 var Test = function(name, testName, expected, testEnvironmentArg, async, callback) {
 	this.name = name;
@@ -672,6 +671,7 @@ extend(QUnit, {
 	url: function( params ) {
 		params = extend( extend( {}, QUnit.urlParams ), params );
 		var querystring = "?",
+			hasOwn = QUnit.hasOwnProperty,
 			key;
 		for ( key in params ) {
 			if ( !hasOwn.call( params, key ) ) {
@@ -943,6 +943,7 @@ function process( last ) {
 }
 
 function saveGlobal() {
+	var hasOwn = QUnit.hasOwnProperty;
 	config.pollution = [];
 
 	if ( config.noglobals ) {
