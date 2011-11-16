@@ -729,6 +729,7 @@ QUnit.load = function() {
 	config.blocking = false;
 
 	var urlConfigHtml = '', len = config.urlConfig.length;
+	urlConfigHtml += '<a href="' + QUnit.url() + '">(Rerun)</a>';
 	for ( var i = 0, val; i < len, val = config.urlConfig[i]; i++ ) {
 		config[val] = QUnit.urlParams[val];
 		urlConfigHtml += '<label><input name="' + val + '" type="checkbox"' + ( config[val] ? ' checked="checked"' : '' ) + '>' + val + '</label>';
