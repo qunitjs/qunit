@@ -260,11 +260,27 @@ var QUnit = {
 
 	// call on start of module test to prepend name to all tests
 	module: function(name, testEnvironment) {
+		/// <summary>
+		///     &#10;Separate tests into modules.
+		///     &#10;Packaging tests into modules is a matter of calling this with the module name before adding the tests. All tests that follow get the name of this module prepended. Call again to change to a different module. 
+		///     &#10;The "this"-scope of each test is the same as for setup and teardown. You can use that to create test data in setup that is accessed in each test in that module. It'll get reset for each test, and you can use teardown for manual cleanup. That allows tests to have a common setup in their setup methods without using some global state which goes especially handy with the ?noglobals option to detect such violations.
+		/// </summary>
+		///	<param name="name" type="String">The name of the module</param>
+		///	<param name="testEnvironment" type="Object">setup and teardown callbacks to run before and after each test in this module. Calling module() again with callbacks resets them.</param>
+
 		config.currentModule = name;
 		config.currentModuleTestEnviroment = testEnvironment;
 	},
 
 	asyncTest: function(testName, expected, callback) {
+		/// <summary>
+		///     &#10;Add an asynchronous test to run. The test must include a call to start().
+		///     &#10;Asynchronous tests added are queued and run one after the other. Equivalent to calling a normal test() and immediately calling stop().
+		/// </summary>
+		///	<param name="testName" type="String">The name of the test.</param>
+		///	<param name="expected" type="Number">(Optional) How many assertions are expected to run.</param>
+		///	<param name="callback" type="Function">The actual testing code to run, should include at least one assertion.</param>
+			
 		if ( arguments.length === 2 ) {
 			callback = expected;
 			expected = null;
@@ -274,6 +290,15 @@ var QUnit = {
 	},
 
 	test: function(testName, expected, callback, async) {
+		/// <summary>
+		///     &#10;Add a test to run. Tests added are queued and run one after the other.
+		///     &#10;Note: There are several overloads for this method:
+		///     &#10;You can call test(testName, callback, async) or test(testName, testEnvironment, callback, async)
+		/// </summary>
+		///	<param name="testName" type="String">The name of the test.</param>
+		///	<param name="expected" type="Number">(Optional) How many assertions are expected to run.</param>
+		///	<param name="callback" type="Function">The actual testing code to run, should include at least one assertion.</param>
+			
 		var name = '<span class="test-name">' + testName + '</span>', testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
@@ -304,6 +329,12 @@ var QUnit = {
 	 * Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
 	 */
 	expect: function(asserts) {
+		/// <summary>
+		///     &#10;Specify how many assertions are expected to run within a test.
+		///     &#10;Most useful when testing async code, where a failure usually prevents assertions to run at all.
+		/// </summary>
+		///	<param name="asserts" type="Integer">The number of assertions you expect to run.</param>
+	
 		config.current.expected = asserts;
 	},
 
@@ -311,17 +342,23 @@ var QUnit = {
 	 * Asserts true.
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
-	ok: function(a, msg) {
-		a = !!a;
+	ok: function (state, message) {
+		/// <summary>
+		///     &#10;A boolean assertion, equivalent to JUnit's assertTrue. Passes if the first argument is truthy.
+		/// </summary>
+		///	<param name="state" type="Boolean">A boolean expression, can be a boolean or any other type, its boolean default is evaluated.</param>
+		///	<param name="message" type="String">A message to output with the assertion result.</param>
+
+		state = !!state;
 		var details = {
-			result: a,
-			message: msg
+			result: state,
+			message: message
 		};
-		msg = escapeInnerText(msg);
-		runLoggingCallbacks( 'log', QUnit, details );
+		message = escapeInnerText(message);
+		runLoggingCallbacks('log', QUnit, details);
 		config.current.assertions.push({
-			result: a,
-			message: msg
+			result: state,
+			message: message
 		});
 	},
 
@@ -338,30 +375,89 @@ var QUnit = {
 	 * @param String message (optional)
 	 */
 	equal: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A comparison assertion, equivalent to JUnit's assertEquals.
+        ///     &#10;Similar to ok(), but outputs both actual and expected values, making debugging much easier. Whenever you compare non-boolean values, use this instead of ok. While the test is equivalent to JUnit's assertEquals, the order of arguments differs from JUnit.
+        ///     &#10;Passes if actual == expected.
+        ///     &#10;Migration note: This method was named "equals", which is now deprecated, after adopting CommonJS naming convetions.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+		
 		QUnit.push(expected == actual, actual, expected, message);
 	},
 
 	notEqual: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A comparison assertion, equivalent to JUnit's assertNotEquals.
+        ///     &#10;Similar to equal, inverting the result. Passes if actual != expected.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+	
 		QUnit.push(expected != actual, actual, expected, message);
 	},
 
 	deepEqual: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A deep recursive comparison assertion, working on primitive types, arrays and objects.
+        ///     &#10;Similar to equal, compares the content given objects. Its also more strict than equal: Comparisons are done using ===. 
+        ///     &#10;Migration note: This method was named "same", which is now deprecated, after adopting CommonJS naming convetions.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+
 		QUnit.push(QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
 	notDeepEqual: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A deep recursive comparison assertion, working on primitive types, arrays and objects, with the result inverted, passing when some property isn't equal.
+        ///     &#10;Similar to deepEqual, inverting the result.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+	
 		QUnit.push(!QUnit.equiv(actual, expected), actual, expected, message);
 	},
 
 	strictEqual: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A stricter comparison assertion then equal.
+        ///     &#10;Similar to equal(), but passes only when arguments have the same type. Passes if actual === expected.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+	
 		QUnit.push(expected === actual, actual, expected, message);
 	},
 
 	notStrictEqual: function(actual, expected, message) {
+		/// <summary>
+        ///     &#10;A stricter comparison assertion then notEqual.
+        ///     &#10;Similar to notEqual(), but passes only when arguments have the same type. Passes if actual !== expected.
+        /// </summary>
+        ///	<param name="actual" type="Object">The actual result.</param>
+        ///	<param name="expected" type="Object">The expected result.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+	
 		QUnit.push(expected !== actual, actual, expected, message);
 	},
 
 	raises: function(block, expected, message) {
+		/// <summary>
+        ///     &#10;Assertion to test if a callback throws an exception when run.
+        ///     &#10;Doesn't do any check for the type of exception or message (may be added in the future, when a good API is found). Currently just executes the callback argument, then calling ok(false) when no exception is thrown, otherwise calling ok(true), in the try-block.
+        /// </summary>
+        ///	<param name="block" type="Function">Callback to execute, expecting it to throw an exception. Gets called with default scope (window) and no arguments.</param>
+        ///	<param name="expected" type="Function">(Optional) Can be a regex to test the thrown exception. Can be a constructor function, tested with instanceof against the exception. Can be a callback - called with the exception as the first argument, return true for a valid exception.</param>
+        ///	<param name="message" type="String">A message to display with the assertion result.</param>
+	
 		var actual, ok = false;
 
 		if (typeof expected === 'string') {
@@ -394,8 +490,14 @@ var QUnit = {
 		QUnit.ok(ok, message);
 	},
 
-	start: function(count) {
-		config.semaphore -= count || 1;
+	start: function(decrement) {
+		/// <summary>
+        ///     &#10;Start running tests again after the testrunner was stopped. See stop().
+        ///     &#10;The optional decrement argument has the same semantics as the argument to stop().
+        /// </summary>
+        ///	<param name="decrement" type="Integer">Optional argument to decrement the semaphore the given times.</param>
+	
+		config.semaphore -= decrement || 1;
 		if (config.semaphore > 0) {
 			// don't start until equal number of stop-calls
 			return;
@@ -423,8 +525,16 @@ var QUnit = {
 		}
 	},
 
-	stop: function(count) {
-		config.semaphore += count || 1;
+	stop: function(increment) {
+		/// <summary>
+		///     &#10;Stop the testrunner to wait for async tests to run. Call start() to continue.
+		///     &#10;The optional argument allows you to compress multiple stop() calls into one, e.g. stop(2) has the same effect as stop(); stop().
+		///     &#10;Note: This used to be the timeout argument, which was never recommended for use in non-debugging code. If you need a global timeout, set QUnit.config.testTimeout instead.
+		///     &#10;On Blackberry 5.0, window.stop is a native read-only function. If you deal with that browser, use QUnit.stop() instead, which will work anywhere.
+		/// </summary>
+		///	<param name="increment" type="Integer">Optional argument to increment the stop-semaphore the given times.</param>
+
+		config.semaphore += increment || 1;
 		config.blocking = true;
 
 		if ( config.testTimeout && defined.setTimeout ) {
@@ -523,6 +633,11 @@ extend(QUnit, {
 
 	// Initialize the configuration options
 	init: function() {
+		/// <summary>
+        ///     &#10;Initialize the test runner (if the runner has already run it'll be re-initialized, effectively resetting it). This method does not need to be called in the normal use of QUnit.
+        ///     &#10;This is useful for being able to use the test runner for multiple batches of dynamically-loaded tests (load a batch of tests, get the results, re-init, load a new batch, etc.).
+        /// </summary>
+	
 		extend(config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
@@ -567,6 +682,11 @@ extend(QUnit, {
 	 * If jQuery is available, uses jQuery's html(), otherwise just innerHTML.
 	 */
 	reset: function() {
+		/// <summary>
+		///     &#10;Automatically called by QUnit after each test. Can be called by test code, though usually its better to seperate test code with multiple calls to test().
+		///     &#10;When QUnit is run in a browser, it looks for #main (deprecreated, but still supported) or #qunit-fixture elements. If found, it'll store the contained markup before running any test, then restoring that markup after each test. If tests manipulate elements only within one of those elements, they won't affect each other. Currently this depends on jQuery being loaded, as jQuery's .html() method is used for cleanup. Just using .innerHTML isn't enough here.
+		/// </summary>
+	
 		if ( window.jQuery ) {
 			jQuery( "#qunit-fixture" ).html( config.fixture );
 		} else {
