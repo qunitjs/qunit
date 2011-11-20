@@ -354,7 +354,7 @@ var QUnit = {
 			result: state,
 			message: message
 		};
-		message = escapeInnerText(msg);
+		message = escapeInnerText(message);
 		runLoggingCallbacks('log', QUnit, details);
 		config.current.assertions.push({
 			result: state,
