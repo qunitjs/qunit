@@ -1,4 +1,17 @@
 
+1.2.0 / 2011-11-24
+==================
+
+  * remove uses of equals(), as it's deprecated in favor of equal()
+  * Code review of "Allow objects with no prototype to be tested against object literals."
+  * Allow objects with no prototype to tested against object literals.
+  * Fix IE8 "Member not found" error
+  * Using node-qunit port, the start/stop function are not exposed so we need to prefix any call to them with 'QUnit'. Aka: start() -> QUnit.start()
+  * Remove the 'let teardown clean up globals test' - IE<9 doesn't support (==buggy) deleting window properties, and that's not worth the trouble, as everything else passes just fine. Fixes #155
+  * Fix globals in test.js, part 2
+  * Fix globals in test.js. ?tell wwalser to use ?noglobals everyonce in a while
+  * Extend readme regarding release process
+
 1.1.0 / 2011-10-11
 ==================
 
