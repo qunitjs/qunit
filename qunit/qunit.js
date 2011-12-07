@@ -185,11 +185,16 @@ Test.prototype = {
 
 			addEvent(b, "dblclick", function(e) {
 				var target = e && e.target ? e.target : window.event.srcElement;
-				if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
-					target = target.parentNode;
+				var filtering;
+				if ( target.className == "module-name" ) {
+					filtering = getText([target]);
+				} else if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+					if ( target.parentNode.nodeName.toLowerCase() == "strong" ) {
+						filtering = getText([target.parentNode]);
+					}
 				}
-				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-					window.location = QUnit.url({ filter: getText([target]).replace(/\([^)]+\)$/, "").replace(/(^\s*|\s*$)/g, "") });
+				if ( window.location && filtering ) {
+					window.location = QUnit.url({ filter: filtering.replace(/\([^)]+\)$/, "").replace(/(^\s*|\s*$)/g, "") });
 				}
 			});
 
@@ -274,7 +279,7 @@ var QUnit = {
 	},
 
 	test: function(testName, expected, callback, async) {
-		var name = '<span class="test-name">' + testName + '</span>', testEnvironmentArg;
+		var name = '<span class="test-name">' + escapeInnerText(testName) + '</span>', testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -724,6 +729,7 @@ QUnit.load = function() {
 	config.blocking = false;
 
 	var urlConfigHtml = '', len = config.urlConfig.length;
+	urlConfigHtml += '<a href="' + QUnit.url() + '">(Rerun)</a>';
 	for ( var i = 0, val; i < len, val = config.urlConfig[i]; i++ ) {
 		config[val] = QUnit.urlParams[val];
 		urlConfigHtml += '<label><input name="' + val + '" type="checkbox"' + ( config[val] ? ' checked="checked"' : '' ) + '>' + val + '</label>';
@@ -989,6 +995,7 @@ function fail(message, exception, callback) {
 	if ( typeof console !== "undefined" && console.error && console.warn ) {
 		console.error(message);
 		console.error(exception);
+		console.error(exception.stack);
 		console.warn(callback.toString());
 
 	} else if ( window.opera && opera.postError ) {
