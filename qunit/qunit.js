@@ -274,7 +274,7 @@ var QUnit = {
 	},
 
 	test: function(testName, expected, callback, async) {
-		var name = '<span class="test-name">' + testName + '</span>', testEnvironmentArg;
+		var name = '<span class="test-name">' + escapeInnerText(testName) + '</span>', testEnvironmentArg;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -989,6 +989,7 @@ function fail(message, exception, callback) {
 	if ( typeof console !== "undefined" && console.error && console.warn ) {
 		console.error(message);
 		console.error(exception);
+		console.error(exception.stack);
 		console.warn(callback.toString());
 
 	} else if ( window.opera && opera.postError ) {
