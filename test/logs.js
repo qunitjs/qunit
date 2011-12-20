@@ -151,3 +151,30 @@ test("test2", 8, function() {
 
 	equal(log, 39);
 });
+
+var testAutorun = true;
+
+QUnit.done(function() {
+
+	if (!testAutorun) {
+		return;
+	}
+
+	testAutorun = false;
+
+	module("autorun");
+
+	test("reset", function() {});
+
+	moduleStart = moduleDone = 0;
+
+	test("first", function(){
+		equal(moduleStart, 1, "test started");
+		equal(moduleDone, 0, "test in progress");
+	});
+
+	test("second", function(){
+		equal(moduleStart, 2, "test started");
+		equal(moduleDone, 1, "test in progress");
+	});
+});
