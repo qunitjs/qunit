@@ -62,6 +62,10 @@ Test.prototype = {
 			runLoggingCallbacks( 'moduleStart', QUnit, {
 				name: this.module
 			} );
+		} else if (config.autorun) {
+			runLoggingCallbacks( 'moduleStart', QUnit, {
+				name: this.module
+			} );
 		}
 
 		config.current = this;
