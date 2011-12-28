@@ -54,6 +54,10 @@
 	color: #fff;
 }
 
+#qunit-header label {
+	display: inline-block;
+}
+
 #qunit-banner {
 	height: 5px;
 }
