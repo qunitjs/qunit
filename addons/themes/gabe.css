@@ -59,6 +59,7 @@ h2 #qunit-tests, h2 #qunit-testrunner-toolbar, h2 #qunit-userAgent, #qunit-testr
     color:#6BC9ED;
     float:right;
     font-family:Arial, 'sans-serif';
+    display: inline-block;
 }
 
 #qunit-header a + label:after {

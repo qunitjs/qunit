@@ -50,6 +50,10 @@
 	color: #fff;
 }
 
+#qunit-header label {
+	display: inline-block;
+}
+
 #qunit-banner.qunit-pass {
 	height: 3px;
 }
