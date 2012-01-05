@@ -33,6 +33,7 @@ var Test = function(name, testName, expected, testEnvironmentArg, async, callbac
 	this.async = async;
 	this.callback = callback;
 	this.assertions = [];
+    this.warnings = [];
 };
 Test.prototype = {
 	init: function() {
@@ -58,7 +59,7 @@ Test.prototype = {
 				} );
 			}
 			config.previousModule = this.module;
-			config.moduleStats = { all: 0, bad: 0 };
+			config.moduleStats = { all: 0, bad: 0, warn: 0 };
 			runLoggingCallbacks( 'moduleStart', QUnit, {
 				name: this.module
 			} );
@@ -156,6 +157,17 @@ Test.prototype = {
 					config.moduleStats.bad++;
 				}
 			}
+            
+            for (i = 0; i < this.warnings.length; i++ ) {
+                var warning = this.warnings[i];
+                
+                var li = document.createElement("li");
+                li.className = "warn";
+                li.innerHTML = warning.message || "warning";
+                ol.appendChild( li );
+                config.stats.warn++;
+                config.moduleStats.warn++;
+            }
 
 			// store result when possible
 			if ( QUnit.config.reorder && defined.sessionStorage ) {
@@ -171,7 +183,7 @@ Test.prototype = {
 			}
 
 			var b = document.createElement("strong");
-			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
+			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, <b class='warnings'>" + this.warnings.length + "</b>, " + this.assertions.length + ")</b>";
 
 			var a = document.createElement("a");
 			a.innerHTML = "Rerun";
@@ -194,7 +206,7 @@ Test.prototype = {
 			});
 
 			var li = id(this.id);
-			li.className = bad ? "fail" : "pass";
+			li.className = bad ? "fail" : (this.warnings.length ? "warning" : "pass");
 			li.removeChild( li.firstChild );
 			li.appendChild( b );
 			li.appendChild( a );
@@ -435,7 +447,13 @@ var QUnit = {
 				QUnit.start();
 			}, config.testTimeout);
 		}
-	}
+	},
+
+    warn: function (msg) {
+        config.current.warnings.push({
+            message: msg
+        });
+    }
 };
 
 //We want access to the constructor's prototype
@@ -524,8 +542,8 @@ extend(QUnit, {
 	// Initialize the configuration options
 	init: function() {
 		extend(config, {
-			stats: { all: 0, bad: 0 },
-			moduleStats: { all: 0, bad: 0 },
+			stats: { all: 0, bad: 0, warn: 0 },
+			moduleStats: { all: 0, bad: 0, warn: 0 },
 			started: +new Date,
 			updateRate: 1000,
 			blocking: false,
@@ -827,11 +845,13 @@ function done() {
 			config.stats.all,
 			'</span> passed, <span class="failed">',
 			config.stats.bad,
-			'</span> failed.'
+			'</span> failed, <span class="warned">',
+			config.stats.warn,
+			'</span> warned.'
 		].join('');
 
 	if ( banner ) {
-		banner.className = (config.stats.bad ? "qunit-fail" : "qunit-pass");
+		banner.className = (config.stats.bad ? "qunit-fail" : (config.stats.warn ? "qunit-warning" : "qunit-pass"));
 	}
 
 	if ( tests ) {

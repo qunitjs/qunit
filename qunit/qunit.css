@@ -155,6 +155,7 @@
 #qunit-tests b.counts                       { color: black; }
 #qunit-tests b.passed                       { color: #5E740B; }
 #qunit-tests b.failed                       { color: #710909; }
+#qunit-tests b.warnings                     { color: #97970F; }
 
 #qunit-tests li li {
 	margin: 0.5em;
@@ -205,6 +206,16 @@
 
 #qunit-banner.qunit-fail                    { background-color: #EE5757; }
 
+/*** Warning styles */
+
+#qunit-tests li li.warning {
+	color: #97970F;
+	background-color: #fff;
+	border-left: 26px solid #EEDD57;
+	white-space: pre;
+}
+#qunit-tests .warning                          { color: #000000; background-color: #EEDD57; }
+#qunit-banner.qunit-warning                    { background-color: #EEDD57; }
 
 /** Result */
 
