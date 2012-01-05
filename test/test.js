@@ -1,7 +1,3 @@
-test("warning thrown", function () {
-    warn("this is a warning");
-});
-
 test("module without setup/teardown (default)", function() {
 	expect(1);
 	ok(true);
