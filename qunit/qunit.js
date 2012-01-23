@@ -10,15 +10,28 @@
 
 (function(window) {
 
+var cachedStorage;
+
 var defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
 	sessionStorage: (function() {
-		try {
-			return !!sessionStorage.getItem;
-		} catch(e) {
-			return false;
-		}
-	})()
+	var key = '__sessionstorage__';
+	var value = key;
+
+	if (cachedStorage !== undefined) {
+		return cachedStorage;
+	}
+
+	try {
+		sessionStorage.setItem(key, value);
+		sessionStorage.removeItem(key);
+		cachedStorage = true;
+	} catch (exc) {
+		cachedStorage = false;
+	}
+
+	return cachedStorage;
+  })()
 };
 
 var	testId = 0,
