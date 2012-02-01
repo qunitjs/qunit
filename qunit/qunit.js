@@ -564,15 +564,15 @@ extend(QUnit, {
 	/**
 	 * Resets the test setup. Useful for tests that modify the DOM.
 	 *
-	 * If jQuery is available, uses jQuery's html(), otherwise just innerHTML.
+	 * If jQuery is available, uses jQuery's replaceWith(), otherwise use replaceChild
 	 */
 	reset: function() {
 		if ( window.jQuery ) {
-			jQuery( "#qunit-fixture" ).html( config.fixture );
-		} else {
-			var main = id( 'qunit-fixture' );
+			jQuery( "#qunit-fixture" ).replaceWith( config.fixture.outerHTML );
+		} else {			
+			main = id( 'qunit-fixture' );
 			if ( main ) {
-				main.innerHTML = config.fixture;
+				main.parentNode.replaceChild(config.fixture.cloneNode(true), main);
 			}
 		}
 	},
@@ -779,7 +779,7 @@ QUnit.load = function() {
 
 	var main = id('qunit-fixture');
 	if ( main ) {
-		config.fixture = main.innerHTML;
+		config.fixture = main.cloneNode(true);
 	}
 
 	if (config.autostart) {
