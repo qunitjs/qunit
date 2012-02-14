@@ -313,9 +313,11 @@ if (typeof document !== "undefined") {
 module("fixture");
 test("setup", function() {
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
+	document.getElementById("qunit-fixture").setAttribute('title','foobar');
 });
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
+	equal( document.getElementById("qunit-fixture").getAttribute('title'), null, "properties automatically reset" );
 });
 
 }
