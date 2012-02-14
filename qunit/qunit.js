@@ -450,9 +450,14 @@ var QUnit = {
 	QUnit.constructor = F;
 })();
 
-// Backwards compatibility, deprecated
-QUnit.equals = QUnit.equal;
-QUnit.same = QUnit.deepEqual;
+// deprecated; still export them to window to provide clear error messages
+// next step: remove entirely
+QUnit.equals = function() {
+	throw new Error("QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead");
+};
+QUnit.same = function() {
+	throw new Error("QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead");
+};
 
 // Maintain internal state
 var config = {
