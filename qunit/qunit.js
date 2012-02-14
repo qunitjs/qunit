@@ -1372,9 +1372,9 @@ QUnit.jsDump = (function() {
 				var ret = [ ];
 				QUnit.jsDump.up();
 				for ( var key in map ) {
-				    var val = map[key];
+					var val = map[key];
 					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
-                }
+				}
 				QUnit.jsDump.down();
 				return join( '{', ret, '}' );
 			},

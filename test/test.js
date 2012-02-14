@@ -160,16 +160,16 @@ test("sync", 2, function() {
 });
 
 test("test synchronous calls to stop", 2, function() {
-    stop();
-    setTimeout(function(){
-        ok(true, 'first');
-        start();
-        stop();
-        setTimeout(function(){
-            ok(true, 'second');
-            start();
-        }, 150);
-    }, 150);
+	stop();
+	setTimeout(function(){
+		ok(true, 'first');
+		start();
+		stop();
+		setTimeout(function(){
+			ok(true, 'second');
+			start();
+		}, 150);
+	}, 150);
 });
 }
 
@@ -336,109 +336,109 @@ module("custom assertions");
 module("recursions");
 
 function Wrap(x) {
-    this.wrap = x;
-    if (x == undefined)  this.first = true;
+	this.wrap = x;
+	if (x == undefined)  this.first = true;
 }
 
 function chainwrap(depth, first, prev) {
-    depth = depth || 0;
-    var last = prev || new Wrap();
-    first = first || last;
+	depth = depth || 0;
+	var last = prev || new Wrap();
+	first = first || last;
 
-    if (depth == 1) {
-        first.wrap = last;
-    }
-    if (depth > 1) {
-        last = chainwrap(depth-1, first, new Wrap(last));
-    }
+	if (depth == 1) {
+		first.wrap = last;
+	}
+	if (depth > 1) {
+		last = chainwrap(depth-1, first, new Wrap(last));
+	}
 
-    return last;
+	return last;
 }
 
 test("check jsDump recursion", function() {
-    expect(4);
+	expect(4);
 
-    var noref = chainwrap(0);
-    var nodump = QUnit.jsDump.parse(noref);
-    equal(nodump, '{\n  "wrap": undefined,\n  "first": true\n}');
+	var noref = chainwrap(0);
+	var nodump = QUnit.jsDump.parse(noref);
+	equal(nodump, '{\n  "wrap": undefined,\n  "first": true\n}');
 
-    var selfref = chainwrap(1);
-    var selfdump = QUnit.jsDump.parse(selfref);
-    equal(selfdump, '{\n  "wrap": recursion(-1),\n  "first": true\n}');
+	var selfref = chainwrap(1);
+	var selfdump = QUnit.jsDump.parse(selfref);
+	equal(selfdump, '{\n  "wrap": recursion(-1),\n  "first": true\n}');
 
-    var parentref = chainwrap(2);
-    var parentdump = QUnit.jsDump.parse(parentref);
-    equal(parentdump, '{\n  "wrap": {\n    "wrap": recursion(-2),\n    "first": true\n  }\n}');
+	var parentref = chainwrap(2);
+	var parentdump = QUnit.jsDump.parse(parentref);
+	equal(parentdump, '{\n  "wrap": {\n    "wrap": recursion(-2),\n    "first": true\n  }\n}');
 
-    var circref = chainwrap(10);
-    var circdump = QUnit.jsDump.parse(circref);
-    ok(new RegExp("recursion\\(-10\\)").test(circdump), "(" +circdump + ") should show -10 recursion level");
+	var circref = chainwrap(10);
+	var circdump = QUnit.jsDump.parse(circref);
+	ok(new RegExp("recursion\\(-10\\)").test(circdump), "(" +circdump + ") should show -10 recursion level");
 });
 
 test("check (deep-)equal recursion", function() {
-    var noRecursion = chainwrap(0);
-    equal(noRecursion, noRecursion, "I should be equal to me.");
-    deepEqual(noRecursion, noRecursion, "... and so in depth.");
+	var noRecursion = chainwrap(0);
+	equal(noRecursion, noRecursion, "I should be equal to me.");
+	deepEqual(noRecursion, noRecursion, "... and so in depth.");
 
-    var selfref = chainwrap(1);
-    equal(selfref, selfref, "Even so if I nest myself.");
-    deepEqual(selfref, selfref, "... into the depth.");
+	var selfref = chainwrap(1);
+	equal(selfref, selfref, "Even so if I nest myself.");
+	deepEqual(selfref, selfref, "... into the depth.");
 
-    var circref = chainwrap(10);
-    equal(circref, circref, "Or hide that through some levels of indirection.");
-    deepEqual(circref, circref, "... and checked on all levels!");
+	var circref = chainwrap(10);
+	equal(circref, circref, "Or hide that through some levels of indirection.");
+	deepEqual(circref, circref, "... and checked on all levels!");
 });
 
 
 test('Circular reference with arrays', function() {
 
-    // pure array self-ref
-    var arr = [];
-    arr.push(arr);
+	// pure array self-ref
+	var arr = [];
+	arr.push(arr);
 
-    var arrdump = QUnit.jsDump.parse(arr);
+	var arrdump = QUnit.jsDump.parse(arr);
 
-    equal(arrdump, '[\n  recursion(-1)\n]');
-    equal(arr, arr[0], 'no endless stack when trying to dump arrays with circular ref');
+	equal(arrdump, '[\n  recursion(-1)\n]');
+	equal(arr, arr[0], 'no endless stack when trying to dump arrays with circular ref');
 
 
-    // mix obj-arr circular ref
-    var obj = {};
-    var childarr = [obj];
-    obj.childarr = childarr;
+	// mix obj-arr circular ref
+	var obj = {};
+	var childarr = [obj];
+	obj.childarr = childarr;
 
-    var objdump = QUnit.jsDump.parse(obj);
-    var childarrdump = QUnit.jsDump.parse(childarr);
+	var objdump = QUnit.jsDump.parse(obj);
+	var childarrdump = QUnit.jsDump.parse(childarr);
 
-    equal(objdump, '{\n  "childarr": [\n    recursion(-2)\n  ]\n}');
-    equal(childarrdump, '[\n  {\n    "childarr": recursion(-2)\n  }\n]');
+	equal(objdump, '{\n  "childarr": [\n    recursion(-2)\n  ]\n}');
+	equal(childarrdump, '[\n  {\n    "childarr": recursion(-2)\n  }\n]');
 
-    equal(obj.childarr, childarr, 'no endless stack when trying to dump array/object mix with circular ref');
-    equal(childarr[0], obj, 'no endless stack when trying to dump array/object mix with circular ref');
+	equal(obj.childarr, childarr, 'no endless stack when trying to dump array/object mix with circular ref');
+	equal(childarr[0], obj, 'no endless stack when trying to dump array/object mix with circular ref');
 
 });
 
 
 test('Circular reference - test reported by soniciq in #105', function() {
-    var MyObject = function() {};
-    MyObject.prototype.parent = function(obj) {
-        if (obj === undefined) { return this._parent; }
-        this._parent = obj;
-    };
-    MyObject.prototype.children = function(obj) {
-        if (obj === undefined) { return this._children; }
-        this._children = obj;
-    };
+	var MyObject = function() {};
+	MyObject.prototype.parent = function(obj) {
+		if (obj === undefined) { return this._parent; }
+		this._parent = obj;
+	};
+	MyObject.prototype.children = function(obj) {
+		if (obj === undefined) { return this._children; }
+		this._children = obj;
+	};
 
-    var a = new MyObject(),
-        b = new MyObject();
+	var a = new MyObject(),
+		b = new MyObject();
 
-    var barr = [b];
-    a.children(barr);
-    b.parent(a);
+	var barr = [b];
+	a.children(barr);
+	b.parent(a);
 
-    equal(a.children(), barr);
-    deepEqual(a.children(), [b]);
+	equal(a.children(), barr);
+	deepEqual(a.children(), [b]);
 });
 
 
