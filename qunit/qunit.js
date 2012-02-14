@@ -571,8 +571,8 @@ extend(QUnit, {
 	 */
 	reset: function() {
 		if ( window.jQuery ) {
-			jQuery( "#qunit-fixture" ).replaceWith( config.fixture.outerHTML );
-		} else {			
+			jQuery( "#qunit-fixture" ).replaceWith( config.fixture.cloneNode(true) );
+		} else {
 			main = id( 'qunit-fixture' );
 			if ( main ) {
 				main.parentNode.replaceChild(config.fixture.cloneNode(true), main);
