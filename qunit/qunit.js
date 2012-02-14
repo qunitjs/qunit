@@ -13,8 +13,11 @@
 var defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
 	sessionStorage: (function() {
+		var x = "qunit-test-string";
 		try {
-			return !!sessionStorage.getItem;
+			sessionStorage.setItem(x, x);
+			sessionStorage.removeItem(x);
+			return true;
 		} catch(e) {
 			return false;
 		}
