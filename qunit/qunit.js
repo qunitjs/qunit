@@ -516,8 +516,7 @@ if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 	extend(window, QUnit);
 	window.QUnit = QUnit;
 } else {
-	extend(exports, QUnit);
-	exports.QUnit = QUnit;
+	module.exports = QUnit;
 }
 
 // define these after exposing globals to keep them in these QUnit namespace only
