@@ -317,7 +317,7 @@ test("setup", function() {
 });
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
-	equal( document.getElementById("qunit-fixture").getAttribute('title'), null, "properties automatically reset" );
+	ok( !document.getElementById("qunit-fixture").getAttribute('title'), "properties automatically reset" );
 });
 
 }
@@ -331,7 +331,7 @@ module("custom assertions");
 	test("mod2", function() {
 		mod2(2, 0, "2 % 2 == 0");
 		mod2(3, 1, "3 % 2 == 1");
-	})
+	});
 })();
 
 
