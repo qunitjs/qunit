@@ -310,6 +310,9 @@ var QUnit = {
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
 	ok: function(a, msg) {
+		if (!config.current) {
+			throw new Error("ok() assertion outside test context, was " + sourceFromStacktrace(2));
+		}
 		a = !!a;
 		var details = {
 			result: a,
@@ -648,6 +651,9 @@ extend(QUnit, {
 	},
 
 	push: function(result, actual, expected, message) {
+		if (!config.current) {
+			throw new Error("assertion outside test context, was " + sourceFromStacktrace());
+		}
 		var details = {
 			result: result,
 			message: message,
@@ -903,20 +909,21 @@ function validTest( name ) {
 
 // so far supports only Firefox, Chrome and Opera (buggy)
 // could be extended in the future to use something like https://github.com/csnover/TraceKit
-function sourceFromStacktrace() {
+function sourceFromStacktrace(offset) {
+	offset = offset || 3;
 	try {
 		throw new Error();
 	} catch ( e ) {
 		if (e.stacktrace) {
 			// Opera
-			return e.stacktrace.split("\n")[6];
+			return e.stacktrace.split("\n")[offset + 3];
 		} else if (e.stack) {
 			// Firefox, Chrome
 			var stack = e.stack.split("\n");
 			if (/^error$/i.test(stack[0])) {
 				stack.shift();
 			}
-			return stack[3];
+			return stack[offset];
 		} else if (e.sourceURL) {
 			// Safari, PhantomJS
 			// TODO sourceURL points at the 'throw new Error' line above, useless
