@@ -16,4 +16,5 @@ QUnit.log(function(details) {
 QUnit.test("yo", function() {
 	QUnit.equal(true, false);
 	QUnit.equal(true, false, "gotta fail");
+	x.y.z;
 });
