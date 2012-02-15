@@ -538,6 +538,16 @@ extend(QUnit, {
 			semaphore: 0
 		});
 
+		var qunit = id( "qunit" );
+		if ( qunit ) {
+			qunit.innerHTML =
+				'<h1 id="qunit-header">' + document.title + '</h1>' +
+				'<h2 id="qunit-banner"></h2>' +
+				'<div id="qunit-testrunner-toolbar"></div>' +
+				'<h2 id="qunit-userAgent"></h2>' +
+				'<ol id="qunit-tests"></ol>';
+		}
+
 		var tests = id( "qunit-tests" ),
 			banner = id( "qunit-banner" ),
 			result = id( "qunit-testresult" );
