@@ -902,7 +902,11 @@ function sourceFromStacktrace() {
 			return e.stacktrace.split("\n")[6];
 		} else if (e.stack) {
 			// Firefox, Chrome
-			return e.stack.split("\n")[4];
+			var stack = e.stack.split("\n");
+			if (/^error$/i.test(stack[0])) {
+				stack.shift();
+			}
+			return stack[3];
 		} else if (e.sourceURL) {
 			// Safari, PhantomJS
 			// TODO sourceURL points at the 'throw new Error' line above, useless
