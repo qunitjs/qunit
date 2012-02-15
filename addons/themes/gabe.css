@@ -357,4 +357,6 @@ p#qunit-testresult span.failed {
 	position: absolute;
 	top: -10000px;
 	left: -10000px;
+    width: 1000px;
+    height: 1000px;
 }
