@@ -10,7 +10,7 @@
 
 /** Font Family and Sizes */
 
-#qunit-wrapper {
+#qunit-tests, #qunit-header, #qunit-banner, #qunit-testrunner-toolbar, #qunit-userAgent, #qunit-testresult {
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
