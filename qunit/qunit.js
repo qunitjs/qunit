@@ -1602,4 +1602,4 @@ QUnit.diff = (function() {
 	};
 })();
 
-})(this);
+})( typeof global == 'object' && global || this );
