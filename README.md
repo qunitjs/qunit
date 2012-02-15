@@ -32,3 +32,6 @@ Releases
 Install git-extras and run `git changelog` to update History.md.
 Update qunit/qunit.js|css to the release version, commit and tag, update them
 again to the next version, commit and push commits and tags.
+
+Put the 'v' in front of the tag (unlike the 1.1.0 release). Clean up the changelog,
+removing merge commits or whitespace cleanups.
