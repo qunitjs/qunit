@@ -1,6 +1,6 @@
 if (typeof require != "undefined") {
 	// should change export to module.exports = QUnit
-	QUnit = require("../qunit/qunit.js").QUnit;
+	QUnit = require("../qunit/qunit.js");
 	print = console.log;
 } else {
 	load("../qunit/qunit.js");
@@ -58,10 +58,10 @@ if (typeof require != "undefined") {
 if (typeof require != "undefined") {
 	fs = require("fs");
 	eval("with (QUnit) {" + fs.readFileSync("test.js", "utf-8") + "}");
-	eval("with (QUnit) {" + fs.readFileSync("same.js", "utf-8") + "}");
+	eval("with (QUnit) {" + fs.readFileSync("deepEqual.js", "utf-8") + "}");
 } else {
 	load("test.js");
-	load("same.js");
+	load("deepEqual.js");
 }
 
 QUnit.start();
