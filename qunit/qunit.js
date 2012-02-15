@@ -860,6 +860,15 @@ function done() {
 		].join(" ");
 	}
 
+	// clear own sessionStorage items if all tests passed
+	if ( config.reorder && defined.sessionStorage && config.stats.bad === 0 ) {
+		for (var key in sessionStorage) {
+			if (sessionStorage.hasOwnProperty(key) && key.indexOf("qunit-") === 0 ) {
+				sessionStorage.removeItem(key);
+			}
+		}
+	}
+
 	runLoggingCallbacks( 'done', QUnit, {
 		failed: config.stats.bad,
 		passed: passed,
