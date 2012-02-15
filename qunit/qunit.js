@@ -657,21 +657,22 @@ extend(QUnit, {
 
 		message = escapeInnerText(message) || (result ? "okay" : "failed");
 		message = '<span class="test-message">' + message + "</span>";
-		expected = escapeInnerText(QUnit.jsDump.parse(expected));
-		actual = escapeInnerText(QUnit.jsDump.parse(actual));
-		var output = message + '<table><tr class="test-expected"><th>Expected: </th><td><pre>' + expected + '</pre></td></tr>';
-		if (actual != expected) {
-			output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
-			output += '<tr class="test-diff"><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
-		}
+		var output = message;
 		if (!result) {
+			expected = escapeInnerText(QUnit.jsDump.parse(expected));
+			actual = escapeInnerText(QUnit.jsDump.parse(actual));
+			output += '<table><tr class="test-expected"><th>Expected: </th><td><pre>' + expected + '</pre></td></tr>';
+			if (actual != expected) {
+				output += '<tr class="test-actual"><th>Result: </th><td><pre>' + actual + '</pre></td></tr>';
+				output += '<tr class="test-diff"><th>Diff: </th><td><pre>' + QUnit.diff(expected, actual) +'</pre></td></tr>';
+			}
 			var source = sourceFromStacktrace();
 			if (source) {
 				details.source = source;
 				output += '<tr class="test-source"><th>Source: </th><td><pre>' + escapeInnerText(source) + '</pre></td></tr>';
 			}
+			output += "</table>";
 		}
-		output += "</table>";
 
 		runLoggingCallbacks( 'log', QUnit, details );
 
