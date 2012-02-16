@@ -2,6 +2,7 @@
 	var count = 0, suiteCount = 0, currentSuite, currentTest, suites = [], assertCount;
 
 	QUnit.jUnitReport = function(data) {
+		// Gets called when a report is generated
 	};
 
 	QUnit.moduleStart(function(data) {
@@ -28,6 +29,20 @@
 			failures: [],
 			start: new Date
 		};
+
+		// Setup default suite if no module was specified
+		if (!currentSuite) {
+			currentSuite = {
+				name: "default",
+				tests: [],
+				failures: 0,
+				time: 0,
+				stdout : '',
+				stderr : ''
+			};
+
+			suites.push(currentSuite);
+		}
 
 		currentSuite.tests.push(currentTest);
 	});
