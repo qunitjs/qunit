@@ -582,11 +582,11 @@ extend(QUnit, {
 	 * If jQuery is available, uses jQuery's replaceWith(), otherwise use replaceChild
 	 */
 	reset: function() {
-		if ( window.jQuery ) {
-			jQuery( "#qunit-fixture" ).replaceWith( config.fixture.cloneNode(true) );
-		} else {
-			var main = id( 'qunit-fixture' );
-			if ( main ) {
+		var main = id( 'qunit-fixture' );
+		if ( main ) {
+			if ( window.jQuery ) {
+				jQuery( main ).replaceWith( config.fixture.cloneNode(true) );
+			} else {
 				main.parentNode.replaceChild(config.fixture.cloneNode(true), main);
 			}
 		}
