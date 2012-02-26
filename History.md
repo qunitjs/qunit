@@ -1,3 +1,43 @@
+1.3.0 / 2012-02-26
+==================
+
+  * Cleanup test markup
+  * Fix the jQuery branch of fixture reset. Would break when no fixture exists.
+  * Added initial version of a junitlogger addon.
+  * Escape document.title before inserting into markup. Extends fix for #127
+  * Catch assertions running outside of test() context, make sure source is provided even for ok(). Fixes #98
+  * Improve global object access, based on comments for 1a9120651d5464773256d8a1f2cf2eabe38ea5b3
+  * Clear all sessionStorage entries once all tests passed. Helps getting rid of items from renamed tests. Fixes #101
+  * Set fixed dimensions for #qunit-fixture. Fixes #114
+  * Extend nodejs test runner to check for stacktrace output, twice
+  * Extend nodejs test runner to check for stacktrace output
+  * Generate more base markup, but allow the user to exclude that completelty or choose their own. Fixes #127
+  * Add a simple test file to check basic nodejs integration works
+  * Check for global object to find setTimeout in node
+  * Fix CommonJS export by assigning QUnit to module.exports.
+  * Remove the testEnviromentArg to test(). Most obscure, never used anywhere. test() is still heavily overloaded with argument shifting, this makes it a little more sane. Fixes #172
+  * Serialize expected and actual values only when test fails. Speeds up output of valid tests, especially for lots of large objects. Fixes #183
+  * Fix sourceFromsTacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
+  * Fix references to test/deepEqual.js
+  * In autorun mode, moduleDone is called without matching moduleStart. Fix issue #184
+  * Fixture test: allow anything falsy in test as getAttribute in oldIE will return empty string instead of null. We don't really care.
+  * Keep label and checkbox together ( http://i.imgur.com/5Wk3A.png )
+  * Add readme for themes
+  * Fix bad global in reset()
+  * Some cleanup in theme addons
+  * Update headers
+  * Update nv.html, add gabe theme based on https://github.com/jquery/qunit/pull/188
+  * Experiemental custom theme based on https://github.com/jquery/qunit/pull/62 by NV
+  * Replace deprecated same and equals aliases with placeholders that just throw errors, providing a hint at what to use instead. Rename test file to match that.
+  * Can't rely on outerHTML for Firefox < 11. Use cloneNode instead.
+  * Merge remote branch 'conzett/master'
+  * Cleanup whitespace
+  * Update sessionStorage support test to latest version from Modernizr, trying to setItem to avoid QUOTA_EXCEEDED_EXCEPTION
+  * Change fixture reset behavior
+  * Merge pull request #181 from simonz/development
+  * Escaping test names
+  * Show exception stack when test failed
+  * Bump post-release version
 
 1.2.0 / 2011-11-24
 ==================
