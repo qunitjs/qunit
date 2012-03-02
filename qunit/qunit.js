@@ -1401,8 +1401,15 @@ QUnit.jsDump = (function() {
 			object:function( map, stack ) {
 				var ret = [ ];
 				QUnit.jsDump.up();
-				for ( var key in map ) {
-					var val = map[key];
+        if (Object.keys) {
+          var keys = Object.keys(map);
+        } else {
+          keys = [];
+          for (var key in map) { keys.push(key); }
+        }
+        keys.sort();
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i], val = map[key];
 					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
 				}
 				QUnit.jsDump.down();
