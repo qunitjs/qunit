@@ -1399,11 +1399,19 @@ QUnit.jsDump = (function() {
 			nodelist: array,
 			arguments: array,
 			object:function( map, stack ) {
-				var ret = [ ];
+				var ret = [ ], keys, key, val, i;
 				QUnit.jsDump.up();
-				for ( var key in map ) {
-					var val = map[key];
-					ret.push( QUnit.jsDump.parse(key,'key') + ': ' + QUnit.jsDump.parse(val, undefined, stack));
+				if (Object.keys) {
+					keys = Object.keys( map );
+				} else {
+					keys = [];
+					for (key in map) { keys.push( key ); }
+				}
+				keys.sort();
+				for (i = 0; i < keys.length; i++) {
+					key = keys[ i ];
+					val = map[ key ];
+					ret.push( QUnit.jsDump.parse( key, 'key' ) + ': ' + QUnit.jsDump.parse( val, undefined, stack ) );
 				}
 				QUnit.jsDump.down();
 				return join( '{', ret, '}' );
