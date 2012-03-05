@@ -311,19 +311,26 @@ var QUnit = {
 	 * Asserts true.
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
-	ok: function(a, msg) {
+	ok: function(result, msg) {
 		if (!config.current) {
 			throw new Error("ok() assertion outside test context, was " + sourceFromStacktrace(2));
 		}
-		a = !!a;
+		result = !!result;
 		var details = {
-			result: a,
+			result: result,
 			message: msg
 		};
-		msg = escapeInnerText(msg);
+		msg = escapeInnerText(msg || (result ? "okay" : "failed"));
+		if ( !result ) {
+			var source = sourceFromStacktrace(2);
+			if (source) {
+				details.source = source;
+				msg += '<table><tr class="test-source"><th>Source: </th><td><pre>' + escapeInnerText(source) + '</pre></td></tr></table>';
+			}
+		}
 		runLoggingCallbacks( 'log', QUnit, details );
 		config.current.assertions.push({
-			result: a,
+			result: result,
 			message: msg
 		});
 	},
