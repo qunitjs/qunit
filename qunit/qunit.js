@@ -523,12 +523,10 @@ var config = {
 })();
 
 // Expose the API as global variables, unless an 'exports'
-// object exists, in that case we assume we're in CommonJS
+// object exists, in that case we assume we're in CommonJS - export everything at the end
 if ( typeof exports === "undefined" || typeof require === "undefined" ) {
 	extend(window, QUnit);
 	window.QUnit = QUnit;
-} else {
-	module.exports = QUnit;
 }
 
 // define these after exposing globals to keep them in these QUnit namespace only
@@ -1644,6 +1642,11 @@ QUnit.diff = (function() {
 		return str;
 	};
 })();
+
+// for CommonJS enviroments, export everything
+if ( typeof exports !== "undefined" || typeof require !== "undefined" ) {
+	extend(exports, QUnit);
+}
 
 // get at whatever the global object is, like window in browsers
 })( (function() {return this}).call() );
