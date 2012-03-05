@@ -132,6 +132,8 @@ Test.prototype = {
 		config.current = this;
 		if ( this.expected != null && this.expected != this.assertions.length ) {
 			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
+		} else if ( this.expected == null && !this.assertions.length ) {
+			QUnit.ok( false, "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." );
 		}
 
 		var good = 0, bad = 0,

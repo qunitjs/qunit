@@ -193,6 +193,7 @@ test("scope check", function() {
 	deepEqual(this.foo, "bar");
 });
 test("modify testEnvironment",function() {
+	expect(0);
 	this.foo="hamster";
 });
 test("testEnvironment reset for next test",function() {
@@ -209,6 +210,7 @@ test("scope check", function() {
 	deepEqual(this.options, {recipe:"soup",ingredients:["hamster","onions"]}) ;
 });
 test("modify testEnvironment",function() {
+	expect(0);
 	// since we do a shallow copy, the testEnvironment can be modified
 	this.options.ingredients.push("carrots");
 });
@@ -306,6 +308,7 @@ if (typeof document !== "undefined") {
 
 module("fixture");
 test("setup", function() {
+	expect(0);
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
 });
 test("basics", function() {
@@ -445,12 +448,14 @@ test('Circular reference - test reported by soniciq in #105', function() {
 	}
 	module("reset");
 	test("reset runs assertions", function() {
+		expect(0);
 		QUnit.reset = function() {
 			afterTest();
 			reset.apply( this, arguments );
 		};
 	});
 	test("reset runs assertions2", function() {
+		expect(0);
 		QUnit.reset = reset;
 	});
 })();
