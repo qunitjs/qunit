@@ -85,11 +85,14 @@ Test.prototype = {
 		// TODO why??
 		QUnit.current_testEnvironment = this.testEnvironment;
 
+		if ( !config.pollution ) {
+			saveGlobal();
+		}
+		if ( config.notrycatch ) {
+			this.testEnvironment.setup.call(this.testEnvironment);
+			return;
+		}
 		try {
-			if ( !config.pollution ) {
-				saveGlobal();
-			}
-
 			this.testEnvironment.setup.call(this.testEnvironment);
 		} catch(e) {
 			QUnit.ok( false, "Setup failed on " + this.testName + ": " + e.message );
@@ -121,12 +124,17 @@ Test.prototype = {
 	},
 	teardown: function() {
 		config.current = this;
-		try {
+		if ( config.notrycatch ) {
 			this.testEnvironment.teardown.call(this.testEnvironment);
-			checkPollution();
-		} catch(e) {
-			QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
+			return;
+		} else {
+			try {
+				this.testEnvironment.teardown.call(this.testEnvironment);
+			} catch(e) {
+				QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
+			}
 		}
+		checkPollution();
 	},
 	finish: function() {
 		config.current = this;
