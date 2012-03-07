@@ -143,12 +143,6 @@ Test.prototype = {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." );
 		}
 
-		try {
-			QUnit.reset();
-		} catch(e) {
-			QUnit.pushFailure( "reset() failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
-		}
-
 		var good = 0, bad = 0,
 			tests = id("qunit-tests");
 
@@ -227,6 +221,8 @@ Test.prototype = {
 				}
 			}
 		}
+
+		QUnit.reset();
 
 		runLoggingCallbacks( 'testDone', QUnit, {
 			name: this.testName,
