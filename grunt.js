@@ -1,13 +1,6 @@
 /*global config:true, task:true*/
 config.init({
   pkg: '<json:package.json>',
-  meta: {
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= template.today("m/d/yyyy") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-      '* Copyright (c) <%= template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
-  },
   qunit: {
     // TODO include 'test/logs.html' as well
     files: ['test/index.html']
