@@ -95,7 +95,7 @@ Test.prototype = {
 		try {
 			this.testEnvironment.setup.call(this.testEnvironment);
 		} catch(e) {
-			QUnit.ok( false, "Setup failed on " + this.testName + ": " + e.message );
+			QUnit.pushFailure( "Setup failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
 		}
 	},
 	run: function() {
@@ -111,8 +111,7 @@ Test.prototype = {
 		try {
 			this.callback.call(this.testEnvironment);
 		} catch(e) {
-			fail("Test " + this.testName + " died, exception and test follows", e, this.callback);
-			QUnit.ok( false, "Died on test #" + (this.assertions.length + 1) + ": " + e.message + " - " + QUnit.jsDump.parse(e) );
+			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + ": " + e.message, extractStacktrace( e, 1 ) );
 			// else next test will carry the responsibility
 			saveGlobal();
 
@@ -131,7 +130,7 @@ Test.prototype = {
 			try {
 				this.testEnvironment.teardown.call(this.testEnvironment);
 			} catch(e) {
-				QUnit.ok( false, "Teardown failed on " + this.testName + ": " + e.message );
+				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
 			}
 		}
 		checkPollution();
@@ -139,9 +138,15 @@ Test.prototype = {
 	finish: function() {
 		config.current = this;
 		if ( this.expected != null && this.expected != this.assertions.length ) {
-			QUnit.ok( false, "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
+			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
 		} else if ( this.expected == null && !this.assertions.length ) {
-			QUnit.ok( false, "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." );
+			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." );
+		}
+
+		try {
+			QUnit.reset();
+		} catch(e) {
+			QUnit.pushFailure( "reset() failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
 		}
 
 		var good = 0, bad = 0,
@@ -221,12 +226,6 @@ Test.prototype = {
 					config.moduleStats.bad++;
 				}
 			}
-		}
-
-		try {
-			QUnit.reset();
-		} catch(e) {
-			fail("reset() failed, following Test " + this.testName + ", exception and reset fn follows", e, QUnit.reset);
 		}
 
 		runLoggingCallbacks( 'testDone', QUnit, {
@@ -703,6 +702,23 @@ extend(QUnit, {
 		});
 	},
 
+	pushFailure: function(message, source) {
+		var details = {
+			result: false,
+			message: message
+		};
+		var output = escapeInnerText(message);
+		if (source) {
+			details.source = source;
+			output += '<table><tr class="test-source"><th>Source: </th><td><pre>' + escapeInnerText(source) + '</pre></td></tr></table>';
+		}
+		runLoggingCallbacks( 'log', QUnit, details );
+		config.current.assertions.push({
+			result: false,
+			message: output
+		});
+	},
+
 	url: function( params ) {
 		params = extend( extend( {}, QUnit.urlParams ), params );
 		var querystring = "?",
@@ -924,26 +940,34 @@ function validTest( name ) {
 
 // so far supports only Firefox, Chrome and Opera (buggy)
 // could be extended in the future to use something like https://github.com/csnover/TraceKit
-function sourceFromStacktrace(offset) {
+function extractStacktrace( e, offset ) {
 	offset = offset || 3;
+	if (e.stacktrace) {
+		// Opera
+		return e.stacktrace.split("\n")[offset + 3];
+	} else if (e.stack) {
+		// Firefox, Chrome
+		var stack = e.stack.split("\n");
+		if (/^error$/i.test(stack[0])) {
+			stack.shift();
+		}
+		return stack[offset];
+	} else if (e.sourceURL) {
+		// Safari, PhantomJS
+		// hopefully one day Safari provides actual stacktraces
+		// exclude useless self-reference for generated Error objects
+		if ( /qunit.js$/.test( e.sourceURL ) ) {
+			return;
+		}
+		// for actual exceptions, this is useful
+		return e.sourceURL + ":" + e.line;
+	}
+}
+function sourceFromStacktrace(offset) {
 	try {
 		throw new Error();
 	} catch ( e ) {
-		if (e.stacktrace) {
-			// Opera
-			return e.stacktrace.split("\n")[offset + 3];
-		} else if (e.stack) {
-			// Firefox, Chrome
-			var stack = e.stack.split("\n");
-			if (/^error$/i.test(stack[0])) {
-				stack.shift();
-			}
-			return stack[offset];
-		} else if (e.sourceURL) {
-			// Safari, PhantomJS
-			// TODO sourceURL points at the 'throw new Error' line above, useless
-			//return e.sourceURL + ":" + e.line;
-		}
+		return extractStacktrace( e, offset );
 	}
 }
 
@@ -1031,18 +1055,6 @@ function diff( a, b ) {
 		}
 	}
 	return result;
-}
-
-function fail(message, exception, callback) {
-	if ( typeof console !== "undefined" && console.error && console.warn ) {
-		console.error(message);
-		console.error(exception);
-		console.error(exception.stack);
-		console.warn(callback.toString());
-
-	} else if ( window.opera && opera.postError ) {
-		opera.postError(message, exception, callback.toString);
-	}
 }
 
 function extend(a, b) {
