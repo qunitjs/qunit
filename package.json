@@ -1,28 +1,29 @@
 {
-	"name": "qunit",
-	"author": "The jQuery Project",
-	"version": "1.4.0pre",
-	"contributors": [
-	{
-		"name": "John Resig",
-		"email": "jeresig@gmail.com",
-		"url": "http://ejohn.org/"
-	},
-	{
-		"name": "Jörn Zaefferer",
-		"email": "joern.zaefferer@googlemail.com",
-		"url": "http://bassistance.de/"
-	}],
-	"url": "http://docs.jquery.com/QUnit",
-	"repositories"	: [{
-		"type": "git",
-		"url": "https://github.com/jquery/qunit.git"
-	}],
-	"license": {
-		"name": "MIT",
-		"url": "http://www.opensource.org/licenses/mit-license.php"
-	},
-	"description": "An easy-to-use JavaScript Unit Testing framework.",
-	"keywords": [ "testing", "unit", "jquery" ],
-	"main": "qunit/qunit.js"
+  "name": "qunit",
+  "title": "QUnit",
+  "description": "An easy-to-use JavaScript Unit Testing framework.",
+  "version": "1.4.0pre",
+  "author": "The jQuery Project",
+  "contributors": [
+    "John Resig <jeresig@gmail.com> (http://ejohn.org/)",
+    "Jörn Zaefferer <joern.zaefferer@googlemail.com> (http://bassistance.de/)"
+  ],
+  "homepage": "http://docs.jquery.com/QUnit",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jquery/qunit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jquery/qunit/issues"
+  },
+  "license": {
+    "name": "MIT",
+    "url": "http://www.opensource.org/licenses/mit-license.php"
+  },
+  "keywords": [
+    "testing",
+    "unit",
+    "jquery"
+  ],
+  "main": "qunit/qunit.js"
 }
