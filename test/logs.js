@@ -164,7 +164,7 @@ QUnit.done(function() {
 
 	module("autorun");
 
-	test("reset", function() {});
+	test("reset", 0, function() {});
 
 	moduleStart = moduleDone = 0;
 
