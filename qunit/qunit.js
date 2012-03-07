@@ -468,10 +468,10 @@ var QUnit = {
 // deprecated; still export them to window to provide clear error messages
 // next step: remove entirely
 QUnit.equals = function() {
-	throw new Error("QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead");
+	QUnit.push(false, false, false, "QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead");
 };
 QUnit.same = function() {
-	throw new Error("QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead");
+	QUnit.push(false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead");
 };
 
 // Maintain internal state
