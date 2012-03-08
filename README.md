@@ -16,8 +16,8 @@ run the tests after each small refactoring step and always know what change
 broke something.
 
 QUnit is similar to other unit testing frameworks like JUnit, but makes use of
-the features JavaScript provides and helps with testing code in the browser, eg.
-with it's stop/start facilities for testing asynchronous code.
+the features JavaScript provides and helps with testing code in the browser, e.g.
+with its stop/start facilities for testing asynchronous code.
 
 If you are interested in helping developing QUnit, you are in the right place.
 For related discussions, visit the
