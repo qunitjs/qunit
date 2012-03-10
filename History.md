@@ -1,3 +1,25 @@
+1.4.0 / 2012-03-10
+==================
+
+  * Prefix test-related session-storage items to make removal more specific. Fixes #213 - Keep hide-passed state when clearing session storage
+  * Update grunt.js with seperate configs for qunit.js and grunt.js, also add tests but disable for now, not passing yet. Add grunt to devDependencies
+  * typo
+  * Cleanup grunt.js, no need for the banner
+  * Fix lint errors and some formatting issues. Use QUnit.pushFailure for noglobals and global error handler.
+  * Fix a missing expect in logs test
+  * Add grunt.js configuration and include some usage instructions in the readme
+  * Update package.json
+  * Partially revert af27eae841c3e1c01c46de72d676f1047e1ee375 - can't move reset around, so also don't wrap in try-catch, as the result of that is effectively swallowed. Can't output the result as the outputting is already done.
+  * Add QUnit.pushFailure to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). Remove old fail() function that would just log to console, not useful anymore as regular test output is much more useful by now. Move up QUnit.reset() call to just make that another failed assertion. Used to not make a test fail. Fixes #210
+  * Update equals and same deprecations to use QUnit.push to provide correct source lines. Fixes #211
+  * Add a test file for narwhal integration. Has to use print instead of console.log. Fails when an assertion fails, something about setInterval...
+  * Apply notrycatch option to setup and teardown as well. Fixes #203. Reorder noglobals check to allow teardown to remove globals that were introduced intentionally. Fixes #204
+  * Extend exports object with QUnit properties at the end of the file to export everything.
+  * Output source line for ok() assertions. Fixes #202
+  * Make test fail if no assertions run. Fixes #178
+  * Sort object output alphabetically in order to improve diffs of objects where properties were set in a different order. Fixes #206
+  * Revert "Change fixture reset behavior", changing #194 and #195 to wontfix.
+
 1.3.0 / 2012-02-26
 ==================
 
@@ -37,7 +59,6 @@
   * Merge pull request #181 from simonz/development
   * Escaping test names
   * Show exception stack when test failed
-  * Bump post-release version
 
 1.2.0 / 2011-11-24
 ==================
@@ -72,7 +93,6 @@
   * Merge remote branch 'Krinkle/master'
   * Using === instead of ==
   * Added more strict array type detection for dump output, and allowed NodeList objects to be output as arrays
-  * Bump post-release version
   * Fixes a bug where after an async test, assertions could move between test cases because of internal state (config.current) being incorrectly set
   * Simplified check for assertion count and adjusted whitespace
   * Redo of fixing issue #156 (Support Object.prototype extending environment). * QUnit.diff: Throws exception without this if Object.prototype is set (Property 'length' of undefined. Since Object.prototype.foo doesn't have a property 'rows') * QUnit.url: Without this fix, if Object.prototype.foo is set, the url will be set to ?foo=...&the=rest. * saveGlobals: Without this fix, whenever a member is added to Object.prototype, saveGlobals will think it was a global variable in this loop. --- This time using the call method instead of obj.hasOwnProperty(key), which may fail if the object has that as it's own property (touché!).
