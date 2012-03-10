@@ -6,29 +6,45 @@ config.init({
     files: ['test/index.html']
   },
   lint: {
-    // TODO lint test files: 'test/**/*.js' - needs seperate globals list
-    files: ['grunt.js', 'qunit/*.js']
+    qunit: 'qunit/qunit.js',
+    grunt: 'grunt.js'
+    // TODO need to figure out which warnings to fix and which to disable
+    // tests: 'test/*.js'
   },
   jshint: {
-    options: {
-      bitwise: true,
-      curly: true,
-      trailing: true,
-      immed: true,
-      latedef: false,
-      newcap: true,
-      noarg: false,
-      noempty: true,
-      nonew: true,
-      sub: true,
-      undef: true,
-      eqnull: true,
-      browser: true,
-      proto: true
+    qunit: {
+      options: {
+        browser: true,
+        bitwise: true,
+        curly: true,
+        trailing: true,
+        immed: true,
+        latedef: false,
+        newcap: true,
+        noarg: false,
+        noempty: true,
+        nonew: true,
+        sub: true,
+        undef: true,
+        eqnull: true,
+        proto: true
+      },
+      globals: {
+        jQuery: true,
+        exports: true
+      }
     },
-    globals: {
-      jQuery: true,
-      exports: true
+    tests: {
+      tests: {
+        globals: {
+          module: true,
+          test: true,
+          ok: true,
+          equal: true,
+          deepEqual: true,
+          QUnit: true
+        }
+      }
     }
   }
 });

@@ -25,5 +25,8 @@
     "unit",
     "jquery"
   ],
-  "main": "qunit/qunit.js"
+  "main": "qunit/qunit.js",
+  "devDependencies": {
+    "grunt": "0.2.x"
+  }
 }
