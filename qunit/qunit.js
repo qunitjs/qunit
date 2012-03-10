@@ -173,9 +173,9 @@ Test.prototype = {
 			// store result when possible
 			if ( QUnit.config.reorder && defined.sessionStorage ) {
 				if (bad) {
-					sessionStorage.setItem("qunit-" + this.module + "-" + this.testName, bad);
+					sessionStorage.setItem("qunit-test-" + this.module + "-" + this.testName, bad);
 				} else {
-					sessionStorage.removeItem("qunit-" + this.module + "-" + this.testName);
+					sessionStorage.removeItem("qunit-test-" + this.module + "-" + this.testName);
 				}
 			}
 
@@ -255,7 +255,7 @@ Test.prototype = {
 			});
 		}
 		// defer when previous test run passed, if storage is available
-		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-" + this.module + "-" + this.testName);
+		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-test-" + this.module + "-" + this.testName);
 		if (bad) {
 			run();
 		} else {
@@ -874,7 +874,7 @@ function done() {
 	// clear own sessionStorage items if all tests passed
 	if ( config.reorder && defined.sessionStorage && config.stats.bad === 0 ) {
 		for (var key in sessionStorage) {
-			if (sessionStorage.hasOwnProperty(key) && key.indexOf("qunit-") === 0 ) {
+			if (sessionStorage.hasOwnProperty(key) && key.indexOf("qunit-test-") === 0 ) {
 				sessionStorage.removeItem(key);
 			}
 		}
