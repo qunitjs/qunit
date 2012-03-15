@@ -1,5 +1,5 @@
 (function() {
-	var count = 0, suiteCount = 0, currentSuite, currentTest, suites = [], assertCount;
+	var count = 0, suiteCount = 0, currentSuite, currentTest, suites = [], assertCount, start, results = {failed:0, passed:0, total:0, time:0};
 
 	QUnit.jUnitReport = function(data) {
 		// Gets called when a report is generated
@@ -22,6 +22,8 @@
 	});
 
 	QUnit.testStart(function(data) {
+		if(!start){ start = new Date(); }
+
 		assertCount = 0;
 
 		currentTest = {
@@ -51,6 +53,10 @@
 		currentTest.failed = data.failed;
 		currentTest.total = data.total;
 		currentSuite.failures += data.failed;
+
+		results.failed += data.failed;
+		results.passed += data.passed;
+		results.total += data.total;
 	});
 
 	QUnit.log(function(data) {
@@ -143,7 +149,10 @@
 
 		xmlWriter.end('testsuites');
 
+        results.time = new Date() - start;
+
 		QUnit.jUnitReport({
+			results:results,
 			xml: xmlWriter.getString()
 		});
 	});
