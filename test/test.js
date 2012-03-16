@@ -306,6 +306,16 @@ test("raises",function() {
 		"custom validation function"
 	);
 
+    this.CustomError = CustomError;
+
+    raises(
+        function() {
+            throw new this.CustomError("some error description");
+        },
+        /description/,
+        "raised error with 'this' context"
+    );
+
 });
 
 if (typeof document !== "undefined") {
