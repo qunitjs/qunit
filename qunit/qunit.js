@@ -370,7 +370,7 @@ var QUnit = {
 		}
 
 		try {
-			block();
+			block.call(config.current.testEnvironment);
 		} catch (e) {
 			actual = e;
 		}
