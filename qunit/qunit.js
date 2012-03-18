@@ -912,8 +912,9 @@ function validTest( name ) {
 	return run;
 }
 
-// so far supports only Firefox, Chrome and Opera (buggy)
-// could be extended in the future to use something like https://github.com/csnover/TraceKit
+// so far supports only Firefox, Chrome and Opera (buggy), Safari (for real exceptions)
+// Later Safari and IE10 are supposed to support error.stack as well
+// See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 function extractStacktrace( e, offset ) {
 	offset = offset || 3;
 	if (e.stacktrace) {
