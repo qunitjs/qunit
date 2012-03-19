@@ -22,7 +22,7 @@
 	});
 
 	QUnit.testStart(function(data) {
-        if(!start){ start = new Date(); }
+		if(!start){ start = new Date(); }
 
 		assertCount = 0;
 
@@ -152,7 +152,7 @@
         results.time = new Date() - start;
 
 		QUnit.jUnitReport({
-            results:results,
+			results:results,
 			xml: xmlWriter.getString()
 		});
 	});
