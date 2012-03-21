@@ -873,9 +873,11 @@ function done() {
 
 	// clear own sessionStorage items if all tests passed
 	if ( config.reorder && defined.sessionStorage && config.stats.bad === 0 ) {
-		for (var key in sessionStorage) {
-			if (sessionStorage.hasOwnProperty(key) && key.indexOf("qunit-test-") === 0 ) {
-				sessionStorage.removeItem(key);
+		var key;
+		for ( var i = 0; i < sessionStorage.length; i++ ) {
+			key = sessionStorage.key( i++ );
+			if ( key.indexOf("qunit-test-") === 0 ) {
+				sessionStorage.removeItem( key );
 			}
 		}
 	}
