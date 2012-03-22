@@ -107,10 +107,10 @@ Test.prototype = {
 			running.innerHTML = [
 				"Running: <br/>",
 				// If there is a module name, include it in displayed text
-				config.current.module ? "<strong>" + config.current.module + "</strong> " : "",
+				this.module ? this.module : "",
 				// Always show the current test name
-				config.current.testName
-			].join("");
+				this.testName
+			].join(" ");
 		}
 
 		if ( this.async ) {
