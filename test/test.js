@@ -242,7 +242,7 @@ module("testEnvironment with makeurl settings", {
 	q: 'another_search_test'
 });
 test("makeurl working with settings from testEnvironment", function() {
-	equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to form the url');
+	equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to from the url');
 });
 
 module("jsDump");
