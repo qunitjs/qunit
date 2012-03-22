@@ -193,6 +193,9 @@
 	padding: 0.5em 0.5em 0.5em 2.5em;
 	color: #333;
 }
+#qunit-testresult .module-name {
+	font-weight: bold;
+}
 
 /** Fixture */
 

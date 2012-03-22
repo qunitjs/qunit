@@ -100,6 +100,13 @@ Test.prototype = {
 	},
 	run: function() {
 		config.current = this;
+
+		var running = id("qunit-testresult");
+
+		if ( running ) {
+			running.innerHTML = "Running: <br/>" + this.name;
+		}
+
 		if ( this.async ) {
 			QUnit.stop();
 		}
