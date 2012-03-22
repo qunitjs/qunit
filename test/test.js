@@ -329,6 +329,15 @@ test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
 });
 
+test("running test name displayed", function() {
+	expect(2);
+
+	var displaying = document.getElementById("qunit-testresult");
+
+	ok( /running test name displayed$/.test(displaying.innerHTML), "Expect test name to be found in displayed text" );
+	ok( /fixture/.test(displaying.innerHTML), "Expect module name to be found in displayed text" );
+});
+
 }
 
 module("custom assertions");

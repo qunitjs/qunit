@@ -100,6 +100,19 @@ Test.prototype = {
 	},
 	run: function() {
 		config.current = this;
+
+		var running = id("qunit-testresult");
+
+		if ( running ) {
+			running.innerHTML = [
+				"Running: <br/>",
+				// If there is a module name, include it in displayed text
+				config.current.module ? "<strong>" + config.current.module + "</strong> " : "",
+				// Always show the current test name
+				config.current.testName
+			].join("");
+		}
+
 		if ( this.async ) {
 			QUnit.stop();
 		}
