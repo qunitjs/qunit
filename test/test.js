@@ -334,7 +334,7 @@ test("running test name displayed", function() {
 
 	var displaying = document.getElementById("qunit-testresult");
 
-	ok( /running test name displayed$/.test(displaying.innerHTML), "Expect test name to be found in displayed text" );
+	ok( /running test name displayed/.test(displaying.innerHTML), "Expect test name to be found in displayed text" );
 	ok( /fixture/.test(displaying.innerHTML), "Expect module name to be found in displayed text" );
 });
 

@@ -104,13 +104,7 @@ Test.prototype = {
 		var running = id("qunit-testresult");
 
 		if ( running ) {
-			running.innerHTML = [
-				"Running: <br/>",
-				// If there is a module name, include it in displayed text
-				this.module ? this.module : "",
-				// Always show the current test name
-				this.testName
-			].join(" ");
+			running.innerHTML = "Running: <br/>" + this.name;
 		}
 
 		if ( this.async ) {
