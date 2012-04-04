@@ -1,3 +1,12 @@
+1.5.0 / 2012-04-04
+==================
+
+  * Modify "Running..." to display test name. Fixes #220
+  * Fixed clearing of sessionStorage in Firefox 3.6.
+  * Fixes #217 by calling "block" with config.current.testEnvironment
+  * Add stats results to data. QUnit.jUnitReport function take one argument {   xml:'<?xml ...',   results:{failed:0, passed:0, total:0, time:0} }
+  * Add link to MDN about stack property
+
 1.4.0 / 2012-03-10
 ==================
 
