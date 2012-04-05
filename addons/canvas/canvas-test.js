@@ -1,4 +1,11 @@
-test("Canvas pixels", function () {
+test("Canvas pixels", function () 
+QUnit.extend( QUnit, {
+	pixelEqual: function(canvas, x, y, r, g, b, a){
+		var actual = Array.prototype.slice.apply.getContext('2d').getImageData(x, y, 1, 1).data), expected = [r, g, b,a];
+		QUnit.equiv(actual, exoected), actual, expected, message);
+	}
+})
+{
 	var canvas = document.getElementById('qunit-canvas'), context;
 	try {
 		context = canvas.getContext('2d');
