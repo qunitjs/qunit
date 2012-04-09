@@ -313,7 +313,11 @@ var QUnit = {
 
 	// Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
 	expect: function(asserts) {
-		config.current.expected = asserts;
+		if (typeof(config.current.expected) !== "number") {
+			config.current.expected = asserts;
+		}	else {
+			config.current.expected += asserts;
+		}
 	},
 
 	// Asserts true.
