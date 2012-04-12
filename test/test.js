@@ -13,6 +13,16 @@ test("expect in test", 1, function() {
 	ok(true);
 });
 
+function testFunc() {
+  expect(1);
+  ok(true);
+}
+
+test("cumulative expect", function() {
+  testFunc();
+  testFunc();
+});
+
 module("setup test", {
 	setup: function() {
 		ok(true);
