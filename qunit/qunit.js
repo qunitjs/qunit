@@ -328,6 +328,7 @@ var QUnit = {
 			message: msg
 		};
 		msg = escapeInnerText(msg || (result ? "okay" : "failed"));
+		msg = '<span class="test-message">' + msg + "</span>";
 		if ( !result ) {
 			var source = sourceFromStacktrace(2);
 			if (source) {
@@ -687,7 +688,9 @@ extend(QUnit, {
 			result: false,
 			message: message
 		};
-		var output = escapeInnerText(message);
+		message = escapeInnerText(message) || "error";
+		message = '<span class="test-message">' + message + "</span>";
+		var output = message;
 		if (source) {
 			details.source = source;
 			output += '<table><tr class="test-source"><th>Source: </th><td><pre>' + escapeInnerText(source) + '</pre></td></tr></table>';
