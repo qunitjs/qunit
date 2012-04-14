@@ -16,6 +16,7 @@ grunt.initConfig({
 	jshint: {
 		qunit: {
 			options: {
+				onevar: true,
 				browser: true,
 				bitwise: true,
 				curly: true,
