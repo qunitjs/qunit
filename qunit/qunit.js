@@ -206,7 +206,7 @@ Test.prototype = {
 			// `a` initialized at top of scope
 			a = document.createElement( "a" );
 			a.innerHTML = "Rerun";
-			a.href = QUnit.url({ filter: getText([b]).replace(/\([^)]+\)$/, "" ).replace(/(^\s*|\s*$)/g, "" ) });
+			a.href = QUnit.url({ filter: getText([b]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" ) });
 
 			addEvent(b, "click", function() {
 				var next = b.nextSibling.nextSibling,
@@ -221,7 +221,7 @@ Test.prototype = {
 				}
 				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
 					window.location = QUnit.url({
-						filter: getText([target]).replace(/\([^)]+\)$/, "" ).replace(/(^\s*|\s*$)/g, "" )
+						filter: getText([target]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" )
 					});
 				}
 			});
@@ -765,7 +765,7 @@ extend( QUnit, {
 	addEvent: addEvent
 });
 
-// QUnit.constructor is set to the empty F() above so that we can add to it"s prototype later
+// QUnit.constructor is set to the empty F() above so that we can add to it's prototype later
 // Doing this allows us to tell if the following methods have been overwritten on the actual
 // QUnit object, which is a deprecated way of using the callbacks.
 extend( QUnit.constructor.prototype, {
@@ -844,7 +844,7 @@ QUnit.load = function() {
 				ol.className = ol.className + " hidepass";
 			} else {
 				tmp = " " + ol.className.replace( /[\n\t\r]/g, " " ) + " ";
-				ol.className = tmp.replace(/ hidepass /, " " );
+				ol.className = tmp.replace( / hidepass /, " " );
 			}
 			if ( defined.sessionStorage ) {
 				if (filter.checked) {
@@ -1361,7 +1361,7 @@ QUnit.equiv = (function() {
  */
 QUnit.jsDump = (function() {
 	function quote( str ) {
-		return '"' + str.toString().replace(/"/g, '\\"') + '"';
+		return '"' + str.toString().replace( /"/g, '\\"' ) + '"';
 	}
 	function literal( o ) {
 		return o + "";
@@ -1450,7 +1450,7 @@ QUnit.jsDump = (function() {
 				}
 				var chr = this.indentChar;
 				if ( this.HTML ) {
-					chr = chr.replace(/\t/g,"   " ).replace(/ /g,"&nbsp;" );
+					chr = chr.replace( /\t/g, "   " ).replace( / /g, "&nbsp;" );
 				}
 				return new Array( this._depth_ + (extra||0) ).join(chr);
 			},
@@ -1527,7 +1527,7 @@ QUnit.jsDump = (function() {
 					}
 					return ret + close + open + "/" + tag + close;
 				},
-				functionArgs: function( fn ) {//function calls it internally, it"s the arguments part of the function
+				functionArgs: function( fn ) {//function calls it internally, it's the arguments part of the function
 					var args,
 						l = fn.length;
 
