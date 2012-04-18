@@ -1,159 +1,94 @@
-module( "testSuites tests", (function(){
-	var asyncTest = QUnit.asyncTest,
-		runSuite = QUnit.runSuite;
+(function( QUnit ) {
 
-	return {
-		setup: function(){
-			//proxy asyncTest and runSuite
-			QUnit.asyncTest = window.asyncTest = function( name, callback ){
-				ok( true, "asyncTestCalled for each suite" );
-				callback(); //don't acutally create tests, just call callback
-			};
-			QUnit.runSuite = window.runSuite = function(){
-				ok( true, "runSuite called for each suite" );
-			};
-			//ensure that subsuite's done doesn't run
-			this.oldDone = QUnit.done;
-		},
-		teardown: function(){
-			//restore
-			QUnit.asyncTest = window.asyncTest = asyncTest;
-			QUnit.runSuite = window.runSuite = runSuite;
-			QUnit.done = this.oldDone;
+QUnit.extend( QUnit, {
+	testSuites: function( suites ) {
+		QUnit.initIframe();
+
+		for ( var i = 0; i < suites.length; i++ ) {
+			(function( suite ) {
+				asyncTest( suite, function() {
+					QUnit.runSuite( suite );
+				});
+			}( suites[i] ) );
 		}
-	};
-})());
+		QUnit.done = function() {
+			this.iframe.style.display = "none";
+		};
+	},
 
-test( "proper number of asyncTest and runSuite calls", function(){
-	expect( 6 );
-	QUnit.testSuites( ["one.html", "two.html", "three.html"] );
-});
+	testStart: function( data ) {
+		// update the test status to show which test suite is running
+		QUnit.id( "qunit-testresult" ).innerHTML = "Running " + data.name + "...<br>&nbsp;";
+	},
 
-test( "done callback changed", function(){
-	QUnit.testSuites( ["dummy.html"] );
-	notEqual( this.oldDone, QUnit.done, "done callback should be set" );
-});
+	testDone: function() {
+		var current = QUnit.id( this.config.current.id ),
+			children = current.children,
+			iframe = this.iframe;
 
-module( "testStart tests", (function(){
-	var id = QUnit.id;
-	return {
-		setup: function(){
-			//proxy id
-			var fakeElem = this.fakeElem = document.createElement( "div" );
-
-			QUnit.id = function(){
-				return fakeElem;
+		// undo the auto-expansion of failed tests
+		for ( var i = 0; i < children.length; i++ ) {
+			if ( children[i].nodeName === "OL" ) {
+				children[i].style.display = "none";
 			}
-		},
-		teardown: function(){
-			QUnit.id = id;
 		}
-	};
-})());
 
-test( "running message printed", function(){
-	var hello = "hello world",
-	expected = "Running " + hello + "...<br>&nbsp;";
-	QUnit.testStart( {name: hello} );
-	equal( this.fakeElem.innerHTML, expected, "innerHTML was set correctly by testStart" );
-});
-
-module( "testDone tests", (function(){
-	var id = QUnit.id;
-	return {
-		setup: function(){
-			//proxy id
-			var fakeElem = this.fakeElem = document.createElement( "div" );
-			fakeElem.appendChild( document.createElement( "ol" ) );
-			fakeElem.appendChild( document.createElement( "ol" ) );
-			QUnit.id = function(){
-				return fakeElem;
+		QUnit.addEvent(current, "dblclick", function( e ) {
+			var target = e && e.target ? e.target : window.event.srcElement;
+			if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+				target = target.parentNode;
 			}
-		},
-		teardown: function(){
-			QUnit.id = id;
-		}
-	};
-})());
-
-test( "test expansions are hidden", function(){
-	QUnit.testDone();
-	equal( this.fakeElem.children[0].style.display, "none", "first ol display is none" );
-	equal( this.fakeElem.children[1].style.display, "none", "second ol display is none" );
-});
-
-test( "non-ol elements aren't hidden", function(){
-	this.fakeElem.appendChild( document.createElement( "span" ) );
-
-	QUnit.testDone();
-	notEqual( this.fakeElem.children[2].style.display, "none", "first ol display is none" );
-});
-
-module( "runSuite tests", (function(){
-	var getElementsByTagName = document.getElementsByTagName,
-		createElement = document.createElement,
-		runSuite = QUnit.runSuite;
-
-	return {
-		setup: function(){
-			//proxy getElementsByTagName and createElement
-			var setAttributeCall = this.setAttributeCall = {},
-				appendChildCall = this.appendChildCall = {called: 0},
-				iframeLoad = this.iframeLoad = {},
-				iframeQUnitObject = this.iframeQUnitObject = {},
-				fakeElement = {
-					appendChild: function(){appendChildCall.called++},
-					setAttribute: function(){setAttributeCall.args = arguments},
-					addEventListener: function( type, callback ){iframeLoad.callback = callback;},
-					contentWindow: {QUnit: iframeQUnitObject},
-					className: "",
-				};
-
-			document.getElementsByTagName = function(){
-				return [fakeElement];
-			};
-			document.createElement = function(){
-				return fakeElement;
+			if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+				window.location = iframe.src;
 			}
+		});
 
-		},
-		teardown: function(){
-			document.getElementsByTagName = getElementsByTagName;
-			document.createElement = createElement;
-			//must restore even though we didn't proxy; the runner overwrites upon first call
-			QUnit.runSuite = runSuite;
+		current.getElementsByTagName('a')[0].href = iframe.src;
+	},
+
+	runSuite: function( suite ) {
+		this.iframe.setAttribute( "src", suite );
+	},
+
+	initIframe: function() {
+		var body = document.body,
+			iframe = this.iframe = document.createElement( "iframe" ),
+			iframeWin;
+
+		iframe.className = "qunit-subsuite";
+		body.appendChild( iframe );
+
+		function onIframeLoad() {
+			var module, test,
+				count = 0;
+
+			QUnit.extend( iframeWin.QUnit, {
+				moduleStart: function( data ) {
+					// capture module name for messages
+					module = data.name;
+				},
+
+				testStart: function( data ) {
+					// capture test name for messages
+					test = data.name;
+				},
+
+				log: function( data ) {
+					// pass all test details through to the main page
+					var message = module + ": " + test + ": " + data.message;
+					expect( ++count );
+					QUnit.push( data.result, data.actual, data.expected, message );
+				},
+
+				done: function() {
+					// start the wrapper test from the main page
+					start();
+				}
+			});
 		}
-	};
-})());
+		QUnit.addEvent( iframe, "load", onIframeLoad );
 
-test( "runSuite different after first run", function(){
-	var before = QUnit.runSuite,
-		after;
-	QUnit.runSuite();
-	after = QUnit.runSuite;
-	notEqual( before, after, "runSuite changed after initial run" );
+		iframeWin = iframe.contentWindow;
+	}
 });
-
-test( "iframe only created once", function(){
-	QUnit.runSuite();
-	equal( this.appendChildCall.called, 1, "append child called once" );
-	QUnit.runSuite();
-	equal( this.appendChildCall.called, 1, "append child only ever called once" );
-});
-
-test( "iframe's QUnit object is modified when iframe source loads", function(){
-	var before = this.iframeQUnitObject,
-		after;
-	QUnit.runSuite();
-	this.iframeLoad.callback();
-	notEqual( before, after, "iframe's qunit object is modified upon load");
-});
-
-test( "iframe src set to suite passed", function(){
-	var pages = ["testing.html", "subsuiteRunner.html"];
-	QUnit.runSuite( pages[0] );
-	equal( this.setAttributeCall.args[0], "src", "src attribute set" );
-	equal( this.setAttributeCall.args[1], pages[0], "src attribute set" );
-	QUnit.runSuite( pages[1] );
-	equal( this.setAttributeCall.args[1], pages[1], "src attribute set" );
-});
+}( QUnit ) );
