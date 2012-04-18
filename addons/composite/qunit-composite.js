@@ -1,9 +1,9 @@
 (function( QUnit ) {
 
-var subsuiteFrame;
-
 QUnit.extend( QUnit, {
 	testSuites: function( suites ) {
+		QUnit.initIframe();
+
 		for ( var i = 0; i < suites.length; i++ ) {
 			(function( suite ) {
 				asyncTest( suite, function() {
@@ -12,7 +12,7 @@ QUnit.extend( QUnit, {
 			}( suites[i] ) );
 		}
 		QUnit.done = function() {
-			subsuiteFrame.style.display = "none";
+			this.iframe.style.display = "none";
 		};
 	},
 
@@ -23,7 +23,8 @@ QUnit.extend( QUnit, {
 
 	testDone: function() {
 		var current = QUnit.id( this.config.current.id ),
-			children = current.children;
+			children = current.children,
+			iframe = this.iframe;
 
 		// undo the auto-expansion of failed tests
 		for ( var i = 0; i < children.length; i++ ) {
@@ -31,11 +32,27 @@ QUnit.extend( QUnit, {
 				children[i].style.display = "none";
 			}
 		}
+
+		QUnit.addEvent(current, "dblclick", function( e ) {
+			var target = e && e.target ? e.target : window.event.srcElement;
+			if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+				target = target.parentNode;
+			}
+			if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+				window.location = iframe.src;
+			}
+		});
+
+		current.getElementsByTagName('a')[0].href = iframe.src;
 	},
 
 	runSuite: function( suite ) {
-		var body = document.getElementsByTagName( "body" )[0],
-			iframe = subsuiteFrame = document.createElement( "iframe" ),
+		this.iframe.setAttribute( "src", suite );
+	},
+
+	initIframe: function() {
+		var body = document.body,
+			iframe = this.iframe = document.createElement( "iframe" ),
 			iframeWin;
 
 		iframe.className = "qunit-subsuite";
@@ -72,11 +89,6 @@ QUnit.extend( QUnit, {
 		QUnit.addEvent( iframe, "load", onIframeLoad );
 
 		iframeWin = iframe.contentWindow;
-		iframe.setAttribute( "src", suite );
-
-		this.runSuite = function( suite ) {
-			iframe.setAttribute( "src", suite );
-		};
 	}
 });
 }( QUnit ) );
