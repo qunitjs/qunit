@@ -244,8 +244,6 @@ Test.prototype = {
 			}
 		}
 
-		QUnit.reset();
-
 		runLoggingCallbacks( "testDone", QUnit, {
 			name: this.testName,
 			module: this.module,
@@ -253,6 +251,8 @@ Test.prototype = {
 			passed: this.assertions.length - bad,
 			total: this.assertions.length
 		});
+
+		QUnit.reset();
 	},
 
 	queue: function() {
