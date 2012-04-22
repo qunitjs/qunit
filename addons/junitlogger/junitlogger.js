@@ -158,11 +158,6 @@
 	});
 
 	function XmlWriter(settings) {
-		var data = [], stack = [], lineBreakAt;
-
-		settings = settings || {};
-		lineBreakAt = makeMap(settings.linebreak_at || 'mytag');
-
 		function addLineBreak(name) {
 			if (lineBreakAt[name] && data[data.length - 1] !== '\n') {
 				data.push('\n');
@@ -174,7 +169,7 @@
 
 			items = items || [];
 
-			if (typeof(items) == "string") {
+			if (typeof(items) === "string") {
 				items = items.split(',');
 			}
 
@@ -201,6 +196,11 @@
 				return baseEntities[chr] || chr;
 			});
 		}
+
+		var data = [], stack = [], lineBreakAt;
+
+		settings = settings || {};
+		lineBreakAt = makeMap(settings.linebreak_at || 'mytag');
 
 		this.start = function(name, attrs, empty) {
 			if (!empty) {

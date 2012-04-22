@@ -44,10 +44,29 @@ grunt.initConfig({
 			}
 		},
 		addons: {
-			// meh
 			options: {
+				browser: true,
+				curly: true,
+				eqnull: true,
+				eqeqeq: true,
+				expr: true,
+				evil: true,
+				jquery: true,
+				latedef: true,
+				noarg: true,
 				onevar: true,
-				smarttabs: true
+				smarttabs: true,
+				trailing: true,
+				undef: true
+			},
+			globals: {
+				module: true,
+				test: true,
+				asyncTest: true,
+				expect: true,
+				start: true,
+				stop: true,
+				QUnit: true
 			}
 		},
 		tests: {

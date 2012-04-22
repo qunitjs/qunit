@@ -9,7 +9,7 @@ QUnit.extend( QUnit, {
 	 */
 	step: function (expected, message) {
 		this.config.current.step++; // increment internal step counter.
-		if (typeof message == "undefined") {
+		if (typeof message === "undefined") {
 			message = "step " + expected;
 		}
 		var actual = this.config.current.step;
@@ -19,7 +19,7 @@ QUnit.extend( QUnit, {
 
 /**
  * Reset the step counter for every test()
- */ 
+ */
 QUnit.testStart(function () {
 	this.config.current.step = 0;
 });
