@@ -29,7 +29,7 @@
 		currentTest = {
 			name: data.name,
 			failures: [],
-			start: new Date
+			start: new Date()
 		};
 
 		// Setup default suite if no module was specified
@@ -73,32 +73,32 @@
 	QUnit.done(function(data) {
 		function ISODateString(d) {
 			function pad(n) {
-				return n < 10 ? '0' + n : n
-			};
+				return n < 10 ? '0' + n : n;
+			}
 
-			return d.getUTCFullYear() + '-'
-				+ pad(d.getUTCMonth() + 1)+'-'
-				+ pad(d.getUTCDate()) + 'T'
-				+ pad(d.getUTCHours()) + ':'
-				+ pad(d.getUTCMinutes()) + ':'
-				+ pad(d.getUTCSeconds()) + 'Z'
-		};
+			return d.getUTCFullYear() + '-' +
+				pad(d.getUTCMonth() + 1)+'-' +
+				pad(d.getUTCDate()) + 'T' +
+				pad(d.getUTCHours()) + ':' +
+				pad(d.getUTCMinutes()) + ':' +
+				pad(d.getUTCSeconds()) + 'Z';
+		}
 
 		// Generate XML report
-		var xmlWriter = new XmlWriter({
-			linebreak_at : "testsuites,testsuite,testcase,failure,system-out,system-err"
-		});
+		var i, ti, fi, test, suite,
+			xmlWriter = new XmlWriter({
+				linebreak_at : "testsuites,testsuite,testcase,failure,system-out,system-err"
+			}),
+			now = new Date();
 
 		xmlWriter.start('testsuites');
 
-		var now = new Date();
-
-		for (var i = 0; i < suites.length; i++) {
-			var suite = suites[i];
+		for (i = 0; i < suites.length; i++) {
+			suite = suites[i];
 
 			// Calculate time
-			for (var ti = 0; ti < suite.tests.length; ti++) {
-				var test = suite.tests[ti];
+			for (ti = 0; ti < suite.tests.length; ti++) {
+				test = suite.tests[ti];
 
 				test.time = (now.getTime() - test.start.getTime()) / 1000;
 				suite.time += test.time;
@@ -115,8 +115,8 @@
 				timestamp: ISODateString(now)
 			});
 
-			for (var ti = 0; ti < suite.tests.length; ti++) {
-				var test = suite.tests[ti];
+			for (ti = 0; ti < suite.tests.length; ti++) {
+				test = suite.tests[ti];
 
 				xmlWriter.start('testcase', {
 					name: test.name,
@@ -125,7 +125,7 @@
 					time: Math.round(test.time * 1000) / 1000
 				});
 
-				for (var fi = 0; fi < test.failures.length; fi++) {
+				for (fi = 0; fi < test.failures.length; fi++) {
 					xmlWriter.start('failure', {type: "AssertionFailedError", message: test.failures[fi]}, true);
 				}
 
@@ -167,7 +167,7 @@
 			if (lineBreakAt[name] && data[data.length - 1] !== '\n') {
 				data.push('\n');
 			}
-		};
+		}
 
 		function makeMap(items, delim, map) {
 			var i;
@@ -186,7 +186,7 @@
 			}
 
 			return map;
-		};
+		}
 
 		function encode(text) {
 			var baseEntities = {
@@ -200,7 +200,7 @@
 			return ('' + text).replace(/[<>&\"\']/g, function(chr) {
 				return baseEntities[chr] || chr;
 			});
-		};
+		}
 
 		this.start = function(name, attrs, empty) {
 			if (!empty) {
@@ -264,5 +264,5 @@
 		};
 
 		this.pi(settings.xmldecl || 'xml version="1.0" encoding="UTF-8"');
-	};
+	}
 })();

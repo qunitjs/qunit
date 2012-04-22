@@ -5,13 +5,19 @@ grunt.initConfig({
 	pkg: '<json:package.json>',
 	qunit: {
 		// TODO include 'test/logs.html' as well
-		files: ['test/index.html']
+		qunit: 'test/index.html',
+		addons: [
+			'addons/canvas/canvas.html',
+			'addons/close-enough/close-enough.html',
+			'addons/composite/composite-demo-test.html'
+		]
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
+		addons: 'addons/**/*.js',
 		grunt: 'grunt.js'
 		// TODO need to figure out which warnings to fix and which to disable
-		// tests: 'test/*.js'
+		// tests: 'test/test.js'
 	},
 	jshint: {
 		qunit: {
@@ -37,17 +43,14 @@ grunt.initConfig({
 				exports: true
 			}
 		},
-		tests: {
-			tests: {
-				globals: {
-					module: true,
-					test: true,
-					ok: true,
-					equal: true,
-					deepEqual: true,
-					QUnit: true
-				}
+		addons: {
+			// meh
+			options: {
+				onevar: true,
+				smarttabs: true
 			}
+		},
+		tests: {
 		}
 	}
 });
