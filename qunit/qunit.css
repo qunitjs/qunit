@@ -56,6 +56,7 @@
 
 #qunit-header label {
 	display: inline-block;
+	padding-left: 0.5em;
 }
 
 #qunit-banner {
