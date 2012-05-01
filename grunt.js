@@ -78,7 +78,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
 		config = grunt.file.readJSON( configFile );
 	testswarm({
-		url: "http://swarm.jquery.org/",
+		url: "http://swarm.jquery.org",
 		pollInterval: 10000,
 		done: this.async()
 	}, {
