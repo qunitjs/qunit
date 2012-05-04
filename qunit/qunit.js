@@ -50,7 +50,7 @@ Test.prototype = {
 			li = document.createElement( "li" );
 			li.appendChild( b );
 			li.className = "running";
-			li.id = this.id = "test-output" + testId++;
+			li.id = this.id = "qunit-test-output" + testId++;
 
 			tests.appendChild( li );
 		}
@@ -1073,7 +1073,8 @@ function saveGlobal() {
 
 	if ( config.noglobals ) {
 		for ( var key in window ) {
-			if ( !hasOwn.call( window, key ) ) {
+			// in Opera sometimes DOM element ids show up here, ignore them
+			if ( !hasOwn.call( window, key ) || /^qunit-test-output/.test( key ) ) {
 				continue;
 			}
 			config.pollution.push( key );
