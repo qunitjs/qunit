@@ -153,9 +153,9 @@ Test.prototype = {
 	finish: function() {
 		config.current = this;
 		if ( this.expected != null && this.expected != this.assertions.length ) {
-			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run" );
+			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
 		} else if ( this.expected == null && !this.assertions.length ) {
-			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." );
+			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
 		var assertion, a, b, i, li, ol,
@@ -329,6 +329,7 @@ QUnit = {
 		test = new Test( name, testName, expected, async, callback );
 		test.module = config.currentModule;
 		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
+		test.stack = sourceFromStacktrace( 2 );
 		test.queue();
 	},
 
