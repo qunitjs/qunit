@@ -1,3 +1,16 @@
+1.6.0 / 2012-05-04
+==================
+
+  * Save stack for each test, use that for failed expect() results, points at the line where test() was called. Fixes #209
+  * Prefix test-output id and ignore that in noglobals check. Fixes #212
+  * Only check for an exports object to detect a CommonJS enviroment. Fixes #237 - Incompatibility with require.js
+  * Add testswarm integration as grunt task
+  * Added padding on URL config checkboxes.
+  * Cleanup composite addon: Use callback registration instead of overwriting them. Set the correct src on rerun link (and dblclick). Remove the composite test itself, as that was a crazy hack not worth maintaining
+  * Cleanup reset() test and usage - run testDone callback first, to allow listeneres ignoring reset assertions
+  * Double clicking on composite test rows opens individual test page
+  * test-message for all message-bearing API reporting details
+
 1.5.0 / 2012-04-04
 ==================
 
