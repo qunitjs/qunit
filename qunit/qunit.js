@@ -40,15 +40,21 @@ function Test( name, testName, expected, async, callback ) {
 
 Test.prototype = {
 	init: function() {
-		var b, li,
+		var a, b, li,
         tests = id( "qunit-tests" );
 
 		if ( tests ) {
 			b = document.createElement( "strong" );
-			b.innerHTML = "Running " + this.name;
+			b.innerHTML = this.name;
+
+			// `a` initialized at top of scope
+			a = document.createElement( "a" );
+			a.innerHTML = "Rerun";
+			a.href = QUnit.url({ filter: getText([b]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" ) });
 
 			li = document.createElement( "li" );
 			li.appendChild( b );
+			li.appendChild( a );
 			li.className = "running";
 			li.id = this.id = "qunit-test-output" + testId++;
 
@@ -203,11 +209,6 @@ Test.prototype = {
 			b = document.createElement( "strong" );
 			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
 
-			// `a` initialized at top of scope
-			a = document.createElement( "a" );
-			a.innerHTML = "Rerun";
-			a.href = QUnit.url({ filter: getText([b]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" ) });
-
 			addEvent(b, "click", function() {
 				var next = b.nextSibling.nextSibling,
 					display = next.style.display;
@@ -230,8 +231,9 @@ Test.prototype = {
 			li = id( this.id );
 			li.className = bad ? "fail" : "pass";
 			li.removeChild( li.firstChild );
+			a = li.firstChild;
 			li.appendChild( b );
-			li.appendChild( a );
+			li.appendChild ( a );
 			li.appendChild( ol );
 
 		} else {
