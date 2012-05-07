@@ -84,7 +84,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	}, {
 		authUsername: "qunit",
 		authToken: config.qunit.authToken,
-		jobName: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit + '</a>',
+		jobName: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
 		runMax: 3,
 		"runNames[]": "QUnit",
 		"runUrls[]": "http://swarm.jquery.org/git/qunit/" + commit + "/test/index.html",
