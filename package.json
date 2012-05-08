@@ -28,6 +28,6 @@
   "main": "qunit/qunit.js",
   "devDependencies": {
     "grunt": "0.3.x",
-    "testswarm": "0.2.1"
+    "testswarm": "0.2.2"
   }
 }
