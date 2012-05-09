@@ -966,8 +966,7 @@ function done() {
 
 function validTest( name ) {
 	var not,
-		filter = config.filter,
-		run = false;
+		filter = config.filter;
 
 	if ( !filter ) {
 		return true;
@@ -983,11 +982,7 @@ function validTest( name ) {
 		return !not;
 	}
 
-	if ( not ) {
-		run = true;
-	}
-
-	return run;
+	return not;
 }
 
 // so far supports only Firefox, Chrome and Opera (buggy), Safari (for real exceptions)
