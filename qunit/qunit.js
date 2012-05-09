@@ -1000,29 +1000,26 @@ function done() {
 }
 
 function validTest( name ) {
-	var not,
-		filter = config.filter,
-		run = false;
+	var include,
+		filter = config.filter;
 
+	// By default, run all tests
 	if ( !filter ) {
 		return true;
 	}
 
-	not = filter.charAt( 0 ) === "!";
-
-	if ( not ) {
+	include = filter.charAt( 0 ) !== "!";
+	if ( !include ) {
 		filter = filter.slice( 1 );
 	}
 
+	// If the filter matches, we need to honour include
 	if ( name.indexOf( filter ) !== -1 ) {
-		return !not;
+		return include;
 	}
 
-	if ( not ) {
-		run = true;
-	}
-
-	return run;
+	// Otherwise, do the opposite
+	return !include;
 }
 
 // so far supports only Firefox, Chrome and Opera (buggy), Safari (for real exceptions)
