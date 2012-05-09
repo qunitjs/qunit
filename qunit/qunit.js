@@ -125,12 +125,12 @@ Test.prototype = {
 		}
 
 		if ( config.notrycatch ) {
-			this.callback.call( this.testEnvironment );
+			this.callback.call( this.testEnvironment, QUnit.assert );
 			return;
 		}
 
 		try {
-			this.callback.call( this.testEnvironment );
+			this.callback.call( this.testEnvironment, QUnit.assert );
 		} catch( e ) {
 			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + ": " + e.message, extractStacktrace( e, 1 ) );
 			// else next test will carry the responsibility
@@ -293,6 +293,7 @@ Test.prototype = {
 	}
 };
 
+// Root QUnit object.
 // `QUnit` initialized at top of scope
 QUnit = {
 
@@ -340,8 +341,59 @@ QUnit = {
 		config.current.expected = asserts;
 	},
 
-	// Asserts true.
-	// @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
+	start: function( count ) {
+		config.semaphore -= count || 1;
+		// don't start until equal number of stop-calls
+		if ( config.semaphore > 0 ) {
+			return;
+		}
+		// ignore if start is called more often then stop
+		if ( config.semaphore < 0 ) {
+			config.semaphore = 0;
+		}
+		// A slight delay, to avoid any current callbacks
+		if ( defined.setTimeout ) {
+			window.setTimeout(function() {
+				if ( config.semaphore > 0 ) {
+					return;
+				}
+				if ( config.timeout ) {
+					clearTimeout( config.timeout );
+				}
+
+				config.blocking = false;
+				process( true );
+			}, 13);
+		} else {
+			config.blocking = false;
+			process( true );
+		}
+	},
+
+	stop: function( count ) {
+		config.semaphore += count || 1;
+		config.blocking = true;
+
+		if ( config.testTimeout && defined.setTimeout ) {
+			clearTimeout( config.timeout );
+			config.timeout = window.setTimeout(function() {
+				QUnit.ok( false, "Test timed out" );
+				config.semaphore = 1;
+				QUnit.start();
+			}, config.testTimeout );
+		}
+	}
+};
+
+// Asssert helpers
+// All of these must call either QUnit.push() or manually do:
+// - runLoggingCallbacks( "log", .. );
+// - config.current.assertions.push({ .. });
+QUnit.assert = {
+	/**
+	 * Asserts rough true-ish result.
+	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
+	 */
 	ok: function( result, msg ) {
 		if ( !config.current ) {
 			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace(2) );
@@ -371,8 +423,11 @@ QUnit = {
 		});
 	},
 
-	// Checks that the first two arguments are equal, with an optional message. Prints out both actual and expected values.
-	// @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes." );
+	/**
+	 * Assert that the first two arguments are equal, with an optional message.
+	 * Prints out both actual and expected values.
+	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
+	 */
 	equal: function( actual, expected, message ) {
 		QUnit.push( expected == actual, actual, expected, message );
 	},
@@ -429,50 +484,21 @@ QUnit = {
 		}
 
 		QUnit.ok( ok, message );
-	},
-
-	start: function( count ) {
-		config.semaphore -= count || 1;
-		// don't start until equal number of stop-calls
-		if ( config.semaphore > 0 ) {
-			return;
-		}
-		// ignore if start is called more often then stop
-		if ( config.semaphore < 0 ) {
-			config.semaphore = 0;
-		}
-		// A slight delay, to avoid any current callbacks
-		if ( defined.setTimeout ) {
-			window.setTimeout(function() {
-				if ( config.semaphore > 0 ) {
-					return;
-				}
-				if ( config.timeout ) {
-					clearTimeout( config.timeout );
-				}
-
-				config.blocking = false;
-				process( true );
-			}, 13);
-		} else {
-			config.blocking = false;
-			process( true );
-		}
-	},
-
-	stop: function( count ) {
-		config.semaphore += count || 1;
-		config.blocking = true;
-
-		if ( config.testTimeout && defined.setTimeout ) {
-			clearTimeout( config.timeout );
-			config.timeout = window.setTimeout(function() {
-				QUnit.ok( false, "Test timed out" );
-				config.semaphore = 1;
-				QUnit.start();
-			}, config.testTimeout );
-		}
 	}
+};
+
+// @deprecated: Kept assertion helpers in root for backwards compatibility
+extend( QUnit, QUnit.assert );
+
+/**
+ * @deprecated: Kept for backwards compatibility
+ * next step: remove entirely
+ */
+QUnit.equals = function() {
+	QUnit.push( false, false, false, "QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead" );
+};
+QUnit.same = function() {
+	QUnit.push( false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead" );
 };
 
 // We want access to the constructor's prototype
@@ -484,17 +510,11 @@ QUnit = {
 	QUnit.constructor = F;
 }());
 
-// deprecated; still export them to window to provide clear error messages
-// next step: remove entirely
-QUnit.equals = function() {
-	QUnit.push( false, false, false, "QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead" );
-};
-QUnit.same = function() {
-	QUnit.push( false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead" );
-};
-
-// Maintain internal state
-// `config` initialized at top of scope
+/**
+ * Config object: Maintain internal state
+ * Later exposed as QUnit.config
+ * `config` initialized at top of scope
+ */
 config = {
 	// The queue of tests to run
 	queue: [],
@@ -525,7 +545,7 @@ config = {
 	moduleDone: []
 };
 
-// Load paramaters
+// Initialize more QUnit.config and QUnit.urlParams
 (function() {
 	var i,
 		location = window.location || { search: "", protocol: "file:" },
@@ -551,14 +571,17 @@ config = {
 	QUnit.isLocal = location.protocol === "file:";
 }());
 
-// Expose the API as global variables, unless an 'exports' object exists,
-// in that case we assume we're in CommonJS - export everything at the end
+// Export global variables, unless an 'exports' object exists,
+// in that case we assume we're in CommonJS (dealt with on the bottom of the script)
 if ( typeof exports === "undefined" ) {
 	extend( window, QUnit );
+
+	// Expose QUnit object
 	window.QUnit = QUnit;
 }
 
-// define these after exposing globals to keep them in these QUnit namespace only
+// Extend QUnit object,
+// these after set here because they should not be exposed as global functions
 extend( QUnit, {
 	config: config,
 
@@ -766,25 +789,37 @@ extend( QUnit, {
 	extend: extend,
 	id: id,
 	addEvent: addEvent
+	// load, equiv, jsDump, diff: Attached later
 });
 
-// QUnit.constructor is set to the empty F() above so that we can add to it's prototype later
-// Doing this allows us to tell if the following methods have been overwritten on the actual
-// QUnit object, which is a deprecated way of using the callbacks.
+/**
+ * @deprecated: Created for backwards compatibility with test runner that set the hook function
+ * into QUnit.{hook}, instead of invoking it and passing the hook function.
+ * QUnit.constructor is set to the empty F() above so that we can add to it's prototype here.
+ * Doing this allows us to tell if the following methods have been overwritten on the actual
+ * QUnit object.
+ */
 extend( QUnit.constructor.prototype, {
+
 	// Logging callbacks; all receive a single argument with the listed properties
 	// run test/logs.html for any related changes
 	begin: registerLoggingCallback( "begin" ),
+
 	// done: { failed, passed, total, runtime }
 	done: registerLoggingCallback( "done" ),
+
 	// log: { result, actual, expected, message }
 	log: registerLoggingCallback( "log" ),
+
 	// testStart: { name }
 	testStart: registerLoggingCallback( "testStart" ),
+
 	// testDone: { name, failed, passed, total }
 	testDone: registerLoggingCallback( "testDone" ),
+
 	// moduleStart: { name }
 	moduleStart: registerLoggingCallback( "moduleStart" ),
+
 	// moduleDone: { name, failed, passed, total }
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
