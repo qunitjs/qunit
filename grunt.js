@@ -36,7 +36,8 @@ grunt.initConfig({
 				sub: true,
 				undef: true,
 				eqnull: true,
-				proto: true
+				proto: true,
+				smarttabs: true
 			},
 			globals: {
 				jQuery: true,
