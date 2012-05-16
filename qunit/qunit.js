@@ -483,7 +483,7 @@ QUnit.assert = {
 			}
 		}
 
-		QUnit.ok( ok, message );
+		QUnit.push( ok, actual, null, message );
 	}
 };
 
