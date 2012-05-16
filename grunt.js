@@ -14,7 +14,7 @@ grunt.initConfig({
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
-		addons: 'addons/**/*.js',
+		// addons: 'addons/**/*.js',
 		grunt: 'grunt.js'
 		// TODO need to figure out which warnings to fix and which to disable
 		// tests: 'test/test.js'
