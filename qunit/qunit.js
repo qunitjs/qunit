@@ -29,14 +29,13 @@ var QUnit,
 	}())
 };
 
-function Test( name, testName, expected, async, callback ) {
-	this.name = name;
-	this.testName = testName;
-	this.expected = expected;
-	this.async = async;
-	this.callback = callback;
+function Test( settings ) {
+	extend( this, settings );
 	this.assertions = [];
+	this.testNumber = ++Test.count;
 }
+
+Test.count = 0;
 
 Test.prototype = {
 	init: function() {
@@ -50,7 +49,7 @@ Test.prototype = {
 			// `a` initialized at top of scope
 			a = document.createElement( "a" );
 			a.innerHTML = "Rerun";
-			a.href = QUnit.url({ filter: getText([b]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" ) });
+			a.href = QUnit.url({ testNumber: this.testNumber });
 
 			li = document.createElement( "li" );
 			li.appendChild( b );
@@ -221,9 +220,7 @@ Test.prototype = {
 					target = target.parentNode;
 				}
 				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-					window.location = QUnit.url({
-						filter: getText([target]).replace( /\([^)]+\)$/, "" ).replace( /(^\s*|\s*$)/g, "" )
-					});
+					window.location = target.nextSibling.href;
 				}
 			});
 
@@ -325,14 +322,21 @@ QUnit = {
 			name = "<span class='module-name'>" + config.currentModule + "</span>: " + name;
 		}
 
-		if ( !validTest(config.currentModule + ": " + testName) ) {
+		test = new Test({
+			name: name,
+			testName: testName,
+			expected: expected,
+			async: async,
+			callback: callback,
+			module: config.currentModule,
+			moduleTestEnvironment: config.currentModuleTestEnviroment,
+			stack: sourceFromStacktrace( 2 )
+		});
+
+		if ( !validTest( test ) ) {
 			return;
 		}
 
-		test = new Test( name, testName, expected, async, callback );
-		test.module = config.currentModule;
-		test.moduleTestEnvironment = config.currentModuleTestEnviroment;
-		test.stack = sourceFromStacktrace( 2 );
 		test.queue();
 	},
 
@@ -566,6 +570,7 @@ config = {
 
 	QUnit.urlParams = urlParams;
 	config.filter = urlParams.filter;
+	config.testNumber = parseInt( urlParams.testNumber, 10 ) || null;
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
@@ -999,11 +1004,15 @@ function done() {
 	});
 }
 
-function validTest( name ) {
+function validTest( test ) {
 	var include,
-		filter = config.filter;
+		filter = config.filter,
+		fullName = test.module + ": " + test.testName;
 
-	// By default, run all tests
+	if ( config.testNumber ) {
+		return test.testNumber === config.testNumber;
+	}
+
 	if ( !filter ) {
 		return true;
 	}
@@ -1014,7 +1023,7 @@ function validTest( name ) {
 	}
 
 	// If the filter matches, we need to honour include
-	if ( name.indexOf( filter ) !== -1 ) {
+	if ( fullName.indexOf( filter ) !== -1 ) {
 		return include;
 	}
 
