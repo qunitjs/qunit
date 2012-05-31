@@ -1,13 +1,13 @@
 /*
- * Qt+WebKit powered (mostly) headless test runner using Phantomjs
+ * Qt+WebKit powered headless test runner using Phantomjs
  *
  * Phantomjs installation: http://code.google.com/p/phantomjs/wiki/BuildInstructions
  *
  * Run with:
- *  phantomjs test.js [url-of-your-qunit-testsuite]
+ *  phantomjs runner.js [url-of-your-qunit-testsuite]
  *
  * E.g.
- *      phantomjs test.js http://localhost/qunit/test
+ *      phantomjs runner.js http://localhost/qunit/test
  */
 
 var url = phantom.args[0];
