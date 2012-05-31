@@ -1463,11 +1463,11 @@ QUnit.jsDump = (function() {
 					type = "null";
 				} else if ( typeof obj === "undefined" ) {
 					type = "undefined";
-				} else if ( QUnit.is( "RegExp", obj) ) {
+				} else if ( QUnit.is( "regexp", obj) ) {
 					type = "regexp";
-				} else if ( QUnit.is( "Date", obj) ) {
+				} else if ( QUnit.is( "date", obj) ) {
 					type = "date";
-				} else if ( QUnit.is( "Function", obj) ) {
+				} else if ( QUnit.is( "function", obj) ) {
 					type = "function";
 				} else if ( typeof obj.setInterval !== undefined && typeof obj.document !== "undefined" && typeof obj.nodeType === "undefined" ) {
 					type = "window";
