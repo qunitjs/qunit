@@ -1007,8 +1007,8 @@ function done() {
 
 function validTest( test ) {
 	var include,
-		filter = config.filter,
-		fullName = test.module + ": " + test.testName;
+		filter = config.filter.toLowerCase(),
+		fullName = (test.module + ": " + test.testName).toLowerCase();
 
 	if ( config.testNumber ) {
 		return test.testNumber === config.testNumber;
