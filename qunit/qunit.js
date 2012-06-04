@@ -13,6 +13,7 @@
 var QUnit,
 	config,
 	testId = 0,
+	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
@@ -131,7 +132,7 @@ Test.prototype = {
 		try {
 			this.callback.call( this.testEnvironment, QUnit.assert );
 		} catch( e ) {
-			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + ": " + e.message, extractStacktrace( e, 1 ) );
+			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + " " + this.stack + ": " + e.message, extractStacktrace( e, 0 ) );
 			// else next test will carry the responsibility
 			saveGlobal();
 
@@ -1036,9 +1037,9 @@ function validTest( test ) {
 // Later Safari and IE10 are supposed to support error.stack as well
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 function extractStacktrace( e, offset ) {
-	offset = offset || 3;
+	offset = offset === undefined ? 3 : offset;
 
-	var stack;
+	var stack, include, i, regex;
 
 	if ( e.stacktrace ) {
 		// Opera
@@ -1048,6 +1049,18 @@ function extractStacktrace( e, offset ) {
 		stack = e.stack.split( "\n" );
 		if (/^error$/i.test( stack[0] ) ) {
 			stack.shift();
+		}
+		if ( fileName ) {
+			include = [];
+			for ( i = offset; i < stack.length; i++ ) {
+				if ( stack[ i ].indexOf( fileName ) != -1 ) {
+					break;
+				}
+				include.push( stack[ i ] );
+			}
+			if ( include.length ) {
+				return include.join( "\n" );
+			}
 		}
 		return stack[ offset ];
 	} else if ( e.sourceURL ) {
