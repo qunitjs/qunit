@@ -158,7 +158,9 @@ Test.prototype = {
 	},
 	finish: function() {
 		config.current = this;
-		if ( this.expected != null && this.expected != this.assertions.length ) {
+		if ( config.requireExpects && this.expected == null ) {
+			QUnit.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
+		} else if ( this.expected != null && this.expected != this.assertions.length ) {
 			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
 		} else if ( this.expected == null && !this.assertions.length ) {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
@@ -538,6 +540,9 @@ config = {
 
 	// by default, modify document.title when suite is done
 	altertitle: true,
+
+	// when enabled, all tests must call expect()
+	requireExpects: false,
 
 	urlConfig: [ "noglobals", "notrycatch" ],
 
