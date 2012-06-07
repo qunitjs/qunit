@@ -1,5 +1,5 @@
 /**
- * QUnit v1.7.0pre - A JavaScript Unit Testing Framework
+ * QUnit v1.7.0 - A JavaScript Unit Testing Framework
  *
  * http://docs.jquery.com/QUnit
  *

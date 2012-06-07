@@ -1,3 +1,20 @@
+1.7.0 / 2012-06-07
+==================
+
+  * Add config.requireExpects. Fixes #207 - Add option to require all tests to call expect().
+  * Improve extractStacktrace() implementation. Fixes #254 - Include all relevant stack lines
+  * Make filters case-insensitive. Partial fix for #252
+  * is() expects lowercase types. Fixes #250 - Expected Date value is not displayed properly
+  * Fix phantomjs addon header and add readme. Fixes #239
+  * Add some hints to composite addon readme. Fixes #251
+  * Track tests by the order in which they were run and create rerun links based on that number. Fixes #241 - Make Rerun link run only a single test.
+  * Use QUnit.push for raises implementation. Fixes #243
+  * CLI runner for phantomjs
+  * Fix jshint validation until they deal with /** */ comments properly
+  * Update validTest() : Simplify logic, clarify vars and add comments
+  * Refactor assertion helpers into QUnit.assert (backwards compatible)
+  * Add Rerun link to placeholders. Fixes #240
+
 1.6.0 / 2012-05-04
 ==================
 
