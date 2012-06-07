@@ -578,7 +578,13 @@ config = {
 	}
 
 	QUnit.urlParams = urlParams;
+
+	// String search anywhere in moduleName+testName
 	config.filter = urlParams.filter;
+
+	// Exact match of the module name
+	config.module = urlParams.module;
+
 	config.testNumber = parseInt( urlParams.testNumber, 10 ) || null;
 
 	// Figure out if we're running the tests from a server or not
@@ -1016,13 +1022,19 @@ function done() {
 	});
 }
 
+/** @return Boolean: true if this test should be ran */
 function validTest( test ) {
 	var include,
 		filter = config.filter && config.filter.toLowerCase(),
+		module = config.module,
 		fullName = (test.module + ": " + test.testName).toLowerCase();
 
 	if ( config.testNumber ) {
 		return test.testNumber === config.testNumber;
+	}
+
+	if ( module && test.module !== module ) {
+		return false;
 	}
 
 	if ( !filter ) {
