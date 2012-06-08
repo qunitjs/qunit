@@ -462,7 +462,6 @@ QUnit.assert = {
 
 	raises: function( block, expected, message ) {
 		var actual,
-			ignoreGlobalErrors = config.current.ignoreGlobalErrors,
 			ok = false;
 
 		if ( typeof expected === "string" ) {
@@ -476,7 +475,7 @@ QUnit.assert = {
 		} catch (e) {
 			actual = e;
 		}
-		config.current.ignoreGlobalErrors = ignoreGlobalErrors;
+		config.current.ignoreGlobalErrors = false;
 
 		if ( actual ) {
 			// we don't want to validate thrown error
