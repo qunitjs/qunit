@@ -321,6 +321,15 @@ test("raises",function() {
 		"custom validation function"
 	);
 
+	raises(
+		function() {
+			( window.execScript || function( data ) {
+				window["eval"].call( window, data );
+			})( "throw 'error'" );
+		},
+		'globally-executed errors caught'
+	);
+
     this.CustomError = CustomError;
 
     raises(

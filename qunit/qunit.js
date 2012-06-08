@@ -469,11 +469,13 @@ QUnit.assert = {
 			expected = null;
 		}
 
+		config.current.ignoreGlobalErrors = true;
 		try {
 			block.call( config.current.testEnvironment );
 		} catch (e) {
 			actual = e;
 		}
+		config.current.ignoreGlobalErrors = false;
 
 		if ( actual ) {
 			// we don't want to validate thrown error
@@ -936,6 +938,9 @@ addEvent( window, "load", QUnit.load );
 // addEvent(window, "error" ) gives us a useless event object
 window.onerror = function( message, file, line ) {
 	if ( QUnit.config.current ) {
+		if ( QUnit.config.current.ignoreGlobalErrors ) {
+			return true;
+		}
 		QUnit.pushFailure( message, file + ":" + line );
 	} else {
 		QUnit.test( "global failure", function() {
