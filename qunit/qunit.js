@@ -255,9 +255,9 @@ Test.prototype = {
 			total: this.assertions.length
 		});
 
-		config.current = undefined;
-
 		QUnit.reset();
+
+		config.current = undefined;
 	},
 
 	queue: function() {
