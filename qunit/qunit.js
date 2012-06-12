@@ -255,6 +255,8 @@ Test.prototype = {
 			total: this.assertions.length
 		});
 
+		config.current = undefined;
+
 		QUnit.reset();
 	},
 
@@ -768,6 +770,10 @@ extend( QUnit, {
 	},
 
 	pushFailure: function( message, source ) {
+		if ( !config.current ) {
+			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace(2) );
+		}
+
 		var output,
 			details = {
 				result: false,
