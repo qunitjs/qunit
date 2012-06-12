@@ -12,6 +12,7 @@
 
 var QUnit,
 	config,
+	onErrorFnPrev,
 	testId = 0,
 	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
@@ -947,18 +948,36 @@ QUnit.load = function() {
 
 addEvent( window, "load", QUnit.load );
 
-// addEvent(window, "error" ) gives us a useless event object
-window.onerror = function( message, file, line ) {
-	if ( QUnit.config.current ) {
-		if ( QUnit.config.current.ignoreGlobalErrors ) {
-			return true;
-		}
-		QUnit.pushFailure( message, file + ":" + line );
-	} else {
-		QUnit.test( "global failure", function() {
-			QUnit.pushFailure( message, file + ":" + line );
-		});
+// `onErrorFnPrev` initialized at top of scope
+// Preserve other handlers
+onErrorFnPrev = window.onerror;
+
+// Cover uncaught exceptions
+// Returning true will surpress the default browser handler,
+// returning false will let it run.
+window.onerror = function ( error, filePath, linerNr ) {
+	var ret = false;
+	if ( onErrorFnPrev ) {
+		ret = onErrorFnPrev( error, filePath, linerNr );
 	}
+
+	// Treat return value as window.onerror itself does,
+	// Only do our handling if not surpressed.
+	if ( ret !== true ) {
+		if ( QUnit.config.current ) {
+			if ( QUnit.config.current.ignoreGlobalErrors ) {
+				return true;
+			}
+			QUnit.pushFailure( error, filePath + ":" + linerNr );
+		} else {
+			QUnit.test( "global failure", function() {
+				QUnit.pushFailure( error, filePath + ":" + linerNr );
+			});
+		}
+		return false;
+	}
+
+	return ret;
 };
 
 function done() {
