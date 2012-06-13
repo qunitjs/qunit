@@ -79,7 +79,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
 		config = grunt.file.readJSON( configFile ).qunit;
 	testswarm({
-		url: "http://swarm.jquery.org/",
+		url: config.swarmUrl,
 		pollInterval: 10000,
 		done: this.async()
 	}, {
@@ -88,7 +88,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 		jobName: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
 		runMax: config.runMax,
 		"runNames[]": "QUnit",
-		"runUrls[]": "http://swarm.jquery.org/git/qunit/" + commit + "/test/index.html",
+		"runUrls[]": config.testUrl + commit + "/test/index.html",
 		"browserSets[]": ["popular"]
 	});
 });
