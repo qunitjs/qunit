@@ -1,3 +1,10 @@
+1.8.0 / 2012-06-14
+==================
+  * Improve window.onerror handling
+  * (issue #260) config.current should be reset at the right time.
+  * Filter: Implement 'module' url parameter. Fixes #252
+  * raises: ignore global exceptions stemming from test. Fixes #257 - Globally-executed errors sneak past raises in IE
+
 1.7.0 / 2012-06-07
 ==================
 
