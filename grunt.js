@@ -1,6 +1,6 @@
 /*global config:true, task:true*/
 module.exports = function( grunt ) {
-
+/* */
 grunt.initConfig({
 	pkg: '<json:package.json>',
 	qunit: {
