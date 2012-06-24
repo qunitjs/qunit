@@ -495,9 +495,11 @@ QUnit.assert = {
 			} else if ( expected.call( {}, actual ) === true ) {
 				ok = true;
 			}
-		}
 
-		QUnit.push( ok, actual, null, message );
+			QUnit.push( ok, actual, null, message );
+		} else {
+			QUnit.pushFailure( message, null, 'No exception was thrown.' );
+		}
 	}
 };
 
@@ -780,7 +782,7 @@ extend( QUnit, {
 		});
 	},
 
-	pushFailure: function( message, source ) {
+	pushFailure: function( message, source, actual ) {
 		if ( !config.current ) {
 			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace(2) );
 		}
@@ -791,14 +793,22 @@ extend( QUnit, {
 				message: message
 			};
 
-		message = escapeInnerText(message ) || "error";
+		message = escapeInnerText( message ) || "error";
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
+		output += "<table>";
+
+		if ( actual ) {
+			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeInnerText( actual ) + "</pre></td></tr>";
+		}
+
 		if ( source ) {
 			details.source = source;
-			output += "<table><tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr></table>";
+			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr>";
 		}
+
+		output += "</table>";
 
 		runLoggingCallbacks( "log", QUnit, details );
 
