@@ -787,13 +787,13 @@ extend( QUnit, {
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
+		if ( actual ) {
+			output += "<table><tr class='test-actual'><th>Result: </th><td><pre>" + escapeInnerText( actual ) + "</pre></td></tr></table>";
+		}
+
 		if ( source ) {
 			details.source = source;
 			output += "<table><tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr></table>";
-		}
-
-		if ( actual ) {
-			output += "<table><tr class='test-actual'><th>Result: </th><td><pre>" + escapeInnerText( actual ) + "</pre></td></tr></table>";
 		}
 
 		runLoggingCallbacks( "log", QUnit, details );
