@@ -885,7 +885,7 @@ QUnit.load = function() {
 	// `banner` initialized at top of scope
 	banner = id( "qunit-header" );
 	if ( banner ) {
-		banner.innerHTML = "<a href='" + QUnit.url({ filter: undefined }) + "'>" + banner.innerHTML + "</a> " + urlConfigHtml;
+		banner.innerHTML = "<a href='" + QUnit.url({ filter: undefined, module: undefined, testNumber: undefined }) + "'>" + banner.innerHTML + "</a> " + urlConfigHtml;
 		addEvent( banner, "change", function( event ) {
 			var params = {};
 			params[ event.target.name ] = event.target.checked ? true : undefined;
