@@ -1,0 +1,7 @@
+{
+	"predef": [
+		"QUnit"
+	],
+	"browser": true,
+	"smarttabs": true
+}
