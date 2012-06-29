@@ -1,6 +1,7 @@
 // run with
 // node test/node-test.js
 var QUnit = require("../qunit/qunit");
+
 QUnit.log(function(details) {
 	if (!details.result) {
 		var output = "FAILED: " + (details.message ? details.message + ", " : "");
@@ -13,8 +14,10 @@ QUnit.log(function(details) {
 		console.log(output);
 	}
 });
-QUnit.test("yo", function() {
-	QUnit.equal(true, false);
-	QUnit.equal(true, false, "gotta fail");
-	x.y.z;
+
+QUnit.test("fail twice with stacktrace", function(assert) {
+	/*jshint expr:true */
+	assert.equal(true, false);
+	assert.equal(true, false, "gotta fail");
+	x.y.z; // Throws ReferenceError
 });

@@ -39,15 +39,18 @@ QUnit.log(function(context) {
 	logContext = context;
 });
 
-var logs = ["begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done"];
-for (var i = 0; i < logs.length; i++) {
-	(function() {
-		var log = logs[i];
-		QUnit[log](function() {
-			console.log(log, arguments);
+(function () {
+	function createCallback(logType) {
+		QUnit[logType](function () {
+			console.log(logType, arguments);
 		});
-	})();
-}
+	}
+
+	var logs = ["begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done"];
+	for (var i = 0; i < logs.length; i++) {
+		createCallback(logs[i]);
+	}
+}());
 
 module("logs1");
 
@@ -179,12 +182,12 @@ QUnit.done(function() {
 
 	moduleStart = moduleDone = 0;
 
-	test("first", function(){
+	test("first", function() {
 		equal(moduleStart, 1, "test started");
 		equal(moduleDone, 0, "test in progress");
 	});
 
-	test("second", function(){
+	test("second", function() {
 		equal(moduleStart, 2, "test started");
 		equal(moduleDone, 1, "test in progress");
 	});
