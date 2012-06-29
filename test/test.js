@@ -280,36 +280,36 @@ test("raises",function() {
 		return this.message;
 	};
 
-	raises(
+	throws(
 		function() {
-			throw "error"
+			throw "my error"
 		}
 	);
 
-	raises(
+	throws(
 		function() {
-			throw "error"
+			throw "my error"
 		},
-		'raises with just a message, no expected'
+		"simple string throw, no 'expected' value given"
 	);
 
-	raises(
+	throws(
 		function() {
 			throw new CustomError();
 		},
 		CustomError,
-		'raised error is an instance of CustomError'
+		'thrown error is an instance of CustomError'
 	);
 
-	raises(
+	throws(
 		function() {
 			throw new CustomError("some error description");
 		},
 		/description/,
-		"raised error message contains 'description'"
+		"use a regex to match against the stringified error"
 	);
 
-	raises(
+	throws(
 		function() {
 			throw new CustomError("some error description");
 		},
@@ -321,7 +321,7 @@ test("raises",function() {
 		"custom validation function"
 	);
 
-	raises(
+	throws(
 		function() {
 			( window.execScript || function( data ) {
 				window["eval"].call( window, data );
@@ -332,12 +332,19 @@ test("raises",function() {
 
     this.CustomError = CustomError;
 
-    raises(
+    throws(
         function() {
             throw new this.CustomError("some error description");
         },
         /description/,
-        "raised error with 'this' context"
+        "throw error from property of 'this' context"
+    );
+
+    raises(
+        function() {
+            throw "error"
+        },
+        "simple throw, asserting with deprecated raises() function"
     );
 
 });
