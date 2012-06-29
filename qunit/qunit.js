@@ -1061,14 +1061,14 @@ function done() {
 function validTest( test ) {
 	var include,
 		filter = config.filter && config.filter.toLowerCase(),
-		module = config.module,
+		module = config.module && config.module.toLowerCase(),
 		fullName = (test.module + ": " + test.testName).toLowerCase();
 
 	if ( config.testNumber ) {
 		return test.testNumber === config.testNumber;
 	}
 
-	if ( module && test.module !== module ) {
+	if ( module && ( !test.module || test.module.toLowerCase() !== module ) ) {
 		return false;
 	}
 
