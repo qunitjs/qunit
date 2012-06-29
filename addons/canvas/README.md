@@ -4,11 +4,13 @@ Canvas - A QUnit Addon For Testing Canvas Rendering
 This addon for QUnit adds a pixelEqual method that allows you to assert
 individual pixel values in a given canvas.
 
-Usage:
+Usage
+-----------
 
-    pixelEqual(canvas, x, y, r, g, b, a, message)
+    assert.pixelEqual(canvas, x, y, r, g, b, a, message);
 
-Where:
+Parameters
+-----------
 
   * canvas: Reference to a canvas element
   * x, y: Coordinates of the pixel to test

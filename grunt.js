@@ -7,8 +7,8 @@ grunt.initConfig({
 		// TODO include 'test/logs.html' as well
 		qunit: 'test/index.html',
 		addons: [
-			'addons/canvas/canvas.html',
-			'addons/close-enough/close-enough.html',
+			'addons/canvas/canvas-test.html',
+			'addons/close-enough/close-enough-test.html',
 			'addons/composite/composite-demo-test.html'
 		]
 	},

@@ -15,20 +15,21 @@ var url = phantom.args[0];
 var page = require('webpage').create();
 
 // Route "console.log()" calls from within the Page context to the main Phantom context (i.e. current "this")
-page.onConsoleMessage = function(msg) {
+page.onConsoleMessage = function (msg) {
 	console.log(msg);
 };
 
-page.onInitialized = function() {
+page.onInitialized = function () {
 	page.evaluate(addLogging);
 };
-page.open(url, function(status){
+
+page.open(url, function (status) {
 	if (status !== "success") {
 		console.log("Unable to access network: " + status);
 		phantom.exit(1);
 	} else {
 		// page.evaluate(addLogging);
-		var interval = setInterval(function() {
+		var interval = setInterval(function () {
 			if (finished()) {
 				clearInterval(interval);
 				onfinishedTests();
@@ -38,30 +39,30 @@ page.open(url, function(status){
 });
 
 function finished() {
-	return page.evaluate(function(){
+	return page.evaluate(function () {
 		return !!window.qunitDone;
 	});
 }
 
 function onfinishedTests() {
-	var output = page.evaluate(function() {
+	var output = page.evaluate(function () {
 			return JSON.stringify(window.qunitDone);
 	});
 	phantom.exit(JSON.parse(output).failed > 0 ? 1 : 0);
 }
 
 function addLogging() {
-	window.document.addEventListener( "DOMContentLoaded", function() {
-		var current_test_assertions = [];
-		var module;
+	window.document.addEventListener( "DOMContentLoaded", function () {
+		var module,
+			current_test_assertions = [];;
 
-		QUnit.moduleStart(function(context) {
+		QUnit.moduleStart(function (context) {
 			module = context.name;
 		});
 
-		QUnit.testDone(function(result) {
-			var name = module + ': ' + result.name;
-			var i;
+		QUnit.testDone(function (result) {
+			var i,
+				name = module + ': ' + result.name;
 
 			if (result.failed) {
 				console.log('Assertion Failed: ' + name);
@@ -74,7 +75,7 @@ function addLogging() {
 			current_test_assertions = [];
 		});
 
-		QUnit.log(function(details) {
+		QUnit.log(function (details) {
 			var response;
 
 			if (details.result) {
@@ -94,9 +95,10 @@ function addLogging() {
 			current_test_assertions.push('Failed assertion: ' + response);
 		});
 
-		QUnit.done(function(result){
+		QUnit.done(function (result) {
 			console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
 			window.qunitDone = result;
 		});
+
 	}, false );
 }
