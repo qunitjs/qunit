@@ -497,7 +497,7 @@ QUnit.assert = {
 
 			QUnit.push( ok, actual, null, message );
 		} else {
-			QUnit.pushFailure( message, null, 'No exception was raised.' );
+			QUnit.pushFailure( message, null, 'No exception was thrown.' );
 		}
 	}
 };
