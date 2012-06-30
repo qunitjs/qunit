@@ -403,6 +403,8 @@ QUnit = {
 QUnit.assert = {
 	/**
 	 * Asserts rough true-ish result.
+	 * @name ok
+	 * @function
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
 	ok: function( result, msg ) {
@@ -437,28 +439,50 @@ QUnit.assert = {
 	/**
 	 * Assert that the first two arguments are equal, with an optional message.
 	 * Prints out both actual and expected values.
+	 * @name equal
+	 * @function
 	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
 	 */
 	equal: function( actual, expected, message ) {
 		QUnit.push( expected == actual, actual, expected, message );
 	},
 
+	/**
+	 * @name notEqual
+	 * @function
+	 */
 	notEqual: function( actual, expected, message ) {
 		QUnit.push( expected != actual, actual, expected, message );
 	},
 
+	/**
+	 * @name deepEqual
+	 * @function
+	 */
 	deepEqual: function( actual, expected, message ) {
 		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
+	/**
+	 * @name notDeepEqual
+	 * @function
+	 */
 	notDeepEqual: function( actual, expected, message ) {
 		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
+	/**
+	 * @name strictEqual
+	 * @function
+	 */
 	strictEqual: function( actual, expected, message ) {
 		QUnit.push( expected === actual, actual, expected, message );
 	},
 
+	/**
+	 * @name notStrictEqual
+	 * @function
+	 */
 	notStrictEqual: function( actual, expected, message ) {
 		QUnit.push( expected !== actual, actual, expected, message );
 	},
