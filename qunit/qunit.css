@@ -54,9 +54,9 @@
 	color: #fff;
 }
 
-#qunit-header label {
+#qunit-testrunner-toolbar label {
 	display: inline-block;
-	padding-left: 0.5em;
+	padding: 0 .5em 0 .1em;
 }
 
 #qunit-banner {
