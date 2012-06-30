@@ -892,7 +892,7 @@ QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
-	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
+	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes,
 		urlConfigHtml = "",
 		oldconfig = extend( {}, config );
 
@@ -970,7 +970,7 @@ QUnit.load = function() {
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
 
-		var urlConfigCheckboxes = document.createElement( 'span' );
+		urlConfigCheckboxes = document.createElement( 'span' );
 		urlConfigCheckboxes.innerHTML = urlConfigHtml;
 		addEvent( urlConfigCheckboxes, "change", function( event ) {
 			var params = {};
