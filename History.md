@@ -1,3 +1,15 @@
+
+1.9.0 / 2012-07-11
+==================
+  * added jsdoc for QUnit.assert functions
+  * Styling: radius to 5px and small pass/error border, remove inner shadow
+  * Move checkboxes into toolbar and give them labels and descriptions (as tooltip). Fixes #274 - Improve urlFilter API and UI
+  * Where we recieve no exception in throws() use a relevant message.
+  * Also make module filter case-insensitive. Follow-up to #252
+  * Banner: Link should ignore "testNumber" and "module". Fixes #270
+  * Rename assert.raises to assert.throws. Fixes #267
+  * Change package.json name property to 'qunitjs' to avoid conflicht with node-qunit; will publish next release to npm
+
 1.8.0 / 2012-06-14
 ==================
   * Improve window.onerror handling

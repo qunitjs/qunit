@@ -2,7 +2,7 @@
   "name": "qunitjs",
   "title": "QUnit",
   "description": "An easy-to-use JavaScript Unit Testing framework.",
-  "version": "1.9.0pre",
+  "version": "1.9.0",
   "author": "The jQuery Project",
   "contributors": [
     "John Resig <jeresig@gmail.com> (http://ejohn.org/)",
