@@ -17,6 +17,8 @@ var QUnit,
 	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
+	// Keep a local reference to Date (GH-283)
+	Date = window.Date,
 	defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
 	sessionStorage: (function() {
