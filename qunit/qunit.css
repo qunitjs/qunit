@@ -20,7 +20,7 @@
 
 /** Resets */
 
-#qunit-tests, #qunit-tests ol, #qunit-header, #qunit-banner, #qunit-userAgent, #qunit-testresult {
+#qunit-tests, #qunit-tests ol, #qunit-header, #qunit-banner, #qunit-userAgent, #qunit-testresult, #qunit-modulefilter {
 	margin: 0;
 	padding: 0;
 }
@@ -67,6 +67,7 @@
 	padding: 0.5em 0 0.5em 2em;
 	color: #5E740B;
 	background-color: #eee;
+	overflow: hidden;
 }
 
 #qunit-userAgent {
@@ -76,6 +77,9 @@
 	text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
 }
 
+#qunit-modulefilter-container {
+	float: right;
+}
 
 /** Tests: Pass/Fail */
 
