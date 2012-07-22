@@ -310,7 +310,7 @@ QUnit = {
 	},
 
 	asyncTest: function( testName, expected, callback, timeout ) {
-		if ( arguments.length === 2 ) {
+		if ( typeof expected == 'function' ) {
 			callback = expected;
 			expected = null;
 		}
