@@ -309,7 +309,7 @@ QUnit = {
 		config.currentModuleTestEnviroment = testEnvironment;
 	},
 
-	asyncTest: function( testName, expected, callback ) {
+	asyncTest: function( testName, expected, callback, timeout ) {
 		if ( arguments.length === 2 ) {
 			callback = expected;
 			expected = null;
