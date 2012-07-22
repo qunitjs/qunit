@@ -607,13 +607,13 @@ config = {
 	],
 
 	// logging callback queues
-	begin:        [],
-	done:         [],
-	log:          [],
-	testStart:    [],
-	testDone:     [],
-	moduleStart:  [],
-	moduleDone:   []
+	begin: [],
+	done: [],
+	log: [],
+	testStart: [],
+	testDone: [],
+	moduleStart: [],
+	moduleDone: []
 };
 
 // Initialize more QUnit.config and QUnit.urlParams
