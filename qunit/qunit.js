@@ -316,8 +316,8 @@ QUnit = {
 		}
 		
 		if( typeof timeout == 'number' ) {
-            config.testTimeout = timeout;
-        }
+			config.testTimeout = timeout;
+		}
 
 		QUnit.test( testName, expected, callback, true );
 	},
