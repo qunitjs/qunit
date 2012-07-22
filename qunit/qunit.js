@@ -316,18 +316,8 @@ QUnit = {
 		}
 		
 		if( typeof timeout == 'number' ) {
-			QUnit.test( testName, expected, function(assets){
-				config.startTimeout = setTimeout(function(){
-					start();
-					throw new Error('Test timeout');
-				}, timeout);
-
-				callback.call(this, assets);
-			}, true );
-		}
-		else {
-			QUnit.test( testName, expected, callback, true );
-		}
+            config.testTimeout = timeout;
+        }
 
 		QUnit.test( testName, expected, callback, true );
 	},
@@ -369,8 +359,6 @@ QUnit = {
 	},
 
 	start: function( count ) {
-		clearTimeout(config.startTimeout);
-	
 		config.semaphore -= count || 1;
 		// don't start until equal number of stop-calls
 		if ( config.semaphore > 0 ) {
@@ -625,8 +613,7 @@ config = {
 	testStart:    [],
 	testDone:     [],
 	moduleStart:  [],
-	moduleDone:   [],
-	startTimeout: null
+	moduleDone:   []
 };
 
 // Initialize more QUnit.config and QUnit.urlParams
