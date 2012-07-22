@@ -1,11 +1,11 @@
 /**
- * QUnit v1.9.0pre - A JavaScript Unit Testing Framework
+ * QUnit v1.10.0pre - A JavaScript Unit Testing Framework
  *
  * http://docs.jquery.com/QUnit
  *
- * Copyright (c) 2012 John Resig, Jörn Zaefferer
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * or GPL (GPL-LICENSE.txt) licenses.
+ * Copyright 2012 jQuery Foundation and other contributors
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
  */
 
 (function( window ) {
@@ -17,6 +17,8 @@ var QUnit,
 	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
+	// Keep a local reference to Date (GH-283)
+	Date = window.Date,
 	defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
 	sessionStorage: (function() {
@@ -312,6 +314,20 @@ QUnit = {
 			callback = expected;
 			expected = null;
 		}
+		
+		if( typeof timeout == 'number' ) {
+			QUnit.test( testName, expected, function(assets){
+				config.startTimeout = setTimeout(function(){
+					start();
+					throw new Error('Test timeout');
+				}, timeout);
+
+				callback.call(this, assets);
+			}, true );
+		}
+		else {
+			QUnit.test( testName, expected, callback, true );
+		}
 
 		QUnit.test( testName, expected, callback, true );
 	},
@@ -353,6 +369,8 @@ QUnit = {
 	},
 
 	start: function( count ) {
+		clearTimeout(config.startTimeout);
+	
 		config.semaphore -= count || 1;
 		// don't start until equal number of stop-calls
 		if ( config.semaphore > 0 ) {
@@ -446,18 +464,18 @@ QUnit.assert = {
 	equal: function( actual, expected, message ) {
 		QUnit.push( expected == actual, actual, expected, message );
 	},
-	
+
 	/**
 	 * @name notEqual
-	 * @function 
+	 * @function
 	 */
 	notEqual: function( actual, expected, message ) {
 		QUnit.push( expected != actual, actual, expected, message );
 	},
-	
+
 	/**
 	 * @name deepEqual
-	 * @function 
+	 * @function
 	 */
 	deepEqual: function( actual, expected, message ) {
 		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
@@ -465,7 +483,7 @@ QUnit.assert = {
 
 	/**
 	 * @name notDeepEqual
-	 * @function 
+	 * @function
 	 */
 	notDeepEqual: function( actual, expected, message ) {
 		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
@@ -473,7 +491,7 @@ QUnit.assert = {
 
 	/**
 	 * @name strictEqual
-	 * @function 
+	 * @function
 	 */
 	strictEqual: function( actual, expected, message ) {
 		QUnit.push( expected === actual, actual, expected, message );
@@ -481,7 +499,7 @@ QUnit.assert = {
 
 	/**
 	 * @name notStrictEqual
-	 * @function 
+	 * @function
 	 */
 	notStrictEqual: function( actual, expected, message ) {
 		QUnit.push( expected !== actual, actual, expected, message );
@@ -585,16 +603,30 @@ config = {
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 
-	urlConfig: [ "noglobals", "notrycatch" ],
+	// add checkboxes that are persisted in the query-string
+	// when enabled, the id is set to `true` as a `QUnit.config` property
+	urlConfig: [
+		{
+			id: "noglobals",
+			label: "Check for Globals",
+			tooltip: "Enabling this will test if any test introduces new properties on the `window` object. Stored as query-strings."
+		},
+		{
+			id: "notrycatch",
+			label: "No try-catch",
+			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging exceptions in IE reasonable. Stored as query-strings."
+		}
+	],
 
 	// logging callback queues
-	begin: [],
-	done: [],
-	log: [],
-	testStart: [],
-	testDone: [],
-	moduleStart: [],
-	moduleDone: []
+	begin:        [],
+	done:         [],
+	log:          [],
+	testStart:    [],
+	testDone:     [],
+	moduleStart:  [],
+	moduleDone:   [],
+	startTimeout: null
 };
 
 // Initialize more QUnit.config and QUnit.urlParams
@@ -903,7 +935,7 @@ QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
-	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
+	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes,
 		urlConfigHtml = "",
 		oldconfig = extend( {}, config );
 
@@ -916,8 +948,15 @@ QUnit.load = function() {
 
 	for ( i = 0; i < len; i++ ) {
 		val = config.urlConfig[i];
-		config[val] = QUnit.urlParams[val];
-		urlConfigHtml += "<label><input name='" + val + "' type='checkbox'" + ( config[val] ? " checked='checked'" : "" ) + ">" + val + "</label>";
+		if ( typeof val === "string" ) {
+			val = {
+				id: val,
+				label: val,
+				tooltip: "[no tooltip available]"
+			};
+		}
+		config[ val.id ] = QUnit.urlParams[ val.id ];
+		urlConfigHtml += "<input id='qunit-urlconfig-" + val.id + "' name='" + val.id + "' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) + " title='" + val.tooltip + "'><label for='qunit-urlconfig-" + val.id + "' title='" + val.tooltip + "'>" + val.label + "</label>";
 	}
 
 	// `userAgent` initialized at top of scope
@@ -929,12 +968,7 @@ QUnit.load = function() {
 	// `banner` initialized at top of scope
 	banner = id( "qunit-header" );
 	if ( banner ) {
-		banner.innerHTML = "<a href='" + QUnit.url({ filter: undefined, module: undefined, testNumber: undefined }) + "'>" + banner.innerHTML + "</a> " + urlConfigHtml;
-		addEvent( banner, "change", function( event ) {
-			var params = {};
-			params[ event.target.name ] = event.target.checked ? true : undefined;
-			window.location = QUnit.url( params );
-		});
+		banner.innerHTML = "<a href='" + QUnit.url({ filter: undefined, module: undefined, testNumber: undefined }) + "'>" + banner.innerHTML + "</a> ";
 	}
 
 	// `toolbar` initialized at top of scope
@@ -975,8 +1009,18 @@ QUnit.load = function() {
 		// `label` initialized at top of scope
 		label = document.createElement( "label" );
 		label.setAttribute( "for", "qunit-filter-pass" );
+		label.setAttribute( "title", "Only show tests and assertons that fail. Stored in sessionStorage." );
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
+
+		urlConfigCheckboxes = document.createElement( 'span' );
+		urlConfigCheckboxes.innerHTML = urlConfigHtml;
+		addEvent( urlConfigCheckboxes, "change", function( event ) {
+			var params = {};
+			params[ event.target.name ] = event.target.checked ? true : undefined;
+			window.location = QUnit.url( params );
+		});
+		toolbar.appendChild( urlConfigCheckboxes );
 	}
 
 	// `main` initialized at top of scope

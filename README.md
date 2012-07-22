@@ -41,8 +41,18 @@ Releases
 --------
 
 Install git-extras and run `git changelog` to update History.md.
-Update qunit/qunit.js|css to the release version, commit and tag, update them
-again to the next version, commit and push commits and tags.
+Update qunit/qunit.js|css and package.json to the release version, commit and
+tag, update them again to the next version, commit and push commits and tags
+(`git push --tags origin master`).
 
-Put the 'v' in front of the tag (unlike the 1.1.0 release). Clean up the changelog,
-removing merge commits or whitespace cleanups.
+Put the 'v' in front of the tag, e.g. `v1.8.0`. Clean up the changelog, removing merge commits
+or whitespace cleanups.
+
+To upload to code.jquery.com (replace $version accordingly):
+
+	scp -q qunit/qunit.js jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/qunit/qunit-$version.js
+	scp -q qunit/qunit.css jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/qunit/qunit-$version.css
+
+Then update /var/www/html/code.jquery.com/index.html and purge it with:
+
+	curl -s http://code.origin.jquery.com/?reload
