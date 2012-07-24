@@ -309,10 +309,14 @@ QUnit = {
 		config.currentModuleTestEnviroment = testEnvironment;
 	},
 
-	asyncTest: function( testName, expected, callback ) {
-		if ( arguments.length === 2 ) {
+	asyncTest: function( testName, expected, callback, timeout ) {
+		if ( typeof expected == 'function' ) {
 			callback = expected;
 			expected = null;
+		}
+		
+		if( typeof timeout == 'number' ) {
+			config.testTimeout = timeout;
 		}
 
 		QUnit.test( testName, expected, callback, true );
