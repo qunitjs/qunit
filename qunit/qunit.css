@@ -1,7 +1,7 @@
 /**
  * QUnit v1.10.0pre - A JavaScript Unit Testing Framework
  *
- * http://docs.jquery.com/QUnit
+ * http://qunitjs.com
  *
  * Copyright 2012 jQuery Foundation and other contributors
  * Dual licensed under the MIT or GPL Version 2 licenses.

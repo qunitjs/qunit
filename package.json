@@ -8,7 +8,7 @@
     "John Resig <jeresig@gmail.com> (http://ejohn.org/)",
     "Jörn Zaefferer <joern.zaefferer@googlemail.com> (http://bassistance.de/)"
   ],
-  "homepage": "http://docs.jquery.com/QUnit",
+  "homepage": "http://qunitjs.com",
   "repository": {
     "type": "git",
     "url": "git://github.com/jquery/qunit.git"
