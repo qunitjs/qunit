@@ -77,6 +77,19 @@ grunt.initConfig({
 	}
 });
 
+grunt.registerTask( "build-git", function( sha ) {
+	function processor( content ) {
+		var tagline = " - A JavaScript Unit Testing Framework";
+		return content.replace( tagline, "-" + sha + " " + grunt.template.today('isoDate') + tagline );
+	}
+	grunt.file.copy( "qunit/qunit.css", "dist/qunit-git.css", {
+		process: processor
+	});
+	grunt.file.copy( "qunit/qunit.js", "dist/qunit-git.js", {
+		process: processor
+	});
+});
+
 grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
 		config = grunt.file.readJSON( configFile ).qunit;
