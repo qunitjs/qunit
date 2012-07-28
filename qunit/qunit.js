@@ -712,17 +712,10 @@ extend( QUnit, {
 	},
 
 	// Resets the test setup. Useful for tests that modify the DOM.
-	// If jQuery is available, uses jQuery's html(), otherwise just innerHTML.
 	reset: function() {
-		var fixture;
-
-		if ( window.jQuery ) {
-			jQuery( "#qunit-fixture" ).html( config.fixture );
-		} else {
-			fixture = id( "qunit-fixture" );
-			if ( fixture ) {
-				fixture.innerHTML = config.fixture;
-			}
+		var fixture = id( "qunit-fixture" );
+		if ( fixture ) {
+			fixture.innerHTML = config.fixture;
 		}
 	},
 
