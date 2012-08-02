@@ -20,7 +20,7 @@
 
 /** Resets */
 
-#qunit-tests, #qunit-tests ol, #qunit-header, #qunit-banner, #qunit-userAgent, #qunit-testresult {
+#qunit-tests, #qunit-header, #qunit-banner, #qunit-userAgent, #qunit-testresult {
 	margin: 0;
 	padding: 0;
 }
@@ -107,7 +107,7 @@
 	color: #000;
 }
 
-#qunit-tests ol {
+.qunit-assert-list {
 	margin-top: 0.5em;
 	padding: 0.5em;
 
@@ -116,6 +116,10 @@
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+}
+
+.qunit-assert-list.qunit-collapsed {
+	display: none;
 }
 
 #qunit-tests table {

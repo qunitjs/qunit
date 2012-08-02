@@ -180,6 +180,7 @@ Test.prototype = {
 
 		if ( tests ) {
 			ol = document.createElement( "ol" );
+			ol.className = "qunit-assert-list";
 
 			for ( i = 0; i < this.assertions.length; i++ ) {
 				assertion = this.assertions[i];
@@ -208,7 +209,7 @@ Test.prototype = {
 			}
 
 			if ( bad === 0 ) {
-				ol.style.display = "none";
+				addClass( ol, "qunit-collapsed" );
 			}
 
 			// `b` initialized at top of scope
@@ -217,8 +218,8 @@ Test.prototype = {
 
 			addEvent(b, "click", function() {
 				var next = b.nextSibling.nextSibling,
-					display = next.style.display;
-				next.style.display = display === "none" ? "block" : "none";
+					collapsed = hasClass( next, "qunit-collapsed" );
+				(collapsed ? removeClass : addClass)( next, "qunit-collapsed" );
 			});
 
 			addEvent(b, "dblclick", function( e ) {
@@ -1315,6 +1316,26 @@ function addEvent( elem, type, fn ) {
 	} else {
 		fn();
 	}
+}
+
+function hasClass( elem, name ) {
+	return (" " + elem.className + " ").indexOf(" " + name + " ") > -1;
+}
+
+function addClass( elem, name ) {
+	if ( !hasClass( elem, name ) ) {
+		elem.className += (elem.className ? " " : "") + name;
+	}
+}
+
+function removeClass( elem, name ) {
+	var set = " " + elem.className + " ";
+	// Class name may appear multiple times
+	while ( set.indexOf(" " + name + " ") > -1 ) {
+		set = set.replace(" " + name + " " , " ");
+	}
+	// If possible, trim it for prettiness, but not neccecarily
+	elem.className = window.jQuery ? jQuery.trim( set ) : ( set.trim ? set.trim() : set );
 }
 
 function id( name ) {
