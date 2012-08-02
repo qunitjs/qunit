@@ -1,4 +1,4 @@
-QUnit.extend( QUnit, {
+QUnit.extend( QUnit.assert, {
 
 	/**
 	 * Check the sequence/order
@@ -8,11 +8,15 @@ QUnit.extend( QUnit, {
 	 * @param String message (optional)
 	 */
 	step: function (expected, message) {
-		this.config.current.step++; // increment internal step counter.
+		// increment internal step counter.
+		QUnit.config.current.step++;
+
 		if (typeof message === "undefined") {
 			message = "step " + expected;
 		}
-		var actual = this.config.current.step;
+
+		var actual = QUnit.config.current.step;
+
 		QUnit.push(QUnit.equiv(actual, expected), actual, expected, message);
 	}
 });

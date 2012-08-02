@@ -1,13 +1,21 @@
-module('Step Addon');
-test("step", 3, function () {
-	QUnit.step(1, "step starts at 1");
+QUnit.module("Step Addon");
+
+QUnit.test("step", 3, function (assert) {
+	assert.step(1, "step starts at 1");
+
+	QUnit.stop();
+
 	setTimeout(function () {
-		start();
-		QUnit.step(3);
+		QUnit.start();
+
+		assert.step(3);
+
 	}, 100);
-	QUnit.step(2, "before the setTimeout callback is run");
-	stop();
+
+	assert.step(2, "before the setTimeout callback is run");
+
 });
-test("step counter", 1, function () {
-	QUnit.step(1, "each test has its own step counter");
+
+QUnit.test("step counter", 1, function (assert) {
+	assert.step(1, "each test has its own step counter");
 });

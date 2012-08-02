@@ -1,4 +1,4 @@
-QUnit.extend( QUnit, {
+QUnit.extend( QUnit.assert, {
 	/**
 	 * Checks that the first two arguments are equal, or are numbers close enough to be considered equal
 	 * based on a specified maximum allowable difference.
