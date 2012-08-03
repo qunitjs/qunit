@@ -952,7 +952,7 @@ QUnit.load = function() {
 	for ( i in config.modules ) {
 		if ( config.modules.hasOwnProperty( i ) ) {
 			numModules += 1;
-			moduleFilterHtml += "<option value='" + i + "' " + ( config.module === i ? "selected" : "" ) + ">" + i + "</option>";
+			moduleFilterHtml += "<option value='" + encodeURIComponent(i) + "' " + ( config.module === i ? "selected" : "" ) + ">" + i + "</option>";
 		}
 	}
 	moduleFilterHtml += "</select>";
@@ -1026,7 +1026,7 @@ QUnit.load = function() {
 			moduleFilter.innerHTML = moduleFilterHtml;
 			addEvent( moduleFilter, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
-				    selectedModule = selectBox.options[selectBox.selectedIndex].value;
+				    selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
 				
 				window.location = QUnit.url( { module: ( selectedModule === "" ) ? undefined : selectedModule } );
 			});
