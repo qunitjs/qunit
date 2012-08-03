@@ -948,7 +948,7 @@ QUnit.load = function() {
 		urlConfigHtml += "<input id='qunit-urlconfig-" + val.id + "' name='" + val.id + "' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) + " title='" + val.tooltip + "'><label for='qunit-urlconfig-" + val.id + "' title='" + val.tooltip + "'>" + val.label + "</label>";
 	}
 
-	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter' style='margin: 0'><option value='' " + ( config.module === undefined  ? "selected" : "" ) + ">< All Modules ></option>";
+	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " + ( config.module === undefined  ? "selected" : "" ) + ">< All Modules ></option>";
 	for ( i in config.modules ) {
 		if ( config.modules.hasOwnProperty( i ) ) {
 			numModules += 1;
@@ -1022,8 +1022,8 @@ QUnit.load = function() {
 
 		if (numModules > 1) {
 			moduleFilter = document.createElement( 'span' );
+			moduleFilter.setAttribute( 'id', 'qunit-modulefilter-container' );
 			moduleFilter.innerHTML = moduleFilterHtml;
-			moduleFilter.style.float = "right";
 			addEvent( moduleFilter, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
 				    selectedModule = selectBox.options[selectBox.selectedIndex].value;
