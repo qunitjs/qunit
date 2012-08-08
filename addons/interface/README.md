@@ -1,17 +1,19 @@
 Interface - A QUnit Addon For Testing Object Structure
 ================================
-TODO: write documentation for Interface
-This addon for QUnit adds close and notClose assertion methods, to test that
-numbers are close enough (or different enough) from an expected number, with
-a specified accuracy.
+This addon for QUnit adds `equalStructure`, `deepEqualStructure`, `notEqualStructure` and `notDeepEqualStructure` assertion methods, to test that
+object structure (called Interface in static languages) are as you expect. Unlike equal and notEqual which also test the values of an object.
+
+Motivation:
+
+	As a front end developer you are at the mercy of server-side devs providing and most importantly NOT subsequently altering the structure of your objects.
+	Getting told that your work doesn't work because someone changed a name of a property at the server or even database level is never fun.
+	**Interface** comes to the rescue!
 
 Usage:
 
-    close(actual, expected, maxDifference, message)
-    notClose(actual, expected, minDifference, message)
+    equalStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
+    deepEqualStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
+    notEqualStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
+    notDeepEqualStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
 
-Where:
-
-  * maxDifference: the maximum inclusive difference allowed between the actual and expected numbers
-  * minDifference: the minimum exclusive difference allowed between the actual and expected numbers
-  * actual, expected, message: The usual
+	* is the property beeing tested.
