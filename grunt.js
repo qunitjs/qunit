@@ -4,19 +4,21 @@ module.exports = function( grunt ) {
 grunt.loadNpmTasks( "grunt-git-authors" );
 
 grunt.initConfig({
+	timeout: 100000,
 	pkg: '<json:package.json>',
 	qunit: {
 		// TODO include 'test/logs.html' as well
 		qunit: 'test/index.html',
 		addons: [
+			'addons/interface/interface.html'/*,
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
-			'addons/composite/composite-demo-test.html'
+			'addons/composite/composite-demo-test.html'*/
 		]
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
-		// addons: 'addons/**/*.js',
+		//addons: 'addons/**/*.js',
 		grunt: 'grunt.js'
 		// TODO need to figure out which warnings to fix and which to disable
 		// tests: 'test/test.js'
