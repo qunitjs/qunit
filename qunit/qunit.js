@@ -1434,8 +1434,7 @@ QUnit.equiv = (function() {
 						a.global === b.global &&
 						// (gmi) ...
 						a.ignoreCase === b.ignoreCase &&
-						a.multiline === b.multiline &&
-                        a.sticky === b.sticky;
+						a.multiline === b.multiline;
 				},
 
 				// - skip when the property is a method of an instance (OOP)

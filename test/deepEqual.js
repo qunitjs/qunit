@@ -382,94 +382,44 @@ test("RegExp.", function() {
 
 	// Tests same regex with same modifiers in different order
 	var r = /foo/;
-	var r5 = /foo/yimg;
-	var r6 = /foo/iymg;
-	var r7 = /foo/imyg;
-	var r8 = /foo/imgy;
-	var r9 = /foo/ymig;
-	var r10 = /foo/myig;
-	var r11 = /foo/miyg;
-	var r12 = /foo/migy;
-	var r13 = /foo/ymgi;
-	var r14 = /foo/mygi;
-	var r15 = /foo/mgyi;
-	var r16 = /foo/mgiy;
-	var r17 = /foo/yigm;
-	var r18 = /foo/iygm;
-	var r19 = /foo/igym;
-	var r20 = /foo/igmy;
-	var r21 = /foo/ygim;
-	var r22 = /foo/gyim;
-	var r23 = /foo/giym;
-	var r24 = /foo/gimy;
-	var r25 = /foo/ygmi;
-	var r26 = /foo/gymi;
-	var r27 = /foo/gmyi;
-	var r28 = /foo/gmiy;
-
+	var r5 = /foo/gim;
+	var r6 = /foo/gmi;
+	var r7 = /foo/igm;
+	var r8 = /foo/img;
+	var r9 = /foo/mig;
+	var r10 = /foo/mgi;
 	var ri1 = /foo/i;
 	var ri2 = /foo/i;
 	var rm1 = /foo/m;
 	var rm2 = /foo/m;
 	var rg1 = /foo/g;
 	var rg2 = /foo/g;
-	var ry1 = /foo/y;
-	var ry2 = /foo/y;
 
 	equal(QUnit.equiv(r5, r6), true, "Modifier order");
 	equal(QUnit.equiv(r5, r7), true, "Modifier order");
 	equal(QUnit.equiv(r5, r8), true, "Modifier order");
 	equal(QUnit.equiv(r5, r9), true, "Modifier order");
 	equal(QUnit.equiv(r5, r10), true, "Modifier order");
-	equal(QUnit.equiv(r5, r11), true, "Modifier order");
-	equal(QUnit.equiv(r5, r12), true, "Modifier order");
-	equal(QUnit.equiv(r5, r13), true, "Modifier order");
-	equal(QUnit.equiv(r5, r14), true, "Modifier order");
-	equal(QUnit.equiv(r5, r15), true, "Modifier order");
-	equal(QUnit.equiv(r5, r16), true, "Modifier order");
-	equal(QUnit.equiv(r5, r17), true, "Modifier order");
-	equal(QUnit.equiv(r5, r18), true, "Modifier order");
-	equal(QUnit.equiv(r5, r19), true, "Modifier order");
-	equal(QUnit.equiv(r5, r20), true, "Modifier order");
-	equal(QUnit.equiv(r5, r21), true, "Modifier order");
-	equal(QUnit.equiv(r5, r22), true, "Modifier order");
-	equal(QUnit.equiv(r5, r23), true, "Modifier order");
-	equal(QUnit.equiv(r5, r24), true, "Modifier order");
-	equal(QUnit.equiv(r5, r25), true, "Modifier order");
-	equal(QUnit.equiv(r5, r26), true, "Modifier order");
-	equal(QUnit.equiv(r5, r27), true, "Modifier order");
-	equal(QUnit.equiv(r5, r28), true, "Modifier order");
+	equal(QUnit.equiv(r, r5), false, "Modifier");
 
-    equal(QUnit.equiv(r, r5), false, "Modifier");
-
-    equal(QUnit.equiv(ri1, ri2), true, "Modifier");
-    equal(QUnit.equiv(ri1, rm1), false, "Modifier");
-    equal(QUnit.equiv(ri1, rg1), false, "Modifier");
-    equal(QUnit.equiv(ri1, ry1), false, "Modifier");
-
-    equal(QUnit.equiv(r, ri1), false, "Modifier");
-    equal(QUnit.equiv(r, rm1), false, "Modifier");
-    equal(QUnit.equiv(r, rg1), false, "Modifier");
-    equal(QUnit.equiv(r, ry1), false, "Modifier");
-
-    equal(QUnit.equiv(rm1, rm2), true, "Modifier");
+	equal(QUnit.equiv(ri1, ri2), true, "Modifier");
+	equal(QUnit.equiv(r, ri1), false, "Modifier");
+	equal(QUnit.equiv(ri1, rm1), false, "Modifier");
+	equal(QUnit.equiv(r, rm1), false, "Modifier");
 	equal(QUnit.equiv(rm1, ri1), false, "Modifier");
-    equal(QUnit.equiv(rm1, rg1), false, "Modifier");
-    equal(QUnit.equiv(rm1, ry1), false, "Modifier");
-
-    equal(QUnit.equiv(rg1, rg2), true, "Modifier");
-    equal(QUnit.equiv(rg1, ry1), false, "Modifier");
-
-    equal(QUnit.equiv(ry1, ry2), true, "Modifier");
+	equal(QUnit.equiv(rm1, rm2), true, "Modifier");
+	equal(QUnit.equiv(rg1, rm1), false, "Modifier");
+	equal(QUnit.equiv(rm1, rg1), false, "Modifier");
+	equal(QUnit.equiv(rg1, rg2), true, "Modifier");
 
 	// Different regex, same modifiers
-	var r29 = /[a-z]/gi;
-	var r30 = /[0-9]/gi; // oops! different
-	equal(QUnit.equiv(r28, r30), false, "Regex pattern");
+	var r11 = /[a-z]/gi;
+	var r13 = /[0-9]/gi; // oops! different
+	equal(QUnit.equiv(r11, r13), false, "Regex pattern");
 
-	var r31 = /0/ig;
-	var r32 = /"0"/ig; // oops! different
-	equal(QUnit.equiv(r31, r32), false, "Regex pattern");
+	var r14 = /0/ig;
+	var r15 = /"0"/ig; // oops! different
+	equal(QUnit.equiv(r14, r15), false, "Regex pattern");
 
 	var r1 = /[\n\r\u2028\u2029]/g;
 	var r2 = /[\n\r\u2028\u2029]/g;
@@ -486,15 +436,15 @@ test("RegExp.", function() {
 	// regex 3 is different: '.' not escaped
 	var regex3 = "^[-_.a-z0-9]+@([-_a-z0-9]+.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
 
-	var r33 = new RegExp(regex1);
-	var r34 = new RegExp(regex2);
-	var r35 = new RegExp(regex3); // diff from r21, not same pattern
+	var r21 = new RegExp(regex1);
+	var r22 = new RegExp(regex2);
+	var r23 = new RegExp(regex3); // diff from r21, not same pattern
 	var r23a = new RegExp(regex3, "gi"); // diff from r23, not same modifier
 	var r24a = new RegExp(regex3, "ig"); // same as r23a
 
-	equal(QUnit.equiv(r33, r34), true, "Complex Regex");
-	equal(QUnit.equiv(r33, r35), false, "Complex Regex");
-	equal(QUnit.equiv(r35, r23a), false, "Complex Regex");
+	equal(QUnit.equiv(r21, r22), true, "Complex Regex");
+	equal(QUnit.equiv(r21, r23), false, "Complex Regex");
+	equal(QUnit.equiv(r23, r23a), false, "Complex Regex");
 	equal(QUnit.equiv(r23a, r24a), true, "Complex Regex");
 
 	// typeof r1 is "function" in some browsers and "object" in others so we must cover this test
