@@ -11,9 +11,9 @@ Getting told that your work doesn't work because someone changed a name of a pro
 
 Usage:
 
-+ `QUnit.equalStructure(actual, expected, [message])` message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
-+ `QUnit.deepEqualStructure(actual, expected, [message])` message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
-+ `QUnit.notEqualStructure(actual, expected, [message])` message will default to _okay_ if the test succeed.
-+ `QUnit.notDeepEqualStructure(actual, expected, [message])` message will default to _okay_ if the test succeed.
++ `QUnit.equalStructure(actual, expected, [message])` message will default to _* is not a property of the actual object'_ or _The structures are equal._ if not provided.
++ `QUnit.deepEqualStructure(actual, expected, [message])` message will default to _* is not a property of the actual object'_ or _The structures are equal_ if not provided.
++ `QUnit.notEqualStructure(actual, expected, [message])` message will default to _okay_ if the test succeed or _The structures are equal_ if it fails.
++ `QUnit.notDeepEqualStructure(actual, expected, [message])` message will default to _okay_ if the test succeed or _The structures are equal_ if it fails.
 
 \* is the property beeing tested.
