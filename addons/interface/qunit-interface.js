@@ -1,5 +1,6 @@
 /**
- * It's hard to see a use-case for the not* methods other than testing the test code it self. But then the methods should share code :-S 
+ * It's hard to see a use-case for the not* methods other than testing the test code it self. But then the methods should share code :-S
+ * @see qunit-interface2.js which uses the same code for equal* and notEqual*
  */
 
 QUnit.extend( QUnit, {
