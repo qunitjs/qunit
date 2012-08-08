@@ -84,7 +84,7 @@ var testStructure4 = {
 test("equalStructure", 2, function () {
 	QUnit.equalStructure(testStructure2, testStructure1, "These two objects have the same structure.");
 	QUnit.equalStructure(testStructure3, testStructure1, "These two objects have the same structure on the first level but not the same data");
-	//TODO: should be in a notEqualStructure testQUnit.equalStructure(testStructure4, testStructure1);
+	//should be in a notEqualStructure testQUnit.equalStructure(testStructure4, testStructure1);
 });
 test("deepEqualStructure", 1, function () {
 	QUnit.deepEqualStructure(testStructure2, testStructure1, "These two objects have the same structure.");
