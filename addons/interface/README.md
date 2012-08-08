@@ -5,7 +5,7 @@ object structure (called Interface in static languages) are as you expect. Unlik
 
 Motivation:
 
-As a front end developer you are at the mercy of server-side devs providing and most importantly NOT subsequently altering the structure of your objects.
+As a front end developer you are at the mercy of server-side devs providing, and most importantly NOT subsequently altering, the structure of your data objects.
 Getting told that your work doesn't work because someone changed a name of a property at the server or even database level is never fun.
 **Interface** comes to the rescue!
 
