@@ -5,15 +5,15 @@ object structure (called Interface in static languages) are as you expect. Unlik
 
 Motivation:
 
-	As a front end developer you are at the mercy of server-side devs providing and most importantly NOT subsequently altering the structure of your objects.
-	Getting told that your work doesn't work because someone changed a name of a property at the server or even database level is never fun.
-	**Interface** comes to the rescue!
+As a front end developer you are at the mercy of server-side devs providing and most importantly NOT subsequently altering the structure of your objects.
+Getting told that your work doesn't work because someone changed a name of a property at the server or even database level is never fun.
+**Interface** comes to the rescue!
 
 Usage:
 
-    equalStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
-    deepEqualStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
-    notEqualStructure(actual, expected, [message]) message will default to _okay_ if the test succeed.
-    notDeepEqualStructure(actual, expected, [message]) message will default to _okay_ if the test succeed.
+equalStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
+deepEqualStructure(actual, expected, [message]) message will default to _* is not a property of the actual object'_ or _okay_ if not provided.
+notEqualStructure(actual, expected, [message]) message will default to _okay_ if the test succeed.
+notDeepEqualStructure(actual, expected, [message]) message will default to _okay_ if the test succeed.
 
-	* is the property beeing tested.
+* is the property beeing tested.
