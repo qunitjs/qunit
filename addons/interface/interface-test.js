@@ -87,8 +87,8 @@ test("equalStructure", 2, function () {
 	//should be in a notEqualStructure testQUnit.equalStructure(testStructure4, testStructure1);
 });
 test("deepEqualStructure", 1, function () {
-	QUnit.deepEqualStructure(testStructure2, testStructure1, "These two objects have the same structure.");
-//	QUnit.deepEqualStructure(testStructure3, testStructure1, "These two objects have only the same structure on the first level.");
+	QUnit.deepEqualStructure(testStructure2, testStructure1, 100, "These two objects have the same structure.");
+//	QUnit.deepEqualStructure(testStructure3, testStructure1, 2, "These two objects have only the same structure on the first level.");
 //	QUnit.deepEqualStructure(testStructure4, testStructure1);
 });
 test("notEqualStructure", 1, function () {
@@ -96,8 +96,9 @@ test("notEqualStructure", 1, function () {
 //	QUnit.notEqualStructure(testStructure3, testStructure1);
 	QUnit.notEqualStructure(testStructure4, testStructure1);
 });
-test("notDeepEqualStructure", 2, function () {
+test("notDeepEqualStructure", 3, function () {
 //	QUnit.notDeepEqualStructure(testStructure2, testStructure1, "These two objects have the same structure.");
-	QUnit.notDeepEqualStructure(testStructure3, testStructure1, "These two objects have only the same structure on the first level.");
+	QUnit.notDeepEqualStructure(testStructure3, testStructure1, 1,"These two objects have only the same structure on the first level.");
+	QUnit.notDeepEqualStructure(testStructure3, testStructure1, 1);
 	QUnit.notDeepEqualStructure(testStructure4, testStructure1);
 });
