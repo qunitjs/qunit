@@ -14,9 +14,9 @@ QUnit.extend( QUnit, function() {
 		for (var prop in expected) {
 			_testingForProperty = prop;
 			if(deep && _depth <= howdeep && typeof actual[prop] === 'object') {
-				++_depth;	// count the current depth
+				++_depth;			// count the current depth
 				if(!checkInterface(actual[prop], expected[prop], true, howdeep)) {
-					_depth = 0;	// reset depth before exit
+					_depth = 0;		// reset depth before exit
 					return false;	// not equal
 				}
 			} else {
@@ -25,19 +25,19 @@ QUnit.extend( QUnit, function() {
 				}
 			}
 		}
-		_depth = 0;
-		return true;	// equal
+		_depth = 0;					// reset depth before exit
+		return true;				// equal
 	}
 	return {
 		/**
 		 * Iterate over the properties of the expected object and look for corresponding properties on the actual object. 
 		 * @param {Object} actual
 		 * @param {Object} expected
-		 * @param {Object} [message] If not supplied then message will tell you which property that didn't exist on the actual object
+		 * @param {Object} [message] If not supplied then message will tell you which property that didn't exist on the actual object or 'The structures are equal' if the test succeed
 		 */
 		equalStructure: function(actual, expected, message) {
 			if(checkInterface(actual, expected)) {
-				QUnit.push(true, actual, expected, message || 'The structures are equal.');
+				QUnit.push(true, actual, expected, message || 'The structures are equal');
 			} else {
 				QUnit.push(false, actual, expected, message || _testingForProperty + ' is not a property of the actual object');
 			}
@@ -47,14 +47,14 @@ QUnit.extend( QUnit, function() {
 		 * @param {Object} actual
 		 * @param {Object} expected
 		 * @param {Number} [howdeep] Where 0 is the first level
-		 * @param {Object} [message] If not supplied then message will tell you which property that didn't exist on the actual object or 'The structures are equal.' if the test succeed
+		 * @param {Object} [message] If not supplied then message will tell you which property that didn't exist on the actual object or 'The structures are equal' if the test succeed
 		 */
 		deepEqualStructure: function(actual, expected, howdeep, message) {
 			if(howdeep && isNaN(howdeep)) {	// this check is put here to give the correct line number
 				throw new TypeError('the howdeep argument (argument 3) is not a number');
 			}
 			if(checkInterface(actual, expected, true, howdeep)) {
-				QUnit.push(true, actual, expected, message || 'The structures are equal.');
+				QUnit.push(true, actual, expected, message || 'The structures are equal');
 			} else {				
 				QUnit.push(false, actual, expected, message || _testingForProperty + ' is not a property of the actual object');
 			}
@@ -63,11 +63,11 @@ QUnit.extend( QUnit, function() {
 		 * Iterate over the properties of the expected object and look for corresponding properties on the actual object. 
 		 * @param {Object} actual
 		 * @param {Object} expected
-		 * @param {Object} [message] If not supplied then message will default to okay if the test succeed
+		 * @param {Object} [message] If not supplied then message will default to 'The structures are equal' if the test fails
 		 */
 		notEqualStructure: function(actual, expected, message) {
 			if(checkInterface(actual, expected)) {
-				QUnit.push(false, actual, expected, message);
+				QUnit.push(false, actual, expected, message || 'The structures are equal');
 			} else {
 				QUnit.push(true, actual, expected, message);
 			}
@@ -77,14 +77,14 @@ QUnit.extend( QUnit, function() {
 		 * @param {Object} actual
 		 * @param {Object} expected
 		 * @param {Number} [howdeep] Where 0 is the first level
-		 * @param {Object} [message] If not supplied then message will default to 'The structures are equal.' if the test fails
+		 * @param {Object} [message] If not supplied then message will default to 'The structures are equal' if the test fails
 		 */
 		notDeepEqualStructure: function(actual, expected, howdeep, message) {
 			if(howdeep && isNaN(howdeep)) {	// this check is put here to give the correct line number
 				throw new TypeError('the howdeep argument (argument 3) is not a number');
 			}
 			if(checkInterface(actual, expected, true, howdeep)) {
-				QUnit.push(false, actual, expected, message || 'The structures are equal.');
+				QUnit.push(false, actual, expected, message || 'The structures are equal');
 			} else {
 				QUnit.push(true, actual, expected, message);
 			}
