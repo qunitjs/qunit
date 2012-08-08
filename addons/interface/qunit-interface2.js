@@ -1,5 +1,3 @@
-
-
 QUnit.extend( QUnit, function() {
 	var _testingForProperty = "", _depth = 0;
 	/**
@@ -27,6 +25,7 @@ QUnit.extend( QUnit, function() {
 				}
 			}
 		}
+		_depth = 0;
 		return true;	// equal
 	}
 	return {
