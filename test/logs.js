@@ -69,7 +69,9 @@ test("test1", 13, function() {
 		result: true,
 		message: "msg",
 		actual: "foo",
-		expected: "foo"
+		expected: "foo",
+        name: "test1",
+        module: "logs1"
 	});
 	strictEqual(testDoneContext, undefined);
 	deepEqual(testContext, {
