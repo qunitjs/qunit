@@ -787,6 +787,8 @@ extend( QUnit, {
 
 		var output, source,
 			details = {
+                module: config.current.module,
+                name: config.current.testName,
 				result: result,
 				message: message,
 				actual: actual,
