@@ -64,7 +64,8 @@ test("test1", 13, function() {
 		actual: 0,
 		expected: 0,
         name: "test1",
-        module: "logs1"
+        module: "logs1",
+        assertionType: QUnit.AssertionType.EQUAL
 	});
 	equal("foo", "foo", "msg");
 	deepEqual(logContext, {
@@ -73,21 +74,24 @@ test("test1", 13, function() {
 		actual: "foo",
 		expected: "foo",
         name: "test1",
-        module: "logs1"
+        module: "logs1",
+        assertionType: QUnit.AssertionType.EQUAL
 	});
     ok(false, "msg");
     deepEqual(logContext, {
         result: false,
         message: "msg",
         name: "test1",
-        module: "logs1"
+        module: "logs1",
+        assertionType: QUnit.AssertionType.OK
     });
     ok(true, "msg");
     deepEqual(logContext, {
         result: true,
         message: "msg",
         name: "test1",
-        module: "logs1"
+        module: "logs1",
+        assertionType: QUnit.AssertionType.OK
     });
 	strictEqual(testDoneContext, undefined);
 	deepEqual(testContext, {
