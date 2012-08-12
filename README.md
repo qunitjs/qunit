@@ -1,4 +1,4 @@
-[QUnit](http://docs.jquery.com/QUnit) - A JavaScript Unit Testing framework.
+[QUnit](http://qunitjs.com) - A JavaScript Unit Testing framework.
 ================================
 
 QUnit is a powerful, easy-to-use, JavaScript test suite. It's used by the jQuery
