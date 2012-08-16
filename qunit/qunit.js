@@ -164,9 +164,9 @@ Test.prototype = {
 		if ( config.requireExpects && this.expected == null ) {
 			QUnit.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
 		} else if ( this.expected != null && this.expected != this.assertions.length ) {
-			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
+			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack, null, QUnit.AssertionType.EXPECT );
 		} else if ( this.expected == null && !this.assertions.length ) {
-			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
+			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack, null, QUnit.AssertionType.EXPECT );
 		}
 
 		var assertion, a, b, i, li, ol,
@@ -399,6 +399,24 @@ QUnit = {
 	}
 };
 
+// Assertion types
+// A type of "enum" so that we don't have to use raw strings
+// We can expose this to the outside world so that we can check for specific assertion types when looking at the results
+// of QUnit.log(...). Especially useful when automating tests with PhantomJS
+QUnit.AssertionType = {
+    OK: "ok",
+    EQUAL: "equal",
+    NOT_EQUAL: "notEqual",
+    DEEP_EQUAL: "deepEqual",
+    NOT_DEEP_EQUAL: "notDeepEqual",
+    STRICT_EQUAL: "strictEqual",
+    NOT_STRICT_EQUAL: "notStrictEqual",
+    THROWS: "throws",
+    EXPECT: "expect"
+};
+
+extend( QUnit, QUnit.AssertionType );
+
 // Asssert helpers
 // All of these must call either QUnit.push() or manually do:
 // - runLoggingCallbacks( "log", .. );
@@ -418,6 +436,9 @@ QUnit.assert = {
 
 		var source,
 			details = {
+                assertionType: QUnit.AssertionType.OK,
+                module: config.current.module,
+                name: config.current.testName,
 				result: result,
 				message: msg
 			};
@@ -447,7 +468,7 @@ QUnit.assert = {
 	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
 	 */
 	equal: function( actual, expected, message ) {
-		QUnit.push( expected == actual, actual, expected, message );
+		QUnit.push( expected == actual, actual, expected, message, QUnit.AssertionType.EQUAL );
 	},
 
 	/**
@@ -455,7 +476,7 @@ QUnit.assert = {
 	 * @function
 	 */
 	notEqual: function( actual, expected, message ) {
-		QUnit.push( expected != actual, actual, expected, message );
+		QUnit.push( expected != actual, actual, expected, message, QUnit.AssertionType.NOT_EQUAL );
 	},
 
 	/**
@@ -463,7 +484,7 @@ QUnit.assert = {
 	 * @function
 	 */
 	deepEqual: function( actual, expected, message ) {
-		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message, QUnit.AssertionType.DEEP_EQUAL );
 	},
 
 	/**
@@ -471,7 +492,7 @@ QUnit.assert = {
 	 * @function
 	 */
 	notDeepEqual: function( actual, expected, message ) {
-		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
+		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message, QUnit.AssertionType.NOT_DEEP_EQUAL );
 	},
 
 	/**
@@ -479,7 +500,7 @@ QUnit.assert = {
 	 * @function
 	 */
 	strictEqual: function( actual, expected, message ) {
-		QUnit.push( expected === actual, actual, expected, message );
+		QUnit.push( expected === actual, actual, expected, message, QUnit.AssertionType.STRICT_EQUAL );
 	},
 
 	/**
@@ -487,7 +508,7 @@ QUnit.assert = {
 	 * @function
 	 */
 	notStrictEqual: function( actual, expected, message ) {
-		QUnit.push( expected !== actual, actual, expected, message );
+		QUnit.push( expected !== actual, actual, expected, message, QUnit.AssertionType.NOT_STRICT_EQUAL );
 	},
 
 	throws: function( block, expected, message ) {
@@ -523,9 +544,9 @@ QUnit.assert = {
 				ok = true;
 			}
 
-			QUnit.push( ok, actual, null, message );
+			QUnit.push( ok, actual, null, message, QUnit.AssertionType.THROWS );
 		} else {
-			QUnit.pushFailure( message, null, 'No exception was thrown.' );
+			QUnit.pushFailure( message, null, 'No exception was thrown.', QUnit.AssertionType.THROWS );
 		}
 	}
 };
@@ -773,13 +794,16 @@ extend( QUnit, {
 		return undefined;
 	},
 
-	push: function( result, actual, expected, message ) {
+	push: function( result, actual, expected, message, assertionType ) {
 		if ( !config.current ) {
 			throw new Error( "assertion outside test context, was " + sourceFromStacktrace() );
 		}
 
 		var output, source,
 			details = {
+                assertionType: assertionType,
+                module: config.current.module,
+                name: config.current.testName,
 				result: result,
 				message: message,
 				actual: actual,
@@ -818,13 +842,16 @@ extend( QUnit, {
 		});
 	},
 
-	pushFailure: function( message, source, actual ) {
+	pushFailure: function( message, source, actual, assertionType ) {
 		if ( !config.current ) {
 			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace(2) );
 		}
 
 		var output,
 			details = {
+                assertionType: assertionType,
+                module: config.current.module,
+                name: config.current.testName,
 				result: false,
 				message: message
 			};
