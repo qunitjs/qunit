@@ -62,15 +62,33 @@ test("test1", 13, function() {
 		result: true,
 		message: undefined,
 		actual: 0,
-		expected: 0
+		expected: 0,
+        name: "test1",
+        module: "logs1"
 	});
 	equal("foo", "foo", "msg");
 	deepEqual(logContext, {
 		result: true,
 		message: "msg",
 		actual: "foo",
-		expected: "foo"
+		expected: "foo",
+        name: "test1",
+        module: "logs1"
 	});
+    ok(false, "msg");
+    deepEqual(logContext, {
+        result: false,
+        message: "msg",
+        name: "test1",
+        module: "logs1"
+    });
+    ok(true, "msg");
+    deepEqual(logContext, {
+        result: true,
+        message: "msg",
+        name: "test1",
+        module: "logs1"
+    });
 	strictEqual(testDoneContext, undefined);
 	deepEqual(testContext, {
 		module: "logs1",
