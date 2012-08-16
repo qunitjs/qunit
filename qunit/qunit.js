@@ -422,6 +422,8 @@ QUnit.assert = {
 
 		var source,
 			details = {
+				module: config.current.module,
+				name: config.current.testName,
 				result: result,
 				message: msg
 			};
@@ -784,6 +786,8 @@ extend( QUnit, {
 
 		var output, source,
 			details = {
+				module: config.current.module,
+				name: config.current.testName,
 				result: result,
 				message: message,
 				actual: actual,
@@ -829,6 +833,8 @@ extend( QUnit, {
 
 		var output,
 			details = {
+				module: config.current.module,
+				name: config.current.testName,
 				result: false,
 				message: message
 			};
