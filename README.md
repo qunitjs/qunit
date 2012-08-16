@@ -37,6 +37,8 @@ to the issue number you're addressing.
 
 To run `grunt`, you need `node` and `npm`, then `npm install grunt -g`.
 
+You will also need to install `grunt-git-authors`, `npm install grunt-git-authors`.
+
 Releases
 --------
 
