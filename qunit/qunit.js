@@ -105,11 +105,11 @@ Test.prototype = {
 			saveGlobal();
 		}
 		if ( config.notrycatch ) {
-			this.testEnvironment.setup.call( this.testEnvironment );
+			this.testEnvironment.setup.call( this.testEnvironment, this );
 			return;
 		}
 		try {
-			this.testEnvironment.setup.call( this.testEnvironment );
+			this.testEnvironment.setup.call( this.testEnvironment, this );
 		} catch( e ) {
 			QUnit.pushFailure( "Setup failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
 		}
@@ -148,11 +148,11 @@ Test.prototype = {
 	teardown: function() {
 		config.current = this;
 		if ( config.notrycatch ) {
-			this.testEnvironment.teardown.call( this.testEnvironment );
+			this.testEnvironment.teardown.call( this.testEnvironment, this );
 			return;
 		} else {
 			try {
-				this.testEnvironment.teardown.call( this.testEnvironment );
+				this.testEnvironment.teardown.call( this.testEnvironment, this );
 			} catch( e ) {
 				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
 			}
