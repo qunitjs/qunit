@@ -59,6 +59,8 @@ test("test1", 13, function() {
 	equal(moduleDone, 0);
 
 	deepEqual(logContext, {
+		name: "test1",
+		module: "logs1",
 		result: true,
 		message: undefined,
 		actual: 0,
@@ -66,6 +68,8 @@ test("test1", 13, function() {
 	});
 	equal("foo", "foo", "msg");
 	deepEqual(logContext, {
+		name: "test1",
+		module: "logs1",
 		result: true,
 		message: "msg",
 		actual: "foo",
@@ -79,6 +83,20 @@ test("test1", 13, function() {
 	strictEqual(moduleDoneContext, undefined);
 	deepEqual(moduleContext, {
 		name: "logs1"
+	});
+	ok(false, "msg");
+	deepEqual(logCOntext, {
+		module: "logs1",
+		name: "test1",
+		result: false,
+		message: "msg"
+	});
+	ok(true, "msg");
+	deepEqual(logContext, {
+		module: "logs1",
+		name: "test1",
+		result: true,
+		message: "msg"
 	});
 
 	equal(log, 12);
