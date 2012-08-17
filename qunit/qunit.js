@@ -1062,9 +1062,9 @@ window.onerror = function ( error, filePath, linerNr ) {
 			}
 			QUnit.pushFailure( error, filePath + ":" + linerNr );
 		} else {
-			QUnit.test( "global failure", function() {
+			QUnit.test( "global failure", extend( function() {
 				QUnit.pushFailure( error, filePath + ":" + linerNr );
-			});
+			}, { validTest: validTest } ) );
 		}
 		return false;
 	}
@@ -1145,6 +1145,12 @@ function validTest( test ) {
 		filter = config.filter && config.filter.toLowerCase(),
 		module = config.module && config.module.toLowerCase(),
 		fullName = (test.module + ": " + test.testName).toLowerCase();
+
+	// Internally-generated tests are always valid
+	if ( test.callback && test.callback.validTest === validTest ) {
+		delete test.callback.validTest;
+		return true;
+	}
 
 	if ( config.testNumber ) {
 		return test.testNumber === config.testNumber;
