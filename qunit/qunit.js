@@ -949,7 +949,7 @@ QUnit.load = function() {
 		}
 	}
 	moduleFilterHtml += "</select>";
-	
+
 	// `userAgent` initialized at top of scope
 	userAgent = id( "qunit-userAgent" );
 	if ( userAgent ) {
@@ -1020,7 +1020,7 @@ QUnit.load = function() {
 			addEvent( moduleFilter, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
 				    selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
-				
+
 				window.location = QUnit.url( { module: ( selectedModule === "" ) ? undefined : selectedModule } );
 			});
 			toolbar.appendChild(moduleFilter);
@@ -1433,7 +1433,8 @@ QUnit.equiv = (function() {
 						a.global === b.global &&
 						// (gmi) ...
 						a.ignoreCase === b.ignoreCase &&
-						a.multiline === b.multiline;
+						a.multiline === b.multiline &&
+						a.sticky === b.sticky;
 				},
 
 				// - skip when the property is a method of an instance (OOP)
