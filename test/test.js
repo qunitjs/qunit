@@ -531,11 +531,13 @@ test('Circular reference - test reported by soniciq in #105', function() {
 })();
 
 if (typeof setTimeout !== 'undefined') {
-function testAfterDone(){
+
+function testAfterDone() {
 	var testName = "ensure has correct number of assertions";
 
 	function secondAfterDoneTest(){
 		QUnit.config.done = [];
+		QUnit.done(nonTestErrors);
 		//QUnit.done = function(){};
 		//because when this does happen, the assertion count parameter doesn't actually
 		//work we use this test to check the assertion count.
@@ -584,8 +586,106 @@ function testAfterDone(){
 			ok(i);
 		}
 	});
+}
 
+function nonTestErrors() {
+	// We'll be throwing errors outside of tests for the global handler to catch
+	var idxThrown,
+		thrown = [],
+		caught = [],
+		stringFilter = QUnit.config.filter,
+		moduleFilter = QUnit.config.module,
+		testNumberFilter = QUnit.config.testNumber,
+		pushFailure = QUnit.pushFailure,
 
+		// Temporarily remove module/test filtering and override pushFailure to catch calls
+		setupEnvironment = function() {
+			QUnit.config.filter =
+				QUnit.config.module =
+				QUnit.config.testNumber = 
+				null;
+
+			// We expect the handler to automatically generate a failing test
+			QUnit.pushFailure = function( error ) {
+				// Trust our data over a useless "Script error." message
+				error = thrown[ idxThrown ] || error;
+				idxThrown = "";
+
+				caught.push( error );
+				QUnit.ok( error.message, error.message || error );
+				restoreEnvironment();
+			};
+		},
+
+		// Restore the "real" testing environment
+		restoreEnvironment = function() {
+			QUnit.config.filter = stringFilter;
+			QUnit.config.module = moduleFilter;
+			QUnit.config.testNumber = testNumberFilter;
+			QUnit.pushFailure = pushFailure;
+		},
+
+		// Generate a function that mocks filtering and then throws an error
+		filterAndError = function( config, description ) {
+			return function() {
+				for ( var prop in config ) {
+					QUnit.config[ prop ] = config[ prop ];
+				}
+				idxThrown = thrown.length;
+				thrown.push( new Error(description) );
+				throw thrown[ idxThrown ];
+			}
+		},
+
+		// Isolate error-throwing functions with setTimeout+setInterval over a queue
+		queue = [
+			filterAndError( {}, "no filtering" ),
+			filterAndError( { module: "!" }, "module filtering" ),
+			filterAndError( { filter: "!" }, "test name filtering" ),
+			filterAndError( { testNumber: 0 }, "test number filtering" ),
+
+			// Finally, assert expected results
+			function() {
+				restoreEnvironment();
+				module("non-test errors");
+				test("always visible", function() {
+					expect(6);
+					equal( thrown.length, 4, "correct number of errors thrown" );
+					equal( caught.length, 4, "correct number of errors caught" );
+					for ( var i = 0; i < 4; i++ ) {
+						strictEqual( caught[i], thrown[i], "caught: " + thrown[i].message );
+					}
+				});
+			}
+		],
+		run = function() {
+			if ( !queue.length ) {
+				return;
+			}
+
+			// Advance when we detect a restored environment
+			var next = setInterval( function() {
+				if ( QUnit.pushFailure === pushFailure ) {
+					clearInterval( next );
+					run();
+				}
+			}, 50 );
+
+			// Run the current item
+			setTimeout( function() {
+				setupEnvironment();
+				( queue.shift() )();
+
+				// Expect errors from all but the last queued function
+				if ( queue.length ) {
+					QUnit.pushFailure("no error thrown");
+				}
+			}, 0 );
+		};
+
+	QUnit.config.done = [];
+	module("non-test errors");
+	run();
 }
 
 QUnit.done(testAfterDone);
