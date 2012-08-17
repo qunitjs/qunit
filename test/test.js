@@ -13,6 +13,15 @@ test("expect in test", 1, function() {
 	ok(true);
 });
 
+test("expect query and multiple issue", function() {
+  expect(2);
+  ok(true);
+  var expected = expect();
+  equal(expected, 2);
+  expect(expected + 1);
+  ok(true);
+});
+
 QUnit.module("assertion helpers");
 
 QUnit.test( "QUnit.assert compatibility", function( assert ) {
