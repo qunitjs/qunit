@@ -1141,6 +1141,11 @@ function done() {
 		}
 	}
 
+	// scroll back to top to show results
+	if ( window.scrollTo ) {
+		window.scrollTo(0, 0);
+	}
+
 	runLoggingCallbacks( "done", QUnit, {
 		failed: config.stats.bad,
 		passed: passed,
