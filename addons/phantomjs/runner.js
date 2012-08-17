@@ -53,14 +53,9 @@ function onfinishedTests() {
 function addLogging() {
 	window.document.addEventListener( "DOMContentLoaded", function() {
 		var current_test_assertions = [];
-		var module;
-
-		QUnit.moduleStart(function(context) {
-			module = context.name;
-		});
 
 		QUnit.testDone(function(result) {
-			var name = module + ': ' + result.name;
+			var name = result.module + ': ' + result.name;
 			var i;
 
 			if (result.failed) {
