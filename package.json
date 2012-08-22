@@ -3,7 +3,10 @@
   "title": "QUnit",
   "description": "An easy-to-use JavaScript Unit Testing framework.",
   "version": "1.10.0pre",
-  "author": "The jQuery Project",
+  "author": {
+    "name": "jQuery Foundation and other contributors",
+    "url": "https://github.com/jquery/qunit/blob/master/AUTHORS.txt"
+  },
   "contributors": [
     "John Resig <jeresig@gmail.com> (http://ejohn.org/)",
     "Jörn Zaefferer <joern.zaefferer@googlemail.com> (http://bassistance.de/)"
