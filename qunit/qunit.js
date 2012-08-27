@@ -306,7 +306,7 @@ QUnit = {
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
 		config.currentModule = name;
-		config.currentModuleTestEnviroment = testEnvironment;
+		config.currentModuleTestEnvironment = testEnvironment;
 		config.modules[name] = true;
 	},
 
@@ -339,7 +339,7 @@ QUnit = {
 			async: async,
 			callback: callback,
 			module: config.currentModule,
-			moduleTestEnvironment: config.currentModuleTestEnviroment,
+			moduleTestEnvironment: config.currentModuleTestEnvironment,
 			stack: sourceFromStacktrace( 2 )
 		});
 
