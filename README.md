@@ -35,7 +35,8 @@ the change, run `grunt` to lint and test it, then commit, push and create a pull
 Include some background for the change in the commit message and `Fixes #nnn`, referring
 to the issue number you're addressing.
 
-To run `grunt`, you need `node` and `npm`, then `npm install grunt -g`.
+To run `grunt`, you need `node` and `npm`, then `npm install grunt -g`. That gives you a global
+grunt binary. For additional grunt tasks, also run `npm install`.
 
 Releases
 --------
