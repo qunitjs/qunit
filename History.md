@@ -1,3 +1,17 @@
+1.10.0 / 2012-08-30 
+==================
+
+  * Simplify licensing: Only MIT, no more MIT/GPL dual licensing.
+  * Scroll the window back to top after tests finished running. Fixes #304
+  * Simplify phantomjs runner to use module property in testDone callback
+  * Adds module and test name to the information that is returned in the callback provided to QUnit.log(Function). Fixes #296
+  * Make QUnit.expect() (without arguments) a getter. Fixes #226
+  * Compare the ES6 sticky (y) property for RegExp. Can't add to tests yet. Fixes #284 - deepEqual for RegExp should compare
+  * onerror: force display of global errors despite URL parameters. Fixes #288 - Global failures can be filtered out by test-limiting URL parameters
+  * Remove conditional codepath based on jQuery presence from reset().
+  * Add module filter to UI
+  * Keep a local reference to Date. Fixes #283.
+  * Update copyright to jQuery Foundation.
 
 1.9.0 / 2012-07-11
 ==================
