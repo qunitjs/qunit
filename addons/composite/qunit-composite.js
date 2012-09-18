@@ -33,6 +33,9 @@ QUnit.extend( QUnit, {
 			var module, test,
 				count = 0;
 
+			if (iframe.src === "") {
+				return;
+			}
 
 			iframeWin.QUnit.moduleStart(function( data ) {
 				// capture module name for messages
