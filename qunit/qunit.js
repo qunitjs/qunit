@@ -1715,13 +1715,9 @@ QUnit.jsDump = (function() {
 				object: function( map, stack ) {
 					var ret = [ ], keys, key, val, i;
 					QUnit.jsDump.up();
-					if ( Object.keys ) {
-						keys = Object.keys( map );
-					} else {
-						keys = [];
-						for ( key in map ) {
-							keys.push( key );
-						}
+					keys = [];
+					for ( key in map ) {
+						keys.push( key );
 					}
 					keys.sort();
 					for ( i = 0; i < keys.length; i++ ) {
