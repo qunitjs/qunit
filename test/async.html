@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>QUnit Test Suite</title>
+	<link rel="stylesheet" href="../qunit/qunit.css">
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">test markup</div>
+	<script type="text/javascript" src="../qunit/qunit.js"></script>
+	<script type="text/javascript">
+		// Simulate a delay in retrieving the tests, as when they are loaded
+		// asynchronously using steal, etc.
+		// This results in the document loading before any tests are loaded,
+		// which means config.autorun is true and config.blocking is false.
+		var head= document.getElementsByTagName('head')[0];
+		var script= document.createElement('script');
+		script.type= 'text/javascript';
+		script.src= 'async_setup.js';
+		setTimeout(function() {
+			head.appendChild(script);
+		}, 1000);
+	</script>
+</body>
+</html>
