@@ -496,7 +496,7 @@ QUnit.assert = {
 		QUnit.push( expected !== actual, actual, expected, message );
 	},
 
-	throws: function( block, expected, message ) {
+	"throws": function( block, expected, message ) {
 		var actual,
 			ok = false;
 
@@ -546,7 +546,7 @@ extend( QUnit, QUnit.assert );
  * @deprecated since 1.9.0
  * Kept global "raises()" for backwards compatibility
  */
-QUnit.raises = QUnit.assert.throws;
+QUnit.raises = QUnit.assert[ "throws" ];
 
 /**
  * @deprecated since 1.0.0, replaced with error pushes since 1.3.0
