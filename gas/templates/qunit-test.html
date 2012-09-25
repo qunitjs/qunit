@@ -1,0 +1,16 @@
+<li id="qunit-test-output<?= testNumber ?>" class="<?= testClassName ?>">
+  <strong id="qunit-test-banner<?= testNumber ?>" >
+    <?!= testName ?>
+  </strong>
+  <b class="counts">(<b class="failed"><?= assertionsFailed ?></b>, <b class="passed"><?= assertionsPassed ?></b>, <?= assertionsTotal ?>)</b>
+  <a href="<?= testUrl ?>">Rerun</a>
+  <ol id="qunit-test-block<?= testNumber ?>" style="display: <?= testDisplay ?>;">
+    <?!= assertions ?>
+  </ol>
+  <script type="text/javascript">
+    addEvent( id( "qunit-test-banner<?= testNumber ?>" ), "click", function() {
+      var block = id( "qunit-test-block<?= testNumber ?>" );
+      block.style.display = ( block.style.display === "none" ) ? "block" : "none";
+    });
+  </script>
+</li>

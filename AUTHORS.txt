@@ -53,3 +53,4 @@ Herbert Vojčík <herby@mailbox.sk>
 Richard Gibson <richard.gibson@gmail.com>
 Alex J Burke <alex@alexjeffburke.com>
 Sergii Kliuchnyk <sergiikliuchnyk@gmail.com>
+Adam Piórowicz <adam@simula.no>

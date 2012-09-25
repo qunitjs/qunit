@@ -1,0 +1,46 @@
+<html>
+<head>
+  <?!= styles ?>
+  <script type="text/javascript">
+    window["id"] = function( name ) {
+      return !!( typeof document !== "undefined" && document && document.getElementById ) && document.getElementById( name );
+    };
+    window["addEvent"] = function( elem, type, fn ) {
+      if ( elem.addEventListener ) {
+        elem.addEventListener( type, fn, false );
+      } else if ( elem.attachEvent ) {
+        elem.attachEvent( "on" + type, fn );
+      } else {
+        fn();
+      }
+    };
+    addEvent( window, "load", function() {
+      if ( <?!= hidepassed ?> ) {
+        var ol = id( "qunit-tests" );
+        ol.className = ol.className + " hidepass";
+      }
+      id( "qunit-userAgent" ).innerHTML = navigator.userAgent;
+      // scroll back to top to show results
+      if ( window.scrollTo ) {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="qunit">
+    <h1 id="qunit-header">
+      <a href="<?= testUrl ?>"><?= title ?></a>
+    </h1>
+    <h2 id="qunit-banner" class="<?= bannerClassName ?>"></h2>
+    <?!= toolbar ?>
+    <h2 id="qunit-userAgent"></h2>
+    <p id="qunit-testresult" class="result">
+      <?!= testResult ?>
+    </p>
+    <ol id="qunit-tests">
+      <?!= tests ?>
+    </ol>
+  </div>
+</body>
+</html>

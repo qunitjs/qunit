@@ -14,12 +14,14 @@ var QUnit,
 	config,
 	onErrorFnPrev,
 	testId = 0,
-	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
+	htmlCollection,
+	prop,
 	defined = {
+	htmlService: typeof HtmlService !== "undefined", // a templating service in Google Apps Script
 	setTimeout: typeof window.setTimeout !== "undefined",
 	sessionStorage: (function() {
 		var x = "qunit-test-string";
@@ -31,7 +33,8 @@ var QUnit,
 			return false;
 		}
 	}())
-};
+	},
+	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, "");
 
 function Test( settings ) {
 	extend( this, settings );
@@ -62,6 +65,10 @@ Test.prototype = {
 			li.id = this.id = "qunit-test-output" + testId++;
 
 			tests.appendChild( li );
+		} else if ( defined.htmlService ) {
+			this.testTemplate.testNumber = this.testNumber;
+			this.testTemplate.testUrl = QUnit.url({ testNumber: this.testNumber });
+			this.id = "qunit-test-output" + testId++;
 		}
 	},
 	setup: function() {
@@ -169,7 +176,7 @@ Test.prototype = {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var assertion, a, b, i, li, ol,
+		var assertion, a, b, i, li, ol, assertionTemplate, assertionsHtml,
 			test = this,
 			good = 0,
 			bad = 0,
@@ -240,6 +247,32 @@ Test.prototype = {
 			li.appendChild ( a );
 			li.appendChild( ol );
 
+		} else if ( defined.htmlService ) {
+			assertionsHtml = HtmlService.createHtmlOutput();
+			for ( i = 0; i < this.assertions.length; i++ ) {
+				assertion = this.assertions[i];
+
+				assertionTemplate = HtmlService.createTemplate( "<li class='<?= r ?>'><?!= m ?></li>" );
+				assertionTemplate.r = assertion.result ? "pass" : "fail";
+				assertionTemplate.m = assertion.message || ( assertion.result ? "okay" : "failed" );
+				assertionsHtml.append( assertionTemplate.evaluate().getContent() );
+
+				if ( assertion.result ) {
+					good++;
+				} else {
+					bad++;
+					config.stats.bad++;
+					config.moduleStats.bad++;
+				}
+			}
+
+			this.testTemplate.testDisplay = bad === 0 ? "none" : "block";
+			this.testTemplate.assertionsFailed = bad;
+			this.testTemplate.assertionsPassed = good;
+			this.testTemplate.assertionsTotal = this.assertions.length;
+			this.testTemplate.assertions = assertionsHtml.getContent();
+			this.testTemplate.testClassName = bad ? "fail" : "pass";
+			htmlCollection.testResults.push( this.testTemplate.evaluate().getContent() );
 		} else {
 			for ( i = 0; i < this.assertions.length; i++ ) {
 				if ( !this.assertions[i].result ) {
@@ -320,7 +353,7 @@ QUnit = {
 	},
 
 	test: function( testName, expected, callback, async ) {
-		var test,
+		var test, testTemplate,
 			name = "<span class='test-name'>" + escapeInnerText( testName ) + "</span>";
 
 		if ( arguments.length === 2 ) {
@@ -332,9 +365,15 @@ QUnit = {
 			name = "<span class='module-name'>" + config.currentModule + "</span>: " + name;
 		}
 
+		if ( defined.htmlService ) {
+			testTemplate = HtmlService.createTemplateFromFile( "qunit-test" );
+			testTemplate.testName = name;
+		}
+
 		test = new Test({
 			name: name,
 			testName: testName,
+			testTemplate: testTemplate,
 			expected: expected,
 			async: async,
 			callback: callback,
@@ -622,6 +661,18 @@ config = {
 	moduleDone: []
 };
 
+if ( defined.htmlService ) {
+	// Initialize QUnit.urlParams
+	QUnit.urlParams = {};
+
+	// In Google Apps Script, expose QUnit object as QUnit_, because the library will have the name QUnit
+	window.QUnit_ = QUnit;
+
+	// Initialize container for HTML templates and documents
+	htmlCollection = {
+		testResults: []
+	};
+} else {
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
 	var i,
@@ -663,11 +714,13 @@ if ( typeof exports === "undefined" ) {
 	// Expose QUnit object
 	window.QUnit = QUnit;
 }
+}
 
 // Extend QUnit object,
 // these after set here because they should not be exposed as global functions
 extend( QUnit, {
 	config: config,
+	htmlCollection: htmlCollection,
 
 	// Initialize the configuration options
 	init: function() {
@@ -683,6 +736,10 @@ extend( QUnit, {
 			queue: [],
 			semaphore: 0
 		});
+
+		if ( defined.htmlService ) {
+			return;
+		}
 
 		var tests, banner, result,
 			qunit = id( "qunit" );
@@ -876,7 +933,7 @@ extend( QUnit, {
 			querystring += encodeURIComponent( key ) + "=" +
 				encodeURIComponent( params[ key ] ) + "&";
 		}
-		return window.location.pathname + querystring.slice( 0, -1 );
+		return ( defined.htmlService ? ScriptApp.getService().getUrl() : window.location.pathname) + querystring.slice( 0, -1 );
 	},
 
 	extend: extend,
@@ -885,6 +942,7 @@ extend( QUnit, {
 	// load, equiv, jsDump, diff: Attached later
 });
 
+if ( !defined.htmlService ) {
 /**
  * @deprecated: Created for backwards compatibility with test runner that set the hook function
  * into QUnit.{hook}, instead of invoking it and passing the hook function.
@@ -920,12 +978,14 @@ extend( QUnit.constructor.prototype, {
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
 	config.autorun = true;
 }
+}
 
 QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
 	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes, moduleFilter,
+		mainTemplate, linkTemplate, toolbarTemplate,
 	    numModules = 0,
 	    moduleFilterHtml = "",
 		urlConfigHtml = "",
@@ -935,6 +995,19 @@ QUnit.load = function() {
 	extend(config, oldconfig);
 
 	config.blocking = false;
+
+	if ( defined.htmlService ) {
+		mainTemplate = HtmlService.createTemplateFromFile( "qunit" );
+		mainTemplate.title = config.title ? config.title : "QUnit for Google Apps Script";
+		toolbarTemplate = HtmlService.createTemplateFromFile( "qunit-toolbar" );
+		if ( typeof config.cssUrl === "string" ) {
+			linkTemplate = HtmlService.createTemplate( "<link rel='stylesheet' href='<?!= url ?>' type='text/css' media='screen' />" );
+			linkTemplate.url = config.cssUrl;
+			mainTemplate.styles = linkTemplate.evaluate().getContent();
+		} else {
+			mainTemplate.styles = HtmlService.createHtmlOutputFromFile( "qunit.css" ).getContent();
+		}
+	}
 
 	len = config.urlConfig.length;
 
@@ -949,9 +1022,12 @@ QUnit.load = function() {
 		}
 		config[ val.id ] = QUnit.urlParams[ val.id ];
 		urlConfigHtml += "<input id='qunit-urlconfig-" + val.id + "' name='" + val.id + "' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) + " title='" + val.tooltip + "'><label for='qunit-urlconfig-" + val.id + "' title='" + val.tooltip + "'>" + val.label + "</label>";
+		if ( defined.htmlService ) {
+			urlConfigHtml += "<script type='text/javascript'>addEvent( id( 'qunit-urlconfig-" + val.id + "' ), 'change', function( event ) { id( 'qunit-action' ).submit(); });</script>";
+		}
 	}
 
-	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " + ( config.module === undefined  ? "selected" : "" ) + ">< All Modules ></option>";
+	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " + ( config.module === undefined  ? "selected" : "" ) + ">&lt; All Modules &gt;</option>";
 	for ( i in config.modules ) {
 		if ( config.modules.hasOwnProperty( i ) ) {
 			numModules += 1;
@@ -1035,6 +1111,16 @@ QUnit.load = function() {
 			});
 			toolbar.appendChild(moduleFilter);
 		}
+	} else if ( defined.htmlService ) {
+		toolbarTemplate.checked = config.hidepassed ? "checked='checked'" : "";
+		toolbarTemplate.urlConfigs = urlConfigHtml;
+		if (numModules > 1) {
+			toolbarTemplate.moduleFilter = moduleFilterHtml;
+		} else {
+			toolbarTemplate.moduleFilter = "";
+		}
+		htmlCollection.main = mainTemplate;
+		htmlCollection.toolbar = toolbarTemplate;
 	}
 
 	// `main` initialized at top of scope
@@ -1048,6 +1134,7 @@ QUnit.load = function() {
 	}
 };
 
+if ( !defined.htmlService ) {
 addEvent( window, "load", QUnit.load );
 
 // `onErrorFnPrev` initialized at top of scope
@@ -1081,6 +1168,7 @@ window.onerror = function ( error, filePath, linerNr ) {
 
 	return ret;
 };
+}
 
 function done() {
 	config.autorun = true;
@@ -1119,6 +1207,8 @@ function done() {
 
 	if ( tests ) {
 		id( "qunit-testresult" ).innerHTML = html;
+	} else if ( defined.htmlService ) {
+		htmlCollection.main.testResult = html;
 	}
 
 	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
@@ -1197,6 +1287,10 @@ function validTest( test ) {
 // Later Safari and IE10 are supposed to support error.stack as well
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 function extractStacktrace( e, offset ) {
+	if ( defined.htmlService ) {
+		return e.stack.replace( /(\n|\t|\s)+/g, " " ).replace( / at file/g, "\nat file" );
+	}
+
 	offset = offset === undefined ? 3 : offset;
 
 	var stack, include, i, regex;
@@ -1368,6 +1462,10 @@ function registerLoggingCallback( key ) {
 	return function( callback ) {
 		config[key].push( callback );
 	};
+}
+
+if ( defined.htmlService ) {
+	QUnit_.registerLoggingCallback = registerLoggingCallback;
 }
 
 // Supports deprecated method of completely overwriting logging callbacks
@@ -1971,6 +2069,15 @@ QUnit.diff = (function() {
 // for CommonJS enviroments, export everything
 if ( typeof exports !== "undefined" ) {
 	extend(exports, QUnit);
+}
+// in Google Apps Script, expose functions and objects that have no equivalent in the QUnit library
+else if ( defined.htmlService ) {
+	QUnit.internals = {};
+	for ( prop in QUnit ) {
+		if ( window[ prop ] === undefined ) {
+			QUnit.internals[ prop ] = QUnit[ prop ];
+		}
+	}
 }
 
 // get at whatever the global object is, like window in browsers
