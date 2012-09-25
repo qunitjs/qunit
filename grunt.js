@@ -43,7 +43,10 @@ grunt.initConfig({
 			},
 			globals: {
 				jQuery: true,
-				exports: true
+				exports: true,
+				QUnit_: true,
+				HtmlService: true,
+				ScriptApp: true
 			}
 		},
 		addons: {

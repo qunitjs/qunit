@@ -1,0 +1,26 @@
+<div id="qunit-testrunner-toolbar">
+  <form id="qunit-action" action="<?= testUrl ?>" method="get">
+    <input id="qunit-filter-pass" type="checkbox" <?!= checked ?>/>
+    <label for="qunit-filter-pass" title="Only show tests and assertions that fail.">Hide passed tests</label>
+    <?!= urlConfigs ?>
+    <span id='qunit-modulefilter-container'><?!= moduleFilter ?></span>
+  </form>
+  <script type="text/javascript">
+    (function() {
+      var filter = id( "qunit-filter-pass" );
+      addEvent( filter, "change", function() {
+        var tmp,
+        ol = id( "qunit-tests" );
+        if ( filter.checked ) {
+          ol.className = ol.className + " hidepass";
+        } else {
+          tmp = " " + ol.className.replace( /[\n\t\r]/g, " " ) + " ";
+          ol.className = tmp.replace( / hidepass /, " " );
+        }
+      });
+      addEvent( id( "qunit-modulefilter" ), "change", function() {
+        id( "qunit-action" ).submit();
+      });
+    })();
+  </script>
+</div>
