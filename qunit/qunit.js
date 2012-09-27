@@ -135,7 +135,7 @@ Test.prototype = {
 		try {
 			this.callback.call( this.testEnvironment, QUnit.assert );
 		} catch( e ) {
-			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + " " + this.stack + ": " + e.message, extractStacktrace( e, 0 ) );
+			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			// else next test will carry the responsibility
 			saveGlobal();
 
@@ -154,7 +154,7 @@ Test.prototype = {
 			try {
 				this.testEnvironment.teardown.call( this.testEnvironment );
 			} catch( e ) {
-				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + e.message, extractStacktrace( e, 1 ) );
+				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
 			}
 		}
 		checkPollution();
