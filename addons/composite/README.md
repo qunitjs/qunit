@@ -10,3 +10,16 @@ outside the composite runner.
 
 If you want to see what assertion failed in a long list of assertions,
 just use the regular "Hide passed tests" checkbox.
+
+## Usage
+
+Load QUnit itself along with `qunit-composite.css` and `qunit-composite.js`,
+then specify the testsuites to load using `QUnit.testSuites`:
+
+```js
+QUnit.testSuites([
+    "test-file-1.html",
+    "test-file-2.html",
+    "test-file-3.html"
+]);
+```
