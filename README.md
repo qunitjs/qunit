@@ -23,9 +23,6 @@ If you are interested in helping developing QUnit, you are in the right place.
 For related discussions, visit the
 [QUnit and Testing forum](http://forum.jquery.com/qunit-and-testing).
 
-Planning for a qunitjs.com site and other testing tools related work now happens
-on the [jQuery Testing Team planning wiki](http://jquerytesting.pbworks.com/w/page/41556026/FrontPage).
-
 Development
 -----------
 
@@ -59,3 +56,7 @@ Then update /var/www/html/code.jquery.com/index.html and purge it with:
 	curl -s http://code.origin.jquery.com/?reload
 
 Update web-base-template to link to those files for qunitjs.com.
+
+Publish to npm via
+
+	npm publish
