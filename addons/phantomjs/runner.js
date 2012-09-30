@@ -10,9 +10,10 @@
  *      phantomjs runner.js http://localhost/qunit/test
  */
 
-var url = phantom.args[0];
-
-var page = require('webpage').create();
+/*jshint latedef:false */
+/*global phantom:true require:true console:true */
+var url = phantom.args[0],
+	page = require('webpage').create();
 
 // Route "console.log()" calls from within the Page context to the main Phantom context (i.e. current "this")
 page.onConsoleMessage = function(msg) {
@@ -55,8 +56,8 @@ function addLogging() {
 		var current_test_assertions = [];
 
 		QUnit.testDone(function(result) {
-			var name = result.module + ': ' + result.name;
-			var i;
+			var i,
+				name = result.module + ': ' + result.name;
 
 			if (result.failed) {
 				console.log('Assertion Failed: ' + name);
