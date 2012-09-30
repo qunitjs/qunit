@@ -1,7 +1,7 @@
 /**
  * QUnit Theme by NV
  *
- * http://docs.jquery.com/QUnit
+ * http://qunitjs.com
  *
  * Copyright 2012 jQuery Foundation and other contributors
  * Released under the MIT license.
@@ -62,10 +62,15 @@
 }
 
 #qunit-testrunner-toolbar {
-	padding: 0 0 0.5em 2em;
+	padding: .5em 0 0.5em 2em;
 }
 
 #qunit-testrunner-toolbar label {
+	margin-right: 1em;
+}
+
+#qunit-modulefilter-container {
+	float: right;
 	margin-right: 1em;
 }
 
@@ -92,9 +97,13 @@
 	cursor: pointer;
 }
 
-#qunit-tests ol {
+.qunit-assert-list {
 	margin: 0.5em 0 1em;
 	background-color: #fff;
+}
+
+.qunit-collapsed {
+	display: none;
 }
 
 #qunit-tests table {

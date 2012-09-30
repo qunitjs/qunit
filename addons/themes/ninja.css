@@ -1,3 +1,12 @@
+/**
+ * QUnit Ninja Theme by Jamie Hoover
+ *
+ * http://qunitjs.com
+ *
+ * Copyright 2012 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
 body {
 	background:#111 no-repeat -webkit-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(1, #111));
 	background:#111 no-repeat -webkit-linear-gradient(top, #222 0%, #111 100%);
