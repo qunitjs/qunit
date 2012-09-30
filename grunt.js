@@ -16,65 +16,34 @@ grunt.initConfig({
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
-		// addons: 'addons/**/*.js',
+		addons: 'addons/**.js',
 		grunt: 'grunt.js'
-		// TODO need to figure out which warnings to fix and which to disable
-		// tests: 'test/test.js'
+		// TODO fix remaining warnings
+		// tests: 'test/**.js'
 	},
-	jshint: {
-		qunit: {
-			options: {
-				onevar: true,
-				browser: true,
-				bitwise: true,
-				curly: true,
-				trailing: true,
-				immed: true,
-				latedef: false,
-				newcap: true,
-				noarg: false,
-				noempty: true,
-				nonew: true,
-				sub: true,
-				undef: true,
-				eqnull: true,
-				proto: true,
-				smarttabs: true
-			},
-			globals: {
-				jQuery: true,
-				exports: true
-			}
-		},
-		addons: {
-			options: {
-				browser: true,
-				curly: true,
-				eqnull: true,
-				eqeqeq: true,
-				expr: true,
-				evil: true,
-				jquery: true,
-				latedef: true,
-				noarg: true,
-				onevar: true,
-				smarttabs: true,
-				trailing: true,
-				undef: true
-			},
-			globals: {
-				module: true,
-				test: true,
-				asyncTest: true,
-				expect: true,
-				start: true,
-				stop: true,
-				QUnit: true
-			}
-		},
-		tests: {
+	// TODO rmeove this one grunt 0.4 is out, see jquery-ui for other details
+	jshint: (function() {
+		function parserc( path ) {
+			var rc = grunt.file.readJSON( (path || "") + ".jshintrc" ),
+				settings = {
+					options: rc,
+					globals: {}
+				};
+
+			(rc.predef || []).forEach(function( prop ) {
+				settings.globals[ prop ] = true;
+			});
+			delete rc.predef;
+
+			return settings;
 		}
-	}
+
+		return {
+			addons: parserc( "addons/" ),
+			qunit: parserc( "qunit/" ),
+			tests: parserc( "test/" )
+		};
+	})()
 });
 
 grunt.registerTask( "build-git", function( sha ) {

@@ -1,0 +1,22 @@
+{
+	"onevar": true,
+	"browser": true,
+	"bitwise": true,
+	"curly": true,
+	"trailing": true,
+	"immed": true,
+	"latedef": false,
+	"newcap": true,
+	"noarg": false,
+	"noempty": true,
+	"nonew": true,
+	"sub": true,
+	"undef": true,
+	"eqnull": true,
+	"proto": true,
+	"smarttabs": true,
+	"predef": [
+		"jQuery",
+		"exports"
+	]
+}
