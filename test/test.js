@@ -58,13 +58,13 @@ module("setup/teardown test", {
 	setup: function() {
 		state = true;
 		ok(true);
-		x = 1;
+		window.x = 1;
 	},
 	teardown: function() {
 		ok(true);
 		// can introduce and delete globals in setup/teardown
 		// without noglobals sounding the alarm
-		delete x;
+		delete window.x;
 	}
 });
 
@@ -145,7 +145,7 @@ test("parameter passed to start decrements semaphore n times", function() {
 module("async setup test", {
 	setup: function() {
 		stop();
-		setTimeout(function(){
+		setTimeout(function() {
 			ok(true);
 			start();
 		}, 500);
@@ -161,7 +161,7 @@ asyncTest("module with async setup", function() {
 module("async teardown test", {
 	teardown: function() {
 		stop();
-		setTimeout(function(){
+		setTimeout(function() {
 			ok(true);
 			start();
 		}, 500);
@@ -210,11 +210,11 @@ test("sync", 2, function() {
 
 test("test synchronous calls to stop", 2, function() {
 	stop();
-	setTimeout(function(){
+	setTimeout(function() {
 		ok(true, 'first');
 		start();
 		stop();
-		setTimeout(function(){
+		setTimeout(function() {
 			ok(true, 'second');
 			start();
 		}, 150);
@@ -237,7 +237,8 @@ test("scope check", function() {
 
 module("simple testEnvironment setup", {
 	foo: "bar",
-	bugid: "#5311" // example of meta-data
+	// example of meta-data
+	bugid: "#5311"
 });
 test("scope check", function() {
 	deepEqual(this.foo, "bar");
@@ -313,13 +314,13 @@ test("raises",function() {
 
 	throws(
 		function() {
-			throw "my error"
+			throw "my error";
 		}
 	);
 
 	throws(
 		function() {
-			throw "my error"
+			throw "my error";
 		},
 		"simple string throw, no 'expected' value given"
 	);
@@ -354,9 +355,10 @@ test("raises",function() {
 
 	throws(
 		function() {
+			/*jshint evil:true */
 			( window.execScript || function( data ) {
 				window["eval"].call( window, data );
-			})( "throw 'error'" );
+			})( "throw 'error';" );
 		},
 		'globally-executed errors caught'
 	);
@@ -373,7 +375,7 @@ test("raises",function() {
 
     raises(
         function() {
-            throw "error"
+            throw "error";
         },
         "simple throw, asserting with deprecated raises() function"
     );
@@ -419,7 +421,9 @@ module("recursions");
 
 function Wrap(x) {
 	this.wrap = x;
-	if (x == undefined)  this.first = true;
+	if (x === undefined) {
+		this.first = true;
+	}
 }
 
 function chainwrap(depth, first, prev) {
@@ -539,29 +543,27 @@ test('Circular reference - test reported by soniciq in #105', function() {
 	});
 })();
 
-if (typeof setTimeout !== 'undefined') {
-function testAfterDone(){
+function testAfterDone() {
 	var testName = "ensure has correct number of assertions";
 
-	function secondAfterDoneTest(){
+	function secondAfterDoneTest() {
 		QUnit.config.done = [];
-		//QUnit.done = function(){};
-		//because when this does happen, the assertion count parameter doesn't actually
-		//work we use this test to check the assertion count.
+		// Because when this does happen, the assertion count parameter doesn't actually
+		// work we use this test to check the assertion count.
 		module("check previous test's assertion counts");
-		test('count previous two test\'s assertions', function(){
-			var spans = document.getElementsByTagName('span'),
-			tests = [],
-			countNodes;
+		test('count previous two test\'s assertions', function () {
+			var i, countNodes,
+				spans = document.getElementsByTagName('span'),
+				tests = [];
 
-			//find these two tests
-			for (var i = 0; i < spans.length; i++) {
+			// Find these two tests
+			for (i = 0; i < spans.length; i++) {
 				if (spans[i].innerHTML.indexOf(testName) !== -1) {
 					tests.push(spans[i]);
 				}
 			}
 
-			//walk dom to counts
+			// Walk dom to counts.
 			countNodes = tests[0].nextSibling.nextSibling.getElementsByTagName('b');
 			equal(countNodes[1].innerHTML, "99");
 			countNodes = tests[1].nextSibling.nextSibling.getElementsByTagName('b');
@@ -573,22 +575,22 @@ function testAfterDone(){
 
 	module("Synchronous test after load of page");
 
-	asyncTest('Async test', function(){
+	asyncTest('Async test', function() {
 		start();
 		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
 	});
 
-	test(testName, 99, function(){
+	test(testName, 99, function() {
 		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
 	});
 
-	//we need two of these types of tests in order to ensure that assertions
-	//don't move between tests.
-	test(testName + ' 2', 99, function(){
+	// We need two of these types of tests in order to ensure that assertions
+	// don't move between tests.
+	test(testName + ' 2', 99, function() {
 		for (var i = 1; i < 100; i++) {
 			ok(i);
 		}
@@ -597,6 +599,6 @@ function testAfterDone(){
 
 }
 
-QUnit.done(testAfterDone);
-
+if (typeof setTimeout !== 'undefined') {
+	QUnit.done(testAfterDone);
 }
