@@ -499,6 +499,7 @@ QUnit.assert = {
 
 	"throws": function( block, expected, message ) {
 		var actual,
+			expectedOutput = expected,
 			ok = false;
 
 		// 'expected' is optional
@@ -519,6 +520,7 @@ QUnit.assert = {
 			// we don't want to validate thrown error
 			if ( !expected ) {
 				ok = true;
+				expectedOutput = null;
 			// expected is a regexp
 			} else if ( QUnit.objectType( expected ) === "regexp" ) {
 				ok = expected.test( actual );
@@ -527,10 +529,11 @@ QUnit.assert = {
 				ok = true;
 			// expected is a validation function which returns true is validation passed
 			} else if ( expected.call( {}, actual ) === true ) {
+				expectedOutput = null;
 				ok = true;
 			}
 
-			QUnit.push( ok, actual, null, message );
+			QUnit.push( ok, actual, expectedOutput, message );
 		} else {
 			QUnit.pushFailure( message, null, 'No exception was thrown.' );
 		}
@@ -1676,6 +1679,8 @@ QUnit.jsDump = (function() {
 					( typeof obj.length === "number" && typeof obj.item !== "undefined" && ( obj.length ? obj.item(0) === obj[0] : ( obj.item( 0 ) === null && typeof obj[0] === "undefined" ) ) )
 				) {
 					type = "array";
+				} else if ( obj.constructor === Error.prototype.constructor ) {
+					type = "error";
 				} else {
 					type = typeof obj;
 				}
@@ -1714,8 +1719,9 @@ QUnit.jsDump = (function() {
 			parsers: {
 				window: "[Window]",
 				document: "[Document]",
-				// when no parser is found, shouldn"t happen
-				error: "[ERROR]",
+				error: function(error) {
+					return "Error(\"" + error.message + "\")";
+				},
 				unknown: "[Unknown]",
 				"null": "null",
 				"undefined": "undefined",
