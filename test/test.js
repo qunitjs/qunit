@@ -58,13 +58,13 @@ module("setup/teardown test", {
 	setup: function() {
 		state = true;
 		ok(true);
-		window.x = 1;
+		x = 1;
 	},
 	teardown: function() {
 		ok(true);
 		// can introduce and delete globals in setup/teardown
 		// without noglobals sounding the alarm
-		delete window.x;
+		delete x;
 	}
 });
 
