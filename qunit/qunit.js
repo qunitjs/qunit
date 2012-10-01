@@ -369,7 +369,7 @@ QUnit = {
 		// ignore if start is called more often then stop
 		if ( config.semaphore < 0 ) {
 			config.semaphore = 0;
-			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)" );
+			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)", null, sourceFromStacktrace(2) );
 			return;
 		}
 		// A slight delay, to avoid any current callbacks
@@ -687,7 +687,7 @@ extend( QUnit, {
 			autorun: false,
 			filter: "",
 			queue: [],
-			semaphore: 0
+			semaphore: 1
 		});
 
 		var tests, banner, result,
@@ -1051,8 +1051,6 @@ QUnit.load = function() {
 	}
 
 	if ( config.autostart ) {
-		// usually start() throws an error when called while already running (semaphore === 0)
-		QUnit.config.semaphore = 1;
 		QUnit.start();
 	}
 };
