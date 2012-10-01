@@ -763,7 +763,8 @@ extend( QUnit, {
 				return "null";
 		}
 
-		var type = toString.call( obj ).match(/^\[object\s(.*)\]$/)[1] || "";
+		var match = toString.call( obj ).match(/^\[object\s(.*)\]$/),
+			type = match && match[1] || "";
 
 		switch ( type ) {
 			case "Number":
