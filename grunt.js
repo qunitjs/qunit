@@ -12,7 +12,8 @@ grunt.initConfig({
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
 			'addons/composite/composite-demo-test.html'
-		]
+		],
+		async: 'test/async.html'
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
