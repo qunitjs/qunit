@@ -259,7 +259,9 @@ Test.prototype = {
 			total: this.assertions.length
 		});
 
-		QUnit.reset();
+		if( config.preventFixtureReset !== true ) {
+		    QUnit.reset();
+		}
 
 		config.current = undefined;
 	},
@@ -305,10 +307,11 @@ Test.prototype = {
 QUnit = {
 
 	// call on start of module test to prepend name to all tests
-	module: function( name, testEnvironment ) {
+	module: function( name, testEnvironment, resetFixture ) {
 		config.currentModule = name;
 		config.currentModuleTestEnvironment = testEnvironment;
 		config.modules[name] = true;
+		config.preventFixtureReset = resetFixture || false;
 	},
 
 	asyncTest: function( testName, expected, callback ) {
