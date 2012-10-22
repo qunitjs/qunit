@@ -83,11 +83,11 @@ QUnit.testDone(function() {
 		src = this.iframe.src;
 
 	// undo the auto-expansion of failed tests
-	for ( i = 0; i < children.length; i++ ) {
-		if ( children[i].nodeName === "OL" ) {
-			children[i].style.display = "none";
-		}
-	}
+	//for ( i = 0; i < children.length; i++ ) {
+	//	if ( children[i].nodeName === "OL" ) {
+	//		children[i].style.display = "none";
+	//	}
+	//}
 
 	QUnit.addEvent(current, "dblclick", function( e ) {
 		var target = e && e.target ? e.target : window.event.srcElement;
