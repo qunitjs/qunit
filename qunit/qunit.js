@@ -1022,7 +1022,7 @@ QUnit.load = function() {
 		toolbar.appendChild( label );
 
 		urlConfigCheckboxes = document.createElement( 'span' );
-		urlConfigCheckboxes.innerHTML = urlConfigHtml;
+		urlConfigCheckboxes.innerHTML = (function (html) { return toStaticHTML ? toStaticHTML(html) : html; })(urlConfigHtml);
 		addEvent( urlConfigCheckboxes, "change", function( event ) {
 			var params = {};
 			params[ event.target.name ] = event.target.checked ? true : undefined;
