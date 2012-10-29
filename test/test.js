@@ -24,17 +24,21 @@ test("expect query and multiple issue", function() {
 
 QUnit.module("assertion helpers");
 
-QUnit.test( "QUnit.assert compatibility", function( assert ) {
-	QUnit.expect(4);
-
+QUnit.test( "QUnit.assert compatibility", 5, function( assert ) {
 	assert.ok( true, "Calling method on `assert` argument to test() callback" );
 
-	// Should also work, although not documented
+	// Should also work, although discouraged and not documented
 	QUnit.assert.ok( true, "Calling method on QUnit.assert object" );
 
 	// Test compatibility aliases
 	QUnit.ok( true, "Calling aliased method in QUnit root object" );
 	ok( true, "Calling aliased function in global namespace" );
+
+	// Regression fix for #341
+	// The assert-context way of testing discouraged global variables,
+	// it doesn't make sense of it itself to be a global variable.
+	// Only allows for mistakes (e.g. forgetting to list 'assert' as parameter)
+	assert.notStrictEqual( window.assert, QUnit.assert, "Assert does not get exposed as a global variable" );
 });
 
 module("setup test", {

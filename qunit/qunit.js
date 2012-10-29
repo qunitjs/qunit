@@ -11,6 +11,7 @@
 (function( window ) {
 
 var QUnit,
+	assert,
 	config,
 	onErrorFnPrev,
 	testId = 0,
@@ -406,11 +407,14 @@ QUnit = {
 	}
 };
 
+// `assert` initialized at top of scope
 // Asssert helpers
-// All of these must call either QUnit.push() or manually do:
+// All of these must either call QUnit.push() or manually do:
 // - runLoggingCallbacks( "log", .. );
 // - config.current.assertions.push({ .. });
-QUnit.assert = {
+// We attach it to the QUnit object *after* we expose the public API,
+// otherwise `assert` will become a global variable in browsers (#341).
+assert = {
 	/**
 	 * Asserts rough true-ish result.
 	 * @name ok
@@ -544,15 +548,16 @@ QUnit.assert = {
 
 /**
  * @deprecate since 1.8.0
- * Kept assertion helpers in root for backwards compatibility
+ * Kept assertion helpers in root for backwards compatibility.
  */
-extend( QUnit, QUnit.assert );
+extend( QUnit, assert );
 
 /**
  * @deprecated since 1.9.0
- * Kept global "raises()" for backwards compatibility
+ * Kept root "raises()" for backwards compatibility.
+ * (Note that we don't introduce assert.raises).
  */
-QUnit.raises = QUnit.assert[ "throws" ];
+QUnit.raises = assert[ "throws" ];
 
 /**
  * @deprecated since 1.0.0, replaced with error pushes since 1.3.0
@@ -673,6 +678,8 @@ if ( typeof exports === "undefined" ) {
 // Extend QUnit object,
 // these after set here because they should not be exposed as global functions
 extend( QUnit, {
+	assert: assert,
+
 	config: config,
 
 	// Initialize the configuration options
