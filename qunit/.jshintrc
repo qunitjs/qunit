@@ -1,22 +1,27 @@
 {
-	"onevar": true,
-	"browser": true,
+	"predef": [
+		"jQuery",
+		"exports"
+	],
+
 	"bitwise": true,
+	"camelcase": false,
 	"curly": true,
-	"trailing": true,
+	"eqeqeq": true,
 	"immed": true,
 	"latedef": false,
 	"newcap": true,
 	"noarg": false,
 	"noempty": true,
 	"nonew": true,
-	"sub": true,
 	"undef": true,
-	"eqnull": true,
+
 	"proto": true,
 	"smarttabs": true,
-	"predef": [
-		"jQuery",
-		"exports"
-	]
+	"sub": true,
+	"trailing": true,
+
+	"browser": true,
+
+	"onevar": true
 }

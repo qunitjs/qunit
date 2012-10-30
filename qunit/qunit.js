@@ -162,11 +162,11 @@ Test.prototype = {
 	},
 	finish: function() {
 		config.current = this;
-		if ( config.requireExpects && this.expected == null ) {
+		if ( config.requireExpects && this.expected === null ) {
 			QUnit.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
-		} else if ( this.expected != null && this.expected != this.assertions.length ) {
+		} else if ( this.expected !== null && this.expected !== this.assertions.length ) {
 			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
-		} else if ( this.expected == null && !this.assertions.length ) {
+		} else if ( this.expected === null && !this.assertions.length ) {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
@@ -225,7 +225,7 @@ Test.prototype = {
 
 			addEvent(b, "dblclick", function( e ) {
 				var target = e && e.target ? e.target : window.event.srcElement;
-				if ( target.nodeName.toLowerCase() == "span" || target.nodeName.toLowerCase() == "b" ) {
+				if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
 					target = target.parentNode;
 				}
 				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
@@ -460,6 +460,7 @@ assert = {
 	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
 	 */
 	equal: function( actual, expected, message ) {
+		/*jshint eqeqeq:false */
 		QUnit.push( expected == actual, actual, expected, message );
 	},
 
@@ -468,6 +469,7 @@ assert = {
 	 * @function
 	 */
 	notEqual: function( actual, expected, message ) {
+		/*jshint eqeqeq:false */
 		QUnit.push( expected != actual, actual, expected, message );
 	},
 
@@ -758,7 +760,7 @@ extend( QUnit, {
 
 	// Safe object type checking
 	is: function( type, obj ) {
-		return QUnit.objectType( obj ) == type;
+		return QUnit.objectType( obj ) === type;
 	},
 
 	objectType: function( obj ) {
@@ -817,7 +819,7 @@ extend( QUnit, {
 			actual = escapeInnerText( QUnit.jsDump.parse(actual) );
 			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
 
-			if ( actual != expected ) {
+			if ( actual !== expected ) {
 				output += "<tr class='test-actual'><th>Result: </th><td><pre>" + actual + "</pre></td></tr>";
 				output += "<tr class='test-diff'><th>Diff: </th><td><pre>" + QUnit.diff( expected, actual ) + "</pre></td></tr>";
 			}
@@ -1227,7 +1229,7 @@ function extractStacktrace( e, offset ) {
 		if ( fileName ) {
 			include = [];
 			for ( i = offset; i < stack.length; i++ ) {
-				if ( stack[ i ].indexOf( fileName ) != -1 ) {
+				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
 					break;
 				}
 				include.push( stack[ i ] );
@@ -1448,6 +1450,7 @@ QUnit.equiv = (function() {
 
 			// for string, boolean, number and null
 			function useStrictEquality( b, a ) {
+				/*jshint eqeqeq:false */
 				if ( b instanceof a.constructor || a instanceof b.constructor ) {
 					// to catch short annotaion VS 'new' annotation of a
 					// declaration
@@ -1653,16 +1656,16 @@ QUnit.jsDump = (function() {
 				type = typeof parser;
 				inStack = inArray( obj, stack );
 
-				if ( inStack != -1 ) {
+				if ( inStack !== -1 ) {
 					return "recursion(" + (inStack - stack.length) + ")";
 				}
-				if ( type == "function" )  {
+				if ( type === "function" )  {
 					stack.push( obj );
 					res = parser.call( this, obj, stack );
 					stack.pop();
 					return res;
 				}
-				return ( type == "string" ) ? parser : this.parsers.error;
+				return ( type === "string" ) ? parser : this.parsers.error;
 			},
 			typeOf: function( obj ) {
 				var type;
@@ -1878,6 +1881,7 @@ function inArray( elem, array ) {
  * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) == "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over"
  */
 QUnit.diff = (function() {
+	/*jshint eqeqeq:false, eqnull:true */
 	function diff( o, n ) {
 		var i,
 			ns = {},
@@ -1907,7 +1911,7 @@ QUnit.diff = (function() {
 			if ( !hasOwn.call( ns, i ) ) {
 				continue;
 			}
-			if ( ns[i].rows.length == 1 && typeof os[i] != "undefined" && os[i].rows.length == 1 ) {
+			if ( ns[i].rows.length === 1 && os[i] !== undefined && os[i].rows.length === 1 ) {
 				n[ ns[i].rows[0] ] = {
 					text: n[ ns[i].rows[0] ],
 					row: os[i].rows[0]
@@ -2013,7 +2017,7 @@ QUnit.diff = (function() {
 
 // for CommonJS enviroments, export everything
 if ( typeof exports !== "undefined" ) {
-	extend(exports, QUnit);
+	extend( exports, QUnit );
 }
 
 // get at whatever the global object is, like window in browsers

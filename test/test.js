@@ -62,13 +62,32 @@ module("setup/teardown test", {
 	setup: function() {
 		state = true;
 		ok(true);
-		x = 1;
+		// Assert that we can introduce and delete globals in setup/teardown
+		// without noglobals sounding any alarm.
+
+		// Using an implied global variable instead of explicit window property
+		// because there is no way to delete a window.property in IE6-8
+		// `delete x` only works for `x = 1, and `delete window.x` throws exception.
+		// No one-code fits all solution possible afaic. Resort to @cc.
+
+		/*@cc_on
+			@if (@_jscript_version < 9)
+				x = 1;
+			@else @*/
+				window.x = 1;
+			/*@end
+		@*/
 	},
 	teardown: function() {
 		ok(true);
-		// can introduce and delete globals in setup/teardown
-		// without noglobals sounding the alarm
-		delete x;
+
+		/*@cc_on
+			@if (@_jscript_version < 9)
+				delete x;
+			@else @*/
+				delete window.x;
+			/*@end
+		@*/
 	}
 });
 
@@ -84,20 +103,18 @@ test("module without setup/teardown", function() {
 	ok(true);
 });
 
-
-
 var orgDate;
 
 module("Date test", {
 	setup: function() {
 		orgDate = Date;
-		Date = function () {
+		window.Date = function () {
 			ok( false, 'QUnit should internally be independant from Date-related manipulation and testing' );
 			return new orgDate();
 		};
 	},
 	teardown: function() {
-		Date = orgDate;
+		window.Date = orgDate;
 	}
 });
 
@@ -129,7 +146,8 @@ test("parameter passed to stop increments semaphore n times", function() {
 	stop(3);
 	setTimeout(function() {
 		state = "not enough starts";
-		start(), start();
+		start();
+		start();
 	}, 13);
 	setTimeout(function() {
 		state = "done";
@@ -139,7 +157,9 @@ test("parameter passed to stop increments semaphore n times", function() {
 
 test("parameter passed to start decrements semaphore n times", function() {
 	expect(1);
-	stop(), stop(), stop();
+	stop();
+	stop();
+	stop();
 	setTimeout(function() {
 		state = "done";
 		start(3);

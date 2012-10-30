@@ -18,9 +18,8 @@ grunt.initConfig({
 	lint: {
 		qunit: 'qunit/qunit.js',
 		addons: 'addons/**.js',
-		grunt: 'grunt.js'
-		// TODO fix remaining warnings
-		// tests: 'test/**.js'
+		grunt: 'grunt.js',
+		tests: 'test/**.js'
 	},
 	// TODO rmeove this one grunt 0.4 is out, see jquery-ui for other details
 	jshint: (function() {

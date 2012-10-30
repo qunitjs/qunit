@@ -70,38 +70,43 @@ test("Primitive types and constants", function () {
 	equal(QUnit.equiv('', null), false, "string");
 	equal(QUnit.equiv('', undefined), false, "string");
 
+	// Rename for lint validation.
+	// We know this is bad, we are asserting whether we can coop with bad code like this.
+	var SafeNumber = Number, SafeString = String, SafeBoolean = Boolean, SafeObject = Object;
+
 	// primitives vs. objects
-	equal(QUnit.equiv(0, new Number()), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Number(), 0), true, "primitives vs. objects");
-	equal(QUnit.equiv(1, new Number(1)), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Number(1), 1), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Number(0), 1), false, "primitives vs. objects");
-	equal(QUnit.equiv(0, new Number(1)), false, "primitives vs. objects");
 
-	equal(QUnit.equiv(new String(), ""), true, "primitives vs. objects");
-	equal(QUnit.equiv("", new String()), true, "primitives vs. objects");
-	equal(QUnit.equiv(new String("My String"), "My String"), true, "primitives vs. objects");
-	equal(QUnit.equiv("My String", new String("My String")), true, "primitives vs. objects");
-	equal(QUnit.equiv("Bad String", new String("My String")), false, "primitives vs. objects");
-	equal(QUnit.equiv(new String("Bad String"), "My String"), false, "primitives vs. objects");
+	equal(QUnit.equiv(0, new SafeNumber()), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeNumber(), 0), true, "primitives vs. objects");
+	equal(QUnit.equiv(1, new SafeNumber(1)), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeNumber(1), 1), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeNumber(0), 1), false, "primitives vs. objects");
+	equal(QUnit.equiv(0, new SafeNumber(1)), false, "primitives vs. objects");
 
-	equal(QUnit.equiv(false, new Boolean()), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Boolean(), false), true, "primitives vs. objects");
-	equal(QUnit.equiv(true, new Boolean(true)), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Boolean(true), true), true, "primitives vs. objects");
-	equal(QUnit.equiv(true, new Boolean(1)), true, "primitives vs. objects");
-	equal(QUnit.equiv(false, new Boolean(false)), true, "primitives vs. objects");
-	equal(QUnit.equiv(new Boolean(false), false), true, "primitives vs. objects");
-	equal(QUnit.equiv(false, new Boolean(0)), true, "primitives vs. objects");
-	equal(QUnit.equiv(true, new Boolean(false)), false, "primitives vs. objects");
-	equal(QUnit.equiv(new Boolean(false), true), false, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeString(), ""), true, "primitives vs. objects");
+	equal(QUnit.equiv("", new SafeString()), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeString("My String"), "My String"), true, "primitives vs. objects");
+	equal(QUnit.equiv("My String", new SafeString("My String")), true, "primitives vs. objects");
+	equal(QUnit.equiv("Bad String", new SafeString("My String")), false, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeString("Bad String"), "My String"), false, "primitives vs. objects");
 
-	equal(QUnit.equiv(new Object(), {}), true, "object literal vs. instantiation");
-	equal(QUnit.equiv({}, new Object()), true, "object literal vs. instantiation");
-	equal(QUnit.equiv(new Object(), {a:1}), false, "object literal vs. instantiation");
-	equal(QUnit.equiv({a:1}, new Object()), false, "object literal vs. instantiation");
-	equal(QUnit.equiv({a:undefined}, new Object()), false, "object literal vs. instantiation");
-	equal(QUnit.equiv(new Object(), {a:undefined}), false, "object literal vs. instantiation");
+	equal(QUnit.equiv(false, new SafeBoolean()), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeBoolean(), false), true, "primitives vs. objects");
+	equal(QUnit.equiv(true, new SafeBoolean(true)), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeBoolean(true), true), true, "primitives vs. objects");
+	equal(QUnit.equiv(true, new SafeBoolean(1)), true, "primitives vs. objects");
+	equal(QUnit.equiv(false, new SafeBoolean(false)), true, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeBoolean(false), false), true, "primitives vs. objects");
+	equal(QUnit.equiv(false, new SafeBoolean(0)), true, "primitives vs. objects");
+	equal(QUnit.equiv(true, new SafeBoolean(false)), false, "primitives vs. objects");
+	equal(QUnit.equiv(new SafeBoolean(false), true), false, "primitives vs. objects");
+
+	equal(QUnit.equiv(new SafeObject(), {}), true, "object literal vs. instantiation");
+	equal(QUnit.equiv({}, new SafeObject()), true, "object literal vs. instantiation");
+	equal(QUnit.equiv(new SafeObject(), {a:1}), false, "object literal vs. instantiation");
+	equal(QUnit.equiv({a:1}, new SafeObject()), false, "object literal vs. instantiation");
+	equal(QUnit.equiv({a:undefined}, new SafeObject()), false, "object literal vs. instantiation");
+	equal(QUnit.equiv(new SafeObject(), {a:undefined}), false, "object literal vs. instantiation");
 });
 
 test("Objects Basics.", function() {
