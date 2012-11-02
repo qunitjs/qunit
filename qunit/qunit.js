@@ -21,18 +21,36 @@ var QUnit,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
 	defined = {
-	setTimeout: typeof window.setTimeout !== "undefined",
-	sessionStorage: (function() {
-		var x = "qunit-test-string";
-		try {
-			sessionStorage.setItem( x, x );
-			sessionStorage.removeItem( x );
-			return true;
-		} catch( e ) {
-			return false;
+		setTimeout: typeof window.setTimeout !== "undefined",
+		sessionStorage: (function() {
+			var x = "qunit-test-string";
+			try {
+				sessionStorage.setItem( x, x );
+				sessionStorage.removeItem( x );
+				return true;
+			} catch( e ) {
+				return false;
+			}
+		}())
+	},
+	/**
+	 * Makes a clone of an object using only Array or Object as base,
+	 * and copies over the own enumerable properties.
+	 *
+	 * @param {Object} obj
+	 * @return {Object} New object with only the own properties (recursively).
+	 */
+	objectValues = function( obj ) {
+		var key, val,
+			vals = QUnit.is( "array", obj ) ? [] : {};
+		for ( key in obj ) {
+			if ( hasOwn.call( obj, key ) ) {
+				val = obj[key];
+				vals[key] = val === Object(val) ? objectValues(val) : val;
+			}
 		}
-	}())
-};
+		return vals;
+	};
 
 function Test( settings ) {
 	extend( this, settings );
@@ -45,7 +63,7 @@ Test.count = 0;
 Test.prototype = {
 	init: function() {
 		var a, b, li,
-        tests = id( "qunit-tests" );
+			tests = id( "qunit-tests" );
 
 		if ( tests ) {
 			b = document.createElement( "strong" );
@@ -471,6 +489,26 @@ assert = {
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
 		QUnit.push( expected != actual, actual, expected, message );
+	},
+
+	/**
+	 * @name propEqual
+	 * @function
+	 */
+	propEqual: function( actual, expected, message ) {
+		actual = objectValues(actual);
+		expected = objectValues(expected);
+		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+	},
+
+	/**
+	 * @name notPropEqual
+	 * @function
+	 */
+	notPropEqual: function( actual, expected, message ) {
+		actual = objectValues(actual);
+		expected = objectValues(expected);
+		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
 	/**
@@ -942,8 +980,8 @@ QUnit.load = function() {
 
 	// Initialize the config, saving the execution queue
 	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes, moduleFilter,
-	    numModules = 0,
-	    moduleFilterHtml = "",
+		numModules = 0,
+		moduleFilterHtml = "",
 		urlConfigHtml = "",
 		oldconfig = extend( {}, config );
 
@@ -1045,7 +1083,7 @@ QUnit.load = function() {
 			moduleFilter.innerHTML = moduleFilterHtml;
 			addEvent( moduleFilter, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
-				    selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
+					selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
 
 				window.location = QUnit.url( { module: ( selectedModule === "" ) ? undefined : selectedModule } );
 			});
