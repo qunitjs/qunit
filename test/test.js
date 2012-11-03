@@ -1,3 +1,43 @@
+function getPreviousTests( rTestName, rModuleName ) {
+	var testSpan, moduleSpan,
+		matches = [],
+		i = 0,
+		rModule = /(^| )module-name( |$)/,
+		testNames = typeof document.getElementsByClassName !== "undefined" ?
+			document.getElementsByClassName("test-name") :
+			(function( spans ){
+				var span,
+					tests = [],
+					i = 0,
+					rTest = /(^| )test-name( |$)/;
+				for ( ; (span = spans[i]); i++ ) {
+					if ( rTest.test( span.className ) ) {
+						tests.push( span );
+					}
+				}
+				return tests;
+			})( document.getElementsByTagName("span") );
+
+	for ( ; (testSpan = testNames[i]); i++ ) {
+		moduleSpan = testSpan;
+		while ( (moduleSpan = moduleSpan.previousSibling) ) {
+			if ( rModule.test( moduleSpan.className ) ) {
+				break;
+			}
+		}
+		if ( (!rTestName || rTestName.test( testSpan.innerHTML )) &&
+			(!rModuleName || moduleSpan && rModuleName.test( moduleSpan.innerHTML )) ) {
+
+			while ( (testSpan = testSpan.parentNode) ) {
+				if ( testSpan.nodeName.toLowerCase() === "li" ) {
+					matches.push( testSpan );
+				}
+			}
+		}
+	}
+	return matches;
+}
+
 test("module without setup/teardown (default)", function() {
 	expect(1);
 	ok(true);
@@ -413,6 +453,7 @@ test("setup", function() {
 	expect(0);
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
 });
+
 test("basics", function() {
 	equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
 });
@@ -425,6 +466,41 @@ test("running test name displayed", function() {
 	ok( /running test name displayed/.test(displaying.innerHTML), "Expect test name to be found in displayed text" );
 	ok( /fixture/.test(displaying.innerHTML), "Expect module name to be found in displayed text" );
 });
+
+(function() {
+	var delayNextSetup,
+		sleep = function( n ) {
+			stop();
+			setTimeout( function() { start(); }, n );
+		};
+
+	module("timing", {
+		setup: function() {
+			if ( delayNextSetup ) {
+				delayNextSetup = false;
+				sleep( 250 );
+			}
+		}
+	});
+
+	test("setup", 0, function() {
+		delayNextSetup = true;
+	});
+
+	test("basics", 2, function() {
+		var previous = getPreviousTests(/^setup$/, /^timing$/)[0],
+			runtime = previous.lastChild.previousSibling;
+		ok( /(^| )runtime( |$)/.test( runtime.className ), "Runtime element exists" );
+		ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
+	});
+
+	test("values", 2, function() {
+		var basics = getPreviousTests(/^setup$/, /^timing$/)[0],
+			slow = getPreviousTests(/^basics$/, /^timing$/)[0];
+		ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50, "Fast runtime for trivial test" );
+		ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250, "Runtime includes setup" );
+	});
+})();
 
 }
 
@@ -576,22 +652,10 @@ function testAfterDone() {
 		// work we use this test to check the assertion count.
 		module("check previous test's assertion counts");
 		test('count previous two test\'s assertions', function () {
-			var i, countNodes,
-				spans = document.getElementsByTagName('span'),
-				tests = [];
+			var tests = getPreviousTests(/^ensure has correct number of assertions/, /^Synchronous test after load of page$/);
 
-			// Find these two tests
-			for (i = 0; i < spans.length; i++) {
-				if (spans[i].innerHTML.indexOf(testName) !== -1) {
-					tests.push(spans[i]);
-				}
-			}
-
-			// Walk dom to counts.
-			countNodes = tests[0].nextSibling.nextSibling.getElementsByTagName('b');
-			equal(countNodes[1].innerHTML, "99");
-			countNodes = tests[1].nextSibling.nextSibling.getElementsByTagName('b');
-			equal(countNodes[1].innerHTML, "99");
+			equal(tests[0].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
+			equal(tests[1].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
 		});
 	}
 	QUnit.config.done = [];

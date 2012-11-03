@@ -45,7 +45,7 @@ Test.count = 0;
 Test.prototype = {
 	init: function() {
 		var a, b, li,
-        tests = id( "qunit-tests" );
+			tests = id( "qunit-tests" );
 
 		if ( tests ) {
 			b = document.createElement( "strong" );
@@ -93,6 +93,7 @@ Test.prototype = {
 			teardown: function() {}
 		}, this.moduleTestEnvironment );
 
+		this.started = +new Date();
 		runLoggingCallbacks( "testStart", QUnit, {
 			name: this.testName,
 			module: this.module
@@ -128,14 +129,20 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
+		this.callbackStarted = +new Date();
+
 		if ( config.notrycatch ) {
 			this.callback.call( this.testEnvironment, QUnit.assert );
+			this.callbackRuntime = +new Date() - this.callbackStarted;
 			return;
 		}
 
 		try {
 			this.callback.call( this.testEnvironment, QUnit.assert );
+			this.callbackRuntime = +new Date() - this.callbackStarted;
 		} catch( e ) {
+			this.callbackRuntime = +new Date() - this.callbackStarted;
+
 			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -149,6 +156,9 @@ Test.prototype = {
 	teardown: function() {
 		config.current = this;
 		if ( config.notrycatch ) {
+			if ( typeof this.callbackRuntime === "undefined" ) {
+				this.callbackRuntime = +new Date() - this.callbackStarted;
+			}
 			this.testEnvironment.teardown.call( this.testEnvironment );
 			return;
 		} else {
@@ -170,12 +180,13 @@ Test.prototype = {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var assertion, a, b, i, li, ol,
+		var i, assertion, a, b, time, li, ol,
 			test = this,
 			good = 0,
 			bad = 0,
 			tests = id( "qunit-tests" );
 
+		this.runtime = +new Date() - this.started;
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
 
@@ -218,7 +229,7 @@ Test.prototype = {
 			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
 
 			addEvent(b, "click", function() {
-				var next = b.nextSibling.nextSibling,
+				var next = b.parentNode.lastChild,
 					collapsed = hasClass( next, "qunit-collapsed" );
 				( collapsed ? removeClass : addClass )( next, "qunit-collapsed" );
 			});
@@ -233,13 +244,19 @@ Test.prototype = {
 				}
 			});
 
+			// `time` initialized at top of scope
+			time = document.createElement( "span" );
+			time.className = "runtime";
+			time.innerHTML = this.runtime + " ms";
+
 			// `li` initialized at top of scope
 			li = id( this.id );
 			li.className = bad ? "fail" : "pass";
 			li.removeChild( li.firstChild );
 			a = li.firstChild;
 			li.appendChild( b );
-			li.appendChild ( a );
+			li.appendChild( a );
+			li.appendChild( time );
 			li.appendChild( ol );
 
 		} else {

@@ -111,6 +111,11 @@
 	color: #000;
 }
 
+#qunit-tests li .runtime {
+	float: right;
+	font-size: smaller;
+}
+
 .qunit-assert-list {
 	margin-top: 0.5em;
 	padding: 0.5em;
