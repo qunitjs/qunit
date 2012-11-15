@@ -675,6 +675,15 @@ config = {
 	moduleDone: []
 };
 
+// Export global variables, unless an 'exports' object exists,
+// in that case we assume we're in CommonJS (dealt with on the bottom of the script)
+if ( typeof exports === "undefined" ) {
+	extend( window, QUnit );
+
+	// Expose QUnit object
+	window.QUnit = QUnit;
+}
+
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
 	var i,
@@ -707,15 +716,6 @@ config = {
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
 }());
-
-// Export global variables, unless an 'exports' object exists,
-// in that case we assume we're in CommonJS (dealt with on the bottom of the script)
-if ( typeof exports === "undefined" ) {
-	extend( window, QUnit );
-
-	// Expose QUnit object
-	window.QUnit = QUnit;
-}
 
 // Extend QUnit object,
 // these after set here because they should not be exposed as global functions
