@@ -18,4 +18,3 @@ var recordCalls = function(qunit, methodName, action) {
 		neverCalled : function() { return callsArguments.length == 0; },
 	};
 };
-
