@@ -41,6 +41,8 @@ var QUnit,
 	 * @return {Object} New object with only the own properties (recursively).
 	 */
 	objectValues = function( obj ) {
+		// Grunt 0.3.x uses an older version of jshint that still has jshint/jshint#392.
+		/*jshint newcap: false */
 		var key, val,
 			vals = QUnit.is( "array", obj ) ? [] : {};
 		for ( key in obj ) {
