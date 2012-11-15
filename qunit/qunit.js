@@ -1162,7 +1162,7 @@ function done() {
 			" milliseconds.<br/>",
 			"<span class='passed'>",
 			passed,
-			"</span> tests of <span class='total'>",
+			"</span> assertions of <span class='total'>",
 			config.stats.all,
 			"</span> passed, <span class='failed'>",
 			config.stats.bad,
