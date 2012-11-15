@@ -4,11 +4,12 @@ QUnit.extend( QUnit, {
 	 * Check the sequence/order
 	 *
 	 * @example step(1); setTimeout(function () { step(3); }, 100); step(2);
-	 * @param Number expected  The excepted step within the test()
+	 * @param Number expected The excepted step within the test()
 	 * @param String message (optional)
 	 */
 	step: function (expected, message) {
-		this.config.current.step++; // increment internal step counter.
+		// increment internal step counter.
+		this.config.current.step++;
 		if (typeof message === "undefined") {
 			message = "step " + expected;
 		}
