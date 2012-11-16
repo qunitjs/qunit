@@ -274,7 +274,8 @@ Test.prototype = {
 			module: this.module,
 			failed: bad,
 			passed: this.assertions.length - bad,
-			total: this.assertions.length
+			total: this.assertions.length,
+			duration: this.runtime
 		});
 
 		QUnit.reset();
@@ -940,7 +941,7 @@ extend( QUnit.constructor.prototype, {
 	// testStart: { name }
 	testStart: registerLoggingCallback( "testStart" ),
 
-	// testDone: { name, failed, passed, total }
+	// testDone: { name, failed, passed, total, duration }
 	testDone: registerLoggingCallback( "testDone" ),
 
 	// moduleStart: { name }
