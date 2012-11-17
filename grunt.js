@@ -74,7 +74,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 		runMax: config.runMax,
 		"runNames[]": "QUnit",
 		"runUrls[]": config.testUrl + commit + "/test/index.html",
-		"browserSets[]": ["popular"]
+		"browserSets[]": config.browserSets
 	});
 });
 
