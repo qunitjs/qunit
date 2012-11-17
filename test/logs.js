@@ -52,7 +52,7 @@ test("test1", 15, function() {
 		result: true,
 		message: "QUnit.moduleDone calls",
 		actual: 0,
-		expected: 0,
+		expected: 0
 	}, "log context after equal(actual, expected, message)" );
 
 	equal( "foo", "foo" );
