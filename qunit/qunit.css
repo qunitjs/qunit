@@ -198,7 +198,7 @@
 #qunit-tests li li.fail {
 	color: #710909;
 	background-color: #fff;
-	border-left: 10px solid #EE5757;
+	border-left: 10px solid #D11111;
 	white-space: pre;
 }
 
