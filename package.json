@@ -32,6 +32,6 @@
   "devDependencies": {
     "grunt": "0.3.x",
     "grunt-git-authors": "1.0.0",
-    "testswarm": "0.2.2"
+    "testswarm": "0.3.0"
   }
 }
