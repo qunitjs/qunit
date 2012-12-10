@@ -1101,7 +1101,7 @@ QUnit.load = function() {
 			moduleFilter = document.createElement( 'span' );
 			moduleFilter.setAttribute( 'id', 'qunit-modulefilter-container' );
 			moduleFilter.innerHTML = moduleFilterHtml;
-			addEvent( moduleFilter, "change", function() {
+			addEvent( moduleFilter.lastChild, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
 					selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
 
