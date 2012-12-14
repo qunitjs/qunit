@@ -11,7 +11,9 @@ grunt.initConfig({
 		addons: [
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
-			'addons/composite/composite-demo-test.html'
+			'addons/composite/composite-demo-test.html',
+			'addons/step/step.html',
+			'addons/html/html.html'
 		],
 		async: 'test/async.html'
 	},
@@ -21,7 +23,7 @@ grunt.initConfig({
 		grunt: 'grunt.js',
 		tests: 'test/**.js'
 	},
-	// TODO rmeove this one grunt 0.4 is out, see jquery-ui for other details
+	// TODO remove this one grunt 0.4 is out, see jquery-ui for other details
 	jshint: (function() {
 		function parserc( path ) {
 			var rc = grunt.file.readJSON( (path || "") + ".jshintrc" ),
