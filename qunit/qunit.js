@@ -999,7 +999,8 @@ QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
-	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes, moduleFilter,
+	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
+		urlConfigCheckboxesContainer, urlConfigCheckboxes, moduleFilter,
 		numModules = 0,
 		moduleFilterHtml = "",
 		urlConfigHtml = "",
@@ -1088,14 +1089,23 @@ QUnit.load = function() {
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
 
-		urlConfigCheckboxes = document.createElement( 'span' );
-		urlConfigCheckboxes.innerHTML = urlConfigHtml;
-		addEvent( urlConfigCheckboxes, "change", function( event ) {
-			var params = {};
-			params[ event.target.name ] = event.target.checked ? true : undefined;
-			window.location = QUnit.url( params );
-		});
-		toolbar.appendChild( urlConfigCheckboxes );
+		urlConfigCheckboxesContainer = document.createElement("span");
+		urlConfigCheckboxesContainer.innerHTML = urlConfigHtml;
+		urlConfigCheckboxes = urlConfigCheckboxesContainer.getElementsByTagName("input");
+		// For oldIE support:
+		// * Add handlers to the individual elements instead of the container
+		// * Use "click" instead of "change"
+		// * Fallback from event.target to event.srcElement
+		i = urlConfigCheckboxes.length;
+		while ( i-- ) {
+			addEvent( urlConfigCheckboxes[i], "click", function( event ) {
+				var params = {},
+					target = event.target || event.srcElement;
+				params[ target.name ] = target.checked ? true : undefined;
+				window.location = QUnit.url( params );
+			});
+		}
+		toolbar.appendChild( urlConfigCheckboxesContainer );
 
 		if (numModules > 1) {
 			moduleFilter = document.createElement( 'span' );
