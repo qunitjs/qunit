@@ -1,5 +1,4 @@
-// run with
-// node test/node-test.js
+// Run with: $ node test/node-test.js
 var QUnit = require("../qunit/qunit");
 
 QUnit.log(function(details) {
