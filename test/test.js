@@ -544,6 +544,15 @@ test("running test name displayed", function() {
 	ok( /fixture/.test(displaying.innerHTML), "Expect module name to be found in displayed text" );
 });
 
+test("progress indication", function() {
+	expect(2);
+
+	var banner = document.getElementById("qunit-banner");
+
+	ok( /^(?:qunit-pass|qunit-fail)$/.test( banner.className ), "Banner class indicates current pass/fail" );
+	ok( banner.style.width && parseFloat( banner.style.width ) < 100, "Banner width indicates overall progress" );
+});
+
 (function() {
 	var delayNextSetup,
 		sleep = function( n ) {
@@ -721,7 +730,9 @@ test('Circular reference - test reported by soniciq in #105', function() {
 })();
 
 function testAfterDone() {
-	var testName = "ensure has correct number of assertions";
+	var banner = document.getElementById("qunit-banner"),
+		bannerWidth = banner.style.width,
+		testName = "ensure has correct number of assertions";
 
 	function secondAfterDoneTest() {
 		QUnit.config.done = [];
@@ -733,6 +744,14 @@ function testAfterDone() {
 
 			equal(tests[0].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
 			equal(tests[1].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
+		});
+
+		module("final state");
+		test("progress indication", function() {
+			expect(2);
+
+			ok( /^(?:qunit-pass|qunit-fail)$/.test( banner.className ), "Banner class indicates final pass/fail" );
+			equal( bannerWidth, "auto", "Banner class indicates total completion" );
 		});
 	}
 	QUnit.config.done = [];

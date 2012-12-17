@@ -60,7 +60,7 @@ function Test( settings ) {
 	this.testNumber = ++Test.count;
 }
 
-Test.count = 0;
+Test.count = Test.unskipped = Test.started = 0;
 
 Test.prototype = {
 	init: function() {
@@ -139,7 +139,13 @@ Test.prototype = {
 	run: function() {
 		config.current = this;
 
-		var running = id( "qunit-testresult" );
+		var banner = id( "qunit-banner" ),
+			running = id( "qunit-testresult" );
+
+		if ( banner ) {
+			banner.className = ( config.stats.bad ? "qunit-fail" : "qunit-pass" );
+			banner.style.width = ( Test.started / Test.unskipped ) * 100 + "%";
+		}
 
 		if ( running ) {
 			running.innerHTML = "Running: <br/>" + this.name;
@@ -149,6 +155,7 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
+		Test.started++;
 		this.callbackStarted = +new Date();
 
 		if ( config.notrycatch ) {
@@ -307,6 +314,8 @@ Test.prototype = {
 		var bad,
 			test = this;
 
+		Test.unskipped++;
+
 		synchronize(function() {
 			test.init();
 		});
@@ -411,6 +420,7 @@ QUnit = {
 			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)", null, sourceFromStacktrace(2) );
 			return;
 		}
+
 		// A slight delay, to avoid any current callbacks
 		if ( defined.setTimeout ) {
 			window.setTimeout(function() {
@@ -1196,6 +1206,7 @@ function done() {
 
 	if ( banner ) {
 		banner.className = ( config.stats.bad ? "qunit-fail" : "qunit-pass" );
+		banner.style.width = "auto";
 	}
 
 	if ( tests ) {
