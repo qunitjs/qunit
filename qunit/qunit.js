@@ -406,7 +406,7 @@ QUnit = {
 			QUnit.begin(function() {
 				// This is triggered at the top of QUnit.load, push start() to the event loop, to allow QUnit.load to finish first
 				setTimeout(function() {
-					start( count );
+					QUnit.start( count );
 				});
 			});
 			return;
