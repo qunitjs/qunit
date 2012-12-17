@@ -6,22 +6,27 @@ grunt.loadNpmTasks( "grunt-git-authors" );
 grunt.initConfig({
 	pkg: '<json:package.json>',
 	qunit: {
-		// TODO include 'test/logs.html' as well
-		qunit: 'test/index.html',
+		qunit: [
+			'test/index.html',
+			'test/async.html'
+			// TODO: Fix test failures in test/logs.js
+			// 'test/logs.html'
+		],
 		addons: [
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
 			'addons/composite/composite-demo-test.html'
-		],
-		async: 'test/async.html'
+			// TODO: Fix test failures addons/step-test.js
+			// 'addons/step/step.html'
+		]
 	},
 	lint: {
 		qunit: 'qunit/qunit.js',
 		addons: 'addons/**.js',
-		grunt: 'grunt.js',
-		tests: 'test/**.js'
+		tests: 'test/**.js',
+		grunt: 'grunt.js'
 	},
-	// TODO rmeove this one grunt 0.4 is out, see jquery-ui for other details
+	// TODO remove this once grunt 0.4 is out, see jquery-ui for other details
 	jshint: (function() {
 		function parserc( path ) {
 			var rc = grunt.file.readJSON( (path || "") + ".jshintrc" ),
@@ -39,8 +44,8 @@ grunt.initConfig({
 		}
 
 		return {
-			addons: parserc( "addons/" ),
 			qunit: parserc( "qunit/" ),
+			addons: parserc( "addons/" ),
 			tests: parserc( "test/" )
 		};
 	})()
@@ -61,19 +66,22 @@ grunt.registerTask( "build-git", function( sha ) {
 
 grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
-		config = grunt.file.readJSON( configFile ).qunit;
+		config = grunt.file.readJSON( configFile ).qunit,
+		suites = ["index.html", "async.html"];
 	testswarm({
 		url: config.swarmUrl,
 		pollInterval: 10000,
 		timeout: 1000 * 60 * 30,
 		done: this.async()
 	}, {
-		authUsername: "qunit",
+		authUsername: config.authUsername,
 		authToken: config.authToken,
 		jobName: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
 		runMax: config.runMax,
-		"runNames[]": "QUnit",
-		"runUrls[]": config.testUrl + commit + "/test/index.html",
+		"runNames[]": suites,
+		"runUrls[]": suites.map(function (suite) {
+			return config.testUrl + commit + "/test/" + suite;
+		}),
 		"browserSets[]": config.browserSets
 	});
 });
