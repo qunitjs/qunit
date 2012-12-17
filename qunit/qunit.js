@@ -400,6 +400,18 @@ QUnit = {
 	},
 
 	start: function( count ) {
+		// QUnit hasn't been initialized yet.
+		// Note: RequireJS (et al) may delay onLoad
+		if ( config.semaphore === undefined ) {
+			QUnit.begin(function() {
+				// This is triggered at the top of QUnit.load, push start() to the event loop, to allow QUnit.load to finish first
+				setTimeout(function() {
+					QUnit.start( count );
+				});
+			});
+			return;
+		}
+
 		config.semaphore -= count || 1;
 		// don't start until equal number of stop-calls
 		if ( config.semaphore > 0 ) {
