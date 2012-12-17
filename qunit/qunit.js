@@ -403,9 +403,12 @@ QUnit = {
 		// QUnit hasn't been initialized yet.
 		// Note: RequireJS (et al) may delay onLoad
 		if ( config.semaphore === undefined ) {
-			setTimeout(function() {
-				QUnit.start( count );
-			}, 13);
+			QUnit.begin(function() {
+				// This is triggered at the top of QUnit.load, push start() to the event loop, to allow QUnit.load to finish first
+				setTimeout(function() {
+					start( count );
+				});
+			});
 			return;
 		}
 
