@@ -36,7 +36,7 @@
 	page.onInitialized = function() {
 		page.evaluate(addLogging);
 	};
-	
+
 	page.onCallback = function(message) {
 		var result,
 			failed;
@@ -88,6 +88,9 @@
 					}
 
 					response += 'expected: ' + details.expected + ', but was: ' + details.actual;
+					if (details.source) {
+						response += "\n" + details.source;
+					}
 				}
 
 				current_test_assertions.push('Failed assertion: ' + response);
