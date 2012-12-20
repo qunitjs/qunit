@@ -1302,7 +1302,7 @@ function validTest( test ) {
 function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 3 : offset;
 
-	var stack, include, i, regex;
+	var stack, include, i;
 
 	if ( e.stacktrace ) {
 		// Opera
@@ -1413,7 +1413,7 @@ function saveGlobal() {
 	}
 }
 
-function checkPollution( name ) {
+function checkPollution() {
 	var newGlobals,
 		deletedGlobals,
 		old = config.pollution;
@@ -1948,27 +1948,6 @@ QUnit.jsDump = (function() {
 
 	return jsDump;
 }());
-
-// from Sizzle.js
-function getText( elems ) {
-	var i, elem,
-		ret = "";
-
-	for ( i = 0; elems[i]; i++ ) {
-		elem = elems[i];
-
-		// Get the text from text nodes and CDATA nodes
-		if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
-			ret += elem.nodeValue;
-
-		// Traverse everything else, except comment nodes
-		} else if ( elem.nodeType !== 8 ) {
-			ret += getText( elem.childNodes );
-		}
-	}
-
-	return ret;
-}
 
 // from jquery.js
 function inArray( elem, array ) {
