@@ -1884,16 +1884,21 @@ QUnit.jsDump = (function() {
 					return join( "{", ret, "}" );
 				},
 				node: function( node ) {
-					var a, val,
+					var len, i, val,
 						open = QUnit.jsDump.HTML ? "&lt;" : "<",
 						close = QUnit.jsDump.HTML ? "&gt;" : ">",
 						tag = node.nodeName.toLowerCase(),
-						ret = open + tag;
+						ret = open + tag,
+						attrs = node.attributes;
 
-					for ( a in QUnit.jsDump.DOMAttrs ) {
-						val = node[ QUnit.jsDump.DOMAttrs[a] ];
-						if ( val ) {
-							ret += " " + a + "=" + QUnit.jsDump.parse( val, "attribute" );
+					if ( attrs ) {
+						for ( i = 0, len = attrs.length; i < len; i++ ) {
+							val = attrs[i].nodeValue;
+							// IE6 includes all attributes in .attributes, even ones not explicitly set.
+							// Those have values like undefined, null, 0, false, "" or "inherit".
+							if ( val && val !== "inherit" ) {
+								ret += " " + attrs[i].nodeName + "=" + QUnit.jsDump.parse( val, "attribute" );
+							}
 						}
 					}
 					ret += close;
@@ -1932,12 +1937,6 @@ QUnit.jsDump = (function() {
 				regexp: literal,
 				number: literal,
 				"boolean": literal
-			},
-			DOMAttrs: {
-				//attributes to dump from nodes, name=>realName
-				id: "id",
-				name: "name",
-				"class": "className"
 			},
 			// if true, entities are escaped ( <, >, \t, space and \n )
 			HTML: false,
