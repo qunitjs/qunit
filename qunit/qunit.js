@@ -1896,7 +1896,14 @@ QUnit.jsDump = (function() {
 							ret += " " + a + "=" + QUnit.jsDump.parse( val, "attribute" );
 						}
 					}
-					return ret + close + open + "/" + tag + close;
+					ret += close;
+
+					// Show content of TextNode or CDATASection
+					if ( node.nodeType === 3 || node.nodeType === 4 ) {
+						ret += node.nodeValue;
+					}
+
+					return ret + open + "/" + tag + close;
 				},
 				// function calls it internally, it's the arguments part of the function
 				functionArgs: function( fn ) {
