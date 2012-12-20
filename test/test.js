@@ -96,6 +96,31 @@ test("module with setup, expect in test call", 2, function() {
 	ok(true);
 });
 
+module("<script id='qunit-unescaped-module'>'module';</script>", {
+	setup: function() {
+	},
+	teardown: function() {
+		// We can't use ok(false) inside script tags since some browsers
+		// don't evaluate script tags inserted through innerHTML after domready.
+		// Counting them before/after doesn't cover everything either as qunit-modulefilter
+		// is created before any test is ran. So use ids instead.
+		if (document.getElementById('qunit-unescaped-module')) {
+			// This can either be from in #qunit-modulefilter or #qunit-testresult
+			ok(false, 'Unscaped module name');
+		}
+		if (document.getElementById('qunit-unescaped-test')) {
+			ok(false, 'Unscaped test name');
+		}
+		if (document.getElementById('qunit-unescaped-assertion')) {
+			ok(false, 'Unscaped test name');
+		}
+	}
+});
+
+test("<script id='qunit-unescaped-test'>'test';</script>", 1, function() {
+	ok(true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>");
+});
+
 var state;
 
 module("setup/teardown test", {
