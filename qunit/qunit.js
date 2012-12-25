@@ -962,7 +962,8 @@ extend( QUnit, {
 			querystring += encodeURIComponent( key ) + "=" +
 				encodeURIComponent( params[ key ] ) + "&";
 		}
-		return window.location.pathname + querystring.slice( 0, -1 );
+		return window.location.protocol + "//" + window.location.host +
+			window.location.pathname + querystring.slice( 0, -1 );
 	},
 
 	extend: extend,
