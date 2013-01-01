@@ -34,6 +34,34 @@ var QUnit,
 		}())
 	},
 	/**
+	 * Provides a normalized error string, correcting an issue
+	 * with IE 7 (and prior) where Error.prototype.toString is
+	 * not properly implemented
+	 *
+	 * Based on http://es5.github.com/#x15.11.4.4
+	 *
+	 * @param {String|Error} error
+	 * @return {String} error message
+	 */
+	errorString = function(error) {
+		var errorString = error.toString();
+		if (errorString.substring(0,7) === '[object') {
+			var name = error.name ? error.name.toString() : 'Error',
+				message = error.message ? error.message.toString() : '';
+			if (name && message) {
+				return name + ': ' + message;
+			} else if (name) {
+				return name;
+			} else if (message) {
+				return message;
+			} else {
+				return 'Error';
+			}
+		} else {
+			return errorString;
+		}
+	};
+	/**
 	 * Makes a clone of an object using only Array or Object as base,
 	 * and copies over the own enumerable properties.
 	 *
@@ -601,7 +629,7 @@ assert = {
 				expectedOutput = null;
 			// expected is a regexp
 			} else if ( QUnit.objectType( expected ) === "regexp" ) {
-				ok = expected.test( actual );
+				ok = expected.test( errorString( actual ) );
 			// expected is a constructor
 			} else if ( actual instanceof expected ) {
 				ok = true;
