@@ -1,189 +1,132 @@
 (function() {
-	var count = 0, suiteCount = 0, currentSuite, currentTest, suites = [], assertCount, start, results = {failed:0, passed:0, total:0, time:0};
+	'use strict';
 
-	QUnit.jUnitReport = function(data) {
-		// Gets called when a report is generated
+	var currentRun, currentModule, currentTest, assertCount;
+
+	// Gets called when a report is generated.
+	QUnit.jUnitReport = function(/* data */) {
+		// Override me!
 	};
 
-	QUnit.moduleStart(function(data) {
-		currentSuite = {
-			name: data.name,
-			tests: [],
-			failures: 0,
-			time: 0,
-			stdout : '',
-			stderr : ''
+	QUnit.begin(function() {
+		currentRun = {
+			modules: [],
+			total: 0,
+			passed: 0,
+			failed: 0,
+			start: new Date(),
+			time: 0
 		};
-
-		suites.push(currentSuite);
 	});
 
-	QUnit.moduleDone(function(data) {
+	QUnit.moduleStart(function(data) {
+		currentModule = {
+			name: data.name,
+			tests: [],
+			total: 0,
+			passed: 0,
+			failed: 0,
+			start: new Date(),
+			time: 0,
+			stdout: [],
+			stderr: []
+		};
+
+		currentRun.modules.push(currentModule);
 	});
 
 	QUnit.testStart(function(data) {
-		if(!start){ start = new Date(); }
-
+		// Setup default module if no module was specified
+		if (!currentModule) {
+			currentModule = {
+				name: data.module || 'default',
+				tests: [],
+				total: 0,
+				passed: 0,
+				failed: 0,
+				start: new Date(),
+				time: 0,
+				stdout: [],
+				stderr: []
+			};
+			
+			currentRun.modules.push(currentModule);
+		}
+		
+		// Reset the assertion count
 		assertCount = 0;
 
 		currentTest = {
 			name: data.name,
-			failures: [],
-			start: new Date()
+			failedAssertions: [],
+			total: 0,
+			passed: 0,
+			failed: 0,
+			start: new Date(),
+			time: 0
 		};
 
-		// Setup default suite if no module was specified
-		if (!currentSuite) {
-			currentSuite = {
-				name: "default",
-				tests: [],
-				failures: 0,
-				time: 0,
-				stdout : '',
-				stderr : ''
-			};
-
-			suites.push(currentSuite);
-		}
-
-		currentSuite.tests.push(currentTest);
-	});
-
-	QUnit.testDone(function(data) {
-		currentTest.failed = data.failed;
-		currentTest.total = data.total;
-		currentSuite.failures += data.failed;
-
-		results.failed += data.failed;
-		results.passed += data.passed;
-		results.total += data.total;
+		currentModule.tests.push(currentTest);
 	});
 
 	QUnit.log(function(data) {
 		assertCount++;
 
+		// Ignore passing assertions
 		if (!data.result) {
-			currentTest.failures.push(data.message);
+			currentTest.failedAssertions.push(data);
 
-			// Add log message of failure to make it easier to find in jenkins UI
-			currentSuite.stdout += '[' + currentSuite.name + ', ' + currentTest.name + ', ' + assertCount + '] ' + data.message + '\n';
+			// Add log message of failure to make it easier to find in Jenkins CI
+			currentModule.stdout.push('[' + currentModule.name + ', ' + currentTest.name + ', ' + assertCount + '] ' + data.message);
 		}
 	});
 
-	QUnit.done(function(data) {
-		function ISODateString(d) {
-			function pad(n) {
-				return n < 10 ? '0' + n : n;
-			}
+	QUnit.testDone(function(data) {
+		currentTest.time = (new Date()).getTime() - currentTest.start.getTime();  // ms
+		currentTest.total = data.total;
+		currentTest.passed = data.passed;
+		currentTest.failed = data.failed;
+		
+		currentTest = null;
+	});
 
+	QUnit.moduleDone(function(data) {
+		currentModule.time = (new Date()).getTime() - currentModule.start.getTime();  // ms
+		currentModule.total = data.total;
+		currentModule.passed = data.passed;
+		currentModule.failed = data.failed;
+
+		currentModule = null;
+	});
+
+	QUnit.done(function(data) {
+		currentRun.time = data.runtime || ((new Date()).getTime() - currentRun.start.getTime());  // ms
+		currentRun.total = data.total;
+		currentRun.passed = data.passed;
+		currentRun.failed = data.failed;
+
+		generateReport(data, currentRun);
+	});
+
+	var generateReport = function(results, run) {
+		var pad = function(n) {
+			return n < 10 ? '0' + n : n;
+		};
+
+		var toISODateString = function(d) {
 			return d.getUTCFullYear() + '-' +
 				pad(d.getUTCMonth() + 1)+'-' +
 				pad(d.getUTCDate()) + 'T' +
 				pad(d.getUTCHours()) + ':' +
 				pad(d.getUTCMinutes()) + ':' +
 				pad(d.getUTCSeconds()) + 'Z';
-		}
+		};
 
-		// Generate XML report
-		var i, ti, fi, test, suite,
-			xmlWriter = new XmlWriter({
-				linebreak_at : "testsuites,testsuite,testcase,failure,system-out,system-err"
-			}),
-			now = new Date();
+		var convertMillisToSeconds = function(ms) {
+			return Math.round(ms * 1000) / 1000000;
+		};
 
-		xmlWriter.start('testsuites');
-
-		for (i = 0; i < suites.length; i++) {
-			suite = suites[i];
-
-			// Calculate time
-			for (ti = 0; ti < suite.tests.length; ti++) {
-				test = suite.tests[ti];
-
-				test.time = (now.getTime() - test.start.getTime()) / 1000;
-				suite.time += test.time;
-			}
-
-			xmlWriter.start('testsuite', {
-				id: "" + i,
-				name: suite.name,
-				errors: "0",
-				failures: suite.failures,
-				hostname: "localhost",
-				tests: suite.tests.length,
-				time: Math.round(suite.time * 1000) / 1000,
-				timestamp: ISODateString(now)
-			});
-
-			for (ti = 0; ti < suite.tests.length; ti++) {
-				test = suite.tests[ti];
-
-				xmlWriter.start('testcase', {
-					name: test.name,
-					total: test.total,
-					failed: test.failed,
-					time: Math.round(test.time * 1000) / 1000
-				});
-
-				for (fi = 0; fi < test.failures.length; fi++) {
-					xmlWriter.start('failure', {type: "AssertionFailedError", message: test.failures[fi]}, true);
-				}
-
-				xmlWriter.end('testcase');
-			}
-
-			if (suite.stdout) {
-				xmlWriter.start('system-out');
-				xmlWriter.cdata('\n' + suite.stdout);
-				xmlWriter.end('system-out');
-			}
-
-			if (suite.stderr) {
-				xmlWriter.start('system-err');
-				xmlWriter.cdata('\n' + suite.stderr);
-				xmlWriter.end('system-err');
-			}
-
-			xmlWriter.end('testsuite');
-		}
-
-		xmlWriter.end('testsuites');
-
-        results.time = new Date() - start;
-
-		QUnit.jUnitReport({
-			results:results,
-			xml: xmlWriter.getString()
-		});
-	});
-
-	function XmlWriter(settings) {
-		function addLineBreak(name) {
-			if (lineBreakAt[name] && data[data.length - 1] !== '\n') {
-				data.push('\n');
-			}
-		}
-
-		function makeMap(items, delim, map) {
-			var i;
-
-			items = items || [];
-
-			if (typeof(items) === "string") {
-				items = items.split(',');
-			}
-
-			map = map || {};
-
-			i = items.length;
-			while (i--) {
-				map[items[i]] = {};
-			}
-
-			return map;
-		}
-
-		function encode(text) {
+		var xmlEncode = function(text) {
 			var baseEntities = {
 				'"' : '&quot;',
 				"'" : '&apos;',
@@ -195,74 +138,169 @@
 			return ('' + text).replace(/[<>&\"\']/g, function(chr) {
 				return baseEntities[chr] || chr;
 			});
+		};
+
+		var XmlWriter = function(settings) {
+			settings = settings || {};
+
+			var data = [], stack = [], lineBreakAt;
+
+			var addLineBreak = function(name) {
+				if (lineBreakAt[name] && data[data.length - 1] !== '\n') {
+					data.push('\n');
+				}
+			};
+
+			lineBreakAt = (function(items) {
+				var i, map = {};
+				items = items || [];
+				
+				i = items.length;
+				while (i--) {
+					map[items[i]] = {};
+				}
+				return map;
+			})(settings.linebreak_at);
+
+			this.start = function(name, attrs, empty) {
+				if (!empty) {
+					stack.push(name);
+				}
+
+				data.push('<' + name);
+
+				for (var aname in attrs) {
+					data.push(' ' + xmlEncode(aname) + '="' + xmlEncode(attrs[aname]) + '"');
+				}
+
+				data.push(empty ? ' />' : '>');
+				addLineBreak(name);
+			};
+
+			this.end = function() {
+				var name = stack.pop();
+				addLineBreak(name);
+				data.push('</' + name + '>');
+				addLineBreak(name);
+			};
+
+			this.text = function(text) {
+				data.push(xmlEncode(text));
+			};
+
+			this.cdata = function(text) {
+				data.push('<![CDATA[' + text + ']]>');
+			};
+
+			this.comment = function(text) {
+				data.push('<!--' + text + '-->');
+			};
+			this.pi = function(name, text) {
+				data.push('<?' + name + (text ? ' ' + text : '') + '?>\n');
+			};
+
+			this.doctype = function(text) {
+				data.push('<!DOCTYPE' + text + '>\n');
+			};
+
+			this.getString = function() {
+				while (stack.length) {
+					this.end();  // internally calls `stack.pop();`
+				}
+				return data.join('').replace(/\n$/, '');
+			};
+
+			this.reset = function() {
+				data.length = 0;
+				stack.length = 0;
+			};
+
+			// Start by writing the XML declaration
+			this.pi(settings.xmldecl || 'xml version="1.0" encoding="UTF-8"');
+		};
+
+
+		// Generate JUnit XML report!
+		var m, mLen, module, t, tLen, test, a, aLen, assertion, isEmptyElement,
+			xmlWriter = new XmlWriter({
+				linebreak_at: ['testsuites', 'testsuite', 'testcase', 'failure', 'system-out', 'system-err']
+			});
+
+		xmlWriter.start('testsuites', {
+			hostname: 'localhost',
+			tests: run.total,
+			failures: run.failed,
+			errors: 0,
+			time: convertMillisToSeconds(run.time),  // ms → sec
+			timestamp: toISODateString(run.start)
+		});
+
+		for (m = 0, mLen = run.modules.length; m < mLen; m++) {
+			module = run.modules[m];
+
+			xmlWriter.start('testsuite', {
+				id: m,
+				name: module.name,
+				hostname: 'localhost',
+				tests: module.total,
+				failures: module.failed,
+				errors: 0,
+				time: convertMillisToSeconds(module.time),  // ms → sec
+				timestamp: toISODateString(module.start)
+			});
+
+			for (t = 0, tLen = module.tests.length; t < tLen; t++) {
+				test = module.tests[t];
+
+				xmlWriter.start('testcase', {
+					name: test.name,
+					tests: test.total,
+					failures: test.failed,
+					errors: 0,
+					time: convertMillisToSeconds(test.time),  // ms → sec
+					timestamp: toISODateString(test.start)
+				});
+
+				for (a = 0, aLen = test.failedAssertions.length; a < aLen; a++) {
+					assertion = test.failedAssertions[a];
+
+					isEmptyElement = assertion && !(assertion.actual && assertion.expected);
+					xmlWriter.start('failure', { type: 'AssertionFailedError', message: assertion.message }, isEmptyElement);
+					if (!isEmptyElement) {
+						xmlWriter.start('actual', { value: assertion.actual }, true);
+						xmlWriter.start('expected', { value: assertion.expected }, true);
+						xmlWriter.end();  //'failure'
+					}
+				}
+
+				xmlWriter.end();  //'testcase'
+			}
+
+			// Per-module stdout
+			if (module.stdout && module.stdout.length) {
+				xmlWriter.start('system-out');
+				xmlWriter.cdata('\n' + module.stdout.join('\n') + '\n');
+				xmlWriter.end();  //'system-out'
+			}
+
+			// Per-module stderr
+			if (module.stderr && module.stderr.length) {
+				xmlWriter.start('system-err');
+				xmlWriter.cdata('\n' + module.stderr.join('\n') + '\n');
+				xmlWriter.end();  //'system-err'
+			}
+
+			xmlWriter.end();  //'testsuite'
 		}
 
-		var data = [], stack = [], lineBreakAt;
+		xmlWriter.end();  //'testsuites'
 
-		settings = settings || {};
-		lineBreakAt = makeMap(settings.linebreak_at || 'mytag');
 
-		this.start = function(name, attrs, empty) {
-			if (!empty) {
-				stack.push(name);
-			}
+		// Invoke the user-defined callback
+		QUnit.jUnitReport({
+			results: results,
+			xml: xmlWriter.getString()
+		});
+	};
 
-			data.push('<', name);
-
-			for (var aname in attrs) {
-				data.push(" " + encode(aname), '="', encode(attrs[aname]), '"');
-			}
-
-			data.push(empty ? ' />' : '>');
-			addLineBreak(name);
-		};
-
-		this.end = function(name) {
-			stack.pop();
-			addLineBreak(name);
-			data.push('</', name, '>');
-			addLineBreak(name);
-		};
-
-		this.text = function(text) {
-			data.push(encode(text));
-		};
-
-		this.cdata = function(text) {
-			data.push('<![CDATA[', text, ']]>');
-		};
-
-		this.comment = function(text) {
-			data.push('<!--', text, '-->');
-		};
-
-		this.pi = function(name, text) {
-			if (text) {
-				data.push('<?', name, ' ', text, '?>\n');
-			} else {
-				data.push('<?', name, '?>\n');
-			}
-		};
-
-		this.doctype = function(text) {
-			data.push('<!DOCTYPE', text, '>\n');
-		};
-
-		this.getString = function() {
-			for (var i = stack.length - 1; i >= 0; i--) {
-				this.end(stack[i]);
-			}
-
-			stack = [];
-
-			return data.join('').replace(/\n$/, '');
-		};
-
-		this.reset = function() {
-			data = [];
-			stack = [];
-		};
-
-		this.pi(settings.xmldecl || 'xml version="1.0" encoding="UTF-8"');
-	}
 })();

@@ -1,5 +1,4 @@
-// run with
-// node test/node-test.js
+// Run with: $ narwhal test/narwhal-test.js
 var QUnit = require("../qunit/qunit");
 
 QUnit.log(function(details) {
@@ -12,8 +11,6 @@ QUnit.log(function(details) {
 			output += ", " + details.source;
 		}
 		print(output);
-	} else {
-		print("ok!");
 	}
 });
 

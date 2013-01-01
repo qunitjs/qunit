@@ -15,6 +15,7 @@
 	"noempty": true,
 	"nonew": true,
 	"undef": true,
+	"unused": true,
 
 	"proto": true,
 	"smarttabs": true,

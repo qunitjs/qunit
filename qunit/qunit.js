@@ -69,7 +69,7 @@ Test.prototype = {
 
 		if ( tests ) {
 			b = document.createElement( "strong" );
-			b.innerHTML = this.name;
+			b.innerHTML = this.nameHtml;
 
 			// `a` initialized at top of scope
 			a = document.createElement( "a" );
@@ -142,7 +142,7 @@ Test.prototype = {
 		var running = id( "qunit-testresult" );
 
 		if ( running ) {
-			running.innerHTML = "Running: <br/>" + this.name;
+			running.innerHTML = "Running: <br/>" + this.nameHtml;
 		}
 
 		if ( this.async ) {
@@ -246,7 +246,7 @@ Test.prototype = {
 
 			// `b` initialized at top of scope
 			b = document.createElement( "strong" );
-			b.innerHTML = this.name + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
+			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
 
 			addEvent(b, "click", function() {
 				var next = b.parentNode.lastChild,
@@ -361,7 +361,7 @@ QUnit = {
 
 	test: function( testName, expected, callback, async ) {
 		var test,
-			name = "<span class='test-name'>" + escapeInnerText( testName ) + "</span>";
+			nameHtml = "<span class='test-name'>" + escapeText( testName ) + "</span>";
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -369,11 +369,11 @@ QUnit = {
 		}
 
 		if ( config.currentModule ) {
-			name = "<span class='module-name'>" + config.currentModule + "</span>: " + name;
+			nameHtml = "<span class='module-name'>" + escapeText( config.currentModule ) + "</span>: " + nameHtml;
 		}
 
 		test = new Test({
-			name: name,
+			nameHtml: nameHtml,
 			testName: testName,
 			expected: expected,
 			async: async,
@@ -400,6 +400,18 @@ QUnit = {
 	},
 
 	start: function( count ) {
+		// QUnit hasn't been initialized yet.
+		// Note: RequireJS (et al) may delay onLoad
+		if ( config.semaphore === undefined ) {
+			QUnit.begin(function() {
+				// This is triggered at the top of QUnit.load, push start() to the event loop, to allow QUnit.load to finish first
+				setTimeout(function() {
+					QUnit.start( count );
+				});
+			});
+			return;
+		}
+
 		config.semaphore -= count || 1;
 		// don't start until equal number of stop-calls
 		if ( config.semaphore > 0 ) {
@@ -473,14 +485,14 @@ assert = {
 				message: msg
 			};
 
-		msg = escapeInnerText( msg || (result ? "okay" : "failed" ) );
+		msg = escapeText( msg || (result ? "okay" : "failed" ) );
 		msg = "<span class='test-message'>" + msg + "</span>";
 
 		if ( !result ) {
 			source = sourceFromStacktrace( 2 );
 			if ( source ) {
 				details.source = source;
-				msg += "<table><tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr></table>";
+				msg += "<table><tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr></table>";
 			}
 		}
 		runLoggingCallbacks( "log", QUnit, details );
@@ -762,7 +774,7 @@ extend( QUnit, {
 
 		if ( qunit ) {
 			qunit.innerHTML =
-				"<h1 id='qunit-header'>" + escapeInnerText( document.title ) + "</h1>" +
+				"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 				"<h2 id='qunit-banner'></h2>" +
 				"<div id='qunit-testrunner-toolbar'></div>" +
 				"<h2 id='qunit-userAgent'></h2>" +
@@ -868,13 +880,13 @@ extend( QUnit, {
 				expected: expected
 			};
 
-		message = escapeInnerText( message ) || ( result ? "okay" : "failed" );
+		message = escapeText( message ) || ( result ? "okay" : "failed" );
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
 		if ( !result ) {
-			expected = escapeInnerText( QUnit.jsDump.parse(expected) );
-			actual = escapeInnerText( QUnit.jsDump.parse(actual) );
+			expected = escapeText( QUnit.jsDump.parse(expected) );
+			actual = escapeText( QUnit.jsDump.parse(actual) );
 			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
 
 			if ( actual !== expected ) {
@@ -886,7 +898,7 @@ extend( QUnit, {
 
 			if ( source ) {
 				details.source = source;
-				output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr>";
+				output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
 			}
 
 			output += "</table>";
@@ -913,19 +925,19 @@ extend( QUnit, {
 				message: message
 			};
 
-		message = escapeInnerText( message ) || "error";
+		message = escapeText( message ) || "error";
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
 		output += "<table>";
 
 		if ( actual ) {
-			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeInnerText( actual ) + "</pre></td></tr>";
+			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeText( actual ) + "</pre></td></tr>";
 		}
 
 		if ( source ) {
 			details.source = source;
-			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeInnerText( source ) + "</pre></td></tr>";
+			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
 		}
 
 		output += "</table>";
@@ -999,7 +1011,8 @@ QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
-	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val, urlConfigCheckboxes, moduleFilter,
+	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
+		urlConfigCheckboxesContainer, urlConfigCheckboxes, moduleFilter,
 		numModules = 0,
 		moduleFilterHtml = "",
 		urlConfigHtml = "",
@@ -1022,14 +1035,24 @@ QUnit.load = function() {
 			};
 		}
 		config[ val.id ] = QUnit.urlParams[ val.id ];
-		urlConfigHtml += "<input id='qunit-urlconfig-" + val.id + "' name='" + val.id + "' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) + " title='" + val.tooltip + "'><label for='qunit-urlconfig-" + val.id + "' title='" + val.tooltip + "'>" + val.label + "</label>";
+		urlConfigHtml += "<input id='qunit-urlconfig-" + escapeText( val.id ) +
+			"' name='" + escapeText( val.id ) +
+			"' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) +
+			" title='" + escapeText( val.tooltip ) +
+			"'><label for='qunit-urlconfig-" + escapeText( val.id ) +
+			"' title='" + escapeText( val.tooltip ) + "'>" + val.label + "</label>";
 	}
 
-	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " + ( config.module === undefined  ? "selected" : "" ) + ">< All Modules ></option>";
+	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " +
+		( config.module === undefined  ? "selected='selected'" : "" ) +
+		">< All Modules ></option>";
+
 	for ( i in config.modules ) {
 		if ( config.modules.hasOwnProperty( i ) ) {
 			numModules += 1;
-			moduleFilterHtml += "<option value='" + encodeURIComponent(i) + "' " + ( config.module === i ? "selected" : "" ) + ">" + i + "</option>";
+			moduleFilterHtml += "<option value='" + escapeText( encodeURIComponent(i) ) + "' " +
+				( config.module === i ? "selected='selected'" : "" ) +
+				">" + escapeText(i) + "</option>";
 		}
 	}
 	moduleFilterHtml += "</select>";
@@ -1088,14 +1111,20 @@ QUnit.load = function() {
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
 
-		urlConfigCheckboxes = document.createElement( 'span' );
-		urlConfigCheckboxes.innerHTML = urlConfigHtml;
-		addEvent( urlConfigCheckboxes, "change", function( event ) {
-			var params = {};
-			params[ event.target.name ] = event.target.checked ? true : undefined;
+		urlConfigCheckboxesContainer = document.createElement("span");
+		urlConfigCheckboxesContainer.innerHTML = urlConfigHtml;
+		urlConfigCheckboxes = urlConfigCheckboxesContainer.getElementsByTagName("input");
+		// For oldIE support:
+		// * Add handlers to the individual elements instead of the container
+		// * Use "click" instead of "change"
+		// * Fallback from event.target to event.srcElement
+		addEvents( urlConfigCheckboxes, "click", function( event ) {
+			var params = {},
+				target = event.target || event.srcElement;
+			params[ target.name ] = target.checked ? true : undefined;
 			window.location = QUnit.url( params );
 		});
-		toolbar.appendChild( urlConfigCheckboxes );
+		toolbar.appendChild( urlConfigCheckboxesContainer );
 
 		if (numModules > 1) {
 			moduleFilter = document.createElement( 'span' );
@@ -1273,7 +1302,7 @@ function validTest( test ) {
 function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 3 : offset;
 
-	var stack, include, i, regex;
+	var stack, include, i;
 
 	if ( e.stacktrace ) {
 		// Opera
@@ -1316,17 +1345,27 @@ function sourceFromStacktrace( offset ) {
 	}
 }
 
-function escapeInnerText( s ) {
+/**
+ * Escape text for attribute or text content.
+ */
+function escapeText( s ) {
 	if ( !s ) {
 		return "";
 	}
 	s = s + "";
-	return s.replace( /[\&<>]/g, function( s ) {
+	// Both single quotes and double quotes (for attributes)
+	return s.replace( /['"<>&]/g, function( s ) {
 		switch( s ) {
-			case "&": return "&amp;";
-			case "<": return "&lt;";
-			case ">": return "&gt;";
-			default: return s;
+			case '\'':
+				return '&#039;';
+			case '"':
+				return '&quot;';
+			case '<':
+				return '&lt;';
+			case '>':
+				return '&gt;';
+			case '&':
+				return '&amp;';
 		}
 	});
 }
@@ -1374,7 +1413,7 @@ function saveGlobal() {
 	}
 }
 
-function checkPollution( name ) {
+function checkPollution() {
 	var newGlobals,
 		deletedGlobals,
 		old = config.pollution;
@@ -1423,13 +1462,30 @@ function extend( a, b ) {
 	return a;
 }
 
+/**
+ * @param {HTMLElement} elem
+ * @param {string} type
+ * @param {Function} fn
+ */
 function addEvent( elem, type, fn ) {
 	if ( elem.addEventListener ) {
 		elem.addEventListener( type, fn, false );
 	} else if ( elem.attachEvent ) {
 		elem.attachEvent( "on" + type, fn );
 	} else {
-		fn();
+		fn(); // WTF
+	}
+}
+
+/**
+ * @param {Array|NodeList} elems
+ * @param {string} type
+ * @param {Function} fn
+ */
+function addEvents( elems, type, fn ) {
+	var i = elems.length;
+	while ( i-- ) {
+		addEvent( elems[i], type, fn );
 	}
 }
 
@@ -1466,7 +1522,6 @@ function registerLoggingCallback( key ) {
 
 // Supports deprecated method of completely overwriting logging callbacks
 function runLoggingCallbacks( key, scope, args ) {
-	//debugger;
 	var i, callbacks;
 	if ( QUnit.hasOwnProperty( key ) ) {
 		QUnit[ key ].call(scope, args );
@@ -1829,19 +1884,31 @@ QUnit.jsDump = (function() {
 					return join( "{", ret, "}" );
 				},
 				node: function( node ) {
-					var a, val,
+					var len, i, val,
 						open = QUnit.jsDump.HTML ? "&lt;" : "<",
 						close = QUnit.jsDump.HTML ? "&gt;" : ">",
 						tag = node.nodeName.toLowerCase(),
-						ret = open + tag;
+						ret = open + tag,
+						attrs = node.attributes;
 
-					for ( a in QUnit.jsDump.DOMAttrs ) {
-						val = node[ QUnit.jsDump.DOMAttrs[a] ];
-						if ( val ) {
-							ret += " " + a + "=" + QUnit.jsDump.parse( val, "attribute" );
+					if ( attrs ) {
+						for ( i = 0, len = attrs.length; i < len; i++ ) {
+							val = attrs[i].nodeValue;
+							// IE6 includes all attributes in .attributes, even ones not explicitly set.
+							// Those have values like undefined, null, 0, false, "" or "inherit".
+							if ( val && val !== "inherit" ) {
+								ret += " " + attrs[i].nodeName + "=" + QUnit.jsDump.parse( val, "attribute" );
+							}
 						}
 					}
-					return ret + close + open + "/" + tag + close;
+					ret += close;
+
+					// Show content of TextNode or CDATASection
+					if ( node.nodeType === 3 || node.nodeType === 4 ) {
+						ret += node.nodeValue;
+					}
+
+					return ret + open + "/" + tag + close;
 				},
 				// function calls it internally, it's the arguments part of the function
 				functionArgs: function( fn ) {
@@ -1871,12 +1938,6 @@ QUnit.jsDump = (function() {
 				number: literal,
 				"boolean": literal
 			},
-			DOMAttrs: {
-				//attributes to dump from nodes, name=>realName
-				id: "id",
-				name: "name",
-				"class": "className"
-			},
 			// if true, entities are escaped ( <, >, \t, space and \n )
 			HTML: false,
 			// indentation unit
@@ -1887,27 +1948,6 @@ QUnit.jsDump = (function() {
 
 	return jsDump;
 }());
-
-// from Sizzle.js
-function getText( elems ) {
-	var i, elem,
-		ret = "";
-
-	for ( i = 0; elems[i]; i++ ) {
-		elem = elems[i];
-
-		// Get the text from text nodes and CDATA nodes
-		if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
-			ret += elem.nodeValue;
-
-		// Traverse everything else, except comment nodes
-		} else if ( elem.nodeType !== 8 ) {
-			ret += getText( elem.childNodes );
-		}
-	}
-
-	return ret;
-}
 
 // from jquery.js
 function inArray( elem, array ) {
