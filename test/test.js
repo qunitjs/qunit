@@ -469,7 +469,7 @@ test("propEqual", 5, function( assert ) {
 	);
 });
 
-test("raises", 8, function() {
+test("raises", 9, function() {
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -489,6 +489,16 @@ test("raises", 8, function() {
 			throw "my error";
 		},
 		"simple string throw, no 'expected' value given"
+	);
+
+	// This test is for IE 7 and prior which does not properly
+	// implement Error.prototype.toString
+	throws(
+		function() {
+			throw new Error("error message");
+		},
+		/error message/,
+		"use regexp against instance of Error"
 	);
 
 	throws(
