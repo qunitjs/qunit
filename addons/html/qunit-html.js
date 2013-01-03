@@ -1,5 +1,5 @@
 /*global QUnit:false */
-(function( QUnit ) {
+(function( QUnit, window, undefined ) {
 	"use strict";
 
 	var trim = function( s ) {
@@ -8,84 +8,356 @@
 		}
 		return window.jQuery ? window.jQuery.trim( s ) : ( s.trim ? s.trim() : s.replace( /^\s+|\s+$/g, "" ) );
 	};
-	
-	var cleanHtml = function( html ) {
-		var translator = document.createElement( "div" );
-		translator.innerHTML = html;
-		return trim( translator.innerHTML );
-	};
-	
-	var outerHtml = function( node ) {
-		var outerHTML = node.outerHTML,
-			translator;
-		if ( !outerHTML ) {
-			translator = document.createElement( "div" );
-			translator.appendChild( node.cloneNode( true ) );
-			outerHTML = translator.innerHTML;
+
+	var normalizeWhitespace = function( s ) {
+		if ( !s ) {
+			return "";
 		}
-		return outerHTML;
+		return trim( s.replace( /\s+/g, " " ) );
 	};
 
-	var getCleanHtmlWithOrderedAttributesForNode = function( node ) {
-		var cleanedOrderedHtml = [],
-			attrKeys = [],
-			fullTagName, attrs, i, len;
-
-		// Element
-		if ( node.nodeType === 1 ) {
-			fullTagName = node.nodeName.toLowerCase();
-			cleanedOrderedHtml.push( "<" + fullTagName );
-
-			attrs = node.attributes;
-			for ( i = 0, len = attrs.length; i < len; i++ ) {
-				attrKeys.push( attrs[i].name.toLowerCase() );
-			}
-			attrKeys.sort();
-
-			for ( i = 0, len = attrKeys.length; i < len; i++ ) {
-				cleanedOrderedHtml.push( " " + attrKeys[i] );
-				if ( attrs[attrKeys[i]].value ) {
-					cleanedOrderedHtml.push( '="' + attrs[attrKeys[i]].value + '"' );
+	var dedupeFlatDict = function( dictToDedupe, parentDict ) {
+		var key, val;
+		if ( parentDict ) {
+			for ( key in dictToDedupe ) {
+				val = dictToDedupe[key];
+				if ( val && ( val === parentDict[key] ) ) {
+					delete dictToDedupe[key];
 				}
 			}
+		}
+		return dictToDedupe;
+	};
 
-			if (node.childNodes.length) {
-				cleanedOrderedHtml.push( ">" );
+	var objectKeys = Object.keys || (function() {
+		var hasOwn = function( obj, propName ) {
+			return Object.prototype.hasOwnProperty.call( obj, propName );
+		};
+		return function( obj ) {
+			var keys = [],
+				key;
+			for ( key in obj ) {
+				if ( hasOwn( obj, key ) ) {
+					keys.push( key );
+				}
+			}
+			return keys;
+		};
+	})();
 
-				// Recursively process childNodes
-				for ( i = 0, len = node.childNodes.length; i < len; i++ ) {
-					cleanedOrderedHtml.push(
-						getCleanHtmlWithOrderedAttributesForNode( node.childNodes[i] )
-					);
+	/**
+	 * Calculate based on `currentStyle`/`getComputedStyle` styles instead
+	 */
+	var getElementStyles = (function() {
+
+		// Memoized
+		var camelCase = (function() {
+			var camelCaseFn = window.jQuery ? window.jQuery.camelCase : (function() {
+				// Matches dashed string for camelizing
+				var rmsPrefix = /^-ms-/,
+					msPrefixFix = "ms-",
+					rdashAlpha = /-([\da-z])/gi,
+					camelCaseReplacerFn = function( all, letter ) {
+						return ( letter + "" ).toUpperCase();
+					};
+
+				return function( s ) {
+					return s.replace(rmsPrefix, msPrefixFix).replace(rdashAlpha, camelCaseReplacerFn);
+				};
+			})();
+
+			var camelCaseMemoizer = {};
+
+			return function( s ) {
+				var temp = camelCaseMemoizer[s];
+				if ( temp ) {
+					return temp;
 				}
 
-				cleanedOrderedHtml.push( "</" + fullTagName + ">" );
+				temp = camelCaseFn( s );
+				camelCaseMemoizer[s] = temp;
+				return temp;
 			}
+		})();
+
+		var styleKeySortingFn = function( a, b ) {
+			return camelCase( a ) < camelCase( b );
+		};
+
+		return function( elem ) {
+			var styleCount, i, key,
+				styles = {},
+				styleKeys = [],
+				style = elem.ownerDocument.defaultView ?
+					elem.ownerDocument.defaultView.getComputedStyle( elem, null ) :
+					elem.currentStyle;
+
+			// `getComputedStyle`
+			if ( style && style.length && style[0] && style[style[0]] ) {
+				styleCount = style.length;
+				while ( styleCount-- ) {
+					styleKeys.push( style[styleCount] );
+				}
+				styleKeys.sort( styleKeySortingFn );
+
+				for ( i = 0, styleCount = styleKeys.length ; i < styleCount ; i++ ) {
+					key = styleKeys[i];
+					if ( key !== "cssText" && typeof style[key] === "string" && style[key] ) {
+						styles[camelCase( key )] = style[key];
+					}
+				}
+			}
+			// `currentStyle` support: IE < 9.0, Opera < 10.6
 			else {
-				cleanedOrderedHtml.push( " />" );
+				for ( key in style ) {
+					styleKeys.push( key );
+				}
+				styleKeys.sort();
+
+				for ( i = 0, styleCount = styleKeys.length ; i < styleCount ; i++ ) {
+					key = styleKeys[i];
+					if ( key !== "cssText" && typeof style[key] === "string" && style[key] ) {
+						styles[key] = style[key];
+					}
+				}
+			}
+
+			if (window.debugging) {
+				console.dir ? console.dir(styles) : console.log(styles);
+			}
+			return styles;
+
+		};
+	})();
+
+	var serializeElementNode = function( elementNode, rootNodeStyles ) {
+		var subNodes, i, len, tempNode, styles,
+			attrKeys = [],
+			serializedNode = {
+				NodeType: elementNode.nodeType,
+				NodeName: elementNode.nodeName.toLowerCase(),
+				Attributes: [],
+				ChildNodes: []
+			};
+
+		subNodes = elementNode.attributes;
+		for ( i = 0, len = subNodes.length ; i < len ; i++ ) {
+			attrKeys.push( subNodes[i].name.toLowerCase() );
+		}
+		attrKeys.sort();
+
+		for ( i = 0, len = attrKeys.length; i < len; i++ ) {
+			tempNode = serializeAttrNode( subNodes[attrKeys[i]] );
+			if ( tempNode ) {
+				(function( a ) {
+					serializedNode.Attributes.push( a );
+				})( tempNode );
 			}
 		}
-		else {
-			cleanedOrderedHtml.push( outerHtml( node ) );
+
+		// Only add the style attribute if there is 1+ pertinent rules
+		styles = dedupeFlatDict( getElementStyles( elementNode ), rootNodeStyles );
+		if ( styles && objectKeys( styles ).length ) {
+			serializedNode.Attributes.push(
+				{
+					NodeType: 2,   // Node.ATTRIBUTE_NODE
+					NodeName: "style",
+					NodeValue: styles
+				}
+			);
 		}
 
-		return cleanedOrderedHtml.join( "" );
+		subNodes = elementNode.childNodes;
+		for ( i = 0, len = subNodes.length; i < len; i++ ) {
+			serializedNode.ChildNodes.push( serializeNode( subNodes[i], rootNodeStyles ) );
+		}
+
+		return serializedNode;
 	};
 
-	var getCleanHtmlWithOrderedAttributes = function( html ) {
-		var translator = document.createElement( "div" ),
-			cleanedOrderedHtml = [],
+	var serializeAttrNode = function( attrNode ) {
+		var serializedNode = {
+			NodeType: attrNode.nodeType,
+			NodeName: attrNode.nodeName.toLowerCase()
+		};
+
+		switch ( serializedNode.NodeName ) {
+			case "style":
+				// Ignore, will handle for all Element nodes even if they don't have a `style` attribute
+				serializedNode = null;
+				break;
+			case "class":
+				serializedNode.NodeValue = normalizeWhitespace( attrNode.nodeValue );
+				break;
+			default:
+				serializedNode.NodeValue = attrNode.nodeValue;
+				break;
+		}
+
+		return serializedNode;
+	};
+
+	var serializeNode = function( node, rootNodeStyles ) {
+		var serializedNode;
+
+		switch (node.nodeType) {
+			case 1:   // Node.ELEMENT_NODE
+				serializedNode = serializeElementNode( node, rootNodeStyles );
+				break;
+			case 2:   // Node.ATTRIBUTE_NODE
+				serializedNode = serializeAttrNode( node );
+				break;
+			case 3:   // Node.TEXT_NODE
+			case 4:   // Node.CDATA_SECTION_NODE
+			case 7:   // Node.PROCESSING_INSTRUCTION_NODE
+			case 8:   // Node.COMMENT_NODE
+				serializedNode = {
+					NodeType: node.nodeType,
+					NodeName: node.nodeName.toLowerCase(),
+					NodeValue: trim( node.nodeValue )
+				};
+				break;
+			case 5:   // Node.ENTITY_REFERENCE_NODE
+			case 6:   // Node.ENTITY_NODE
+			case 9:   // Node.DOCUMENT_NODE
+			case 10:  // Node.DOCUMENT_TYPE_NODE
+			case 11:  // Node.DOCUMENT_FRAGMENT_NODE
+			case 12:  // Node.NOTATION_NODE
+				serializedNode = {
+					NodeType: node.nodeType,
+					NodeName: node.nodeName
+				};
+				break;
+			default:
+				throw new Error( "`node.nodeType` was not recognized: " + node.nodeType );
+		}
+
+		return serializedNode;
+	};
+
+	var serializeHtml = function( html ) {
+		var scratch = getCleanSlate(),
+			rootNode = scratch.container(),
+			rootNodeStyles = getElementStyles( rootNode ),
+			serializedHtml = [],
 			kids, i, len;
-		translator.innerHTML = html;
+		rootNode.innerHTML = trim( html );
 
-		kids = translator.childNodes;
+		kids = rootNode.childNodes;
 		for ( i = 0, len = kids.length; i < len; i++ ) {
-			cleanedOrderedHtml.push( getCleanHtmlWithOrderedAttributesForNode( kids[i] ) );
+			serializedHtml.push( serializeNode( kids[i], rootNodeStyles ) );
 		}
 
-		return trim( cleanedOrderedHtml.join( '' ) );
+		scratch.reset();
+
+		return serializedHtml;
 	};
 
+	var getCleanSlate = (function() {
+		var containerElId = "qunit-html-addon-container",
+			iframeReady = false,
+			iframeLoaded = function() {
+				iframeReady = true;
+			},
+			iframeReadied = function() {
+				if (iframe.readystate == "complete") {
+					iframeReady = true;
+				}
+			},
+			iframeApi,
+			iframe,
+			iframeWin,
+			iframeDoc;
+
+		if ( !iframeApi ) {
+
+			QUnit.begin(function() {
+				// Initialize the background iframe!
+				if ( !iframe || !iframeWin || !iframeDoc ) {
+					iframe = window.document.createElement( "iframe" );
+					QUnit.addEvent( iframe, "load", iframeLoaded );
+					QUnit.addEvent( iframe, "readystatechange", iframeReadied );
+					iframe.style.position = "absolute";
+					iframe.style.top = iframe.style.left = "-1000px";
+					iframe.height = iframe.width = 0;
+
+					// `getComputedStyle` behaves inconsistently cross-browser when not attached to a live DOM
+					window.document.body.appendChild( iframe );
+
+					iframeWin = iframe.contentWindow ||
+						iframe.window ||
+						iframe.contentDocument && iframe.contentDocument.defaultView ||
+						iframe.document && ( iframe.document.defaultView || iframe.document.window ) ||
+						window.frames[( iframe.name || iframe.id )];
+
+					iframeDoc = iframeWin && iframeWin.document ||
+						iframe.contentDocument ||
+						iframe.document;
+
+					var iframeContents = [
+						"<!DOCTYPE html>",
+						"<html>",
+						"<head>",
+						"	<title>QUnit HTML addon iframe</title>",
+						"</head>",
+						"<body>",
+						"	<div id=\"" + containerElId + "\"></div>",
+						"	<script type=\"text/javascript\">",
+						"		window.isReady = true;",
+						"	</script>",
+						"</body>",
+						"</html>"
+					].join( "\n" );
+
+					iframeDoc.open();
+					iframeDoc.write( iframeContents );
+					iframeDoc.close();
+
+					// Is ready?
+					iframeReady = iframeReady || iframeWin.isReady;
+				}
+			});
+
+			QUnit.done(function() {
+				if ( iframe && iframe.ownerDocument ) {
+					iframe.parentNode.removeChild( iframe );
+				}
+				iframe = iframeWin = iframeDoc = null;
+				iframeReady = false;
+			});
+
+			var waitForIframeReady = function( maxTimeout ) {
+				if ( !iframeReady ) {
+					if ( !maxTimeout ) {
+						maxTimeout = 2000;  // 2 seconds MAX
+					}
+					var startTime = new Date();
+					while ( !iframeReady && ( ( new Date() - startTime ) < maxTimeout ) ) {
+						iframeReady = iframeReady || iframeWin.isReady;
+					}
+				}
+			};
+
+			iframeApi = {
+				container: function() {
+					waitForIframeReady();
+					if ( iframeReady && iframeDoc ) {
+						return iframeDoc.getElementById( containerElId );
+					}
+					return undefined;
+				},
+				reset: function() {
+					var containerEl = iframeApi.container();
+					if ( containerEl ) {
+						containerEl.innerHTML = "";
+					}
+				}
+			};
+		}
+
+		// Actual function signature for `getCleanState`
+		return function() { return iframeApi; };
+	})();
 
 	QUnit.extend( QUnit, {
 
@@ -93,58 +365,42 @@
 		 * Compare two snippets of HTML for equality after normalization.
 		 *
 		 * @example QUnit.htmlEqual("<B>Hello, QUnit!</B>  ", "<b>Hello, QUnit!</b>", "HTML should be equal");
-		 * @param String actual The actual HTML before normalization.
-		 * @param String expected The excepted HTML before normalization.
-		 * @param String message (optional)
+		 * @param {String} actual The actual HTML before normalization.
+		 * @param {String} expected The excepted HTML before normalization.
+		 * @param {String} [message] Optional message to display in the results.
 		 */
-		htmlEqual: function( actual, expected, message ) {
-			var cleanedActual, cleanedExpected, cleanedOrderedActual, cleanedOrderedExpected;
-
+		htmlEqual: function( actual, expected, message, expectedSerialization ) {
 			if ( !message ) {
 				message = "HTML should be equal";
 			}
 
-			// Follow an escalation process for performance reasons
-			if ( actual === expected ) {
-				QUnit.push( true, actual, expected, message );
-			}
-			else {
-				cleanedActual = cleanHtml( actual );
-				cleanedExpected = cleanHtml( expected );
-
-				if ( cleanedActual === cleanedExpected ) {
-					QUnit.push( true, actual, expected, message );
-				}
-				else {
-					cleanedOrderedActual = getCleanHtmlWithOrderedAttributes( actual );
-					cleanedOrderedExpected = getCleanHtmlWithOrderedAttributes( expected );
-
-					QUnit.push( QUnit.equiv( cleanedOrderedActual, cleanedOrderedExpected ), actual, expected, message );
-				}
-			}
+			QUnit.deepEqual( serializeHtml( actual ), serializeHtml( expected ), message );
 		},
 
 		/**
 		 * Compare two snippets of HTML for inequality after normalization.
 		 *
 		 * @example QUnit.notHtmlEqual("<b>Hello, <i>QUnit!</i></b>", "<b>Hello, QUnit!</b>", "HTML should not be equal");
-		 * @param String actual The actual HTML before normalization.
-		 * @param String expected The excepted HTML before normalization.
-		 * @param String message (optional)
+		 * @param {String} actual The actual HTML before normalization.
+		 * @param {String} expected The excepted HTML before normalization.
+		 * @param {String} [message] Optional message to display in the results.
 		 */
 		notHtmlEqual: function( actual, expected, message ) {
-			var cleanedOrderedActual, cleanedOrderedExpected;
-
 			if ( !message ) {
 				message = "HTML should not be equal";
 			}
 
-			cleanedOrderedActual = getCleanHtmlWithOrderedAttributes( actual );
-			cleanedOrderedExpected = getCleanHtmlWithOrderedAttributes( expected );
+			QUnit.notDeepEqual( serializeHtml( actual ), serializeHtml( expected ), message );
+		},
 
-			QUnit.push( !QUnit.equiv( cleanedOrderedActual, cleanedOrderedExpected ), actual, expected, message );
-		}
+		/**
+		 * Normalize and serialize an HTML snippet. Primarily only exposed for unit testing purposes.
+		 *
+		 * @example QUnit.serializeHtml('<b style="color:red;">Test</b>');
+		 * @param {String} html The HTML snippet to normalize and serialize.
+		 * @returns {Object[]} The normalized and serialized form of the HTML snippet.
+		 */
+		serializeHtml: serializeHtml
 
 	});
-
-})( QUnit );
+})( QUnit, this );
