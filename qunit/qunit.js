@@ -43,24 +43,25 @@ var QUnit,
 	 * @param {String|Error} error
 	 * @return {String} error message
 	 */
-	errorString = function(error) {
-		var errorString = error.toString();
-		if (errorString.substring(0,7) === '[object') {
-			var name = error.name ? error.name.toString() : 'Error',
-				message = error.message ? error.message.toString() : '';
-			if (name && message) {
-				return name + ': ' + message;
-			} else if (name) {
+	errorString = function( error ) {
+		var name, message,
+			errorString = error.toString();
+		if ( errorString.substring( 0, 7 ) === "[object" ) {
+			name = error.name ? error.name.toString() : "Error";
+			message = error.message ? error.message.toString() : "";
+			if ( name && message ) {
+				return name + ": " + message;
+			} else if ( name ) {
 				return name;
-			} else if (message) {
+			} else if ( message ) {
 				return message;
 			} else {
-				return 'Error';
+				return "Error";
 			}
 		} else {
 			return errorString;
 		}
-	};
+	},
 	/**
 	 * Makes a clone of an object using only Array or Object as base,
 	 * and copies over the own enumerable properties.
