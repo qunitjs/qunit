@@ -16,8 +16,15 @@ QUnit.extend( QUnit, {
 	},
 
 	runSuite: function( suite ) {
+		var path = suite;
+
+		if ( QUnit.is( 'object', suite ) ) {
+			path = suite.path;
+			suite = suite.name;
+		}
+
 		asyncTest( suite, function() {
-			QUnit.iframe.setAttribute( "src", suite );
+			QUnit.iframe.setAttribute( "src", path );
 		});
 	},
 
