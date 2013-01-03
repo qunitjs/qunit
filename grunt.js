@@ -65,7 +65,7 @@ grunt.registerTask( "build-git", function( sha ) {
 grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
 		config = grunt.file.readJSON( configFile ).qunit,
-		suites = ["index.html", "async.html"];
+		suites = ["index.html", "async.html", "logs.html"];
 	testswarm({
 		url: config.swarmUrl,
 		pollInterval: 10000,
