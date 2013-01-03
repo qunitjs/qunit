@@ -8,16 +8,14 @@ grunt.initConfig({
 	qunit: {
 		qunit: [
 			'test/index.html',
-			'test/async.html'
-			// TODO: Fix test failures in test/logs.js
-			// 'test/logs.html'
+			'test/async.html',
+			'test/logs.html'
 		],
 		addons: [
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
-			'addons/composite/composite-demo-test.html'
-			// TODO: Fix test failures addons/step-test.js
-			// 'addons/step/step.html'
+			'addons/composite/composite-demo-test.html',
+			'addons/step/step.html'
 		]
 	},
 	lint: {
