@@ -43,7 +43,7 @@
 					cleanedStyleAttr = {},
 					cleanedStyleRules = {},
 					i, elKeys, elKey,
-					j, attrs, attr, cleanedAttrs, attrIndexOffset, kids, kid, cleanedKids,
+					j, attrs, attr, cleanedAttrs, kids, kid, cleanedKids,
 					k, styleAttrKey, styleAttrKeys,
 					l, styleRuleKeys, styleRuleKey;
 
@@ -58,7 +58,6 @@
 					if (elKey === "Attributes") {
 						attrs = serializedElementNode.Attributes;
 						cleanedAttrs = [];
-						attrIndexOffset = 0;
 
 						// MOAR ITERATION!!!
 						for (j = 0; j < attrs.length; j++) {
@@ -69,7 +68,7 @@
 							}
 							else {
 								styleAttrKeys = objectKeys(attr);
-								for (k = 0; k < (styleAttrKeys.length - attrIndexOffset); k++) {
+								for (k = 0; k < styleAttrKeys.length; k++) {
 									styleAttrKey = styleAttrKeys[k];
 									if (styleAttrKey !== "NodeValue") {
 										cleanedStyleAttr[styleAttrKey] = attr[styleAttrKey];
@@ -89,7 +88,6 @@
 										}
 										else {
 											cleanedStyleAttr = null;
-											attrIndexOffset++;
 										}
 									}
 								}
