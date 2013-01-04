@@ -6,7 +6,7 @@
 		if ( !s ) {
 			return "";
 		}
-		return window.jQuery ? window.jQuery.trim( s ) : ( s.trim ? s.trim() : s.replace( /^\s+|\s+$/g, "" ) );
+		return typeof s.trim === "function" ? s.trim() : s.replace( /^\s+|\s+$/g, "" );
 	};
 
 	var normalizeWhitespace = function( s ) {
@@ -52,7 +52,7 @@
 
 		// Memoized
 		var camelCase = (function() {
-			var camelCaseFn = window.jQuery ? window.jQuery.camelCase : (function() {
+			var camelCaseFn = (function() {
 				// Matches dashed string for camelizing
 				var rmsPrefix = /^-ms-/,
 					msPrefixFix = "ms-",
@@ -122,76 +122,41 @@
 				}
 			}
 
-			if (window.debugging) {
-				console.dir ? console.dir(styles) : console.log(styles);
-			}
 			return styles;
 
 		};
 	})();
 
 	var serializeElementNode = function( elementNode, rootNodeStyles ) {
-		var subNodes, i, len, tempNode, styles,
-			attrKeys = [],
+		var subNodes, i, len, styles, attrName,
 			serializedNode = {
 				NodeType: elementNode.nodeType,
 				NodeName: elementNode.nodeName.toLowerCase(),
-				Attributes: [],
+				Attributes: {},
 				ChildNodes: []
 			};
 
 		subNodes = elementNode.attributes;
 		for ( i = 0, len = subNodes.length ; i < len ; i++ ) {
-			attrKeys.push( subNodes[i].name.toLowerCase() );
-		}
-		attrKeys.sort();
-
-		for ( i = 0, len = attrKeys.length; i < len; i++ ) {
-			tempNode = serializeAttrNode( subNodes[attrKeys[i]] );
-			if ( tempNode ) {
-				(function( a ) {
-					serializedNode.Attributes.push( a );
-				})( tempNode );
+			attrName = subNodes[i].name.toLowerCase();
+			if ( attrName === "class" ) {
+				serializedNode.Attributes[attrName] = normalizeWhitespace( subNodes[i].value );
 			}
+			else if ( attrName !== "style" ) {
+				serializedNode.Attributes[attrName] = subNodes[i].value;
+			}
+			// Ignore the "style" attribute completely
 		}
 
 		// Only add the style attribute if there is 1+ pertinent rules
 		styles = dedupeFlatDict( getElementStyles( elementNode ), rootNodeStyles );
 		if ( styles && objectKeys( styles ).length ) {
-			serializedNode.Attributes.push(
-				{
-					NodeType: 2,   // Node.ATTRIBUTE_NODE
-					NodeName: "style",
-					NodeValue: styles
-				}
-			);
+			serializedNode.Attributes["style"] = styles;
 		}
 
 		subNodes = elementNode.childNodes;
 		for ( i = 0, len = subNodes.length; i < len; i++ ) {
 			serializedNode.ChildNodes.push( serializeNode( subNodes[i], rootNodeStyles ) );
-		}
-
-		return serializedNode;
-	};
-
-	var serializeAttrNode = function( attrNode ) {
-		var serializedNode = {
-			NodeType: attrNode.nodeType,
-			NodeName: attrNode.nodeName.toLowerCase()
-		};
-
-		switch ( serializedNode.NodeName ) {
-			case "style":
-				// Ignore, will handle for all Element nodes even if they don't have a `style` attribute
-				serializedNode = null;
-				break;
-			case "class":
-				serializedNode.NodeValue = normalizeWhitespace( attrNode.nodeValue );
-				break;
-			default:
-				serializedNode.NodeValue = attrNode.nodeValue;
-				break;
 		}
 
 		return serializedNode;
@@ -204,10 +169,13 @@
 			case 1:   // Node.ELEMENT_NODE
 				serializedNode = serializeElementNode( node, rootNodeStyles );
 				break;
-			case 2:   // Node.ATTRIBUTE_NODE
-				serializedNode = serializeAttrNode( node );
-				break;
 			case 3:   // Node.TEXT_NODE
+				serializedNode = {
+					NodeType: node.nodeType,
+					NodeName: node.nodeName.toLowerCase(),
+					NodeValue: node.nodeValue
+				};
+				break;
 			case 4:   // Node.CDATA_SECTION_NODE
 			case 7:   // Node.PROCESSING_INSTRUCTION_NODE
 			case 8:   // Node.COMMENT_NODE
@@ -228,6 +196,8 @@
 					NodeName: node.nodeName
 				};
 				break;
+			case 2:   // Node.ATTRIBUTE_NODE
+				throw new Error( "`node.nodeType` was `Node.ATTRIBUTE_NODE` (2), which is not supported by this method" );
 			default:
 				throw new Error( "`node.nodeType` was not recognized: " + node.nodeType );
 		}

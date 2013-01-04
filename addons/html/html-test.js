@@ -40,12 +40,10 @@
 			},
 			removeUnlistedStyleRulesFromSerializedElementNode = function(serializedElementNode, listedStyleRules) {
 				var cleanedSerializedElementNode = {},
-					cleanedStyleAttr = {},
 					cleanedStyleRules = {},
 					i, elKeys, elKey,
-					j, attrs, attr, cleanedAttrs, kids, kid, cleanedKids,
-					k, styleAttrKey, styleAttrKeys,
-					l, styleRuleKeys, styleRuleKey;
+					j, attrs, attrKeys, attrKey, attrVal, cleanedAttrs, kids, kid, cleanedKids,
+					k, styleRuleKeys, styleRuleKey;
 
 				if (!listedStyleRules) {
 					listedStyleRules = [];
@@ -57,42 +55,29 @@
 
 					if (elKey === "Attributes") {
 						attrs = serializedElementNode.Attributes;
-						cleanedAttrs = [];
+						cleanedAttrs = {};
 
 						// MOAR ITERATION!!!
-						for (j = 0; j < attrs.length; j++) {
-							attr = attrs[j];
+						attrKeys = objectKeys(attrs);
+						for (j = 0; j < attrKeys.length; j++) {
+							attrKey = attrKeys[j];
 
-							if (attr.NodeName !== "style") {
-								cleanedAttrs.push(attr);
+							if (attrKey !== "style") {
+								cleanedAttrs[attrKey] = attrs[attrKey];
 							}
 							else {
-								styleAttrKeys = objectKeys(attr);
-								for (k = 0; k < styleAttrKeys.length; k++) {
-									styleAttrKey = styleAttrKeys[k];
-									if (styleAttrKey !== "NodeValue") {
-										cleanedStyleAttr[styleAttrKey] = attr[styleAttrKey];
-									}
-									else {
-										styleRuleKeys = objectKeys(attr.NodeValue);
-										for (l = 0; l < styleRuleKeys.length; l++) {
-											styleRuleKey = styleRuleKeys[l];
+								attrVal = attrs[attrKey];
+								styleRuleKeys = objectKeys(attrVal);
+								for (k = 0; k < styleRuleKeys.length; k++) {
+									styleRuleKey = styleRuleKeys[k];
 
-											if (arrayIndexOf(listedStyleRules, styleRuleKey) !== -1) {
-												cleanedStyleRules[styleRuleKey] = attr.NodeValue[styleRuleKey];
-											}
-										}
-
-										if (objectKeys(cleanedStyleRules).length) {
-											cleanedStyleAttr.NodeValue = cleanedStyleRules;
-										}
-										else {
-											cleanedStyleAttr = null;
-										}
+									if (arrayIndexOf(listedStyleRules, styleRuleKey) !== -1) {
+										cleanedStyleRules[styleRuleKey] = attrVal[styleRuleKey];
 									}
 								}
-								if (cleanedStyleAttr) {
-									cleanedAttrs.push(cleanedStyleAttr);
+
+								if (objectKeys(cleanedStyleRules).length) {
+									cleanedAttrs[attrKey] = cleanedStyleRules;
 								}
 							}
 						}
@@ -122,19 +107,14 @@
 			removeUnlistedStyleRulesFromSerializedNodes = function(actual, expected) {
 				var actualLength = actual.length,
 					cleanedActual = new Array(actualLength),
-					i, j, attrs, listedStyleRules;
+					i, attrs, listedStyleRules;
 
 				for (i = 0; i < actualLength; i++) {
 					if (actual[i].NodeType === 1) {
 						listedStyleRules = [];
 						attrs = expected[i].Attributes;
-						if (attrs) {
-							for (j = 0; j < attrs.length; j++) {
-								if (attrs[j].NodeName === "style") {
-									listedStyleRules = objectKeys(attrs[j].NodeValue);
-									break;
-								}
-							}
+						if (attrs && attrs['style']) {
+							listedStyleRules = objectKeys(attrs['style']);
 						}
 						cleanedActual[i] = removeUnlistedStyleRulesFromSerializedElementNode(actual[i], listedStyleRules);
 					}
@@ -162,82 +142,43 @@
 
 	// Set `assertStylePropIsColor` and `assertFontWeightIsBold`
 	(function() {
-		var assertStylePropExists = function(serializedElementNode, stylePropName) {
-			QUnit.ok(serializedElementNode);
-			QUnit.ok(serializedElementNode.Attributes);
-			QUnit.strictEqual(serializedElementNode.Attributes.length > 0, true);
-
-			var styleAttributeIndex = (function(attrs) {
-				for (var i = 0, len = attrs.length; i < len; i++) {
-					if (attrs[i].NodeName === 'style') {
-						return i;
-					}
-				}
-				return -1;
-			})(serializedElementNode.Attributes);
-
-			QUnit.notStrictEqual(styleAttributeIndex, -1);
-			QUnit.ok(serializedElementNode.Attributes[styleAttributeIndex]);
-			QUnit.strictEqual(serializedElementNode.Attributes[styleAttributeIndex].NodeType, 2);
-			QUnit.strictEqual(serializedElementNode.Attributes[styleAttributeIndex].NodeName, 'style');
-			QUnit.ok(serializedElementNode.Attributes[styleAttributeIndex].NodeValue);
-
-			var stylePropVal = serializedElementNode.Attributes[styleAttributeIndex].NodeValue[stylePropName];
-			QUnit.ok(stylePropVal);
-			return stylePropVal;
-		};
+		var redColorRegex = /^(red|rgb\(255,\s*0,\s*0\)|#F00|#FF0000)$/i,
+			greenColorRegex = /^(green|rgb\(0,\s*255,\s*0\)|#0F0|#00FF00)$/i,
+			boldRegex = /^(bold|700)$/i;
 
 		assertStylePropIsColor = function(serializedElementNode, stylePropName, colorName) {
-			var styles = assertStylePropExists(serializedElementNode, stylePropName),
-				colorRegex = (function(colorName) {
+			var styleProp = serializedElementNode.Attributes.style[stylePropName],
+				colorRegex = (function() {
 					switch (colorName.toLowerCase()) {
 						case 'red':
-							return /^(red|rgb\(255,\s*0,\s*0\)|#F00|#FF0000)$/ig;
+							return redColorRegex;
 						case 'green':
-							return /^(green|rgb\(0,\s*255,\s*0\)|#0F0|#00FF00)$/ig;
+							return greenColorRegex;
 						default:
 							throw new Error('Unexpected value for `colorName`: "' + colorName + '"');
 					}
-				})(colorName);
-
-			QUnit.strictEqual(colorRegex.test(styles), true);
+				})();
+			QUnit.strictEqual(colorRegex.test(styleProp), true, (stylePropName + ': ' + colorName));
 		};
 
 		assertFontWeightIsBold = function(serializedElementNode) {
-			var styles = assertStylePropExists(serializedElementNode, 'fontWeight'),
-				boldRegex = /^(bold|700)$/ig;
-
-			QUnit.strictEqual(boldRegex.test(styles), true);
+			var fontWeightStyle = serializedElementNode.Attributes.style.fontWeight;
+			QUnit.strictEqual(boldRegex.test(fontWeightStyle), true, 'fontWeight: bold');
 		};
 	})();
 
 	assertBackgroundImageIsNone = function(serializedElementNode) {
-		QUnit.ok(serializedElementNode);
-		QUnit.ok(serializedElementNode.Attributes);
-
-		if (serializedElementNode.Attributes.length) {
-			var styleAttributeIndex = (function(attrs) {
-				for (var i = 0, len = attrs.length; i < len; i++) {
-					if (attrs[i].NodeName === 'style') {
-						return i;
-					}
-				}
-				return -1;
-			})(serializedElementNode.Attributes);
-
-			if (styleAttributeIndex !== -1) {
-				QUnit.ok(serializedElementNode.Attributes[styleAttributeIndex]);
-				QUnit.strictEqual(serializedElementNode.Attributes[styleAttributeIndex].NodeType, 2);
-				QUnit.strictEqual(serializedElementNode.Attributes[styleAttributeIndex].NodeName, 'style');
-				QUnit.ok(serializedElementNode.Attributes[styleAttributeIndex].NodeValue);
-
-				var bgImage = serializedElementNode.Attributes[styleAttributeIndex].NodeValue['backgroundImage'];
-				if (bgImage) {
-					QUnit.strictEqual(/^none$/ig.test(bgImage), true);
-				}
+		var result = !!serializedElementNode && !!serializedElementNode.Attributes;
+		if (result && !!serializedElementNode.Attributes.style) {
+			var bgImage = serializedElementNode.Attributes.style.backgroundImage;
+			if (bgImage) {
+				result = result && /^none$/ig.test(bgImage);
 			}
 		}
+		QUnit.strictEqual(result, true, 'backgroundImage: none');
 	};
+
+
 
 	module('qunit-html addon tests');
 
@@ -265,7 +206,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -287,7 +228,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'br',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: []
 				}
 			]
@@ -393,7 +334,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -415,7 +356,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -437,7 +378,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -459,7 +400,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -481,7 +422,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -503,7 +444,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -525,7 +466,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -547,13 +488,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'title',
-							NodeValue: 'testAttr'
-						}
-					],
+					Attributes: {
+						'title': 'testAttr'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -575,13 +512,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'title',
-							NodeValue: 'testAttr'
-						}
-					],
+					Attributes: {
+						'title': 'testAttr'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -603,7 +536,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'br',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: []
 				}
 			]
@@ -619,7 +552,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'br',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: []
 				}
 			]
@@ -638,28 +571,12 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'class',
-							NodeValue: 'className'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'id',
-							NodeValue: 'guid'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'lang',
-							NodeValue: 'en'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'title',
-							NodeValue: 'titleText'
-						}
-					],
+					Attributes: {
+						'class': 'className',
+						'id': 'guid',
+						'lang': 'en',
+						'title': 'titleText'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -684,28 +601,12 @@
 				{
 					NodeType: 1,
 					NodeName: 'input',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'id',
-							NodeValue: 'guid'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'size',
-							NodeValue: '5'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'type',
-							NodeValue: 'text'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'value',
-							NodeValue: 'blah'
-						}
-					],
+					Attributes: {
+						'id': 'guid',
+						'size': '5',
+						'type': 'text',
+						'value': 'blah'
+					},
 					ChildNodes: []
 				}
 			]
@@ -725,28 +626,12 @@
 				{
 					NodeType: 1,
 					NodeName: 'input',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'id',
-							NodeValue: 'guid'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'size',
-							NodeValue: '5'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'type',
-							NodeValue: 'text'
-						},
-						{
-							NodeType: 2,
-							NodeName: 'value',
-							NodeValue: 'blah'
-						}
-					],
+					Attributes: {
+						'id': 'guid',
+						'size': '5',
+						'type': 'text',
+						'value': 'blah'
+					},
 					ChildNodes: []
 				}
 			]
@@ -765,13 +650,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'class',
-							NodeValue: 'class1'
-						}
-					],
+					Attributes: {
+						'class': 'class1'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -796,13 +677,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'class',
-							NodeValue: 'class2'
-						}
-					],
+					Attributes: {
+						'class': 'class2'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -827,13 +704,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'class',
-							NodeValue: 'class1 class2'
-						}
-					],
+					Attributes: {
+						'class': 'class1 class2'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -858,13 +731,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'class',
-							NodeValue: 'class1 class2'
-						}
-					],
+					Attributes: {
+						'class': 'class1 class2'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -891,7 +760,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -920,7 +789,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [ /* Cannot validate `color` this way */ ],
+					Attributes: { /* Cannot validate `color` this way */ },
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -949,7 +818,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [ /* Cannot validate `color` this way */ ],
+					Attributes: { /* Cannot validate `color` this way */ },
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -978,7 +847,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [ /* Cannot validate `color` this way */ ],
+					Attributes: { /* Cannot validate `color` this way */ },
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1007,7 +876,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [ /* Cannot validate `color` this way */ ],
+					Attributes: { /* Cannot validate `color` this way */ },
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1036,7 +905,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [ /* Cannot validate `color` this way */ ],
+					Attributes: { /* Cannot validate `color` this way */ },
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1065,7 +934,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1096,23 +965,19 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'style',
-							NodeValue: {
-								'borderTopWidth': '5px',
-								'borderTopStyle': 'solid',
-								'borderRightWidth': '5px',
-								'borderRightStyle': 'solid',
-								'borderBottomWidth': '5px',
-								'borderBottomStyle': 'solid',
-								'borderLeftWidth': '5px',
-								'borderLeftStyle': 'solid'
-								/* Cannot validate `border*Color` this way */
-							}
+					Attributes: {
+						'style': {
+							'borderTopWidth': '5px',
+							'borderTopStyle': 'solid',
+							'borderRightWidth': '5px',
+							'borderRightStyle': 'solid',
+							'borderBottomWidth': '5px',
+							'borderBottomStyle': 'solid',
+							'borderLeftWidth': '5px',
+							'borderLeftStyle': 'solid'
+							/* Cannot validate `border*Color` this way */
 						}
-					],
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1144,7 +1009,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1174,13 +1039,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'title',
-							NodeValue: 'strong'
-						}
-					],
+					Attributes: {
+						'title': 'strong'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1192,13 +1053,9 @@
 				{
 					NodeType: 1,
 					NodeName: 'i',
-					Attributes: [
-						{
-							NodeType: 2,
-							NodeName: 'title',
-							NodeValue: 'em'
-						}
-					],
+					Attributes: {
+						'title': 'em'
+					},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1224,7 +1081,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'b',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
@@ -1241,7 +1098,7 @@
 				{
 					NodeType: 1,
 					NodeName: 'i',
-					Attributes: [],
+					Attributes: {},
 					ChildNodes: [
 						{
 							NodeType: 3,
