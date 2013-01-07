@@ -10,6 +10,7 @@
 
 	QUnit.begin(function() {
 		currentRun = {
+			name: (window && window.location && window.location.href) || (run.modules.length === 1 && run.modules[0].name) || null,
 			modules: [],
 			total: 0,
 			passed: 0,
@@ -227,6 +228,7 @@
 			});
 
 		xmlWriter.start('testsuites', {
+			name: run.name,
 			hostname: 'localhost',
 			tests: run.total,
 			failures: run.failed,
