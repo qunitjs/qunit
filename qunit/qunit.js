@@ -1079,7 +1079,9 @@ QUnit.load = function() {
 		}
 	}
 	numModules = moduleNames.length;
-	moduleNames.sort();
+	moduleNames.sort( function( a, b ) {
+		return a.localeCompare( b );
+	});
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " +
 		( config.module === undefined  ? "selected='selected'" : "" ) +
 		">< All Modules ></option>";
