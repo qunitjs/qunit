@@ -1498,12 +1498,12 @@ function extend( a, b ) {
  * @param {Function} fn
  */
 function addEvent( elem, type, fn ) {
+	// Standards-based browsers
 	if ( elem.addEventListener ) {
 		elem.addEventListener( type, fn, false );
-	} else if ( elem.attachEvent ) {
-		elem.attachEvent( "on" + type, fn );
+	// IE
 	} else {
-		fn(); // WTF
+		elem.attachEvent( "on" + type, fn );
 	}
 }
 
