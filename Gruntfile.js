@@ -89,6 +89,60 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	);
 });
 
-grunt.registerTask("default", ["jshint", "qunit"]);
+// TODO: Extract this task later, if feasible
+grunt.registerTask( "test-on-node", function() {
+	var testActive = false,
+		runDone = false,
+		done = this.async(),
+		QUnit = require("./qunit/qunit");
+
+	// Make the current tests work in the Node.js environment by appending
+	// a bunch of properties into the `global` object
+	["test", "asyncTest", "start", "stop", "expect"].forEach(function(f) {
+		global[f] = QUnit[f];
+	});
+	global.QUnit = QUnit;
+
+	QUnit.begin(function() {
+		grunt.verbose.ok( "BEGIN" );
+	});
+	QUnit.testStart(function() {
+		testActive = true;
+	});
+	QUnit.log(function( details ) {
+		if ( testActive ) {
+			if ( details.result ) {
+				return;
+			}
+			var message = "name: " + details.name + " module: " + details.module + " message: " + details.message;
+			grunt.log.error( message );
+		}
+	});
+	QUnit.testDone(function() {
+		testActive = false;
+	});
+	QUnit.done(function( details ) {
+		if ( !runDone ) {
+			var succeeded = ( details.failed === 0 ),
+				message = details.total + " assertions in (" + details.runtime + "ms), passed: " + details.passed + ", failed: " + details.failed;
+			if ( succeeded ) {
+				grunt.log.ok( message );
+			} else {
+				grunt.log.error( message );
+			}
+			done( succeeded );
+		}
+		runDone = true;
+	});
+	QUnit.config.autorun = false;
+
+	require("./test/logs");
+	require("./test/test");
+	require("./test/deepEqual");
+
+	QUnit.load();
+});
+
+grunt.registerTask("default", ["jshint", "qunit", "test-on-node"]);
 
 };

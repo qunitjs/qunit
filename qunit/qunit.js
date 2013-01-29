@@ -22,6 +22,7 @@ var QUnit,
 	Date = window.Date,
 	setTimeout = window.setTimeout,
 	defined = {
+		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
@@ -756,6 +757,7 @@ if ( typeof exports === "undefined" ) {
 	window.QUnit = QUnit;
 }
 
+
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
 	var i,
@@ -864,14 +866,16 @@ extend( QUnit, {
 	// Trigger an event on an element.
 	// @example triggerEvent( document.body, "click" );
 	triggerEvent: function( elem, type, event ) {
-		if ( document.createEvent ) {
-			event = document.createEvent( "MouseEvents" );
-			event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
-				0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		if ( defined.document ) {
+			if ( document.createEvent ) {
+				event = document.createEvent( "MouseEvents" );
+				event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
+					0, 0, 0, 0, 0, false, false, false, false, 0, null);
 
-			elem.dispatchEvent( event );
-		} else if ( elem.fireEvent ) {
-			elem.fireEvent( "on" + type );
+				elem.dispatchEvent( event );
+			} else if ( elem.fireEvent ) {
+				elem.fireEvent( "on" + type );
+			}
 		}
 	},
 
@@ -882,11 +886,11 @@ extend( QUnit, {
 
 	objectType: function( obj ) {
 		if ( typeof obj === "undefined" ) {
-				return "undefined";
+			return "undefined";
 		// consider: typeof null === object
 		}
 		if ( obj === null ) {
-				return "null";
+			return "null";
 		}
 
 		var match = toString.call( obj ).match(/^\[object\s(.*)\]$/),
@@ -1053,7 +1057,7 @@ extend( QUnit.constructor.prototype, {
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
 
-if ( typeof document === "undefined" || document.readyState === "complete" ) {
+if ( !defined.document || document.readyState === "complete" ) {
 	config.autorun = true;
 }
 
@@ -1213,7 +1217,9 @@ QUnit.load = function() {
 	}
 };
 
-addEvent( window, "load", QUnit.load );
+if ( defined.document ) {
+	addEvent( window, "load", QUnit.load );
+}
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -1287,7 +1293,7 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
+	if ( config.altertitle && defined.document && document.title ) {
 		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
@@ -1578,7 +1584,7 @@ function removeClass( elem, name ) {
 }
 
 function id( name ) {
-	return !!( typeof document !== "undefined" && document && document.getElementById ) &&
+	return !!( defined.document && document && document.getElementById ) &&
 		document.getElementById( name );
 }
 
@@ -2204,8 +2210,8 @@ QUnit.diff = (function() {
 }());
 
 // for CommonJS environments, export everything
-if ( typeof exports !== "undefined" ) {
-	extend( exports, QUnit.constructor.prototype );
+if ( typeof module !== "undefined" ) {
+	module.exports = QUnit;
 }
 
 // get at whatever the global object is, like window in browsers
