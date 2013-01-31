@@ -1585,6 +1585,7 @@ QUnit.equiv = (function() {
 		callers = [],
 		// stack to avoiding loops from circular referencing
 		parents = [],
+		parentsB = [],
 
 		getProto = Object.getPrototypeOf || function ( obj ) {
 			return obj.__proto__;
@@ -1641,7 +1642,7 @@ QUnit.equiv = (function() {
 				},
 
 				"array": function( b, a ) {
-					var i, j, len, loop;
+					var i, j, len, loop, aCircular, bCircular;
 
 					// b could be an object literal here
 					if ( QUnit.objectType( b ) !== "array" ) {
@@ -1656,24 +1657,35 @@ QUnit.equiv = (function() {
 
 					// track reference to avoid circular references
 					parents.push( a );
+					parentsB.push( b );
 					for ( i = 0; i < len; i++ ) {
 						loop = false;
 						for ( j = 0; j < parents.length; j++ ) {
-							if ( parents[j] === a[i] ) {
-								loop = true;// dont rewalk array
+							aCircular = parents[j] === a[i];
+							bCircular = parentsB[j] === b[i];
+							if ( aCircular || bCircular ) {
+								if ( a[i] === b[i] || aCircular && bCircular ) {
+									loop = true;
+								} else {
+									parents.pop();
+									parentsB.pop();
+									return false;
+								}
 							}
 						}
 						if ( !loop && !innerEquiv(a[i], b[i]) ) {
 							parents.pop();
+							parentsB.pop();
 							return false;
 						}
 					}
 					parents.pop();
+					parentsB.pop();
 					return true;
 				},
 
 				"object": function( b, a ) {
-					var i, j, loop,
+					var i, j, loop, aCircular, bCircular,
 						// Default to true
 						eq = true,
 						aProperties = [],
@@ -1692,28 +1704,36 @@ QUnit.equiv = (function() {
 
 					// stack constructor before traversing properties
 					callers.push( a.constructor );
+
 					// track reference to avoid circular references
 					parents.push( a );
+					parentsB.push( b );
 
-					for ( i in a ) { // be strict: don't ensures hasOwnProperty
-									// and go deep
+					// be strict: don't ensures hasOwnProperty and go deep
+					for ( i in a ) {
 						loop = false;
 						for ( j = 0; j < parents.length; j++ ) {
-							if ( parents[j] === a[i] ) {
-								// don't go down the same path twice
-								loop = true;
+							aCircular = parents[j] === a[i];
+							bCircular = parentsB[j] === b[i];
+							if ( aCircular || bCircular ) {
+								if ( a[i] === b[i] || aCircular && bCircular ) {
+									loop = true;
+								} else {
+									eq = false;
+									break;
+								}
 							}
 						}
-						aProperties.push(i); // collect a's properties
-
-						if (!loop && !innerEquiv( a[i], b[i] ) ) {
+						aProperties.push(i);
+						if ( !loop && !innerEquiv(a[i], b[i]) ) {
 							eq = false;
 							break;
 						}
 					}
 
-					callers.pop(); // unstack, we are done
 					parents.pop();
+					parentsB.pop();
+					callers.pop(); // unstack, we are done
 
 					for ( i in b ) {
 						bProperties.push( i ); // collect b's properties
