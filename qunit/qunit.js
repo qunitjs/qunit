@@ -1044,6 +1044,7 @@ QUnit.load = function() {
 	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
 		urlConfigCheckboxesContainer, urlConfigCheckboxes, moduleFilter,
 		numModules = 0,
+		moduleNames = [],
 		moduleFilterHtml = "",
 		urlConfigHtml = "",
 		oldconfig = extend( {}, config );
@@ -1072,18 +1073,24 @@ QUnit.load = function() {
 			"'><label for='qunit-urlconfig-" + escapeText( val.id ) +
 			"' title='" + escapeText( val.tooltip ) + "'>" + val.label + "</label>";
 	}
-
+	for ( i in config.modules ) {
+		if ( config.modules.hasOwnProperty( i ) ) {
+			moduleNames.push(i);
+		}
+	}
+	numModules = moduleNames.length;
+	moduleNames.sort( function( a, b ) {
+		return a.localeCompare( b );
+	});
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " +
 		( config.module === undefined  ? "selected='selected'" : "" ) +
 		">< All Modules ></option>";
 
-	for ( i in config.modules ) {
-		if ( config.modules.hasOwnProperty( i ) ) {
-			numModules += 1;
-			moduleFilterHtml += "<option value='" + escapeText( encodeURIComponent(i) ) + "' " +
-				( config.module === i ? "selected='selected'" : "" ) +
-				">" + escapeText(i) + "</option>";
-		}
+
+	for ( i = 0; i < numModules; i++) {
+			moduleFilterHtml += "<option value='" + escapeText( encodeURIComponent(moduleNames[i]) ) + "' " +
+				( config.module === moduleNames[i] ? "selected='selected'" : "" ) +
+				">" + escapeText(moduleNames[i]) + "</option>";
 	}
 	moduleFilterHtml += "</select>";
 
