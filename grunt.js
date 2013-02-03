@@ -96,6 +96,52 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	);
 });
 
+
+grunt.registerTask( "test-on-node", function() {
+	var done = this.async(),
+		QUnit = require("./qunit/qunit");
+	QUnit.begin(function() {
+		grunt.log.ok('BEGIN');
+	});
+	QUnit.log(function( details ) {
+		if ( details.result ) {
+			return;
+		}
+		var message = "name: " + details.name + " module: " + details.module + " message: " + details.message;
+		grunt.log.error(message);
+	});
+	QUnit.done(function( details ) {
+		var succeeded = (details.failed === 0),
+			message = details.total + " assertions in (" + details.runtime + "ms), passed: " + details.passed + ", failed: " + details.failed;
+		if ( succeeded ) {
+			grunt.log.ok(message);
+		} else {
+			grunt.log.error(message);
+		}
+		done( succeeded );
+	});
+	QUnit.config.autorun = false;
+	QUnit.load();
+
+	var extend = function ( a, b ) {
+		for ( var prop in b ) {
+			if ( b[ prop ] === undefined ) {
+				delete a[ prop ];
+			} else if ( prop !== "constructor" ) {
+				a[ prop ] = b[ prop ];
+			}
+		}
+		return a;
+	};
+
+	extend(global, QUnit);
+	global.QUnit = QUnit;
+
+	require("./test/test");
+	require("./test/deepEqual");
+});
+
+
 grunt.registerTask('default', 'lint qunit');
 
 };

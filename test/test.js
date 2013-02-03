@@ -81,7 +81,7 @@ QUnit.test( "QUnit.assert compatibility", 5, function( assert ) {
 	assert.notStrictEqual( window.assert, QUnit.assert, "Assert does not get exposed as a global variable" );
 });
 
-module("setup test", {
+QUnit.module("setup test", {
 	setup: function() {
 		ok(true);
 	}
@@ -96,7 +96,7 @@ test("module with setup, expect in test call", 2, function() {
 	ok(true);
 });
 
-module("<script id='qunit-unescaped-module'>'module';</script>", {
+QUnit.module("<script id='qunit-unescaped-module'>'module';</script>", {
 	setup: function() {
 	},
 	teardown: function() {
@@ -123,7 +123,7 @@ test("<script id='qunit-unescaped-test'>'test';</script>", 1, function() {
 
 var state;
 
-module("setup/teardown test", {
+QUnit.module("setup/teardown test", {
 	setup: function() {
 		state = true;
 		ok(true);
@@ -161,7 +161,7 @@ test("module with setup/teardown", function() {
 	ok(true);
 });
 
-module("setup/teardown test 2");
+QUnit.module("setup/teardown test 2");
 
 test("module without setup/teardown", function() {
 	expect(1);
@@ -170,7 +170,7 @@ test("module without setup/teardown", function() {
 
 var orgDate;
 
-module("Date test", {
+QUnit.module("Date test", {
 	setup: function() {
 		orgDate = Date;
 		window.Date = function () {
@@ -191,7 +191,7 @@ test("sample test for Date test", function () {
 if (typeof setTimeout !== 'undefined') {
 state = 'fail';
 
-module("teardown and stop", {
+QUnit.module("teardown and stop", {
 	teardown: function() {
 		equal(state, "done", "Test teardown.");
 	}
@@ -231,7 +231,7 @@ test("parameter passed to start decrements semaphore n times", function() {
 	}, 18);
 });
 
-module("async setup test", {
+QUnit.module("async setup test", {
 	setup: function() {
 		stop();
 		setTimeout(function() {
@@ -247,7 +247,7 @@ asyncTest("module with async setup", function() {
 	start();
 });
 
-module("async teardown test", {
+QUnit.module("async teardown test", {
 	teardown: function() {
 		stop();
 		setTimeout(function() {
@@ -263,7 +263,7 @@ asyncTest("module with async teardown", function() {
 	start();
 });
 
-module("asyncTest");
+QUnit.module("asyncTest");
 
 asyncTest("asyncTest", function() {
 	expect(2);
@@ -311,7 +311,7 @@ test("test synchronous calls to stop", 2, function() {
 });
 }
 
-module("save scope", {
+QUnit.module("save scope", {
 	setup: function() {
 		this.foo = "bar";
 	},
@@ -324,7 +324,7 @@ test("scope check", function() {
 	deepEqual(this.foo, "bar");
 });
 
-module("simple testEnvironment setup", {
+QUnit.module("simple testEnvironment setup", {
 	foo: "bar",
 	// example of meta-data
 	bugid: "#5311"
@@ -340,7 +340,7 @@ test("testEnvironment reset for next test",function() {
 	deepEqual(this.foo, "bar");
 });
 
-module("testEnvironment with object", {
+QUnit.module("testEnvironment with object", {
 	options:{
 		recipe:"soup",
 		ingredients:["hamster","onions"]
@@ -359,7 +359,7 @@ test("testEnvironment reset for next test",function() {
 });
 
 
-module("testEnvironment tests");
+QUnit.module("testEnvironment tests");
 
 function makeurl() {
 	var testEnv = QUnit.current_testEnvironment;
@@ -373,7 +373,7 @@ test("makeurl working",function() {
 	equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
 
-module("testEnvironment with makeurl settings", {
+QUnit.module("testEnvironment with makeurl settings", {
 	url: 'http://google.com/',
 	q: 'another_search_test'
 });
@@ -381,7 +381,7 @@ test("makeurl working with settings from testEnvironment", function() {
 	equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to from the url');
 });
 
-module("jsDump");
+QUnit.module("jsDump");
 test("jsDump output", function() {
 	equal( QUnit.jsDump.parse([1, 2]), "[\n  1,\n  2\n]" );
 	equal( QUnit.jsDump.parse({top: 5, left: 0}), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
@@ -391,7 +391,7 @@ test("jsDump output", function() {
 	}
 });
 
-module("assertions");
+QUnit.module("assertions");
 
 test("propEqual", 5, function( assert ) {
 	var objectCreate = Object.create || function ( origin ) {
@@ -560,7 +560,7 @@ test("raises", 9, function() {
 
 if (typeof document !== "undefined") {
 
-module("fixture");
+QUnit.module("fixture");
 test("setup", function() {
 	expect(0);
 	document.getElementById("qunit-fixture").innerHTML = "foobar";
@@ -586,7 +586,7 @@ test("running test name displayed", function() {
 			setTimeout( function() { start(); }, n );
 		};
 
-	module("timing", {
+	QUnit.module("timing", {
 		setup: function() {
 			if ( delayNextSetup ) {
 				delayNextSetup = false;
@@ -616,7 +616,7 @@ test("running test name displayed", function() {
 
 }
 
-module("custom assertions");
+QUnit.module("custom assertions");
 (function() {
 	function mod2(value, expected, message) {
 		var actual = value % 2;
@@ -629,7 +629,7 @@ module("custom assertions");
 })();
 
 
-module("recursions");
+QUnit.module("recursions");
 
 function Wrap(x) {
 	this.wrap = x;
@@ -741,7 +741,7 @@ test('Circular reference - test reported by soniciq in #105', function() {
 
 (function() {
 	var reset = QUnit.reset;
-	module("reset");
+	QUnit.module("reset");
 	test("reset runs assertions", function() {
 		expect(0);
 		QUnit.reset = function() {
@@ -762,7 +762,7 @@ function testAfterDone() {
 		QUnit.config.done = [];
 		// Because when this does happen, the assertion count parameter doesn't actually
 		// work we use this test to check the assertion count.
-		module("check previous test's assertion counts");
+		QUnit.module("check previous test's assertion counts");
 		test('count previous two test\'s assertions', function () {
 			var tests = getPreviousTests(/^ensure has correct number of assertions/, /^Synchronous test after load of page$/);
 
@@ -773,7 +773,7 @@ function testAfterDone() {
 	QUnit.config.done = [];
 	QUnit.done(secondAfterDoneTest);
 
-	module("Synchronous test after load of page");
+	QUnit.module("Synchronous test after load of page");
 
 	asyncTest('Async test', function() {
 		start();
