@@ -20,6 +20,7 @@ then specify the test suites to load using `QUnit.testSuites`:
 QUnit.testSuites([
     "test-file-1.html",
     "test-file-2.html",
-    "test-file-3.html"
+    // optionally provide a name and path
+    { name: "Test File 3", path: "test-file-3.html" }
 ]);
 ```

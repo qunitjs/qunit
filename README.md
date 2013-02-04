@@ -1,7 +1,7 @@
-[QUnit](http://qunitjs.com) - A JavaScript Unit Testing framework.
+[QUnit](http://qunitjs.com) - A JavaScript Unit Testing Framework.
 ================================
 
-QUnit is a powerful, easy-to-use, JavaScript test suite. It's used by the jQuery
+QUnit is a powerful, easy-to-use, JavaScript unit testing framework. It's used by the jQuery
 project to test its code and plugins but is capable of testing any generic
 JavaScript code (and even capable of testing JavaScript code on the server-side).
 
@@ -38,13 +38,14 @@ grunt binary. For additional grunt tasks, also run `npm install`.
 Releases
 --------
 
-Install git-extras and run `git changelog` to update History.md.
-Update qunit/qunit.js|css and package.json to the release version, commit and
-tag, update them again to the next version, commit and push commits and tags
-(`git push --tags origin master`).
+Install git-extras and run `git changelog` to update History.md. Clean up the
+changelog, removing merge commits or whitespace cleanups.
 
-Put the 'v' in front of the tag, e.g. `v1.8.0`. Clean up the changelog, removing merge commits
-or whitespace cleanups.
+Update qunit/qunit.js|css and package.json to the release version, commit and
+tag (Put the 'v' in front of the tag, e.g. `v1.8.0`), update them again to
+the next version, commit and push commits and tags:
+
+	git push --tags origin master
 
 To upload to code.jquery.com (replace $version accordingly), ssh to code.origin.jquery.com:
 

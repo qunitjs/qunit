@@ -227,6 +227,7 @@
 			});
 
 		xmlWriter.start('testsuites', {
+			name: (window && window.location && window.location.href) || (run.modules.length === 1 && run.modules[0].name) || null,
 			hostname: 'localhost',
 			tests: run.total,
 			failures: run.failed,

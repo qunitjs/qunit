@@ -1423,6 +1423,32 @@ test('mixed object/array with references to self wont loop', function() {
 	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambigous test)");
 });
 
+test('compare self-referent to tree', function () {
+	var temp,
+		circularA = [0],
+		treeA = [0, null],
+		circularO = {},
+		treeO = {
+			o: null
+		};
+
+	circularA[1] = circularA;
+	circularO.o = circularO;
+
+	equal(QUnit.equiv(circularA, treeA), false, "Array: Should not consider circular equal to tree");
+	equal(QUnit.equiv(circularO, treeO), false, "Object: Should not consider circular equal to tree");
+
+	temp = [ 0, circularA ];
+	equal(QUnit.equiv(circularA, temp), true, "Array: Reference is circular for one, but equal on other");
+	equal(QUnit.equiv(temp, circularA), true, "Array: Reference is circular for one, but equal on other");
+
+	temp = {
+		o: circularO
+	};
+	equal(QUnit.equiv(circularO, temp), true, "Object: Reference is circular for one, but equal on other");
+	equal(QUnit.equiv(temp, circularO), true, "Object: Reference is circular for one, but equal on other");
+});
+
 test("Test that must be done at the end because they extend some primitive's prototype", function() {
 	// Try that a function looks like our regular expression.
 	// This tests if we check that a and b are really both instance of RegExp

@@ -9,14 +9,14 @@ grunt.initConfig({
 		qunit: [
 			'test/index.html',
 			'test/async.html'
-			// TODO: Fix test failures in test/logs.js
+			// TODO figure out why this fails on our Jenkins server (Linux)
 			// 'test/logs.html'
 		],
 		addons: [
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
 			'addons/composite/composite-demo-test.html',
-			// TODO: Fix test failures addons/step-test.js
+			// TODO same as above
 			// 'addons/step/step.html',
 			'addons/html/html.html'
 		]
@@ -68,23 +68,33 @@ grunt.registerTask( "build-git", function( sha ) {
 grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var testswarm = require( "testswarm" ),
 		config = grunt.file.readJSON( configFile ).qunit,
-		suites = ["index.html", "async.html"];
-	testswarm({
+		runs = {},
+		done = this.async();
+	["index", "async"].forEach(function (suite) {
+		runs[suite] = config.testUrl + commit + "/test/" + suite + ".html";
+	});
+	testswarm.createClient( {
 		url: config.swarmUrl,
 		pollInterval: 10000,
-		timeout: 1000 * 60 * 30,
-		done: this.async()
-	}, {
-		authUsername: config.authUsername,
-		authToken: config.authToken,
-		jobName: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
-		runMax: config.runMax,
-		"runNames[]": suites,
-		"runUrls[]": suites.map(function (suite) {
-			return config.testUrl + commit + "/test/" + suite;
-		}),
-		"browserSets[]": config.browserSets
-	});
+		timeout: 1000 * 60 * 30
+	} )
+	.addReporter( testswarm.reporters.cli )
+	.auth( {
+		id: config.authUsername,
+		token: config.authToken
+	} )
+	.addjob(
+		{
+			name: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
+			runs: runs,
+			browserSets: config.browserSets
+		}, function( err, passed ) {
+			if ( err ) {
+				grunt.log.error( err );
+			}
+			done( passed );
+		}
+	);
 });
 
 grunt.registerTask('default', 'lint qunit');

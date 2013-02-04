@@ -1,4 +1,38 @@
-1.10.0 / 2012-08-30 
+1.11.0 / 2013-01-20
+==================
+
+  * Diff: Fix exception on property "constructor". Fixes #394.
+  * Composite Add-on: Test suites can be named by including an obj with name & path props within array param for .testSuites()
+  * Fix URL generator to take protocol and host into account to fix usage with file protocol in IE7/8
+  * Fix issue with Error.prototype.toString in IE 7
+  * Refactor jsDump for "node". Fixes #381.
+  * Show contents of text nodes in jsDump.node. Fixes #380.
+  * Escape text. Fixes #379.
+  * Rewrote most of the JUnitLogger addon as it was in bad shape: unused variables, duplicate effort that QUnit handles internally (e.g. tallying number of total assertions, failed assertions, etc.), sub-optimal XmlWriter implementation, etc.
+  * Phantomjs: Include source in assertion details
+  * Phantomjs: Removed the polling mechanism in favor of PhantomJS 1.6+'s `WebPage#onCallback`
+  * Delay start() until init() happened. Fixes #358. Closes #373.
+  * urlConfig: Fix checkbox event for oldIE. Fixes #369. Closes #370.
+  * Issue #365: Fix module picker for oldIE. Closes #366.
+  * Fixes #344 - Capture and show test duration.
+  * Rename tests to assertions in summary. Fixes #336 - Summary counts assertions but mentions 'tests'.
+  * Assert: Implement propEqual and notPropEqual. Fixes #317.
+  * Canvas addon: Use 0.6 as alpha value to avoid inconsistencies between browsers. Fixes #342
+  * Remove global variable "assert". Fixes #341.
+  * Add a test for loading tests asynchronously
+  * Improve start()-called-too-often fix, initialize semaphore at 1, fixes autostart=false case. Also provide stack for the offending start() call
+  * There's type-free objects in Firefox, extend objectType() to allow null match. Fixes #315
+  * Push a failing assertion when calling start() while already running. Resets anyway to keep other tests going. Fixes #314
+  * Adds Ninja Theme
+  * Extend jsdump to output Error objects as such, including the message property. Extend throws to provide 'expected' value when possible. Fixes #307
+  * Use classes to collapse assertion groups. Fixes #269
+  * Readme for junitlogger addon
+  * Better readme for composite addon
+  * Make `throws` ES3 compatible
+  * Composite: Adds test whether iframe contains content. Fixes #318 - Composite: Raises "global failure" in Opera
+  * Apply the same exception handling for test and teardown try/catch as for setup
+
+1.10.0 / 2012-08-30
 ==================
 
   * Simplify licensing: Only MIT, no more MIT/GPL dual licensing.
