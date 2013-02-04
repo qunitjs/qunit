@@ -15,9 +15,10 @@ grunt.initConfig({
 		addons: [
 			'addons/canvas/canvas.html',
 			'addons/close-enough/close-enough.html',
-			'addons/composite/composite-demo-test.html'
+			'addons/composite/composite-demo-test.html',
 			// TODO same as above
-			// 'addons/step/step.html'
+			// 'addons/step/step.html',
+			'addons/html/html.html'
 		]
 	},
 	lint: {
