@@ -2,9 +2,7 @@
 
   QUnit.extend( QUnit, {
     testSuites: function( suites ) {
-      QUnit.begin(function() {
-        initIframe();
-      });
+      initIframe();
 
       var i = 0,
           suiteCount = suites.length;
@@ -33,7 +31,30 @@
         });
       },
       
-      initIframe = function() {
+      initIframe = (function() {
+        var isInited = false;
+        return function() {
+          // This should only ever be allowed to execute once
+          if ( !isInited ) {
+          
+            // Initialize the iframe at the start of any test run
+            QUnit.begin(function() {
+              qunitCompositeIframe = createIframe();
+            });
+            
+            // Additionally, if the test run has already started and the iframe was
+            // not initialized, initialize it right now instead
+            if ( !qunitCompositeIframe && QUnit.config && QUnit.config.started ) {
+              qunitCompositeIframe = createIframe();
+            }
+            
+            // Never let this initializer be executed again
+            isInited = true;
+          }
+        }
+      })(),
+      
+      createIframe = function() {
         var body = document.body,
             iframe = document.createElement( "iframe" ),
             iframeWin;
@@ -80,7 +101,7 @@
         QUnit.addEvent( iframe, "load", onIframeLoad );
 
         iframeWin = iframe.contentWindow;
-        qunitCompositeIframe = iframe;
+        return iframe;
       },
       
       // Hijacked from qunit.js
