@@ -19,6 +19,7 @@
   });
 
   var qunitCompositeIframe,
+  
       runSuite = function( suite ) {
         var path = suite;
 
@@ -31,6 +32,7 @@
           qunitCompositeIframe.setAttribute( "src", path );
         });
       },
+      
       initIframe = function() {
         var body = document.body,
             iframe = document.createElement( "iframe" ),
@@ -79,6 +81,18 @@
 
         iframeWin = iframe.contentWindow;
         qunitCompositeIframe = iframe;
+      },
+      
+      // Hijacked from qunit.js
+      hasClass = function( elem, name ) {
+        return ( " " + elem.className + " " ).indexOf( " " + name + " " ) > -1;
+      },
+
+      // Hijacked from qunit.js
+      addClass = function( elem, name ) {
+        if ( !hasClass( elem, name ) ) {
+          elem.className += ( elem.className ? " " : "" ) + name;
+        }
       };
 
   QUnit.testStart(function( data ) {
@@ -95,8 +109,8 @@
 
     // undo the auto-expansion of failed tests
     for ( ; i < childCount; i++ ) {
-      if ( children[ i ].nodeName === "OL" ) {
-        children[ i ].style.display = "none";
+      if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
+        addClass( children[ i ], "qunit-collapsed" );
       }
     }
 
