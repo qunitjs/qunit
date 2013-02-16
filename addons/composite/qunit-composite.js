@@ -4,7 +4,7 @@ var iframe;
 function runSuite( suite ) {
 	var path;
 
-	if ( QUnit.is( 'object', suite ) ) {
+	if ( QUnit.is( "object", suite ) ) {
 		path = suite.path;
 		suite = suite.name;
 	} else {
@@ -22,38 +22,38 @@ function initIframe() {
 		body = document.body;
 
 	function onIframeLoad() {
-		var module, test,
+		var moduleName, testName,
 			count = 0;
 
-		if (iframe.src === "") {
+		if ( iframe.src === "" ) {
 			return;
 		}
 
 		iframeWin.QUnit.moduleStart(function( data ) {
-			// capture module name for messages
-			module = data.name;
+			// Capture module name for messages
+			moduleName = data.name;
 		});
 
 		iframeWin.QUnit.testStart(function( data ) {
-			// capture test name for messages
-			test = data.name;
+			// Capture test name for messages
+			testName = data.name;
 		});
 		iframeWin.QUnit.testDone(function() {
-			test = undefined;
+			testName = undefined;
 		});
 
 		iframeWin.QUnit.log(function( data ) {
-			if (test === undefined) {
+			if (testName === undefined) {
 				return;
 			}
-			// pass all test details through to the main page
-			var message = module + ": " + test + ": " + data.message;
+			// Pass all test details through to the main page
+			var message = moduleName + ": " + testName + ": " + data.message;
 			expect( ++count );
 			QUnit.push( data.result, data.actual, data.expected, message );
 		});
 
 		// Continue the outer test when the iframe's test is done
-		iframeWin.QUnit.done(QUnit.start);
+		iframeWin.QUnit.done( QUnit.start );
 	}
 
 	iframe = document.createElement( "iframe" );
@@ -73,8 +73,8 @@ function initIframe() {
 QUnit.testSuites = function( suites ) {
 	QUnit.begin( initIframe );
 
-	for ( var i = 0; i < suites.length; i++ ) {
-		runSuite( suites[i] );
+	for ( var i = 0, len = suites.length; i < len; i++ ) {
+		runSuite( suites[ i ] );
 	}
 
 	QUnit.done(function() {
@@ -88,12 +88,11 @@ QUnit.testStart(function( data ) {
 });
 
 QUnit.testDone(function() {
-	var i,
-		current = QUnit.id( this.config.current.id ),
+	var current = QUnit.id( this.config.current.id ),
 		children = current.children,
 		src = iframe.src;
 
-	QUnit.addEvent(current, "dblclick", function( e ) {
+	QUnit.addEvent( current, "dblclick", function( e ) {
 		var target = e && e.target ? e.target : window.event.srcElement;
 		if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
 			target = target.parentNode;
@@ -104,7 +103,7 @@ QUnit.testDone(function() {
 	});
 
 	// Update Rerun link to point to the standalone test suite page
-	current.getElementsByTagName('a')[0].href = src;
+	current.getElementsByTagName( "a" )[ 0 ].href = src;
 });
 
 }( QUnit ) );
