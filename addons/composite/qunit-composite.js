@@ -6,7 +6,9 @@
         initIframe();
       });
 
-      for ( var i = 0; i < suites.length; i++ ) {
+      var i = 0,
+          suiteCount = suites.length;
+      for ( ; i < suiteCount; i++ ) {
         runSuite( suites[ i ] );
       }
 
@@ -85,13 +87,14 @@
   });
 
   QUnit.testDone(function() {
-    var i,
+    var i = 0,
         current = QUnit.id( this.config.current.id ),
         children = current.children,
+        childCount = children.length,
         src = qunitCompositeIframe.src;
 
     // undo the auto-expansion of failed tests
-    for ( i = 0; i < children.length; i++ ) {
+    for ( ; i < childCount; i++ ) {
       if ( children[ i ].nodeName === "OL" ) {
         children[ i ].style.display = "none";
       }
