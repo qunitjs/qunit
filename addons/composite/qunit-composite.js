@@ -7,7 +7,7 @@
       });
 
       for ( var i = 0; i < suites.length; i++ ) {
-        runSuite( suites[i] );
+        runSuite( suites[ i ] );
       }
 
       QUnit.done(function() {
@@ -20,7 +20,7 @@
       runSuite = function( suite ) {
         var path = suite;
 
-        if ( QUnit.is( 'object', suite ) ) {
+        if ( QUnit.is( "object", suite ) ) {
           path = suite.path;
           suite = suite.name;
         }
@@ -92,8 +92,8 @@
 
     // undo the auto-expansion of failed tests
     for ( i = 0; i < children.length; i++ ) {
-      if ( children[i].nodeName === "OL" ) {
-        children[i].style.display = "none";
+      if ( children[ i ].nodeName === "OL" ) {
+        children[ i ].style.display = "none";
       }
     }
 
@@ -107,7 +107,7 @@
       }
     });
 
-    current.getElementsByTagName('a')[0].href = src;
+    current.getElementsByTagName( "a" )[ 0 ].href = src;
   });
 
-}( QUnit ) );
+})( QUnit );
