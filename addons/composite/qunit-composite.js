@@ -116,11 +116,6 @@
         }
       };
 
-  QUnit.testStart(function( data ) {
-    // update the test status to show which test suite is running
-    QUnit.id( "qunit-testresult" ).innerHTML = "Running " + data.name + "...<br>&nbsp;";
-  });
-
   QUnit.testDone(function() {
     var i = 0,
         current = QUnit.id( this.config.current.id ),
