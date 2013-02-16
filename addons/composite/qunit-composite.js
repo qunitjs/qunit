@@ -1,5 +1,5 @@
 (function( QUnit ) {
-var iframe;
+var iframe, hasBoundBegin;
 
 function runSuite( suite ) {
 	var path;
@@ -71,7 +71,10 @@ function initIframe() {
  *  or an object with a path and name property.
  */
 QUnit.testSuites = function( suites ) {
-	QUnit.begin( initIframe );
+	if ( !hasBoundBegin ) {
+		hasBoundBegin = true;
+		QUnit.begin( initIframe );
+	}
 
 	for ( var i = 0, len = suites.length; i < len; i++ ) {
 		runSuite( suites[ i ] );
