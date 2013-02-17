@@ -18,9 +18,26 @@ then specify the test suites to load using `QUnit.testSuites`:
 
 ```js
 QUnit.testSuites([
-    "test-file-1.html",
-    "test-file-2.html",
+    "example-test-1.html",
+    "example-test-2.html",
     // optionally provide a name and path
-    { name: "Test File 3", path: "test-file-3.html" }
+    { name: "Example Test 3", path: "example-test-3.html" }
 ]);
 ```
+
+Optionally, give the composed module a name (defaults to "Composition #1"):
+
+```
+QUnit.testSuites( "Example tests", [
+    "example-test-1.html",
+    "example-test-2.html"
+]);
+```
+
+### Notes ###
+ - Although it is possible to do so, we do not recommend mixing QUnit Composite suites (`QUnit.testSuites`) on the same page
+   as regular tests and modules (`QUnit.test`/`test`, `QUnit.module`/`module`).
+ - The QUnit Composite addon cannot be used for testing suites on the "file://" protocol **if** any of the referenced suites
+   are outside of the test page's directory (e.g. `../test.html`) due to web security restrictions. You can work around this
+   restriction by running them in Google Chrome or [PhantomJS](http://phantomjs.org), _with web security disabled_ &mdash; or,
+   of course, by not referencing suites outside of the current test page's directory.

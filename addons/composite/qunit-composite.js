@@ -1,10 +1,12 @@
 (function( QUnit ) {
-var iframe;
+var iframe, hasBound,
+	modules = 1,
+	executingComposite = false;
 
 function runSuite( suite ) {
 	var path;
 
-	if ( QUnit.is( 'object', suite ) ) {
+	if ( QUnit.is( "object", suite ) ) {
 		path = suite.path;
 		suite = suite.name;
 	} else {
@@ -22,42 +24,42 @@ function initIframe() {
 		body = document.body;
 
 	function onIframeLoad() {
-		var module, test,
+		var moduleName, testName,
 			count = 0;
 
-		if (iframe.src === "") {
+		if ( !iframe.src ) {
 			return;
 		}
 
 		iframeWin.QUnit.moduleStart(function( data ) {
-			// capture module name for messages
-			module = data.name;
+			// Capture module name for messages
+			moduleName = data.name;
 		});
 
 		iframeWin.QUnit.testStart(function( data ) {
-			// capture test name for messages
-			test = data.name;
+			// Capture test name for messages
+			testName = data.name;
 		});
 		iframeWin.QUnit.testDone(function() {
-			test = undefined;
+			testName = undefined;
 		});
 
 		iframeWin.QUnit.log(function( data ) {
-			if (test === undefined) {
+			if (testName === undefined) {
 				return;
 			}
-			// pass all test details through to the main page
-			var message = module + ": " + test + ": " + data.message;
+			// Pass all test details through to the main page
+			var message = ( moduleName ? moduleName + ": " : "" ) + testName + ": " + ( data.message || ( data.result ? "okay" : "failed" ) );
 			expect( ++count );
 			QUnit.push( data.result, data.actual, data.expected, message );
 		});
 
 		// Continue the outer test when the iframe's test is done
-		iframeWin.QUnit.done(QUnit.start);
+		iframeWin.QUnit.done( QUnit.start );
 	}
 
 	iframe = document.createElement( "iframe" );
-	iframe.className = "qunit-subsuite";
+	iframe.className = "qunit-composite-suite";
 	body.appendChild( iframe );
 
 	QUnit.addEvent( iframe, "load", onIframeLoad );
@@ -66,34 +68,57 @@ function initIframe() {
 }
 
 /**
+ * @param {string} [name] Module name to group these test suites.
  * @param {Array} suites List of suites where each suite
  *  may either be a string (path to the html test page),
  *  or an object with a path and name property.
  */
-QUnit.testSuites = function( suites ) {
-	QUnit.begin( initIframe );
+QUnit.testSuites = function( name, suites ) {
+	var i, suitesLen;
 
-	for ( var i = 0; i < suites.length; i++ ) {
-		runSuite( suites[i] );
+	if ( arguments.length === 1 ) {
+		suites = name;
+		name = "Composition #" + modules++;
+	}
+	suitesLen = suites.length;
+
+	if ( !hasBound ) {
+		hasBound = true;
+		QUnit.begin( initIframe );
+
+		// TODO: Would be better to use something like QUnit.once( 'moduleDone' )
+		// after the last test suite.
+		QUnit.moduleDone( function () {
+			executingComposite = false;
+		} );
+
+		QUnit.done(function() {
+			iframe.style.display = "none";
+		});
 	}
 
-	QUnit.done(function() {
-		iframe.style.display = "none";
+	QUnit.module( name, {
+		setup: function () {
+			executingComposite = true;
+		}
 	});
+
+	for ( i = 0; i < suitesLen; i++ ) {
+		runSuite( suites[ i ] );
+	}
 };
 
-QUnit.testStart(function( data ) {
-	// update the test status to show which test suite is running
-	QUnit.id( "qunit-testresult" ).innerHTML = "Running " + data.name + "...<br>&nbsp;";
-});
-
 QUnit.testDone(function() {
-	var i,
+	if ( !executingComposite ) {
+		return;
+	}
+
+	var i, len,
 		current = QUnit.id( this.config.current.id ),
 		children = current.children,
 		src = iframe.src;
 
-	QUnit.addEvent(current, "dblclick", function( e ) {
+	QUnit.addEvent( current, "dblclick", function( e ) {
 		var target = e && e.target ? e.target : window.event.srcElement;
 		if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
 			target = target.parentNode;
@@ -103,8 +128,15 @@ QUnit.testDone(function() {
 		}
 	});
 
+	// Undo QUnit's auto-expansion for bad tests
+	for ( i = 0, len = children.length; i < len; i++ ) {
+		if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
+			QUnit.addClass( children[ i ], "qunit-collapsed" );
+		}
+	}
+
 	// Update Rerun link to point to the standalone test suite page
-	current.getElementsByTagName('a')[0].href = src;
+	current.getElementsByTagName( "a" )[ 0 ].href = src;
 });
 
 }( QUnit ) );
