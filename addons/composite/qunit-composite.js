@@ -59,7 +59,7 @@ function initIframe() {
 	}
 
 	iframe = document.createElement( "iframe" );
-	iframe.className = "qunit-subsuite";
+	iframe.className = "qunit-composite-suite";
 	body.appendChild( iframe );
 
 	QUnit.addEvent( iframe, "load", onIframeLoad );
