@@ -84,7 +84,7 @@
             iframe = document.createElement( "iframe" ),
             iframeWin;
 
-        iframe.className = "qunit-subsuite";
+        iframe.className = "qunit-composite-subsuite";
         body.appendChild( iframe );
 
         function onIframeLoad() {
