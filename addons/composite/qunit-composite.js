@@ -1,5 +1,7 @@
 (function( QUnit ) {
-var iframe, hasBoundBegin;
+var iframe, hasBound,
+	modules = 1,
+	executingComposite = false;
 
 function runSuite( suite ) {
 	var path;
@@ -66,26 +68,51 @@ function initIframe() {
 }
 
 /**
+ * @param {string} [name] Module name to group these test suites.
  * @param {Array} suites List of suites where each suite
  *  may either be a string (path to the html test page),
  *  or an object with a path and name property.
  */
-QUnit.testSuites = function( suites ) {
-	if ( !hasBoundBegin ) {
-		hasBoundBegin = true;
+QUnit.testSuites = function( name, suites ) {
+	var i, suitesLen;
+
+	if ( arguments.length === 1 ) {
+		suites = name;
+		name = "Composition #" + modules++;
+	}
+	suitesLen = suites.length;
+
+	if ( !hasBound ) {
+		hasBound = true;
 		QUnit.begin( initIframe );
+
+		// TODO: Would be better to use something like QUnit.once( 'moduleDone' )
+		// after the last test suite.
+		QUnit.moduleDone( function () {
+			executingComposite = false;
+		} );
+
+		QUnit.done(function() {
+			iframe.style.display = "none";
+		});
 	}
 
-	for ( var i = 0, len = suites.length; i < len; i++ ) {
+	QUnit.module( name, {
+		setup: function () {
+			executingComposite = true;
+		}
+	});
+
+	for ( i = 0; i < suitesLen; i++ ) {
 		runSuite( suites[ i ] );
 	}
-
-	QUnit.done(function() {
-		iframe.style.display = "none";
-	});
 };
 
 QUnit.testDone(function() {
+	if ( !executingComposite ) {
+		return;
+	}
+
 	var current = QUnit.id( this.config.current.id ),
 		children = current.children,
 		src = iframe.src;
