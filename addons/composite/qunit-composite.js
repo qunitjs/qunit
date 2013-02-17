@@ -113,7 +113,8 @@ QUnit.testDone(function() {
 		return;
 	}
 
-	var current = QUnit.id( this.config.current.id ),
+	var i, len,
+		current = QUnit.id( this.config.current.id ),
 		children = current.children,
 		src = iframe.src;
 
@@ -126,6 +127,13 @@ QUnit.testDone(function() {
 			window.location = src;
 		}
 	});
+
+	// Undo QUnit's auto-expansion for bad tests
+	for ( i = 0, len = children.length; i < len; i++ ) {
+		if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
+			QUnit.addClass( children[ i ], "qunit-collapsed" );
+		}
+	}
 
 	// Update Rerun link to point to the standalone test suite page
 	current.getElementsByTagName( "a" )[ 0 ].href = src;
