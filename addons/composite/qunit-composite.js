@@ -27,7 +27,7 @@ function initIframe() {
 		var moduleName, testName,
 			count = 0;
 
-		if ( iframe.src === "" ) {
+		if ( !iframe.src ) {
 			return;
 		}
 
@@ -49,7 +49,7 @@ function initIframe() {
 				return;
 			}
 			// Pass all test details through to the main page
-			var message = moduleName + ": " + testName + ": " + data.message;
+			var message = ( moduleName ? moduleName + ": " : "" ) + testName + ": " + ( data.message || ( data.result ? "okay" : "failed" ) );
 			expect( ++count );
 			QUnit.push( data.result, data.actual, data.expected, message );
 		});
