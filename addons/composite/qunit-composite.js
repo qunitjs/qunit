@@ -88,39 +88,40 @@
         body.appendChild( iframe );
 
         function onIframeLoad() {
-          var module, test,
+          var moduleName, testName,
               count = 0;
 
-          if (iframe.src === "") {
+          if ( !iframe.src ) {
             return;
           }
 
           iframeWin.QUnit.moduleStart(function( data ) {
-            // capture module name for messages
-            module = data.name;
+            // Capture module name for messages
+            moduleName = data.name;
           });
 
           iframeWin.QUnit.testStart(function( data ) {
-            // capture test name for messages
-            test = data.name;
+            // Capture test name for messages
+            testName = data.name;
           });
+          
           iframeWin.QUnit.testDone(function() {
-            test = null;
+            testName = null;
           });
 
           iframeWin.QUnit.log(function( data ) {
-            if (test === null) {
+            if ( testName === null ) {
               return;
             }
-            // pass all test details through to the main page
-            var message = module + ": " + test + ": " + data.message;
+            // Pass all test details through to the main page
+            var message = ( moduleName ? moduleName + ": " : "" ) + testName + ": " + ( data.message || ( data.result ? "okay" : "failed" ) );
             expect( ++count );
             QUnit.push( data.result, data.actual, data.expected, message );
           });
 
           iframeWin.QUnit.done(function() {
-            // start the wrapper test from the main page
-            start();
+            // Start the wrapper test from the main page
+            QUnit.start();
           });
         }
         QUnit.addEvent( iframe, "load", onIframeLoad );
