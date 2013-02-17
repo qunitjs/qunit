@@ -2,21 +2,42 @@
 
   QUnit.extend( QUnit, {
     testSuites: function( suites ) {
-      initIframe();
-
       var i = 0,
-          suiteCount = suites.length;
+          suiteCount = suites.length,
+          moduleMeta = {
+            completed: 0,
+            total: suiteCount
+          };
+
+      QUnit.module( null, {
+        setup: once(
+          function() {
+            executingComposite = true;
+            initIframe();
+            initLoggingCallbacks();
+          }
+        ),
+        teardown: function() {
+          moduleMeta.completed++;
+          if ( moduleMeta.completed === moduleMeta.total ) {
+            QUnit.moduleDone( once(
+              function() {
+                executingComposite = false;
+              }
+            ) );
+          }
+        }
+      });
+      
       for ( ; i < suiteCount; i++ ) {
         runSuite( suites[ i ] );
       }
-
-      QUnit.done(function() {
-        qunitCompositeIframe.style.display = "none";
-      });
     }
   });
 
   var qunitCompositeIframe,
+
+      executingComposite = false,
   
       runSuite = function( suite ) {
         var path = suite;
@@ -26,33 +47,37 @@
           suite = suite.name;
         }
 
-        asyncTest( suite, function() {
+        QUnit.asyncTest( suite, function() {
           qunitCompositeIframe.setAttribute( "src", path );
         });
       },
-      
-      initIframe = (function() {
-        var isInited = false;
+
+      once = function( fn ) {
+        var memo;
         return function() {
-          // This should only ever be allowed to execute once
-          if ( !isInited ) {
+          if ( !fn ) {
+            return memo;
+          }
+          memo = fn.apply( this, arguments );
+          fn = null;
+          return memo;
+        };
+      },
+
+      initIframe = once(
+        function() {
+          // Initialize the iframe at the start of any test run
+          QUnit.begin(function() {
+            qunitCompositeIframe = createIframe();
+          });
           
-            // Initialize the iframe at the start of any test run
-            QUnit.begin(function() {
-              qunitCompositeIframe = createIframe();
-            });
-            
-            // Additionally, if the test run has already started and the iframe was
-            // not initialized, initialize it right now instead
-            if ( !qunitCompositeIframe && QUnit.config && QUnit.config.started ) {
-              qunitCompositeIframe = createIframe();
-            }
-            
-            // Never let this initializer be executed again
-            isInited = true;
+          // Additionally, if the test run has already started and the iframe was
+          // not initialized, initialize it right now instead
+          if ( !qunitCompositeIframe && QUnit.config && QUnit.config.started ) {
+            qunitCompositeIframe = createIframe();
           }
         }
-      })(),
+      ),
       
       createIframe = function() {
         var body = document.body,
@@ -104,6 +129,46 @@
         return iframe;
       },
       
+      initLoggingCallbacks = once(
+        function() {
+          QUnit.testDone(function() {
+            if ( !executingComposite ) {
+              return;
+            }
+            
+            var i = 0,
+                current = QUnit.id( this.config.current.id ),
+                children = current.children,
+                childCount = children.length,
+                src = qunitCompositeIframe.src;
+
+            // Undo the auto-expansion of failed tests
+            for ( ; i < childCount; i++ ) {
+              if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
+                addClass( children[ i ], "qunit-collapsed" );
+              }
+            }
+
+            QUnit.addEvent(current, "dblclick", function( e ) {
+              var target = e && e.target ? e.target : window.event.srcElement;
+              if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
+                target = target.parentNode;
+              }
+              if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+                window.location = src;
+              }
+            });
+
+            current.getElementsByTagName( "a" )[ 0 ].href = src;
+          });
+
+          QUnit.done(function() {
+            // Hide the iframe when the test run is all finished
+            qunitCompositeIframe.style.display = "none";
+          });
+        }
+      ),
+
       // Hijacked from qunit.js
       hasClass = function( elem, name ) {
         return ( " " + elem.className + " " ).indexOf( " " + name + " " ) > -1;
@@ -115,32 +180,5 @@
           elem.className += ( elem.className ? " " : "" ) + name;
         }
       };
-
-  QUnit.testDone(function() {
-    var i = 0,
-        current = QUnit.id( this.config.current.id ),
-        children = current.children,
-        childCount = children.length,
-        src = qunitCompositeIframe.src;
-
-    // undo the auto-expansion of failed tests
-    for ( ; i < childCount; i++ ) {
-      if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
-        addClass( children[ i ], "qunit-collapsed" );
-      }
-    }
-
-    QUnit.addEvent(current, "dblclick", function( e ) {
-      var target = e && e.target ? e.target : window.event.srcElement;
-      if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
-        target = target.parentNode;
-      }
-      if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-        window.location = src;
-      }
-    });
-
-    current.getElementsByTagName( "a" )[ 0 ].href = src;
-  });
 
 })( QUnit );
