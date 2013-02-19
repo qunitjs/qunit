@@ -3,7 +3,7 @@ A PhantomJS-powered headless test runner, providing basic console output for QUn
 
 ### Usage ###
 ```bash
-  phantomjs runner.js [url-of-your-qunit-testsuite]
+  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds]
 ```
 
 ### Example ###
