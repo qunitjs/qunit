@@ -113,7 +113,16 @@
 			});
 
 			QUnit.done(function(result) {
-				console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
+			
+			        var colorRed="\u001b[41m \u001b[30m";
+          			var colorGreen="\u001b[42m \u001b[30m";
+          			var colorEnd = "\u001b[0m";
+
+        			if(result.failed >=1) {
+          				console.log(colorRed+'Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.'+colorEnd);
+        			} else {
+          				console.log(colorGreen+'Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.'+colorEnd);
+        			}
 
 				if (typeof window.callPhantom === 'function') {
 					window.callPhantom({
