@@ -20,13 +20,14 @@
 	var args = require('system').args;
 
 	// arg[0]: scriptName, args[1...]: arguments
-	if (args.length !== 2) {
-		console.error('Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite]');
+	if (args.length < 2) {
+		console.error('Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds]');
 		phantom.exit(1);
 	}
 
 	var url = args[1],
-		page = require('webpage').create();
+		page = require('webpage').create(),
+		timeout = args[2];
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
 	page.onConsoleMessage = function(msg) {
@@ -62,6 +63,13 @@
 			if (qunitMissing) {
 				console.error('The `QUnit` object is not present on this page.');
 				phantom.exit(1);
+			}
+
+			// Set a timeout on the test running, otherwise tests with async problems will hang forever
+			if (timeout) {
+				setTimeout(function(){
+					phantom.exit(1);
+				}, timeout*1000);
 			}
 
 			// Do nothing... the callback mechanism will handle everything!
