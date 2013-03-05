@@ -106,13 +106,13 @@ module("<script id='qunit-unescaped-module'>'module';</script>", {
 		// is created before any test is ran. So use ids instead.
 		if (document.getElementById('qunit-unescaped-module')) {
 			// This can either be from in #qunit-modulefilter or #qunit-testresult
-			ok(false, 'Unscaped module name');
+			ok(false, 'Unescaped module name');
 		}
 		if (document.getElementById('qunit-unescaped-test')) {
-			ok(false, 'Unscaped test name');
+			ok(false, 'Unescaped test name');
 		}
 		if (document.getElementById('qunit-unescaped-assertion')) {
-			ok(false, 'Unscaped test name');
+			ok(false, 'Unescaped test name');
 		}
 	}
 });
@@ -174,7 +174,7 @@ module("Date test", {
 	setup: function() {
 		orgDate = Date;
 		window.Date = function () {
-			ok( false, 'QUnit should internally be independant from Date-related manipulation and testing' );
+			ok( false, 'QUnit should internally be independent from Date-related manipulation and testing' );
 			return new orgDate();
 		};
 	},

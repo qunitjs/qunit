@@ -1301,7 +1301,7 @@ test("Complex Instances Nesting (with function value in literals and/or in neste
 			b: fnOutside, // ok make reference to a function in all instances scope
 
 			// This function won't be ingored.
-			// It isn't visible for all C insances
+			// It isn't visible for all C instances
 			// and it is not in a property of an instance. (in an Object instances e.g. the object literal)
 			c: fnInside
 		};
@@ -1377,15 +1377,15 @@ test('object with references to self wont loop', function() {
 	};
 	circularA.abc = circularA;
 	circularB.abc = circularB;
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambiguous test)");
 
 	circularA.def = 1;
 	circularB.def = 1;
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object (ambiguous test)");
 
 	circularA.def = 1;
 	circularB.def = 0;
-	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object (unambigous test)");
+	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object (unambiguous test)");
 });
 
 test('array with references to self wont loop', function() {
@@ -1393,15 +1393,15 @@ test('array with references to self wont loop', function() {
 		circularB = [];
 	circularA.push(circularA);
 	circularB.push(circularB);
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambiguous test)");
 
 	circularA.push( 'abc' );
 	circularB.push( 'abc' );
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on array (ambiguous test)");
 
 	circularA.push( 'hello' );
 	circularB.push( 'goodbye' );
-	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on array (unambigous test)");
+	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on array (unambiguous test)");
 });
 
 test('mixed object/array with references to self wont loop', function() {
@@ -1412,15 +1412,15 @@ test('mixed object/array with references to self wont loop', function() {
 
 	circularA.push(circularA);
 	circularB.push(circularB);
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambiguous test)");
 
 	circularA[0].def = 1;
 	circularB[0].def = 1;
-	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambigous test)");
+	equal(QUnit.equiv(circularA, circularB), true, "Should not repeat test on object/array (ambiguous test)");
 
 	circularA[0].def = 1;
 	circularB[0].def = 0;
-	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambigous test)");
+	equal(QUnit.equiv(circularA, circularB), false, "Should not repeat test on object/array (unambiguous test)");
 });
 
 test('compare self-referent to tree', function () {
