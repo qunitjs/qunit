@@ -91,7 +91,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 			if ( err ) {
 				grunt.log.error( err );
 			}
-			done( passed );
+			done( passed === true );
 		}
 	);
 });
