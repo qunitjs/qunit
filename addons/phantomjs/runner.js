@@ -17,7 +17,8 @@
 (function() {
 	'use strict';
 
-	var args = require('system').args;
+	var url, page,
+		args = require('system').args;
 
 	// arg[0]: scriptName, args[1...]: arguments
 	if (args.length !== 2) {
@@ -25,8 +26,8 @@
 		phantom.exit(1);
 	}
 
-	var url = args[1],
-		page = require('webpage').create();
+	url = args[1];
+	page = require('webpage').create();
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
 	page.onConsoleMessage = function(msg) {

@@ -470,6 +470,7 @@ test("propEqual", 5, function( assert ) {
 });
 
 test("raises", 9, function() {
+	/*jshint es5:true */
 	function CustomError( message ) {
 		this.message = message;
 	}

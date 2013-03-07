@@ -1,60 +1,55 @@
-/*global config:true, task:true*/
+/*jshint node:true */
 module.exports = function( grunt ) {
 
 grunt.loadNpmTasks( "grunt-git-authors" );
+grunt.loadNpmTasks( "grunt-contrib-jshint" );
+grunt.loadNpmTasks( "grunt-contrib-qunit" );
 
 grunt.initConfig({
-	pkg: '<json:package.json>',
 	qunit: {
 		qunit: [
-			'test/index.html',
-			'test/async.html'
+			"test/index.html",
+			"test/async.html"
 			// TODO figure out why this fails on our Jenkins server (Linux)
-			// 'test/logs.html'
+			//"test/logs.html"
 		],
 		addons: [
-			'addons/canvas/canvas.html',
-			'addons/close-enough/close-enough.html',
-			'addons/composite/composite.html'
+			"addons/canvas/canvas.html",
+			"addons/close-enough/close-enough.html",
+			"addons/composite/composite.html"
 			// TODO same as above
-			// 'addons/step/step.html'
+			// "addons/step/step.html"
 		]
 	},
-	lint: {
-		qunit: 'qunit/qunit.js',
-		addons: 'addons/**.js',
-		tests: 'test/**.js',
-		grunt: 'grunt.js'
-	},
-	// TODO remove this once grunt 0.4 is out, see jquery-ui for other details
-	jshint: (function() {
-		function parserc( path ) {
-			var rc = grunt.file.readJSON( (path || "") + ".jshintrc" ),
-				settings = {
-					options: rc,
-					globals: {}
-				};
-
-			(rc.predef || []).forEach(function( prop ) {
-				settings.globals[ prop ] = true;
-			});
-			delete rc.predef;
-
-			return settings;
+	jshint: {
+		options: {
+				jshintrc: ".jshintrc"
+		},
+		gruntfile: [ "Gruntfile.js" ],
+		qunit: [ "qunit/**/*.js" ],
+		addons: {
+			options: {
+				jshintrc: "addons/.jshintrc"
+			},
+			files: {
+				src: [ "addons/**/*.js" ]
+			}
+		},
+		tests: {
+			options: {
+				jshintrc: "test/.jshintrc"
+			},
+			files: {
+				src: [ "test/**/*.js" ]
+			}
 		}
-
-		return {
-			qunit: parserc( "qunit/" ),
-			addons: parserc( "addons/" ),
-			tests: parserc( "test/" )
-		};
-	})()
+	}
 });
 
 grunt.registerTask( "build-git", function( sha ) {
 	function processor( content ) {
 		var tagline = " - A JavaScript Unit Testing Framework";
-		return content.replace( tagline, "-" + sha + " " + grunt.template.today('isoDate') + tagline );
+		return content.replace( tagline, "-" + sha + " " + grunt.template.today("isoDate") + tagline );
 	}
 	grunt.file.copy( "qunit/qunit.css", "dist/qunit-git.css", {
 		process: processor
@@ -84,7 +79,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	} )
 	.addjob(
 		{
-			name: 'QUnit commit #<a href="https://github.com/jquery/qunit/commit/' + commit + '">' + commit.substr( 0, 10 ) + '</a>',
+			name: "QUnit commit #<a href='https://github.com/jquery/qunit/commit/" + commit + "'>" + commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
 			browserSets: config.browserSets
 		}, function( err, passed ) {
@@ -96,6 +91,6 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	);
 });
 
-grunt.registerTask('default', 'lint qunit');
+grunt.registerTask("default", ["jshint", "qunit"]);
 
 };
