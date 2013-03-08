@@ -997,7 +997,10 @@ extend( QUnit, {
 
 	extend: extend,
 	id: id,
-	addEvent: addEvent
+	addEvent: addEvent,
+	addClass: addClass,
+	hasClass: hasClass,
+	removeClass: removeClass
 	// load, equiv, jsDump, diff: Attached later
 });
 
