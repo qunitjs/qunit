@@ -1,82 +1,86 @@
 (function( QUnit ) {
+var iframe;
 
-QUnit.extend( QUnit, {
-	testSuites: function( suites ) {
-		QUnit.begin(function() {
-			QUnit.initIframe();
-		});
+function runSuite( suite ) {
+	var path;
 
-		for ( var i = 0; i < suites.length; i++ ) {
-			QUnit.runSuite( suites[i] );
+	if ( QUnit.is( 'object', suite ) ) {
+		path = suite.path;
+		suite = suite.name;
+	} else {
+		path = suite;
+	}
+
+	QUnit.asyncTest( suite, function() {
+		iframe.setAttribute( "src", path );
+		// QUnit.start is called from the child iframe's QUnit.done hook.
+	});
+}
+
+function initIframe() {
+	var iframeWin,
+		body = document.body;
+
+	function onIframeLoad() {
+		var module, test,
+			count = 0;
+
+		if (iframe.src === "") {
+			return;
 		}
 
-		QUnit.done(function() {
-			this.iframe.style.display = "none";
+		iframeWin.QUnit.moduleStart(function( data ) {
+			// capture module name for messages
+			module = data.name;
 		});
-	},
 
-	runSuite: function( suite ) {
-		var path = suite;
-
-		if ( QUnit.is( 'object', suite ) ) {
-			path = suite.path;
-			suite = suite.name;
-		}
-
-		asyncTest( suite, function() {
-			QUnit.iframe.setAttribute( "src", path );
+		iframeWin.QUnit.testStart(function( data ) {
+			// capture test name for messages
+			test = data.name;
 		});
-	},
+		iframeWin.QUnit.testDone(function() {
+			test = undefined;
+		});
 
-	initIframe: function() {
-		var body = document.body,
-			iframe = this.iframe = document.createElement( "iframe" ),
-			iframeWin;
-
-		iframe.className = "qunit-subsuite";
-		body.appendChild( iframe );
-
-		function onIframeLoad() {
-			var module, test,
-				count = 0;
-
-			if (iframe.src === "") {
+		iframeWin.QUnit.log(function( data ) {
+			if (test === undefined) {
 				return;
 			}
+			// pass all test details through to the main page
+			var message = module + ": " + test + ": " + data.message;
+			expect( ++count );
+			QUnit.push( data.result, data.actual, data.expected, message );
+		});
 
-			iframeWin.QUnit.moduleStart(function( data ) {
-				// capture module name for messages
-				module = data.name;
-			});
-
-			iframeWin.QUnit.testStart(function( data ) {
-				// capture test name for messages
-				test = data.name;
-			});
-			iframeWin.QUnit.testDone(function() {
-				test = null;
-			});
-
-			iframeWin.QUnit.log(function( data ) {
-				if (test === null) {
-					return;
-				}
-				// pass all test details through to the main page
-				var message = module + ": " + test + ": " + data.message;
-				expect( ++count );
-				QUnit.push( data.result, data.actual, data.expected, message );
-			});
-
-			iframeWin.QUnit.done(function() {
-				// start the wrapper test from the main page
-				start();
-			});
-		}
-		QUnit.addEvent( iframe, "load", onIframeLoad );
-
-		iframeWin = iframe.contentWindow;
+		// Continue the outer test when the iframe's test is done
+		iframeWin.QUnit.done(QUnit.start);
 	}
-});
+
+	iframe = document.createElement( "iframe" );
+	iframe.className = "qunit-subsuite";
+	body.appendChild( iframe );
+
+	QUnit.addEvent( iframe, "load", onIframeLoad );
+
+	iframeWin = iframe.contentWindow;
+}
+
+/**
+ * @param {Array} suites List of suites where each suite
+ *  may either be a string (path to the html test page),
+ *  or an object with a path and name property.
+ */
+QUnit.testSuites = function( suites ) {
+	QUnit.begin( initIframe );
+
+	for ( var i = 0; i < suites.length; i++ ) {
+		runSuite( suites[i] );
+	}
+
+	QUnit.done(function() {
+		iframe.style.display = "none";
+	});
+};
 
 QUnit.testStart(function( data ) {
 	// update the test status to show which test suite is running
@@ -87,7 +91,7 @@ QUnit.testDone(function() {
 	var i,
 		current = QUnit.id( this.config.current.id ),
 		children = current.children,
-		src = this.iframe.src;
+		src = iframe.src;
 
 	// undo the auto-expansion of failed tests
 	for ( i = 0; i < children.length; i++ ) {
@@ -106,6 +110,7 @@ QUnit.testDone(function() {
 		}
 	});
 
+	// Update Rerun link to point to the standalone test suite page
 	current.getElementsByTagName('a')[0].href = src;
 });
 
