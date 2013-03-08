@@ -1,112 +1,185 @@
 (function( QUnit ) {
 
-QUnit.extend( QUnit, {
-	testSuites: function( suites ) {
-		QUnit.begin(function() {
-			QUnit.initIframe();
-		});
+  QUnit.extend( QUnit, {
+    testSuites: function( suites ) {
+      var i = 0,
+          suiteCount = suites.length,
+          moduleMeta = {
+            completed: 0,
+            total: suiteCount
+          };
 
-		for ( var i = 0; i < suites.length; i++ ) {
-			QUnit.runSuite( suites[i] );
-		}
+      QUnit.module( null, {
+        setup: once(
+          function() {
+            executingComposite = true;
+            initIframe();
+            initLoggingCallbacks();
+          }
+        ),
+        teardown: function() {
+          moduleMeta.completed++;
+          if ( moduleMeta.completed === moduleMeta.total ) {
+            QUnit.moduleDone( once(
+              function() {
+                executingComposite = false;
+              }
+            ) );
+          }
+        }
+      });
+      
+      for ( ; i < suiteCount; i++ ) {
+        runSuite( suites[ i ] );
+      }
+    }
+  });
 
-		QUnit.done(function() {
-			this.iframe.style.display = "none";
-		});
-	},
+  var qunitCompositeIframe,
 
-	runSuite: function( suite ) {
-		var path = suite;
+      executingComposite = false,
+  
+      runSuite = function( suite ) {
+        var path = suite;
 
-		if ( QUnit.is( 'object', suite ) ) {
-			path = suite.path;
-			suite = suite.name;
-		}
+        if ( QUnit.is( "object", suite ) ) {
+          path = suite.path;
+          suite = suite.name;
+        }
 
-		asyncTest( suite, function() {
-			QUnit.iframe.setAttribute( "src", path );
-		});
-	},
+        QUnit.asyncTest( suite, function() {
+          qunitCompositeIframe.setAttribute( "src", path );
+        });
+      },
 
-	initIframe: function() {
-		var body = document.body,
-			iframe = this.iframe = document.createElement( "iframe" ),
-			iframeWin;
+      once = function( fn ) {
+        var memo;
+        return function() {
+          if ( !fn ) {
+            return memo;
+          }
+          memo = fn.apply( this, arguments );
+          fn = null;
+          return memo;
+        };
+      },
 
-		iframe.className = "qunit-subsuite";
-		body.appendChild( iframe );
+      initIframe = once(
+        function() {
+          // Initialize the iframe at the start of any test run
+          QUnit.begin(function() {
+            qunitCompositeIframe = createIframe();
+          });
+          
+          // Additionally, if the test run has already started and the iframe was
+          // not initialized, initialize it right now instead
+          if ( !qunitCompositeIframe && QUnit.config && QUnit.config.started ) {
+            qunitCompositeIframe = createIframe();
+          }
+        }
+      ),
+      
+      createIframe = function() {
+        var body = document.body,
+            iframe = document.createElement( "iframe" ),
+            iframeWin;
 
-		function onIframeLoad() {
-			var module, test,
-				count = 0;
+        iframe.className = "qunit-composite-subsuite";
+        body.appendChild( iframe );
 
-			if (iframe.src === "") {
-				return;
-			}
+        function onIframeLoad() {
+          var moduleName, testName,
+              count = 0;
 
-			iframeWin.QUnit.moduleStart(function( data ) {
-				// capture module name for messages
-				module = data.name;
-			});
+          if ( !iframe.src ) {
+            return;
+          }
 
-			iframeWin.QUnit.testStart(function( data ) {
-				// capture test name for messages
-				test = data.name;
-			});
-			iframeWin.QUnit.testDone(function() {
-				test = null;
-			});
+          iframeWin.QUnit.moduleStart(function( data ) {
+            // Capture module name for messages
+            moduleName = data.name;
+          });
 
-			iframeWin.QUnit.log(function( data ) {
-				if (test === null) {
-					return;
-				}
-				// pass all test details through to the main page
-				var message = module + ": " + test + ": " + data.message;
-				expect( ++count );
-				QUnit.push( data.result, data.actual, data.expected, message );
-			});
+          iframeWin.QUnit.testStart(function( data ) {
+            // Capture test name for messages
+            testName = data.name;
+          });
+          
+          iframeWin.QUnit.testDone(function() {
+            testName = null;
+          });
 
-			iframeWin.QUnit.done(function() {
-				// start the wrapper test from the main page
-				start();
-			});
-		}
-		QUnit.addEvent( iframe, "load", onIframeLoad );
+          iframeWin.QUnit.log(function( data ) {
+            if ( testName === null ) {
+              return;
+            }
+            // Pass all test details through to the main page
+            var message = ( moduleName ? moduleName + ": " : "" ) + testName + ": " + ( data.message || ( data.result ? "okay" : "failed" ) );
+            expect( ++count );
+            QUnit.push( data.result, data.actual, data.expected, message );
+          });
 
-		iframeWin = iframe.contentWindow;
-	}
-});
+          iframeWin.QUnit.done(function() {
+            // Start the wrapper test from the main page
+            QUnit.start();
+          });
+        }
+        QUnit.addEvent( iframe, "load", onIframeLoad );
 
-QUnit.testStart(function( data ) {
-	// update the test status to show which test suite is running
-	QUnit.id( "qunit-testresult" ).innerHTML = "Running " + data.name + "...<br>&nbsp;";
-});
+        iframeWin = iframe.contentWindow;
+        return iframe;
+      },
+      
+      initLoggingCallbacks = once(
+        function() {
+          QUnit.testDone(function() {
+            if ( !executingComposite ) {
+              return;
+            }
+            
+            var i = 0,
+                current = QUnit.id( this.config.current.id ),
+                children = current.children,
+                childCount = children.length,
+                src = qunitCompositeIframe.src;
 
-QUnit.testDone(function() {
-	var i,
-		current = QUnit.id( this.config.current.id ),
-		children = current.children,
-		src = this.iframe.src;
+            // Undo the auto-expansion of failed tests
+            for ( ; i < childCount; i++ ) {
+              if ( children[ i ].nodeName.toLowerCase() === "ol" ) {
+                addClass( children[ i ], "qunit-collapsed" );
+              }
+            }
 
-	// undo the auto-expansion of failed tests
-	for ( i = 0; i < children.length; i++ ) {
-		if ( children[i].nodeName === "OL" ) {
-			children[i].style.display = "none";
-		}
-	}
+            QUnit.addEvent(current, "dblclick", function( e ) {
+              var target = e && e.target ? e.target : window.event.srcElement;
+              if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
+                target = target.parentNode;
+              }
+              if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
+                window.location = src;
+              }
+            });
 
-	QUnit.addEvent(current, "dblclick", function( e ) {
-		var target = e && e.target ? e.target : window.event.srcElement;
-		if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
-			target = target.parentNode;
-		}
-		if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-			window.location = src;
-		}
-	});
+            current.getElementsByTagName( "a" )[ 0 ].href = src;
+          });
 
-	current.getElementsByTagName('a')[0].href = src;
-});
+          QUnit.done(function() {
+            // Hide the iframe when the test run is all finished
+            qunitCompositeIframe.style.display = "none";
+          });
+        }
+      ),
 
-}( QUnit ) );
+      // Hijacked from qunit.js
+      hasClass = function( elem, name ) {
+        return ( " " + elem.className + " " ).indexOf( " " + name + " " ) > -1;
+      },
+
+      // Hijacked from qunit.js
+      addClass = function( elem, name ) {
+        if ( !hasClass( elem, name ) ) {
+          elem.className += ( elem.className ? " " : "" ) + name;
+        }
+      };
+
+})( QUnit );
