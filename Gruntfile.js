@@ -9,15 +9,13 @@ grunt.initConfig({
 	qunit: {
 		qunit: [
 			"test/index.html",
-			"test/async.html"
-			// TODO figure out why this fails on our Jenkins server (Linux)
-			//"test/logs.html"
+			"test/async.html",
+			"test/logs.html"
 		],
 		addons: [
 			"addons/canvas/canvas.html",
-			"addons/close-enough/close-enough.html"
-			// TODO same as above
-			// "addons/step/step.html"
+			"addons/close-enough/close-enough.html",
+			"addons/step/step.html"
 		]
 	},
 	jshint: {
