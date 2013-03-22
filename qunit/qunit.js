@@ -648,7 +648,7 @@ assert = {
 };
 
 /**
- * @deprecate since 1.8.0
+ * @deprecated since 1.8.0
  * Kept assertion helpers in root for backwards compatibility.
  */
 extend( QUnit, assert );
