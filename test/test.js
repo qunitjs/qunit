@@ -743,6 +743,68 @@ test('Circular reference - test reported by soniciq in #105', function() {
 	deepEqual(a.children(), [b]);
 });
 
+module("Faking setTimeout");
+test("QUnit isn't stopped by fake setTimeout", function() {
+  var innerRunner =
+    '  <html>' +
+    '    <head>' +
+    '      <meta charset="UTF-8">' +
+    '      <title>QUnit Test Suite</title>' +
+    '      <link rel="stylesheet" href="../qunit/qunit.css">' +
+    '    </head>' +
+    '    <body>' +
+    '      <div id="qunit"></div>' +
+    '      <script src="../qunit/qunit.js"></script>' +
+    '      <script type="text/javascript">' +
+    '        QUnit.config.updateRate = 1;' +
+    '        module("Module that mucks with time", {' +
+    '          setup: function() {' +
+    '            this.setTimeout = window.setTimeout;' +
+    '            window.setTimeout = function() {};' +
+    '          },' +
+    '          teardown: function() {' +
+    '            window.setTimeout = this.setTimeout;' +
+    '          }' +
+    '        });' +
+    '        test("just a test", function() { ok(true); });' +
+    '        test("just a test", function() { ok(true); });' +
+    '      </script>' +
+    '    </body>' +
+    '  </html>';
+
+  var frame = document.createElement('iframe');
+  var supportsSrcDoc = !!('srcdoc' in frame);
+  frame.setAttribute('srcdoc', innerRunner);
+
+  if (!supportsSrcDoc) {
+    var url = ":window.frameElement.getAttribute('srcdoc')";
+    frame.setAttribute('src', "javascript" + url);
+  }
+
+  document.getElementById('qunit-fixture').appendChild(frame);
+
+  expect(1);
+  QUnit.stop();
+
+  var start = Date.now();
+  setTimeout(checkFinished, 25);
+
+  function checkFinished() {
+    var qunitElement = frame.contentDocument.getElementById('qunit');
+    var completed = /completed/.test(qunitElement.innerText);
+
+    if (completed) {
+      ok(true);
+      QUnit.start();
+    } else if (Date.now() - start > 1000) {
+      ok(false, "QUnit was stopped by fake setTimeout!");
+      QUnit.start();
+    } else {
+      setTimeout(checkFinished, 25);
+    }
+  }
+});
+
 (function() {
 	var reset = QUnit.reset;
 	module("reset");
