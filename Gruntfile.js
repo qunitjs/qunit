@@ -11,7 +11,8 @@ grunt.initConfig({
 		qunit: [
 			"test/index.html",
 			"test/async.html",
-			"test/logs.html"
+			"test/logs.html",
+			"test/setTimeout.html"
 		]
 	},
 	jshint: {
@@ -61,7 +62,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 		config = grunt.file.readJSON( configFile ).qunit,
 		runs = {},
 		done = this.async();
-	["index", "async"].forEach(function (suite) {
+	["index", "async", "setTimeout"].forEach(function (suite) {
 		runs[suite] = config.testUrl + commit + "/test/" + suite + ".html";
 	});
 	testswarm.createClient( {
