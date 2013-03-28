@@ -115,8 +115,16 @@ Test.prototype = {
 		}
 	},
 	setup: function() {
-		if ( this.module !== config.previousModule ) {
-			if ( config.previousModule ) {
+		if (
+			// Emit moduleStart when we're switching from one module to another
+			this.module !== config.previousModule ||
+				// They could be equal (both undefined) but if the previousModule property doesn't
+				// yet exist it means this is the first test in a suite that isn't wrapped in a
+				// module, in which case we'll just emit a moduleStart event for 'undefined'.
+				// Without this, reporters can get testStart before moduleStart  which is a problem.
+				!hasOwn.call( config, 'previousModule' )
+		) {
+			if ( hasOwn.call( config, 'previousModule' ) ) {
 				runLoggingCallbacks( "moduleDone", QUnit, {
 					name: config.previousModule,
 					failed: config.moduleStats.bad,
@@ -126,10 +134,6 @@ Test.prototype = {
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
-			runLoggingCallbacks( "moduleStart", QUnit, {
-				name: this.module
-			});
-		} else if ( config.autorun ) {
 			runLoggingCallbacks( "moduleStart", QUnit, {
 				name: this.module
 			});
