@@ -524,7 +524,7 @@ assert = {
 				message: msg
 			};
 
-		msg = escapeText( msg || (result ? "okay" : "failed" ) );
+		msg = escapeText( msg || ( result ? "okay" : "failed" ) );
 		msg = "<span class='test-message'>" + msg + "</span>";
 
 		if ( !result ) {
@@ -950,7 +950,7 @@ extend( QUnit, {
 				expected: expected
 			};
 
-		message = escapeText( message ) || ( result ? "okay" : "failed" );
+		message = escapeText( message ) || ( result === undefined ? "skipped" : ( result ? "okay" : "failed" ) );
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
@@ -1294,11 +1294,13 @@ function done() {
 			config.stats.all,
 			"</span> passed, <span class='failed'>",
 			config.stats.bad,
-			"</span> failed."
+			"</span> failed, <span class='skipped'>",
+			config.stats.skipped,
+			"</span> skipped."
 		].join( "" );
 
 	if ( banner ) {
-		banner.className = ( config.stats.bad ? "qunit-fail" : "qunit-pass" );
+		banner.className = ( config.stats.bad ? "qunit-fail" : ( config.stats.skippped ? "qunit-skip" : "qunit-pass" ) );
 	}
 
 	if ( tests ) {
