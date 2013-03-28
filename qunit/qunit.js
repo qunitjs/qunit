@@ -252,14 +252,14 @@ Test.prototype = {
 				assertion = this.assertions[i];
 
 				li = document.createElement( "li" );
-				li.className = assertion.result === undefined ? "skip" : ( assertion.result ? "pass" : "fail" ); //TODO: make this support skip
-				li.innerHTML = assertion.message || ( assertion.result === undefined ? "skipped" : ( assertion.result ? "okay" : "failed" ) );
+				li.className = assertion.result === null ? "skip" : ( assertion.result ? "pass" : "fail" ); //TODO: make this support skip
+				li.innerHTML = assertion.message || ( assertion.result === null ? "skipped" : ( assertion.result ? "okay" : "failed" ) );
 				ol.appendChild( li );
 
 				//TODO: switch for skip?
 				if ( assertion.result ) {
 					good++;
-				} else if( assertion.result === undefined ) {
+				} else if( assertion.result === null ) {
 					skipped++;
 					config.stats.skipped++;
 					config.moduleStats.skipped++;
@@ -620,7 +620,7 @@ assert = {
 	 * @function
 	 */
 	skip: function( message ) {
-		QUnit.push( undefined, undefined, undefined, message );
+		QUnit.push( null, null, null, message );
 	},
 
 	/**
@@ -637,7 +637,7 @@ assert = {
 
 		//if the test passes, skip
 		if( test ) {
-			QUnit.push( undefined, undefined, undefined, message );
+			assert.skip( message );
 		}
 		//otherwise run their provided function
 		else if( fn && typeof fn === 'function' ) {
@@ -950,7 +950,7 @@ extend( QUnit, {
 				expected: expected
 			};
 
-		message = escapeText( message ) || ( result === undefined ? "skipped" : ( result ? "okay" : "failed" ) );
+		message = escapeText( message ) || ( result === null ? "skipped" : ( result ? "okay" : "failed" ) );
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
