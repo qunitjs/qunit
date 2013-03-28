@@ -133,7 +133,7 @@ Test.prototype = {
 				});
 			}
 			config.previousModule = this.module;
-			config.moduleStats = { all: 0, bad: 0 };
+			config.moduleStats = { all: 0, bad: 0, skipped: 0 };
 			runLoggingCallbacks( "moduleStart", QUnit, {
 				name: this.module
 			});
@@ -237,6 +237,7 @@ Test.prototype = {
 			test = this,
 			good = 0,
 			bad = 0,
+			skipped = 0,
 			tests = id( "qunit-tests" );
 
 		this.runtime = +new Date() - this.started;
@@ -251,12 +252,17 @@ Test.prototype = {
 				assertion = this.assertions[i];
 
 				li = document.createElement( "li" );
-				li.className = assertion.result ? "pass" : "fail";
-				li.innerHTML = assertion.message || ( assertion.result ? "okay" : "failed" );
+				li.className = assertion.result === null ? "skip" : ( assertion.result ? "pass" : "fail" ); //TODO: make this support skip
+				li.innerHTML = assertion.message || ( assertion.result === null ? "skipped" : ( assertion.result ? "okay" : "failed" ) );
 				ol.appendChild( li );
 
+				//TODO: switch for skip?
 				if ( assertion.result ) {
 					good++;
+				} else if( assertion.result === null ) {
+					skipped++;
+					config.stats.skipped++;
+					config.moduleStats.skipped++;
 				} else {
 					bad++;
 					config.stats.bad++;
@@ -279,7 +285,7 @@ Test.prototype = {
 
 			// `b` initialized at top of scope
 			b = document.createElement( "strong" );
-			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
+			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, <b class='skipped'>" + skipped + "</b>, " + this.assertions.length + ")</b>";
 
 			addEvent(b, "click", function() {
 				var next = b.parentNode.lastChild,
@@ -304,7 +310,7 @@ Test.prototype = {
 
 			// `li` initialized at top of scope
 			li = id( this.id );
-			li.className = bad ? "fail" : "pass";
+			li.className = bad ? "fail" : ( skipped ? "skip" : "pass" );
 			li.removeChild( li.firstChild );
 			a = li.firstChild;
 			li.appendChild( b );
@@ -518,7 +524,7 @@ assert = {
 				message: msg
 			};
 
-		msg = escapeText( msg || (result ? "okay" : "failed" ) );
+		msg = escapeText( msg || ( result ? "okay" : "failed" ) );
 		msg = "<span class='test-message'>" + msg + "</span>";
 
 		if ( !result ) {
@@ -606,6 +612,37 @@ assert = {
 	 */
 	notStrictEqual: function( actual, expected, message ) {
 		QUnit.push( expected !== actual, actual, expected, message );
+	},
+
+	/**
+	 * Marks a test with a "skipped" assertion so that you can come back later to implement or re-enable a test
+	 * @name skip
+	 * @function
+	 */
+	skip: function( message ) {
+		QUnit.push( null, null, null, message );
+	},
+
+	/**
+	 * Skips the provided function if the test is true
+	 * @name skipIf
+	 * @function
+	 * @example skipIf( !document.querySelectorAll, "Browser doesn't support querySelectorAll. Need a different Test", function() { QUnit.equal(!document.querySelectorAll, true); } );
+	 */
+	skipIf: function( test, message, fn ) {
+		if( typeof message === 'function' ) {
+			fn = message;
+			message = null;
+		}
+
+		//if the test passes, skip
+		if( test ) {
+			assert.skip( message );
+		}
+		//otherwise run their provided function
+		else if( fn && typeof fn === 'function' ) {
+			fn();
+		}
 	},
 
 	"throws": function( block, expected, message ) {
@@ -790,8 +827,8 @@ extend( QUnit, {
 	// Initialize the configuration options
 	init: function() {
 		extend( config, {
-			stats: { all: 0, bad: 0 },
-			moduleStats: { all: 0, bad: 0 },
+			stats: { all: 0, bad: 0, skipped: 0 },
+			moduleStats: { all: 0, bad: 0, skipped: 0 },
 			started: +new Date(),
 			updateRate: 1000,
 			blocking: false,
@@ -913,11 +950,11 @@ extend( QUnit, {
 				expected: expected
 			};
 
-		message = escapeText( message ) || ( result ? "okay" : "failed" );
+		message = escapeText( message ) || ( result === null ? "skipped" : ( result ? "okay" : "failed" ) );
 		message = "<span class='test-message'>" + message + "</span>";
 		output = message;
 
-		if ( !result ) {
+		if ( result === false ) {
 			expected = escapeText( QUnit.jsDump.parse(expected) );
 			actual = escapeText( QUnit.jsDump.parse(actual) );
 			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
@@ -940,7 +977,7 @@ extend( QUnit, {
 		runLoggingCallbacks( "log", QUnit, details );
 
 		config.current.assertions.push({
-			result: !!result,
+			result: result,
 			message: output
 		});
 	},
@@ -1257,11 +1294,13 @@ function done() {
 			config.stats.all,
 			"</span> passed, <span class='failed'>",
 			config.stats.bad,
-			"</span> failed."
+			"</span> failed, <span class='skipped'>",
+			config.stats.skipped,
+			"</span> skipped."
 		].join( "" );
 
 	if ( banner ) {
-		banner.className = ( config.stats.bad ? "qunit-fail" : "qunit-pass" );
+		banner.className = ( config.stats.bad ? "qunit-fail" : ( config.stats.skippped ? "qunit-skip" : "qunit-pass" ) );
 	}
 
 	if ( tests ) {
