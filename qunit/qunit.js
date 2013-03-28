@@ -509,6 +509,7 @@ assert = {
 			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace(2) );
 		}
 		result = !!result;
+		msg = msg || (result ? "okay" : "failed" );
 
 		var source,
 			details = {
@@ -518,8 +519,7 @@ assert = {
 				message: msg
 			};
 
-		msg = escapeText( msg || (result ? "okay" : "failed" ) );
-		msg = "<span class='test-message'>" + msg + "</span>";
+		msg = "<span class='test-message'>" + escapeText( msg ) + "</span>";
 
 		if ( !result ) {
 			source = sourceFromStacktrace( 2 );
