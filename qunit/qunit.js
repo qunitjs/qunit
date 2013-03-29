@@ -154,8 +154,12 @@ Test.prototype = {
 
 		/*jshint camelcase:false */
 
-		// allow utility functions to access the current test environment
-		// TODO why??
+
+		/**
+		 * Expose the current test environment.
+		 *
+		 * @deprecated since 1.12.0: Use QUnit.config.current.testEnvironment instead.
+		 */
 		QUnit.current_testEnvironment = this.testEnvironment;
 
 		/*jshint camelcase:true */
