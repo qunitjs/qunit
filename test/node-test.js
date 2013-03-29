@@ -1,3 +1,4 @@
+/*jshint node:true, undef:false */
 // Run with: $ node test/node-test.js
 var QUnit = require("../qunit/qunit");
 

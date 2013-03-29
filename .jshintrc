@@ -5,22 +5,24 @@
 	],
 
 	"bitwise": true,
-	"camelcase": false,
+	"camelcase": true,
 	"curly": true,
 	"eqeqeq": true,
+	"forin": true,
 	"immed": true,
 	"latedef": false,
 	"newcap": true,
-	"noarg": false,
+	"noarg": true,
 	"noempty": true,
 	"nonew": true,
+	"plusplus": false,
+	"quotmark": "double",
 	"undef": true,
 	"unused": true,
+	"trailing": true,
 
 	"proto": true,
-	"smarttabs": true,
 	"sub": true,
-	"trailing": true,
 
 	"browser": true,
 

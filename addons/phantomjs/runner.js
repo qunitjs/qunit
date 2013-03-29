@@ -11,7 +11,6 @@
  *   phantomjs runner.js http://localhost/qunit/test/index.html
  */
 
-/*jshint latedef:false */
 /*global phantom:false, require:false, console:false, window:false, QUnit:false */
 
 (function() {
@@ -28,7 +27,9 @@
 
 	url = args[1];
 	page = require('webpage').create();
-	timeout = args[2] != null ? parseInt(args[2], 10) : null;
+	if (args[2] !== undefined) {
+		timeout = parseInt(args[2], 10);
+	}
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
 	page.onConsoleMessage = function(msg) {
@@ -80,7 +81,7 @@
 
 	function addLogging() {
 		window.document.addEventListener('DOMContentLoaded', function() {
-			var current_test_assertions = [];
+			var currentTestAssertions = [];
 
 			QUnit.log(function(details) {
 				var response;
@@ -104,7 +105,7 @@
 					response += "\n" + details.source;
 				}
 
-				current_test_assertions.push('Failed assertion: ' + response);
+				currentTestAssertions.push('Failed assertion: ' + response);
 			});
 
 			QUnit.testDone(function(result) {
@@ -115,12 +116,12 @@
 				if (result.failed) {
 					console.log('Test failed: ' + name);
 
-					for (i = 0, len = current_test_assertions.length; i < len; i++) {
-						console.log('    ' + current_test_assertions[i]);
+					for (i = 0, len = currentTestAssertions.length; i < len; i++) {
+						console.log('    ' + currentTestAssertions[i]);
 					}
 				}
 
-				current_test_assertions.length = 0;
+				currentTestAssertions.length = 0;
 			});
 
 			QUnit.done(function(result) {

@@ -122,9 +122,9 @@ Test.prototype = {
 				// yet exist it means this is the first test in a suite that isn't wrapped in a
 				// module, in which case we'll just emit a moduleStart event for 'undefined'.
 				// Without this, reporters can get testStart before moduleStart  which is a problem.
-				!hasOwn.call( config, 'previousModule' )
+				!hasOwn.call( config, "previousModule" )
 		) {
-			if ( hasOwn.call( config, 'previousModule' ) ) {
+			if ( hasOwn.call( config, "previousModule" ) ) {
 				runLoggingCallbacks( "moduleDone", QUnit, {
 					name: config.previousModule,
 					failed: config.moduleStats.bad,
@@ -152,9 +152,13 @@ Test.prototype = {
 			module: this.module
 		});
 
+		/*jshint camelcase:false */
+
 		// allow utility functions to access the current test environment
 		// TODO why??
 		QUnit.current_testEnvironment = this.testEnvironment;
+
+		/*jshint camelcase:true */
 
 		if ( !config.pollution ) {
 			saveGlobal();
@@ -646,7 +650,7 @@ assert = {
 
 			QUnit.push( ok, actual, expectedOutput, message );
 		} else {
-			QUnit.pushFailure( message, null, 'No exception was thrown.' );
+			QUnit.pushFailure( message, null, "No exception was thrown." );
 		}
 	}
 };
@@ -741,7 +745,7 @@ config = {
 // Export global variables, unless an 'exports' object exists,
 // in that case we assume we're in CommonJS (dealt with on the bottom of the script)
 if ( typeof exports === "undefined" ) {
-	extend( window, QUnit );
+	extend( window, QUnit.constructor.prototype );
 
 	// Expose QUnit object
 	window.QUnit = QUnit;
@@ -989,11 +993,10 @@ extend( QUnit, {
 			querystring = "?";
 
 		for ( key in params ) {
-			if ( !hasOwn.call( params, key ) ) {
-				continue;
+			if ( hasOwn.call( params, key ) ) {
+				querystring += encodeURIComponent( key ) + "=" +
+					encodeURIComponent( params[ key ] ) + "&";
 			}
-			querystring += encodeURIComponent( key ) + "=" +
-				encodeURIComponent( params[ key ] ) + "&";
 		}
 		return window.location.protocol + "//" + window.location.host +
 			window.location.pathname + querystring.slice( 0, -1 );
@@ -1171,8 +1174,8 @@ QUnit.load = function() {
 		toolbar.appendChild( urlConfigCheckboxesContainer );
 
 		if (numModules > 1) {
-			moduleFilter = document.createElement( 'span' );
-			moduleFilter.setAttribute( 'id', 'qunit-modulefilter-container' );
+			moduleFilter = document.createElement( "span" );
+			moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 			moduleFilter.innerHTML = moduleFilterHtml;
 			addEvent( moduleFilter.lastChild, "change", function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
@@ -1400,16 +1403,16 @@ function escapeText( s ) {
 	// Both single quotes and double quotes (for attributes)
 	return s.replace( /['"<>&]/g, function( s ) {
 		switch( s ) {
-			case '\'':
-				return '&#039;';
-			case '"':
-				return '&quot;';
-			case '<':
-				return '&lt;';
-			case '>':
-				return '&gt;';
-			case '&':
-				return '&amp;';
+			case "'":
+				return "&#039;";
+			case "\"":
+				return "&quot;";
+			case "<":
+				return "&lt;";
+			case ">":
+				return "&gt;";
+			case "&":
+				return "&amp;";
 		}
 	});
 }
@@ -1448,11 +1451,13 @@ function saveGlobal() {
 
 	if ( config.noglobals ) {
 		for ( var key in window ) {
-			// in Opera sometimes DOM element ids show up here, ignore them
-			if ( !hasOwn.call( window, key ) || /^qunit-test-output/.test( key ) ) {
-				continue;
+			if ( hasOwn.call( window, key ) ) {
+				// in Opera sometimes DOM element ids show up here, ignore them
+				if ( /^qunit-test-output/.test( key ) ) {
+					continue;
+				}
+				config.pollution.push( key );
 			}
-			config.pollution.push( key );
 		}
 	}
 }
@@ -1494,12 +1499,15 @@ function diff( a, b ) {
 
 function extend( a, b ) {
 	for ( var prop in b ) {
-		if ( b[ prop ] === undefined ) {
-			delete a[ prop ];
-
-		// Avoid "Member not found" error in IE8 caused by setting window.constructor
-		} else if ( prop !== "constructor" || a !== window ) {
-			a[ prop ] = b[ prop ];
+		if ( hasOwn.call( b, prop ) ) {
+			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
+			if ( !( prop === "constructor" && a === window ) ) {
+				if ( b[ prop ] === undefined ) {
+					delete a[ prop ];
+				} else {
+					a[ prop ] = b[ prop ];
+				}
+			}
 		}
 	}
 
@@ -1602,6 +1610,7 @@ QUnit.equiv = (function() {
 		parentsB = [],
 
 		getProto = Object.getPrototypeOf || function ( obj ) {
+			/*jshint camelcase:false */
 			return obj.__proto__;
 		},
 		callbacks = (function () {
@@ -1699,6 +1708,7 @@ QUnit.equiv = (function() {
 				},
 
 				"object": function( b, a ) {
+					/*jshint forin:false */
 					var i, j, loop, aCircular, bCircular,
 						// Default to true
 						eq = true,
@@ -1723,7 +1733,7 @@ QUnit.equiv = (function() {
 					parents.push( a );
 					parentsB.push( b );
 
-					// be strict: don't ensures hasOwnProperty and go deep
+					// be strict: don't ensure hasOwnProperty and go deep
 					for ( i in a ) {
 						loop = false;
 						for ( j = 0; j < parents.length; j++ ) {
@@ -1777,7 +1787,7 @@ QUnit.equiv = (function() {
 			}
 
 			// apply transition with (1..n) arguments
-		}( args[0], args[1] ) && arguments.callee.apply( this, args.splice(1, args.length - 1 )) );
+		}( args[0], args[1] ) && innerEquiv.apply( this, args.splice(1, args.length - 1 )) );
 	};
 
 	return innerEquiv;
@@ -1795,7 +1805,7 @@ QUnit.equiv = (function() {
  */
 QUnit.jsDump = (function() {
 	function quote( str ) {
-		return '"' + str.toString().replace( /"/g, '\\"' ) + '"';
+		return "\"" + str.toString().replace( /"/g, "\\\"" ) + "\"";
 	}
 	function literal( o ) {
 		return o + "";
@@ -1888,13 +1898,13 @@ QUnit.jsDump = (function() {
 				if ( this.HTML ) {
 					chr = chr.replace( /\t/g, "   " ).replace( / /g, "&nbsp;" );
 				}
-				return new Array( this._depth_ + (extra||0) ).join(chr);
+				return new Array( this.depth + ( extra || 0 ) ).join(chr);
 			},
 			up: function( a ) {
-				this._depth_ += a || 1;
+				this.depth += a || 1;
 			},
 			down: function( a ) {
-				this._depth_ -= a || 1;
+				this.depth -= a || 1;
 			},
 			setParser: function( name, parser ) {
 				this.parsers[name] = parser;
@@ -1904,7 +1914,7 @@ QUnit.jsDump = (function() {
 			literal: literal,
 			join: join,
 			//
-			_depth_: 1,
+			depth: 1,
 			// This is the list of parsers, to modify them, use jsDump.setParser
 			parsers: {
 				window: "[Window]",
@@ -1932,6 +1942,7 @@ QUnit.jsDump = (function() {
 				nodelist: array,
 				"arguments": array,
 				object: function( map, stack ) {
+					/*jshint forin:false */
 					var ret = [ ], keys, key, val, i;
 					QUnit.jsDump.up();
 					keys = [];
@@ -2070,18 +2081,17 @@ QUnit.diff = (function() {
 		}
 
 		for ( i in ns ) {
-			if ( !hasOwn.call( ns, i ) ) {
-				continue;
-			}
-			if ( ns[i].rows.length === 1 && hasOwn.call( os, i ) && os[i].rows.length === 1 ) {
-				n[ ns[i].rows[0] ] = {
-					text: n[ ns[i].rows[0] ],
-					row: os[i].rows[0]
-				};
-				o[ os[i].rows[0] ] = {
-					text: o[ os[i].rows[0] ],
-					row: ns[i].rows[0]
-				};
+			if ( hasOwn.call( ns, i ) ) {
+				if ( ns[i].rows.length === 1 && hasOwn.call( os, i ) && os[i].rows.length === 1 ) {
+					n[ ns[i].rows[0] ] = {
+						text: n[ ns[i].rows[0] ],
+						row: os[i].rows[0]
+					};
+					o[ os[i].rows[0] ] = {
+						text: o[ os[i].rows[0] ],
+						row: ns[i].rows[0]
+					};
+				}
 			}
 		}
 
@@ -2179,7 +2189,7 @@ QUnit.diff = (function() {
 
 // for CommonJS environments, export everything
 if ( typeof exports !== "undefined" ) {
-	extend( exports, QUnit );
+	extend( exports, QUnit.constructor.prototype );
 }
 
 // get at whatever the global object is, like window in browsers

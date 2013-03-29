@@ -1,24 +1,30 @@
 {
-	"browser": true,
-	"curly": true,
-	"eqnull": true,
-	"eqeqeq": true,
-	"expr": true,
-	"evil": true,
-	"jquery": true,
-	"latedef": true,
-	"noarg": true,
-	"onevar": true,
-	"smarttabs": true,
-	"trailing": true,
-	"undef": true,
 	"predef": [
+		"QUnit",
 		"module",
 		"test",
-		"asyncTest",
-		"expect",
 		"start",
-		"stop",
-		"QUnit"
-	]
+		"stop"
+	],
+
+	"bitwise": true,
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"forin": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonew": true,
+	"plusplus": false,
+	"quotmark": false,
+	"undef": true,
+	"unused": true,
+	"trailing": true,
+
+	"browser": true,
+
+	"onevar": true
 }

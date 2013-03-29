@@ -1,3 +1,4 @@
+/*jshint node:true, undef:false */
 // Run with: $ narwhal test/narwhal-test.js
 var QUnit = require("../qunit/qunit");
 

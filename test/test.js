@@ -362,14 +362,17 @@ test("testEnvironment reset for next test",function() {
 module("testEnvironment tests");
 
 function makeurl() {
-	var testEnv = QUnit.current_testEnvironment;
+	var testEnv = QUnit.config.current.testEnvironment;
 	var url = testEnv.url || 'http://example.com/search';
 	var q   = testEnv.q   || 'a search test';
 	return url + '?q='+encodeURIComponent(q);
 }
 
-test("makeurl working",function() {
-	equal( QUnit.current_testEnvironment, this, 'The current testEnvironment is global');
+test("makeurl working", 3, function() {
+	equal( QUnit.config.current.testEnvironment, this, 'The current testEnvironment QUnit.config');
+	/*jshint camelcase:false */
+	equal( QUnit.current_testEnvironment, this, 'The current testEnvironment is in QUnit.config (old way)');
+	/*jshint camelcase:true */
 	equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
 
@@ -621,7 +624,7 @@ module("custom assertions");
 (function() {
 	function mod2(value, expected, message) {
 		var actual = value % 2;
-		QUnit.push(actual == expected, actual, expected, message);
+		QUnit.push(actual === expected, actual, expected, message);
 	}
 	test("mod2", function() {
 		mod2(2, 0, "2 % 2 == 0");
@@ -644,7 +647,7 @@ function chainwrap(depth, first, prev) {
 	var last = prev || new Wrap();
 	first = first || last;
 
-	if (depth == 1) {
+	if (depth === 1) {
 		first.wrap = last;
 	}
 	if (depth > 1) {

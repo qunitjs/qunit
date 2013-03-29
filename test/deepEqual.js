@@ -337,10 +337,10 @@ test("Functions.", function() {
 	var f1 = function () {};
 
 	// f2 and f3 have the same code, formatted differently
-	var f2 = function () {var i = 0;};
+	var f2 = function () {return 0;};
 	var f3 = function () {
 		/*jshint asi:true */
-		var i = 0 // this comment and no semicoma as difference
+		return 0 // this comment and no semicoma as difference
 	};
 
 	equal(QUnit.equiv(function() {}, function() {}), false, "Anonymous functions"); // exact source code
@@ -943,6 +943,19 @@ test("Complex Objects.", function() {
 		c: fn1
 	};
 
+	var diff6 = {
+		a: [
+			"string", null, 0, "1", 1, {
+				prop: null,
+				foo: [1,2,null,{}, [], [1,2,3]],
+				bar: undefined
+			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+		],
+		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+		b: "b",
+		c: fn2 // different: fn2 instead of fn1
+	};
+
 	equal(QUnit.equiv(same1, same2), true);
 	equal(QUnit.equiv(same2, same1), true);
 	equal(QUnit.equiv(same2, diff1), false);
@@ -954,6 +967,7 @@ test("Complex Objects.", function() {
 	equal(QUnit.equiv(same1, diff3), false);
 	equal(QUnit.equiv(same1, diff4), false);
 	equal(QUnit.equiv(same1, diff5), false);
+	equal(QUnit.equiv(same1, diff6), false);
 	equal(QUnit.equiv(diff5, diff1), false);
 });
 
@@ -1215,7 +1229,7 @@ test("Instances", function() {
 		var privateVar = 0;
 		this.year = year;
 		this.isOld = function() {
-			return year > 10;
+			return privateVar > 10;
 		};
 	}
 
@@ -1223,7 +1237,7 @@ test("Instances", function() {
 		var privateVar = 1;
 		this.year = year;
 		this.isOld = function() {
-			return year > 80;
+			return privateVar > 80;
 		};
 	}
 
@@ -1232,14 +1246,13 @@ test("Instances", function() {
 	var carDiff = new Car(10);
 	var human = new Human(30);
 
-	var diff = {
-		year: 30
-	};
-
-	var same = {
-		year: 30,
-		isOld: function () {}
-	};
+	/**
+	 * difference:
+	 *   - year: 30
+	 * same:
+	 *   - year: 30,
+	 *   - isOld: function () {}
+	 */
 
 	equal(QUnit.equiv(car, car), true);
 	equal(QUnit.equiv(car, carDiff), false);
