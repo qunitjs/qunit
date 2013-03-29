@@ -4,6 +4,7 @@ module.exports = function( grunt ) {
 grunt.loadNpmTasks( "grunt-git-authors" );
 grunt.loadNpmTasks( "grunt-contrib-jshint" );
 grunt.loadNpmTasks( "grunt-contrib-qunit" );
+grunt.loadNpmTasks( "grunt-contrib-watch" );
 
 grunt.initConfig({
 	qunit: {
@@ -40,6 +41,10 @@ grunt.initConfig({
 				src: [ "test/**/*.js" ]
 			}
 		}
+	},
+	watch: {
+		files: [ "*", ".jshintrc", "{addons,qunit,test}/**/{*,.*}" ],
+		tasks: "default"
 	}
 });
 
