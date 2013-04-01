@@ -2,7 +2,8 @@ module("Canvas Addon");
 
 test("Canvas pixels", function (assert) {
 	var context,
-		canvas = document.getElementById('qunit-canvas');
+		canvas = document.getElementById('qunit-canvas'),
+		imageObj = new Image();
 	try {
 		context = canvas.getContext('2d');
 	} catch(e) {
@@ -79,12 +80,11 @@ test("Canvas pixels", function (assert) {
 	context.clearRect(0, 0, 5, 5);
 
 	// show how to use pixelEqual() in conjunction with drawImage()
-    var imageObj = new Image();
 	imageObj.onload = function() {
 		context.drawImage(imageObj, 0, 0);
 		assert.pixelEqual(canvas, 3, 3, 0, 255, 0, 255);
 		start();
-	}
+	};
 	stop();
 	imageObj.src = './0-255-0.gif';
 });
