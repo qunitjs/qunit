@@ -79,10 +79,12 @@ test("Canvas pixels", function (assert) {
 	context.clearRect(0, 0, 5, 5);
 
 	// show how to use pixelEqual() in conjunction with drawImage()
-	var imageObj = new Image();
+    var imageObj = new Image();
 	imageObj.onload = function() {
 		context.drawImage(imageObj, 0, 0);
+		assert.pixelEqual(canvas, 3, 3, 0, 255, 0, 255);
+		start();
 	}
-	imageObj.src = 'http://hake.com/graphics/0-255-0.gif';
-	assert.pixelEqual(canvas, 3, 3, 0, 255, 0, 0);
+	stop();
+	imageObj.src = './0-255-0.gif';
 });
