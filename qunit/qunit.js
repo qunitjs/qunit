@@ -1185,7 +1185,12 @@ QUnit.load = function() {
 				var selectBox = moduleFilter.getElementsByTagName("select")[0],
 					selectedModule = decodeURIComponent(selectBox.options[selectBox.selectedIndex].value);
 
-				window.location = QUnit.url( { module: ( selectedModule === "" ) ? undefined : selectedModule } );
+				window.location = QUnit.url({
+					module: ( selectedModule === "" ) ? undefined : selectedModule,
+					// Remove any existing filters
+					filter: undefined,
+					testNumber: undefined
+				});
 			});
 			toolbar.appendChild(moduleFilter);
 		}
