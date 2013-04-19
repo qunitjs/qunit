@@ -559,8 +559,8 @@ QUnit.load = function() {
 	runLoggingCallbacks( "begin", QUnit, {} );
 
 	// Initialize the config, saving the execution queue
-	var banner, filter, i, label, len, main, ol, toolbar, userAgent, val,
-		urlConfigCheckboxesContainer, urlConfigCheckboxes, moduleFilter,
+	var banner, filter, i, j, label, len, main, ol, toolbar, val, selection,
+		urlConfigContainer, moduleFilter, userAgent,
 		numModules = 0,
 		moduleNames = [],
 		moduleFilterHtml = "",
@@ -579,17 +579,55 @@ QUnit.load = function() {
 		if ( typeof val === "string" ) {
 			val = {
 				id: val,
-				label: val,
-				tooltip: "[no tooltip available]"
+				label: val
 			};
 		}
 		config[ val.id ] = QUnit.urlParams[ val.id ];
-		urlConfigHtml += "<input id='qunit-urlconfig-" + escapeText( val.id ) +
-			"' name='" + escapeText( val.id ) +
-			"' type='checkbox'" + ( config[ val.id ] ? " checked='checked'" : "" ) +
-			" title='" + escapeText( val.tooltip ) +
-			"'><label for='qunit-urlconfig-" + escapeText( val.id ) +
-			"' title='" + escapeText( val.tooltip ) + "'>" + val.label + "</label>";
+		if ( !val.value || typeof val.value === "string" ) {
+			urlConfigHtml += "<input id='qunit-urlconfig-" + escapeText( val.id ) +
+				"' name='" + escapeText( val.id ) +
+				"' type='checkbox'" +
+				( val.value ? " value='" + escapeText( val.value ) + "'" : "" ) +
+				( config[ val.id ] ? " checked='checked'" : "" ) +
+				" title='" + escapeText( val.tooltip ) +
+				"'><label for='qunit-urlconfig-" + escapeText( val.id ) +
+				"' title='" + escapeText( val.tooltip ) + "'>" + val.label + "</label>";
+		} else {
+			urlConfigHtml += "<label for='qunit-urlconfig-" + escapeText( val.id ) +
+				"' title='" + escapeText( val.tooltip ) +
+				"'>" + val.label +
+				": </label><select id='qunit-urlconfig-" + escapeText( val.id ) +
+				"' name='" + escapeText( val.id ) +
+				"' title='" + escapeText( val.tooltip ) +
+				"'><option></option>";
+			selection = false;
+			if ( QUnit.is( "array", val.value ) ) {
+				for ( j = 0; j < val.value.length; j++ ) {
+					urlConfigHtml += "<option value='" + escapeText( val.value[j] ) + "'" +
+						( config[ val.id ] === val.value[j] ?
+							(selection = true) && " selected='selected'" :
+							"" ) +
+						">" + escapeText( val.value[j] ) + "</option>";
+				}
+			} else {
+				for ( j in val.value ) {
+					if ( hasOwn.call( val.value, j ) ) {
+						urlConfigHtml += "<option value='" + escapeText( j ) + "'" +
+							( config[ val.id ] === j ?
+								(selection = true) && " selected='selected'" :
+								"" ) +
+							">" + escapeText( val.value[j] ) + "</option>";
+					}
+				}
+			}
+			if ( config[ val.id ] && !selection ) {
+				urlConfigHtml += "<option value='" + escapeText( config[ val.id ] ) +
+					"' selected='selected' disabled='disabled'>" +
+					escapeText( config[ val.id ] ) +
+					"</option>";
+			}
+			urlConfigHtml += "</select>";
+		}
 	}
 	for ( i in config.modules ) {
 		if ( config.modules.hasOwnProperty( i ) ) {
@@ -666,20 +704,27 @@ QUnit.load = function() {
 		label.innerHTML = "Hide passed tests";
 		toolbar.appendChild( label );
 
-		urlConfigCheckboxesContainer = document.createElement("span");
-		urlConfigCheckboxesContainer.innerHTML = urlConfigHtml;
-		urlConfigCheckboxes = urlConfigCheckboxesContainer.getElementsByTagName("input");
+		urlConfigContainer = document.createElement("span");
+		urlConfigContainer.innerHTML = urlConfigHtml;
 		// For oldIE support:
 		// * Add handlers to the individual elements instead of the container
-		// * Use "click" instead of "change"
+		// * Use "click" instead of "change" for checkboxes
 		// * Fallback from event.target to event.srcElement
-		addEvents( urlConfigCheckboxes, "click", function( event ) {
+		addEvents( urlConfigContainer.getElementsByTagName("input"), "click", function( event ) {
 			var params = {},
 				target = event.target || event.srcElement;
-			params[ target.name ] = target.checked ? true : undefined;
+			params[ target.name ] = target.checked ?
+				target.defaultValue || true :
+				undefined;
 			window.location = QUnit.url( params );
 		});
-		toolbar.appendChild( urlConfigCheckboxesContainer );
+		addEvents( urlConfigContainer.getElementsByTagName("select"), "change", function( event ) {
+			var params = {},
+				target = event.target || event.srcElement;
+			params[ target.name ] = target.options[ target.selectedIndex ].value || undefined;
+			window.location = QUnit.url( params );
+		});
+		toolbar.appendChild( urlConfigContainer );
 
 		if (numModules > 1) {
 			moduleFilter = document.createElement( "span" );
