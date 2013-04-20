@@ -606,7 +606,8 @@ QUnit.load = function() {
 			}
 			if ( config[ val.id ] && !selection ) {
 				urlConfigHtml += "<option value='" + escapeText( config[ val.id ] ) +
-					"' selected='selected'>" + escapeText( config[ val.id ] ) +
+					"' selected='selected' disabled='disabled'>" +
+					escapeText( config[ val.id ] ) +
 					"</option>";
 			}
 			urlConfigHtml += "</select>";
