@@ -61,6 +61,8 @@ Jonas Ulrich <jochenulrich@t-online.de>
 James M. Greene <james.m.greene@gmail.com>
 Rodney Rehm <mail+github@rodneyrehm.de>
 Peter Wagenet <peter.wagenet@gmail.com>
+Clog <flewya@gmail.com>
+Antranig Basman <amb26ohloh@ponder.org.uk>
 Matthew Mirande <itsbusticated@gmail.com>
 Jared Wyles <jared.wyles@gmail.com>
 Dmitry Gusev <dmitry.gusev@gmail.com>
