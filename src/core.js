@@ -597,11 +597,13 @@ QUnit.load = function() {
 				}
 			} else {
 				for ( j in val.value ) {
-					urlConfigHtml += "<option value='" + escapeText( j ) + "'" +
-						( config[ val.id ] === j ?
-							(selection = true) && " selected='selected'" :
-							"" ) +
-						">" + escapeText( val.value[j] ) + "</option>";
+					if ( hasOwn.call( val.value, j ) ) {
+						urlConfigHtml += "<option value='" + escapeText( j ) + "'" +
+							( config[ val.id ] === j ?
+								(selection = true) && " selected='selected'" :
+								"" ) +
+							">" + escapeText( val.value[j] ) + "</option>";
+					}
 				}
 			}
 			if ( config[ val.id ] && !selection ) {
