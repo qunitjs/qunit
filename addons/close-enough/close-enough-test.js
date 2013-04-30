@@ -1,6 +1,6 @@
-module("CloseEnough Addon");
+QUnit.module("CloseEnough Addon");
 
-test("Close Numbers", function (assert) {
+QUnit.test("Close Numbers", function (assert) {
 	var halfPi = Math.PI / 2,
 		sqrt2 = Math.sqrt(2);
 
@@ -18,7 +18,7 @@ test("Close Numbers", function (assert) {
 	assert.close(Infinity, Infinity, 1);
 });
 
-test("Distant Numbers", function (assert) {
+QUnit.test("Distant Numbers", function (assert) {
 	var halfPi = Math.PI / 2,
 		sqrt2 = Math.sqrt(2);
 

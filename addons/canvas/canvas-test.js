@@ -1,4 +1,4 @@
-module("Canvas Addon");
+QUnit.module("Canvas Addon");
 
 QUnit.asyncTest("Canvas pixels", function (assert) {
 	var context,
@@ -86,7 +86,7 @@ QUnit.asyncTest("Canvas pixels", function (assert) {
 	imageObj.onload = function() {
 		context.drawImage( imageObj, 0, 0 );
 		assert.pixelEqual( canvas, 3, 3, 0, 255, 0, 255, "green pixel" );
-		start();
+		QUnit.start();
 	};
 	imageObj.src = "./0-255-0.gif";
 });

@@ -1,10 +1,6 @@
 {
 	"predef": [
-		"QUnit",
-		"module",
-		"test",
-		"start",
-		"stop"
+		"QUnit"
 	],
 
 	"bitwise": true,
