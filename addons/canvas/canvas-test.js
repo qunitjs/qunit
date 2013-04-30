@@ -13,7 +13,6 @@ QUnit.asyncTest("Canvas pixels", function (assert) {
 
 	QUnit.expect(17);
 
-	// how to use pixelEqual() in conjunction with HTML drawing
 	context.fillStyle = 'rgba(0, 0, 0, 0)';
 	context.fillRect(0, 0, 5, 5);
 	assert.pixelEqual(canvas, 0, 0, 0, 0, 0, 0);
