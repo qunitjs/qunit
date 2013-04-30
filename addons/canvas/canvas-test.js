@@ -1,6 +1,6 @@
 module("Canvas Addon");
 
-asyncTest("Canvas pixels", function (assert) {
+QUnit.asyncTest("Canvas pixels", function (assert) {
 	var context,
 		canvas = document.getElementById('qunit-canvas'),
 		imageObj = new Image();
@@ -11,7 +11,7 @@ asyncTest("Canvas pixels", function (assert) {
 		return;
 	}
 
-	expect(17);
+	QUnit.expect(17);
 
 	// how to use pixelEqual() in conjunction with HTML drawing
 	context.fillStyle = 'rgba(0, 0, 0, 0)';
