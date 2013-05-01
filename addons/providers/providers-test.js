@@ -1,3 +1,4 @@
+// Providers test module definition
 QUnit.module('Providers Addon');
 
 // First test -- data array
