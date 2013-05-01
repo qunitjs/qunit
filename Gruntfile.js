@@ -16,6 +16,7 @@ grunt.initConfig({
 		addons: [
 			"addons/canvas/canvas.html",
 			"addons/close-enough/close-enough.html",
+			"addons/providers/providers.html",
 			"addons/step/step.html"
 		]
 	},
