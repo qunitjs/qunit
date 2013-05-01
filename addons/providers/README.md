@@ -1,27 +1,44 @@
-Close-Enough - A QUnit addon for testing number approximations
+Providers - A QUnit addon for implementing data providers in tests
 ================================
 
-This addon for QUnit adds `close` and `notClose` assertion methods to test that
-numbers are close enough (or different enough) from an expected number, with
-a specified accuracy.
+This addon for QUnit adds a `QUnit.testWithProvider` method, allowing tests
+to be run with multiple data sets provided as parameters to the test.
+
 
 ### Usage ###
 
 ```js
-assert.close(actual, expected, maxDifference, message);
-assert.notClose(actual, expected, minDifference, message);
+QUnit.testWithProvider(testName, data, expected, callback, async)
 ```
 
 Where:
- - `maxDifference`: the maximum inclusive difference allowed between the `actual` and `expected` numbers
- - `minDifference`: the minimum exclusive difference allowed between the `actual` and `expected` numbers
- - `actual`, `expected`, `message`: The usual
+ - `testName`: The title of the unit being tested
+ - `data`: An array of argument lists to pass to the callback, or a function that generates an array
+ - `expected`: Number of assertions in the test
+ - `callback`: The function used to run the test and any assertions
+ - `async`: Flag to set if the test should be run asynchronously
 
 ### Example ###
+
 ```js
-test('Example unit test', function(assert) {
-	assert.close(3.141, Math.PI, 0.001);
-	assert.notClose(3.1, Math.PI, 0.001);
+// Uses an array of argument lists
+QUnit.testWithProvider('Sample addition', [[1, 2, 3], [2, 3, 5]], function(a, b, sum) {
+	QUnit.equal(addNumbers(a, b), sum, 'Two numbers were added together');
+});
+
+// For callbacks with an arity of 1, you can pass a flat list
+QUnit.testWithProvider('Sample absolute value', [-1, -2, -3], function(num) {
+	QUnit.equal(absolute(num), Math.abs(num), 'The absolute value of the number is returned');
+});
+
+// For dynamic data sources, use a function
+var provider = function() {
+		// some operations
+		return data;
+	};
+QUnit.testWithProvider('Sample with a function', provider, function(val1, val2) {
+	// Additional assertions with this data source
+});
 ```
 
 For more examples, refer to the unit tests.
