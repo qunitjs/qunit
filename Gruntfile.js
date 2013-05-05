@@ -14,8 +14,7 @@ grunt.initConfig({
 			"test/logs.html"
 		],
 		addons: [
-			"addons/canvas/canvas.html",
-			"addons/close-enough/close-enough.html"
+			"addons/canvas/canvas.html"
 		]
 	},
 	jshint: {
