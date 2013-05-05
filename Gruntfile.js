@@ -12,9 +12,6 @@ grunt.initConfig({
 			"test/index.html",
 			"test/async.html",
 			"test/logs.html"
-		],
-		addons: [
-			"addons/canvas/canvas.html"
 		]
 	},
 	jshint: {
