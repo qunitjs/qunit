@@ -15,13 +15,12 @@ grunt.initConfig({
 		],
 		addons: [
 			"addons/canvas/canvas.html",
-			"addons/close-enough/close-enough.html",
-			"addons/step/step.html"
+			"addons/close-enough/close-enough.html"
 		]
 	},
 	jshint: {
 		options: {
-				jshintrc: ".jshintrc"
+			jshintrc: ".jshintrc"
 		},
 		gruntfile: [ "Gruntfile.js" ],
 		qunit: [ "qunit/**/*.js" ],
