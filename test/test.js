@@ -773,7 +773,8 @@ test("QUnit isn't stopped by fake setTimeout", function() {
     '  </html>';
 
   var frame = document.createElement('iframe');
-  var supportsSrcDoc = !!('srcdoc' in frame);
+
+  var supportsSrcDoc = 'srcdoc' in frame;
   frame.setAttribute('srcdoc', innerRunner);
 
   if (!supportsSrcDoc) {
