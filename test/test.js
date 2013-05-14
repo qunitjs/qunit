@@ -787,17 +787,18 @@ test("QUnit isn't stopped by fake setTimeout", function() {
   expect(1);
   QUnit.stop();
 
-  var start = Date.now();
+  var start = (new Date()).getTime();
   setTimeout(checkFinished, 25);
 
   function checkFinished() {
     var qunitElement = frame.contentDocument.getElementById('qunit');
     var completed = /completed/.test(qunitElement && qunitElement.innerHTML);
+    var now = (new Date()).getTime();
 
     if (completed) {
       ok(true);
       QUnit.start();
-    } else if (Date.now() - start > 1000) {
+    } else if (now - start > 1000) {
       ok(false, "QUnit was stopped by fake setTimeout!");
       QUnit.start();
     } else {
