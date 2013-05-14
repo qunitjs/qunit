@@ -791,7 +791,7 @@ test("QUnit isn't stopped by fake setTimeout", function() {
 
   function checkFinished() {
     var qunitElement = frame.contentDocument.getElementById('qunit');
-    var completed = /completed/.test(qunitElement.innerText);
+    var completed = /completed/.test(qunitElement && qunitElement.innerHTML);
 
     if (completed) {
       ok(true);
