@@ -11,7 +11,8 @@ grunt.initConfig({
 		qunit: [
 			"test/index.html",
 			"test/async.html",
-			"test/logs.html"
+			"test/logs.html",
+			"test/setTimeout.html"
 		]
 	},
 	jshint: {
