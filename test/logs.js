@@ -40,13 +40,13 @@ QUnit.log(function(context) {
 
 module("logs1");
 
-test("test1", 15, function() {
-	equal( begin, 1, "QUnit.begin calls" );
-	equal( moduleStart, 1, "QUnit.moduleStart calls" );
-	equal( testStart, 1, "QUnit.testStart calls" );
-	equal( testDone, 0, "QUnit.testDone calls" );
-	equal( moduleDone, 0, "QUnit.moduleDone calls" );
-	deepEqual( logContext, {
+test("test1", 15, function( assert ) {
+	assert.equal( begin, 1, "QUnit.begin calls" );
+	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
+	assert.equal( testStart, 1, "QUnit.testStart calls" );
+	assert.equal( testDone, 0, "QUnit.testDone calls" );
+	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
+	assert.deepEqual( logContext, {
 		name: "test1",
 		module: "logs1",
 		result: true,
@@ -55,8 +55,8 @@ test("test1", 15, function() {
 		expected: 0
 	}, "log context after equal(actual, expected, message)" );
 
-	equal( "foo", "foo" );
-	deepEqual(logContext, {
+	assert.equal( "foo", "foo" );
+	assert.deepEqual(logContext, {
 		name: "test1",
 		module: "logs1",
 		result: true,
@@ -65,95 +65,95 @@ test("test1", 15, function() {
 		expected: "foo"
 	}, "log context after equal(actual, expected)" );
 
-	ok( true, "ok(true, message)" );
-	deepEqual( logContext, {
+	assert.ok( true, "ok(true, message)" );
+	assert.deepEqual( logContext, {
 		module: "logs1",
 		name: "test1",
 		result: true,
 		message: "ok(true, message)"
 	}, "log context after ok(true, message)" );
 
-	strictEqual( testDoneContext, undefined, "testDone context" );
-	deepEqual( testContext, {
+	assert.strictEqual( testDoneContext, undefined, "testDone context" );
+	assert.deepEqual( testContext, {
 		module: "logs1",
 		name: "test1"
 	}, "test context" );
-	strictEqual( moduleDoneContext, undefined, "moduleDone context" );
-	deepEqual( moduleContext, {
+	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
+	assert.deepEqual( moduleContext, {
 		name: "logs1"
 	}, "module context" );
 
-	equal( log, 14, "QUnit.log calls" );
+	assert.equal( log, 14, "QUnit.log calls" );
 });
-test("test2", 11, function() {
-	equal( begin, 1, "QUnit.begin calls" );
-	equal( moduleStart, 1, "QUnit.moduleStart calls" );
-	equal( testStart, 2, "QUnit.testStart calls" );
-	equal( testDone, 1, "QUnit.testDone calls" );
-	equal( moduleDone, 0, "QUnit.moduleDone calls" );
+test("test2", 11, function( assert ) {
+	assert.equal( begin, 1, "QUnit.begin calls" );
+	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
+	assert.equal( testStart, 2, "QUnit.testStart calls" );
+	assert.equal( testDone, 1, "QUnit.testDone calls" );
+	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	ok( typeof testDoneContext.duration === "number" , "testDone context: duration" );
+	assert.ok( typeof testDoneContext.duration === "number" , "testDone context: duration" );
 	delete testDoneContext.duration;
-	deepEqual( testDoneContext, {
+	assert.deepEqual( testDoneContext, {
 		module: "logs1",
 		name: "test1",
 		failed: 0,
 		passed: 15,
 		total: 15
 	}, "testDone context" );
-	deepEqual( testContext, {
+	assert.deepEqual( testContext, {
 		module: "logs1",
 		name: "test2"
 	}, "test context" );
-	strictEqual( moduleDoneContext, undefined, "moduleDone context" );
-	deepEqual( moduleContext, {
+	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
+	assert.deepEqual( moduleContext, {
 		name: "logs1"
 	}, "module context" );
 
-	equal( log, 25, "QUnit.log calls" );
+	assert.equal( log, 25, "QUnit.log calls" );
 });
 
 module("logs2");
 
-test( "test1", 9, function() {
-	equal( begin, 1, "QUnit.begin calls" );
-	equal( moduleStart, 2, "QUnit.moduleStart calls" );
-	equal( testStart, 3, "QUnit.testStart calls" );
-	equal( testDone, 2, "QUnit.testDone calls" );
-	equal( moduleDone, 1, "QUnit.moduleDone calls" );
+test( "test1", 9, function( assert ) {
+	assert.equal( begin, 1, "QUnit.begin calls" );
+	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
+	assert.equal( testStart, 3, "QUnit.testStart calls" );
+	assert.equal( testDone, 2, "QUnit.testDone calls" );
+	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
-	deepEqual( testContext, {
+	assert.deepEqual( testContext, {
 		module: "logs2",
 		name: "test1"
 	}, "test context" );
-	deepEqual( moduleDoneContext, {
+	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		failed: 0,
 		passed: 26,
 		total: 26
 	}, "moduleDone context" );
-	deepEqual( moduleContext, {
+	assert.deepEqual( moduleContext, {
 		name: "logs2"
 	}, "module context" );
 
-	equal( log, 34, "QUnit.log calls" );
+	assert.equal( log, 34, "QUnit.log calls" );
 });
-test( "test2", 8, function() {
-	equal( begin, 1, "QUnit.begin calls" );
-	equal( moduleStart, 2, "QUnit.moduleStart calls" );
-	equal( testStart, 4, "QUnit.testStart calls" );
-	equal( testDone, 3, "QUnit.testDone calls" );
-	equal( moduleDone, 1, "QUnit.moduleDone calls" );
+test( "test2", 8, function( assert ) {
+	assert.equal( begin, 1, "QUnit.begin calls" );
+	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
+	assert.equal( testStart, 4, "QUnit.testStart calls" );
+	assert.equal( testDone, 3, "QUnit.testDone calls" );
+	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
-	deepEqual( testContext, {
+	assert.deepEqual( testContext, {
 		module: "logs2",
 		name: "test2"
 	}, "test context" );
-	deepEqual( moduleContext, {
+	assert.deepEqual( moduleContext, {
 		name: "logs2"
 	}, "module context" );
 
-	equal( log, 42, "QUnit.log calls" );
+	assert.equal( log, 42, "QUnit.log calls" );
 });
 
 var testAutorun = true;
@@ -172,13 +172,13 @@ QUnit.done(function() {
 
 	moduleStart = moduleDone = 0;
 
-	test("first", function() {
-		equal(moduleStart, 1, "test started");
-		equal(moduleDone, 0, "test in progress");
+	test("first", function( assert ) {
+		assert.equal(moduleStart, 1, "test started");
+		assert.equal(moduleDone, 0, "test in progress");
 	});
 
-	test("second", function() {
-		equal(moduleStart, 2, "test started");
-		equal(moduleDone, 1, "test in progress");
+	test("second", function( assert ) {
+		assert.equal(moduleStart, 2, "test started");
+		assert.equal(moduleDone, 1, "test in progress");
 	});
 });
