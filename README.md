@@ -1,4 +1,4 @@
-[![Build Status](http://swarm.jquery.org:8080/job/QUnit/badge/icon)](http://swarm.jquery.org:8080/job/QUnit/)
+[![Build Status](http://jenkins.jquery.com/job/QUnit/badge/icon)](http://jenkins.jquery.com/job/QUnit/)
 
 # [QUnit](http://qunitjs.com) - A JavaScript Unit Testing Framework.
 
