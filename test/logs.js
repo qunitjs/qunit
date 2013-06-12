@@ -166,11 +166,12 @@ QUnit.done(function() {
 
 	testAutorun = false;
 
-	module("autorun");
-
-	test("reset", 0, function() {});
-
 	moduleStart = moduleDone = 0;
+
+	// Since these tests run *after* done, and as such
+	// QUnit is not able to know whether more tests are coming
+	// the module starts/ends after each test.
+	module("autorun");
 
 	test("first", function( assert ) {
 		assert.equal(moduleStart, 1, "test started");

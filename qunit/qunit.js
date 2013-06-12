@@ -1254,6 +1254,7 @@ function done() {
 			total: config.moduleStats.all
 		});
 	}
+	delete config.previousModule;
 
 	var i, key,
 		banner = id( "qunit-banner" ),
