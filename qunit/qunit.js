@@ -1568,7 +1568,7 @@ function removeClass( elem, name ) {
 		set = set.replace(" " + name + " " , " ");
 	}
 	// If possible, trim it for prettiness, but not necessarily
-	elem.className = window.jQuery ? jQuery.trim( set ) : ( set.trim ? set.trim() : set );
+	elem.className = typeof set.trim === "function" ? set.trim() : set.replace(/^\s+|\s+$/g, "");
 }
 
 function id( name ) {
