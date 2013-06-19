@@ -849,6 +849,11 @@ extend( QUnit, {
 	},
 
 	// Resets the test setup. Useful for tests that modify the DOM.
+	/*
+	DEPRECATED: Use multiple tests instead of resetting inside a test.
+	Use testStart or testDone for custom cleanup.
+	This method will throw an error in 2.0, and will be removed in 2.1
+	*/
 	reset: function() {
 		var fixture = id( "qunit-fixture" );
 		if ( fixture ) {
