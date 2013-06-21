@@ -1,3 +1,30 @@
+1.12.0 / 2013-06-21
+===================
+
+  * Add a deprecation comment to QUnit.reset. Partial fix for #354
+  * Fix mis-match between moduleStart and moduleDone events
+  * Removed jQuery.trim optimization. Fixes #424.
+  * Use a local setTimeout reference, add separate unit test suite for that. Fixes #432 - Using a setTimeout stub can stop test suite from continuing. Closes gh-433
+  * Added CONTRIBUTING.md.
+  * Moved 'addons/themes/nv' to 'Krinkle/qunit-theme-nv.git'
+  * Moved 'addons/themes/ninja' to 'Krinkle/qunit-theme-ninja.git'
+  * Moved 'addons/themes/gabe' to 'Krinkle/qunit-theme-gabe.git'
+  * Moved 'addons/canvas' to 'JamesMGreene/qunit-assert-canvas.git'. Tree: https://github.com/JamesMGreene/qunit-assert-canvas/tree/v1.0.0
+  * Moved 'addons/close-enough' to 'JamesMGreene/qunit-assert-close.git'. Tree: https://github.com/JamesMGreene/qunit-assert-close/tree/v1.0.0
+  * Moved 'addons/step' to 'JamesMGreene/qunit-assert-step.git'. Tree: https://github.com/JamesMGreene/qunit-assert-step/tree/v1.0.0
+  * Canvas plugin: Show how to test with images. Closes gh-438.
+  * Clear filter and testNumber when choosing a module. Fixes #442.
+  * Deprecate QUnit.current_testEnvironment in favour of config.current.testEnvironment.
+  * assert.ok: Message shouldn't be undefined in 'log' event.
+  * Emit moduleStart before testStart even if test isn't in a module.
+  * PhantomJS plugin: Added optional timeout. Closes #415.
+  * PhantomJS plugin: Include stack trace for all failed tests. Closes #416.
+  * Moved 'addons/composite' to 'jquery/qunit-composite.git'. Tree: https://github.com/jquery/qunit-composite/tree/v1.0.0 Fixes #419.
+  * Moved 'addons/junitlogger' to 'jquery/qunit-reporter-junit.git'.
+  * Sort the module names so we no longer rely on implicit ordering. Fixes #391. Closes gh-392
+  * JUnitLogger: Add a `name` property to the test run. Closes gh-389
+  * Improve circular reference logic in equiv - Fixes #397
+
 1.11.0 / 2013-01-20
 ==================
 
