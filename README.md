@@ -37,25 +37,26 @@ grunt binary. For additional grunt tasks, also run `npm install`.
 
 ## Releases
 
-Install git-extras and run `git changelog` to update History.md. Clean up the
-changelog, removing merge commits or whitespace cleanups.
+Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update History.md. Clean up the changelog, removing merge commits or whitespace cleanups.
 
-Update qunit/qunit.js|css and package.json to the release version, commit and
+Update qunit/qunit.js|css and package.json to the release version, commit ("Release $version") and
 tag (Put the 'v' in front of the tag, e.g. `v1.8.0`), update them again to
-the next version, commit and push commits and tags:
+the next version ("Bump post-release version"), commit and push commits and tags:
 
 	git push --tags origin master
 
-To upload to code.jquery.com (replace $version accordingly), ssh to code.origin.jquery.com:
+To upload to code.jquery.com (replace $version accordingly), ssh to jq03 (swarm.jquery.org).
 
-	cp qunit/qunit.js /var/www/html/code.jquery.com/qunit/qunit-$version.js
-	cp qunit/qunit.css /var/www/html/code.jquery.com/qunit/qunit-$version.css
+Clone or fetch QUnit, checkout the tag you created, then:
+
+	sudo cp qunit/qunit.js /var/www/html/code.jquery.com/qunit/qunit-$version.js
+	sudo cp qunit/qunit.css /var/www/html/code.jquery.com/qunit/qunit-$version.css
 
 Then update /var/www/html/code.jquery.com/index.html and purge it with:
 
 	curl -s http://code.origin.jquery.com/?reload
 
-Update web-base-template to link to those files for qunitjs.com.
+Update jquery-wp-content to link to those files for qunitjs.com.
 
 Publish to npm via
 
