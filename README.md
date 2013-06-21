@@ -56,8 +56,16 @@ Then update /var/www/html/code.jquery.com/index.html and purge it with:
 
 	curl -s http://code.origin.jquery.com/?reload
 
-Update jquery-wp-content to link to those files for qunitjs.com.
+Update web sites, replacing previous versions with new ones:
+
+* jquery/jquery-wp-content themes/jquery/footer-qunit.php
+* jquery/qunitjs.com pages/index.html
 
 Publish to npm via
 
 	npm publish
+
+Finally announce on Twitter @qunitjs
+
+	Released v1.12.0: https://github.com/jquery/qunit/tree/v1.12.0
+	Changelog: https://github.com/jquery/qunit/blob/v1.12.0/History.md
