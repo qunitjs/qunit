@@ -22,6 +22,7 @@ var QUnit,
 	Date = window.Date,
 	setTimeout = window.setTimeout,
 	defined = {
+		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
@@ -1213,7 +1214,9 @@ QUnit.load = function() {
 	}
 };
 
-addEvent( window, "load", QUnit.load );
+if ( defined.document ) {
+	addEvent( window, "load", QUnit.load );
+}
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
