@@ -1136,7 +1136,7 @@ QUnit.load = function() {
 
 		addEvent( filter, "click", function() {
 			var tmp,
-				ol = document.getElementById( "qunit-tests" );
+				ol = id( "qunit-tests" );
 
 			if ( filter.checked ) {
 				ol.className = ol.className + " hidepass";
@@ -1156,7 +1156,7 @@ QUnit.load = function() {
 		if ( config.hidepassed || defined.sessionStorage && sessionStorage.getItem( "qunit-filter-passed-tests" ) ) {
 			filter.checked = true;
 			// `ol` initialized at top of scope
-			ol = document.getElementById( "qunit-tests" );
+			ol = id( "qunit-tests" );
 			ol.className = ol.className + " hidepass";
 		}
 		toolbar.appendChild( filter );
