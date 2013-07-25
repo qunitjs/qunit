@@ -1,7 +1,7 @@
 {
   "name": "qunit",
   "version": "1.13.0pre",
-  "main": "qunit/qunit.js",
+  "main": ["qunit/qunit.js", "qunit/qunit.css"],
   "ignore": [
     "**/.*",
     "package.json",
