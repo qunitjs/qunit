@@ -211,7 +211,9 @@ Test.prototype = {
 
 			// Restart the tests if they're blocking
 			if ( config.blocking ) {
-				QUnit.start();
+				while ( config.semaphore !== 0 ) {
+					QUnit.start();
+				}
 			}
 		}
 	},
