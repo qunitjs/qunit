@@ -66,7 +66,7 @@
 			console.error( "Unable to access network: " + status );
 			phantom.exit(1);
 		} else {
-			// Cannot do this verification with the 'DOMContentLoaded' handler because it
+			// Cannot do this verification with the "DOMContentLoaded" handler because it
 			// will be too late to attach it if a page does not have any script tags.
 			var qunitMissing = page.evaluate(function() { return (typeof QUnit === "undefined" || !QUnit); });
 			if (qunitMissing) {
@@ -87,38 +87,36 @@
 	});
 
 	function colorizer() {
-		window.ANSI = {};
-		window.ANSI.color_map = {
-			"red": "\u001b[31m",
-			"redBold": "\u001b[1m\u001b[31m",
-			"green": "\u001b[32m",
-			"greenBold": "\u001b[1m\u001b[32m",
-			"blue": "\u001b[34m",
-			"blueBold": "\u001b[1m\u001b[34m",
-			"end": "\u001b[0m"
+		window.ANSI = {
+			colorMap: {
+				"red": "\u001b[31m",
+				"redBold": "\u001b[1m\u001b[31m",
+				"green": "\u001b[32m",
+				"greenBold": "\u001b[1m\u001b[32m",
+				"blue": "\u001b[34m",
+				"blueBold": "\u001b[1m\u001b[34m",
+				"end": "\u001b[0m"
+			},
+			highlightMap: {
+				"red": "\u001b[41m \u001b[37m", // change 37 to 30 for black text
+				"green": "\u001b[42m \u001b[30m",
+				"blue": "\u001b[44m \u001b[37m",
+				"end": "\u001b[0m"
+			},
+			highlightText: function ( text, color ) {
+				var colorCode = this.highlightMap[ color ],
+						colorEnd = this.highlightMap.end;
+
+				return colorCode + text + colorEnd;
+			},
+			colorizeText: function ( text, color ) {
+				var colorCode = this.colorMap[ color ],
+						colorEnd = this.colorMap.end;
+
+				return colorCode + text + colorEnd;
+			}
 		};
 
-		window.ANSI.highlight_map = {
-			"red": "\u001b[41m \u001b[37m", // change 37 to 30 for black text
-			"green": "\u001b[42m \u001b[30m",
-			"blue": "\u001b[44m \u001b[37m",
-			"end": "\u001b[0m"
-		};
-
-		window.ANSI.highlight_text = function ( text, color ) {
-			var color_code = this.highlight_map[ color ],
-					color_end = this.highlight_map.end;
-
-			return color_code + text + color_end;
-		};
-
-		window.ANSI.colorize_text = function ( text, color ) {
-			var color_code = this.color_map[ color ],
-					color_end = this.color_map.end;
-
-			return color_code + text + color_end;
-
-		};
 	}
 
 	function addLogging() {
@@ -137,7 +135,7 @@
 
 				if (typeof details.expected !== "undefined" ) {
 					if (response) {
-						response += ', ';
+						response += ", ";
 					}
 
 					response += "expected: " + details.expected + ", but was: " + details.actual;
@@ -147,12 +145,12 @@
 					response += "\n" + details.source;
 				}
 
-				currentTestAssertions.push( window.ANSI.colorize_text( "Failed assertion: ", "red" ) + details.message );
+				currentTestAssertions.push( window.ANSI.colorizeText( "Failed assertion: ", "red" ) + details.message );
 			});
 
 			QUnit.moduleStart( function ( details ) {
 				console.log( "---------------" );
-				console.log( "Running QUnit Tests for: " + window.ANSI.colorize_text( details.name, "blueBold") );
+				console.log( "Running QUnit Tests for: " + window.ANSI.colorizeText( details.name, "blueBold") );
 				console.log( "---------------" );
 			});
 
@@ -162,13 +160,13 @@
 					name = result.module + ": " + result.name;
 
 				if (result.failed) {
-					console.log( window.ANSI.highlight_text( String.fromCharCode( "0x2717" ) + " Test failed: ", "red" ) + " " + name );
+					console.log( window.ANSI.highlightText( String.fromCharCode( "0x2717" ) + " Test failed: ", "red" ) + " " + name );
 
 					for (i = 0, len = currentTestAssertions.length; i < len; i++) {
-						console.log('    ' + String.fromCharCode( "0x21B3" ) + "  " + currentTestAssertions[i]);
+						console.log("    " + String.fromCharCode( "0x21B3" ) + "  " + currentTestAssertions[i]);
 					}
 				} else {
-					console.log( window.ANSI.highlight_text( String.fromCharCode( "0x2713" ) + " Test passed: ", "green" ) + " " + name );
+					console.log( window.ANSI.highlightText( String.fromCharCode( "0x2713" ) + " Test passed: ", "green" ) + " " + name );
 				}
 
 				currentTestAssertions.length = 0;
@@ -176,7 +174,7 @@
 
 			QUnit.done(function(result) {
 				console.log( "---------------" );
-				console.log("Took " + result.runtime +  "ms to run " + result.total + " tests. " + window.ANSI.colorize_text( result.passed + " passed", "green" ) + ", " + window.ANSI.colorize_text( result.failed + " failed", "red" ) + "." );
+				console.log("Took " + result.runtime +  "ms to run " + result.total + " tests. " + window.ANSI.colorizeText( result.passed + " passed", "green" ) + ", " + window.ANSI.colorizeText( result.failed + " failed", "red" ) + "." );
 				console.log( "---------------" );
 
 				if (typeof window.callPhantom === "function" ) {
