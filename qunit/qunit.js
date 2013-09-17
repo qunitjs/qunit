@@ -221,10 +221,18 @@ Test.prototype = {
 			if ( typeof this.callbackRuntime === "undefined" ) {
 				this.callbackRuntime = +new Date() - this.callbackStarted;
 			}
+			runLoggingCallbacks( "testTeardown", QUnit, {
+				name: this.testName,
+				module: this.module
+			});
 			this.testEnvironment.teardown.call( this.testEnvironment, QUnit.assert );
 			return;
 		} else {
 			try {
+				runLoggingCallbacks( "testTeardown", QUnit, {
+					name: this.testName,
+					module: this.module
+				});
 				this.testEnvironment.teardown.call( this.testEnvironment, QUnit.assert );
 			} catch( e ) {
 				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
@@ -743,6 +751,8 @@ config = {
 	log: [],
 	testStart: [],
 	testDone: [],
+	testSetup: [],
+	testTeardown: [],
 	moduleStart: [],
 	moduleDone: []
 };
@@ -1042,6 +1052,9 @@ extend( QUnit.constructor.prototype, {
 
 	// testStart: { name }
 	testStart: registerLoggingCallback( "testStart" ),
+
+	// testTeardown: { name }
+	testTeardown: registerLoggingCallback( "testTeardown" ),
 
 	// testDone: { name, failed, passed, total, duration }
 	testDone: registerLoggingCallback( "testDone" ),
