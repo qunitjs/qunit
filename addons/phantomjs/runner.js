@@ -148,12 +148,12 @@
 					response += "\n" + details.source;
 				}
 
-				currentTestAssertions.push( ANSI.colorizeText( "Failed assertion: ", "red" ) + details.message );
+				currentTestAssertions.push( window.ANSI.colorizeText( "Failed assertion: ", "red" ) + details.message );
 			});
 
 			QUnit.moduleStart(function ( details ) {
 				console.log( "---------------" );
-				console.log( "Running QUnit Tests for: " + ANSI.colorizeText( details.name, "blueBold") );
+				console.log( "Running QUnit Tests for: " + window.ANSI.colorizeText( details.name, "blueBold") );
 				console.log( "---------------" );
 			});
 
@@ -163,13 +163,13 @@
 					name = result.module + ": " + result.name;
 
 				if ( result.failed ) {
-					console.log( ANSI.highlightText( String.fromCharCode( "0x2717" ) + " Test failed: ", "red" ) + " " + name );
+					console.log( window.ANSI.highlightText( String.fromCharCode( "0x2717" ) + " Test failed: ", "red" ) + " " + name );
 
 					for ( i = 0, len = currentTestAssertions.length; i < len; i++ ) {
 						console.log( "    " + String.fromCharCode( "0x21B3" ) + "  " + currentTestAssertions[ i ] );
 					}
 				} else {
-					console.log( ANSI.highlightText( String.fromCharCode( "0x2713" ) + " Test passed: ", "green" ) + " " + name );
+					console.log( window.ANSI.highlightText( String.fromCharCode( "0x2713" ) + " Test passed: ", "green" ) + " " + name );
 				}
 
 				currentTestAssertions.length = 0;
@@ -177,7 +177,7 @@
 
 			QUnit.done(function ( result ) {
 				console.log( "---------------" );
-				console.log( "Took " + result.runtime +  "ms to run " + result.total + " tests. " + ANSI.colorizeText( result.passed + " passed", "green" ) + ", " + ANSI.colorizeText( result.failed + " failed", "red" ) + "." );
+				console.log( "Took " + result.runtime +  "ms to run " + result.total + " tests. " + window.ANSI.colorizeText( result.passed + " passed", "green" ) + ", " + window.ANSI.colorizeText( result.failed + " failed", "red" ) + "." );
 				console.log( "---------------" );
 
 				if ( typeof window.callPhantom === "function" ) {
