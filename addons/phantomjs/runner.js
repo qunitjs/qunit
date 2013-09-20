@@ -16,7 +16,7 @@
 (function() {
 	"use strict";
 
-	var url, page, timeout,
+	var url, page, timeout, useColor,
 		args = require( "system" ).args;
 
 	// arg[0]: scriptName, args[1...]: arguments
@@ -27,9 +27,10 @@
 
 	url = args[ 1 ];
 	page = require( "webpage" ).create();
-	if ( args[ 2 ] !== undefined ) {
+	if ( typeof args[ 2 ] === "number" ) {
 		timeout = parseInt( args[ 2 ], 10 );
 	}
+	useColor = ( args.indexOf( "--no-color" ) === -1 ) ? true : false;
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
 	page.onConsoleMessage = function ( msg ) {
@@ -44,7 +45,7 @@
 
 	page.onInitialized = function () {
 		page.evaluate( addLogging );
-		page.evaluate( colorizer );
+		page.evaluate( colorizer, useColor );
 	};
 
 	page.onCallback = function( message ) {
@@ -89,7 +90,7 @@
 		}
 	});
 
-	function colorizer() {
+	function colorizer( useColor ) {
 		window.ANSI = {
 			colorMap: {
 				"red": "\u001b[31m",
@@ -110,13 +111,13 @@
 				var colorCode = this.highlightMap[ color ],
 						colorEnd = this.highlightMap.end;
 
-				return colorCode + text + colorEnd;
+				return ( useColor ) ? colorCode + text + colorEnd : text;
 			},
 			colorizeText: function ( text, color ) {
 				var colorCode = this.colorMap[ color ],
 						colorEnd = this.colorMap.end;
 
-				return colorCode + text + colorEnd;
+				return ( useColor ) ? colorCode + text + colorEnd : text;
 			}
 		};
 
@@ -169,8 +170,6 @@
 					for ( i = 0, len = currentTestAssertions.length; i < len; i++ ) {
 						console.log( "    " + String.fromCharCode( "0x21B3" ) + "  " + currentTestAssertions[ i ] );
 					}
-				} else {
-					console.log( ANSI.highlightText( String.fromCharCode( "0x2713" ) + " Test passed: ", "green" ) + " " + name );
 				}
 
 				currentTestAssertions.length = 0;
