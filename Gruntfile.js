@@ -77,7 +77,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	} )
 	.addjob(
 		{
-			name: "QUnit commit #<a href='https://github.com/jquery/qunit/commit/" + commit + "'>" + commit.substr( 0, 10 ) + "</a>",
+			name: "Commit #<a href='https://github.com/jquery/qunit/commit/" + commit + "'>" + commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
 			browserSets: config.browserSets
 		}, function( err, passed ) {
