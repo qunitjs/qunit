@@ -47,7 +47,11 @@
 		if (message) {
 			if (message.name === 'QUnit.done') {
 				result = message.data;
-				failed = !result || result.failed;
+				failed = !result || !result.total || result.failed;
+
+				if (!result.total) {
+					console.error('No tests were executed. Are you loading tests asynchronously?');
+				}
 
 				phantom.exit(failed ? 1 : 0);
 			}
