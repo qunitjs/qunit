@@ -716,6 +716,9 @@ config = {
 	// by default, modify document.title when suite is done
 	altertitle: true,
 
+	// by default, scroll to top of the page when suite is done
+	scrollTop: true,
+
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 
@@ -1308,7 +1311,7 @@ function done() {
 	}
 
 	// scroll back to top to show results
-	if ( window.scrollTo ) {
+	if ( config.scrollTop && window.scrollTo ) {
 		window.scrollTo(0, 0);
 	}
 
