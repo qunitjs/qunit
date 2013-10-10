@@ -4,11 +4,13 @@ var begin = 0,
 	moduleStart = 0,
 	moduleDone = 0,
 	testStart = 0,
+	testTeardown = 0,
 	testDone = 0,
 	log = 0,
 	moduleContext,
 	moduleDoneContext,
 	testContext,
+	testTeardownContext,
 	testDoneContext,
 	logContext;
 
@@ -29,6 +31,11 @@ QUnit.testStart(function(context) {
 	testStart++;
 	testContext = context;
 });
+QUnit.testTeardown(function(context) {
+	QUnit.ok(true, "Assertion added in testTeardown");
+	testTeardown++;
+	testTeardownContext = context;
+});
 QUnit.testDone(function(context) {
 	testDone++;
 	testDoneContext = context;
@@ -40,10 +47,11 @@ QUnit.log(function(context) {
 
 module("logs1");
 
-test("test1", 15, function( assert ) {
+test("test1", 18, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 1, "QUnit.testStart calls" );
+	assert.equal( testTeardown, 0, "QUnit.testTeardown calls" );
 	assert.equal( testDone, 0, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 	assert.deepEqual( logContext, {
@@ -73,6 +81,7 @@ test("test1", 15, function( assert ) {
 		message: "ok(true, message)"
 	}, "log context after ok(true, message)" );
 
+	assert.strictEqual( testTeardownContext, undefined, "testTeardown context" );
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
@@ -83,23 +92,28 @@ test("test1", 15, function( assert ) {
 		name: "logs1"
 	}, "module context" );
 
-	assert.equal( log, 14, "QUnit.log calls" );
+	assert.equal( log, 16, "QUnit.log calls" );
 });
-test("test2", 11, function( assert ) {
+test("test2", 14, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 2, "QUnit.testStart calls" );
+	assert.equal( testTeardown, 1, "QUnit.testTeardown calls" );
 	assert.equal( testDone, 1, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
+	assert.deepEqual( testTeardownContext, {
+		module: "logs1",
+		name: "test1"
+	}, "testTeardown context" );
 	assert.ok( typeof testDoneContext.duration === "number" , "testDone context: duration" );
 	delete testDoneContext.duration;
 	assert.deepEqual( testDoneContext, {
 		module: "logs1",
 		name: "test1",
 		failed: 0,
-		passed: 15,
-		total: 15
+		passed: 18,
+		total: 18
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
@@ -110,15 +124,16 @@ test("test2", 11, function( assert ) {
 		name: "logs1"
 	}, "module context" );
 
-	assert.equal( log, 25, "QUnit.log calls" );
+	assert.equal( log, 30, "QUnit.log calls" );
 });
 
 module("logs2");
 
-test( "test1", 9, function( assert ) {
+test( "test1", 11, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 3, "QUnit.testStart calls" );
+	assert.equal( testTeardown, 2, "QUnit.testTeardown calls" );
 	assert.equal( testDone, 2, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
@@ -129,19 +144,20 @@ test( "test1", 9, function( assert ) {
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		failed: 0,
-		passed: 26,
-		total: 26
+		passed: 32,
+		total: 32
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 34, "QUnit.log calls" );
+	assert.equal( log, 41, "QUnit.log calls" );
 });
-test( "test2", 8, function( assert ) {
+test( "test2", 10, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 4, "QUnit.testStart calls" );
+	assert.equal( testTeardown, 3, "QUnit.testTeardown calls" );
 	assert.equal( testDone, 3, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
@@ -153,7 +169,7 @@ test( "test2", 8, function( assert ) {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 42, "QUnit.log calls" );
+	assert.equal( log, 51, "QUnit.log calls" );
 });
 
 var testAutorun = true;
