@@ -1,0 +1,19 @@
+{
+  "name": "YOUR-PROJECT-NAME-HERE",
+  "description": "YOUR PROJECT DESCRIPTION HERE",
+  "author": "YOUR NAME <your@emailaddress.com>",
+  "version": "0.0.1",
+  "dependencies": {
+    "connect": "1.8.5",
+    "express": "2.5.2",
+    "jade": "0.20.0",
+    "mongoose": "2.4.8",
+    "socket.io": "0.8.7"
+  },
+  "devDependencies": {
+    "vows": "0.5.x",
+	"mocha": "*",
+	"should": "*"
+  },
+  "engine": "node >= 0.6.6"
+}
