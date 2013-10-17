@@ -765,15 +765,19 @@ if ( typeof exports === "undefined" ) {
 		urlParams = {},
 		current;
 
-	if ( params[ 0 ] ) {
-		for ( i = 0; i < length; i++ ) {
-			current = params[ i ].split( "=" );
-			current[ 0 ] = decodeURIComponent( current[ 0 ] );
-			// allow just a key to turn on a flag, e.g., test.html?noglobals
-			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-			urlParams[ current[ 0 ] ] = current[ 1 ];
-		}
-	}
+    if ( params[ 0 ] ) {
+        for ( i = 0; i < length; i++ ) {
+            current = params[ i ].split( "=" );
+            current[ 0 ] = decodeURIComponent( current[ 0 ] );
+            // allow just a key to turn on a flag, e.g., test.html?noglobals
+            current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
+            if (urlParams[ current[ 0 ] ]) {
+                urlParams[ current[ 0 ] ] = [].concat(urlParams[ current[ 0 ] ], current[ 1 ]);
+            }else{
+                urlParams[ current[ 0 ] ] = current[ 1 ];
+            }
+        }
+    }
 
 	QUnit.urlParams = urlParams;
 
@@ -783,7 +787,15 @@ if ( typeof exports === "undefined" ) {
 	// Exact match of the module name
 	config.module = urlParams.module;
 
-	config.testNumber = parseInt( urlParams.testNumber, 10 ) || null;
+    config.testNumbers = [];
+    if (urlParams.testNumber) {
+        //ensure that urlParams.testNumber is an array
+        urlParams.testNumber = [].concat(urlParams.testNumber);
+        for ( i = 0; i < urlParams.testNumber.length; i++ ) {
+            current = urlParams.testNumber[ i ];
+            config.testNumbers.push(parseInt(current, 10));
+        }
+    }
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
@@ -1322,7 +1334,8 @@ function done() {
 
 /** @return Boolean: true if this test should be ran */
 function validTest( test ) {
-	var include,
+	var i,
+        include,
 		filter = config.filter && config.filter.toLowerCase(),
 		module = config.module && config.module.toLowerCase(),
 		fullName = (test.module + ": " + test.testName).toLowerCase();
@@ -1333,9 +1346,14 @@ function validTest( test ) {
 		return true;
 	}
 
-	if ( config.testNumber ) {
-		return test.testNumber === config.testNumber;
-	}
+    if ( config.testNumbers.length > 0) {
+        for (i = 0; i < config.testNumbers.length; i++){
+            if (test.testNumber === config.testNumbers[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	if ( module && ( !test.module || test.module.toLowerCase() !== module ) ) {
 		return false;
