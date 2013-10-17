@@ -6,3 +6,8 @@
 .settings
 node_modules
 dist/
+.idea
+*.iml
+
+.vagrant
+Vagrantfile
