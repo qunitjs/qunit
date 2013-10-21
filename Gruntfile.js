@@ -115,6 +115,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	);
 });
 
-grunt.registerTask("default", ["concat", "jshint", "qunit"]);
+grunt.registerTask( "build", ["concat"] );
+grunt.registerTask( "default", ["build", "jshint", "qunit"] );
 
 };

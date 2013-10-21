@@ -35,6 +35,8 @@
     "testswarm": "~1.0.1"
   },
   "scripts": {
-    "test": "grunt"
-  }
+    "test": "grunt",
+    "prepublish": "grunt build"
+  },
+  "main": "dist/qunit.js"
 }
