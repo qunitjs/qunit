@@ -2,25 +2,54 @@
 module.exports = function( grunt ) {
 
 grunt.loadNpmTasks( "grunt-git-authors" );
+grunt.loadNpmTasks( "grunt-contrib-concat" );
 grunt.loadNpmTasks( "grunt-contrib-jshint" );
 grunt.loadNpmTasks( "grunt-contrib-qunit" );
 grunt.loadNpmTasks( "grunt-contrib-watch" );
 
+
+function process( code ) {
+	return code
+
+		// Embed version
+		.replace( /@VERSION/g, grunt.config( "pkg" ).version )
+
+		// Embed date (yyyy-mm-ddThh:mmZ)
+		.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
+}
+
 grunt.initConfig({
-	qunit: {
-		qunit: [
-			"test/index.html",
-			"test/async.html",
-			"test/logs.html",
-			"test/setTimeout.html"
-		]
+	pkg: grunt.file.readJSON( "package.json" ),
+	concat: {
+		"src-js": {
+			options: { process: process },
+			src: [
+				"src/intro.js",
+				"src/core.js",
+				"src/test.js",
+				"src/assert.js",
+				"src/equiv.js",
+				"src/dump.js",
+				"src/diff.js",
+				"src/export.js",
+				"src/outro.js"
+			],
+			dest: "dist/qunit.js"
+		},
+		"src-css": {
+			options: { process: process },
+			src: [
+				"src/qunit.css"
+			],
+			dest: "dist/qunit.css"
+		}
 	},
 	jshint: {
 		options: {
 			jshintrc: ".jshintrc"
 		},
 		gruntfile: [ "Gruntfile.js" ],
-		qunit: [ "qunit/**/*.js" ],
+		dist: [ "dist/*.js" ],
 		addons: {
 			options: {
 				jshintrc: "addons/.jshintrc"
@@ -38,23 +67,18 @@ grunt.initConfig({
 			}
 		}
 	},
+	qunit: {
+		qunit: [
+			"test/index.html",
+			"test/async.html",
+			"test/logs.html",
+			"test/setTimeout.html"
+		]
+	},
 	watch: {
-		files: [ "*", ".jshintrc", "{addons,qunit,test}/**/{*,.*}" ],
+		files: [ "*", ".jshintrc", "{addons,src,test}/**/{*,.*}" ],
 		tasks: "default"
 	}
-});
-
-grunt.registerTask( "build-git", function( sha ) {
-	function processor( content ) {
-		var tagline = " - A JavaScript Unit Testing Framework";
-		return content.replace( tagline, "-" + sha + " " + grunt.template.today("isoDate") + tagline );
-	}
-	grunt.file.copy( "qunit/qunit.css", "dist/qunit-git.css", {
-		process: processor
-	});
-	grunt.file.copy( "qunit/qunit.js", "dist/qunit-git.js", {
-		process: processor
-	});
 });
 
 grunt.registerTask( "testswarm", function( commit, configFile ) {
@@ -62,9 +86,11 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 		config = grunt.file.readJSON( configFile ).qunit,
 		runs = {},
 		done = this.async();
+
 	["index", "async", "setTimeout"].forEach(function (suite) {
 		runs[suite] = config.testUrl + commit + "/test/" + suite + ".html";
 	});
+
 	testswarm.createClient( {
 		url: config.swarmUrl,
 		pollInterval: 10000,
@@ -89,6 +115,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	);
 });
 
-grunt.registerTask("default", ["jshint", "qunit"]);
+grunt.registerTask( "build", ["concat"] );
+grunt.registerTask( "default", ["build", "jshint", "qunit"] );
 
 };
