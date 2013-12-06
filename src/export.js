@@ -1,11 +1,11 @@
-// Export global variables, unless an 'exports' object exists,
-// in that case we assume we're in CommonJS
-if ( typeof exports === "undefined" ) {
+// For browser, export only select globals
+// but everything in the QUnit namespace
+if ( typeof window !== "undefined" ) {
 	extend( window, QUnit.constructor.prototype );
-
-	// Expose QUnit object
 	window.QUnit = QUnit;
-} else {
-	// for CommonJS environments, export everything
-	extend( exports, QUnit.constructor.prototype );
+}
+
+// For CommonJS environments, export everything
+if ( typeof module !== "undefined" && module.exports ) {
+	module.exports = QUnit;
 }
