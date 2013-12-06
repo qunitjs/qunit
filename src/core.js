@@ -10,6 +10,7 @@ var QUnit,
 	Date = window.Date,
 	setTimeout = window.setTimeout,
 	defined = {
+		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
@@ -535,7 +536,7 @@ extend( QUnit.constructor.prototype, {
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
 
-if ( typeof document === "undefined" || document.readyState === "complete" ) {
+if ( !defined.document || document.readyState === "complete" ) {
 	config.autorun = true;
 }
 
@@ -695,7 +696,9 @@ QUnit.load = function() {
 	}
 };
 
-addEvent( window, "load", QUnit.load );
+if ( defined.document ) {
+	addEvent( window, "load", QUnit.load );
+}
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -769,7 +772,7 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
+	if ( config.altertitle && defined.document && document.title ) {
 		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
@@ -1024,6 +1027,9 @@ function addEvent( elem, type, fn ) {
 	// IE
 	} else if ( elem.attachEvent ) {
 		elem.attachEvent( "on" + type, fn );
+	// Caller must ensure support for event listeners is present
+	} else {
+		throw new Error( "addEvent was called in a context without event listener support" );
 	}
 }
 
@@ -1060,8 +1066,7 @@ function removeClass( elem, name ) {
 }
 
 function id( name ) {
-	return !!( typeof document !== "undefined" && document && document.getElementById ) &&
-		document.getElementById( name );
+	return !!( defined.document && document.getElementById ) && document.getElementById( name );
 }
 
 function registerLoggingCallback( key ) {
