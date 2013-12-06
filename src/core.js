@@ -364,11 +364,11 @@ extend( QUnit, {
 
 	objectType: function( obj ) {
 		if ( typeof obj === "undefined" ) {
-				return "undefined";
-		// consider: typeof null === object
+			return "undefined";
 		}
+		// Consider: typeof null === object
 		if ( obj === null ) {
-				return "null";
+			return "null";
 		}
 
 		var match = toString.call( obj ).match(/^\[object\s(.*)\]$/),
