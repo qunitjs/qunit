@@ -16,19 +16,26 @@
 (function() {
 	'use strict';
 
-	var url, page, timeout,
-		args = require('system').args;
+	var url, page, timeout, output,
+			args = require('system').args;
 
 	// arg[0]: scriptName, args[1...]: arguments
-	if (args.length < 2 || args.length > 3) {
-		console.error('Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds]');
+	if (args.length < 2 || args.length > 4) {
+		console.error('Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds] [output.xml]');
 		phantom.exit(1);
 	}
 
 	url = args[1];
 	page = require('webpage').create();
 	if (args[2] !== undefined) {
-		timeout = parseInt(args[2], 10);
+		if (isFinite(args[2])) {
+			timeout = parseInt(args[2], 10);
+			if (args[3] !== undefined) {
+				output = args[3];
+			}
+		} else {
+			output = args[2];
+		}
 	}
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
@@ -55,6 +62,12 @@
 
 				phantom.exit(failed ? 1 : 0);
 			}
+			if (message.name === 'QUnit.jUnitReport') {
+				if (output !== undefined)
+				{
+					require("fs").write(output, message.report.xml);
+				}
+			}
 		}
 	};
 
@@ -65,7 +78,9 @@
 		} else {
 			// Cannot do this verification with the 'DOMContentLoaded' handler because it
 			// will be too late to attach it if a page does not have any script tags.
-			var qunitMissing = page.evaluate(function() { return (typeof QUnit === 'undefined' || !QUnit); });
+			var qunitMissing = page.evaluate(function() {
+				return (typeof QUnit === 'undefined' || !QUnit);
+			});
 			if (qunitMissing) {
 				console.error('The `QUnit` object is not present on this page.');
 				phantom.exit(1);
@@ -86,6 +101,17 @@
 	function addLogging() {
 		window.document.addEventListener('DOMContentLoaded', function() {
 			var currentTestAssertions = [];
+
+			if (QUnit.jUnitReport !== undefined) {
+				QUnit.jUnitReport = function(report) {
+					if (typeof window.callPhantom === 'function') {
+						window.callPhantom({
+							'name': 'QUnit.jUnitReport',
+							'report': report
+						});
+					}
+				};
+			}
 
 			QUnit.log(function(details) {
 				var response;
