@@ -357,20 +357,6 @@ extend( QUnit, {
 		}
 	},
 
-	// Trigger an event on an element.
-	// @example triggerEvent( document.body, "click" );
-	triggerEvent: function( elem, type, event ) {
-		if ( document.createEvent ) {
-			event = document.createEvent( "MouseEvents" );
-			event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
-				0, 0, 0, 0, 0, false, false, false, false, 0, null);
-
-			elem.dispatchEvent( event );
-		} else if ( elem.fireEvent ) {
-			elem.fireEvent( "on" + type );
-		}
-	},
-
 	// Safe object type checking
 	is: function( type, obj ) {
 		return QUnit.objectType( obj ) === type;
