@@ -1038,7 +1038,8 @@ function addEvent( elem, type, fn ) {
 	// IE
 	} else if ( elem.attachEvent ) {
 		elem.attachEvent( "on" + type, fn );
-	}
+	// Something without events, like Rhino
+	} // else  Do nothing
 }
 
 /**
