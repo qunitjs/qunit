@@ -83,7 +83,7 @@ QUnit.test( "QUnit.assert compatibility", 5, function( assert ) {
 	assert.notStrictEqual( window.assert, QUnit.assert, "Assert does not get exposed as a global variable" );
 });
 
-QUnit.module("setup test", {
+QUnit.module( "setup test", {
 	setup: function( assert ) {
 		assert.ok(true);
 	}
@@ -98,42 +98,45 @@ test("module with setup, expect in test call", 2, function( assert ) {
 	assert.ok(true);
 });
 
+// TODO: More to the html-reporter test once we have that.
+if ( typeof document !== "undefined" ) {
 
-if (typeof document !== "undefined") {
-
-	QUnit.module("<script id='qunit-unescaped-module'>'module';</script>", {
+	QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 		setup: function() {
 		},
 		teardown: function( assert ) {
+
 			// We can't use ok(false) inside script tags since some browsers
 			// don't evaluate script tags inserted through innerHTML after domready.
 			// Counting them before/after doesn't cover everything either as qunit-modulefilter
 			// is created before any test is ran. So use ids instead.
-			if (document.getElementById('qunit-unescaped-module')) {
+			if ( document.getElementById( "qunit-unescaped-module" ) ) {
+
 				// This can either be from in #qunit-modulefilter or #qunit-testresult
-				assert.ok(false, 'Unescaped module name');
+				assert.ok( false, "Unescaped module name" );
 			}
-			if (document.getElementById('qunit-unescaped-test')) {
-				assert.ok(false, 'Unescaped test name');
+			if ( document.getElementById( "qunit-unescaped-test" ) ) {
+				assert.ok( false, "Unescaped test name" );
 			}
-			if (document.getElementById('qunit-unescaped-assertion')) {
-				assert.ok(false, 'Unescaped test name');
+			if ( document.getElementById( "qunit-unescaped-assertion" ) ) {
+				assert.ok( false, "Unescaped test name" );
 			}
 		}
 	});
 
-	test("<script id='qunit-unescaped-test'>'test';</script>", 1, function( assert ) {
-		assert.ok(true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>");
+	test( "<script id='qunit-unescaped-test'>'test';</script>", 1, function( assert ) {
+		assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 	});
 
 }
 
 var state;
 
-QUnit.module("setup/teardown test", {
+QUnit.module( "setup/teardown test", {
 	setup: function( assert ) {
 		state = true;
 		assert.ok(true);
+
 		// Assert that we can introduce and delete globals in setup/teardown
 		// without noglobals sounding any alarm.
 
@@ -177,7 +180,7 @@ test("module without setup/teardown", function( assert ) {
 
 var OrgDate;
 
-QUnit.module("Date test", {
+QUnit.module( "Date test", {
 	setup: function( assert ) {
 		OrgDate = Date;
 		window.Date = function () {
@@ -198,7 +201,7 @@ test("sample test for Date test", function ( assert ) {
 if (typeof setTimeout !== 'undefined') {
 state = 'fail';
 
-QUnit.module("teardown and stop", {
+QUnit.module( "teardown and stop", {
 	teardown: function( assert ) {
 		assert.equal(state, "done", "Test teardown.");
 	}
@@ -238,7 +241,7 @@ test("parameter passed to start decrements semaphore n times", function() {
 	}, 18);
 });
 
-QUnit.module("async setup test", {
+QUnit.module( "async setup test", {
 	setup: function( assert ) {
 		stop();
 		setTimeout(function() {
@@ -254,7 +257,7 @@ asyncTest("module with async setup", function( assert ) {
 	start();
 });
 
-QUnit.module("async teardown test", {
+QUnit.module( "async teardown test", {
 	teardown: function( assert ) {
 		stop();
 		setTimeout(function() {
@@ -318,7 +321,7 @@ test("test synchronous calls to stop", 2, function( assert ) {
 });
 }
 
-QUnit.module("save scope", {
+QUnit.module( "save scope", {
 	setup: function() {
 		this.foo = "bar";
 	},
@@ -331,7 +334,7 @@ test("scope check", function( assert ) {
 	assert.deepEqual(this.foo, "bar");
 });
 
-QUnit.module("simple testEnvironment setup", {
+QUnit.module( "simple testEnvironment setup", {
 	foo: "bar",
 	// example of meta-data
 	bugid: "#5311"
@@ -347,7 +350,7 @@ test("testEnvironment reset for next test", function( assert ) {
 	assert.deepEqual(this.foo, "bar");
 });
 
-QUnit.module("testEnvironment with object", {
+QUnit.module( "testEnvironment with object", {
 	options: {
 		recipe: "soup",
 		ingredients: ["hamster", "onions"]
@@ -387,7 +390,7 @@ test("makeurl working", 2, function( assert ) {
 	assert.equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
 
-QUnit.module("testEnvironment with makeurl settings", {
+QUnit.module( "testEnvironment with makeurl settings", {
 	url: 'http://google.com/',
 	q: 'another_search_test'
 });

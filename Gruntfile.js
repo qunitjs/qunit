@@ -137,28 +137,27 @@ grunt.registerTask( "test-on-node", function() {
 		testActive = true;
 	});
 	QUnit.log(function( details ) {
-		if ( testActive ) {
-			if ( details.result ) {
-				return;
-			}
-			var message = "name: " + details.name + " module: " + details.module + " message: " + details.message;
-			grunt.log.error( message );
+		if ( !testActive || details.result ) {
+			return;
 		}
+		var message = "name: " + details.name + " module: " + details.module + " message: " + details.message;
+		grunt.log.error( message );
 	});
 	QUnit.testDone(function() {
 		testActive = false;
 	});
 	QUnit.done(function( details ) {
-		if ( !runDone ) {
-			var succeeded = ( details.failed === 0 ),
-				message = details.total + " assertions in (" + details.runtime + "ms), passed: " + details.passed + ", failed: " + details.failed;
-			if ( succeeded ) {
-				grunt.log.ok( message );
-			} else {
-				grunt.log.error( message );
-			}
-			done( succeeded );
+		if ( runDone ) {
+			return;
 		}
+		var succeeded = ( details.failed === 0 ),
+			message = details.total + " assertions in (" + details.runtime + "ms), passed: " + details.passed + ", failed: " + details.failed;
+		if ( succeeded ) {
+			grunt.log.ok( message );
+		} else {
+			grunt.log.error( message );
+		}
+		done( succeeded );
 		runDone = true;
 	});
 	QUnit.config.autorun = false;
