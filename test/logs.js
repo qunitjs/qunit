@@ -184,5 +184,5 @@ QUnit.done(function() {
 			assert.equal( moduleStart, 2, "test started" );
 			assert.equal( moduleDone, 1, "test in progress" );
 		});
-	}, 5000);
+	}, 5000 );
 });
