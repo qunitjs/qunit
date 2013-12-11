@@ -110,22 +110,22 @@ if ( typeof document !== "undefined" ) {
 			// don't evaluate script tags inserted through innerHTML after domready.
 			// Counting them before/after doesn't cover everything either as qunit-modulefilter
 			// is created before any test is ran. So use ids instead.
-			if (document.getElementById( "qunit-unescaped-module" )) {
+			if ( document.getElementById( "qunit-unescaped-module" ) ) {
 
 				// This can either be from in #qunit-modulefilter or #qunit-testresult
-				assert.ok(false, "Unescaped module name" );
+				assert.ok( false, "Unescaped module name" );
 			}
-			if (document.getElementById("qunit-unescaped-test" )) {
-				assert.ok(false, "Unescaped test name" );
+			if ( document.getElementById( "qunit-unescaped-test" ) ) {
+				assert.ok( false, "Unescaped test name" );
 			}
-			if (document.getElementById("qunit-unescaped-assertion" )) {
-				assert.ok(false, "Unescaped test name" );
+			if ( document.getElementById( "qunit-unescaped-assertion" ) ) {
+				assert.ok( false, "Unescaped test name" );
 			}
 		}
 	});
 
 	test( "<script id='qunit-unescaped-test'>'test';</script>", 1, function( assert ) {
-		assert.ok(true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
+		assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 	});
 
 }
