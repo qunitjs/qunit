@@ -1028,7 +1028,7 @@ function addEvent( elem, type, fn ) {
 		elem.addEventListener( type, fn, false );
 	} else if ( elem.attachEvent ) {
 
-		// IE
+		// support: IE <9
 		elem.attachEvent( "on" + type, fn );
 	} else {
 
