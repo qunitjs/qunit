@@ -367,6 +367,7 @@ extend( QUnit, {
 		if ( typeof obj === "undefined" ) {
 			return "undefined";
 		}
+
 		// Consider: typeof null === object
 		if ( obj === null ) {
 			return "null";
@@ -1021,15 +1022,18 @@ function extend( a, b ) {
  * @param {Function} fn
  */
 function addEvent( elem, type, fn ) {
-	// Standards-based browsers
 	if ( elem.addEventListener ) {
+
+		// Standards-based browsers
 		elem.addEventListener( type, fn, false );
-	// IE
 	} else if ( elem.attachEvent ) {
+
+		// IE
 		elem.attachEvent( "on" + type, fn );
-	// Caller must ensure support for event listeners is present
 	} else {
-		throw new Error( "addEvent was called in a context without event listener support" );
+
+		// Caller must ensure support for event listeners is present
+		throw new Error( "addEvent() was called in a context without event listener support" );
 	}
 }
 
