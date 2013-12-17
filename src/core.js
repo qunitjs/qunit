@@ -1070,7 +1070,7 @@ function removeClass( elem, name ) {
 }
 
 function id( name ) {
-	return !!( defined.document && document.getElementById ) && document.getElementById( name );
+	return defined.document && document.getElementById && document.getElementById( name );
 }
 
 function registerLoggingCallback( key ) {
