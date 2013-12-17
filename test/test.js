@@ -64,7 +64,7 @@ test("expect query and multiple issue", function( assert ) {
 	assert.ok(true);
 });
 
-QUnit.module("assertion helpers");
+QUnit.module( "assertion helpers" );
 
 QUnit.test( "QUnit.assert compatibility", 5, function( assert ) {
 	assert.ok( true, "Calling method on `assert` argument to test() callback" );
