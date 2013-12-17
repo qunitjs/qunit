@@ -103,7 +103,8 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 	} )
 	.addjob(
 		{
-			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" + commit.substr( 0, 10 ) + "</a>",
+			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" +
+				commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
 			browserSets: config.browserSets
 		}, function( err, passed ) {
@@ -137,7 +138,8 @@ grunt.registerTask( "test-on-node", function() {
 		if ( !testActive || details.result ) {
 			return;
 		}
-		var message = "name: " + details.name + " module: " + details.module + " message: " + details.message;
+		var message = "name: " + details.name + " module: " + details.module +
+			" message: " + details.message;
 		grunt.log.error( message );
 	});
 	QUnit.testDone(function() {
@@ -148,7 +150,8 @@ grunt.registerTask( "test-on-node", function() {
 			return;
 		}
 		var succeeded = ( details.failed === 0 ),
-			message = details.total + " assertions in (" + details.runtime + "ms), passed: " + details.passed + ", failed: " + details.failed;
+			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
+				details.passed + ", failed: " + details.failed;
 		if ( succeeded ) {
 			grunt.log.ok( message );
 		} else {
