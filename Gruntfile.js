@@ -130,9 +130,6 @@ grunt.registerTask( "test-on-node", function() {
 	});
 	global.QUnit = QUnit;
 
-	QUnit.begin(function() {
-		grunt.verbose.ok( "BEGIN" );
-	});
 	QUnit.testStart(function() {
 		testActive = true;
 	});
