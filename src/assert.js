@@ -37,7 +37,7 @@ assert = QUnit.assert = {
 			}
 		}
 		runLoggingCallbacks( "log", QUnit, details );
-		config.current.assertions.push({
+		return config.current.assertions.push({
 			result: result,
 			message: msg
 		});
@@ -52,7 +52,7 @@ assert = QUnit.assert = {
 	 */
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		QUnit.push( expected == actual, actual, expected, message );
+		return QUnit.push( expected == actual, actual, expected, message );
 	},
 
 	/**
@@ -61,7 +61,7 @@ assert = QUnit.assert = {
 	 */
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		QUnit.push( expected != actual, actual, expected, message );
+		return QUnit.push( expected != actual, actual, expected, message );
 	},
 
 	/**
@@ -71,7 +71,7 @@ assert = QUnit.assert = {
 	propEqual: function( actual, expected, message ) {
 		actual = objectValues(actual);
 		expected = objectValues(expected);
-		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+		return QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
 	/**
@@ -81,7 +81,7 @@ assert = QUnit.assert = {
 	notPropEqual: function( actual, expected, message ) {
 		actual = objectValues(actual);
 		expected = objectValues(expected);
-		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
+		return QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
 	/**
@@ -89,7 +89,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	deepEqual: function( actual, expected, message ) {
-		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+		return QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
 	/**
@@ -97,7 +97,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notDeepEqual: function( actual, expected, message ) {
-		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
+		return QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
 	},
 
 	/**
@@ -105,7 +105,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	strictEqual: function( actual, expected, message ) {
-		QUnit.push( expected === actual, actual, expected, message );
+		return QUnit.push( expected === actual, actual, expected, message );
 	},
 
 	/**
@@ -113,7 +113,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notStrictEqual: function( actual, expected, message ) {
-		QUnit.push( expected !== actual, actual, expected, message );
+		return QUnit.push( expected !== actual, actual, expected, message );
 	},
 
 	"throws": function( block, expected, message ) {
@@ -152,9 +152,9 @@ assert = QUnit.assert = {
 				ok = true;
 			}
 
-			QUnit.push( ok, actual, expectedOutput, message );
+			return QUnit.push( ok, actual, expectedOutput, message );
 		} else {
-			QUnit.pushFailure( message, null, "No exception was thrown." );
+			return QUnit.pushFailure( message, null, "No exception was thrown." );
 		}
 	}
 };
