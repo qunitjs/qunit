@@ -449,7 +449,7 @@ extend( QUnit, {
 
 		runLoggingCallbacks( "log", QUnit, details );
 
-		config.current.assertions.push({
+		return config.current.assertions.push({
 			result: !!result,
 			message: output
 		});
