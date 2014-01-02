@@ -737,9 +737,9 @@ function done() {
 	config.autorun = true;
 
 	// Log the last module results
-	if ( config.currentModule ) {
+	if ( config.previousModule ) {
 		runLoggingCallbacks( "moduleDone", QUnit, {
-			name: config.currentModule,
+			name: config.previousModule,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all
