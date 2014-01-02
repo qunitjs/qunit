@@ -26,13 +26,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.0",
+    "grunt": "0.4.2",
     "grunt-contrib-concat": "0.3.0",
-    "grunt-contrib-jshint": "~0.2.0",
-    "grunt-contrib-qunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.3.0",
-    "grunt-git-authors": "~1.2.0",
-    "testswarm": "~1.0.1"
+    "grunt-contrib-jshint": "0.7.2",
+    "grunt-contrib-qunit": "0.3.0",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-git-authors": "1.2.0",
+    "testswarm": "1.1.0"
   },
   "scripts": {
     "test": "grunt",

@@ -1,4 +1,4 @@
-module("equiv");
+QUnit.module("equiv");
 
 
 test("Primitive types and constants", function ( assert ) {

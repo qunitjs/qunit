@@ -38,7 +38,7 @@ QUnit.log(function(context) {
 	logContext = context;
 });
 
-module("logs1");
+QUnit.module("logs1");
 
 test("test1", 15, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
@@ -85,6 +85,7 @@ test("test1", 15, function( assert ) {
 
 	assert.equal( log, 14, "QUnit.log calls" );
 });
+
 test("test2", 11, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
@@ -113,7 +114,7 @@ test("test2", 11, function( assert ) {
 	assert.equal( log, 25, "QUnit.log calls" );
 });
 
-module("logs2");
+QUnit.module("logs2");
 
 test( "test1", 9, function( assert ) {
 	assert.equal( begin, 1, "QUnit.begin calls" );
@@ -160,7 +161,7 @@ var testAutorun = true;
 
 QUnit.done(function() {
 
-	if (!testAutorun) {
+	if ( !testAutorun ) {
 		return;
 	}
 
@@ -171,15 +172,17 @@ QUnit.done(function() {
 	// Since these tests run *after* done, and as such
 	// QUnit is not able to know whether more tests are coming
 	// the module starts/ends after each test.
-	module("autorun");
+	QUnit.module( "autorun" );
 
-	test("first", function( assert ) {
-		assert.equal(moduleStart, 1, "test started");
-		assert.equal(moduleDone, 0, "test in progress");
-	});
+	setTimeout(function() {
+		test( "first", function( assert ) {
+			assert.equal( moduleStart, 1, "test started" );
+			assert.equal( moduleDone, 0, "test in progress" );
+		});
 
-	test("second", function( assert ) {
-		assert.equal(moduleStart, 2, "test started");
-		assert.equal(moduleDone, 1, "test in progress");
-	});
+		test( "second", function( assert ) {
+			assert.equal( moduleStart, 2, "test started" );
+			assert.equal( moduleDone, 1, "test in progress" );
+		});
+	}, 5000 );
 });

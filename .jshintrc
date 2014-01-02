@@ -1,7 +1,7 @@
 {
-	"predef": [
-		"exports"
-	],
+	"globals": {
+		"module": false
+	},
 
 	"bitwise": true,
 	"camelcase": true,

@@ -10,6 +10,7 @@ var QUnit,
 	Date = window.Date,
 	setTimeout = window.setTimeout,
 	defined = {
+		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
@@ -357,20 +358,6 @@ extend( QUnit, {
 		}
 	},
 
-	// Trigger an event on an element.
-	// @example triggerEvent( document.body, "click" );
-	triggerEvent: function( elem, type, event ) {
-		if ( document.createEvent ) {
-			event = document.createEvent( "MouseEvents" );
-			event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
-				0, 0, 0, 0, 0, false, false, false, false, 0, null);
-
-			elem.dispatchEvent( event );
-		} else if ( elem.fireEvent ) {
-			elem.fireEvent( "on" + type );
-		}
-	},
-
 	// Safe object type checking
 	is: function( type, obj ) {
 		return QUnit.objectType( obj ) === type;
@@ -378,11 +365,12 @@ extend( QUnit, {
 
 	objectType: function( obj ) {
 		if ( typeof obj === "undefined" ) {
-				return "undefined";
-		// consider: typeof null === object
+			return "undefined";
 		}
+
+		// Consider: typeof null === object
 		if ( obj === null ) {
-				return "null";
+			return "null";
 		}
 
 		var match = toString.call( obj ).match(/^\[object\s(.*)\]$/),
@@ -549,7 +537,7 @@ extend( QUnit.constructor.prototype, {
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
 
-if ( typeof document === "undefined" || document.readyState === "complete" ) {
+if ( !defined.document || document.readyState === "complete" ) {
 	config.autorun = true;
 }
 
@@ -709,7 +697,9 @@ QUnit.load = function() {
 	}
 };
 
-addEvent( window, "load", QUnit.load );
+if ( defined.document ) {
+	addEvent( window, "load", QUnit.load );
+}
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -783,7 +773,7 @@ function done() {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( config.altertitle && typeof document !== "undefined" && document.title ) {
+	if ( config.altertitle && defined.document && document.title ) {
 		// show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
@@ -1032,12 +1022,18 @@ function extend( a, b ) {
  * @param {Function} fn
  */
 function addEvent( elem, type, fn ) {
-	// Standards-based browsers
 	if ( elem.addEventListener ) {
+
+		// Standards-based browsers
 		elem.addEventListener( type, fn, false );
-	// IE
 	} else if ( elem.attachEvent ) {
+
+		// support: IE <9
 		elem.attachEvent( "on" + type, fn );
+	} else {
+
+		// Caller must ensure support for event listeners is present
+		throw new Error( "addEvent() was called in a context without event listener support" );
 	}
 }
 
@@ -1074,8 +1070,7 @@ function removeClass( elem, name ) {
 }
 
 function id( name ) {
-	return !!( typeof document !== "undefined" && document && document.getElementById ) &&
-		document.getElementById( name );
+	return defined.document && document.getElementById && document.getElementById( name );
 }
 
 function registerLoggingCallback( key ) {
