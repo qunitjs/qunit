@@ -1,6 +1,12 @@
+function pushTestResult(resultObject) {
+	Array.prototype.push.call(this, resultObject);
+	return resultObject.result;
+}
+
 function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
+	this.assertions.push = pushTestResult;
 	this.testNumber = ++Test.count;
 }
 
