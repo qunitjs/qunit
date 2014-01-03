@@ -93,7 +93,9 @@ test("test2", 11, function( assert ) {
 	assert.equal( testDone, 1, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	assert.ok( typeof testDoneContext.duration === "number" , "testDone context: duration" );
+	assert.equal( typeof testDoneContext.runtime, "number" , "testDone context: runtime" );
+	delete testDoneContext.runtime;
+	// DEPRECATED: remove this delete when removing the duration property
 	delete testDoneContext.duration;
 	assert.deepEqual( testDoneContext, {
 		module: "logs1",

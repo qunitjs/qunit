@@ -527,7 +527,7 @@ extend( QUnit.constructor.prototype, {
 	// testStart: { name }
 	testStart: registerLoggingCallback( "testStart" ),
 
-	// testDone: { name, failed, passed, total, duration }
+	// testDone: { name, failed, passed, total, runtime }
 	testDone: registerLoggingCallback( "testDone" ),
 
 	// moduleStart: { name }
