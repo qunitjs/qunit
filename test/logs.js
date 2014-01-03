@@ -40,7 +40,8 @@ QUnit.log(function(context) {
 
 QUnit.module("logs1");
 
-test("test1", 15, function( assert ) {
+test("test1", function( assert ) {
+	expect( 15 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 1, "QUnit.testStart calls" );
@@ -86,7 +87,8 @@ test("test1", 15, function( assert ) {
 	assert.equal( log, 14, "QUnit.log calls" );
 });
 
-test("test2", 11, function( assert ) {
+test("test2", function( assert ) {
+	expect( 11 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 2, "QUnit.testStart calls" );
@@ -118,7 +120,8 @@ test("test2", 11, function( assert ) {
 
 QUnit.module("logs2");
 
-test( "test1", 9, function( assert ) {
+test( "test1", function( assert ) {
+	expect( 9 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 3, "QUnit.testStart calls" );
@@ -141,7 +144,8 @@ test( "test1", 9, function( assert ) {
 
 	assert.equal( log, 34, "QUnit.log calls" );
 });
-test( "test2", 8, function( assert ) {
+test( "test2", function( assert ) {
+	expect( 8 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 4, "QUnit.testStart calls" );

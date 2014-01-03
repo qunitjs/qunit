@@ -45,13 +45,15 @@ test("module without setup/teardown (default)", function( assert ) {
 	assert.ok(true);
 });
 
-test("expect in test", 3, function( assert ) {
+test("expect in test", function( assert ) {
+	expect( 3 );
 	assert.ok(true);
 	assert.ok(true);
 	assert.ok(true);
 });
 
-test("expect in test", 1, function( assert ) {
+test("expect in test", function( assert ) {
+	expect( 1 );
 	assert.ok(true);
 });
 
@@ -66,7 +68,8 @@ test("expect query and multiple issue", function( assert ) {
 
 QUnit.module( "assertion helpers" );
 
-QUnit.test( "QUnit.assert compatibility", 5, function( assert ) {
+QUnit.test( "QUnit.assert compatibility", function( assert ) {
+	expect( 5 );
 	assert.ok( true, "Calling method on `assert` argument to test() callback" );
 
 	// Should also work, although discouraged and not documented
@@ -94,7 +97,8 @@ test("module with setup", function( assert ) {
 	assert.ok(true);
 });
 
-test("module with setup, expect in test call", 2, function( assert ) {
+test("module with setup, expect in test call", function( assert ) {
+	expect( 2 );
 	assert.ok(true);
 });
 
@@ -124,7 +128,8 @@ if ( typeof document !== "undefined" ) {
 		}
 	});
 
-	test( "<script id='qunit-unescaped-test'>'test';</script>", 1, function( assert ) {
+	test( "<script id='qunit-unescaped-test'>'test';</script>", function( assert ) {
+		expect( 1 );
 		assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 	});
 
@@ -275,7 +280,8 @@ asyncTest("module with async teardown", function( assert ) {
 
 QUnit.module( "asyncTest" );
 
-asyncTest("asyncTest", 2, function( assert ) {
+asyncTest("asyncTest", function( assert ) {
+	expect( 2 );
 	assert.ok(true);
 	setTimeout(function() {
 		state = "done";
@@ -294,7 +300,8 @@ asyncTest("asyncTest with expect()", function( assert ) {
 	}, 13);
 });
 
-test("sync", 2, function( assert ) {
+test("sync", function( assert ) {
+	expect( 2 );
 	stop();
 	setTimeout(function() {
 		assert.ok(true);
@@ -307,7 +314,8 @@ test("sync", 2, function( assert ) {
 	}, 125);
 });
 
-test("test synchronous calls to stop", 2, function( assert ) {
+test("test synchronous calls to stop", function( assert ) {
+	expect( 2 );
 	stop();
 	setTimeout(function() {
 		assert.ok(true, 'first');
@@ -385,7 +393,8 @@ function makeurl() {
 	return url + '?q='+encodeURIComponent(q);
 }
 
-test("makeurl working", 2, function( assert ) {
+test("makeurl working", function( assert ) {
+	expect( 2 );
 	assert.equal( QUnit.config.current.testEnvironment, this, 'The current testEnvironment QUnit.config');
 	assert.equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
 });
@@ -410,7 +419,8 @@ test("jsDump output", function( assert ) {
 
 QUnit.module( "assertions" );
 
-test("propEqual", 5, function( assert ) {
+test("propEqual", function( assert ) {
+	expect( 5 );
 	var objectCreate = Object.create || function ( origin ) {
 		function O() {}
 		O.prototype = origin;
@@ -605,18 +615,21 @@ test("running test name displayed", function( assert ) {
 		}
 	});
 
-	test("setup", 0, function() {
+	test("setup", function() {
+		expect( 0 );
 		delayNextSetup = true;
 	});
 
-	test("basics", 2, function( assert ) {
+	test("basics", function( assert ) {
+		expect( 2 );
 		var previous = getPreviousTests(/^setup$/, /^timing$/)[0],
 			runtime = previous.lastChild.previousSibling;
 		assert.ok( /(^| )runtime( |$)/.test( runtime.className ), "Runtime element exists" );
 		assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
 	});
 
-	test("values", 2, function( assert ) {
+	test("values", function( assert ) {
+		expect( 2 );
 		var basics = getPreviousTests(/^setup$/, /^timing$/)[0],
 			slow = getPreviousTests(/^basics$/, /^timing$/)[0];
 		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50, "Fast runtime for trivial test" );
@@ -632,7 +645,8 @@ QUnit.module( "custom assertions" );
 		var actual = value % 2;
 		QUnit.push(actual === expected, actual, expected, message);
 	};
-	test("mod2", 2, function( assert ) {
+	test("mod2", function( assert ) {
+		expect( 2 );
 		assert.mod2(2, 0, "2 % 2 == 0");
 		assert.mod2(3, 1, "3 % 2 == 1");
 	});
@@ -792,7 +806,8 @@ function testAfterDone() {
 		}
 	});
 
-	test(testName, 99, function( assert ) {
+	test(testName, function( assert ) {
+		expect( 99 );
 		for (var i = 1; i < 100; i++) {
 			assert.ok(i);
 		}
@@ -800,7 +815,8 @@ function testAfterDone() {
 
 	// We need two of these types of tests in order to ensure that assertions
 	// don't move between tests.
-	test(testName + ' 2', 99, function( assert ) {
+	test(testName + ' 2', function( assert ) {
+		expect( 99 );
 		for (var i = 1; i < 100; i++) {
 			assert.ok(i);
 		}
