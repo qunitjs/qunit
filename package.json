@@ -20,10 +20,10 @@
   "bugs": {
     "url": "https://github.com/jquery/qunit/issues"
   },
-  "license": {
-    "name": "MIT",
+  "licenses": [{
+    "type": "MIT",
     "url": "https://github.com/jquery/qunit/blob/master/MIT-LICENSE.txt"
-  },
+  }],
   "dependencies": {},
   "devDependencies": {
     "grunt": "0.4.2",
