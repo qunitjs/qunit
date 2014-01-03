@@ -167,10 +167,11 @@ extend( QUnit.constructor.prototype, assert );
 
 /**
  * @deprecated since 1.9.0
- * Kept root "raises()" for backwards compatibility.
- * (Note that we don't introduce assert.raises).
+ * Kept to avoid TypeErrors for undefined methods.
  */
-QUnit.constructor.prototype.raises = assert[ "throws" ];
+QUnit.constructor.prototype.raises = function() {
+	QUnit.push( false, false, false, "QUnit.raises has been deprecated since 2012 (fad3c1ea), use QUnit.throws instead" );
+};
 
 /**
  * @deprecated since 1.0.0, replaced with error pushes since 1.3.0

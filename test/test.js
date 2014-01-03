@@ -486,7 +486,8 @@ test("propEqual", 5, function( assert ) {
 	);
 });
 
-test("raises", 9, function( assert ) {
+test("throws", function( assert ) {
+	expect(8);
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -565,14 +566,6 @@ test("raises", 9, function( assert ) {
 		/description/,
 		"throw error from property of 'this' context"
 	);
-
-	QUnit.raises(
-		function() {
-			throw "error";
-		},
-		"simple throw, asserting with deprecated raises() function"
-	);
-
 });
 
 if (typeof document !== "undefined") {
