@@ -1,3 +1,59 @@
+
+n.n.n / 2014-01-04 
+==================
+
+  * Build: Add basic release script future releases with jquery-release
+  * Package: Fix formatting in bower.json and package.json
+  * Package: Change invalid license property to licenses, use type property
+  * Build: Update authors
+  * Tests: Stop using the expected argument in test() calls
+  * Logging: Add runtime property to testDone, deprecate duration
+  * Logs Test: Make test more reliable by disabling reordering
+  * Assert: Remove raises (deprecated 2012), replace with failed assertion
+  * Build: Update jshint config to include project-wide settings
+  * Logging: Use correct module name for moduleDone
+  * Grunt: Keep long lines under 100 characters
+  * Tests: Fix style issue, since this was touched in a previous commit
+  * Tests: Fix style issue, since this was touched in a previous commit
+  * Core: Simplify id() method, no need for typecast
+  * Grunt: Remove verbose log in test-on-node task
+  * Tests: whitespace checking after code review
+  * Core: specifying IE support (<9)
+  * Package.json: very specific versions of dependencies (without a tilde)
+  * Tests: JS Style (spacings) and TODO comment
+  * outro.js: .call() => ()
+  * export.js: removing a comment line
+  * Core: whitespace && addEvent => addEvent() in error string
+  * Gruntfile: inverting ifs
+  * grunt 0.4.1 => 0.4.2 plus updating grunt-contrib-* versions
+  * Test/jshint: predef => globals
+  * Grunt: Add non-browser test as grunt task. Runs existing tests in node.
+  * Export: Only export to the variable that we check for.
+  * Core: Properly check for existence of document
+  * Tests: Avoid using the 'module' global to enable running tests in node
+  * Test/node/narwhal: Update require path, execute QUnit.load()
+  * Test/jshint: Whitespace
+  * Outro: Fix formatting and improve the comment
+  * Core: Fix indentation and comment position in objectType()
+  * Core: Remove triggerEvent, which isn't used or documented anywhere.
+  * Package: Update devDependencies to slightly newer versions
+  * Docs: Removed IRC channel links in CONTRIBUTING.md
+  * Core: Silence addEvent in non-browser env
+  * Match css and js file header
+  * Merge pull request #480 from Krinkle/src-split
+  * travis: Move grunt-cli from before_script to before_install
+  * Add build task and add 'main' property back in package.json
+  * The Grand QUnit Split of 2013
+  * travis: Update nodejs to 0.10
+  * Added a failure check for if 0 tests are run
+  * Gruntfile: Remove project prefix from TestSwarm job name
+  * Gruntfile: Remove project prefix from TestSwarm job name
+  * Bower: Include qunit.css in main directive. Closes gh-465
+  * Use `id` function for selection elements in two places that were not using it. Closes gh-463
+  * Add bower.json. Fixes #461
+  * Readme: Update release instruction updates
+  * Readme: Update release instructions
+  * Bump post-release version
 1.12.0 / 2013-06-21
 ===================
 
