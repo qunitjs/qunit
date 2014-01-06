@@ -253,7 +253,7 @@ Test.prototype = {
 			total: this.assertions.length,
 			runtime: this.runtime,
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
-			duration: this.runtime,
+			duration: this.runtime
 		});
 
 		QUnit.reset();
