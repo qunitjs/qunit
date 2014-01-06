@@ -20,6 +20,7 @@
 	"bitwise": true,
 	"browser": true,
 	"camelcase": true,
+	"es3": true,
 	"forin": true,
 	"latedef": false,
 	"newcap": true,
