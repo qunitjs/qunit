@@ -5,6 +5,7 @@ var shell = require( "shelljs" ),
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt";
 
 Release.define({
+	npmPublish: true,
 	issueTracker: "github",
 	changelogShell: function() {
 		return "# Changelog for QUnit v" + Release.newVersion + "\n";
