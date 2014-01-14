@@ -258,20 +258,24 @@ config = {
 
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
-	var i,
+	var i, current,
 		location = window.location || { search: "", protocol: "file:" },
 		params = location.search.slice( 1 ).split( "&" ),
 		length = params.length,
-		urlParams = {},
-		current;
+		urlParams = {};
 
 	if ( params[ 0 ] ) {
 		for ( i = 0; i < length; i++ ) {
 			current = params[ i ].split( "=" );
 			current[ 0 ] = decodeURIComponent( current[ 0 ] );
+
 			// allow just a key to turn on a flag, e.g., test.html?noglobals
 			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-			urlParams[ current[ 0 ] ] = current[ 1 ];
+			if ( urlParams[ current[ 0 ] ] ) {
+				urlParams[ current[ 0 ] ] = [].concat( urlParams[ current[ 0 ] ], current[ 1 ] );
+			} else {
+				urlParams[ current[ 0 ] ] = current[ 1 ];
+			}
 		}
 	}
 
@@ -283,7 +287,16 @@ config = {
 	// Exact match of the module name
 	config.module = urlParams.module;
 
-	config.testNumber = parseInt( urlParams.testNumber, 10 ) || null;
+	config.testNumber = [];
+	if ( urlParams.testNumber ) {
+
+		// Ensure that urlParams.testNumber is an array
+		urlParams.testNumber = [].concat( urlParams.testNumber );
+		for ( i = 0; i < urlParams.testNumber.length; i++ ) {
+			current = urlParams.testNumber[ i ];
+			config.testNumber.push( parseInt( current, 10 ) );
+		}
+	}
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
@@ -811,7 +824,7 @@ function validTest( test ) {
 	var include,
 		filter = config.filter && config.filter.toLowerCase(),
 		module = config.module && config.module.toLowerCase(),
-		fullName = (test.module + ": " + test.testName).toLowerCase();
+		fullName = ( test.module + ": " + test.testName ).toLowerCase();
 
 	// Internally-generated tests are always valid
 	if ( test.callback && test.callback.validTest === validTest ) {
@@ -819,8 +832,10 @@ function validTest( test ) {
 		return true;
 	}
 
-	if ( config.testNumber ) {
-		return test.testNumber === config.testNumber;
+	if ( config.testNumber.length > 0 ) {
+		if ( inArray( test.testNumber, config.testNumber ) < 0 ) {
+			return false;
+		}
 	}
 
 	if ( module && ( !test.module || test.module.toLowerCase() !== module ) ) {
