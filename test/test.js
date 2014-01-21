@@ -497,7 +497,7 @@ test("propEqual", function( assert ) {
 });
 
 test("throws", function( assert ) {
-	expect(9);
+	expect(10);
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -583,6 +583,14 @@ test("throws", function( assert ) {
 		},
 		"some error description",
 		"handle string typed thrown errors"
+	);
+
+	assert.throws(
+		function() {
+			throw new Error( "foo" );
+		},
+		new Error( "foo" ),
+		"assert when a function throws an 'Error' object"
 	);
 });
 

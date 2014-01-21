@@ -142,6 +142,12 @@ assert = QUnit.assert = {
 				ok = true;
 				expectedOutput = null;
 
+			// expected is an Error object
+			} else if ( expected instanceof Error ) {
+				ok = actual instanceof Error &&
+					 actual.name === expected.name &&
+					 actual.message === expected.message;
+
 			// expected is a regexp
 			} else if ( QUnit.objectType( expected ) === "regexp" ) {
 				ok = expected.test( errorString( actual ) );
