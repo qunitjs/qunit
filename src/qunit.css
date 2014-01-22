@@ -37,7 +37,7 @@
 
 	font-size: 1.5em;
 	line-height: 1em;
-	font-weight: normal;
+	font-weight: 400;
 
 	-webkit-border-radius: 5px 5px 0 0;
 	-moz-border-radius: 5px 5px 0 0;
@@ -241,7 +241,7 @@
 	border-bottom: 1px solid #FFF;
 }
 #qunit-testresult .module-name {
-	font-weight: bold;
+	font-weight: 700;
 }
 
 /** Fixture */
