@@ -55,12 +55,33 @@ grunt.initConfig({
 		}
 	},
 	qunit: {
+		options: {
+			timeout: 30000,
+			"--web-security": "no",
+			coverage: {
+				src: [ "dist/qunit.js" ],
+				instrumentedFiles: "temp/",
+				htmlReport: "build/report/coverage",
+				lcovReport: "build/report/lcov",
+				linesThresholdPct: 70
+			}
+		},
 		qunit: [
 			"test/index.html",
 			"test/async.html",
 			"test/logs.html",
 			"test/setTimeout.html"
 		]
+	},
+	coveralls: {
+		options: {
+			force: true
+		},
+		all: {
+
+			// LCOV coverage file relevant to every target
+			src: "build/report/lcov/lcov.info"
+		}
 	},
 	watch: {
 		files: [ "*", ".jshintrc", "{src,test}/**/{*,.*}" ],
