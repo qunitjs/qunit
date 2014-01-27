@@ -9,6 +9,7 @@ var QUnit,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
 	setTimeout = window.setTimeout,
+	clearTimeout = window.clearTimeout,
 	defined = {
 		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
