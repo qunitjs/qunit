@@ -587,7 +587,7 @@ QUnit.load = function() {
 				"' title='" + escapeText( val.tooltip ) +
 				"'><option></option>";
 			selection = false;
-			if ( toString.call( val.value ) === "[object Array]" ) {
+			if ( QUnit.is( "array", val.value ) ) {
 				for ( j = 0; j < val.value.length; j++ ) {
 					urlConfigHtml += "<option value='" + escapeText( val.value[j] ) + "'" +
 						( config[ val.id ] === val.value[j] ?
