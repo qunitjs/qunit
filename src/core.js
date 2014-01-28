@@ -85,16 +85,17 @@ QUnit = {
 		config.modules[name] = true;
 	},
 
-	asyncTest: function( testName, expected, callback ) {
-		if ( arguments.length === 2 ) {
+	asyncTest: function( testName, expected, callback, runcount ) {
+		if ( expected instanceof Function ) {
+			runcount = callback;
 			callback = expected;
 			expected = null;
 		}
 
-		QUnit.test( testName, expected, callback, true );
+		QUnit.test( testName, expected, callback, true, runcount );
 	},
 
-	test: function( testName, expected, callback, async ) {
+	test: function( testName, expected, callback, async, runcount ) {
 		var test,
 			nameHtml = "<span class='test-name'>" + escapeText( testName ) + "</span>";
 
@@ -115,7 +116,8 @@ QUnit = {
 			callback: callback,
 			module: config.currentModule,
 			moduleTestEnvironment: config.currentModuleTestEnvironment,
-			stack: sourceFromStacktrace( 2 )
+			stack: sourceFromStacktrace( 2 ),
+			maxRuncount: runcount || 1
 		});
 
 		if ( !validTest( test ) ) {
@@ -738,7 +740,7 @@ window.onerror = function ( error, filePath, linerNr ) {
 		} else {
 			QUnit.test( "global failure", extend( function() {
 				QUnit.pushFailure( error, filePath + ":" + linerNr );
-			}, { validTest: validTest } ) );
+			}, { validTest: validTest } ), undefined, undefined, 1 );
 		}
 		return false;
 	}

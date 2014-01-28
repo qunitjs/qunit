@@ -30,6 +30,12 @@ Test.prototype = {
 		}
 	},
 	setup: function() {
+
+		// On each single run for a test, insert the assertions to a clean array (If an assertion failed previously, the run-loop is cancelled).
+		if (this.runcount > 0) {
+			this.assertions = [];
+		}
+		
 		if (
 			// Emit moduleStart when we're switching from one module to another
 			this.module !== config.previousModule ||
@@ -146,7 +152,7 @@ Test.prototype = {
 		}
 		checkPollution();
 	},
-	finish: function() {
+	finishSingleRun: function() {
 		config.current = this;
 		if ( config.requireExpects && this.expected === null ) {
 			QUnit.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
@@ -155,12 +161,16 @@ Test.prototype = {
 		} else if ( this.expected === null && !this.assertions.length ) {
 			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
+	},
+	finish: function() {
+		config.current = this;
 
 		var i, assertion, a, b, time, li, ol,
 			test = this,
 			good = 0,
 			bad = 0,
-			tests = id( "qunit-tests" );
+			tests = id( "qunit-tests" ),
+			timeHtml;
 
 		this.runtime = +new Date() - this.started;
 		config.stats.all += this.assertions.length;
@@ -202,7 +212,7 @@ Test.prototype = {
 
 			// `b` initialized at top of scope
 			b = document.createElement( "strong" );
-			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
+			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + (this.maxRuncount > 1 ? " / <b class='runcount'>" + this.runcount + "</b>" : "") + ")</b>";
 
 			addEvent(b, "click", function() {
 				var next = b.parentNode.lastChild,
@@ -223,7 +233,15 @@ Test.prototype = {
 			// `time` initialized at top of scope
 			time = document.createElement( "span" );
 			time.className = "runtime";
-			time.innerHTML = this.runtime + " ms";
+			
+			if ( this.maxRuncount > 1 ) {
+				timeHtml = "avg: " + ((this.totalRuntime || 0) / this.runcount).toFixed(2) + " ms";
+				timeHtml += ", min: " + (this.minRuntime || 0) + " ms";
+				timeHtml += ", max: " + (this.maxRuntime || 0) + " ms";
+			} else {
+				timeHtml = (this.totalRuntime || 0) + " ms";
+			}
+			time.innerHTML = timeHtml;
 
 			// `li` initialized at top of scope
 			li = id( this.id );
@@ -269,16 +287,58 @@ Test.prototype = {
 			test.init();
 		});
 		function run() {
-			// each of these can by async
-			synchronize(function() {
-				test.setup();
-			});
-			synchronize(function() {
-				test.run();
-			});
-			synchronize(function() {
-				test.teardown();
-			});
+
+			var runs = test.maxRuncount || 1,
+				runtime,
+				runIndex,
+				failed = false;
+			test.runcount = 0;
+			
+			function performRunCycle() {
+					
+				// each of these can by async
+				synchronize(function() {
+					if (!failed) {
+						test.runcount++;
+						test.setup();
+					}
+				});
+				synchronize(function() {
+					if (!failed) {
+						test.run();
+					}
+				});
+				synchronize(function() {
+					if (!failed) {
+						test.teardown();
+					}
+				});
+				synchronize(function() {
+					if (!failed) {
+						test.finishSingleRun();
+					}
+				});
+				synchronize(function() {
+					if (!failed) {
+						runtime = +new Date() - test.started;
+						test.totalRuntime = (test.totalRuntime || 0) + runtime;
+						if (test.minRuntime == null || test.minRuntime > runtime) {
+							test.minRuntime = runtime;
+						}
+						if (test.maxRuntime == null || test.maxRuntime < runtime) {
+							test.maxRuntime = runtime;
+						}
+						// Skip next runs if we failed, to prevent stacking up too many assertions
+						failed = !!test.assertions.filter(function(assertion){ return !assertion.result; }).length;
+					}
+				});
+				
+			}
+			
+			for ( runIndex = 0; runIndex < runs; runIndex++ ) {
+				performRunCycle(); // Queue as many runs as we need
+			}
+			
 			synchronize(function() {
 				test.finish();
 			});
