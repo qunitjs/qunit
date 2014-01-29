@@ -116,6 +116,24 @@ assert = QUnit.assert = {
 		QUnit.push( expected !== actual, actual, expected, message );
 	},
 
+	/**
+	 * @name contains
+	 * @function
+	 * @example contains( "substring", "Larger string containing substring", "asserts true when substring found in string" );
+	 */
+    contains: function ( target, container, message ) {
+        QUnit.push( container.indexOf( target ) !== -1, target, container, message );
+    },
+
+	/**
+	 * @name notContains
+	 * @function
+	 * @example notContains( "substring", "Not the droids you're looking for", "asserts true when substring not found in string" );
+	 */
+    notContains: function ( target, container, message ) {
+        QUnit.push( container.indexOf( target ) === -1, target, container, message );
+    },
+
 	"throws": function( block, expected, message ) {
 		var actual,
 			expectedOutput = expected,

@@ -578,6 +578,18 @@ test("throws", function( assert ) {
 	);
 });
 
+test("contains", function ( assert ) {
+    expect( 1 );
+    assert.contains( 'Text', 'Some Text container', "custom failure message" );
+});
+
+test("notContains", function ( assert ) {
+    expect( 2 );
+    assert.notContains( 'Foo', 'Text container', "custom failure message" );
+
+    assert.notContains( 'Text', 'Some text container', "custom failure message" );
+});
+
 if (typeof document !== "undefined") {
 
 QUnit.module( "fixture" );
