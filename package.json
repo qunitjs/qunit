@@ -40,5 +40,5 @@
     "test": "grunt",
     "prepublish": "grunt build"
   },
-  "main": "dist/qunit.js"
+  "main": "qunit/qunit.js"
 }
