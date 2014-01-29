@@ -98,7 +98,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" +
 				commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
-			browserSets: "popular"
+			browserSets: [ "popular", "ios" ]
 		}, function( err, passed ) {
 			if ( err ) {
 				grunt.log.error( err );
