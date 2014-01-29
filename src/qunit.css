@@ -40,8 +40,6 @@
 	font-weight: 400;
 
 	border-radius: 5px 5px 0 0;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
 }
 
 #qunit-header a {
@@ -202,8 +200,6 @@
 
 #qunit-tests > li:last-child {
 	border-radius: 0 0 5px 5px;
-	border-bottom-right-radius: 5px;
-	border-bottom-left-radius: 5px;
 }
 
 #qunit-tests .fail                          { color: #000; background-color: #EE5757; }
