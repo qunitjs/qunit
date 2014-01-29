@@ -50,14 +50,6 @@ grunt.initConfig({
 		},
 		gruntfile: [ "Gruntfile.js" ],
 		dist: [ "dist/*.js" ],
-		addons: {
-			options: {
-				jshintrc: "addons/.jshintrc"
-			},
-			files: {
-				src: [ "addons/**/*.js" ]
-			}
-		},
 		tests: {
 			options: {
 				jshintrc: "test/.jshintrc"
@@ -76,7 +68,7 @@ grunt.initConfig({
 		]
 	},
 	watch: {
-		files: [ "*", ".jshintrc", "{addons,src,test}/**/{*,.*}" ],
+		files: [ "*", ".jshintrc", "{src,test}/**/{*,.*}" ],
 		tasks: "default"
 	}
 });
