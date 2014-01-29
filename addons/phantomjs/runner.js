@@ -14,38 +14,46 @@
 /*global phantom:false, require:false, console:false, window:false, QUnit:false */
 
 (function() {
-	'use strict';
+	"use strict";
 
-	var url, page, timeout,
-		args = require('system').args;
+	var url, page, timeout, useColor,
+		args = require( "system" ).args;
 
 	// arg[0]: scriptName, args[1...]: arguments
-	if (args.length < 2 || args.length > 3) {
-		console.error('Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds]');
-		phantom.exit(1);
+	if ( args.length < 2 || args.length > 3 ) {
+		console.error( "Usage:\n  phantomjs runner.js [url-of-your-qunit-testsuite] [timeout-in-seconds]" );
+		phantom.exit( 1 );
 	}
 
-	url = args[1];
-	page = require('webpage').create();
-	if (args[2] !== undefined) {
-		timeout = parseInt(args[2], 10);
+	url = args[ 1 ];
+	page = require( "webpage" ).create();
+	if ( typeof args[ 2 ] === "number" ) {
+		timeout = parseInt( args[ 2 ], 10 );
 	}
+	useColor = ( args.indexOf( "--no-color" ) === -1 ) ? true : false;
 
 	// Route `console.log()` calls from within the Page context to the main Phantom context (i.e. current `this`)
-	page.onConsoleMessage = function(msg) {
-		console.log(msg);
+	page.onConsoleMessage = function ( msg ) {
+		// Test for jQuery.mockjax logging values to exclude
+		// https://github.com/appendto/jquery-mockjax
+		if ( /MOCK\ GET/.test( msg ) ) {
+			return;
+		}
+
+		console.log( msg );
 	};
 
-	page.onInitialized = function() {
-		page.evaluate(addLogging);
+	page.onInitialized = function () {
+		page.evaluate( addLogging );
+		page.evaluate( colorizer, useColor );
 	};
 
-	page.onCallback = function(message) {
+	page.onCallback = function( message ) {
 		var result,
 			failed;
 
-		if (message) {
-			if (message.name === 'QUnit.done') {
+		if ( message ) {
+			if ( message.name === "QUnit.done" ) {
 				result = message.data;
 				failed = !result || !result.total || result.failed;
 
@@ -53,91 +61,136 @@
 					console.error('No tests were executed. Are you loading tests asynchronously?');
 				}
 
-				phantom.exit(failed ? 1 : 0);
+				phantom.exit( failed ? 1 : 0 );
 			}
 		}
 	};
 
-	page.open(url, function(status) {
-		if (status !== 'success') {
-			console.error('Unable to access network: ' + status);
-			phantom.exit(1);
+	page.open( url, function ( status ) {
+		if ( status !== "success" ) {
+			console.error( "Unable to access network: " + status );
+			phantom.exit( 1 );
 		} else {
-			// Cannot do this verification with the 'DOMContentLoaded' handler because it
+			// Cannot do this verification with the "DOMContentLoaded" handler because it
 			// will be too late to attach it if a page does not have any script tags.
-			var qunitMissing = page.evaluate(function() { return (typeof QUnit === 'undefined' || !QUnit); });
-			if (qunitMissing) {
-				console.error('The `QUnit` object is not present on this page.');
-				phantom.exit(1);
+			var qunitMissing = page.evaluate(function () {
+				return (typeof QUnit === "undefined" || !QUnit);
+			});
+
+			if ( qunitMissing ) {
+				console.error( "The `QUnit` object is not present on this page." );
+				phantom.exit( 1 );
 			}
 
 			// Set a timeout on the test running, otherwise tests with async problems will hang forever
-			if (typeof timeout === 'number') {
+			if ( typeof timeout === "number" ) {
 				setTimeout(function() {
-					console.error('The specified timeout of ' + timeout + ' seconds has expired. Aborting...');
-					phantom.exit(1);
-				}, timeout * 1000);
+					console.error( "The specified timeout of " + timeout + " seconds has expired. Aborting..." );
+					phantom.exit( 1 );
+				}, timeout * 1000 );
 			}
 
 			// Do nothing... the callback mechanism will handle everything!
 		}
 	});
 
+	function colorizer( useColor ) {
+		window.ANSI = {
+			colorMap: {
+				"red": "\u001b[31m",
+				"redBold": "\u001b[1m\u001b[31m",
+				"green": "\u001b[32m",
+				"greenBold": "\u001b[1m\u001b[32m",
+				"blue": "\u001b[34m",
+				"blueBold": "\u001b[1m\u001b[34m",
+				"end": "\u001b[0m"
+			},
+			highlightMap: {
+				"red": "\u001b[41m \u001b[37m", // change 37 to 30 for black text
+				"green": "\u001b[42m \u001b[30m",
+				"blue": "\u001b[44m \u001b[37m",
+				"end": "\u001b[0m"
+			},
+			highlightText: function ( text, color ) {
+				var colorCode = this.highlightMap[ color ],
+						colorEnd = this.highlightMap.end;
+
+				return ( useColor ) ? colorCode + text + colorEnd : text;
+			},
+			colorizeText: function ( text, color ) {
+				var colorCode = this.colorMap[ color ],
+						colorEnd = this.colorMap.end;
+
+				return ( useColor ) ? colorCode + text + colorEnd : text;
+			}
+		};
+
+	}
+
 	function addLogging() {
-		window.document.addEventListener('DOMContentLoaded', function() {
+		window.document.addEventListener( "DOMContentLoaded", function() {
+			/* global ANSI */
 			var currentTestAssertions = [];
 
 			QUnit.log(function(details) {
 				var response;
 
 				// Ignore passing assertions
-				if (details.result) {
+				if ( details.result ) {
 					return;
 				}
 
-				response = details.message || '';
+				response = details.message || "";
 
-				if (typeof details.expected !== 'undefined') {
-					if (response) {
-						response += ', ';
+				if ( typeof details.expected !== "undefined" ) {
+					if ( response ) {
+						response += ", ";
 					}
 
-					response += 'expected: ' + details.expected + ', but was: ' + details.actual;
+					response += "expected: " + details.expected + ", but was: " + details.actual;
 				}
 
-				if (details.source) {
+				if ( details.source ) {
 					response += "\n" + details.source;
 				}
 
-				currentTestAssertions.push('Failed assertion: ' + response);
+				currentTestAssertions.push( ANSI.colorizeText( "Failed assertion: ", "red" ) + details.message );
 			});
 
-			QUnit.testDone(function(result) {
+			QUnit.moduleStart(function ( details ) {
+				console.log( "---------------" );
+				console.log( "Running QUnit Tests for: " + ANSI.colorizeText( details.name, "blueBold") );
+				console.log( "---------------" );
+			});
+
+			QUnit.testDone(function ( result ) {
 				var i,
 					len,
-					name = result.module + ': ' + result.name;
+					name = result.module + ": " + result.name;
 
-				if (result.failed) {
-					console.log('Test failed: ' + name);
+				if ( result.failed ) {
+					console.log( ANSI.highlightText( String.fromCharCode( "0x2717" ) + " Test failed: ", "red" ) + " " + name );
 
-					for (i = 0, len = currentTestAssertions.length; i < len; i++) {
-						console.log('    ' + currentTestAssertions[i]);
+					for ( i = 0, len = currentTestAssertions.length; i < len; i++ ) {
+						console.log( "    " + String.fromCharCode( "0x21B3" ) + "  " + currentTestAssertions[ i ] );
 					}
 				}
 
 				currentTestAssertions.length = 0;
 			});
 
-			QUnit.done(function(result) {
-				console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
+			QUnit.done(function ( result ) {
+				console.log( "---------------" );
+				console.log( "Took " + result.runtime +  "ms to run " + result.total + " tests. " + ANSI.colorizeText( result.passed + " passed", "green" ) + ", " + ANSI.colorizeText( result.failed + " failed", "red" ) + "." );
+				console.log( "---------------" );
 
-				if (typeof window.callPhantom === 'function') {
+				if ( typeof window.callPhantom === "function" ) {
 					window.callPhantom({
-						'name': 'QUnit.done',
-						'data': result
+						"name": "QUnit.done",
+						"data": result
 					});
 				}
 			});
-		}, false);
+		}, false );
 	}
 })();
