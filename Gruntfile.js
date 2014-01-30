@@ -95,22 +95,22 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 		runs = {},
 		done = this.async();
 
-	["index", "async", "setTimeout"].forEach(function (suite) {
-		runs[suite] = config.testUrl + commit + "/test/" + suite + ".html";
+	[ "index", "async", "setTimeout" ].forEach(function ( suite ) {
+		runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
 	});
 
-	testswarm.createClient( {
-		url: config.swarmUrl,
-		pollInterval: 10000,
-		timeout: 1000 * 60 * 30
-	} )
-	.addReporter( testswarm.reporters.cli )
-	.auth( {
-		id: config.authUsername,
-		token: config.authToken
-	} )
-	.addjob(
-		{
+	testswarm
+		.createClient({
+			url: config.swarmUrl,
+			pollInterval: 10000,
+			timeout: 1000 * 60 * 30
+		})
+		.addReporter( testswarm.reporters.cli )
+		.auth({
+			id: config.authUsername,
+			token: config.authToken
+		})
+		.addjob({
 			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" +
 				commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
@@ -120,8 +120,7 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 				grunt.log.error( err );
 			}
 			done( passed );
-		}
-	);
+		});
 });
 
 // TODO: Extract this task later, if feasible
