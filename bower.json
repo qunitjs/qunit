@@ -1,6 +1,6 @@
 {
   "name": "qunit",
-  "version": "1.13.1pre",
+  "version": "1.14.0pre",
   "main": [
     "qunit/qunit.js",
     "qunit/qunit.css"

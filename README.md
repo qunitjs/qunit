@@ -43,10 +43,6 @@ Install [git-extras](https://github.com/visionmedia/git-extras) and run `git cha
 
 Then run the script.
 
-Check out the new tag (may need to fetch with `git fetch -t`), then publish to npm via
-
-	npm publish
-
 Update web sites, replacing previous versions with new ones:
 
 * jquery/jquery-wp-content themes/jquery/footer-qunit.php

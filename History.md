@@ -1,3 +1,21 @@
+1.14.0 / 2014-01-31
+==================
+
+  * Grunt: Run tests on ios browserSet as well
+  * Package: Set main property to qunit/qunit.js
+  * Grunt: Inline browserSet config for TestSwarm runs
+  * CSS: Removing redundancy
+  * Core: Add config property for disabling default scroll-to-top
+  * Grunt: Remove addons leftovers
+  * Addons: Remove last remnants
+  * Core: Extend QUnit.config.urlConfig to support select-one dropdowns
+  * Assert: Extend throws to accept Error instances
+  * Assert: Extend throws to handle errors as strings
+  * CSS: Updating qunit.css for consistency
+  * Core: Cache window.clearTimeout in case it gets mocked
+  * Core: Run multiple tests by test number
+  * jshint: add es3 option to ensure oldie support
+
 1.13.0 / 2014-01-04
 ==================
 
