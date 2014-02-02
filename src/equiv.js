@@ -23,7 +23,7 @@ QUnit.equiv = (function() {
 		parentsB = [],
 
 		getProto = Object.getPrototypeOf || function ( obj ) {
-			/*jshint camelcase:false */
+			/* jshint camelcase: false, proto: true */
 			return obj.__proto__;
 		},
 		callbacks = (function () {
