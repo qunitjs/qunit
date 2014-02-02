@@ -1,33 +1,27 @@
 {
-	"predef": [
-		"QUnit",
-		"module",
-		"test",
-		"asyncTest",
-		"expect",
-		"start",
-		"stop",
-		"raises"
-	],
-
-	"bitwise": true,
-	"camelcase": true,
+	"boss": true,
 	"curly": true,
 	"eqeqeq": true,
-	"forin": true,
+	"eqnull": true,
+	"expr": true,
 	"immed": true,
-	"latedef": false,
-	"newcap": true,
 	"noarg": true,
-	"noempty": true,
-	"nonew": true,
-	"plusplus": false,
-	"quotmark": false,
+	"onevar": true,
+	"quotmark": "double",
+	"smarttabs": true,
+	"trailing": true,
 	"undef": true,
 	"unused": true,
-	"trailing": true,
 
 	"browser": true,
 
-	"onevar": false
+	"globals": {
+		"QUnit": false,
+		"module": false,
+		"test": false,
+		"asyncTest": false,
+		"expect": false,
+		"start": false,
+		"stop": false
+	}
 }
