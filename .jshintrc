@@ -1,32 +1,22 @@
 {
+    "boss": true,
+    "curly": true,
+    "eqeqeq": true,
+    "eqnull": true,
+    "expr": true,
+    "immed": true,
+    "noarg": true,
+    "onevar": true,
+    "quotmark": "double",
+    "smarttabs": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+
+	"browser": true,
+	"es3": true,
+
 	"globals": {
 		"module": false
-	},
-
-	"boss": true,
-	"curly": true,
-	"eqeqeq": true,
-	"eqnull": true,
-	"expr": true,
-	"immed": true,
-	"noarg": true,
-	"onevar": true,
-	"quotmark": "double",
-	"smarttabs": true,
-	"trailing": true,
-	"undef": true,
-	"unused": true,
-
-	"bitwise": true,
-	"browser": true,
-	"camelcase": true,
-	"es3": true,
-	"forin": true,
-	"latedef": false,
-	"newcap": true,
-	"noempty": true,
-	"nonew": true,
-	"plusplus": false,
-	"proto": true,
-	"sub": true
+	}
 }
