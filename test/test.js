@@ -1,5 +1,7 @@
 (function( window ) {
 
+var OrgDate, state;
+
 function getPreviousTests( rTestName, rModuleName ) {
 	var testSpan, moduleSpan,
 		matches = [],
@@ -135,8 +137,6 @@ if ( typeof document !== "undefined" ) {
 
 }
 
-var state;
-
 QUnit.module( "setup/teardown test", {
 	setup: function( assert ) {
 		state = true;
@@ -183,13 +183,11 @@ test("module without setup/teardown", function( assert ) {
 	assert.ok(true);
 });
 
-var OrgDate;
-
 QUnit.module( "Date test", {
 	setup: function( assert ) {
 		OrgDate = Date;
 		window.Date = function () {
-			assert.ok( false, 'QUnit should internally be independent from Date-related manipulation and testing' );
+			assert.ok( false, "QUnit should internally be independent from Date-related manipulation and testing" );
 			return new OrgDate();
 		};
 	},
@@ -203,8 +201,8 @@ test("sample test for Date test", function ( assert ) {
 	assert.ok(true);
 });
 
-if (typeof setTimeout !== 'undefined') {
-state = 'fail';
+if (typeof setTimeout !== "undefined") {
+state = "fail";
 
 QUnit.module( "teardown and stop", {
 	teardown: function( assert ) {
@@ -318,11 +316,11 @@ test("test synchronous calls to stop", function( assert ) {
 	expect( 2 );
 	stop();
 	setTimeout(function() {
-		assert.ok(true, 'first');
+		assert.ok(true, "first");
 		start();
 		stop();
 		setTimeout(function() {
-			assert.ok(true, 'second');
+			assert.ok(true, "second");
 			start();
 		}, 150);
 	}, 150);
@@ -387,31 +385,31 @@ test("testEnvironment reset for next test",function( assert ) {
 QUnit.module( "testEnvironment tests" );
 
 function makeurl() {
-	var testEnv = QUnit.config.current.testEnvironment;
-	var url = testEnv.url || 'http://example.com/search';
-	var q   = testEnv.q   || 'a search test';
-	return url + '?q='+encodeURIComponent(q);
+	var testEnv = QUnit.config.current.testEnvironment,
+		url = testEnv.url || "http://example.com/search",
+		q   = testEnv.q   || "a search test";
+	return url + "?q=" + encodeURIComponent(q);
 }
 
 test("makeurl working", function( assert ) {
 	expect( 2 );
-	assert.equal( QUnit.config.current.testEnvironment, this, 'The current testEnvironment QUnit.config');
-	assert.equal( makeurl(), 'http://example.com/search?q=a%20search%20test', 'makeurl returns a default url if nothing specified in the testEnvironment');
+	assert.equal( QUnit.config.current.testEnvironment, this, "The current testEnvironment QUnit.config");
+	assert.equal( makeurl(), "http://example.com/search?q=a%20search%20test", "makeurl returns a default url if nothing specified in the testEnvironment");
 });
 
 QUnit.module( "testEnvironment with makeurl settings", {
-	url: 'http://google.com/',
-	q: 'another_search_test'
+	url: "http://google.com/",
+	q: "another_search_test"
 });
 test("makeurl working with settings from testEnvironment", function( assert ) {
-	assert.equal( makeurl(), 'http://google.com/?q=another_search_test', 'rather than passing arguments, we use test metadata to from the url');
+	assert.equal( makeurl(), "http://google.com/?q=another_search_test", "rather than passing arguments, we use test metadata to from the url");
 });
 
 QUnit.module( "jsDump" );
 test("jsDump output", function( assert ) {
 	assert.equal( QUnit.jsDump.parse([1, 2]), "[\n  1,\n  2\n]" );
 	assert.equal( QUnit.jsDump.parse({top: 5, left: 0}), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
-	if (typeof document !== 'undefined' && document.getElementById("qunit-header")) {
+	if (typeof document !== "undefined" && document.getElementById("qunit-header")) {
 		assert.equal( QUnit.jsDump.parse(document.getElementById("qunit-header")), "<h1 id=\"qunit-header\"></h1>" );
 		assert.equal( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
 	}
@@ -435,7 +433,7 @@ test("propEqual", function( assert ) {
 	}
 	Foo.prototype.doA = function () {};
 	Foo.prototype.doB = function () {};
-	Foo.prototype.bar = 'prototype';
+	Foo.prototype.bar = "prototype";
 
 	function Bar() {
 	}
@@ -443,56 +441,56 @@ test("propEqual", function( assert ) {
 	Bar.prototype.constructor = Bar;
 
 	assert.propEqual(
-		new Foo( 1, '2', [] ),
+		new Foo( 1, "2", [] ),
 		{
 			x: 1,
-			y: '2',
+			y: "2",
 			z: []
 		}
 	);
 
 	assert.notPropEqual(
-		new Foo( '1', 2, 3 ),
+		new Foo( "1", 2, 3 ),
 		{
 			x: 1,
-			y: '2',
+			y: "2",
 			z: 3
 		},
-		'Primitive values are strictly compared'
+		"Primitive values are strictly compared"
 	);
 
 	assert.notPropEqual(
-		new Foo( 1, '2', [] ),
+		new Foo( 1, "2", [] ),
 		{
 			x: 1,
-			y: '2',
+			y: "2",
 			z: {}
 		},
-		'Array type is preserved'
+		"Array type is preserved"
 	);
 
 	assert.notPropEqual(
-		new Foo( 1, '2', {} ),
+		new Foo( 1, "2", {} ),
 		{
 			x: 1,
-			y: '2',
+			y: "2",
 			z: []
 		},
-		'Empty array is not the same as empty object'
+		"Empty array is not the same as empty object"
 	);
 
 	assert.propEqual(
-		new Foo( 1, '2', new Foo( [ 3 ], new Bar(), null ) ),
+		new Foo( 1, "2", new Foo( [ 3 ], new Bar(), null ) ),
 		{
 			x: 1,
-			y: '2',
+			y: "2",
 			z: {
 				x: [ 3 ],
 				y: {},
 				z: null
 			}
 		},
-		'Complex nesting of different types, inheritance and constructors'
+		"Complex nesting of different types, inheritance and constructors"
 	);
 });
 
@@ -534,7 +532,7 @@ test("throws", function( assert ) {
 			throw new CustomError();
 		},
 		CustomError,
-		'thrown error is an instance of CustomError'
+		"thrown error is an instance of CustomError"
 	);
 
 	assert.throws(
@@ -564,7 +562,7 @@ test("throws", function( assert ) {
 				window["eval"].call( window, data );
 			})( "throw 'error';" );
 		},
-		'globally-executed errors caught'
+		"globally-executed errors caught"
 	);
 
 	this.CustomError = CustomError;
@@ -696,69 +694,75 @@ function chainwrap(depth, first, prev) {
 test("Check jsDump recursion", function( assert ) {
 	expect(4);
 
-	var noref = chainwrap(0);
-	var nodump = QUnit.jsDump.parse(noref);
-	assert.equal(nodump, '{\n  "first": true,\n  "wrap": undefined\n}');
+	var noref, nodump, selfref, selfdump, parentref, parentdump, circref, circdump;
 
-	var selfref = chainwrap(1);
-	var selfdump = QUnit.jsDump.parse(selfref);
-	assert.equal(selfdump, '{\n  "first": true,\n  "wrap": recursion(-1)\n}');
+	noref = chainwrap(0);
+	nodump = QUnit.jsDump.parse(noref);
+	assert.equal(nodump, "{\n  \"first\": true,\n  \"wrap\": undefined\n}");
 
-	var parentref = chainwrap(2);
-	var parentdump = QUnit.jsDump.parse(parentref);
-	assert.equal(parentdump, '{\n  "wrap": {\n    "first": true,\n    "wrap": recursion(-2)\n  }\n}');
+	selfref = chainwrap(1);
+	selfdump = QUnit.jsDump.parse(selfref);
+	assert.equal(selfdump, "{\n  \"first\": true,\n  \"wrap\": recursion(-1)\n}");
 
-	var circref = chainwrap(10);
-	var circdump = QUnit.jsDump.parse(circref);
+	parentref = chainwrap(2);
+	parentdump = QUnit.jsDump.parse(parentref);
+	assert.equal(parentdump, "{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}");
+
+	circref = chainwrap(10);
+	circdump = QUnit.jsDump.parse(circref);
 	assert.ok(new RegExp("recursion\\(-10\\)").test(circdump), "(" +circdump + ") should show -10 recursion level");
 });
 
 test("Check equal/deepEqual recursion", function( assert ) {
-	var noRecursion = chainwrap(0);
+	var noRecursion, selfref, circref;
+
+	noRecursion = chainwrap(0);
 	assert.equal(noRecursion, noRecursion, "I should be equal to me.");
 	assert.deepEqual(noRecursion, noRecursion, "... and so in depth.");
 
-	var selfref = chainwrap(1);
+	selfref = chainwrap(1);
 	assert.equal(selfref, selfref, "Even so if I nest myself.");
 	assert.deepEqual(selfref, selfref, "... into the depth.");
 
-	var circref = chainwrap(10);
+	circref = chainwrap(10);
 	assert.equal(circref, circref, "Or hide that through some levels of indirection.");
 	assert.deepEqual(circref, circref, "... and checked on all levels!");
 });
 
 
 test("Circular reference with arrays", function( assert ) {
+	var arr, arrdump, obj, childarr, objdump, childarrdump;
 
 	// pure array self-ref
-	var arr = [];
+	arr = [];
 	arr.push(arr);
 
-	var arrdump = QUnit.jsDump.parse(arr);
+	arrdump = QUnit.jsDump.parse(arr);
 
-	assert.equal(arrdump, '[\n  recursion(-1)\n]');
-	assert.equal(arr, arr[0], 'no endless stack when trying to dump arrays with circular ref');
+	assert.equal(arrdump, "[\n  recursion(-1)\n]");
+	assert.equal(arr, arr[0], "no endless stack when trying to dump arrays with circular ref");
 
 
 	// mix obj-arr circular ref
-	var obj = {};
-	var childarr = [obj];
+	obj = {};
+	childarr = [obj];
 	obj.childarr = childarr;
 
-	var objdump = QUnit.jsDump.parse(obj);
-	var childarrdump = QUnit.jsDump.parse(childarr);
+	objdump = QUnit.jsDump.parse(obj);
+	childarrdump = QUnit.jsDump.parse(childarr);
 
-	assert.equal(objdump, '{\n  "childarr": [\n    recursion(-2)\n  ]\n}');
-	assert.equal(childarrdump, '[\n  {\n    "childarr": recursion(-2)\n  }\n]');
+	assert.equal(objdump, "{\n  \"childarr\": [\n    recursion(-2)\n  ]\n}");
+	assert.equal(childarrdump, "[\n  {\n    \"childarr\": recursion(-2)\n  }\n]");
 
-	assert.equal(obj.childarr, childarr, 'no endless stack when trying to dump array/object mix with circular ref');
-	assert.equal(childarr[0], obj, 'no endless stack when trying to dump array/object mix with circular ref');
+	assert.equal(obj.childarr, childarr, "no endless stack when trying to dump array/object mix with circular ref");
+	assert.equal(childarr[0], obj, "no endless stack when trying to dump array/object mix with circular ref");
 
 });
 
 
 test("Circular reference - test reported by soniciq in #105", function( assert ) {
-	var MyObject = function() {};
+	var a, b, barr,
+		MyObject = function() {};
 	MyObject.prototype.parent = function(obj) {
 		if (obj === undefined) { return this._parent; }
 		this._parent = obj;
@@ -768,10 +772,10 @@ test("Circular reference - test reported by soniciq in #105", function( assert )
 		this._children = obj;
 	};
 
-	var a = new MyObject(),
-		b = new MyObject();
+	a = new MyObject();
+	b = new MyObject();
 
-	var barr = [b];
+	barr = [b];
 	a.children(barr);
 	b.parent(a);
 
@@ -803,7 +807,7 @@ function testAfterDone() {
 		// Because when this does happen, the assertion count parameter doesn't actually
 		// work we use this test to check the assertion count.
 		QUnit.module( "check previous test's assertion counts" );
-		test('count previous two test\'s assertions', function ( assert ) {
+		test("count previous two test's assertions", function ( assert ) {
 			var tests = getPreviousTests(/^ensure has correct number of assertions/, /^Synchronous test after load of page$/);
 
 			assert.equal(tests[0].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
@@ -815,7 +819,7 @@ function testAfterDone() {
 
 	QUnit.module( "Synchronous test after load of page" );
 
-	asyncTest('Async test', function( assert ) {
+	asyncTest("Async test", function( assert ) {
 		start();
 		for (var i = 1; i < 100; i++) {
 			assert.ok(i);
@@ -831,7 +835,7 @@ function testAfterDone() {
 
 	// We need two of these types of tests in order to ensure that assertions
 	// don't move between tests.
-	test(testName + ' 2', function( assert ) {
+	test(testName + " 2", function( assert ) {
 		expect( 99 );
 		for (var i = 1; i < 100; i++) {
 			assert.ok(i);
@@ -840,7 +844,7 @@ function testAfterDone() {
 
 }
 
-if (typeof setTimeout !== 'undefined') {
+if (typeof setTimeout !== "undefined") {
 	QUnit.done(testAfterDone);
 }
 

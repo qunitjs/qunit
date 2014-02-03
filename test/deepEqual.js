@@ -7,7 +7,7 @@ test("Primitive types and constants", function ( assert ) {
 	assert.equal(QUnit.equiv(null, undefined), false, "null");
 	assert.equal(QUnit.equiv(null, 0), false, "null");
 	assert.equal(QUnit.equiv(null, false), false, "null");
-	assert.equal(QUnit.equiv(null, ''), false, "null");
+	assert.equal(QUnit.equiv(null, ""), false, "null");
 	assert.equal(QUnit.equiv(null, []), false, "null");
 
 	assert.equal(QUnit.equiv(undefined, undefined), true, "undefined");
@@ -45,9 +45,9 @@ test("Primitive types and constants", function ( assert ) {
 	assert.equal(QUnit.equiv(1, 1), true, "number");
 	assert.equal(QUnit.equiv(1.1, 1.1), true, "number");
 	assert.equal(QUnit.equiv(0.0000005, 0.0000005), true, "number");
-	assert.equal(QUnit.equiv(0, ''), false, "number");
-	assert.equal(QUnit.equiv(0, '0'), false, "number");
-	assert.equal(QUnit.equiv(1, '1'), false, "number");
+	assert.equal(QUnit.equiv(0, ""), false, "number");
+	assert.equal(QUnit.equiv(0, "0"), false, "number");
+	assert.equal(QUnit.equiv(1, "1"), false, "number");
 	assert.equal(QUnit.equiv(0, false), false, "number");
 	assert.equal(QUnit.equiv(1, true), false, "number");
 
@@ -61,14 +61,14 @@ test("Primitive types and constants", function ( assert ) {
 	assert.equal(QUnit.equiv(true, null), false, "boolean");
 	assert.equal(QUnit.equiv(true, undefined), false, "boolean");
 
-	assert.equal(QUnit.equiv('', ''), true, "string");
-	assert.equal(QUnit.equiv('a', 'a'), true, "string");
+	assert.equal(QUnit.equiv("", ""), true, "string");
+	assert.equal(QUnit.equiv("a", "a"), true, "string");
 	assert.equal(QUnit.equiv("foobar", "foobar"), true, "string");
 	assert.equal(QUnit.equiv("foobar", "foo"), false, "string");
-	assert.equal(QUnit.equiv('', 0), false, "string");
-	assert.equal(QUnit.equiv('', false), false, "string");
-	assert.equal(QUnit.equiv('', null), false, "string");
-	assert.equal(QUnit.equiv('', undefined), false, "string");
+	assert.equal(QUnit.equiv("", 0), false, "string");
+	assert.equal(QUnit.equiv("", false), false, "string");
+	assert.equal(QUnit.equiv("", null), false, "string");
+	assert.equal(QUnit.equiv("", undefined), false, "string");
 
 	// Rename for lint validation.
 	// We know this is bad, we are asserting whether we can coop with bad code like this.
@@ -144,7 +144,7 @@ test("Objects basics", function( assert ) {
 
 	// Objects with no prototype, created via Object.create(null), are used e.g. as dictionaries.
 	// Being able to test equivalence against object literals is quite useful.
-	if (typeof Object.create === 'function') {
+	if (typeof Object.create === "function") {
 		assert.equal(QUnit.equiv(Object.create(null), {}), true, "empty object without prototype VS empty object");
 
 		var nonEmptyWithNoProto = Object.create(null);
@@ -270,7 +270,7 @@ test("Arrays basics", function( assert ) {
 												1,2,3,4,[
 													2,3,4,[
 														1,2,[
-															'1',2,3,4,[                 // string instead of number
+															"1",2,3,4,[                 // string instead of number
 																1,2,3,4,5,6,7,8,9,[
 																	0
 																],1,2,3,4,5,6,7,8,9
@@ -333,15 +333,15 @@ test("Arrays basics", function( assert ) {
 });
 
 test("Functions", function( assert ) {
-	var f0 = function () {};
-	var f1 = function () {};
+	var f0 = function () {},
+		f1 = function () {},
 
 	// f2 and f3 have the same code, formatted differently
-	var f2 = function () {return 0;};
-	var f3 = function () {
-		/*jshint asi:true */
-		return 0 // this comment and no semicoma as difference
-	};
+		f2 = function () {return 0;},
+		f3 = function () {
+			/* jshint asi:true */
+			return 0 // this comment and no semicoma as difference
+		};
 
 	assert.equal(QUnit.equiv(function() {}, function() {}), false, "Anonymous functions"); // exact source code
 	assert.equal(QUnit.equiv(function() {}, function() {return true;}), false, "Anonymous functions");
@@ -361,14 +361,15 @@ test("Date instances", function( assert ) {
 	// Date, we don't need to test Date.parse() because it returns a number.
 	// Only test the Date instances by setting them a fix date.
 	// The date use is midnight January 1, 1970
+	var d1, d2, d3;
 
-	var d1 = new Date();
+	d1 = new Date();
 	d1.setTime(0); // fix the date
 
-	var d2 = new Date();
+	d2 = new Date();
 	d2.setTime(0); // fix the date
 
-	var d3 = new Date(); // The very now
+	d3 = new Date(); // The very now
 
 	// Anyway their types differs, just in case the code fails in the order in which it deals with date
 	assert.equal(QUnit.equiv(d1, 0), false); // d1.valueOf() returns 0, but d1 and 0 are different
@@ -387,31 +388,32 @@ test("RegExp", function( assert ) {
 	// typeof a === "function";    // Oops, false in IE and Opera, true in FF and Safari ("object")
 
 	// Tests same regex with same modifiers in different order
-	var r = /foo/;
-	var r5 = /foo/gim;
-	var r6 = /foo/gmi;
-	var r7 = /foo/igm;
-	var r8 = /foo/img;
-	var r9 = /foo/mig;
-	var r10 = /foo/mgi;
-	var ri1 = /foo/i;
-	var ri2 = /foo/i;
-	var rm1 = /foo/m;
-	var rm2 = /foo/m;
-	var rg1 = /foo/g;
-	var rg2 = /foo/g;
+	var regex1, regex2, regex3, r3a, r3b,
+		r1 = /foo/,
+		r2 = /foo/gim,
+		r3 = /foo/gmi,
+		r4 = /foo/igm,
+		r5 = /foo/img,
+		r6 = /foo/mig,
+		r7 = /foo/mgi,
+		ri1 = /foo/i,
+		ri2 = /foo/i,
+		rm1 = /foo/m,
+		rm2 = /foo/m,
+		rg1 = /foo/g,
+		rg2 = /foo/g;
 
-	assert.equal(QUnit.equiv(r5, r6), true, "Modifier order");
-	assert.equal(QUnit.equiv(r5, r7), true, "Modifier order");
-	assert.equal(QUnit.equiv(r5, r8), true, "Modifier order");
-	assert.equal(QUnit.equiv(r5, r9), true, "Modifier order");
-	assert.equal(QUnit.equiv(r5, r10), true, "Modifier order");
-	assert.equal(QUnit.equiv(r, r5), false, "Modifier");
+	assert.equal(QUnit.equiv(r2, r3), true, "Modifier order");
+	assert.equal(QUnit.equiv(r2, r4), true, "Modifier order");
+	assert.equal(QUnit.equiv(r2, r5), true, "Modifier order");
+	assert.equal(QUnit.equiv(r2, r6), true, "Modifier order");
+	assert.equal(QUnit.equiv(r2, r7), true, "Modifier order");
+	assert.equal(QUnit.equiv(r1, r2), false, "Modifier");
 
 	assert.equal(QUnit.equiv(ri1, ri2), true, "Modifier");
-	assert.equal(QUnit.equiv(r, ri1), false, "Modifier");
+	assert.equal(QUnit.equiv(r1, ri1), false, "Modifier");
 	assert.equal(QUnit.equiv(ri1, rm1), false, "Modifier");
-	assert.equal(QUnit.equiv(r, rm1), false, "Modifier");
+	assert.equal(QUnit.equiv(r1, rm1), false, "Modifier");
 	assert.equal(QUnit.equiv(rm1, ri1), false, "Modifier");
 	assert.equal(QUnit.equiv(rm1, rm2), true, "Modifier");
 	assert.equal(QUnit.equiv(rg1, rm1), false, "Modifier");
@@ -419,44 +421,44 @@ test("RegExp", function( assert ) {
 	assert.equal(QUnit.equiv(rg1, rg2), true, "Modifier");
 
 	// Different regex, same modifiers
-	var r11 = /[a-z]/gi;
-	var r13 = /[0-9]/gi; // oops! different
-	assert.equal(QUnit.equiv(r11, r13), false, "Regex pattern");
+	r1 = /[a-z]/gi;
+	r2 = /[0-9]/gi; // oops! different
+	assert.equal(QUnit.equiv(r1, r2), false, "Regex pattern");
 
-	var r14 = /0/ig;
-	var r15 = /"0"/ig; // oops! different
-	assert.equal(QUnit.equiv(r14, r15), false, "Regex pattern");
+	r1 = /0/ig;
+	r2 = /"0"/ig; // oops! different
+	assert.equal(QUnit.equiv(r1, r2), false, "Regex pattern");
 
-	var r1 = /[\n\r\u2028\u2029]/g;
-	var r2 = /[\n\r\u2028\u2029]/g;
-	var r3 = /[\n\r\u2028\u2028]/g; // differs from r1
-	var r4 = /[\n\r\u2028\u2029]/;  // differs from r1
+	r1 = /[\n\r\u2028\u2029]/g;
+	r2 = /[\n\r\u2028\u2029]/g;
+	r3 = /[\n\r\u2028\u2028]/g; // differs from r1
+	r4 = /[\n\r\u2028\u2029]/;  // differs from r1
 
 	assert.equal(QUnit.equiv(r1, r2), true, "Regex pattern");
 	assert.equal(QUnit.equiv(r1, r3), false, "Regex pattern");
 	assert.equal(QUnit.equiv(r1, r4), false, "Regex pattern");
 
 	// More complex regex
-	var regex1 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
-	var regex2 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
+	regex1 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
+	regex2 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
 	// regex 3 is different: '.' not escaped
-	var regex3 = "^[-_.a-z0-9]+@([-_a-z0-9]+.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
+	regex3 = "^[-_.a-z0-9]+@([-_a-z0-9]+.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
 
-	var r21 = new RegExp(regex1);
-	var r22 = new RegExp(regex2);
-	var r23 = new RegExp(regex3); // diff from r21, not same pattern
-	var r23a = new RegExp(regex3, "gi"); // diff from r23, not same modifier
-	var r24a = new RegExp(regex3, "ig"); // same as r23a
+	r1 = new RegExp(regex1);
+	r2 = new RegExp(regex2);
+	r3 = new RegExp(regex3); // diff from r21, not same pattern
+	r3a = new RegExp(regex3, "gi"); // diff from r23, not same modifier
+	r3b = new RegExp(regex3, "ig"); // same as r23a
 
-	assert.equal(QUnit.equiv(r21, r22), true, "Complex Regex");
-	assert.equal(QUnit.equiv(r21, r23), false, "Complex Regex");
-	assert.equal(QUnit.equiv(r23, r23a), false, "Complex Regex");
-	assert.equal(QUnit.equiv(r23a, r24a), true, "Complex Regex");
+	assert.equal(QUnit.equiv(r1, r2), true, "Complex Regex");
+	assert.equal(QUnit.equiv(r1, r3), false, "Complex Regex");
+	assert.equal(QUnit.equiv(r3, r3a), false, "Complex Regex");
+	assert.equal(QUnit.equiv(r3a, r3b), true, "Complex Regex");
 
 	// typeof r1 is "function" in some browsers and "object" in others so we must cover this test
-	var re = / /;
-	assert.equal(QUnit.equiv(re, function () {}), false, "Regex internal");
-	assert.equal(QUnit.equiv(re, {}), false, "Regex internal");
+	r1 = / /;
+	assert.equal(QUnit.equiv(r1, function () {}), false, "Regex internal");
+	assert.equal(QUnit.equiv(r1, {}), false, "Regex internal");
 });
 
 
@@ -852,109 +854,109 @@ test("Complex objects", function( assert ) {
 	), false);
 
 	var same1 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var same2 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		same2 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff1 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3,4]], // different: 4 was add to the array
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		diff1 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3,4]], // different: 4 was add to the array
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff2 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				newprop: undefined, // different: newprop was added
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		diff2 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					newprop: undefined, // different: newprop was added
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff3 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±" // different: missing last char
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		diff3 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±" // different: missing last char
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff4 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,undefined,{}, [], [1,2,3]], // different: undefined instead of null
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		diff4 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,undefined,{}, [], [1,2,3]], // different: undefined instead of null
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff5 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				bat: undefined // different: property name not "bar"
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn1
-	};
+		diff5 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					bat: undefined // different: property name not "bar"
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn1
+		},
 
-	var diff6 = {
-		a: [
-			"string", null, 0, "1", 1, {
-				prop: null,
-				foo: [1,2,null,{}, [], [1,2,3]],
-				bar: undefined
-			}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
-		],
-		unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
-		b: "b",
-		c: fn2 // different: fn2 instead of fn1
-	};
+		diff6 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [1,2,null,{}, [], [1,2,3]],
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn2 // different: fn2 instead of fn1
+		};
 
 	assert.equal(QUnit.equiv(same1, same2), true);
 	assert.equal(QUnit.equiv(same2, same1), true);
@@ -980,13 +982,13 @@ test("Complex Arrays", function( assert ) {
 	assert.equal(QUnit.equiv(
 				[1, 2, 3, true, {}, null, [
 					{
-						a: ["", '1', 0]
+						a: ["", "1", 0]
 					},
 					5, 6, 7
 				], "foo"],
 				[1, 2, 3, true, {}, null, [
 					{
-						a: ["", '1', 0]
+						a: ["", "1", 0]
 					},
 					5, 6, 7
 				], "foo"]),
@@ -995,13 +997,13 @@ test("Complex Arrays", function( assert ) {
 	assert.equal(QUnit.equiv(
 				[1, 2, 3, true, {}, null, [
 					{
-						a: ["", '1', 0]
+						a: ["", "1", 0]
 					},
 					5, 6, 7
 				], "foo"],
 				[1, 2, 3, true, {}, null, [
 					{
-						b: ["", '1', 0]         // not same property name
+						b: ["", "1", 0]         // not same property name
 					},
 					5, 6, 7
 				], "foo"]),
@@ -1168,8 +1170,8 @@ test("Prototypal inheritance", function( assert ) {
 	}
 	Hoozit.prototype = new Gizmo();
 
-	var gizmo = new Gizmo("ok");
-	var hoozit = new Hoozit("ok");
+	var gizmo = new Gizmo("ok"),
+		hoozit = new Hoozit("ok");
 
 	// Try this test many times after test on instances that hold function
 	// to make sure that our code does not mess with last object constructor memoization.
@@ -1208,15 +1210,17 @@ test("Prototypal inheritance", function( assert ) {
 
 
 test("Instances", function( assert ) {
+	var a1, a2, b1, b2, car, carSame, carDiff, human;
+
 	function A() {}
-	var a1 = new A();
-	var a2 = new A();
+	a1 = new A();
+	a2 = new A();
 
 	function B() {
 		this.fn = function () {};
 	}
-	var b1 = new B();
-	var b2 = new B();
+	b1 = new B();
+	b2 = new B();
 
 	assert.equal(QUnit.equiv(a1, a2), true, "Same property, same constructor");
 
@@ -1241,10 +1245,10 @@ test("Instances", function( assert ) {
 		};
 	}
 
-	var car = new Car(30);
-	var carSame = new Car(30);
-	var carDiff = new Car(10);
-	var human = new Human(30);
+	car = new Car(30);
+	carSame = new Car(30);
+	carDiff = new Car(10);
+	human = new Human(30);
 
 	/**
 	 * difference:
@@ -1262,6 +1266,8 @@ test("Instances", function( assert ) {
 
 
 test("Complex instance nesting (with function values in literals and/or in nested instances)", function( assert ) {
+	var a1, a2, b1, b2, c1, c2, d1, d2, e1, e2;
+
 	function A(fn) {
 		this.a = {};
 		this.fn = fn;
@@ -1357,26 +1363,26 @@ test("Complex instance nesting (with function values in literals and/or in neste
 	}
 
 
-	var a1 = new A(function () {});
-	var a2 = new A(function () {});
+	a1 = new A(function () {});
+	a2 = new A(function () {});
 	assert.equal(QUnit.equiv(a1, a2), true);
 
 	assert.equal(QUnit.equiv(a1, a2), true); // different instances
 
-	var b1 = new B(function () {});
-	var b2 = new B(function () {});
+	b1 = new B(function () {});
+	b2 = new B(function () {});
 	assert.equal(QUnit.equiv(b1, b2), true);
 
-	var c1 = new C(function () {});
-	var c2 = new C(function () {});
+	c1 = new C(function () {});
+	c2 = new C(function () {});
 	assert.equal(QUnit.equiv(c1, c2), true);
 
-	var d1 = new D(function () {});
-	var d2 = new D(function () {});
+	d1 = new D(function () {});
+	d2 = new D(function () {});
 	assert.equal(QUnit.equiv(d1, d2), false);
 
-	var e1 = new E(function () {});
-	var e2 = new E(function () {});
+	e1 = new E(function () {});
+	e2 = new E(function () {});
 	assert.equal(QUnit.equiv(e1, e2), false);
 
 });
