@@ -1,8 +1,4 @@
 {
-	"globals": {
-		"module": false
-	},
-
 	"boss": true,
 	"curly": true,
 	"eqeqeq": true,
@@ -17,16 +13,10 @@
 	"undef": true,
 	"unused": true,
 
-	"bitwise": true,
 	"browser": true,
-	"camelcase": true,
 	"es3": true,
-	"forin": true,
-	"latedef": false,
-	"newcap": true,
-	"noempty": true,
-	"nonew": true,
-	"plusplus": false,
-	"proto": true,
-	"sub": true
+
+	"globals": {
+		"module": false
+	}
 }
