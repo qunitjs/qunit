@@ -372,4 +372,10 @@ Test.prototype = {
 	}
 };
 
+	// exports Test to be used on Core module
+	extend( scoped, {
+		Test: Test
+	});
+
+
 }( scoped ));
