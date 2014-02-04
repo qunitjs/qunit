@@ -42,6 +42,7 @@
 
 		test: function( testName, expected, callback, async ) {
 			var test,
+				Test = scoped.Test,
 				nameHtml = "<span class='test-name'>" + escapeText( testName ) + "</span>";
 
 			if ( arguments.length === 2 ) {
