@@ -60,7 +60,8 @@ function objectValues( obj ) {
 // All of these must either call QUnit.push() or manually do:
 // - runLoggingCallbacks( "log", .. );
 // - config.current.assertions.push({ .. });
-assert = QUnit.assert = {
+QUnit.assert = {
+
 	/**
 	 * Asserts rough true-ish result.
 	 * @name ok
@@ -234,7 +235,7 @@ assert = QUnit.assert = {
  * @deprecated since 1.8.0
  * Kept assertion helpers in root for backwards compatibility.
  */
-extend( QUnit.constructor.prototype, assert );
+extend( QUnit.constructor.prototype, QUnit.assert );
 
 /**
  * @deprecated since 1.9.0
