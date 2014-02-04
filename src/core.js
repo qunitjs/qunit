@@ -1,8 +1,8 @@
+(function( scoped ) {
 var QUnit,
-	assert,
 	config,
 	onErrorFnPrev,
-	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
+	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
@@ -19,7 +19,6 @@ var QUnit,
 			}
 		}())
 	};
-
 
 // Root QUnit object.
 // `QUnit` initialized at top of scope
@@ -1057,3 +1056,6 @@ function inArray( elem, array ) {
 
 	return -1;
 }
+
+}( scoped ));
+
