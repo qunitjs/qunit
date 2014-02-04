@@ -16,17 +16,23 @@ function process( code ) {
 grunt.initConfig({
 	pkg: grunt.file.readJSON( "package.json" ),
 	concat: {
-		"src-js": {
-			options: { process: process },
+		"scoped": {
 			src: [
-				"src/intro.js",
 				"src/core.js",
 				"src/test.js",
 				"src/assert.js",
 				"src/equiv.js",
 				"src/dump.js",
 				"src/diff.js",
-				"src/export.js",
+				"src/export.js"
+			],
+			dest: "temp/qunit.js"
+		},
+		"src-js": {
+			options: { process: process },
+			src: [
+				"src/intro.js",
+				"<%= concat.scoped.dest %>",
 				"src/outro.js"
 			],
 			dest: "dist/qunit.js"
@@ -156,7 +162,7 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "build", [ "concat" ] );
 grunt.registerTask( "default", [ "build", "jshint", "qunit", "test-on-node" ] );
+grunt.registerTask( "build", [ "concat:scoped", "concat:src-js", "concat:src-css" ] );
 
 };
