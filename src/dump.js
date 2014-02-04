@@ -8,7 +8,12 @@
  * @author Ariel Flesler
  * @link {http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html}
  */
-QUnit.jsDump = (function() {
+(function( scoped ) {
+	var QUnit = scoped.QUnit,
+		inArray = scoped.inArray,
+		toString = Object.prototype.toString,
+		reName = /^function (\w+)/;
+
 	function quote( str ) {
 		return "\"" + str.toString().replace( /"/g, "\\\"" ) + "\"";
 	}
@@ -16,7 +21,8 @@ QUnit.jsDump = (function() {
 		return o + "";
 	}
 	function join( pre, arr, post ) {
-		var s = jsDump.separator(),
+		var jsDump = QUnit.jsDump,
+			s = jsDump.separator(),
 			base = jsDump.indent(),
 			inner = jsDump.indent(1);
 		if ( arr.join ) {
@@ -37,8 +43,7 @@ QUnit.jsDump = (function() {
 		return join( "[", ret, "]" );
 	}
 
-	var reName = /^function (\w+)/,
-		jsDump = {
+		QUnit.jsDump = {
 			// type is used mostly internally, you can fix a (custom)type in advance
 			parse: function( obj, type, stack ) {
 				stack = stack || [ ];
@@ -226,5 +231,4 @@ QUnit.jsDump = (function() {
 			multiline: true
 		};
 
-	return jsDump;
-}());
+}( scoped ));
