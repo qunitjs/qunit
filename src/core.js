@@ -989,23 +989,6 @@ function checkPollution() {
 	}
 }
 
-// returns a new Array with the elements that are in a but not in b
-function diff( a, b ) {
-	var i, j,
-		result = a.slice();
-
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
-			if ( result[i] === b[j] ) {
-				result.splice( i, 1 );
-				i--;
-				break;
-			}
-		}
-	}
-	return result;
-}
-
 function extend( a, b ) {
 	for ( var prop in b ) {
 		if ( hasOwn.call( b, prop ) ) {
