@@ -10,3 +10,8 @@
  */
 
 (function( window ) {
+	var setTimeout = window.setTimeout,
+		clearTimeout = window.clearTimeout,
+
+		// Keep a local reference to Date (GH-283)
+		Date = window.Date;
