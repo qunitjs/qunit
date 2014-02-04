@@ -1,19 +1,6 @@
 // Test for equality any JavaScript type.
 // Author: Philippe Rathé <prathe@gmail.com>
 (function( scoped ) {
-
-	// Call the o related callback with the given arguments.
-	function bindCallbacks( o, callbacks, args ) {
-		var prop = QUnit.objectType( o );
-		if ( prop ) {
-			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
-				return callbacks[ prop ].apply( callbacks, args );
-			} else {
-				return callbacks[ prop ]; // or undefined
-			}
-		}
-	}
-
 	var QUnit = scoped.QUnit,
 
 		// the real equiv function
@@ -187,7 +174,19 @@
 			};
 		}());
 
-	innerEquiv = function() { // can take multiple arguments
+	// Call the o related callback with the given arguments.
+	function bindCallbacks( o, callbacks, args ) {
+		var prop = QUnit.objectType( o );
+		if ( prop ) {
+			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
+				return callbacks[ prop ].apply( callbacks, args );
+			} else {
+				return callbacks[ prop ]; // or undefined
+			}
+		}
+	}
+
+	QUnit.equiv = innerEquiv = function() { // can take multiple arguments
 		var args = [].slice.apply( arguments );
 		if ( args.length < 2 ) {
 			return true; // end transition
@@ -208,7 +207,4 @@
 		}( args[ 0 ], args[ 1 ] ) && innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
 	};
 
-	QUnit.equiv = innerEquiv;
-
 }( scoped ));
-
