@@ -1,3 +1,12 @@
+(function( scoped ) {
+	var QUnit = scoped.QUnit,
+		config = QUnit.config,
+		extend = QUnit.extend,
+		sourceFromStacktrace = scoped.sourceFromStacktrace,
+		escapeText = scoped.escapeText,
+		runLoggingCallbacks = scoped.runLoggingCallbacks,
+		hasOwn = Object.prototype.hasOwnProperty;
+
 /**
 * Provides a normalized error string, correcting an issue
 * with IE 7 (and prior) where Error.prototype.toString is
@@ -47,7 +56,6 @@ function objectValues( obj ) {
 	return vals;
 }
 
-// `assert` initialized at top of scope
 // Assert helpers
 // All of these must either call QUnit.push() or manually do:
 // - runLoggingCallbacks( "log", .. );
@@ -246,3 +254,5 @@ QUnit.constructor.prototype.equals = function() {
 QUnit.constructor.prototype.same = function() {
 	QUnit.push( false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead" );
 };
+
+}( scoped ));
