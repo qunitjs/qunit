@@ -1,3 +1,5 @@
+var testId = 0;
+
 function synchronize( callback, last ) {
 	config.queue.push( callback );
 
