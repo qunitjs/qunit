@@ -10,7 +10,9 @@
  */
 
 (function( window ) {
-	var setTimeout = window.setTimeout,
+	var scoped = {},
+
+		setTimeout = window.setTimeout,
 		clearTimeout = window.clearTimeout,
 
 		// Keep a local reference to Date (GH-283)
