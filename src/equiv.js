@@ -1,6 +1,6 @@
 // Test for equality any JavaScript type.
 // Author: Philippe Rathé <prathe@gmail.com>
-QUnit.equiv = (function() {
+(function( scoped ) {
 
 	// Call the o related callback with the given arguments.
 	function bindCallbacks( o, callbacks, args ) {
@@ -14,10 +14,14 @@ QUnit.equiv = (function() {
 		}
 	}
 
-	// the real equiv function
-	var innerEquiv,
+	var QUnit = scoped.QUnit,
+
+		// the real equiv function
+		innerEquiv,
+
 		// stack to decide between skip/abort functions
 		callers = [],
+
 		// stack to avoiding loops from circular referencing
 		parents = [],
 		parentsB = [],
@@ -203,5 +207,7 @@ QUnit.equiv = (function() {
 		}( args[0], args[1] ) && innerEquiv.apply( this, args.splice(1, args.length - 1 )) );
 	};
 
-	return innerEquiv;
-}());
+	QUnit.equiv = innerEquiv;
+
+}( scoped ));
+
