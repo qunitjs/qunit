@@ -49,15 +49,14 @@ grunt.initConfig({
 		options: {
 			jshintrc: ".jshintrc"
 		},
-		gruntfile: [ "Gruntfile.js" ],
-		dist: [ "dist/*.js" ],
+		gruntfile: "Gruntfile.js",
+		scoped: "<%= concat.scoped.src %>",
+		dist: "dist/*.js",
 		tests: {
 			options: {
 				jshintrc: "test/.jshintrc"
 			},
-			files: {
-				src: [ "test/**/*.js" ]
-			}
+			src: [ "test/**/*.js" ]
 		}
 	},
 	qunit: {
@@ -162,7 +161,8 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "default", [ "build", "jshint", "qunit", "test-on-node" ] );
 grunt.registerTask( "build", [ "concat:scoped", "concat:src-js", "concat:src-css" ] );
+grunt.registerTask( "jshint-non-dist", [ "jshint:gruntfile", "jshint:scoped", "jshint:tests" ] );
+grunt.registerTask( "default", [ "jshint-non-dist", "build", "jshint:dist", "qunit", "test-on-node" ] );
 
 };
