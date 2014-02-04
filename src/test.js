@@ -1,3 +1,11 @@
+function synchronize( callback, last ) {
+	config.queue.push( callback );
+
+	if ( config.autorun && !config.blocking ) {
+		process( last );
+	}
+}
+
 function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
