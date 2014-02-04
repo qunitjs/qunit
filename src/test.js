@@ -23,6 +23,40 @@ function diff( a, b ) {
 	return result;
 }
 
+function saveGlobal() {
+	config.pollution = [];
+
+	if ( config.noglobals ) {
+		for ( var key in window ) {
+			if ( hasOwn.call( window, key ) ) {
+				// in Opera sometimes DOM element ids show up here, ignore them
+				if ( /^qunit-test-output/.test( key ) ) {
+					continue;
+				}
+				config.pollution.push( key );
+			}
+		}
+	}
+}
+
+function checkPollution() {
+	var newGlobals,
+		deletedGlobals,
+		old = config.pollution;
+
+	saveGlobal();
+
+	newGlobals = diff( config.pollution, old );
+	if ( newGlobals.length > 0 ) {
+		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join(", ") );
+	}
+
+	deletedGlobals = diff( old, config.pollution );
+	if ( deletedGlobals.length > 0 ) {
+		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join(", ") );
+	}
+}
+
 function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
