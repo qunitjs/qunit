@@ -26,11 +26,11 @@
 		parents = [],
 		parentsB = [],
 
-		getProto = Object.getPrototypeOf || function ( obj ) {
+		getProto = Object.getPrototypeOf || function( obj ) {
 			/* jshint camelcase: false, proto: true */
 			return obj.__proto__;
 		},
-		callbacks = (function () {
+		callbacks = (function() {
 
 			// for string, boolean, number and null
 			function useStrictEquality( b, a ) {
@@ -77,7 +77,7 @@
 				// - abort otherwise,
 				// initial === would have catch identical references anyway
 				"function": function() {
-					var caller = callers[callers.length - 1];
+					var caller = callers[ callers.length - 1 ];
 					return caller !== Object && typeof caller !== "undefined";
 				},
 
@@ -101,10 +101,10 @@
 					for ( i = 0; i < len; i++ ) {
 						loop = false;
 						for ( j = 0; j < parents.length; j++ ) {
-							aCircular = parents[j] === a[i];
-							bCircular = parentsB[j] === b[i];
+							aCircular = parents[ j ] === a[ i ];
+							bCircular = parentsB[ j ] === b[ i ];
 							if ( aCircular || bCircular ) {
-								if ( a[i] === b[i] || aCircular && bCircular ) {
+								if ( a[ i ] === b[ i ] || aCircular && bCircular ) {
 									loop = true;
 								} else {
 									parents.pop();
@@ -113,7 +113,7 @@
 								}
 							}
 						}
-						if ( !loop && !innerEquiv(a[i], b[i]) ) {
+						if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
 							parents.pop();
 							parentsB.pop();
 							return false;
@@ -135,10 +135,11 @@
 					// comparing constructors is more strict than using
 					// instanceof
 					if ( a.constructor !== b.constructor ) {
+
 						// Allow objects with no prototype to be equivalent to
 						// objects with Object as their constructor.
-						if ( !(( getProto(a) === null && getProto(b) === Object.prototype ) ||
-							( getProto(b) === null && getProto(a) === Object.prototype ) ) ) {
+						if ( !(( getProto( a ) === null && getProto( b ) === Object.prototype ) ||
+							( getProto( b ) === null && getProto( a ) === Object.prototype ) ) ) {
 								return false;
 						}
 					}
@@ -154,10 +155,10 @@
 					for ( i in a ) {
 						loop = false;
 						for ( j = 0; j < parents.length; j++ ) {
-							aCircular = parents[j] === a[i];
-							bCircular = parentsB[j] === b[i];
+							aCircular = parents[ j ] === a[ i ];
+							bCircular = parentsB[ j ] === b[ i ];
 							if ( aCircular || bCircular ) {
-								if ( a[i] === b[i] || aCircular && bCircular ) {
+								if ( a[ i ] === b[ i ] || aCircular && bCircular ) {
 									loop = true;
 								} else {
 									eq = false;
@@ -165,8 +166,8 @@
 								}
 							}
 						}
-						aProperties.push(i);
-						if ( !loop && !innerEquiv(a[i], b[i]) ) {
+						aProperties.push( i );
+						if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
 							eq = false;
 							break;
 						}
@@ -197,14 +198,14 @@
 				return true; // catch the most you can
 			} else if ( a === null || b === null || typeof a === "undefined" ||
 					typeof b === "undefined" ||
-					QUnit.objectType(a) !== QUnit.objectType(b) ) {
+					QUnit.objectType( a ) !== QUnit.objectType( b ) ) {
 				return false; // don't lose time with error prone cases
 			} else {
-				return bindCallbacks(a, callbacks, [ b, a ]);
+				return bindCallbacks( a, callbacks, [ b, a ] );
 			}
 
 			// apply transition with (1..n) arguments
-		}( args[0], args[1] ) && innerEquiv.apply( this, args.splice(1, args.length - 1 )) );
+		}( args[ 0 ], args[ 1 ] ) && innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
 	};
 
 	QUnit.equiv = innerEquiv;
