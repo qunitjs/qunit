@@ -1,12 +1,7 @@
 /*jshint node:true */
 module.exports = function( grunt ) {
 
-grunt.loadNpmTasks( "grunt-git-authors" );
-grunt.loadNpmTasks( "grunt-contrib-concat" );
-grunt.loadNpmTasks( "grunt-contrib-jshint" );
-grunt.loadNpmTasks( "grunt-contrib-qunit" );
-grunt.loadNpmTasks( "grunt-contrib-watch" );
-
+require( "load-grunt-tasks" )( grunt );
 
 function process( code ) {
 	return code
