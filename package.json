@@ -26,6 +26,11 @@
       "url": "https://github.com/jquery/qunit/blob/master/MIT-LICENSE.txt"
     }
   ],
+  "files": [
+    "qunit/qunit.js",
+    "qunit/qunit.css",
+    "MIT-LICENSE.txt"
+  ],
   "dependencies": {},
   "devDependencies": {
     "grunt": "0.4.2",
