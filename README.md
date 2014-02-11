@@ -1,4 +1,5 @@
 [![Build Status](http://jenkins.jquery.com/job/QUnit/badge/icon)](http://jenkins.jquery.com/job/QUnit/)
+[![Coverage Status](https://coveralls.io/repos/jquery/qunit/badge.png)](https://coveralls.io/r/jquery/qunit)
 
 # [QUnit](http://qunitjs.com) - A JavaScript Unit Testing Framework.
 
