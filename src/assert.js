@@ -1,9 +1,67 @@
-// `assert` initialized at top of scope
+(function( scoped ) {
+var QUnit = scoped.QUnit,
+	config = QUnit.config,
+	extend = QUnit.extend,
+	sourceFromStacktrace = scoped.sourceFromStacktrace,
+	escapeText = scoped.escapeText,
+	runLoggingCallbacks = scoped.runLoggingCallbacks,
+	hasOwn = Object.prototype.hasOwnProperty;
+
+/**
+* Provides a normalized error string, correcting an issue
+* with IE 7 (and prior) where Error.prototype.toString is
+* not properly implemented
+*
+* Based on http://es5.github.com/#x15.11.4.4
+*
+* @param {String|Error} error
+* @return {String} error message
+*/
+function errorString( error ) {
+	var name, message,
+		errString = error.toString();
+	if ( errString.substring( 0, 7 ) === "[object" ) {
+		name = error.name ? error.name.toString() : "Error";
+		message = error.message ? error.message.toString() : "";
+		if ( name && message ) {
+			return name + ": " + message;
+		} else if ( name ) {
+			return name;
+		} else if ( message ) {
+			return message;
+		} else {
+			return "Error";
+		}
+	} else {
+		return errString;
+	}
+}
+
+/**
+* Makes a clone of an object using only Array or Object as base,
+* and copies over the own enumerable properties.
+*
+* @param {Object} obj
+* @return {Object} New object with only the own properties (recursively).
+*/
+function objectValues( obj ) {
+	var key, val,
+		vals = QUnit.is( "array", obj ) ? [] : {};
+	for ( key in obj ) {
+		if ( hasOwn.call( obj, key ) ) {
+			val = obj[ key ];
+			vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
+		}
+	}
+	return vals;
+}
+
 // Assert helpers
 // All of these must either call QUnit.push() or manually do:
 // - runLoggingCallbacks( "log", .. );
 // - config.current.assertions.push({ .. });
-assert = QUnit.assert = {
+QUnit.assert = {
+
 	/**
 	 * Asserts rough true-ish result.
 	 * @name ok
@@ -177,7 +235,7 @@ assert = QUnit.assert = {
  * @deprecated since 1.8.0
  * Kept assertion helpers in root for backwards compatibility.
  */
-extend( QUnit.constructor.prototype, assert );
+extend( QUnit.constructor.prototype, QUnit.assert );
 
 /**
  * @deprecated since 1.9.0
@@ -197,3 +255,5 @@ QUnit.constructor.prototype.equals = function() {
 QUnit.constructor.prototype.same = function() {
 	QUnit.push( false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead" );
 };
+
+}( scoped ));

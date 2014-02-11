@@ -1,3 +1,7 @@
+(function( scoped ) {
+var QUnit = scoped.QUnit,
+	extend = QUnit.extend;
+
 // For browser, export only select globals
 if ( typeof window !== "undefined" ) {
 	extend( window, QUnit.constructor.prototype );
@@ -8,3 +12,5 @@ if ( typeof window !== "undefined" ) {
 if ( typeof module !== "undefined" && module.exports ) {
 	module.exports = QUnit;
 }
+
+}( scoped ));

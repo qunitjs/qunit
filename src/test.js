@@ -1,3 +1,78 @@
+(function( scoped ) {
+var testId = 0,
+	QUnit = scoped.QUnit,
+	runLoggingCallbacks = scoped.runLoggingCallbacks,
+	extractStacktrace = scoped.extractStacktrace,
+	defined = scoped.defined,
+	process = scoped.process,
+	config = QUnit.config,
+	extend = QUnit.extend,
+	id = QUnit.id,
+	addEvent = QUnit.addEvent,
+	addClass = QUnit.addClass,
+	hasClass = QUnit.hasClass,
+	removeClass = QUnit.removeClass,
+	hasOwn = Object.prototype.hasOwnProperty;
+
+function synchronize( callback, last ) {
+	config.queue.push( callback );
+
+	if ( config.autorun && !config.blocking ) {
+		process( last );
+	}
+}
+
+// returns a new Array with the elements that are in a but not in b
+function diff( a, b ) {
+	var i, j,
+		result = a.slice();
+
+	for ( i = 0; i < result.length; i++ ) {
+		for ( j = 0; j < b.length; j++ ) {
+			if ( result[ i ] === b[ j ] ) {
+				result.splice( i, 1 );
+				i--;
+				break;
+			}
+		}
+	}
+	return result;
+}
+
+function saveGlobal() {
+	config.pollution = [];
+
+	if ( config.noglobals ) {
+		for ( var key in window ) {
+			if ( hasOwn.call( window, key ) ) {
+				// in Opera sometimes DOM element ids show up here, ignore them
+				if ( /^qunit-test-output/.test( key ) ) {
+					continue;
+				}
+				config.pollution.push( key );
+			}
+		}
+	}
+}
+
+function checkPollution() {
+	var newGlobals,
+		deletedGlobals,
+		old = config.pollution;
+
+	saveGlobal();
+
+	newGlobals = diff( config.pollution, old );
+	if ( newGlobals.length > 0 ) {
+		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join(", ") );
+	}
+
+	deletedGlobals = diff( old, config.pollution );
+	if ( deletedGlobals.length > 0 ) {
+		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join(", ") );
+	}
+}
+
 function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
@@ -296,3 +371,10 @@ Test.prototype = {
 		}
 	}
 };
+
+// exports Test to be used on Core module
+extend( scoped, {
+	Test: Test
+});
+
+}( scoped ));

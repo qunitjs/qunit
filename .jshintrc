@@ -17,6 +17,7 @@
 	"es3": true,
 
 	"globals": {
-		"module": false
+		"module": false,
+		"scoped": true
 	}
 }

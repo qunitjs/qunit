@@ -1,15 +1,10 @@
+(function( scoped ) {
 var QUnit,
-	assert,
 	config,
 	onErrorFnPrev,
-	testId = 0,
-	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
+	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
-	// Keep a local reference to Date (GH-283)
-	Date = window.Date,
-	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout,
 	defined = {
 		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
@@ -23,57 +18,7 @@ var QUnit,
 				return false;
 			}
 		}())
-	},
-	/**
-	 * Provides a normalized error string, correcting an issue
-	 * with IE 7 (and prior) where Error.prototype.toString is
-	 * not properly implemented
-	 *
-	 * Based on http://es5.github.com/#x15.11.4.4
-	 *
-	 * @param {String|Error} error
-	 * @return {String} error message
-	 */
-	errorString = function( error ) {
-		var name, message,
-			errorString = error.toString();
-		if ( errorString.substring( 0, 7 ) === "[object" ) {
-			name = error.name ? error.name.toString() : "Error";
-			message = error.message ? error.message.toString() : "";
-			if ( name && message ) {
-				return name + ": " + message;
-			} else if ( name ) {
-				return name;
-			} else if ( message ) {
-				return message;
-			} else {
-				return "Error";
-			}
-		} else {
-			return errorString;
-		}
-	},
-	/**
-	 * Makes a clone of an object using only Array or Object as base,
-	 * and copies over the own enumerable properties.
-	 *
-	 * @param {Object} obj
-	 * @return {Object} New object with only the own properties (recursively).
-	 */
-	objectValues = function( obj ) {
-		// Grunt 0.3.x uses an older version of jshint that still has jshint/jshint#392.
-		/*jshint newcap: false */
-		var key, val,
-			vals = QUnit.is( "array", obj ) ? [] : {};
-		for ( key in obj ) {
-			if ( hasOwn.call( obj, key ) ) {
-				val = obj[key];
-				vals[key] = val === Object(val) ? objectValues(val) : val;
-			}
-		}
-		return vals;
 	};
-
 
 // Root QUnit object.
 // `QUnit` initialized at top of scope
@@ -97,6 +42,7 @@ QUnit = {
 
 	test: function( testName, expected, callback, async ) {
 		var test,
+			Test = scoped.Test,
 			nameHtml = "<span class='test-name'>" + escapeText( testName ) + "</span>";
 
 		if ( arguments.length === 2 ) {
@@ -983,14 +929,6 @@ function escapeText( s ) {
 	});
 }
 
-function synchronize( callback, last ) {
-	config.queue.push( callback );
-
-	if ( config.autorun && !config.blocking ) {
-		process( last );
-	}
-}
-
 function process( last ) {
 	function next() {
 		process( last );
@@ -1010,57 +948,6 @@ function process( last ) {
 	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
 		done();
 	}
-}
-
-function saveGlobal() {
-	config.pollution = [];
-
-	if ( config.noglobals ) {
-		for ( var key in window ) {
-			if ( hasOwn.call( window, key ) ) {
-				// in Opera sometimes DOM element ids show up here, ignore them
-				if ( /^qunit-test-output/.test( key ) ) {
-					continue;
-				}
-				config.pollution.push( key );
-			}
-		}
-	}
-}
-
-function checkPollution() {
-	var newGlobals,
-		deletedGlobals,
-		old = config.pollution;
-
-	saveGlobal();
-
-	newGlobals = diff( config.pollution, old );
-	if ( newGlobals.length > 0 ) {
-		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join(", ") );
-	}
-
-	deletedGlobals = diff( old, config.pollution );
-	if ( deletedGlobals.length > 0 ) {
-		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join(", ") );
-	}
-}
-
-// returns a new Array with the elements that are in a but not in b
-function diff( a, b ) {
-	var i, j,
-		result = a.slice();
-
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
-			if ( result[i] === b[j] ) {
-				result.splice( i, 1 );
-				i--;
-				break;
-			}
-		}
-	}
-	return result;
 }
 
 function extend( a, b ) {
@@ -1170,3 +1057,17 @@ function inArray( elem, array ) {
 
 	return -1;
 }
+
+// methods exportation
+extend( scoped, {
+	QUnit: QUnit,
+	runLoggingCallbacks: runLoggingCallbacks,
+	defined: defined,
+	extractStacktrace: extractStacktrace,
+	process: process,
+	sourceFromStacktrace: sourceFromStacktrace,
+	escapeText: escapeText,
+	inArray: inArray
+});
+
+}( scoped ));
