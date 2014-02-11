@@ -10,10 +10,10 @@
  */
 
 (function( window ) {
-	var scoped = {},
+var scoped = {},
 
-		setTimeout = window.setTimeout,
-		clearTimeout = window.clearTimeout,
+	setTimeout = window.setTimeout,
+	clearTimeout = window.clearTimeout,
 
-		// Keep a local reference to Date (GH-283)
-		Date = window.Date;
+	// Keep a local reference to Date (GH-283)
+	Date = window.Date;

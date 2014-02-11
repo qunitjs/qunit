@@ -1,11 +1,11 @@
 (function( scoped ) {
-	var QUnit = scoped.QUnit,
-		config = QUnit.config,
-		extend = QUnit.extend,
-		sourceFromStacktrace = scoped.sourceFromStacktrace,
-		escapeText = scoped.escapeText,
-		runLoggingCallbacks = scoped.runLoggingCallbacks,
-		hasOwn = Object.prototype.hasOwnProperty;
+var QUnit = scoped.QUnit,
+	config = QUnit.config,
+	extend = QUnit.extend,
+	sourceFromStacktrace = scoped.sourceFromStacktrace,
+	escapeText = scoped.escapeText,
+	runLoggingCallbacks = scoped.runLoggingCallbacks,
+	hasOwn = Object.prototype.hasOwnProperty;
 
 /**
 * Provides a normalized error string, correcting an issue

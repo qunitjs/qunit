@@ -1,18 +1,18 @@
 (function( scoped ) {
-	var testId = 0,
-		QUnit = scoped.QUnit,
-		runLoggingCallbacks = scoped.runLoggingCallbacks,
-		extractStacktrace = scoped.extractStacktrace,
-		defined = scoped.defined,
-		process = scoped.process,
-		config = QUnit.config,
-		extend = QUnit.extend,
-		id = QUnit.id,
-		addEvent = QUnit.addEvent,
-		addClass = QUnit.addClass,
-		hasClass = QUnit.hasClass,
-		removeClass = QUnit.removeClass,
-		hasOwn = Object.prototype.hasOwnProperty;
+var testId = 0,
+	QUnit = scoped.QUnit,
+	runLoggingCallbacks = scoped.runLoggingCallbacks,
+	extractStacktrace = scoped.extractStacktrace,
+	defined = scoped.defined,
+	process = scoped.process,
+	config = QUnit.config,
+	extend = QUnit.extend,
+	id = QUnit.id,
+	addEvent = QUnit.addEvent,
+	addClass = QUnit.addClass,
+	hasClass = QUnit.hasClass,
+	removeClass = QUnit.removeClass,
+	hasOwn = Object.prototype.hasOwnProperty;
 
 function synchronize( callback, last ) {
 	config.queue.push( callback );
@@ -372,10 +372,9 @@ Test.prototype = {
 	}
 };
 
-	// exports Test to be used on Core module
-	extend( scoped, {
-		Test: Test
-	});
-
+// exports Test to be used on Core module
+extend( scoped, {
+	Test: Test
+});
 
 }( scoped ));

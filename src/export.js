@@ -1,6 +1,6 @@
 (function( scoped ) {
-	var QUnit = scoped.QUnit,
-		extend = QUnit.extend;
+var QUnit = scoped.QUnit,
+	extend = QUnit.extend;
 
 // For browser, export only select globals
 if ( typeof window !== "undefined" ) {
@@ -14,4 +14,3 @@ if ( typeof module !== "undefined" && module.exports ) {
 }
 
 }( scoped ));
-
