@@ -59,7 +59,7 @@ Antranig Basman <amb26ohloh@ponder.org.uk>
 Vivin Paliath <vivin.paliath@gmail.com>
 Joshua Niehus <jm.niehus@gmail.com>
 Glen Huang <curvedmark@gmail.com>
-Jonas Ulrich <jochenulrich@t-online.de>
+Jochen Ulrich <jochenulrich@t-online.de>
 Jamie Hoover <jamie@ninjaui.com>
 James M. Greene <james.m.greene@gmail.com>
 Rodney Rehm <mail+github@rodneyrehm.de>
