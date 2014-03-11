@@ -783,22 +783,6 @@ test("Circular reference - test reported by soniciq in #105", function( assert )
 	assert.deepEqual(a.children(), [b]);
 });
 
-(function() {
-	var reset = QUnit.reset;
-	QUnit.module( "reset" );
-	test("reset runs assertions", function( assert ) {
-		expect(0);
-		QUnit.reset = function() {
-			assert.ok( false, "reset should not modify test status" );
-			reset.apply( this, arguments );
-		};
-	});
-	test("reset runs assertions, cleanup", function() {
-		expect(0);
-		QUnit.reset = reset;
-	});
-})();
-
 function testAfterDone() {
 	var testName = "ensure has correct number of assertions";
 
