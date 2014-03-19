@@ -61,7 +61,7 @@ Test.prototype = {
 			teardown: function() {}
 		}, this.moduleTestEnvironment );
 
-		this.started = +new Date();
+		this.started = now();
 		runLoggingCallbacks( "testStart", QUnit, {
 			name: this.testName,
 			module: this.module
@@ -105,19 +105,19 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
-		this.callbackStarted = +new Date();
+		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
 			this.callback.call( this.testEnvironment, QUnit.assert );
-			this.callbackRuntime = +new Date() - this.callbackStarted;
+			this.callbackRuntime = now() - this.callbackStarted;
 			return;
 		}
 
 		try {
 			this.callback.call( this.testEnvironment, QUnit.assert );
-			this.callbackRuntime = +new Date() - this.callbackStarted;
+			this.callbackRuntime = now() - this.callbackStarted;
 		} catch( e ) {
-			this.callbackRuntime = +new Date() - this.callbackStarted;
+			this.callbackRuntime = now() - this.callbackStarted;
 
 			QUnit.pushFailure( "Died on test #" + (this.assertions.length + 1) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			// else next test will carry the responsibility
@@ -133,7 +133,7 @@ Test.prototype = {
 		config.current = this;
 		if ( config.notrycatch ) {
 			if ( typeof this.callbackRuntime === "undefined" ) {
-				this.callbackRuntime = +new Date() - this.callbackStarted;
+				this.callbackRuntime = now() - this.callbackStarted;
 			}
 			this.testEnvironment.teardown.call( this.testEnvironment, QUnit.assert );
 			return;
@@ -162,7 +162,7 @@ Test.prototype = {
 			bad = 0,
 			tests = id( "qunit-tests" );
 
-		this.runtime = +new Date() - this.started;
+		this.runtime = now() - this.started;
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
 

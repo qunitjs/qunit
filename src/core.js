@@ -6,8 +6,9 @@ var QUnit,
 	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
-	// Keep a local reference to Date (GH-283)
-	Date = window.Date,
+	now = Date.now || function() {
+		return +new Date();
+	},
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
 	defined = {
@@ -315,7 +316,7 @@ extend( QUnit, {
 		extend( config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
-			started: +new Date(),
+			started: now(),
 			updateRate: 1000,
 			blocking: false,
 			autostart: true,
@@ -812,7 +813,7 @@ function done() {
 	var i, key,
 		banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
-		runtime = +new Date() - config.started,
+		runtime = now() - config.started,
 		passed = config.stats.all - config.stats.bad,
 		html = [
 			"Tests completed in ",
@@ -995,11 +996,11 @@ function process( last ) {
 	function next() {
 		process( last );
 	}
-	var start = new Date().getTime();
+	var start = now();
 	config.depth = config.depth ? config.depth + 1 : 1;
 
 	while ( config.queue.length && !config.blocking ) {
-		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( new Date().getTime() - start ) < config.updateRate ) ) {
+		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( now() - start ) < config.updateRate ) ) {
 			config.queue.shift()();
 		} else {
 			setTimeout( next, 13 );
