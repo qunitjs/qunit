@@ -559,7 +559,9 @@ if ( !defined.document || document.readyState === "complete" ) {
 }
 
 QUnit.load = function() {
-	runLoggingCallbacks( "begin", QUnit, {} );
+	runLoggingCallbacks( "begin", QUnit, {
+		totalTests: Test.count
+	});
 
 	// Initialize the config, saving the execution queue
 	var banner, filter, i, j, label, len, main, ol, toolbar, val, selection,
