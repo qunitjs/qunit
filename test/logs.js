@@ -6,13 +6,15 @@ var begin = 0,
 	testStart = 0,
 	testDone = 0,
 	log = 0,
+	totalTests,
 	moduleContext,
 	moduleDoneContext,
 	testContext,
 	testDoneContext,
 	logContext;
 
-QUnit.begin(function() {
+QUnit.begin(function( args ) {
+	totalTests = args.totalTests;
 	begin++;
 });
 QUnit.done(function() {
@@ -41,7 +43,9 @@ QUnit.log(function(context) {
 QUnit.module("logs1");
 
 test("test1", function( assert ) {
-	expect( 15 );
+	expect( 16 );
+
+	assert.equal( typeof totalTests, "number", "QUnit.begin should pass total amount of tests to callback" );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 1, "QUnit.testStart calls" );
@@ -84,7 +88,7 @@ test("test1", function( assert ) {
 		name: "logs1"
 	}, "module context" );
 
-	assert.equal( log, 14, "QUnit.log calls" );
+	assert.equal( log, 15, "QUnit.log calls" );
 });
 
 test("test2", function( assert ) {
@@ -103,8 +107,8 @@ test("test2", function( assert ) {
 		module: "logs1",
 		name: "test1",
 		failed: 0,
-		passed: 15,
-		total: 15
+		passed: 16,
+		total: 16
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
@@ -115,7 +119,7 @@ test("test2", function( assert ) {
 		name: "logs1"
 	}, "module context" );
 
-	assert.equal( log, 25, "QUnit.log calls" );
+	assert.equal( log, 26, "QUnit.log calls" );
 });
 
 QUnit.module("logs2");
@@ -135,14 +139,14 @@ test( "test1", function( assert ) {
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		failed: 0,
-		passed: 26,
-		total: 26
+		passed: 27,
+		total: 27
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 34, "QUnit.log calls" );
+	assert.equal( log, 35, "QUnit.log calls" );
 });
 test( "test2", function( assert ) {
 	expect( 8 );
@@ -160,7 +164,7 @@ test( "test2", function( assert ) {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 42, "QUnit.log calls" );
+	assert.equal( log, 43, "QUnit.log calls" );
 });
 
 var testAutorun = true;
