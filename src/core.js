@@ -156,7 +156,7 @@ QUnit = {
 		// ignore if start is called more often then stop
 		if ( config.semaphore < 0 ) {
 			config.semaphore = 0;
-			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)", null, sourceFromStacktrace(2) );
+			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)", sourceFromStacktrace(2) );
 			return;
 		}
 		// A slight delay, to avoid any current callbacks
