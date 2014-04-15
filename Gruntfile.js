@@ -89,11 +89,20 @@ grunt.initConfig({
 	}
 });
 
-grunt.registerTask( "testswarm", function( commit, configFile ) {
-	var testswarm = require( "testswarm" ),
-		config = grunt.file.readJSON( configFile ).qunit,
+grunt.registerTask( "testswarm", function( commit, configFile, projectName, browserSets, timeout ) {
+	var config,
+		testswarm = require( "testswarm" ),
 		runs = {},
 		done = this.async();
+
+	projectName = projectName || "qunit";
+	config = grunt.file.readJSON( configFile )[ projectName ];
+	browserSets = browserSets || config.browserSets;
+	if ( browserSets[ 0 ] === "[" ) {
+		// We got an array, parse it
+		browserSets = JSON.parse( browserSets );
+	}
+	timeout = timeout || 1000 * 60 * 15;
 
 	[ "index", "async", "setTimeout" ].forEach(function ( suite ) {
 		runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
@@ -112,7 +121,8 @@ grunt.registerTask( "testswarm", function( commit, configFile ) {
 			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" +
 				commit.substr( 0, 10 ) + "</a>",
 			runs: runs,
-			browserSets: [ "popular-qunit", "ios" ]
+			browserSets: browserSets,
+			timeout: timeout
 		}, function( err, passed ) {
 			if ( err ) {
 				grunt.log.error( err );
