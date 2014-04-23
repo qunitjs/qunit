@@ -6,8 +6,10 @@ var QUnit,
 	fileName = (sourceFromStacktrace( 0 ) || "" ).replace(/(:\d+)+\)?/, "").replace(/.+\//, ""),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
+	// Keep a local reference to Date (GH-283)
+	Date = window.Date,
 	now = Date.now || function() {
-		return +new Date();
+		return new Date().getTime();
 	},
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
