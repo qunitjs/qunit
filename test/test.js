@@ -414,6 +414,24 @@ test("jsDump output", function( assert ) {
 		assert.equal( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
 	}
 });
+test("jsDump classes", function( assert ) {
+	function CustomError( message ) {
+		this.message = message;
+	}
+
+	CustomError.prototype.toString = function() {
+		return this.message;
+	};
+	var customError = new CustomError("sad puppy"),
+		typeError = new TypeError("crying kitten");
+	
+	assert.equal(
+			QUnit.jsDump.parse(customError),
+			"{\n  \"message\": \"sad puppy\",\n  \"toString\": function( ){\n    [code]\n  }\n}" );
+	assert.equal(
+			QUnit.jsDump.parse(typeError),
+			"{\n  \"message\": \"crying kitten\",\n  \"name\": \"TypeError\"\n}");
+});
 
 QUnit.module( "assertions" );
 
