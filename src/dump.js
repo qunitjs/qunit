@@ -151,11 +151,22 @@ QUnit.jsDump = (function() {
 				"arguments": array,
 				object: function( map, stack ) {
 					/*jshint forin:false */
-					var ret = [], keys, key, val, i;
+					var ret = [], keys, key, val, i, nonEnumerableProperties;
 					QUnit.jsDump.up();
 					keys = [];
 					for ( key in map ) {
 						keys.push( key );
+					}
+
+					// No enumerable properties, look for specific non-enumerable properties.
+					if ( keys.length === 0 ) {
+						nonEnumerableProperties = [ "message", "name" ];
+						for ( i in nonEnumerableProperties ) {
+							key = nonEnumerableProperties[ i ];
+							if ( key in map ) {
+								keys.push( key );
+							}
+						}
 					}
 					keys.sort();
 					for ( i = 0; i < keys.length; i++ ) {

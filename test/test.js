@@ -405,6 +405,7 @@ test( "makeurl working with settings from testEnvironment", function( assert ) {
 });
 
 QUnit.module( "jsDump" );
+
 test( "jsDump output", function( assert ) {
 	assert.equal( QUnit.jsDump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
 	assert.equal( QUnit.jsDump.parse( { top: 5, left: 0 } ), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
@@ -412,6 +413,25 @@ test( "jsDump output", function( assert ) {
 		assert.equal( QUnit.jsDump.parse( document.getElementById( "qunit-header" ) ), "<h1 id=\"qunit-header\"></h1>" );
 		assert.equal( QUnit.jsDump.parse( document.getElementsByTagName( "h1" ) ), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
 	}
+});
+
+test( "jsDump, TypeError properties", function( assert ) {
+	function CustomError( message ) {
+		this.message = message;
+	}
+
+	CustomError.prototype.toString = function() {
+		return this.message;
+	};
+	var customError = new CustomError( "sad puppy" ),
+		typeError = new TypeError( "crying kitten" );
+
+	assert.equal(
+			QUnit.jsDump.parse( customError ),
+			"{\n  \"message\": \"sad puppy\",\n  \"toString\": function( ){\n    [code]\n  }\n}" );
+	assert.equal(
+			QUnit.jsDump.parse( typeError ),
+			"{\n  \"message\": \"crying kitten\",\n  \"name\": \"TypeError\"\n}" );
 });
 
 QUnit.module( "assertions" );
