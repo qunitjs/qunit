@@ -12,8 +12,8 @@ module( "Module that mucks with time", {
 });
 
 test( "just a test", function( assert ) {
-	assert.ok(true);
+	assert.ok( true );
 });
 test( "just a test", function( assert ) {
-	assert.ok(true);
+	assert.ok( true );
 });

@@ -18,20 +18,21 @@ QUnit.jsDump = (function() {
 	function join( pre, arr, post ) {
 		var s = jsDump.separator(),
 			base = jsDump.indent(),
-			inner = jsDump.indent(1);
+			inner = jsDump.indent( 1 );
 		if ( arr.join ) {
 			arr = arr.join( "," + s + inner );
 		}
 		if ( !arr ) {
 			return pre + post;
 		}
-		return [ pre, inner + arr, base + post ].join(s);
+		return [ pre, inner + arr, base + post ].join( s );
 	}
 	function array( arr, stack ) {
-		var i = arr.length, ret = new Array(i);
+		var i = arr.length,
+			ret = new Array( i );
 		this.up();
 		while ( i-- ) {
-			ret[i] = this.parse( arr[i] , undefined , stack);
+			ret[ i ] = this.parse( arr[ i ], undefined, stack );
 		}
 		this.down();
 		return join( "[", ret, "]" );
@@ -41,17 +42,17 @@ QUnit.jsDump = (function() {
 		jsDump = {
 			// type is used mostly internally, you can fix a (custom)type in advance
 			parse: function( obj, type, stack ) {
-				stack = stack || [ ];
+				stack = stack || [];
 				var inStack, res,
-					parser = this.parsers[ type || this.typeOf(obj) ];
+					parser = this.parsers[ type || this.typeOf( obj ) ];
 
 				type = typeof parser;
 				inStack = inArray( obj, stack );
 
 				if ( inStack !== -1 ) {
-					return "recursion(" + (inStack - stack.length) + ")";
+					return "recursion(" + ( inStack - stack.length ) + ")";
 				}
-				if ( type === "function" )  {
+				if ( type === "function" ) {
 					stack.push( obj );
 					res = parser.call( this, obj, stack );
 					stack.pop();
@@ -65,11 +66,11 @@ QUnit.jsDump = (function() {
 					type = "null";
 				} else if ( typeof obj === "undefined" ) {
 					type = "undefined";
-				} else if ( QUnit.is( "regexp", obj) ) {
+				} else if ( QUnit.is( "regexp", obj ) ) {
 					type = "regexp";
-				} else if ( QUnit.is( "date", obj) ) {
+				} else if ( QUnit.is( "date", obj ) ) {
 					type = "date";
-				} else if ( QUnit.is( "function", obj) ) {
+				} else if ( QUnit.is( "function", obj ) ) {
 					type = "function";
 				} else if ( typeof obj.setInterval !== undefined && typeof obj.document !== "undefined" && typeof obj.nodeType === "undefined" ) {
 					type = "window";
@@ -78,10 +79,12 @@ QUnit.jsDump = (function() {
 				} else if ( obj.nodeType ) {
 					type = "node";
 				} else if (
+
 					// native arrays
 					toString.call( obj ) === "[object Array]" ||
+
 					// NodeList objects
-					( typeof obj.length === "number" && typeof obj.item !== "undefined" && ( obj.length ? obj.item(0) === obj[0] : ( obj.item( 0 ) === null && typeof obj[0] === "undefined" ) ) )
+					( typeof obj.length === "number" && typeof obj.item !== "undefined" && ( obj.length ? obj.item( 0 ) === obj[ 0 ] : ( obj.item( 0 ) === null && typeof obj[ 0 ] === "undefined" ) ) )
 				) {
 					type = "array";
 				} else if ( obj.constructor === Error.prototype.constructor ) {
@@ -92,7 +95,7 @@ QUnit.jsDump = (function() {
 				return type;
 			},
 			separator: function() {
-				return this.multiline ?	this.HTML ? "<br />" : "\n" : this.HTML ? "&nbsp;" : " ";
+				return this.multiline ? this.HTML ? "<br />" : "\n" : this.HTML ? "&nbsp;" : " ";
 			},
 			// extra can be a number, shortcut for increasing-calling-decreasing
 			indent: function( extra ) {
@@ -103,7 +106,7 @@ QUnit.jsDump = (function() {
 				if ( this.HTML ) {
 					chr = chr.replace( /\t/g, "   " ).replace( / /g, "&nbsp;" );
 				}
-				return new Array( this.depth + ( extra || 0 ) ).join(chr);
+				return new Array( this.depth + ( extra || 0 ) ).join( chr );
 			},
 			up: function( a ) {
 				this.depth += a || 1;
@@ -112,7 +115,7 @@ QUnit.jsDump = (function() {
 				this.depth -= a || 1;
 			},
 			setParser: function( name, parser ) {
-				this.parsers[name] = parser;
+				this.parsers[ name ] = parser;
 			},
 			// The next 3 are exposed so you can use them
 			quote: quote,
@@ -124,7 +127,7 @@ QUnit.jsDump = (function() {
 			parsers: {
 				window: "[Window]",
 				document: "[Document]",
-				error: function(error) {
+				error: function( error ) {
 					return "Error(\"" + error.message + "\")";
 				},
 				unknown: "[Unknown]",
@@ -133,7 +136,7 @@ QUnit.jsDump = (function() {
 				"function": function( fn ) {
 					var ret = "function",
 						// functions never have name in IE
-						name = "name" in fn ? fn.name : (reName.exec(fn) || [])[1];
+						name = "name" in fn ? fn.name : ( reName.exec( fn ) || [] )[ 1 ];
 
 					if ( name ) {
 						ret += " " + name;
@@ -141,14 +144,14 @@ QUnit.jsDump = (function() {
 					ret += "( ";
 
 					ret = [ ret, QUnit.jsDump.parse( fn, "functionArgs" ), "){" ].join( "" );
-					return join( ret, QUnit.jsDump.parse(fn,"functionCode" ), "}" );
+					return join( ret, QUnit.jsDump.parse( fn, "functionCode" ), "}" );
 				},
 				array: array,
 				nodelist: array,
 				"arguments": array,
 				object: function( map, stack ) {
 					/*jshint forin:false */
-					var ret = [ ], keys, key, val, i;
+					var ret = [], keys, key, val, i;
 					QUnit.jsDump.up();
 					keys = [];
 					for ( key in map ) {
@@ -173,11 +176,12 @@ QUnit.jsDump = (function() {
 
 					if ( attrs ) {
 						for ( i = 0, len = attrs.length; i < len; i++ ) {
-							val = attrs[i].nodeValue;
+							val = attrs[ i ].nodeValue;
+
 							// IE6 includes all attributes in .attributes, even ones not explicitly set.
 							// Those have values like undefined, null, 0, false, "" or "inherit".
 							if ( val && val !== "inherit" ) {
-								ret += " " + attrs[i].nodeName + "=" + QUnit.jsDump.parse( val, "attribute" );
+								ret += " " + attrs[ i ].nodeName + "=" + QUnit.jsDump.parse( val, "attribute" );
 							}
 						}
 					}
@@ -190,6 +194,7 @@ QUnit.jsDump = (function() {
 
 					return ret + open + "/" + tag + close;
 				},
+
 				// function calls it internally, it's the arguments part of the function
 				functionArgs: function( fn ) {
 					var args,
@@ -199,10 +204,11 @@ QUnit.jsDump = (function() {
 						return "";
 					}
 
-					args = new Array(l);
+					args = new Array( l );
 					while ( l-- ) {
+
 						// 97 is 'a'
-						args[l] = String.fromCharCode(97+l);
+						args[ l ] = String.fromCharCode( 97 + l );
 					}
 					return " " + args.join( ", " ) + " ";
 				},

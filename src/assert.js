@@ -12,7 +12,7 @@ assert = QUnit.assert = {
 	 */
 	ok: function( result, msg ) {
 		if ( !config.current ) {
-			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace(2) );
+			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
 		}
 		result = !!result;
 		msg = msg || ( result ? "okay" : "failed" );
@@ -69,9 +69,9 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	propEqual: function( actual, expected, message ) {
-		actual = objectValues(actual);
-		expected = objectValues(expected);
-		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+		actual = objectValues( actual );
+		expected = objectValues( expected );
+		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -79,9 +79,9 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notPropEqual: function( actual, expected, message ) {
-		actual = objectValues(actual);
-		expected = objectValues(expected);
-		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
+		actual = objectValues( actual );
+		expected = objectValues( expected );
+		QUnit.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -89,7 +89,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	deepEqual: function( actual, expected, message ) {
-		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -97,7 +97,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notDeepEqual: function( actual, expected, message ) {
-		QUnit.push( !QUnit.equiv(actual, expected), actual, expected, message );
+		QUnit.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**

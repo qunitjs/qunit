@@ -8,31 +8,31 @@ function getPreviousTests( rTestName, rModuleName ) {
 		i = 0,
 		rModule = /(^| )module-name( |$)/,
 		testNames = typeof document.getElementsByClassName !== "undefined" ?
-			document.getElementsByClassName("test-name") :
+			document.getElementsByClassName( "test-name" ) :
 			(function( spans ) {
 				var span,
 					tests = [],
 					i = 0,
 					rTest = /(^| )test-name( |$)/;
-				for ( ; (span = spans[i]); i++ ) {
+				for ( ; ( span = spans[ i ] ); i++ ) {
 					if ( rTest.test( span.className ) ) {
 						tests.push( span );
 					}
 				}
 				return tests;
-			})( document.getElementsByTagName("span") );
+			})( document.getElementsByTagName( "span" ) );
 
-	for ( ; (testSpan = testNames[i]); i++ ) {
+	for ( ; ( testSpan = testNames[ i ] ); i++ ) {
 		moduleSpan = testSpan;
-		while ( (moduleSpan = moduleSpan.previousSibling) ) {
+		while ( ( moduleSpan = moduleSpan.previousSibling ) ) {
 			if ( rModule.test( moduleSpan.className ) ) {
 				break;
 			}
 		}
-		if ( (!rTestName || rTestName.test( testSpan.innerHTML )) &&
-			(!rModuleName || moduleSpan && rModuleName.test( moduleSpan.innerHTML )) ) {
+		if ( ( !rTestName || rTestName.test( testSpan.innerHTML ) ) &&
+			( !rModuleName || moduleSpan && rModuleName.test( moduleSpan.innerHTML ) ) ) {
 
-			while ( (testSpan = testSpan.parentNode) ) {
+			while ( ( testSpan = testSpan.parentNode ) ) {
 				if ( testSpan.nodeName.toLowerCase() === "li" ) {
 					matches.push( testSpan );
 				}
@@ -42,30 +42,30 @@ function getPreviousTests( rTestName, rModuleName ) {
 	return matches;
 }
 
-test("module without setup/teardown (default)", function( assert ) {
-	expect(1);
-	assert.ok(true);
-});
-
-test("expect in test", function( assert ) {
-	expect( 3 );
-	assert.ok(true);
-	assert.ok(true);
-	assert.ok(true);
-});
-
-test("expect in test", function( assert ) {
+test( "module without setup/teardown (default)", function( assert ) {
 	expect( 1 );
-	assert.ok(true);
+	assert.ok( true );
 });
 
-test("expect query and multiple issue", function( assert ) {
-	expect(2);
-	assert.ok(true);
+test( "expect in test", function( assert ) {
+	expect( 3 );
+	assert.ok( true );
+	assert.ok( true );
+	assert.ok( true );
+});
+
+test( "expect in test", function( assert ) {
+	expect( 1 );
+	assert.ok( true );
+});
+
+test( "expect query and multiple issue", function( assert ) {
+	expect( 2 );
+	assert.ok( true );
 	var expected = expect();
-	assert.equal(expected, 2);
-	expect(expected + 1);
-	assert.ok(true);
+	assert.equal( expected, 2 );
+	expect( expected + 1 );
+	assert.ok( true );
 });
 
 QUnit.module( "assertion helpers" );
@@ -90,18 +90,18 @@ QUnit.test( "QUnit.assert compatibility", function( assert ) {
 
 QUnit.module( "setup test", {
 	setup: function( assert ) {
-		assert.ok(true);
+		assert.ok( true );
 	}
 });
 
-test("module with setup", function( assert ) {
-	expect(2);
-	assert.ok(true);
+test( "module with setup", function( assert ) {
+	expect( 2 );
+	assert.ok( true );
 });
 
-test("module with setup, expect in test call", function( assert ) {
+test( "module with setup, expect in test call", function( assert ) {
 	expect( 2 );
-	assert.ok(true);
+	assert.ok( true );
 });
 
 // TODO: More to the html-reporter test once we have that.
@@ -134,13 +134,12 @@ if ( typeof document !== "undefined" ) {
 		expect( 1 );
 		assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 	});
-
 }
 
 QUnit.module( "setup/teardown test", {
 	setup: function( assert ) {
 		state = true;
-		assert.ok(true);
+		assert.ok( true );
 
 		// Assert that we can introduce and delete globals in setup/teardown
 		// without noglobals sounding any alarm.
@@ -159,7 +158,7 @@ QUnit.module( "setup/teardown test", {
 		@*/
 	},
 	teardown: function( assert ) {
-		assert.ok(true);
+		assert.ok( true );
 
 		/*@cc_on
 			@if (@_jscript_version < 9)
@@ -171,22 +170,22 @@ QUnit.module( "setup/teardown test", {
 	}
 });
 
-test("module with setup/teardown", function( assert ) {
-	expect(3);
-	assert.ok(true);
+test( "module with setup/teardown", function( assert ) {
+	expect( 3 );
+	assert.ok( true );
 });
 
 QUnit.module( "setup/teardown test 2" );
 
-test("module without setup/teardown", function( assert ) {
-	expect(1);
-	assert.ok(true);
+test( "module without setup/teardown", function( assert ) {
+	expect( 1 );
+	assert.ok( true );
 });
 
 QUnit.module( "Date test", {
 	setup: function( assert ) {
 		OrgDate = Date;
-		window.Date = function () {
+		window.Date = function() {
 			assert.ok( false, "QUnit should internally be independent from Date-related manipulation and testing" );
 			return new OrgDate();
 		};
@@ -196,67 +195,67 @@ QUnit.module( "Date test", {
 	}
 });
 
-test("sample test for Date test", function ( assert ) {
-	expect(1);
-	assert.ok(true);
+test( "sample test for Date test", function( assert ) {
+	expect( 1 );
+	assert.ok( true );
 });
 
-if (typeof setTimeout !== "undefined") {
+if ( typeof setTimeout !== "undefined" ) {
 state = "fail";
 
 QUnit.module( "teardown and stop", {
 	teardown: function( assert ) {
-		assert.equal(state, "done", "Test teardown.");
+		assert.equal( state, "done", "Test teardown." );
 	}
 });
 
-test("teardown must be called after test ended", function() {
-	expect(1);
+test( "teardown must be called after test ended", function() {
+	expect( 1 );
 	stop();
 	setTimeout(function() {
 		state = "done";
 		start();
-	}, 13);
+	}, 13 );
 });
 
-test("parameter passed to stop increments semaphore n times", function() {
-	expect(1);
-	stop(3);
+test( "parameter passed to stop increments semaphore n times", function() {
+	expect( 1 );
+	stop( 3 );
 	setTimeout(function() {
 		state = "not enough starts";
 		start();
 		start();
-	}, 13);
+	}, 13 );
 	setTimeout(function() {
 		state = "done";
 		start();
-	}, 15);
+	}, 15 );
 });
 
-test("parameter passed to start decrements semaphore n times", function() {
-	expect(1);
+test( "parameter passed to start decrements semaphore n times", function() {
+	expect( 1 );
 	stop();
 	stop();
 	stop();
 	setTimeout(function() {
 		state = "done";
-		start(3);
-	}, 18);
+		start( 3 );
+	}, 18 );
 });
 
 QUnit.module( "async setup test", {
 	setup: function( assert ) {
 		stop();
 		setTimeout(function() {
-			assert.ok(true);
+			assert.ok( true );
 			start();
-		}, 500);
+		}, 500 );
 	}
 });
 
-asyncTest("module with async setup", function( assert ) {
-	expect(2);
-	assert.ok(true);
+asyncTest( "module with async setup", function( assert ) {
+	expect( 2 );
+	assert.ok( true );
 	start();
 });
 
@@ -264,66 +263,66 @@ QUnit.module( "async teardown test", {
 	teardown: function( assert ) {
 		stop();
 		setTimeout(function() {
-			assert.ok(true);
+			assert.ok( true );
 			start();
-		}, 500);
+		}, 500 );
 	}
 });
 
-asyncTest("module with async teardown", function( assert ) {
-	expect(2);
-	assert.ok(true);
+asyncTest( "module with async teardown", function( assert ) {
+	expect( 2 );
+	assert.ok( true );
 	start();
 });
 
 QUnit.module( "asyncTest" );
 
-asyncTest("asyncTest", function( assert ) {
+asyncTest( "asyncTest", function( assert ) {
 	expect( 2 );
-	assert.ok(true);
+	assert.ok( true );
 	setTimeout(function() {
 		state = "done";
-		assert.ok(true);
+		assert.ok( true );
 		start();
-	}, 13);
+	}, 13 );
 });
 
-asyncTest("asyncTest with expect()", function( assert ) {
-	expect(2);
-	assert.ok(true);
+asyncTest( "asyncTest with expect()", function( assert ) {
+	expect( 2 );
+	assert.ok( true );
 	setTimeout(function() {
 		state = "done";
-		assert.ok(true);
+		assert.ok( true );
 		start();
-	}, 13);
+	}, 13 );
 });
 
-test("sync", function( assert ) {
+test( "sync", function( assert ) {
 	expect( 2 );
 	stop();
 	setTimeout(function() {
-		assert.ok(true);
+		assert.ok( true );
 		start();
-	}, 13);
+	}, 13 );
 	stop();
 	setTimeout(function() {
-		assert.ok(true);
+		assert.ok( true );
 		start();
-	}, 125);
+	}, 125 );
 });
 
-test("test synchronous calls to stop", function( assert ) {
+test( "test synchronous calls to stop", function( assert ) {
 	expect( 2 );
 	stop();
 	setTimeout(function() {
-		assert.ok(true, "first");
+		assert.ok( true, "first" );
 		start();
 		stop();
 		setTimeout(function() {
-			assert.ok(true, "second");
+			assert.ok( true, "second" );
 			start();
-		}, 150);
-	}, 150);
+		}, 150 );
+	}, 150 );
 });
 }
 
@@ -332,12 +331,12 @@ QUnit.module( "save scope", {
 		this.foo = "bar";
 	},
 	teardown: function( assert ) {
-		assert.deepEqual(this.foo, "bar");
+		assert.deepEqual( this.foo, "bar" );
 	}
 });
-test("scope check", function( assert ) {
-	expect(2);
-	assert.deepEqual(this.foo, "bar");
+test( "scope check", function( assert ) {
+	expect( 2 );
+	assert.deepEqual( this.foo, "bar" );
 });
 
 QUnit.module( "simple testEnvironment setup", {
@@ -345,40 +344,40 @@ QUnit.module( "simple testEnvironment setup", {
 	// example of meta-data
 	bugid: "#5311"
 });
-test("scope check", function( assert ) {
-	assert.deepEqual(this.foo, "bar");
+test( "scope check", function( assert ) {
+	assert.deepEqual( this.foo, "bar" );
 });
-test("modify testEnvironment", function() {
-	expect(0);
+test( "modify testEnvironment", function() {
+	expect( 0 );
 	this.foo = "hamster";
 });
-test("testEnvironment reset for next test", function( assert ) {
-	assert.deepEqual(this.foo, "bar");
+test( "testEnvironment reset for next test", function( assert ) {
+	assert.deepEqual( this.foo, "bar" );
 });
 
 QUnit.module( "testEnvironment with object", {
 	options: {
 		recipe: "soup",
-		ingredients: ["hamster", "onions"]
+		ingredients: [ "hamster", "onions" ]
 	}
 });
-test("scope check", function( assert ) {
-	assert.deepEqual(this.options, {
+test( "scope check", function( assert ) {
+	assert.deepEqual( this.options, {
 		recipe: "soup",
-		ingredients: ["hamster", "onions"]
+		ingredients: [ "hamster", "onions" ]
 	});
 });
-test("modify testEnvironment",function() {
-	expect(0);
+test( "modify testEnvironment", function() {
+	expect( 0 );
 	// since we only do a shallow copy, nested children of testEnvironment can be modified
 	// and survice
-	this.options.ingredients.push("carrots");
+	this.options.ingredients.push( "carrots" );
 });
-test("testEnvironment reset for next test",function( assert ) {
-	assert.deepEqual(this.options, {
+test( "testEnvironment reset for next test", function( assert ) {
+	assert.deepEqual( this.options, {
 		recipe: "soup",
-		ingredients: ["hamster", "onions", "carrots"]
-	}, "Is this a bug or a feature? Could do a deep copy") ;
+		ingredients: [ "hamster", "onions", "carrots" ]
+	}, "Is this a bug or a feature? Could do a deep copy" );
 });
 
 
@@ -387,39 +386,39 @@ QUnit.module( "testEnvironment tests" );
 function makeurl() {
 	var testEnv = QUnit.config.current.testEnvironment,
 		url = testEnv.url || "http://example.com/search",
-		q   = testEnv.q   || "a search test";
-	return url + "?q=" + encodeURIComponent(q);
+		q = testEnv.q || "a search test";
+	return url + "?q=" + encodeURIComponent( q );
 }
 
-test("makeurl working", function( assert ) {
+test( "makeurl working", function( assert ) {
 	expect( 2 );
-	assert.equal( QUnit.config.current.testEnvironment, this, "The current testEnvironment QUnit.config");
-	assert.equal( makeurl(), "http://example.com/search?q=a%20search%20test", "makeurl returns a default url if nothing specified in the testEnvironment");
+	assert.equal( QUnit.config.current.testEnvironment, this, "The current testEnvironment QUnit.config" );
+	assert.equal( makeurl(), "http://example.com/search?q=a%20search%20test", "makeurl returns a default url if nothing specified in the testEnvironment" );
 });
 
 QUnit.module( "testEnvironment with makeurl settings", {
 	url: "http://google.com/",
 	q: "another_search_test"
 });
-test("makeurl working with settings from testEnvironment", function( assert ) {
-	assert.equal( makeurl(), "http://google.com/?q=another_search_test", "rather than passing arguments, we use test metadata to from the url");
+test( "makeurl working with settings from testEnvironment", function( assert ) {
+	assert.equal( makeurl(), "http://google.com/?q=another_search_test", "rather than passing arguments, we use test metadata to from the url" );
 });
 
 QUnit.module( "jsDump" );
-test("jsDump output", function( assert ) {
-	assert.equal( QUnit.jsDump.parse([1, 2]), "[\n  1,\n  2\n]" );
-	assert.equal( QUnit.jsDump.parse({top: 5, left: 0}), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
-	if (typeof document !== "undefined" && document.getElementById("qunit-header")) {
-		assert.equal( QUnit.jsDump.parse(document.getElementById("qunit-header")), "<h1 id=\"qunit-header\"></h1>" );
-		assert.equal( QUnit.jsDump.parse(document.getElementsByTagName("h1")), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
+test( "jsDump output", function( assert ) {
+	assert.equal( QUnit.jsDump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
+	assert.equal( QUnit.jsDump.parse( { top: 5, left: 0 } ), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
+	if ( typeof document !== "undefined" && document.getElementById( "qunit-header" ) ) {
+		assert.equal( QUnit.jsDump.parse( document.getElementById( "qunit-header" ) ), "<h1 id=\"qunit-header\"></h1>" );
+		assert.equal( QUnit.jsDump.parse( document.getElementsByTagName( "h1" ) ), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
 	}
 });
 
 QUnit.module( "assertions" );
 
-test("propEqual", function( assert ) {
+test( "propEqual", function( assert ) {
 	expect( 5 );
-	var objectCreate = Object.create || function ( origin ) {
+	var objectCreate = Object.create || function( origin ) {
 		function O() {}
 		O.prototype = origin;
 		var r = new O();
@@ -431,8 +430,8 @@ test("propEqual", function( assert ) {
 		this.y = y;
 		this.z = z;
 	}
-	Foo.prototype.doA = function () {};
-	Foo.prototype.doB = function () {};
+	Foo.prototype.doA = function() {};
+	Foo.prototype.doB = function() {};
 	Foo.prototype.bar = "prototype";
 
 	function Bar() {
@@ -494,8 +493,8 @@ test("propEqual", function( assert ) {
 	);
 });
 
-test("throws", function( assert ) {
-	expect(10);
+test( "throws", function( assert ) {
+	expect( 10 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -521,7 +520,7 @@ test("throws", function( assert ) {
 	// implement Error.prototype.toString
 	assert.throws(
 		function() {
-			throw new Error("error message");
+			throw new Error( "error message" );
 		},
 		/error message/,
 		"use regexp against instance of Error"
@@ -537,7 +536,7 @@ test("throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			throw new CustomError("some error description");
+			throw new CustomError( "some error description" );
 		},
 		/description/,
 		"use a regex to match against the stringified error"
@@ -545,10 +544,10 @@ test("throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			throw new CustomError("some error description");
+			throw new CustomError( "some error description" );
 		},
 		function( err ) {
-			if ( (err instanceof CustomError) && /description/.test(err) ) {
+			if ( ( err instanceof CustomError ) && /description/.test( err ) ) {
 				return true;
 			}
 		},
@@ -559,7 +558,7 @@ test("throws", function( assert ) {
 		function() {
 			/*jshint evil:true */
 			( window.execScript || function( data ) {
-				window["eval"].call( window, data );
+				window[ "eval" ].call( window, data );
 			})( "throw 'error';" );
 		},
 		"globally-executed errors caught"
@@ -569,7 +568,7 @@ test("throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			throw new this.CustomError("some error description");
+			throw new this.CustomError( "some error description" );
 		},
 		/description/,
 		"throw error from property of 'this' context"
@@ -592,25 +591,25 @@ test("throws", function( assert ) {
 	);
 });
 
-if (typeof document !== "undefined") {
+if ( typeof document !== "undefined" ) {
 
 QUnit.module( "fixture" );
-test("setup", function() {
-	expect(0);
-	document.getElementById("qunit-fixture").innerHTML = "foobar";
+test( "setup", function() {
+	expect( 0 );
+	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";
 });
 
-test("basics", function( assert ) {
-	assert.equal( document.getElementById("qunit-fixture").innerHTML, "test markup", "automatically reset" );
+test( "basics", function( assert ) {
+	assert.equal( document.getElementById( "qunit-fixture" ).innerHTML, "test markup", "automatically reset" );
 });
 
-test("running test name displayed", function( assert ) {
-	expect(2);
+test( "running test name displayed", function( assert ) {
+	expect( 2 );
 
-	var displaying = document.getElementById("qunit-testresult");
+	var displaying = document.getElementById( "qunit-testresult" );
 
-	assert.ok( /running test name displayed/.test(displaying.innerHTML), "Expect test name to be found in displayed text" );
-	assert.ok( /fixture/.test(displaying.innerHTML), "Expect module name to be found in displayed text" );
+	assert.ok( /running test name displayed/.test( displaying.innerHTML ), "Expect test name to be found in displayed text" );
+	assert.ok( /fixture/.test( displaying.innerHTML ), "Expect module name to be found in displayed text" );
 });
 
 (function() {
@@ -629,23 +628,23 @@ test("running test name displayed", function( assert ) {
 		}
 	});
 
-	test("setup", function() {
+	test( "setup", function() {
 		expect( 0 );
 		delayNextSetup = true;
 	});
 
-	test("basics", function( assert ) {
+	test( "basics", function( assert ) {
 		expect( 2 );
-		var previous = getPreviousTests(/^setup$/, /^timing$/)[0],
+		var previous = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
 			runtime = previous.lastChild.previousSibling;
 		assert.ok( /(^| )runtime( |$)/.test( runtime.className ), "Runtime element exists" );
 		assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
 	});
 
-	test("values", function( assert ) {
+	test( "values", function( assert ) {
 		expect( 2 );
-		var basics = getPreviousTests(/^setup$/, /^timing$/)[0],
-			slow = getPreviousTests(/^basics$/, /^timing$/)[0];
+		var basics = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
+			slow = getPreviousTests( /^basics$/, /^timing$/ )[ 0 ];
 		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50, "Fast runtime for trivial test" );
 		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250, "Runtime includes setup" );
 	});
@@ -669,118 +668,121 @@ QUnit.module( "custom assertions" );
 
 QUnit.module( "recursions" );
 
-function Wrap(x) {
+function Wrap( x ) {
 	this.wrap = x;
-	if (x === undefined) {
+	if ( x === undefined ) {
 		this.first = true;
 	}
 }
 
-function chainwrap(depth, first, prev) {
+function chainwrap( depth, first, prev ) {
 	depth = depth || 0;
 	var last = prev || new Wrap();
 	first = first || last;
 
-	if (depth === 1) {
+	if ( depth === 1 ) {
 		first.wrap = last;
 	}
-	if (depth > 1) {
-		last = chainwrap(depth-1, first, new Wrap(last));
+	if ( depth > 1 ) {
+		last = chainwrap( depth - 1, first, new Wrap( last ) );
 	}
 
 	return last;
 }
 
-test("Check jsDump recursion", function( assert ) {
-	expect(4);
+test( "Check jsDump recursion", function( assert ) {
+	expect( 4 );
 
 	var noref, nodump, selfref, selfdump, parentref, parentdump, circref, circdump;
 
-	noref = chainwrap(0);
-	nodump = QUnit.jsDump.parse(noref);
-	assert.equal(nodump, "{\n  \"first\": true,\n  \"wrap\": undefined\n}");
+	noref = chainwrap( 0 );
+	nodump = QUnit.jsDump.parse( noref );
+	assert.equal( nodump, "{\n  \"first\": true,\n  \"wrap\": undefined\n}" );
 
-	selfref = chainwrap(1);
-	selfdump = QUnit.jsDump.parse(selfref);
-	assert.equal(selfdump, "{\n  \"first\": true,\n  \"wrap\": recursion(-1)\n}");
+	selfref = chainwrap( 1 );
+	selfdump = QUnit.jsDump.parse( selfref );
+	assert.equal( selfdump, "{\n  \"first\": true,\n  \"wrap\": recursion(-1)\n}" );
 
-	parentref = chainwrap(2);
-	parentdump = QUnit.jsDump.parse(parentref);
-	assert.equal(parentdump, "{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}");
+	parentref = chainwrap( 2 );
+	parentdump = QUnit.jsDump.parse( parentref );
+	assert.equal( parentdump, "{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}" );
 
-	circref = chainwrap(10);
-	circdump = QUnit.jsDump.parse(circref);
-	assert.ok(new RegExp("recursion\\(-10\\)").test(circdump), "(" +circdump + ") should show -10 recursion level");
+	circref = chainwrap( 10 );
+	circdump = QUnit.jsDump.parse( circref );
+	assert.ok( new RegExp( "recursion\\(-10\\)" ).test( circdump ), "(" + circdump + ") should show -10 recursion level" );
 });
 
-test("Check equal/deepEqual recursion", function( assert ) {
+test( "Check equal/deepEqual recursion", function( assert ) {
 	var noRecursion, selfref, circref;
 
-	noRecursion = chainwrap(0);
-	assert.equal(noRecursion, noRecursion, "I should be equal to me.");
-	assert.deepEqual(noRecursion, noRecursion, "... and so in depth.");
+	noRecursion = chainwrap( 0 );
+	assert.equal( noRecursion, noRecursion, "I should be equal to me." );
+	assert.deepEqual( noRecursion, noRecursion, "... and so in depth." );
 
-	selfref = chainwrap(1);
-	assert.equal(selfref, selfref, "Even so if I nest myself.");
-	assert.deepEqual(selfref, selfref, "... into the depth.");
+	selfref = chainwrap( 1 );
+	assert.equal( selfref, selfref, "Even so if I nest myself." );
+	assert.deepEqual( selfref, selfref, "... into the depth." );
 
-	circref = chainwrap(10);
-	assert.equal(circref, circref, "Or hide that through some levels of indirection.");
-	assert.deepEqual(circref, circref, "... and checked on all levels!");
+	circref = chainwrap( 10 );
+	assert.equal( circref, circref, "Or hide that through some levels of indirection." );
+	assert.deepEqual( circref, circref, "... and checked on all levels!" );
 });
 
-
-test("Circular reference with arrays", function( assert ) {
+test( "Circular reference with arrays", function( assert ) {
 	var arr, arrdump, obj, childarr, objdump, childarrdump;
 
 	// pure array self-ref
 	arr = [];
-	arr.push(arr);
+	arr.push( arr );
 
-	arrdump = QUnit.jsDump.parse(arr);
+	arrdump = QUnit.jsDump.parse( arr );
 
-	assert.equal(arrdump, "[\n  recursion(-1)\n]");
-	assert.equal(arr, arr[0], "no endless stack when trying to dump arrays with circular ref");
+	assert.equal( arrdump, "[\n  recursion(-1)\n]" );
+	assert.equal( arr, arr[ 0 ], "no endless stack when trying to dump arrays with circular ref" );
 
 
 	// mix obj-arr circular ref
 	obj = {};
-	childarr = [obj];
+	childarr = [ obj ];
 	obj.childarr = childarr;
 
-	objdump = QUnit.jsDump.parse(obj);
-	childarrdump = QUnit.jsDump.parse(childarr);
+	objdump = QUnit.jsDump.parse( obj );
+	childarrdump = QUnit.jsDump.parse( childarr );
 
-	assert.equal(objdump, "{\n  \"childarr\": [\n    recursion(-2)\n  ]\n}");
-	assert.equal(childarrdump, "[\n  {\n    \"childarr\": recursion(-2)\n  }\n]");
+	assert.equal( objdump, "{\n  \"childarr\": [\n    recursion(-2)\n  ]\n}" );
+	assert.equal( childarrdump, "[\n  {\n    \"childarr\": recursion(-2)\n  }\n]" );
 
-	assert.equal(obj.childarr, childarr, "no endless stack when trying to dump array/object mix with circular ref");
-	assert.equal(childarr[0], obj, "no endless stack when trying to dump array/object mix with circular ref");
+	assert.equal( obj.childarr, childarr, "no endless stack when trying to dump array/object mix with circular ref" );
+	assert.equal( childarr[ 0 ], obj, "no endless stack when trying to dump array/object mix with circular ref" );
 
 });
 
 
-test("Circular reference - test reported by soniciq in #105", function( assert ) {
+test( "Circular reference - test reported by soniciq in #105", function( assert ) {
 	var a, b, barr,
-		MyObject = function() {};
-	MyObject.prototype.parent = function(obj) {
-		if (obj === undefined) { return this._parent; }
+		MyObject = function(){};
+	MyObject.prototype.parent = function( obj ) {
+		if ( obj === undefined ) {
+			return this._parent;
+		}
 		this._parent = obj;
 	};
-	MyObject.prototype.children = function(obj) {
-		if (obj === undefined) { return this._children; }
+	MyObject.prototype.children = function( obj ) {
+		if ( obj === undefined ) {
+			return this._children;
+		}
 		this._children = obj;
 	};
 
 	a = new MyObject();
 	b = new MyObject();
 
-	barr = [b];
-	a.children(barr);
-	b.parent(a);
+	barr = [ b ];
+	a.children( barr );
+	b.parent( a );
 
-	assert.equal(a.children(), barr);
-	assert.deepEqual(a.children(), [b]);
+	assert.equal( a.children(), barr );
+	assert.deepEqual( a.children(), [ b ] );
 });
 
 function testAfterDone() {
@@ -791,45 +793,44 @@ function testAfterDone() {
 		// Because when this does happen, the assertion count parameter doesn't actually
 		// work we use this test to check the assertion count.
 		QUnit.module( "check previous test's assertion counts" );
-		test("count previous two test's assertions", function ( assert ) {
-			var tests = getPreviousTests(/^ensure has correct number of assertions/, /^Synchronous test after load of page$/);
+		test( "count previous two test's assertions", function( assert ) {
+			var tests = getPreviousTests( /^ensure has correct number of assertions/, /^Synchronous test after load of page$/ );
 
-			assert.equal(tests[0].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
-			assert.equal(tests[1].firstChild.lastChild.getElementsByTagName("b")[1].innerHTML, "99");
+			assert.equal( tests[ 0 ].firstChild.lastChild.getElementsByTagName( "b" )[ 1 ].innerHTML, "99" );
+			assert.equal( tests[ 1 ].firstChild.lastChild.getElementsByTagName( "b" )[ 1 ].innerHTML, "99" );
 		});
 	}
 	QUnit.config.done = [];
-	QUnit.done(secondAfterDoneTest);
+	QUnit.done( secondAfterDoneTest );
 
 	QUnit.module( "Synchronous test after load of page" );
 
-	asyncTest("Async test", function( assert ) {
+	asyncTest( "Async test", function( assert ) {
 		start();
 		for (var i = 1; i < 100; i++) {
-			assert.ok(i);
+			assert.ok( i );
 		}
 	});
 
-	test(testName, function( assert ) {
+	test( testName, function( assert ) {
 		expect( 99 );
 		for (var i = 1; i < 100; i++) {
-			assert.ok(i);
+			assert.ok( i );
 		}
 	});
 
 	// We need two of these types of tests in order to ensure that assertions
 	// don't move between tests.
-	test(testName + " 2", function( assert ) {
+	test( testName + " 2", function( assert ) {
 		expect( 99 );
 		for (var i = 1; i < 100; i++) {
-			assert.ok(i);
+			assert.ok( i );
 		}
 	});
-
 }
 
-if (typeof setTimeout !== "undefined") {
-	QUnit.done(testAfterDone);
+if ( typeof setTimeout !== "undefined" ) {
+	QUnit.done( testAfterDone );
 }
 
 
