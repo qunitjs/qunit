@@ -430,7 +430,7 @@ test( "jsDump classes", function( assert ) {
 			"{\n  \"message\": \"sad puppy\",\n  \"toString\": function( ){\n    [code]\n  }\n}" );
 	assert.equal(
 			QUnit.jsDump.parse( typeError ),
-			"{\n  \"message\": \"crying kitten\",\n  \"name\": \"TypeError\"\n}");
+			"{\n  \"message\": \"crying kitten\",\n  \"name\": \"TypeError\"\n}" );
 });
 
 QUnit.module( "assertions" );
