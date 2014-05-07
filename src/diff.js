@@ -20,65 +20,65 @@ QUnit.diff = (function() {
 			os = {};
 
 		for ( i = 0; i < n.length; i++ ) {
-			if ( !hasOwn.call( ns, n[i] ) ) {
-				ns[ n[i] ] = {
+			if ( !hasOwn.call( ns, n[ i ] ) ) {
+				ns[ n[ i ] ] = {
 					rows: [],
 					o: null
 				};
 			}
-			ns[ n[i] ].rows.push( i );
+			ns[ n[ i ] ].rows.push( i );
 		}
 
 		for ( i = 0; i < o.length; i++ ) {
-			if ( !hasOwn.call( os, o[i] ) ) {
-				os[ o[i] ] = {
+			if ( !hasOwn.call( os, o[ i ] ) ) {
+				os[ o[ i ] ] = {
 					rows: [],
 					n: null
 				};
 			}
-			os[ o[i] ].rows.push( i );
+			os[ o[ i ] ].rows.push( i );
 		}
 
 		for ( i in ns ) {
 			if ( hasOwn.call( ns, i ) ) {
-				if ( ns[i].rows.length === 1 && hasOwn.call( os, i ) && os[i].rows.length === 1 ) {
-					n[ ns[i].rows[0] ] = {
-						text: n[ ns[i].rows[0] ],
-						row: os[i].rows[0]
+				if ( ns[ i ].rows.length === 1 && hasOwn.call( os, i ) && os[ i ].rows.length === 1 ) {
+					n[ ns[ i ].rows[ 0 ] ] = {
+						text: n[ ns[ i ].rows[ 0 ] ],
+						row: os[ i ].rows[ 0 ]
 					};
-					o[ os[i].rows[0] ] = {
-						text: o[ os[i].rows[0] ],
-						row: ns[i].rows[0]
+					o[ os[ i ].rows[ 0 ] ] = {
+						text: o[ os[ i ].rows[ 0 ] ],
+						row: ns[ i ].rows[ 0 ]
 					};
 				}
 			}
 		}
 
 		for ( i = 0; i < n.length - 1; i++ ) {
-			if ( n[i].text != null && n[ i + 1 ].text == null && n[i].row + 1 < o.length && o[ n[i].row + 1 ].text == null &&
-						n[ i + 1 ] == o[ n[i].row + 1 ] ) {
+			if ( n[ i ].text != null && n[ i + 1 ].text == null && n[ i ].row + 1 < o.length && o[ n[ i ].row + 1 ].text == null &&
+				n[ i + 1 ] == o[ n[ i ].row + 1 ] ) {
 
 				n[ i + 1 ] = {
 					text: n[ i + 1 ],
-					row: n[i].row + 1
+					row: n[ i ].row + 1
 				};
-				o[ n[i].row + 1 ] = {
-					text: o[ n[i].row + 1 ],
+				o[ n[ i ].row + 1 ] = {
+					text: o[ n[ i ].row + 1 ],
 					row: i + 1
 				};
 			}
 		}
 
 		for ( i = n.length - 1; i > 0; i-- ) {
-			if ( n[i].text != null && n[ i - 1 ].text == null && n[i].row > 0 && o[ n[i].row - 1 ].text == null &&
-						n[ i - 1 ] == o[ n[i].row - 1 ]) {
+			if ( n[ i ].text != null && n[ i - 1 ].text == null && n[ i ].row > 0 && o[ n[ i ].row - 1 ].text == null &&
+				n[ i - 1 ] == o[ n[ i ].row - 1 ] ) {
 
 				n[ i - 1 ] = {
 					text: n[ i - 1 ],
-					row: n[i].row - 1
+					row: n[ i ].row - 1
 				};
-				o[ n[i].row - 1 ] = {
-					text: o[ n[i].row - 1 ],
+				o[ n[ i ].row - 1 ] = {
+					text: o[ n[ i ].row - 1 ],
 					row: i - 1
 				};
 			}
@@ -96,48 +96,45 @@ QUnit.diff = (function() {
 
 		var i, pre,
 			str = "",
-			out = diff( o === "" ? [] : o.split(/\s+/), n === "" ? [] : n.split(/\s+/) ),
-			oSpace = o.match(/\s+/g),
-			nSpace = n.match(/\s+/g);
+			out = diff( o === "" ? [] : o.split( /\s+/ ), n === "" ? [] : n.split( /\s+/ ) ),
+			oSpace = o.match( /\s+/g ),
+			nSpace = n.match( /\s+/g );
 
 		if ( oSpace == null ) {
 			oSpace = [ " " ];
-		}
-		else {
+		} else {
 			oSpace.push( " " );
 		}
 
 		if ( nSpace == null ) {
 			nSpace = [ " " ];
-		}
-		else {
+		} else {
 			nSpace.push( " " );
 		}
 
 		if ( out.n.length === 0 ) {
 			for ( i = 0; i < out.o.length; i++ ) {
-				str += "<del>" + out.o[i] + oSpace[i] + "</del>";
+				str += "<del>" + out.o[ i ] + oSpace[ i ] + "</del>";
 			}
-		}
-		else {
-			if ( out.n[0].text == null ) {
-				for ( n = 0; n < out.o.length && out.o[n].text == null; n++ ) {
-					str += "<del>" + out.o[n] + oSpace[n] + "</del>";
+		} else {
+			if ( out.n[ 0 ].text == null ) {
+				for ( n = 0; n < out.o.length && out.o[ n ].text == null; n++ ) {
+					str += "<del>" + out.o[ n ] + oSpace[ n ] + "</del>";
 				}
 			}
 
 			for ( i = 0; i < out.n.length; i++ ) {
-				if (out.n[i].text == null) {
-					str += "<ins>" + out.n[i] + nSpace[i] + "</ins>";
-				}
-				else {
+				if ( out.n[ i ].text == null ) {
+					str += "<ins>" + out.n[ i ] + nSpace[ i ] + "</ins>";
+				} else {
+					
 					// `pre` initialized at top of scope
 					pre = "";
 
-					for ( n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++ ) {
-						pre += "<del>" + out.o[n] + oSpace[n] + "</del>";
+					for ( n = out.n[ i ].row + 1; n < out.o.length && out.o[ n ].text == null; n++ ) {
+						pre += "<del>" + out.o[ n ] + oSpace[ n ] + "</del>";
 					}
-					str += " " + out.n[i].text + nSpace[i] + pre;
+					str += " " + out.n[ i ].text + nSpace[ i ] + pre;
 				}
 			}
 		}

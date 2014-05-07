@@ -19,30 +19,30 @@ QUnit.begin(function( args ) {
 });
 QUnit.done(function() {
 });
-QUnit.moduleStart(function(context) {
+QUnit.moduleStart(function( context ) {
 	moduleStart++;
 	moduleContext = context;
 });
-QUnit.moduleDone(function(context) {
+QUnit.moduleDone(function( context ) {
 	moduleDone++;
 	moduleDoneContext = context;
 });
-QUnit.testStart(function(context) {
+QUnit.testStart(function( context ) {
 	testStart++;
 	testContext = context;
 });
-QUnit.testDone(function(context) {
+QUnit.testDone(function( context ) {
 	testDone++;
 	testDoneContext = context;
 });
-QUnit.log(function(context) {
+QUnit.log(function( context ) {
 	log++;
 	logContext = context;
 });
 
-QUnit.module("logs1");
+QUnit.module( "logs1" );
 
-test("test1", function( assert ) {
+test( "test1", function( assert ) {
 	expect( 16 );
 
 	assert.equal( typeof totalTests, "number", "QUnit.begin should pass total amount of tests to callback" );
@@ -61,7 +61,7 @@ test("test1", function( assert ) {
 	}, "log context after equal(actual, expected, message)" );
 
 	assert.equal( "foo", "foo" );
-	assert.deepEqual(logContext, {
+	assert.deepEqual( logContext, {
 		name: "test1",
 		module: "logs1",
 		result: true,
@@ -91,7 +91,7 @@ test("test1", function( assert ) {
 	assert.equal( log, 15, "QUnit.log calls" );
 });
 
-test("test2", function( assert ) {
+test( "test2", function( assert ) {
 	expect( 11 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
@@ -99,7 +99,7 @@ test("test2", function( assert ) {
 	assert.equal( testDone, 1, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	assert.equal( typeof testDoneContext.runtime, "number" , "testDone context: runtime" );
+	assert.equal( typeof testDoneContext.runtime, "number", "testDone context: runtime" );
 	delete testDoneContext.runtime;
 	// DEPRECATED: remove this delete when removing the duration property
 	delete testDoneContext.duration;
@@ -122,7 +122,7 @@ test("test2", function( assert ) {
 	assert.equal( log, 26, "QUnit.log calls" );
 });
 
-QUnit.module("logs2");
+QUnit.module( "logs2" );
 
 test( "test1", function( assert ) {
 	expect( 9 );
