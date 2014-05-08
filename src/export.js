@@ -1,6 +1,34 @@
 // For browser, export only select globals
 if ( typeof window !== "undefined" ) {
-	extend( window, QUnit.constructor.prototype );
+	(function() {
+		var i, l,
+			toExport = {},
+			keys = [
+				"test",
+				"module",
+				"expect",
+				"asyncTest",
+				"start",
+				"stop",
+				"ok",
+				"equal",
+				"notEqual",
+				"propEqual",
+				"notPropEqual",
+				"deepEqual",
+				"notDeepEqual",
+				"strictEqual",
+				"notStrictEqual",
+				"throws"
+			];
+
+		for ( i = 0, l = keys.length; i < l; i++ ) {
+			toExport[ keys[ i ] ] = QUnit[ keys[ i ] ];
+		}
+
+		extend( window, toExport );
+	})();
+
 	window.QUnit = QUnit;
 }
 
