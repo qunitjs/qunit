@@ -414,6 +414,51 @@ test( "jsDump output", function( assert ) {
 	}
 });
 
+test( "jsDump, TypeError properties", function() {
+	function CustomError( message ) {
+		this.message = message;
+	}
+
+	CustomError.prototype.toString = function() {
+		return this.message;
+	};
+	var customError = new CustomError( "sad puppy" ),
+		typeError = new TypeError( "crying kitten" ),
+		expectedCustomMessage = "\"message\": \"sad puppy\"",
+		expectedTypeMessage = "\"message\": \"crying kitten\"",
+		expectedTypeName = "\"name\": \"TypeError\"",
+		
+		dumpedCustomError = QUnit.jsDump.parse( customError ),
+		dumpedTypeError = QUnit.jsDump.parse( typeError ),
+		dumpedTypeErrorWithEnumerable;
+	
+	// Test when object has some enumerable properties by adding one
+	typeError.hasCheeseburger = true;
+	
+	dumpedTypeErrorWithEnumerable = QUnit.jsDump.parse( typeError );
+	
+	QUnit.push(
+			dumpedCustomError.indexOf(expectedCustomMessage) >= 0,
+			dumpedCustomError,
+			expectedCustomMessage,
+			"custom error contains message field" );
+	QUnit.push(
+			dumpedTypeError.indexOf(expectedTypeMessage) >= 0,
+			dumpedTypeError,
+			expectedTypeMessage,
+			"type error contains message field" );
+	QUnit.push(
+			dumpedTypeError.indexOf(expectedTypeName) >= 0,
+			dumpedTypeError,
+			expectedTypeName,
+			"type error contains name field" );
+	QUnit.push(
+			dumpedTypeErrorWithEnumerable.indexOf(expectedTypeMessage) >= 0,
+			dumpedTypeErrorWithEnumerable,
+			expectedTypeMessage,
+			"type error with enumerable field contains message field" );
+});
+
 QUnit.module( "assertions" );
 
 test( "propEqual", function( assert ) {
