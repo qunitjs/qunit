@@ -27,8 +27,8 @@
     }
   ],
   "files": [
-    "qunit/qunit.js",
-    "qunit/qunit.css",
+    "dist/qunit.js",
+    "dist/qunit.css",
     "MIT-LICENSE.txt"
   ],
   "dependencies": {},
