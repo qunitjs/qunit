@@ -16,12 +16,6 @@
 	"browser": true,
 
 	"globals": {
-		"QUnit": false,
-		"module": false,
-		"test": false,
-		"asyncTest": false,
-		"expect": false,
-		"start": false,
-		"stop": false
+		"QUnit": false
 	}
 }

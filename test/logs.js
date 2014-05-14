@@ -42,8 +42,8 @@ QUnit.log(function( context ) {
 
 QUnit.module( "logs1" );
 
-test( "test1", function( assert ) {
-	expect( 16 );
+QUnit.test( "test1", function( assert ) {
+	assert.expect( 16 );
 
 	assert.equal( typeof totalTests, "number", "QUnit.begin should pass total amount of tests to callback" );
 	assert.equal( begin, 1, "QUnit.begin calls" );
@@ -91,8 +91,8 @@ test( "test1", function( assert ) {
 	assert.equal( log, 15, "QUnit.log calls" );
 });
 
-test( "test2", function( assert ) {
-	expect( 11 );
+QUnit.test( "test2", function( assert ) {
+	assert.expect( 11 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 2, "QUnit.testStart calls" );
@@ -124,8 +124,8 @@ test( "test2", function( assert ) {
 
 QUnit.module( "logs2" );
 
-test( "test1", function( assert ) {
-	expect( 9 );
+QUnit.test( "test1", function( assert ) {
+	assert.expect( 9 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 3, "QUnit.testStart calls" );
@@ -148,8 +148,8 @@ test( "test1", function( assert ) {
 
 	assert.equal( log, 35, "QUnit.log calls" );
 });
-test( "test2", function( assert ) {
-	expect( 8 );
+QUnit.test( "test2", function( assert ) {
+	assert.expect( 8 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 4, "QUnit.testStart calls" );
@@ -185,12 +185,12 @@ QUnit.done(function() {
 	QUnit.module( "autorun" );
 
 	setTimeout(function() {
-		test( "first", function( assert ) {
+		QUnit.test( "first", function( assert ) {
 			assert.equal( moduleStart, 1, "test started" );
 			assert.equal( moduleDone, 0, "test in progress" );
 		});
 
-		test( "second", function( assert ) {
+		QUnit.test( "second", function( assert ) {
 			assert.equal( moduleStart, 2, "test started" );
 			assert.equal( moduleDone, 1, "test in progress" );
 		});
