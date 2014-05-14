@@ -156,7 +156,6 @@ QUnit.test( "Objects basics", function( assert ) {
 	}
 });
 
-
 QUnit.test( "Arrays basics", function( assert ) {
 
 	assert.equal( QUnit.equiv( [], [] ), true );
@@ -978,7 +977,6 @@ QUnit.test( "Complex objects", function( assert ) {
 	assert.equal( QUnit.equiv( diff5, diff1 ), false );
 });
 
-
 QUnit.test( "Complex Arrays", function( assert ) {
 
 	function fn() {}
@@ -1163,7 +1161,6 @@ QUnit.test( "Complex Arrays", function( assert ) {
 			}, {}]]]), false);
 });
 
-
 QUnit.test( "Prototypal inheritance", function( assert ) {
 	function Gizmo( id ) {
 		this.id = id;
@@ -1211,7 +1208,6 @@ QUnit.test( "Prototypal inheritance", function( assert ) {
 	// Make sure this is still true !important
 	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
 });
-
 
 QUnit.test( "Instances", function( assert ) {
 	var a1, a2, b1, b2, car, carSame, carDiff, human;
@@ -1267,7 +1263,6 @@ QUnit.test( "Instances", function( assert ) {
 	assert.equal( QUnit.equiv( car, carSame ), true );
 	assert.equal( QUnit.equiv( car, human ), false );
 });
-
 
 QUnit.test( "Complex instance nesting (with function values in literals and/or in nested instances)", function( assert ) {
 	var a1, a2, b1, b2, c1, c2, d1, d2, e1, e2;
@@ -1390,7 +1385,6 @@ QUnit.test( "Complex instance nesting (with function values in literals and/or i
 	assert.equal( QUnit.equiv( e1, e2 ), false );
 
 });
-
 
 QUnit.test( "Object with circular references", function( assert ) {
 	var circularA = {

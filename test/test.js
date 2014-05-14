@@ -334,6 +334,7 @@ QUnit.module( "save scope", {
 		assert.deepEqual( this.foo, "bar" );
 	}
 });
+
 QUnit.test( "scope check", function( assert ) {
 	assert.expect( 2 );
 	assert.deepEqual( this.foo, "bar" );
@@ -344,13 +345,16 @@ QUnit.module( "simple testEnvironment setup", {
 	// example of meta-data
 	bugid: "#5311"
 });
+
 QUnit.test( "scope check", function( assert ) {
 	assert.deepEqual( this.foo, "bar" );
 });
+
 QUnit.test( "modify testEnvironment", function( assert ) {
 	assert.expect( 0 );
 	this.foo = "hamster";
 });
+
 QUnit.test( "testEnvironment reset for next test", function( assert ) {
 	assert.deepEqual( this.foo, "bar" );
 });
@@ -361,12 +365,14 @@ QUnit.module( "testEnvironment with object", {
 		ingredients: [ "hamster", "onions" ]
 	}
 });
+
 QUnit.test( "scope check", function( assert ) {
 	assert.deepEqual( this.options, {
 		recipe: "soup",
 		ingredients: [ "hamster", "onions" ]
 	});
 });
+
 QUnit.test( "modify testEnvironment", function( assert ) {
 	assert.expect( 0 );
 	
@@ -374,6 +380,7 @@ QUnit.test( "modify testEnvironment", function( assert ) {
 	// and survice
 	this.options.ingredients.push( "carrots" );
 });
+
 QUnit.test( "testEnvironment reset for next test", function( assert ) {
 	assert.deepEqual( this.options, {
 		recipe: "soup",
@@ -401,11 +408,13 @@ QUnit.module( "testEnvironment with makeurl settings", {
 	url: "http://google.com/",
 	q: "another_search_test"
 });
+
 QUnit.test( "makeurl working with settings from testEnvironment", function( assert ) {
 	assert.equal( makeurl(), "http://google.com/?q=another_search_test", "rather than passing arguments, we use test metadata to from the url" );
 });
 
 QUnit.module( "jsDump" );
+
 QUnit.test( "jsDump output", function( assert ) {
 	assert.equal( QUnit.jsDump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
 	assert.equal( QUnit.jsDump.parse( { top: 5, left: 0 } ), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
@@ -640,6 +649,7 @@ QUnit.test( "throws", function( assert ) {
 if ( typeof document !== "undefined" ) {
 
 QUnit.module( "fixture" );
+
 QUnit.test( "setup", function( assert ) {
 	assert.expect( 0 );
 	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";

@@ -17,24 +17,30 @@ QUnit.begin(function( args ) {
 	totalTests = args.totalTests;
 	begin++;
 });
+
 QUnit.done(function() {
 });
+
 QUnit.moduleStart(function( context ) {
 	moduleStart++;
 	moduleContext = context;
 });
+
 QUnit.moduleDone(function( context ) {
 	moduleDone++;
 	moduleDoneContext = context;
 });
+
 QUnit.testStart(function( context ) {
 	testStart++;
 	testContext = context;
 });
+
 QUnit.testDone(function( context ) {
 	testDone++;
 	testDoneContext = context;
 });
+
 QUnit.log(function( context ) {
 	log++;
 	logContext = context;
@@ -148,6 +154,7 @@ QUnit.test( "test1", function( assert ) {
 
 	assert.equal( log, 35, "QUnit.log calls" );
 });
+
 QUnit.test( "test2", function( assert ) {
 	assert.expect( 8 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
