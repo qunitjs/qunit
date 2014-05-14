@@ -129,15 +129,6 @@ QUnit = {
 		test.queue();
 	},
 
-	// Specify the number of expected assertions to guarantee that failed test (no assertions are run at all) don't slip through.
-	expect: function( asserts ) {
-		if ( arguments.length === 1 ) {
-			config.current.expected = asserts;
-		} else {
-			return config.current.expected;
-		}
-	},
-
 	start: function( count ) {
 		// QUnit hasn't been initialized yet.
 		// Note: RequireJS (et al) may delay onLoad
