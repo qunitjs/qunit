@@ -180,6 +180,7 @@ grunt.registerTask( "test-on-node", function() {
 	require( "./test/logs" );
 	require( "./test/test" );
 	require( "./test/deepEqual" );
+	require( "./test/globals" );
 
 	QUnit.load();
 });
