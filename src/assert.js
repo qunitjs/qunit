@@ -14,16 +14,19 @@ assert = QUnit.assert = {
 		if ( !config.current ) {
 			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
 		}
-		result = !!result;
-		msg = msg || ( result ? "okay" : "failed" );
+		var source, details,
+			originalResult = result;
 
-		var source,
-			details = {
-				module: config.current.module,
-				name: config.current.testName,
-				result: result,
-				message: msg
-			};
+		result = !!result;
+		msg = msg || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
+			QUnit.jsDump.parse( originalResult ) );
+
+		details = {
+			module: config.current.module,
+			name: config.current.testName,
+			result: result,
+			message: msg
+		};
 
 		msg = "<span class='test-message'>" + escapeText( msg ) + "</span>";
 
