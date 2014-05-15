@@ -178,22 +178,3 @@ assert = QUnit.assert = {
  * Kept assertion helpers in root for backwards compatibility.
  */
 extend( QUnit.constructor.prototype, assert );
-
-/**
- * @deprecated since 1.9.0
- * Kept to avoid TypeErrors for undefined methods.
- */
-QUnit.constructor.prototype.raises = function() {
-	QUnit.push( false, false, false, "QUnit.raises has been deprecated since 2012 (fad3c1ea), use QUnit.throws instead" );
-};
-
-/**
- * @deprecated since 1.0.0, replaced with error pushes since 1.3.0
- * Kept to avoid TypeErrors for undefined methods.
- */
-QUnit.constructor.prototype.equals = function() {
-	QUnit.push( false, false, false, "QUnit.equals has been deprecated since 2009 (e88049a0), use QUnit.equal instead" );
-};
-QUnit.constructor.prototype.same = function() {
-	QUnit.push( false, false, false, "QUnit.same has been deprecated since 2009 (e88049a0), use QUnit.deepEqual instead" );
-};
