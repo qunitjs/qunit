@@ -1,6 +1,6 @@
 QUnit.config.updateRate = 1;
 
-module( "Module that mucks with time", {
+QUnit.module( "Module that mucks with time", {
 	setup: function() {
 		this.setTimeout = window.setTimeout;
 		window.setTimeout = function() {};
@@ -11,9 +11,10 @@ module( "Module that mucks with time", {
 	}
 });
 
-test( "just a test", function( assert ) {
+QUnit.test( "just a test", function( assert ) {
 	assert.ok( true );
 });
-test( "just a test", function( assert ) {
+
+QUnit.test( "just a test", function( assert ) {
 	assert.ok( true );
 });

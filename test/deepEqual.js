@@ -1,6 +1,6 @@
 QUnit.module( "equiv" );
 
-test( "Primitive types and constants", function( assert ) {
+QUnit.test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( null, null ), true, "null" );
 	assert.equal( QUnit.equiv( null, {} ), false, "null" );
 	assert.equal( QUnit.equiv( null, undefined ), false, "null" );
@@ -111,7 +111,7 @@ test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "object literal vs. instantiation" );
 });
 
-test( "Objects basics", function( assert ) {
+QUnit.test( "Objects basics", function( assert ) {
 	assert.equal( QUnit.equiv( {}, {} ), true );
 	assert.equal( QUnit.equiv( {}, null ), false );
 	assert.equal( QUnit.equiv( {}, undefined ), false );
@@ -156,8 +156,7 @@ test( "Objects basics", function( assert ) {
 	}
 });
 
-
-test( "Arrays basics", function( assert ) {
+QUnit.test( "Arrays basics", function( assert ) {
 
 	assert.equal( QUnit.equiv( [], [] ), true );
 
@@ -334,7 +333,7 @@ test( "Arrays basics", function( assert ) {
 							false, "Multidimensional" );
 });
 
-test( "Functions", function( assert ) {
+QUnit.test( "Functions", function( assert ) {
 	var f0 = function() {},
 		f1 = function() {},
 
@@ -361,7 +360,7 @@ test( "Functions", function( assert ) {
 	assert.equal( QUnit.equiv( function() {}, {} ), false );
 });
 
-test( "Date instances", function( assert ) {
+QUnit.test( "Date instances", function( assert ) {
 
 	// Date, we don't need to test Date.parse() because it returns a number.
 	// Only test the Date instances by setting them a fix date.
@@ -386,7 +385,7 @@ test( "Date instances", function( assert ) {
 	assert.equal( QUnit.equiv( d1, d3 ), false );
 });
 
-test( "RegExp", function( assert ) {
+QUnit.test( "RegExp", function( assert ) {
 	// Must test cases that imply those traps:
 	// var a = /./;
 	// a instanceof Object;        // Oops
@@ -467,7 +466,7 @@ test( "RegExp", function( assert ) {
 	assert.equal( QUnit.equiv( r1, {} ), false, "Regex internal" );
 });
 
-test( "Complex objects", function( assert ) {
+QUnit.test( "Complex objects", function( assert ) {
 
 	function fn1() {
 		return "fn1";
@@ -978,8 +977,7 @@ test( "Complex objects", function( assert ) {
 	assert.equal( QUnit.equiv( diff5, diff1 ), false );
 });
 
-
-test( "Complex Arrays", function( assert ) {
+QUnit.test( "Complex Arrays", function( assert ) {
 
 	function fn() {}
 
@@ -1163,8 +1161,7 @@ test( "Complex Arrays", function( assert ) {
 			}, {}]]]), false);
 });
 
-
-test( "Prototypal inheritance", function( assert ) {
+QUnit.test( "Prototypal inheritance", function( assert ) {
 	function Gizmo( id ) {
 		this.id = id;
 	}
@@ -1212,8 +1209,7 @@ test( "Prototypal inheritance", function( assert ) {
 	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
 });
 
-
-test( "Instances", function( assert ) {
+QUnit.test( "Instances", function( assert ) {
 	var a1, a2, b1, b2, car, carSame, carDiff, human;
 
 	function A() {}
@@ -1268,8 +1264,7 @@ test( "Instances", function( assert ) {
 	assert.equal( QUnit.equiv( car, human ), false );
 });
 
-
-test( "Complex instance nesting (with function values in literals and/or in nested instances)", function( assert ) {
+QUnit.test( "Complex instance nesting (with function values in literals and/or in nested instances)", function( assert ) {
 	var a1, a2, b1, b2, c1, c2, d1, d2, e1, e2;
 
 	function A( fn ) {
@@ -1391,8 +1386,7 @@ test( "Complex instance nesting (with function values in literals and/or in nest
 
 });
 
-
-test( "Object with circular references", function( assert ) {
+QUnit.test( "Object with circular references", function( assert ) {
 	var circularA = {
 			abc: null
 		},
@@ -1412,7 +1406,7 @@ test( "Object with circular references", function( assert ) {
 	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on object (unambiguous test)" );
 });
 
-test( "Array with circular references", function( assert ) {
+QUnit.test( "Array with circular references", function( assert ) {
 	var circularA = [],
 		circularB = [];
 	circularA.push( circularA );
@@ -1428,7 +1422,7 @@ test( "Array with circular references", function( assert ) {
 	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on array (unambiguous test)" );
 });
 
-test( "Mixed object/array with references to self wont loop", function( assert ) {
+QUnit.test( "Mixed object/array with references to self wont loop", function( assert ) {
 	var circularA = [{
 			abc: null
 		}],
@@ -1451,7 +1445,7 @@ test( "Mixed object/array with references to self wont loop", function( assert )
 	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on object/array (unambiguous test)" );
 });
 
-test( "Compare self-referent to tree", function( assert ) {
+QUnit.test( "Compare self-referent to tree", function( assert ) {
 	var temp,
 		circularA = [ 0 ],
 		treeA = [ 0, null ],
@@ -1477,7 +1471,7 @@ test( "Compare self-referent to tree", function( assert ) {
 	assert.equal( QUnit.equiv( temp, circularO ), true, "Object: Reference is circular for one, but equal on other" );
 });
 
-test( "Test that must be done at the end because they extend some primitive's prototype", function( assert ) {
+QUnit.test( "Test that must be done at the end because they extend some primitive's prototype", function( assert ) {
 	// Try that a function looks like our regular expression.
 	// This tests if we check that a and b are really both instance of RegExp
 	Function.prototype.global = true;
