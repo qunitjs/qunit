@@ -45,14 +45,7 @@ grunt.initConfig({
 		},
 		gruntfile: [ "Gruntfile.js" ],
 		dist: [ "dist/*.js" ],
-		tests: {
-			options: {
-				jshintrc: "test/.jshintrc"
-			},
-			files: {
-				src: [ "test/**/*.js" ]
-			}
-		}
+		tests: [ "test/**/*.js" ]
 	},
 	qunit: {
 		options: {
