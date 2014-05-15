@@ -17,6 +17,7 @@
 	"es3": true,
 
 	"globals": {
+		"QUnit": false,
 		"module": false
 	}
 }
