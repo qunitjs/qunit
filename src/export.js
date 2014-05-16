@@ -5,20 +5,9 @@ if ( typeof window !== "undefined" ) {
 			keys = [
 				"test",
 				"module",
-				"expect",
 				"asyncTest",
 				"start",
-				"stop",
-				"ok",
-				"equal",
-				"notEqual",
-				"propEqual",
-				"notPropEqual",
-				"deepEqual",
-				"notDeepEqual",
-				"strictEqual",
-				"notStrictEqual",
-				"throws"
+				"stop"
 			];
 
 		for ( i = 0, l = keys.length; i < l; i++ ) {

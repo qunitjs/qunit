@@ -2,7 +2,7 @@
 
 QUnit.module( "globals" );
 
-function checkExported( assert, methods, isAssertion ) {
+function checkExported( assert, methods ) {
 	var i, l, method;
 
 	for ( i = 0, l = methods.length; i < l; i++ ) {
@@ -15,14 +15,6 @@ function checkExported( assert, methods, isAssertion ) {
 			QUnit.constructor.prototype[ method ],
 			"QUnit exports QUnit." + method + " to the global scope"
 		);
-
-		if ( isAssertion ) {
-			assert.strictEqual(
-				window[ method ],
-				assert[ method ],
-				"Global " + method + " is the same of assert." + method
-			);
-		}
 	}
 }
 
