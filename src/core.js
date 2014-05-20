@@ -147,6 +147,9 @@ QUnit = {
 		if ( config.semaphore > 0 ) {
 			return;
 		}
+
+		// Set the starting time when the first test is run
+		QUnit.config.started = QUnit.config.started || now();
 		// ignore if start is called more often then stop
 		if ( config.semaphore < 0 ) {
 			config.semaphore = 0;
@@ -310,7 +313,7 @@ extend( QUnit, {
 		extend( config, {
 			stats: { all: 0, bad: 0 },
 			moduleStats: { all: 0, bad: 0 },
-			started: now(),
+			started: 0,
 			updateRate: 1000,
 			blocking: false,
 			autostart: true,
