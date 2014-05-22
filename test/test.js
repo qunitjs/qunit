@@ -407,7 +407,11 @@ QUnit.test( "makeurl working with settings from testEnvironment", function( asse
 	);
 });
 
-QUnit.module( "dump" );
+QUnit.module( "dump", {
+	teardown: function() {
+		QUnit.dump.maxDepth = null;
+	}
+});
 
 QUnit.test( "dump output", function( assert ) {
 	assert.equal( QUnit.dump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
@@ -422,6 +426,38 @@ QUnit.test( "dump output", function( assert ) {
 			"[\n  <h1 id=\"qunit-header\"></h1>\n]"
 		);
 	}
+});
+
+QUnit.test( "dump output, shallow", function( assert ) {
+	var obj = {
+		top: {
+			middle: {
+				bottom: 0
+			}
+		},
+		left: 0
+	};
+	assert.expect( 4 );
+	QUnit.dump.maxDepth = 1;
+	assert.equal( QUnit.dump.parse( obj ), "{\n  \"left\": 0,\n  \"top\": [object Object]\n}" );
+
+	QUnit.dump.maxDepth = 2;
+	assert.equal(
+		QUnit.dump.parse( obj ),
+		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": [object Object]\n  }\n}"
+	);
+
+	QUnit.dump.maxDepth = 3;
+	assert.equal(
+		QUnit.dump.parse( obj ),
+		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
+	);
+
+	QUnit.dump.maxDepth = 5;
+	assert.equal(
+		QUnit.dump.parse( obj ),
+		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
+	);
 });
 
 QUnit.test( "dump, TypeError properties", function( assert ) {
