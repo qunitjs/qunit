@@ -135,7 +135,7 @@ assert = QUnit.assert = {
 			ok = false;
 
 		// 'expected' is optional
-		if ( !message && typeof expected === "string" ) {
+		if ( !message && typeof expected === "string" && arguments.length < 3 ) {
 			message = expected;
 			expected = null;
 		}

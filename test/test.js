@@ -549,7 +549,7 @@ QUnit.test( "propEqual", function( assert ) {
 });
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 10 );
+	assert.expect( 11 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -643,6 +643,14 @@ QUnit.test( "throws", function( assert ) {
 		},
 		new Error( "foo" ),
 		"assert when a function throws an 'Error' object"
+	);
+
+	assert.throws(
+		function() {
+			throw new CustomError( "some error description" );
+		},
+		"some error description",
+		"use a regex to match against the stringified error"
 	);
 });
 
