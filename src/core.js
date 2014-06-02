@@ -1,5 +1,4 @@
 var QUnit,
-	assert,
 	config,
 	onErrorFnPrev,
 	testId = 0,
@@ -409,91 +408,6 @@ extend( QUnit, {
 			return "object";
 		}
 		return undefined;
-	},
-
-	push: function( result, actual, expected, message ) {
-		if ( !config.current ) {
-			throw new Error( "assertion outside test context, was " + sourceFromStacktrace() );
-		}
-
-		var output, source,
-			details = {
-				module: config.current.module,
-				name: config.current.testName,
-				result: result,
-				message: message,
-				actual: actual,
-				expected: expected
-			};
-
-		message = escapeText( message ) || ( result ? "okay" : "failed" );
-		message = "<span class='test-message'>" + message + "</span>";
-		output = message;
-
-		if ( !result ) {
-			expected = escapeText( QUnit.dump.parse( expected ) );
-			actual = escapeText( QUnit.dump.parse( actual ) );
-			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
-
-			if ( actual !== expected ) {
-				output += "<tr class='test-actual'><th>Result: </th><td><pre>" + actual + "</pre></td></tr>";
-				output += "<tr class='test-diff'><th>Diff: </th><td><pre>" + QUnit.diff( expected, actual ) + "</pre></td></tr>";
-			}
-
-			source = sourceFromStacktrace();
-
-			if ( source ) {
-				details.source = source;
-				output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
-			}
-
-			output += "</table>";
-		}
-
-		runLoggingCallbacks( "log", QUnit, details );
-
-		config.current.assertions.push({
-			result: !!result,
-			message: output
-		});
-	},
-
-	pushFailure: function( message, source, actual ) {
-		if ( !config.current ) {
-			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
-		}
-
-		var output,
-			details = {
-				module: config.current.module,
-				name: config.current.testName,
-				result: false,
-				message: message
-			};
-
-		message = escapeText( message ) || "error";
-		message = "<span class='test-message'>" + message + "</span>";
-		output = message;
-
-		output += "<table>";
-
-		if ( actual ) {
-			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeText( actual ) + "</pre></td></tr>";
-		}
-
-		if ( source ) {
-			details.source = source;
-			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
-		}
-
-		output += "</table>";
-
-		runLoggingCallbacks( "log", QUnit, details );
-
-		config.current.assertions.push({
-			result: false,
-			message: output
-		});
 	},
 
 	url: function( params ) {

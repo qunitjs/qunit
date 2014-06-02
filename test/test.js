@@ -68,26 +68,6 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.ok( true );
 });
 
-QUnit.module( "assertion helpers" );
-
-QUnit.test( "QUnit.assert compatibility", function( assert ) {
-	assert.expect( 5 );
-	assert.ok( true, "Calling method on `assert` argument to test() callback" );
-
-	// Should also work, although discouraged and not documented
-	QUnit.assert.ok( true, "Calling method on QUnit.assert object" );
-
-	// Test compatibility aliases
-	QUnit.ok( true, "Calling aliased method in QUnit root object" );
-	assert.ok( true, "Calling aliased function in global namespace" );
-
-	// Regression fix for #341
-	// The assert-context way of testing discouraged global variables,
-	// it doesn't make sense of it itself to be a global variable.
-	// Only allows for mistakes (e.g. forgetting to list 'assert' as parameter)
-	assert.notStrictEqual( window.assert, QUnit.assert, "Assert does not get exposed as a global variable" );
-});
-
 QUnit.module( "setup test", {
 	setup: function( assert ) {
 		assert.ok( true );
@@ -375,7 +355,7 @@ QUnit.test( "scope check", function( assert ) {
 
 QUnit.test( "modify testEnvironment", function( assert ) {
 	assert.expect( 0 );
-	
+
 	// since we only do a shallow copy, nested children of testEnvironment can be modified
 	// and survice
 	this.options.ingredients.push( "carrots" );
@@ -424,7 +404,7 @@ QUnit.test( "dump output", function( assert ) {
 	}
 });
 
-QUnit.test( "dump, TypeError properties", function() {
+QUnit.test( "dump, TypeError properties", function( assert ) {
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -437,32 +417,32 @@ QUnit.test( "dump, TypeError properties", function() {
 		expectedCustomMessage = "\"message\": \"sad puppy\"",
 		expectedTypeMessage = "\"message\": \"crying kitten\"",
 		expectedTypeName = "\"name\": \"TypeError\"",
-		
+
 		dumpedCustomError = QUnit.dump.parse( customError ),
 		dumpedTypeError = QUnit.dump.parse( typeError ),
 		dumpedTypeErrorWithEnumerable;
-	
+
 	// Test when object has some enumerable properties by adding one
 	typeError.hasCheeseburger = true;
-	
+
 	dumpedTypeErrorWithEnumerable = QUnit.dump.parse( typeError );
-	
-	QUnit.push(
+
+	assert.push(
 			dumpedCustomError.indexOf(expectedCustomMessage) >= 0,
 			dumpedCustomError,
 			expectedCustomMessage,
 			"custom error contains message field" );
-	QUnit.push(
+	assert.push(
 			dumpedTypeError.indexOf(expectedTypeMessage) >= 0,
 			dumpedTypeError,
 			expectedTypeMessage,
 			"type error contains message field" );
-	QUnit.push(
+	assert.push(
 			dumpedTypeError.indexOf(expectedTypeName) >= 0,
 			dumpedTypeError,
 			expectedTypeName,
 			"type error contains name field" );
-	QUnit.push(
+	assert.push(
 			dumpedTypeErrorWithEnumerable.indexOf(expectedTypeMessage) >= 0,
 			dumpedTypeErrorWithEnumerable,
 			expectedTypeMessage,
@@ -709,18 +689,18 @@ QUnit.test( "running test name displayed", function( assert ) {
 }
 
 QUnit.module( "custom assertions" );
-(function() {
-	QUnit.assert.mod2 = function( value, expected, message ) {
-		var actual = value % 2;
-		QUnit.push(actual === expected, actual, expected, message);
-	};
-	QUnit.test("mod2", function( assert ) {
-		assert.expect( 2 );
-		assert.mod2(2, 0, "2 % 2 == 0");
-		assert.mod2(3, 1, "3 % 2 == 1");
-	});
-})();
 
+QUnit.assert.mod2 = function( value, expected, message ) {
+	var actual = value % 2;
+	this.push( actual === expected, actual, expected, message );
+};
+
+QUnit.test( "mod2", function( assert ) {
+	assert.expect( 2 );
+
+	assert.mod2( 2, 0, "2 % 2 == 0" );
+	assert.mod2( 3, 1, "3 % 2 == 1" );
+});
 
 QUnit.module( "recursions" );
 
