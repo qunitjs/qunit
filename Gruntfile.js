@@ -135,13 +135,6 @@ grunt.registerTask( "test-on-node", function() {
 		done = this.async(),
 		QUnit = require( "./dist/qunit" );
 
-	// Make the current tests work in the Node.js environment by appending
-	// a bunch of properties into the `global` object
-	[ "test", "asyncTest", "start", "stop", "expect" ].forEach(function( method ) {
-		global[ method ] = QUnit[ method ];
-	});
-	global.QUnit = QUnit;
-
 	QUnit.testStart(function() {
 		testActive = true;
 	});
