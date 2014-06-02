@@ -42,23 +42,6 @@ QUnit.test( "QUnit exported methods", function( assert ) {
 	checkExported( assert, globals );
 });
 
-QUnit.test( "Assertion exported methods", function( assert ) {
-	var methods = [
-			"expect", "ok",
-			"equal", "notEqual",
-			"propEqual", "notPropEqual",
-			"deepEqual", "notDeepEqual",
-			"strictEqual", "notStrictEqual",
-			"throws"
-		];
-
-	// 2 assertions per item on checkExported
-	// +1 assertion per item on the loop
-	assert.expect( methods.length * 3 );
-
-	checkExported( assert, methods, true );
-});
-
 // Get a reference to the global object, like window in browsers
 }( (function() {
 	return this;

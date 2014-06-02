@@ -1,5 +1,6 @@
 function Test( settings ) {
 	extend( this, settings );
+	this.assert = new Assert( this );
 	this.assertions = [];
 	this.testNumber = ++Test.count;
 }
@@ -84,13 +85,13 @@ Test.prototype = {
 			saveGlobal();
 		}
 		if ( config.notrycatch ) {
-			this.testEnvironment.setup.call( this.testEnvironment, QUnit.assert );
+			this.testEnvironment.setup.call( this.testEnvironment, this.assert );
 			return;
 		}
 		try {
-			this.testEnvironment.setup.call( this.testEnvironment, QUnit.assert );
+			this.testEnvironment.setup.call( this.testEnvironment, this.assert );
 		} catch ( e ) {
-			QUnit.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
+			this.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
 		}
 	},
 	run: function() {
@@ -109,18 +110,18 @@ Test.prototype = {
 		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
-			this.callback.call( this.testEnvironment, QUnit.assert );
+			this.callback.call( this.testEnvironment, this.assert );
 			this.callbackRuntime = now() - this.callbackStarted;
 			return;
 		}
 
 		try {
-			this.callback.call( this.testEnvironment, QUnit.assert );
+			this.callback.call( this.testEnvironment, this.assert );
 			this.callbackRuntime = now() - this.callbackStarted;
 		} catch ( e ) {
 			this.callbackRuntime = now() - this.callbackStarted;
 
-			QUnit.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
+			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -137,13 +138,13 @@ Test.prototype = {
 			if ( typeof this.callbackRuntime === "undefined" ) {
 				this.callbackRuntime = now() - this.callbackStarted;
 			}
-			this.testEnvironment.teardown.call( this.testEnvironment, QUnit.assert );
+			this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
 			return;
 		} else {
 			try {
-				this.testEnvironment.teardown.call( this.testEnvironment, QUnit.assert );
+				this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
 			} catch ( e ) {
-				QUnit.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
+				this.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
 			}
 		}
 		checkPollution();
@@ -151,11 +152,11 @@ Test.prototype = {
 	finish: function() {
 		config.current = this;
 		if ( config.requireExpects && this.expected === null ) {
-			QUnit.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
+			this.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
 		} else if ( this.expected !== null && this.expected !== this.assertions.length ) {
-			QUnit.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
+			this.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
 		} else if ( this.expected === null && !this.assertions.length ) {
-			QUnit.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
+			this.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
 		var i, assertion, a, b, time, li, ol,
@@ -296,5 +297,107 @@ Test.prototype = {
 		} else {
 			synchronize( run, true );
 		}
+	},
+
+	push: function( result, actual, expected, message ) {
+		if ( !this instanceof Test ) {
+			throw new Error( "assertion outside test context, was " + sourceFromStacktrace() );
+		}
+
+		var output, source,
+			details = {
+				module: this.module,
+				name: this.testName,
+				result: result,
+				message: message,
+				actual: actual,
+				expected: expected
+			};
+
+		message = escapeText( message ) || ( result ? "okay" : "failed" );
+		message = "<span class='test-message'>" + message + "</span>";
+		output = message;
+
+		if ( !result ) {
+			expected = escapeText( QUnit.dump.parse( expected ) );
+			actual = escapeText( QUnit.dump.parse( actual ) );
+			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
+
+			if ( actual !== expected ) {
+				output += "<tr class='test-actual'><th>Result: </th><td><pre>" + actual + "</pre></td></tr>";
+				output += "<tr class='test-diff'><th>Diff: </th><td><pre>" + QUnit.diff( expected, actual ) + "</pre></td></tr>";
+			}
+
+			source = sourceFromStacktrace();
+
+			if ( source ) {
+				details.source = source;
+				output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
+			}
+
+			output += "</table>";
+		}
+
+		runLoggingCallbacks( "log", QUnit, details );
+
+		this.assertions.push({
+			result: !!result,
+			message: output
+		});
+	},
+
+	pushFailure: function( message, source, actual ) {
+		if ( !this instanceof Test ) {
+			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
+		}
+
+		var output,
+			details = {
+				module: this.module,
+				name: this.testName,
+				result: false,
+				message: message
+			};
+
+		message = escapeText( message ) || "error";
+		message = "<span class='test-message'>" + message + "</span>";
+		output = message;
+
+		output += "<table>";
+
+		if ( actual ) {
+			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeText( actual ) + "</pre></td></tr>";
+		}
+
+		if ( source ) {
+			details.source = source;
+			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
+		}
+
+		output += "</table>";
+
+		runLoggingCallbacks( "log", QUnit, details );
+
+		config.current.assertions.push({
+			result: false,
+			message: output
+		});
 	}
+};
+
+// Deprecated
+QUnit.push = function() {
+
+	// Gets current test obj
+	var currentTest = QUnit.config.current.assert.test;
+
+	return currentTest.push.apply( currentTest, arguments );
+};
+
+QUnit.pushFailure = function() {
+
+	// Gets current test obj
+	var currentTest = QUnit.config.current.assert.test;
+
+	return currentTest.pushFailure.apply( currentTest, arguments );
 };

@@ -1,17 +1,22 @@
-// `assert` initialized at top of scope
+function Assert( testContext ) {
+	this.test = testContext;
+}
+
 // Assert helpers
-// All of these must either call QUnit.push() or manually do:
-// - runLoggingCallbacks( "log", .. );
-// - config.current.assertions.push({ .. });
-assert = QUnit.assert = {
+QUnit.assert = Assert.prototype = {
 
 	// Specify the number of expected assertions to guarantee that failed test (no assertions are run at all) don't slip through.
 	expect: function( asserts ) {
 		if ( arguments.length === 1 ) {
-			config.current.expected = asserts;
+			this.test.expected = asserts;
 		} else {
-			return config.current.expected;
+			return this.test.expected;
 		}
+	},
+
+	// Exports test.push() to the user API
+	push: function() {
+		return this.test.push.apply( this.test, arguments );
 	},
 
 	/**
@@ -24,9 +29,9 @@ assert = QUnit.assert = {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
 			QUnit.dump.parse( result ) );
 		if ( !!result ) {
-			QUnit.push( true, result, true, message );
+			this.push( true, result, true, message );
 		} else {
-			QUnit.pushFailure( message, null, result );
+			this.test.pushFailure( message, null, result );
 		}
 	},
 
@@ -39,7 +44,7 @@ assert = QUnit.assert = {
 	 */
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		QUnit.push( expected == actual, actual, expected, message );
+		this.push( expected == actual, actual, expected, message );
 	},
 
 	/**
@@ -48,7 +53,7 @@ assert = QUnit.assert = {
 	 */
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		QUnit.push( expected != actual, actual, expected, message );
+		this.push( expected != actual, actual, expected, message );
 	},
 
 	/**
@@ -58,7 +63,7 @@ assert = QUnit.assert = {
 	propEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -68,7 +73,7 @@ assert = QUnit.assert = {
 	notPropEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
-		QUnit.push( !QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -76,7 +81,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	deepEqual: function( actual, expected, message ) {
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -84,7 +89,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notDeepEqual: function( actual, expected, message ) {
-		QUnit.push( !QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	/**
@@ -92,7 +97,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	strictEqual: function( actual, expected, message ) {
-		QUnit.push( expected === actual, actual, expected, message );
+		this.push( expected === actual, actual, expected, message );
 	},
 
 	/**
@@ -100,7 +105,7 @@ assert = QUnit.assert = {
 	 * @function
 	 */
 	notStrictEqual: function( actual, expected, message ) {
-		QUnit.push( expected !== actual, actual, expected, message );
+		this.push( expected !== actual, actual, expected, message );
 	},
 
 	"throws": function( block, expected, message ) {
@@ -114,13 +119,13 @@ assert = QUnit.assert = {
 			expected = null;
 		}
 
-		config.current.ignoreGlobalErrors = true;
+		this.test.ignoreGlobalErrors = true;
 		try {
-			block.call( config.current.testEnvironment );
+			block.call( this.test.testEnvironment );
 		} catch (e) {
 			actual = e;
 		}
-		config.current.ignoreGlobalErrors = false;
+		this.test.ignoreGlobalErrors = false;
 
 		if ( actual ) {
 
@@ -153,15 +158,9 @@ assert = QUnit.assert = {
 				ok = true;
 			}
 
-			QUnit.push( ok, actual, expectedOutput, message );
+			this.push( ok, actual, expectedOutput, message );
 		} else {
-			QUnit.pushFailure( message, null, "No exception was thrown." );
+			this.test.pushFailure( message, null, "No exception was thrown." );
 		}
 	}
 };
-
-/**
- * @deprecated since 1.8.0
- * Kept assertion helpers in root for backwards compatibility.
- */
-extend( QUnit.constructor.prototype, assert );
