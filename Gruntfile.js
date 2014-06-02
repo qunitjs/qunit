@@ -77,6 +77,9 @@ grunt.initConfig({
 		}
 	},
 	watch: {
+		options: {
+			atBegin: true
+		},
 		files: [ "*", ".jshintrc", "{src,test}/**/{*,.*}" ],
 		tasks: "default"
 	}
