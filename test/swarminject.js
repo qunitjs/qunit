@@ -6,5 +6,9 @@
 		return;
 	}
 	/*jshint evil:true */
-	document.write( "<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" + ( new Date() ).getTime() + "'></scr" + "ipt>" );
+	document.write(
+		"<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" +
+		( new Date() ).getTime() +
+		"'></scr" + "ipt>"
+	);
 })();

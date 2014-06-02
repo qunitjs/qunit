@@ -11,7 +11,8 @@ var begin = 0,
 	moduleDoneContext,
 	testContext,
 	testDoneContext,
-	logContext;
+	logContext,
+	testAutorun;
 
 QUnit.begin(function( args ) {
 	totalTests = args.totalTests;
@@ -51,7 +52,11 @@ QUnit.module( "logs1" );
 QUnit.test( "test1", function( assert ) {
 	assert.expect( 16 );
 
-	assert.equal( typeof totalTests, "number", "QUnit.begin should pass total amount of tests to callback" );
+	assert.equal(
+		typeof totalTests,
+		"number",
+		"QUnit.begin should pass total amount of tests to callback"
+	);
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 1, "QUnit.testStart calls" );
@@ -192,7 +197,7 @@ QUnit.test( "test2", function( assert ) {
 	assert.equal( log, 44, "QUnit.log calls" );
 });
 
-var testAutorun = true;
+testAutorun = true;
 
 QUnit.done(function() {
 

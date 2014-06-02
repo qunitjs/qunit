@@ -40,6 +40,7 @@
     "grunt-contrib-watch": "0.5.3",
     "grunt-coveralls": "0.3.0",
     "grunt-git-authors": "1.2.0",
+    "grunt-jscs": "0.6.1",
     "grunt-qunit-istanbul": "0.4.5",
     "load-grunt-tasks": "0.3.0",
     "testswarm": "1.1.0"

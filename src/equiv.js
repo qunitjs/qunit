@@ -197,7 +197,7 @@ QUnit.equiv = (function() {
 			return true; // end transition
 		}
 
-		return ( function( a, b ) {
+		return ( (function( a, b ) {
 			if ( a === b ) {
 				return true; // catch the most you can
 			} else if ( a === null || b === null || typeof a === "undefined" ||
@@ -211,7 +211,7 @@ QUnit.equiv = (function() {
 			}
 
 			// apply transition with (1..n) arguments
-		}( args[ 0 ], args[ 1 ] ) && innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
+		}( args[ 0 ], args[ 1 ] ) ) && innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
 	};
 
 	return innerEquiv;

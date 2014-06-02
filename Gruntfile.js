@@ -54,6 +54,15 @@ grunt.initConfig({
 			"build/*.js"
 		]
 	},
+	jscs: {
+		options: {
+			config: ".jscsrc"
+		},
+		all: [
+			"<%= jshint.all %>",
+			"!test/deepEqual.js"
+		]
+	},
 	qunit: {
 		options: {
 			timeout: 30000,
@@ -112,7 +121,7 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 	}
 	timeout = timeout || 1000 * 60 * 15;
 
-	[ "index", "async", "setTimeout" ].forEach(function ( suite ) {
+	[ "index", "async", "setTimeout" ].forEach(function( suite ) {
 		runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
 	});
 
@@ -187,6 +196,6 @@ grunt.registerTask( "test-on-node", function() {
 });
 
 grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "qunit", "test-on-node" ] );
+grunt.registerTask( "default", [ "build", "jshint", "jscs", "qunit", "test-on-node" ] );
 
 };

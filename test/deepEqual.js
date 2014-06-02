@@ -190,16 +190,16 @@ QUnit.test( "Arrays basics", function( assert ) {
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // shorter
 					false );
 	assert.equal( QUnit.equiv(
-					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[{}]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
+					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ {} ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // deepest element not an array
 					false );
 
 	// same multidimensional
 	assert.equal( QUnit.equiv(
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,4,[
@@ -217,10 +217,10 @@ QUnit.test( "Arrays basics", function( assert ) {
 									]
 								]
 							]]],
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,4,[
@@ -242,10 +242,10 @@ QUnit.test( "Arrays basics", function( assert ) {
 
 	// different multidimensional
 	assert.equal( QUnit.equiv(
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,4,[
@@ -263,10 +263,10 @@ QUnit.test( "Arrays basics", function( assert ) {
 									]
 								]
 							]]],
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,4,[
@@ -288,10 +288,10 @@ QUnit.test( "Arrays basics", function( assert ) {
 
 	// different multidimensional
 	assert.equal( QUnit.equiv(
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,4,[
@@ -309,10 +309,10 @@ QUnit.test( "Arrays basics", function( assert ) {
 									]
 								]
 							]]],
-							[1,2,3,4,5,6,7,8,9, [
+							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
-										[6,7,8,9, [
+										[ 6,7,8,9, [
 											[
 												1,2,3,4,[
 													2,3,[                   // missing an element (4)
@@ -481,7 +481,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -493,7 +493,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -506,7 +506,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								q: [],
-								p: 1/0,
+								p: 1 / 0,
 								o: 99
 							},
 							l: undefined,
@@ -527,7 +527,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				b: false,
 				a: 3.14159,
@@ -542,7 +542,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									r: "r",
 									t: undefined,
 									u: 0,
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									v: {
 										w: {
 											x: {
@@ -553,7 +553,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -576,7 +576,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -589,7 +589,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									//r: "r",   // different: missing a property
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -602,7 +602,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -622,7 +622,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -635,7 +635,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -648,7 +648,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -671,7 +671,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -684,7 +684,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -697,7 +697,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -717,7 +717,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -730,7 +730,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									//t: undefined,                 // different: missing a property with an undefined value
 									u: 0,
 									v: {
@@ -743,7 +743,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -766,7 +766,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -779,7 +779,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -792,7 +792,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: []
 							},
 							l: undefined,
@@ -812,7 +812,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		{
 			a: 1,
 			b: null,
-			c: [{}],
+			c: [ {} ],
 			d: {
 				a: 3.14159,
 				b: false,
@@ -825,7 +825,7 @@ QUnit.test( "Complex objects", function( assert ) {
 							k: {
 								n: {
 									r: "r",
-									s: [1,2,3],
+									s: [ 1, 2, 3 ],
 									t: undefined,
 									u: 0,
 									v: {
@@ -838,7 +838,7 @@ QUnit.test( "Complex objects", function( assert ) {
 									}
 								},
 								o: 99,
-								p: 1/0,
+								p: 1 / 0,
 								q: {}           // different was []
 							},
 							l: undefined,
@@ -861,7 +861,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -874,7 +874,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -887,7 +887,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3,4]], // different: 4 was add to the array
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3, 4 ] ], // different: 4 was add to the array
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -900,7 +900,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					newprop: undefined, // different: newprop was added
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
@@ -914,7 +914,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±" // different: missing last char
 			],
@@ -927,7 +927,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,undefined,{}, [], [1,2,3]], // different: undefined instead of null
+					foo: [ 1,2,undefined,{}, [], [ 1, 2, 3 ] ], // different: undefined instead of null
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -940,7 +940,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					bat: undefined // different: property name not "bar"
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -953,7 +953,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			a: [
 				"string", null, 0, "1", 1, {
 					prop: null,
-					foo: [1,2,null,{}, [], [1,2,3]],
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
 					bar: undefined
 				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
 			],
@@ -982,180 +982,180 @@ QUnit.test( "Complex Arrays", function( assert ) {
 	function fn() {}
 
 	assert.equal( QUnit.equiv(
-				[1, 2, 3, true, {}, null, [
+				[ 1, 2, 3, true, {}, null, [
 					{
-						a: ["", "1", 0]
+						a: [ "", "1", 0 ]
 					},
 					5, 6, 7
-				], "foo"],
-				[1, 2, 3, true, {}, null, [
+				], "foo" ],
+				[ 1, 2, 3, true, {}, null, [
 					{
-						a: ["", "1", 0]
+						a: [ "", "1", 0 ]
 					},
 					5, 6, 7
-				], "foo"]),
-			true);
+				], "foo" ] ),
+			true );
 
 	assert.equal( QUnit.equiv(
-				[1, 2, 3, true, {}, null, [
+				[ 1, 2, 3, true, {}, null, [
 					{
-						a: ["", "1", 0]
+						a: [ "", "1", 0 ]
 					},
 					5, 6, 7
-				], "foo"],
-				[1, 2, 3, true, {}, null, [
+				], "foo" ],
+				[ 1, 2, 3, true, {}, null, [
 					{
-						b: ["", "1", 0]         // not same property name
+						b: [ "", "1", 0 ]         // not same property name
 					},
 					5, 6, 7
-				], "foo"]),
-			false);
+				], "foo" ] ),
+			false );
 
-	var a = [{
+	var a = [ {
 		b: fn,
 		c: false,
 		"do": "reserved word",
 		"for": {
-			ar: [3,5,9,"hey!", [], {
-				ar: [1,[
+			ar: [ 3, 5, 9, "hey!", [], {
+				ar: [ 1,[
 					3,4,6,9, null, [], []
-				]],
+				] ],
 				e: fn,
 				f: undefined
-			}]
+			} ]
 		},
 		e: 0.43445
 	}, 5, "string", 0, fn, false, null, undefined, 0, [
-		4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[3]]]], "3"], {}, 1/0
-	], [], [[[], "foo", null, {
-		n: 1/0,
+		4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
+	], [], [ [ [], "foo", null, {
+		n: 1 / 0,
 		z: {
-			a: [3,4,5,6,"yep!", undefined, undefined],
+			a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 			b: {}
 		}
-	}, {}]]];
+	}, {} ] ] ];
 
-	assert.equal( QUnit.equiv(a,
-			[{
+	assert.equal( QUnit.equiv( a,
+			[ {
 				b: fn,
 				c: false,
 				"do": "reserved word",
 				"for": {
-					ar: [3,5,9,"hey!", [], {
-						ar: [1,[
+					ar: [ 3, 5, 9, "hey!", [], {
+						ar: [ 1, [
 							3,4,6,9, null, [], []
 						]],
 						e: fn,
 						f: undefined
-					}]
+					} ]
 				},
 				e: 0.43445
 			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[3]]]], "3"], {}, 1/0
+				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
 			], [], [[[], "foo", null, {
-				n: 1/0,
+				n: 1 / 0,
 				z: {
-					a: [3,4,5,6,"yep!", undefined, undefined],
+					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
 			}, {}]]]), true);
 
-	assert.equal( QUnit.equiv(a,
-			[{
+	assert.equal( QUnit.equiv( a,
+			[ {
 				b: fn,
 				c: false,
 				"do": "reserved word",
 				"for": {
-					ar: [3,5,9,"hey!", [], {
-						ar: [1,[
+					ar: [ 3, 5, 9, "hey!", [], {
+						ar: [ 1, [
 							3,4,6,9, null, [], []
 						]],
 						e: fn,
 						f: undefined
-					}]
+					} ]
 				},
 				e: 0.43445
 			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[2]]]], "3"], {}, 1/0    // different: [[[[[2]]]]] instead of [[[[[3]]]]]
+				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 2 ]]]], "3"], {}, 1 / 0    // different: [[[[[2]]]]] instead of [[[[[3]]]]]
 			], [], [[[], "foo", null, {
-				n: 1/0,
+				n: 1 / 0,
 				z: {
-					a: [3,4,5,6,"yep!", undefined, undefined],
+					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv(a,
-			[{
+	assert.equal( QUnit.equiv( a,
+			[ {
 				b: fn,
 				c: false,
 				"do": "reserved word",
 				"for": {
-					ar: [3,5,9,"hey!", [], {
-						ar: [1,[
+					ar: [ 3, 5, 9, "hey!", [], {
+						ar: [ 1, [
 							3,4,6,9, null, [], []
 						]],
 						e: fn,
 						f: undefined
-					}]
+					} ]
 				},
 				e: 0.43445
 			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[3]]]], "3"], {}, 1/0
+				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
 			], [], [[[], "foo", null, {
-				n: -1/0,                                                                // different, -Infinity instead of Infinity
+				n: -1 / 0,                                                                // different, -Infinity instead of Infinity
 				z: {
-					a: [3,4,5,6,"yep!", undefined, undefined],
+					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv(a,
-			[{
+	assert.equal( QUnit.equiv( a,
+			[ {
 				b: fn,
 				c: false,
 				"do": "reserved word",
 				"for": {
-					ar: [3,5,9,"hey!", [], {
-						ar: [1,[
+					ar: [ 3, 5, 9, "hey!", [], {
+						ar: [ 1, [
 							3,4,6,9, null, [], []
 						]],
 						e: fn,
 						f: undefined
-					}]
+					} ]
 				},
 				e: 0.43445
 			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[3]]]], "3"], {}, 1/0
+				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
 			], [], [[[], "foo", {                                                       // different: null is missing
-				n: 1/0,
+				n: 1 / 0,
 				z: {
-					a: [3,4,5,6,"yep!", undefined, undefined],
+					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv(a,
-			[{
+	assert.equal( QUnit.equiv( a,
+			[ {
 				b: fn,
 				c: false,
 				"do": "reserved word",
 				"for": {
-					ar: [3,5,9,"hey!", [], {
-						ar: [1,[
+					ar: [ 3, 5, 9, "hey!", [], {
+						ar: [ 1, [
 							3,4,6,9, null, [], []
 						]],
 						e: fn
 																				// different: missing property f: undefined
-					}]
+					} ]
 				},
 				e: 0.43445
 			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[3]]]], "3"], {}, 1/0
+				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
 			], [], [[[], "foo", null, {
-				n: 1/0,
+				n: 1 / 0,
 				z: {
-					a: [3,4,5,6,"yep!", undefined, undefined],
+					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
 			}, {}]]]), false);
@@ -1227,7 +1227,9 @@ QUnit.test( "Instances", function( assert ) {
 	// b1.fn and b2.fn are functions but they are different references
 	// But we decided to skip function for instances.
 	assert.equal( QUnit.equiv( b1, b2 ), true, "Same property, same constructor" );
-	assert.equal( QUnit.equiv( a1, b1 ), false, "Same properties but different constructor" ); // failed
+
+	// failed
+	assert.equal( QUnit.equiv( a1, b1 ), false, "Same properties but different constructor" );
 
 	function Car( year ) {
 		var privateVar = 0;
@@ -1264,127 +1266,129 @@ QUnit.test( "Instances", function( assert ) {
 	assert.equal( QUnit.equiv( car, human ), false );
 });
 
-QUnit.test( "Complex instance nesting (with function values in literals and/or in nested instances)", function( assert ) {
-	var a1, a2, b1, b2, c1, c2, d1, d2, e1, e2;
+QUnit.test(
+	"Complex instance nesting (with function values in literals and/or in nested instances)",
+	function( assert ) {
+		var a1, a2, b1, b2, c1, c2, d1, d2, e1, e2;
 
-	function A( fn ) {
-		this.a = {};
-		this.fn = fn;
-		this.b = { a: [] };
-		this.o = {};
-		this.fn1 = fn;
-	}
-	function B( fn ) {
-		this.fn = fn;
-		this.fn1 = function() {};
-		this.a = new A(function() {});
-	}
-
-	function fnOutside() {
-	}
-
-	function C( fn ) {
-		function fnInside() {
+		function A( fn ) {
+			this.a = {};
+			this.fn = fn;
+			this.b = { a: [] };
+			this.o = {};
+			this.fn1 = fn;
 		}
-		this.x = 10;
-		this.fn = fn;
-		this.fn1 = function() {};
-		this.fn2 = fnInside;
-		this.fn3 = {
-			a: true,
-			b: fnOutside // ok make reference to a function in all instances scope
-		};
-		this.o1 = {};
-
-		// This function will be ignored.
-		// Even if it is not visible for all instances (e.g. locked in a closures),
-		// it is from a  property that makes part of an instance (e.g. from the C constructor)
-		this.b1 = new B(function() {});
-		this.b2 = new B({
-			x: {
-				b2: new B(function() {})
-			}
-		});
-	}
-
-	function D( fn ) {
-		function fnInside() {
+		function B( fn ) {
+			this.fn = fn;
+			this.fn1 = function() {};
+			this.a = new A(function() {});
 		}
-		this.x = 10;
-		this.fn = fn;
-		this.fn1 = function() {};
-		this.fn2 = fnInside;
-		this.fn3 = {
-			a: true,
-			b: fnOutside, // ok make reference to a function in all instances scope
 
-			// This function won't be ingored.
-			// It isn't visible for all C instances
-			// and it is not in a property of an instance. (in an Object instances e.g. the object literal)
-			c: fnInside
-		};
-		this.o1 = {};
-
-		// This function will be ignored.
-		// Even if it is not visible for all instances (e.g. locked in a closures),
-		// it is from a  property that makes part of an instance (e.g. from the C constructor)
-		this.b1 = new B(function() {});
-		this.b2 = new B({
-			x: {
-				b2: new B(function() {})
-			}
-		});
-	}
-
-	function E( fn ) {
-		function fnInside() {
+		function fnOutside() {
 		}
-		this.x = 10;
-		this.fn = fn;
-		this.fn1 = function() {};
-		this.fn2 = fnInside;
-		this.fn3 = {
-			a: true,
-			b: fnOutside // ok make reference to a function in all instances scope
-		};
-		this.o1 = {};
 
-		// This function will be ignored.
-		// Even if it is not visible for all instances (e.g. locked in a closures),
-		// it is from a  property that makes part of an instance (e.g. from the C constructor)
-		this.b1 = new B(function() {});
-		this.b2 = new B({
-			x: {
-				b1: new B( { a: function() {} } ),
-				b2: new B(function() {})
+		function C( fn ) {
+			function fnInside() {
 			}
-		});
+			this.x = 10;
+			this.fn = fn;
+			this.fn1 = function() {};
+			this.fn2 = fnInside;
+			this.fn3 = {
+				a: true,
+				b: fnOutside // ok make reference to a function in all instances scope
+			};
+			this.o1 = {};
+
+			// This function will be ignored.
+			// Even if it is not visible for all instances (e.g. locked in a closures),
+			// it is from a  property that makes part of an instance (e.g. from the C constructor)
+			this.b1 = new B(function() {});
+			this.b2 = new B({
+				x: {
+					b2: new B(function() {})
+				}
+			});
+		}
+
+		function D( fn ) {
+			function fnInside() {
+			}
+			this.x = 10;
+			this.fn = fn;
+			this.fn1 = function() {};
+			this.fn2 = fnInside;
+			this.fn3 = {
+				a: true,
+				b: fnOutside, // ok make reference to a function in all instances scope
+
+				// This function won't be ingored.
+				// It isn't visible for all C instances
+				// and it is not in a property of an instance.
+				// (in an Object instances e.g. the object literal)
+				c: fnInside
+			};
+			this.o1 = {};
+
+			// This function will be ignored.
+			// Even if it is not visible for all instances (e.g. locked in a closures),
+			// it is from a  property that makes part of an instance (e.g. from the C constructor)
+			this.b1 = new B(function() {});
+			this.b2 = new B({
+				x: {
+					b2: new B(function() {})
+				}
+			});
+		}
+
+		function E( fn ) {
+			function fnInside() {
+			}
+			this.x = 10;
+			this.fn = fn;
+			this.fn1 = function() {};
+			this.fn2 = fnInside;
+			this.fn3 = {
+				a: true,
+				b: fnOutside // ok make reference to a function in all instances scope
+			};
+			this.o1 = {};
+
+			// This function will be ignored.
+			// Even if it is not visible for all instances (e.g. locked in a closures),
+			// it is from a  property that makes part of an instance (e.g. from the C constructor)
+			this.b1 = new B(function() {});
+			this.b2 = new B({
+				x: {
+					b1: new B( { a: function() {} } ),
+					b2: new B(function() {})
+				}
+			});
+		}
+
+		a1 = new A(function() {});
+		a2 = new A(function() {});
+		assert.equal( QUnit.equiv( a1, a2 ), true );
+
+		assert.equal( QUnit.equiv( a1, a2 ), true ); // different instances
+
+		b1 = new B(function() {});
+		b2 = new B(function() {});
+		assert.equal( QUnit.equiv( b1, b2 ), true );
+
+		c1 = new C(function() {});
+		c2 = new C(function() {});
+		assert.equal( QUnit.equiv( c1, c2 ), true );
+
+		d1 = new D(function() {});
+		d2 = new D(function() {});
+		assert.equal( QUnit.equiv( d1, d2 ), false );
+
+		e1 = new E(function() {});
+		e2 = new E(function() {});
+		assert.equal( QUnit.equiv( e1, e2 ), false );
 	}
-
-
-	a1 = new A(function() {});
-	a2 = new A(function() {});
-	assert.equal( QUnit.equiv( a1, a2 ), true );
-
-	assert.equal( QUnit.equiv( a1, a2 ), true ); // different instances
-
-	b1 = new B(function() {});
-	b2 = new B(function() {});
-	assert.equal( QUnit.equiv( b1, b2 ), true );
-
-	c1 = new C(function() {});
-	c2 = new C(function() {});
-	assert.equal( QUnit.equiv( c1, c2 ), true );
-
-	d1 = new D(function() {});
-	d2 = new D(function() {});
-	assert.equal( QUnit.equiv( d1, d2 ), false );
-
-	e1 = new E(function() {});
-	e2 = new E(function() {});
-	assert.equal( QUnit.equiv( e1, e2 ), false );
-
-});
+);
 
 QUnit.test( "Object with circular references", function( assert ) {
 	var circularA = {
@@ -1395,15 +1399,21 @@ QUnit.test( "Object with circular references", function( assert ) {
 		};
 	circularA.abc = circularA;
 	circularB.abc = circularB;
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on object (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on object (ambiguous test)"
+	);
 
 	circularA.def = 1;
 	circularB.def = 1;
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on object (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on object (ambiguous test)"
+	);
 
 	circularA.def = 1;
 	circularB.def = 0;
-	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on object (unambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), false,
+		"Should not repeat test on object (unambiguous test)"
+	);
 });
 
 QUnit.test( "Array with circular references", function( assert ) {
@@ -1411,38 +1421,50 @@ QUnit.test( "Array with circular references", function( assert ) {
 		circularB = [];
 	circularA.push( circularA );
 	circularB.push( circularB );
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on array (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on array (ambiguous test)"
+	);
 
 	circularA.push( "abc" );
 	circularB.push( "abc" );
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on array (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on array (ambiguous test)"
+	);
 
 	circularA.push( "hello" );
 	circularB.push( "goodbye" );
-	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on array (unambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), false,
+		"Should not repeat test on array (unambiguous test)"
+	);
 });
 
 QUnit.test( "Mixed object/array with references to self wont loop", function( assert ) {
-	var circularA = [{
+	var circularA = [ {
 			abc: null
-		}],
-		circularB = [{
+		} ],
+		circularB = [ {
 			abc: null
-		}];
+		} ];
 	circularA[ 0 ].abc = circularA;
 	circularB[ 0 ].abc = circularB;
 
 	circularA.push( circularA );
 	circularB.push( circularB );
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on object/array (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on object/array (ambiguous test)"
+	);
 
 	circularA[ 0 ].def = 1;
 	circularB[ 0 ].def = 1;
-	assert.equal( QUnit.equiv( circularA, circularB ), true, "Should not repeat test on object/array (ambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), true,
+		"Should not repeat test on object/array (ambiguous test)"
+	);
 
 	circularA[ 0 ].def = 1;
 	circularB[ 0 ].def = 0;
-	assert.equal( QUnit.equiv( circularA, circularB ), false, "Should not repeat test on object/array (unambiguous test)" );
+	assert.equal( QUnit.equiv( circularA, circularB ), false,
+		"Should not repeat test on object/array (unambiguous test)"
+	);
 });
 
 QUnit.test( "Compare self-referent to tree", function( assert ) {
@@ -1457,30 +1479,52 @@ QUnit.test( "Compare self-referent to tree", function( assert ) {
 	circularA[ 1 ] = circularA;
 	circularO.o = circularO;
 
-	assert.equal( QUnit.equiv( circularA, treeA ), false, "Array: Should not consider circular equal to tree" );
-	assert.equal( QUnit.equiv( circularO, treeO ), false, "Object: Should not consider circular equal to tree" );
+	assert.equal( QUnit.equiv( circularA, treeA ), false,
+		"Array: Should not consider circular equal to tree"
+	);
+	assert.equal( QUnit.equiv( circularO, treeO ), false,
+		"Object: Should not consider circular equal to tree"
+	);
 
 	temp = [ 0, circularA ];
-	assert.equal( QUnit.equiv( circularA, temp ), true, "Array: Reference is circular for one, but equal on other" );
-	assert.equal( QUnit.equiv( temp, circularA ), true, "Array: Reference is circular for one, but equal on other" );
+	assert.equal( QUnit.equiv( circularA, temp ), true,
+		"Array: Reference is circular for one, but equal on other"
+	);
+	assert.equal( QUnit.equiv( temp, circularA ), true,
+		"Array: Reference is circular for one, but equal on other"
+	);
 
 	temp = {
 		o: circularO
 	};
-	assert.equal( QUnit.equiv( circularO, temp ), true, "Object: Reference is circular for one, but equal on other" );
-	assert.equal( QUnit.equiv( temp, circularO ), true, "Object: Reference is circular for one, but equal on other" );
+	assert.equal( QUnit.equiv( circularO, temp ), true,
+		"Object: Reference is circular for one, but equal on other"
+	);
+	assert.equal( QUnit.equiv( temp, circularO ), true,
+		"Object: Reference is circular for one, but equal on other"
+	);
 });
 
-QUnit.test( "Test that must be done at the end because they extend some primitive's prototype", function( assert ) {
-	// Try that a function looks like our regular expression.
-	// This tests if we check that a and b are really both instance of RegExp
-	Function.prototype.global = true;
-	Function.prototype.multiline = true;
-	Function.prototype.ignoreCase = false;
-	Function.prototype.source = "my regex";
-	var re = /my regex/gm;
-	assert.equal( QUnit.equiv( re, function() {}), false, "A function that looks that a regex isn't a regex" );
-	// This test will ensures it works in both ways, and ALSO especially that we can make differences
-	// between RegExp and Function constructor because typeof on a RegExpt instance is "function"
-	assert.equal( QUnit.equiv(function() {}, re ), false, "Same conversely, but ensures that function and regexp are distinct because their constructor are different" );
-});
+QUnit.test( "Test that must be done at the end because they extend some primitive's prototype",
+	function( assert ) {
+
+		// Try that a function looks like our regular expression.
+		// This tests if we check that a and b are really both instance of RegExp
+		Function.prototype.global = true;
+		Function.prototype.multiline = true;
+		Function.prototype.ignoreCase = false;
+		Function.prototype.source = "my regex";
+		var re = /my regex/gm;
+		assert.equal( QUnit.equiv( re, function() {}), false,
+			"A function that looks that a regex isn't a regex"
+		);
+
+		// This test will ensures it works in both ways,
+		// and ALSO especially that we can make differences
+		// between RegExp and Function constructor because
+		// typeof on a RegExpt instance is "function"
+		assert.equal( QUnit.equiv(function() {}, re ), false,
+			"Same conversely, but ensures that function and regexp are distinct because their constructor are different"
+		);
+	}
+);
