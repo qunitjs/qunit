@@ -166,7 +166,10 @@ QUnit.module( "Date test", {
 	setup: function( assert ) {
 		OrgDate = Date;
 		window.Date = function() {
-			assert.ok( false, "QUnit should internally be independent from Date-related manipulation and testing" );
+			assert.ok(
+				false,
+				"QUnit should internally be independent from Date-related manipulation and testing"
+			);
 			return new OrgDate();
 		};
 	},
@@ -368,7 +371,6 @@ QUnit.test( "testEnvironment reset for next test", function( assert ) {
 	}, "Is this a bug or a feature? Could do a deep copy" );
 });
 
-
 QUnit.module( "testEnvironment tests" );
 
 function makeurl() {
@@ -380,8 +382,16 @@ function makeurl() {
 
 QUnit.test( "makeurl working", function( assert ) {
 	assert.expect( 2 );
-	assert.equal( QUnit.config.current.testEnvironment, this, "The current testEnvironment QUnit.config" );
-	assert.equal( makeurl(), "http://example.com/search?q=a%20search%20test", "makeurl returns a default url if nothing specified in the testEnvironment" );
+	assert.equal(
+		QUnit.config.current.testEnvironment,
+		this,
+		"The current testEnvironment QUnit.config"
+	);
+	assert.equal(
+		makeurl(),
+		"http://example.com/search?q=a%20search%20test",
+		"makeurl returns a default url if nothing specified in the testEnvironment"
+	);
 });
 
 QUnit.module( "testEnvironment with makeurl settings", {
@@ -390,7 +400,11 @@ QUnit.module( "testEnvironment with makeurl settings", {
 });
 
 QUnit.test( "makeurl working with settings from testEnvironment", function( assert ) {
-	assert.equal( makeurl(), "http://google.com/?q=another_search_test", "rather than passing arguments, we use test metadata to from the url" );
+	assert.equal(
+		makeurl(),
+		"http://google.com/?q=another_search_test",
+		"rather than passing arguments, we use test metadata to from the url"
+	);
 });
 
 QUnit.module( "dump" );
@@ -399,8 +413,14 @@ QUnit.test( "dump output", function( assert ) {
 	assert.equal( QUnit.dump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
 	assert.equal( QUnit.dump.parse( { top: 5, left: 0 } ), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
 	if ( typeof document !== "undefined" && document.getElementById( "qunit-header" ) ) {
-		assert.equal( QUnit.dump.parse( document.getElementById( "qunit-header" ) ), "<h1 id=\"qunit-header\"></h1>" );
-		assert.equal( QUnit.dump.parse( document.getElementsByTagName( "h1" ) ), "[\n  <h1 id=\"qunit-header\"></h1>\n]" );
+		assert.equal(
+			QUnit.dump.parse( document.getElementById( "qunit-header" ) ),
+			"<h1 id=\"qunit-header\"></h1>"
+		);
+		assert.equal(
+			QUnit.dump.parse( document.getElementsByTagName( "h1" ) ),
+			"[\n  <h1 id=\"qunit-header\"></h1>\n]"
+		);
 	}
 });
 
@@ -420,6 +440,7 @@ QUnit.test( "dump, TypeError properties", function( assert ) {
 
 		dumpedCustomError = QUnit.dump.parse( customError ),
 		dumpedTypeError = QUnit.dump.parse( typeError ),
+
 		dumpedTypeErrorWithEnumerable;
 
 	// Test when object has some enumerable properties by adding one
@@ -652,10 +673,13 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			/*jshint evil:true */
+
+			/*jshint ignore:start */
 			( window.execScript || function( data ) {
-				window[ "eval" ].call( window, data );
+				window.eval.call( window, data );
 			})( "throw 'error';" );
+
+			/*jshint ignore:end */
 		},
 		"globally-executed errors caught"
 	);
@@ -689,7 +713,11 @@ QUnit.test( "setup", function( assert ) {
 });
 
 QUnit.test( "basics", function( assert ) {
-	assert.equal( document.getElementById( "qunit-fixture" ).innerHTML, "test markup", "automatically reset" );
+	assert.equal(
+		document.getElementById( "qunit-fixture" ).innerHTML,
+		"test markup",
+		"automatically reset"
+	);
 });
 
 QUnit.test( "running test name displayed", function( assert ) {
@@ -697,8 +725,12 @@ QUnit.test( "running test name displayed", function( assert ) {
 
 	var displaying = document.getElementById( "qunit-testresult" );
 
-	assert.ok( /running test name displayed/.test( displaying.innerHTML ), "Expect test name to be found in displayed text" );
-	assert.ok( /fixture/.test( displaying.innerHTML ), "Expect module name to be found in displayed text" );
+	assert.ok( /running test name displayed/.test( displaying.innerHTML ),
+		"Expect test name to be found in displayed text"
+	);
+	assert.ok( /fixture/.test( displaying.innerHTML ),
+		"Expect module name to be found in displayed text"
+	);
 });
 
 (function() {
@@ -734,8 +766,12 @@ QUnit.test( "running test name displayed", function( assert ) {
 		assert.expect( 2 );
 		var basics = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
 			slow = getPreviousTests( /^basics$/, /^timing$/ )[ 0 ];
-		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50, "Fast runtime for trivial test" );
-		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250, "Runtime includes setup" );
+		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50,
+			"Fast runtime for trivial test"
+		);
+		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250,
+			"Runtime includes setup"
+		);
 	});
 })();
 
@@ -794,11 +830,15 @@ QUnit.test( "Check dump recursion", function( assert ) {
 
 	parentref = chainwrap( 2 );
 	parentdump = QUnit.dump.parse( parentref );
-	assert.equal( parentdump, "{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}" );
+	assert.equal( parentdump,
+		"{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}"
+	);
 
 	circref = chainwrap( 10 );
 	circdump = QUnit.dump.parse( circref );
-	assert.ok( new RegExp( "recursion\\(-10\\)" ).test( circdump ), "(" + circdump + ") should show -10 recursion level" );
+	assert.ok( new RegExp( "recursion\\(-10\\)" ).test( circdump ),
+		"(" + circdump + ") should show -10 recursion level"
+	);
 });
 
 QUnit.test( "Check equal/deepEqual recursion", function( assert ) {
@@ -829,7 +869,6 @@ QUnit.test( "Circular reference with arrays", function( assert ) {
 	assert.equal( arrdump, "[\n  recursion(-1)\n]" );
 	assert.equal( arr, arr[ 0 ], "no endless stack when trying to dump arrays with circular ref" );
 
-
 	// mix obj-arr circular ref
 	obj = {};
 	childarr = [ obj ];
@@ -841,15 +880,18 @@ QUnit.test( "Circular reference with arrays", function( assert ) {
 	assert.equal( objdump, "{\n  \"childarr\": [\n    recursion(-2)\n  ]\n}" );
 	assert.equal( childarrdump, "[\n  {\n    \"childarr\": recursion(-2)\n  }\n]" );
 
-	assert.equal( obj.childarr, childarr, "no endless stack when trying to dump array/object mix with circular ref" );
-	assert.equal( childarr[ 0 ], obj, "no endless stack when trying to dump array/object mix with circular ref" );
+	assert.equal( obj.childarr, childarr,
+		"no endless stack when trying to dump array/object mix with circular ref"
+	);
+	assert.equal( childarr[ 0 ], obj,
+		"no endless stack when trying to dump array/object mix with circular ref"
+	);
 
 });
 
-
 QUnit.test( "Circular reference - test reported by soniciq in #105", function( assert ) {
 	var a, b, barr,
-		MyObject = function(){};
+		MyObject = function() {};
 	MyObject.prototype.parent = function( obj ) {
 		if ( obj === undefined ) {
 			return this._parent;
