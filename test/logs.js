@@ -81,7 +81,9 @@ QUnit.test( "test1", function( assert ) {
 		module: "logs1",
 		name: "test1",
 		result: true,
-		message: "ok(true, message)"
+		message: "ok(true, message)",
+		actual: true,
+		expected: true
 	}, "log context after ok(true, message)" );
 
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );

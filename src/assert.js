@@ -20,40 +20,14 @@ assert = QUnit.assert = {
 	 * @function
 	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
 	 */
-	ok: function( result, msg ) {
-		if ( !config.current ) {
-			throw new Error( "ok() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
+	ok: function( result, message ) {
+		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
+			QUnit.jsDump.parse( result ) );
+		if ( !!result ) {
+			QUnit.push( true, result, true, message );
+		} else {
+			QUnit.pushFailure( message, null, result );
 		}
-		var source, details,
-			originalResult = result;
-
-		result = !!result;
-		msg = msg || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
-			QUnit.jsDump.parse( originalResult ) );
-
-		details = {
-			module: config.current.module,
-			name: config.current.testName,
-			result: result,
-			message: msg
-		};
-
-		msg = "<span class='test-message'>" + escapeText( msg ) + "</span>";
-
-		if ( !result ) {
-			source = sourceFromStacktrace( 2 );
-			if ( source ) {
-				details.source = source;
-				msg += "<table><tr class='test-source'><th>Source: </th><td><pre>" +
-					escapeText( source ) +
-					"</pre></td></tr></table>";
-			}
-		}
-		runLoggingCallbacks( "log", QUnit, details );
-		config.current.assertions.push({
-			result: result,
-			message: msg
-		});
 	},
 
 	/**
