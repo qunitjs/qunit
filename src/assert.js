@@ -22,7 +22,7 @@ assert = QUnit.assert = {
 	 */
 	ok: function( result, message ) {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
-			QUnit.jsDump.parse( result ) );
+			QUnit.dump.parse( result ) );
 		if ( !!result ) {
 			QUnit.push( true, result, true, message );
 		} else {

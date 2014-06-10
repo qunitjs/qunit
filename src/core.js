@@ -431,8 +431,8 @@ extend( QUnit, {
 		output = message;
 
 		if ( !result ) {
-			expected = escapeText( QUnit.jsDump.parse( expected ) );
-			actual = escapeText( QUnit.jsDump.parse( actual ) );
+			expected = escapeText( QUnit.dump.parse( expected ) );
+			actual = escapeText( QUnit.dump.parse( actual ) );
 			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
 
 			if ( actual !== expected ) {
@@ -517,8 +517,6 @@ extend( QUnit, {
 	addClass: addClass,
 	hasClass: hasClass,
 	removeClass: removeClass
-
-	// load, equiv, jsDump, diff: Attached later
 });
 
 /**

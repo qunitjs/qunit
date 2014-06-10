@@ -1,14 +1,6 @@
-/**
- * jsDump Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com |
- * http://flesler.blogspot.com Licensed under BSD
- * (http://www.opensource.org/licenses/bsd-license.php) Date: 5/15/2008
- *
- * @projectDescription Advanced and extensible data dumping for Javascript.
- * @version 1.0.0
- * @author Ariel Flesler
- * @link {http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html}
- */
-QUnit.jsDump = (function() {
+// Based on jsDump by Ariel Flesler
+// http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
+QUnit.dump = (function() {
 	function quote( str ) {
 		return "\"" + str.toString().replace( /"/g, "\\\"" ) + "\"";
 	}
@@ -16,9 +8,9 @@ QUnit.jsDump = (function() {
 		return o + "";
 	}
 	function join( pre, arr, post ) {
-		var s = jsDump.separator(),
-			base = jsDump.indent(),
-			inner = jsDump.indent( 1 );
+		var s = dump.separator(),
+			base = dump.indent(),
+			inner = dump.indent( 1 );
 		if ( arr.join ) {
 			arr = arr.join( "," + s + inner );
 		}
@@ -39,7 +31,7 @@ QUnit.jsDump = (function() {
 	}
 
 	var reName = /^function (\w+)/,
-		jsDump = {
+		dump = {
 			// type is used mostly internally, you can fix a (custom)type in advance
 			parse: function( obj, type, stack ) {
 				stack = stack || [];
@@ -123,7 +115,7 @@ QUnit.jsDump = (function() {
 			join: join,
 			//
 			depth: 1,
-			// This is the list of parsers, to modify them, use jsDump.setParser
+			// This is the list of parsers, to modify them, use dump.setParser
 			parsers: {
 				window: "[Window]",
 				document: "[Document]",
@@ -143,8 +135,8 @@ QUnit.jsDump = (function() {
 					}
 					ret += "( ";
 
-					ret = [ ret, QUnit.jsDump.parse( fn, "functionArgs" ), "){" ].join( "" );
-					return join( ret, QUnit.jsDump.parse( fn, "functionCode" ), "}" );
+					ret = [ ret, dump.parse( fn, "functionArgs" ), "){" ].join( "" );
+					return join( ret, dump.parse( fn, "functionCode" ), "}" );
 				},
 				array: array,
 				nodelist: array,
@@ -152,7 +144,7 @@ QUnit.jsDump = (function() {
 				object: function( map, stack ) {
 					/*jshint forin:false */
 					var ret = [], keys, key, val, i, nonEnumerableProperties;
-					QUnit.jsDump.up();
+					dump.up();
 					keys = [];
 					for ( key in map ) {
 						keys.push( key );
@@ -170,15 +162,15 @@ QUnit.jsDump = (function() {
 					for ( i = 0; i < keys.length; i++ ) {
 						key = keys[ i ];
 						val = map[ key ];
-						ret.push( QUnit.jsDump.parse( key, "key" ) + ": " + QUnit.jsDump.parse( val, undefined, stack ) );
+						ret.push( dump.parse( key, "key" ) + ": " + dump.parse( val, undefined, stack ) );
 					}
-					QUnit.jsDump.down();
+					dump.down();
 					return join( "{", ret, "}" );
 				},
 				node: function( node ) {
 					var len, i, val,
-						open = QUnit.jsDump.HTML ? "&lt;" : "<",
-						close = QUnit.jsDump.HTML ? "&gt;" : ">",
+						open = dump.HTML ? "&lt;" : "<",
+						close = dump.HTML ? "&gt;" : ">",
 						tag = node.nodeName.toLowerCase(),
 						ret = open + tag,
 						attrs = node.attributes;
@@ -190,7 +182,7 @@ QUnit.jsDump = (function() {
 							// IE6 includes all attributes in .attributes, even ones not explicitly set.
 							// Those have values like undefined, null, 0, false, "" or "inherit".
 							if ( val && val !== "inherit" ) {
-								ret += " " + attrs[ i ].nodeName + "=" + QUnit.jsDump.parse( val, "attribute" );
+								ret += " " + attrs[ i ].nodeName + "=" + dump.parse( val, "attribute" );
 							}
 						}
 					}
@@ -241,5 +233,8 @@ QUnit.jsDump = (function() {
 			multiline: true
 		};
 
-	return jsDump;
+	return dump;
 }());
+
+// back compat
+QUnit.jsDump = QUnit.dump;
