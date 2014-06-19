@@ -33,26 +33,26 @@ grunt.initConfig({
 		},
 		"src-css": {
 			options: { process: process },
-			src: [
-				"src/qunit.css"
-			],
+			src: "src/qunit.css",
 			dest: "dist/qunit.css"
 		}
 	},
 	jshint: {
 		options: {
-			jshintrc: ".jshintrc"
+			jshintrc: true
 		},
-		gruntfile: [ "Gruntfile.js" ],
-		dist: [ "dist/*.js" ],
-		tests: [ "test/**/*.js" ]
+		all: [
+			"*.js",
+			"{test,dist}/**/*.js",
+			"build/*.js"
+		]
 	},
 	qunit: {
 		options: {
 			timeout: 30000,
 			"--web-security": "no",
 			coverage: {
-				src: [ "dist/qunit.js" ],
+				src: "dist/qunit.js",
 				instrumentedFiles: "temp/",
 				htmlReport: "build/report/coverage",
 				lcovReport: "build/report/lcov",
@@ -80,7 +80,12 @@ grunt.initConfig({
 		options: {
 			atBegin: true
 		},
-		files: [ "*", ".jshintrc", "{src,test}/**/{*,.*}" ],
+		files: [
+			".jshintrc",
+			"*.js",
+			"build/*.js",
+			"{src,test}/**/*.js"
+		],
 		tasks: "default"
 	}
 });
