@@ -468,7 +468,7 @@ if ( !defined.document || document.readyState === "complete" ) {
 }
 
 QUnit.load = function() {
-	runLoggingCallbacks( "begin", QUnit, {
+	runLoggingCallbacks( "begin", {
 		totalTests: Test.count
 	});
 
@@ -713,7 +713,7 @@ function done() {
 
 	// Log the last module results
 	if ( config.previousModule ) {
-		runLoggingCallbacks( "moduleDone", QUnit, {
+		runLoggingCallbacks( "moduleDone", {
 			name: config.previousModule,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
@@ -775,7 +775,7 @@ function done() {
 		window.scrollTo( 0, 0 );
 	}
 
-	runLoggingCallbacks( "done", QUnit, {
+	runLoggingCallbacks( "done", {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
@@ -1066,16 +1066,12 @@ function registerLoggingCallback( key ) {
 	};
 }
 
-// Supports deprecated method of completely overwriting logging callbacks
-function runLoggingCallbacks( key, scope, args ) {
-	var i, callbacks;
-	if ( QUnit.hasOwnProperty( key ) ) {
-		QUnit[ key ].call( scope, args );
-	} else {
-		callbacks = config[ key ];
-		for ( i = 0; i < callbacks.length; i++ ) {
-			callbacks[ i ].call( scope, args );
-		}
+function runLoggingCallbacks( key, args ) {
+	var i, l, callbacks;
+
+	callbacks = config[ key ];
+	for ( i = 0, l = callbacks.length; i < l; i++ ) {
+		callbacks[ i ]( args );
 	}
 }
 

@@ -43,7 +43,7 @@ Test.prototype = {
 				!hasOwn.call( config, "previousModule" )
 		) {
 			if ( hasOwn.call( config, "previousModule" ) ) {
-				runLoggingCallbacks( "moduleDone", QUnit, {
+				runLoggingCallbacks( "moduleDone", {
 					name: config.previousModule,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
@@ -52,7 +52,7 @@ Test.prototype = {
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0 };
-			runLoggingCallbacks( "moduleStart", QUnit, {
+			runLoggingCallbacks( "moduleStart", {
 				name: this.module
 			});
 		}
@@ -65,7 +65,7 @@ Test.prototype = {
 		}, this.moduleTestEnvironment );
 
 		this.started = now();
-		runLoggingCallbacks( "testStart", QUnit, {
+		runLoggingCallbacks( "testStart", {
 			name: this.testName,
 			module: this.module
 		});
@@ -247,7 +247,7 @@ Test.prototype = {
 			}
 		}
 
-		runLoggingCallbacks( "testDone", QUnit, {
+		runLoggingCallbacks( "testDone", {
 			name: this.testName,
 			module: this.module,
 			failed: bad,
@@ -338,7 +338,7 @@ Test.prototype = {
 			output += "</table>";
 		}
 
-		runLoggingCallbacks( "log", QUnit, details );
+		runLoggingCallbacks( "log", details );
 
 		this.assertions.push({
 			result: !!result,
@@ -376,7 +376,7 @@ Test.prototype = {
 
 		output += "</table>";
 
-		runLoggingCallbacks( "log", QUnit, details );
+		runLoggingCallbacks( "log", details );
 
 		config.current.assertions.push({
 			result: false,
