@@ -25,8 +25,9 @@ grunt.initConfig({
 				"src/assert.js",
 				"src/equiv.js",
 				"src/dump.js",
-				"external/jsdiff/jsdiff.js",
 				"src/export.js",
+				"external/jsdiff/jsdiff.js",
+				"reporter/html.js",
 				"src/outro.js"
 			],
 			dest: "dist/qunit.js"

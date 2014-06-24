@@ -8,28 +8,6 @@ function Test( settings ) {
 Test.count = 0;
 
 Test.prototype = {
-	init: function() {
-		var a, b, li,
-			tests = id( "qunit-tests" );
-
-		if ( tests ) {
-			b = document.createElement( "strong" );
-			b.innerHTML = this.nameHtml;
-
-			// `a` initialized at top of scope
-			a = document.createElement( "a" );
-			a.innerHTML = "Rerun";
-			a.href = QUnit.url( { testNumber: this.testNumber } );
-
-			li = document.createElement( "li" );
-			li.appendChild( b );
-			li.appendChild( a );
-			li.className = "running";
-			li.id = this.id = "qunit-test-output" + testId++;
-
-			tests.appendChild( li );
-		}
-	},
 	setup: function() {
 		if (
 
@@ -67,7 +45,8 @@ Test.prototype = {
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
-			module: this.module
+			module: this.module,
+			testNumber: this.testNumber
 		});
 
 		/*jshint camelcase:false */
@@ -96,12 +75,6 @@ Test.prototype = {
 	},
 	run: function() {
 		config.current = this;
-
-		var running = id( "qunit-testresult" );
-
-		if ( running ) {
-			running.innerHTML = "Running: <br/>" + this.nameHtml;
-		}
 
 		if ( this.async ) {
 			QUnit.stop();
@@ -159,91 +132,18 @@ Test.prototype = {
 			this.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var i, assertion, a, b, time, li, ol,
-			test = this,
-			good = 0,
-			bad = 0,
-			tests = id( "qunit-tests" );
+		var i,
+			bad = 0;
 
 		this.runtime = now() - this.started;
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
 
-		if ( tests ) {
-			ol = document.createElement( "ol" );
-			ol.className = "qunit-assert-list";
-
-			for ( i = 0; i < this.assertions.length; i++ ) {
-				assertion = this.assertions[ i ];
-
-				li = document.createElement( "li" );
-				li.className = assertion.result ? "pass" : "fail";
-				li.innerHTML = assertion.message || ( assertion.result ? "okay" : "failed" );
-				ol.appendChild( li );
-
-				if ( assertion.result ) {
-					good++;
-				} else {
-					bad++;
-					config.stats.bad++;
-					config.moduleStats.bad++;
-				}
-			}
-
-			// store result when possible
-			if ( QUnit.config.reorder && defined.sessionStorage ) {
-				if ( bad ) {
-					sessionStorage.setItem( "qunit-test-" + this.module + "-" + this.testName, bad );
-				} else {
-					sessionStorage.removeItem( "qunit-test-" + this.module + "-" + this.testName );
-				}
-			}
-
-			if ( bad === 0 ) {
-				addClass( ol, "qunit-collapsed" );
-			}
-
-			// `b` initialized at top of scope
-			b = document.createElement( "strong" );
-			b.innerHTML = this.nameHtml + " <b class='counts'>(<b class='failed'>" + bad + "</b>, <b class='passed'>" + good + "</b>, " + this.assertions.length + ")</b>";
-
-			addEvent( b, "click", function() {
-				var next = b.parentNode.lastChild,
-					collapsed = hasClass( next, "qunit-collapsed" );
-				( collapsed ? removeClass : addClass )( next, "qunit-collapsed" );
-			});
-
-			addEvent( b, "dblclick", function( e ) {
-				var target = e && e.target ? e.target : window.event.srcElement;
-				if ( target.nodeName.toLowerCase() === "span" || target.nodeName.toLowerCase() === "b" ) {
-					target = target.parentNode;
-				}
-				if ( window.location && target.nodeName.toLowerCase() === "strong" ) {
-					window.location = QUnit.url( { testNumber: test.testNumber } );
-				}
-			});
-
-			// `time` initialized at top of scope
-			time = document.createElement( "span" );
-			time.className = "runtime";
-			time.innerHTML = this.runtime + " ms";
-
-			// `li` initialized at top of scope
-			li = id( this.id );
-			li.className = bad ? "fail" : "pass";
-			li.removeChild( li.firstChild );
-			a = li.firstChild;
-			li.appendChild( b );
-			li.appendChild( a );
-			li.appendChild( time );
-			li.appendChild( ol );
-		} else {
-			for ( i = 0; i < this.assertions.length; i++ ) {
-				if ( !this.assertions[ i ].result ) {
-					bad++;
-					config.stats.bad++;
-					config.moduleStats.bad++;
-				}
+		for ( i = 0; i < this.assertions.length; i++ ) {
+			if ( !this.assertions[ i ].result ) {
+				bad++;
+				config.stats.bad++;
+				config.moduleStats.bad++;
 			}
 		}
 
@@ -255,11 +155,13 @@ Test.prototype = {
 			total: this.assertions.length,
 			runtime: this.runtime,
 
+			// HTML Reporter use
+			assertions: this.assertions,
+			testNumber: this.testNumber,
+
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
 			duration: this.runtime
 		});
-
-		QUnit.reset();
 
 		config.current = undefined;
 	},
@@ -268,9 +170,6 @@ Test.prototype = {
 		var bad,
 			test = this;
 
-		synchronize(function() {
-			test.init();
-		});
 		function run() {
 			// each of these can by async
 			synchronize(function() {
@@ -304,45 +203,30 @@ Test.prototype = {
 			throw new Error( "assertion outside test context, was " + sourceFromStacktrace() );
 		}
 
-		var output, source,
+		var source,
 			details = {
 				module: this.module,
 				name: this.testName,
 				result: result,
 				message: message,
 				actual: actual,
-				expected: expected
+				expected: expected,
+				testNumber: this.testNumber
 			};
 
-		message = escapeText( message ) || ( result ? "okay" : "failed" );
-		message = "<span class='test-message'>" + message + "</span>";
-		output = message;
-
 		if ( !result ) {
-			expected = escapeText( QUnit.dump.parse( expected ) );
-			actual = escapeText( QUnit.dump.parse( actual ) );
-			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
-
-			if ( actual !== expected ) {
-				output += "<tr class='test-actual'><th>Result: </th><td><pre>" + actual + "</pre></td></tr>";
-				output += "<tr class='test-diff'><th>Diff: </th><td><pre>" + QUnit.diff( expected, actual ) + "</pre></td></tr>";
-			}
-
 			source = sourceFromStacktrace();
 
 			if ( source ) {
 				details.source = source;
-				output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
 			}
-
-			output += "</table>";
 		}
 
 		runLoggingCallbacks( "log", details );
 
 		this.assertions.push({
 			result: !!result,
-			message: output
+			message: message
 		});
 	},
 
@@ -351,36 +235,24 @@ Test.prototype = {
 			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
 		}
 
-		var output,
-			details = {
+		var details = {
 				module: this.module,
 				name: this.testName,
 				result: false,
-				message: message
+				message: message || "error",
+				actual: actual || null,
+				testNumber: this.testNumber
 			};
-
-		message = escapeText( message ) || "error";
-		message = "<span class='test-message'>" + message + "</span>";
-		output = message;
-
-		output += "<table>";
-
-		if ( actual ) {
-			output += "<tr class='test-actual'><th>Result: </th><td><pre>" + escapeText( actual ) + "</pre></td></tr>";
-		}
 
 		if ( source ) {
 			details.source = source;
-			output += "<tr class='test-source'><th>Source: </th><td><pre>" + escapeText( source ) + "</pre></td></tr>";
 		}
-
-		output += "</table>";
 
 		runLoggingCallbacks( "log", details );
 
-		config.current.assertions.push({
+		this.assertions.push({
 			result: false,
-			message: output
+			message: message
 		});
 	}
 };

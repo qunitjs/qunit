@@ -1,7 +1,6 @@
 var QUnit,
 	config,
 	onErrorFnPrev,
-	testId = 0,
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
@@ -74,7 +73,6 @@ var QUnit,
 		return vals;
 	};
 
-
 // Root QUnit object.
 // `QUnit` initialized at top of scope
 QUnit = {
@@ -96,20 +94,14 @@ QUnit = {
 	},
 
 	test: function( testName, expected, callback, async ) {
-		var test,
-			nameHtml = "<span class='test-name'>" + escapeText( testName ) + "</span>";
+		var test;
 
 		if ( arguments.length === 2 ) {
 			callback = expected;
 			expected = null;
 		}
 
-		if ( config.currentModule ) {
-			nameHtml = "<span class='module-name'>" + escapeText( config.currentModule ) + "</span>: " + nameHtml;
-		}
-
 		test = new Test({
-			nameHtml: nameHtml,
 			testName: testName,
 			expected: expected,
 			async: async,
@@ -305,71 +297,6 @@ extend( QUnit, {
 
 	config: config,
 
-	// Initialize the configuration options
-	init: function() {
-		extend( config, {
-			stats: { all: 0, bad: 0 },
-			moduleStats: { all: 0, bad: 0 },
-			started: 0,
-			updateRate: 1000,
-			blocking: false,
-			autostart: true,
-			autorun: false,
-			filter: "",
-			queue: [],
-			semaphore: 1
-		});
-
-		var tests, banner, result,
-			qunit = id( "qunit" );
-
-		if ( qunit ) {
-			qunit.innerHTML =
-				"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-				"<h2 id='qunit-banner'></h2>" +
-				"<div id='qunit-testrunner-toolbar'></div>" +
-				"<h2 id='qunit-userAgent'></h2>" +
-				"<ol id='qunit-tests'></ol>";
-		}
-
-		tests = id( "qunit-tests" );
-		banner = id( "qunit-banner" );
-		result = id( "qunit-testresult" );
-
-		if ( tests ) {
-			tests.innerHTML = "";
-		}
-
-		if ( banner ) {
-			banner.className = "";
-		}
-
-		if ( result ) {
-			result.parentNode.removeChild( result );
-		}
-
-		if ( tests ) {
-			result = document.createElement( "p" );
-			result.id = "qunit-testresult";
-			result.className = "result";
-			tests.parentNode.insertBefore( result, tests );
-			result.innerHTML = "Running...<br/>&nbsp;";
-		}
-	},
-
-	// Resets the test setup. Useful for tests that modify the DOM.
-	/*
-	DEPRECATED: Use multiple tests instead of resetting inside a test.
-	Use testStart or testDone for custom cleanup.
-	This method will throw an error in 2.0, and will be removed in 2.1
-	*/
-	reset: function() {
-		var fixture = id( "qunit-fixture" );
-		if ( fixture ) {
-			fixture.innerHTML = config.fixture;
-		}
-	},
-
 	// Safe object type checking
 	is: function( type, obj ) {
 		return QUnit.objectType( obj ) === type;
@@ -463,218 +390,28 @@ extend( QUnit.constructor.prototype, {
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
 
-if ( !defined.document || document.readyState === "complete" ) {
-	config.autorun = true;
-}
-
 QUnit.load = function() {
 	runLoggingCallbacks( "begin", {
 		totalTests: Test.count
 	});
 
-	// Initialize the config, saving the execution queue
-	var banner, filter, i, j, label, len, main, ol, toolbar, val, selection,
-		urlConfigContainer, moduleFilter, userAgent,
-		numModules = 0,
-		moduleNames = [],
-		moduleFilterHtml = "",
-		urlConfigHtml = "",
-		oldconfig = extend( {}, config );
-
-	QUnit.init();
-	extend( config, oldconfig );
+	// Initialize the configuration options
+	extend( config, {
+		stats: { all: 0, bad: 0 },
+		moduleStats: { all: 0, bad: 0 },
+		started: 0,
+		updateRate: 1000,
+		autostart: true,
+		filter: "",
+		semaphore: 1
+	}, true );
 
 	config.blocking = false;
-
-	len = config.urlConfig.length;
-
-	for ( i = 0; i < len; i++ ) {
-		val = config.urlConfig[ i ];
-		if ( typeof val === "string" ) {
-			val = {
-				id: val,
-				label: val
-			};
-		}
-		config[ val.id ] = QUnit.urlParams[ val.id ];
-		if ( !val.value || typeof val.value === "string" ) {
-			urlConfigHtml += "<input id='qunit-urlconfig-" + escapeText( val.id ) +
-				"' name='" + escapeText( val.id ) +
-				"' type='checkbox'" +
-				( val.value ? " value='" + escapeText( val.value ) + "'" : "" ) +
-				( config[ val.id ] ? " checked='checked'" : "" ) +
-				" title='" + escapeText( val.tooltip ) +
-				"'><label for='qunit-urlconfig-" + escapeText( val.id ) +
-				"' title='" + escapeText( val.tooltip ) + "'>" + val.label + "</label>";
-		} else {
-			urlConfigHtml += "<label for='qunit-urlconfig-" + escapeText( val.id ) +
-				"' title='" + escapeText( val.tooltip ) +
-				"'>" + val.label +
-				": </label><select id='qunit-urlconfig-" + escapeText( val.id ) +
-				"' name='" + escapeText( val.id ) +
-				"' title='" + escapeText( val.tooltip ) +
-				"'><option></option>";
-			selection = false;
-			if ( QUnit.is( "array", val.value ) ) {
-				for ( j = 0; j < val.value.length; j++ ) {
-					urlConfigHtml += "<option value='" + escapeText( val.value[ j ] ) + "'" +
-						( config[ val.id ] === val.value[ j ] ?
-							( selection = true ) && " selected='selected'" :
-							"" ) +
-						">" + escapeText( val.value[ j ] ) + "</option>";
-				}
-			} else {
-				for ( j in val.value ) {
-					if ( hasOwn.call( val.value, j ) ) {
-						urlConfigHtml += "<option value='" + escapeText( j ) + "'" +
-							( config[ val.id ] === j ?
-								( selection = true ) && " selected='selected'" :
-								"" ) +
-							">" + escapeText( val.value[ j ] ) + "</option>";
-					}
-				}
-			}
-			if ( config[ val.id ] && !selection ) {
-				urlConfigHtml += "<option value='" + escapeText( config[ val.id ] ) +
-					"' selected='selected' disabled='disabled'>" +
-					escapeText( config[ val.id ] ) +
-					"</option>";
-			}
-			urlConfigHtml += "</select>";
-		}
-	}
-	for ( i in config.modules ) {
-		if ( config.modules.hasOwnProperty( i ) ) {
-			moduleNames.push( i );
-		}
-	}
-	numModules = moduleNames.length;
-	moduleNames.sort(function( a, b ) {
-		return a.localeCompare( b );
-	});
-	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label><select id='qunit-modulefilter' name='modulefilter'><option value='' " +
-		( config.module === undefined ? "selected='selected'" : "" ) +
-		">< All Modules ></option>";
-
-	for ( i = 0; i < numModules; i++ ) {
-		moduleFilterHtml += "<option value='" + escapeText( encodeURIComponent( moduleNames[ i ] ) ) + "' " +
-			( config.module === moduleNames[ i ] ? "selected='selected'" : "" ) +
-			">" + escapeText( moduleNames[ i ] ) + "</option>";
-	}
-	moduleFilterHtml += "</select>";
-
-	// `userAgent` initialized at top of scope
-	userAgent = id( "qunit-userAgent" );
-	if ( userAgent ) {
-		userAgent.innerHTML = navigator.userAgent;
-	}
-
-	// `banner` initialized at top of scope
-	banner = id( "qunit-header" );
-	if ( banner ) {
-		banner.innerHTML = "<a href='" + QUnit.url( { filter: undefined, module: undefined, testNumber: undefined } ) + "'>" + banner.innerHTML + "</a> ";
-	}
-
-	// `toolbar` initialized at top of scope
-	toolbar = id( "qunit-testrunner-toolbar" );
-	if ( toolbar ) {
-
-		// `filter` initialized at top of scope
-		filter = document.createElement( "input" );
-		filter.type = "checkbox";
-		filter.id = "qunit-filter-pass";
-
-		addEvent( filter, "click", function() {
-			var tmp,
-				ol = id( "qunit-tests" );
-
-			if ( filter.checked ) {
-				ol.className = ol.className + " hidepass";
-			} else {
-				tmp = " " + ol.className.replace( /[\n\t\r]/g, " " ) + " ";
-				ol.className = tmp.replace( / hidepass /, " " );
-			}
-			if ( defined.sessionStorage ) {
-				if ( filter.checked ) {
-					sessionStorage.setItem( "qunit-filter-passed-tests", "true" );
-				} else {
-					sessionStorage.removeItem( "qunit-filter-passed-tests" );
-				}
-			}
-		});
-
-		if ( config.hidepassed || defined.sessionStorage && sessionStorage.getItem( "qunit-filter-passed-tests" ) ) {
-			filter.checked = true;
-
-			// `ol` initialized at top of scope
-			ol = id( "qunit-tests" );
-			ol.className = ol.className + " hidepass";
-		}
-		toolbar.appendChild( filter );
-
-		// `label` initialized at top of scope
-		label = document.createElement( "label" );
-		label.setAttribute( "for", "qunit-filter-pass" );
-		label.setAttribute( "title", "Only show tests and assertions that fail. Stored in sessionStorage." );
-		label.innerHTML = "Hide passed tests";
-		toolbar.appendChild( label );
-
-		urlConfigContainer = document.createElement( "span" );
-		urlConfigContainer.innerHTML = urlConfigHtml;
-
-		// For oldIE support:
-		// * Add handlers to the individual elements instead of the container
-		// * Use "click" instead of "change" for checkboxes
-		// * Fallback from event.target to event.srcElement
-		addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", function( event ) {
-			var params = {},
-				target = event.target || event.srcElement;
-			params[ target.name ] = target.checked ?
-				target.defaultValue || true :
-				undefined;
-			window.location = QUnit.url( params );
-		});
-		addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", function( event ) {
-			var params = {},
-				target = event.target || event.srcElement;
-			params[ target.name ] = target.options[ target.selectedIndex ].value || undefined;
-			window.location = QUnit.url( params );
-		});
-		toolbar.appendChild( urlConfigContainer );
-
-		if ( numModules > 1 ) {
-			moduleFilter = document.createElement( "span" );
-			moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
-			moduleFilter.innerHTML = moduleFilterHtml;
-			addEvent( moduleFilter.lastChild, "change", function() {
-				var selectBox = moduleFilter.getElementsByTagName( "select" )[ 0 ],
-					selectedModule = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value );
-
-				window.location = QUnit.url({
-					module: ( selectedModule === "" ) ? undefined : selectedModule,
-					// Remove any existing filters
-					filter: undefined,
-					testNumber: undefined
-				});
-			});
-			toolbar.appendChild( moduleFilter );
-		}
-	}
-
-	// `main` initialized at top of scope
-	main = id( "qunit-fixture" );
-	if ( main ) {
-		config.fixture = main.innerHTML;
-	}
 
 	if ( config.autostart ) {
 		QUnit.start();
 	}
 };
-
-if ( defined.document ) {
-	addEvent( window, "load", QUnit.load );
-}
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -722,58 +459,8 @@ function done() {
 	}
 	delete config.previousModule;
 
-	var i, key,
-		banner = id( "qunit-banner" ),
-		tests = id( "qunit-tests" ),
-		runtime = now() - config.started,
-		passed = config.stats.all - config.stats.bad,
-		html = [
-			"Tests completed in ",
-			runtime,
-			" milliseconds.<br/>",
-			"<span class='passed'>",
-			passed,
-			"</span> assertions of <span class='total'>",
-			config.stats.all,
-			"</span> passed, <span class='failed'>",
-			config.stats.bad,
-			"</span> failed."
-		].join( "" );
-
-	if ( banner ) {
-		banner.className = ( config.stats.bad ? "qunit-fail" : "qunit-pass" );
-	}
-
-	if ( tests ) {
-		id( "qunit-testresult" ).innerHTML = html;
-	}
-
-	if ( config.altertitle && defined.document && document.title ) {
-
-		// show ✖ for good, ✔ for bad suite result in title
-		// use escape sequences in case file gets loaded with non-utf-8-charset
-		document.title = [
-			( config.stats.bad ? "\u2716" : "\u2714" ),
-			document.title.replace( /^[\u2714\u2716] /i, "" )
-		].join( " " );
-	}
-
-	// clear own sessionStorage items if all tests passed
-	if ( config.reorder && defined.sessionStorage && config.stats.bad === 0 ) {
-
-		// `key` & `i` initialized at top of scope
-		for ( i = 0; i < sessionStorage.length; i++ ) {
-			key = sessionStorage.key( i++ );
-			if ( key.indexOf( "qunit-test-" ) === 0 ) {
-				sessionStorage.removeItem( key );
-			}
-		}
-	}
-
-	// scroll back to top to show results
-	if ( config.scrolltop && window.scrollTo ) {
-		window.scrollTo( 0, 0 );
-	}
+	var runtime = now() - config.started,
+		passed = config.stats.all - config.stats.bad;
 
 	runLoggingCallbacks( "done", {
 		failed: config.stats.bad,
@@ -877,32 +564,6 @@ function sourceFromStacktrace( offset ) {
 	}
 }
 
-/**
- * Escape text for attribute or text content.
- */
-function escapeText( s ) {
-	if ( !s ) {
-		return "";
-	}
-	s = s + "";
-
-	// Both single quotes and double quotes (for attributes)
-	return s.replace( /['"<>&]/g, function( s ) {
-		switch ( s ) {
-			case "'":
-				return "&#039;";
-			case "\"":
-				return "&quot;";
-			case "<":
-				return "&lt;";
-			case ">":
-				return "&gt;";
-			case "&":
-				return "&amp;";
-		}
-	});
-}
-
 function synchronize( callback, last ) {
 	config.queue.push( callback );
 
@@ -983,7 +644,7 @@ function diff( a, b ) {
 	return result;
 }
 
-function extend( a, b ) {
+function extend( a, b, undefOnly ) {
 	for ( var prop in b ) {
 		if ( hasOwn.call( b, prop ) ) {
 
@@ -991,7 +652,7 @@ function extend( a, b ) {
 			if ( !( prop === "constructor" && a === window ) ) {
 				if ( b[ prop ] === undefined ) {
 					delete a[ prop ];
-				} else {
+				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
 					a[ prop ] = b[ prop ];
 				}
 			}
@@ -999,65 +660,6 @@ function extend( a, b ) {
 	}
 
 	return a;
-}
-
-/**
- * @param {HTMLElement} elem
- * @param {string} type
- * @param {Function} fn
- */
-function addEvent( elem, type, fn ) {
-	if ( elem.addEventListener ) {
-
-		// Standards-based browsers
-		elem.addEventListener( type, fn, false );
-	} else if ( elem.attachEvent ) {
-
-		// support: IE <9
-		elem.attachEvent( "on" + type, fn );
-	} else {
-
-		// Caller must ensure support for event listeners is present
-		throw new Error( "addEvent() was called in a context without event listener support" );
-	}
-}
-
-/**
- * @param {Array|NodeList} elems
- * @param {string} type
- * @param {Function} fn
- */
-function addEvents( elems, type, fn ) {
-	var i = elems.length;
-	while ( i-- ) {
-		addEvent( elems[ i ], type, fn );
-	}
-}
-
-function hasClass( elem, name ) {
-	return ( " " + elem.className + " " ).indexOf( " " + name + " " ) > -1;
-}
-
-function addClass( elem, name ) {
-	if ( !hasClass( elem, name ) ) {
-		elem.className += ( elem.className ? " " : "" ) + name;
-	}
-}
-
-function removeClass( elem, name ) {
-	var set = " " + elem.className + " ";
-
-	// Class name may appear multiple times
-	while ( set.indexOf( " " + name + " " ) > -1 ) {
-		set = set.replace( " " + name + " ", " " );
-	}
-
-	// If possible, trim it for prettiness, but not necessarily
-	elem.className = typeof set.trim === "function" ? set.trim() : set.replace( /^\s+|\s+$/g, "" );
-}
-
-function id( name ) {
-	return defined.document && document.getElementById && document.getElementById( name );
 }
 
 function registerLoggingCallback( key ) {
