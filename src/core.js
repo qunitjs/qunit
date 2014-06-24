@@ -350,12 +350,7 @@ extend( QUnit, {
 			window.location.pathname + querystring.slice( 0, -1 );
 	},
 
-	extend: extend,
-	id: id,
-	addEvent: addEvent,
-	addClass: addClass,
-	hasClass: hasClass,
-	removeClass: removeClass
+	extend: extend
 });
 
 /**
