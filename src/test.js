@@ -49,17 +49,6 @@ Test.prototype = {
 			testNumber: this.testNumber
 		});
 
-		/*jshint camelcase:false */
-
-		/**
-		 * Expose the current test environment.
-		 *
-		 * @deprecated since 1.12.0: Use QUnit.config.current.testEnvironment instead.
-		 */
-		QUnit.current_testEnvironment = this.testEnvironment;
-
-		/*jshint camelcase:true */
-
 		if ( !config.pollution ) {
 			saveGlobal();
 		}
