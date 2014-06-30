@@ -404,6 +404,42 @@ QUnit.test( "dump output", function( assert ) {
 	}
 });
 
+QUnit.test( "dump output, shallow", function( assert ) {
+	var obj = {
+		top: {
+			middle: {
+				bottom: 0
+			}
+		},
+		left: 0
+	};
+	assert.expect(4);
+	try {
+		QUnit.dump.maxDepth = 1;
+		assert.equal(
+			QUnit.dump.parse( obj ),
+			"{\n  \"left\": 0,\n  \"top\": [object Object]\n}"
+		);
+		QUnit.dump.maxDepth = 2;
+		assert.equal(
+			QUnit.dump.parse( obj ),
+			"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": [object Object]\n  }\n}"
+		);
+		QUnit.dump.maxDepth = 3;
+		assert.equal(
+			QUnit.dump.parse( obj ),
+			"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
+		);
+		QUnit.dump.maxDepth = 5;
+		assert.equal(
+			QUnit.dump.parse( obj ),
+			"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
+		);
+	} finally {
+		QUnit.dump.maxDepth = null;
+	}
+});
+
 QUnit.test( "dump, TypeError properties", function( assert ) {
 	function CustomError( message ) {
 		this.message = message;

@@ -319,8 +319,10 @@ Test.prototype = {
 		output = message;
 
 		if ( !result ) {
+			QUnit.dump.maxDepth = 5;
 			expected = escapeText( QUnit.dump.parse( expected ) );
 			actual = escapeText( QUnit.dump.parse( actual ) );
+			QUnit.dump.maxDepth = null;
 			output += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" + expected + "</pre></td></tr>";
 
 			if ( actual !== expected ) {
