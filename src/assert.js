@@ -109,12 +109,12 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	"throws": function( block, expected, message ) {
-		var actual,
+		var actual, expectedType,
 			expectedOutput = expected,
 			ok = false;
 
-		// 'expected' is optional
-		if ( !message && typeof expected === "string" ) {
+		// 'expected' is optional unless doing string comparison
+		if ( message == null && typeof expected === "string" ) {
 			message = expected;
 			expected = null;
 		}
@@ -128,32 +128,33 @@ QUnit.assert = Assert.prototype = {
 		this.test.ignoreGlobalErrors = false;
 
 		if ( actual ) {
+			expectedType = QUnit.objectType( expected );
 
 			// we don't want to validate thrown error
 			if ( !expected ) {
 				ok = true;
 				expectedOutput = null;
 
-			// expected is an Error object
-			} else if ( expected instanceof Error ) {
-				ok = actual instanceof Error &&
-					 actual.name === expected.name &&
-					 actual.message === expected.message;
-
 			// expected is a regexp
-			} else if ( QUnit.objectType( expected ) === "regexp" ) {
+			} else if ( expectedType === "regexp" ) {
 				ok = expected.test( errorString( actual ) );
 
 			// expected is a string
-			} else if ( QUnit.objectType( expected ) === "string" ) {
+			} else if ( expectedType === "string" ) {
 				ok = expected === errorString( actual );
 
-			// expected is a constructor
-			} else if ( actual instanceof expected ) {
+			// expected is a constructor, maybe an Error constructor
+			} else if ( expectedType === "function" && actual instanceof expected ) {
 				ok = true;
 
-			// expected is a validation function which returns true is validation passed
-			} else if ( expected.call( {}, actual ) === true ) {
+			// expected is an Error object
+			} else if ( expectedType === "object" && expected instanceof Error ) {
+				ok = actual instanceof Error &&
+					actual.name === expected.name &&
+					actual.message === expected.message;
+
+			// expected is a validation function which returns true if validation passed
+			} else if ( expectedType === "function" && expected.call( {}, actual ) === true ) {
 				expectedOutput = null;
 				ok = true;
 			}

@@ -529,7 +529,7 @@ QUnit.test( "propEqual", function( assert ) {
 });
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 10 );
+	assert.expect( 14 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -563,6 +563,42 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
+			throw new TypeError();
+		},
+		Error,
+		"thrown TypeError without a message is an instance of Error"
+	);
+
+	assert.throws(
+		function() {
+			throw new TypeError();
+		},
+		TypeError,
+		"thrown TypeError without a message is an instance of TypeError"
+	);
+
+	assert.throws(
+		function() {
+			throw new TypeError( "error message" );
+		},
+		Error,
+		"thrown TypeError with a message is an instance of Error"
+	);
+
+	// This test is for IE 8 and prior which goes against the standards
+	// by considering that the native Error constructors, such TypeError,
+	// are also instances of the Error constructor. As such, the assertion
+	// sometimes went down the wrong path.
+	assert.throws(
+		function() {
+			throw new TypeError( "error message" );
+		},
+		TypeError,
+		"thrown TypeError with a message is an instance of TypeError"
+	);
+
+	assert.throws(
+		function() {
 			throw new CustomError();
 		},
 		CustomError,
@@ -582,9 +618,7 @@ QUnit.test( "throws", function( assert ) {
 			throw new CustomError( "some error description" );
 		},
 		function( err ) {
-			if ( ( err instanceof CustomError ) && /description/.test( err ) ) {
-				return true;
-			}
+			return err instanceof CustomError && /description/.test( err );
 		},
 		"custom validation function"
 	);
