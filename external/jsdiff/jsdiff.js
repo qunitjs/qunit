@@ -13,6 +13,8 @@
  * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) == "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over"
  */
 QUnit.diff = (function() {
+	var hasOwn = Object.prototype.hasOwnProperty;
+
 	/*jshint eqeqeq:false, eqnull:true */
 	function diff( o, n ) {
 		var i,
@@ -127,7 +129,7 @@ QUnit.diff = (function() {
 				if ( out.n[ i ].text == null ) {
 					str += "<ins>" + out.n[ i ] + nSpace[ i ] + "</ins>";
 				} else {
-					
+
 					// `pre` initialized at top of scope
 					pre = "";
 

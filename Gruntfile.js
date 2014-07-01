@@ -26,9 +26,9 @@ grunt.initConfig({
 				"src/equiv.js",
 				"src/dump.js",
 				"src/export.js",
+				"src/outro.js",
 				"external/jsdiff/jsdiff.js",
-				"reporter/html.js",
-				"src/outro.js"
+				"reporter/html.js"
 			],
 			dest: "dist/qunit.js"
 		},
