@@ -859,7 +859,7 @@ function testAfterDone() {
 	var testName = "ensure has correct number of assertions";
 
 	function secondAfterDoneTest() {
-		QUnit.config.done = [];
+		QUnit.config.callbacks.done = [];
 		// Because when this does happen, the assertion count parameter doesn't actually
 		// work we use this test to check the assertion count.
 		QUnit.module( "check previous test's assertion counts" );
@@ -870,7 +870,7 @@ function testAfterDone() {
 			assert.equal( tests[ 1 ].firstChild.lastChild.getElementsByTagName( "b" )[ 1 ].innerHTML, "99" );
 		});
 	}
-	QUnit.config.done = [];
+	QUnit.config.callbacks.done = [];
 	QUnit.done( secondAfterDoneTest );
 
 	QUnit.module( "Synchronous test after load of page" );

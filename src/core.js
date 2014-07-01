@@ -237,14 +237,7 @@ config = {
 	// Set of all modules.
 	modules: {},
 
-	// logging callback queues
-	begin: [],
-	done: [],
-	log: [],
-	testStart: [],
-	testDone: [],
-	moduleStart: [],
-	moduleDone: []
+	callbacks: {}
 };
 
 // Initialize more QUnit.config and QUnit.urlParams
@@ -658,15 +651,21 @@ function extend( a, b, undefOnly ) {
 }
 
 function registerLoggingCallback( key ) {
+
+	// Initialize key collection of logging callback
+	if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
+		config.callbacks[ key ] = [];
+	}
+
 	return function( callback ) {
-		config[ key ].push( callback );
+		config.callbacks[ key ].push( callback );
 	};
 }
 
 function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
-	callbacks = config[ key ];
+	callbacks = config.callbacks[ key ];
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
 	}
