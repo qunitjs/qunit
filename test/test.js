@@ -855,55 +855,6 @@ QUnit.test( "Circular reference - test reported by soniciq in #105", function( a
 	assert.deepEqual( a.children(), [ b ] );
 });
 
-function testAfterDone() {
-	var testName = "ensure has correct number of assertions";
-
-	function secondAfterDoneTest() {
-		QUnit.config.callbacks.done = [];
-		// Because when this does happen, the assertion count parameter doesn't actually
-		// work we use this test to check the assertion count.
-		QUnit.module( "check previous test's assertion counts" );
-		QUnit.test( "count previous two test's assertions", function( assert ) {
-			var tests = getPreviousTests( /^ensure has correct number of assertions/, /^Synchronous test after load of page$/ );
-
-			assert.equal( tests[ 0 ].firstChild.lastChild.getElementsByTagName( "b" )[ 1 ].innerHTML, "99" );
-			assert.equal( tests[ 1 ].firstChild.lastChild.getElementsByTagName( "b" )[ 1 ].innerHTML, "99" );
-		});
-	}
-	QUnit.config.callbacks.done = [];
-	QUnit.done( secondAfterDoneTest );
-
-	QUnit.module( "Synchronous test after load of page" );
-
-	QUnit.asyncTest( "Async test", function( assert ) {
-		QUnit.start();
-		for (var i = 1; i < 100; i++) {
-			assert.ok( i );
-		}
-	});
-
-	QUnit.test( testName, function( assert ) {
-		assert.expect( 99 );
-		for (var i = 1; i < 100; i++) {
-			assert.ok( i );
-		}
-	});
-
-	// We need two of these types of tests in order to ensure that assertions
-	// don't move between tests.
-	QUnit.test( testName + " 2", function( assert ) {
-		assert.expect( 99 );
-		for (var i = 1; i < 100; i++) {
-			assert.ok( i );
-		}
-	});
-}
-
-if ( typeof setTimeout !== "undefined" ) {
-	QUnit.done( testAfterDone );
-}
-
-
 // Get a reference to the global object, like window in browsers
 }( (function() {
 	return this;
