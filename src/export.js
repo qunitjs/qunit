@@ -1,5 +1,24 @@
 // For browser, export only select globals
 if ( typeof window !== "undefined" ) {
+
+	// Deprecated
+	// Extend assert methods to QUnit and Global scope through Backwards compatibility
+	(function() {
+		var i,
+			assertions = Assert.prototype;
+
+		function applyCurrent( current ) {
+			return function() {
+				var assert = new Assert( QUnit.config.current );
+				current.apply( assert, arguments );
+			};
+		}
+
+		for ( i in assertions ) {
+			QUnit[ i ] = applyCurrent( assertions[ i ] );
+		}
+	})();
+
 	(function() {
 		var i, l,
 			keys = [
