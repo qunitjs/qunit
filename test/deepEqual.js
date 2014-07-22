@@ -109,6 +109,32 @@ QUnit.test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( { a: 1 }, new SafeObject() ), false, "object literal vs. instantiation" );
 	assert.equal( QUnit.equiv( { a: undefined }, new SafeObject() ), false, "object literal vs. instantiation" );
 	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "object literal vs. instantiation" );
+	
+	
+	assert.equal( QUnit.equiv( 0.0000000001, 0.0000000002 ), false, "float" ); //these numbers are almost the same
+	
+	QUnit.precision = 1e-9; //setting precision
+	assert.equal( QUnit.equiv( 0.0000000001, 0.0000000002 ), true, "float" ); //difference of the numbers is less than the precision, so equiv returns true
+	
+	QUnit.precision = 1e-10; //setting precision
+	assert.equal( QUnit.equiv( 0.0000000001, 0.0000000002 ), false, "float" ); //difference of the numbers is greater than the precision, so equiv returns false
+	
+	QUnit.precision = 0; //turning off the precision check
+	assert.equal( QUnit.equiv( 0.0000000001, 0.0000000002 ), false, "float" ); //these numbers are almost the same
+	
+	QUnit.precision = 1e-9; //turning back the precision check
+	assert.equal( QUnit.equiv( 1.2 + 1.4, 2.6 ), true, "float" ); //usually the sum of (1.2 + 1.4) is something around 2.5999999999999996
+	assert.equal( QUnit.equiv( 1.2 + 1.4, new SafeNumber( 2.6 ) ), true, "float vs object" );
+	
+	assert.equal( QUnit.equiv( 
+							{n: 1.2 + 1.4, m: 2.5999999999999996},
+							{n: 2.6, m: 2.6}),
+							true, "object containing float" );
+	
+	assert.equal( QUnit.equiv( 
+							[1.2 + 1.4, 2.5999999999999996],
+							[2.6, 2.6]),
+							true, "array containing float" );
 });
 
 QUnit.test( "Objects basics", function( assert ) {

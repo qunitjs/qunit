@@ -45,11 +45,19 @@ QUnit.equiv = (function() {
 					return a === b;
 				}
 			}
+			
+			function usePrecisionEquality(b, a) {
+				if (typeof QUnit.precision !== "undefined" && QUnit.precision > 0) {
+					return Math.abs(b - a) < QUnit.precision;
+				} else {
+					return useStrictEquality(b, a);
+				}
+			}
 
 			return {
 				"string": useStrictEquality,
 				"boolean": useStrictEquality,
-				"number": useStrictEquality,
+				"number": usePrecisionEquality,
 				"null": useStrictEquality,
 				"undefined": useStrictEquality,
 
