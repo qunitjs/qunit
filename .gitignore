@@ -1,3 +1,4 @@
 dist
 node_modules
 build/report
+browserstack-run.pid
