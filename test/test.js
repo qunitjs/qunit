@@ -599,7 +599,7 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			throw new CustomError();
+			throw new CustomError( "some error description" );
 		},
 		CustomError,
 		"thrown error is an instance of CustomError"
@@ -607,10 +607,18 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
-			throw new CustomError( "some error description" );
+			throw new Error( "some error description" );
 		},
 		/description/,
 		"use a regex to match against the stringified error"
+	);
+
+	assert.throws(
+		function() {
+			throw new Error( "foo" );
+		},
+		new Error( "foo" ),
+		"thrown error object is similar to the expected Error object"
 	);
 
 	assert.throws(
@@ -649,14 +657,6 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"some error description",
 		"handle string typed thrown errors"
-	);
-
-	assert.throws(
-		function() {
-			throw new Error( "foo" );
-		},
-		new Error( "foo" ),
-		"assert when a function throws an 'Error' object"
 	);
 });
 
