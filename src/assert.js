@@ -165,3 +165,26 @@ QUnit.assert = Assert.prototype = {
 		}
 	}
 };
+
+(function( asserts ) {
+	var name;
+
+	function makeThrowFn( name, prefix ) {
+		var throwFn = function() {
+			throw prefix + "." + name + "() is deprecated, use the assert parameter of " +
+				"the test() callback and assert." + name + "() instead";
+		};
+
+		return throwFn;
+	}
+
+	for ( name in asserts ) {
+		if ( asserts.hasOwnProperty( name ) ) {
+			QUnit[ name ] = makeThrowFn( name, "QUnit" );
+			if ( typeof window !== "undefined" ) {
+				window[ name ] = makeThrowFn( name, "window" );
+			}
+		}
+	}
+
+})( QUnit.assert );
