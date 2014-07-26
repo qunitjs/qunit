@@ -529,7 +529,7 @@ QUnit.test( "propEqual", function( assert ) {
 });
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 14 );
+	assert.expect( 16 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -619,6 +619,25 @@ QUnit.test( "throws", function( assert ) {
 		},
 		new Error( "foo" ),
 		"thrown error object is similar to the expected Error object"
+	);
+
+	assert.throws(
+		function() {
+			throw new CustomError( "some error description" );
+		},
+		new CustomError( "some error description" ),
+		"thrown error object is similar to the expected CustomError object"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				name: "SomeName",
+				message: "some message"
+			};
+		},
+		{ name: "SomeName", message: "some message" },
+		"thrown error object is similar to the expected plain object"
 	);
 
 	assert.throws(

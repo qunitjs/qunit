@@ -148,8 +148,8 @@ QUnit.assert = Assert.prototype = {
 				ok = true;
 
 			// expected is an Error object
-			} else if ( expectedType === "object" && expected instanceof Error ) {
-				ok = actual instanceof Error &&
+			} else if ( expectedType === "object" ) {
+				ok = actual instanceof expected.constructor &&
 					actual.name === expected.name &&
 					actual.message === expected.message;
 
