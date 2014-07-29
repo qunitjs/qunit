@@ -3,7 +3,13 @@ module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
 
-function process( code ) {
+function process( code, filepath ) {
+
+	// Make coverage ignore external files
+	if ( filepath.match( /^external\// ) ) {
+		code = "/*istanbul ignore next */\n" + code;
+	}
+
 	return code
 
 		// Embed version
