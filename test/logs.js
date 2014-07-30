@@ -233,4 +233,20 @@ QUnit.test( "after QUnit.init()", function( assert ) {
 	assert.deepEqual( QUnit.config.moduleStats, { all: 0, bad: 0 }, "clean module statistics" );
 });
 
+QUnit.test( "QUnit.reset()", function( assert ) {
+
+	// Skip non-browsers
+	if ( typeof window === "undefined" || !window.document ) {
+		assert.expect( 0 );
+		return;
+	}
+
+	var myFixture = document.getElementById( "qunit-fixture" );
+
+	myFixture.innerHTML = "<em>something different from QUnit.config.fixture</em>";
+
+	QUnit.reset();
+
+	assert.strictEqual( myFixture.innerHTML, QUnit.config.fixture, "restores #qunit-fixture" );
+});
 
