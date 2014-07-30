@@ -221,3 +221,16 @@ QUnit.done(function() {
 		});
 	}, 5000 );
 });
+
+// Test Deprecated QUnit.init, this should reset the visible logs
+// Ref #530
+QUnit.init();
+
+QUnit.module( "deprecated log methods" );
+
+QUnit.test( "after QUnit.init()", function( assert ) {
+	assert.deepEqual( QUnit.config.stats, { all: 0, bad: 0 }, "clean test statistics" );
+	assert.deepEqual( QUnit.config.moduleStats, { all: 0, bad: 0 }, "clean module statistics" );
+});
+
+
