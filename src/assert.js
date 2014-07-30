@@ -16,7 +16,17 @@ QUnit.assert = Assert.prototype = {
 
 	// Exports test.push() to the user API
 	push: function() {
-		return this.test.push.apply( this.test, arguments );
+		var assert = this;
+
+		// Backwards compatibility fix.
+		// Allows the direct use of global exported assertions and QUnit.assert.*
+		// Although, it's use is not recommended as it can leak assertions
+		// to other tests from async tests, because we only get a reference to the current test,
+		// not exactly the test where assertion were intended to be called.
+		if ( !( assert instanceof Assert ) ) {
+			assert = QUnit.config.current.assert;
+		}
+		return assert.test.push.apply( assert.test, arguments );
 	},
 
 	/**
