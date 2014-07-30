@@ -1,5 +1,63 @@
 (function() {
 
+// Deprecated QUnit.init - Ref #530
+// Re-initialize the configuration options
+QUnit.init = function() {
+	var tests, banner, result, qunit,
+		config = QUnit.config;
+
+	config.stats = { all: 0, bad: 0 };
+	config.moduleStats = { all: 0, bad: 0 };
+	config.started = 0;
+	config.updateRate = 1000;
+	config.blocking = false;
+	config.autostart = true;
+	config.autorun = false;
+	config.filter = "";
+	config.queue = [];
+	config.semaphore = 1;
+
+	// Return on non-browser environments
+	// This is necessary to not break on node tests
+	if ( typeof window === "undefined" ) {
+		return;
+	}
+
+	qunit = id( "qunit" );
+	if ( qunit ) {
+		qunit.innerHTML =
+			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
+			"<h2 id='qunit-banner'></h2>" +
+			"<div id='qunit-testrunner-toolbar'></div>" +
+			"<h2 id='qunit-userAgent'></h2>" +
+			"<ol id='qunit-tests'></ol>";
+	}
+
+	tests = id( "qunit-tests" );
+	banner = id( "qunit-banner" );
+	result = id( "qunit-testresult" );
+
+	if ( tests ) {
+		tests.innerHTML = "";
+	}
+
+	if ( banner ) {
+		banner.className = "";
+	}
+
+	if ( result ) {
+		result.parentNode.removeChild( result );
+	}
+
+	if ( tests ) {
+		result = document.createElement( "p" );
+		result.id = "qunit-testresult";
+		result.className = "result";
+		tests.parentNode.insertBefore( result, tests );
+		result.innerHTML = "Running...<br/>&nbsp;";
+	}
+};
+
 // Don't load the HTML Reporter on non-Browser environments
 if ( typeof window === "undefined" ) {
 	return;
