@@ -45,13 +45,16 @@ QUnit.test( "QUnit exported methods", function( assert ) {
 
 // Test deprecated exported Assert methods
 QUnit.test( "Exported assertions", function() {
-	QUnit.expect( 4 );
+	QUnit.expect( 6 );
 
 	QUnit.ok( true );
 	QUnit.equal( 2, 2 );
 
 	ok( true );
 	equal( 2, 2 );
+
+	QUnit.assert.ok( true );
+	QUnit.assert.equal( 2, 2 );
 });
 
 // Get a reference to the global object, like window in browsers
