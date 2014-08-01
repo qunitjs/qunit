@@ -250,3 +250,25 @@ QUnit.test( "QUnit.reset()", function( assert ) {
 	assert.strictEqual( myFixture.innerHTML, QUnit.config.fixture, "restores #qunit-fixture" );
 });
 
+(function() {
+
+	// Skip non-browsers
+	if ( typeof window === "undefined" || !window.document ) {
+		return;
+	}
+
+	var resetCount = 0;
+	QUnit.module( "HTML reporter" );
+
+	QUnit.test( "QUnit.resetFixture setup", function( assert ) {
+		assert.expect( 0 );
+
+		QUnit.resetFixture(function() {
+			resetCount++;
+		});
+	});
+
+	QUnit.test( "QUnit.resetFixture after fixture reset", function( assert ) {
+		assert.strictEqual( resetCount, 1, "called reset callback" );
+	});
+})();

@@ -1,5 +1,7 @@
 (function() {
 
+var resetFixtureCallback;
+
 // Deprecated QUnit.init - Ref #530
 // Re-initialize the configuration options
 QUnit.init = function() {
@@ -71,15 +73,30 @@ QUnit.reset = function() {
 		return;
 	}
 
-	var fixture = id( "qunit-fixture" );
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
+	resetFixture();
 };
 
 // Don't load the HTML Reporter on non-Browser environments
 if ( typeof window === "undefined" ) {
 	return;
+}
+
+QUnit.resetFixture = function( fn ) {
+	if ( typeof fn === "function" ) {
+		resetFixtureCallback = fn;
+	}
+};
+
+function resetFixture() {
+	var fixture = id( "qunit-fixture" );
+
+	if ( resetFixtureCallback ) {
+		resetFixtureCallback();
+	}
+
+	if ( fixture ) {
+		fixture.innerHTML = config.fixture;
+	}
 }
 
 var config = QUnit.config,
@@ -617,12 +634,9 @@ QUnit.log(function( details ) {
 QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad,
-		tests = id( "qunit-tests" ),
-		fixture = id( "qunit-fixture" );
+		tests = id( "qunit-tests" );
 
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
+	resetFixture();
 
 	if ( !tests ) {
 		return;
