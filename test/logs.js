@@ -249,4 +249,3 @@ QUnit.test( "QUnit.reset()", function( assert ) {
 
 	assert.strictEqual( myFixture.innerHTML, QUnit.config.fixture, "restores #qunit-fixture" );
 });
-
