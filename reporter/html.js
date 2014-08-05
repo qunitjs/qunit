@@ -617,7 +617,7 @@ QUnit.log(function( details ) {
 
 QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
-		good, bad,
+		good, bad, testCounts,
 		tests = id( "qunit-tests" );
 
 	// QUnit.reset() is deprecated and will be replaced for a new
@@ -650,9 +650,13 @@ QUnit.testDone(function( details ) {
 
 	// testItem.firstChild is the test name
 	testTitle = testItem.firstChild;
-	testTitle.innerHTML += " <b class='counts'>(<b class='failed'>" + bad +
-		"</b>, <b class='passed'>" + good +
-		"</b>, " + details.assertions.length + ")</b>";
+
+	testCounts = bad ?
+		"<b class='failed'>" + bad + "</b>, " + "<b class='passed'>" + good + "</b>, " :
+		"";
+
+	testTitle.innerHTML += " <b class='counts'>(" + testCounts +
+		details.assertions.length + ")</b>";
 
 	addEvent( testTitle, "click", function() {
 		toggleClass( assertList, "qunit-collapsed" );
