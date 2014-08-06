@@ -242,15 +242,6 @@ Test.prototype = {
 	}
 };
 
-// Deprecated
-QUnit.push = function() {
-
-	// Gets current test obj
-	var currentTest = QUnit.config.current.assert.test;
-
-	return currentTest.push.apply( currentTest, arguments );
-};
-
 QUnit.pushFailure = function() {
 
 	// Gets current test obj
