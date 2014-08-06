@@ -188,10 +188,6 @@ Test.prototype = {
 	},
 
 	push: function( result, actual, expected, message ) {
-		if ( !this instanceof Test ) {
-			throw new Error( "assertion outside test context, was " + sourceFromStacktrace() );
-		}
-
 		var source,
 			details = {
 				module: this.module,
