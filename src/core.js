@@ -119,6 +119,8 @@ QUnit = {
 	},
 
 	start: function( count ) {
+		var message;
+
 		// QUnit hasn't been initialized yet.
 		// Note: RequireJS (et al) may delay onLoad
 		if ( config.semaphore === undefined ) {
@@ -142,7 +144,15 @@ QUnit = {
 		// ignore if start is called more often then stop
 		if ( config.semaphore < 0 ) {
 			config.semaphore = 0;
-			QUnit.pushFailure( "Called start() while already started (QUnit.config.semaphore was 0 already)", sourceFromStacktrace( 2 ) );
+
+			message = "Called start() while already started (QUnit.config.semaphore was 0 already)";
+
+			if ( config.current ) {
+				QUnit.pushFailure( message, sourceFromStacktrace( 2 ) );
+			} else {
+				throw new Error( message );
+			}
+
 			return;
 		}
 		// A slight delay, to avoid any current callbacks
@@ -499,21 +509,20 @@ function validTest( test ) {
 	return !include;
 }
 
-// so far supports only Firefox, Chrome and Opera (buggy), Safari (for real exceptions)
-// Later Safari and IE10 are supposed to support error.stack as well
+// Doesn't support IE6 to IE9
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 function extractStacktrace( e, offset ) {
-	offset = offset === undefined ? 3 : offset;
+	offset = offset === undefined ? 4 : offset;
 
 	var stack, include, i;
 
 	if ( e.stacktrace ) {
 
-		// Opera
+		// Opera 12.x
 		return e.stacktrace.split( "\n" )[ offset + 3 ];
 	} else if ( e.stack ) {
 
-		// Firefox, Chrome
+		// Firefox, Chrome, Safari 6+, IE10+, PhantomJS and Node
 		stack = e.stack.split( "\n" );
 		if ( /^error$/i.test( stack[ 0 ] ) ) {
 			stack.shift();
@@ -533,8 +542,7 @@ function extractStacktrace( e, offset ) {
 		return stack[ offset ];
 	} else if ( e.sourceURL ) {
 
-		// Safari, PhantomJS
-		// hopefully one day Safari provides actual stacktraces
+		// Safari < 6
 		// exclude useless self-reference for generated Error objects
 		if ( /qunit.js$/.test( e.sourceURL ) ) {
 			return;

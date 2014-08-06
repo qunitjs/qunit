@@ -59,7 +59,7 @@ Test.prototype = {
 		try {
 			this.testEnvironment.setup.call( this.testEnvironment, this.assert );
 		} catch ( e ) {
-			this.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
+			this.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 		}
 	},
 	run: function() {
@@ -106,7 +106,7 @@ Test.prototype = {
 			try {
 				this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
 			} catch ( e ) {
-				this.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 1 ) );
+				this.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			}
 		}
 		checkPollution();
@@ -243,6 +243,9 @@ Test.prototype = {
 };
 
 QUnit.pushFailure = function() {
+	if ( !QUnit.config.current ) {
+		throw new Error( "pushFailure() assertion outside test context, in " + sourceFromStacktrace( 2 ) );
+	}
 
 	// Gets current test obj
 	var currentTest = QUnit.config.current.assert.test;
