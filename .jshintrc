@@ -18,6 +18,7 @@
 
 	"globals": {
 		"QUnit": false,
+		"exports": false,
 		"module": false
 	}
 }

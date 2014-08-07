@@ -1,5 +1,9 @@
 // For browser, export only select globals
-if ( typeof window !== "undefined" ) {
+if ( typeof window !== "undefined" ||
+	(
+		typeof exports === "object" && exports && !exports.nodeType &&
+		typeof module === "object" && module && module.exports !== exports
+	) ) {
 
 	// Deprecated
 	// Extend assert methods to QUnit and Global scope through Backwards compatibility
@@ -19,11 +23,10 @@ if ( typeof window !== "undefined" ) {
 		}
 	})();
 
-	(function() {
+	(function( exports ) {
 		var i, l,
 			keys = [
 				"test",
-				"module",
 				"expect",
 				"asyncTest",
 				"start",
@@ -41,14 +44,18 @@ if ( typeof window !== "undefined" ) {
 			];
 
 		for ( i = 0, l = keys.length; i < l; i++ ) {
-			window[ keys[ i ] ] = QUnit[ keys[ i ] ];
+			exports[ keys[ i ] ] = QUnit[ keys[ i ] ];
 		}
-	})();
 
-	window.QUnit = QUnit;
-}
+		if ( exports === window ) {
+			exports.module = QUnit.module;
+		}
 
-// For CommonJS environments, export everything
-if ( typeof module !== "undefined" && module.exports ) {
+		exports.QUnit = QUnit;
+	})( typeof exports === "object" ? exports : window );
+
+// For Node.js, export everything
+} else if ( typeof window === "undefined" ) {
 	module.exports = QUnit;
+	QUnit.QUnit = QUnit;
 }

@@ -1,6 +1,8 @@
+/* global global:true */
 (function( window ) {
 
-var OrgDate, state;
+var OrgDate, state,
+	document = window.document;
 
 function getPreviousTests( rTestName, rModuleName ) {
 	var testSpan, moduleSpan,
@@ -85,7 +87,7 @@ QUnit.test( "module with setup, expect in test call", function( assert ) {
 });
 
 // TODO: More to the html-reporter test once we have that.
-if ( typeof document !== "undefined" ) {
+if ( document ) {
 
 	QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 		setup: function() {
@@ -412,7 +414,7 @@ QUnit.module( "dump" );
 QUnit.test( "dump output", function( assert ) {
 	assert.equal( QUnit.dump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
 	assert.equal( QUnit.dump.parse( { top: 5, left: 0 } ), "{\n  \"left\": 0,\n  \"top\": 5\n}" );
-	if ( typeof document !== "undefined" && document.getElementById( "qunit-header" ) ) {
+	if ( document && document.getElementById( "qunit-header" ) ) {
 		assert.equal(
 			QUnit.dump.parse( document.getElementById( "qunit-header" ) ),
 			"<h1 id=\"qunit-header\"></h1>"
@@ -703,7 +705,7 @@ QUnit.test( "throws", function( assert ) {
 	);
 });
 
-if ( typeof document !== "undefined" ) {
+if ( document ) {
 
 QUnit.module( "fixture" );
 
@@ -917,6 +919,4 @@ QUnit.test( "Circular reference - test reported by soniciq in #105", function( a
 });
 
 // Get a reference to the global object, like window in browsers
-}( (function() {
-	return this;
-}.call()) ));
+}( typeof global === "object" && global || this ));

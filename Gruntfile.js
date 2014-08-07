@@ -1,6 +1,10 @@
 /*jshint node:true */
 module.exports = function( grunt ) {
 
+var path = require( "path" ),
+	spawn = require( "child_process" ).spawn,
+	envs = [ "node", "rhino", "ringo" ];
+
 require( "load-grunt-tasks" )( grunt );
 
 function process( code, filepath ) {
@@ -148,54 +152,34 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 		});
 });
 
-// TODO: Extract this task later, if feasible
-// Also spawn a separate process to keep tests atomic
-grunt.registerTask( "test-on-node", function() {
-	var testActive = false,
-		runDone = false,
-		done = this.async(),
-		QUnit = require( "./dist/qunit" );
+envs.forEach( function( env ) {
+	grunt.registerTask( "test-on-" + env, function() {
+		var process = global.process,
+			oldWorkingDir = process.cwd(),
+			done = this.async();
 
-	QUnit.testStart(function() {
-		testActive = true;
-	});
-	QUnit.log(function( details ) {
-		if ( !testActive || details.result ) {
-			return;
-		}
-		var message = "name: " + details.name + " module: " + details.module +
-			" message: " + details.message;
-		grunt.log.error( message );
-	});
-	QUnit.testDone(function() {
-		testActive = false;
-	});
-	QUnit.done(function( details ) {
-		if ( runDone ) {
-			return;
-		}
-		var succeeded = ( details.failed === 0 ),
-			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
-				details.passed + ", failed: " + details.failed;
-		if ( succeeded ) {
-			grunt.log.ok( message );
-		} else {
-			grunt.log.error( message );
-		}
-		done( succeeded );
-		runDone = true;
-	});
-	QUnit.config.autorun = false;
+		process.chdir( path.join( oldWorkingDir, "test" ) );
+		grunt.log.ok( "Testing on " + env );
 
-	require( "./test/logs" );
-	require( "./test/test" );
-	require( "./test/deepEqual" );
-	require( "./test/globals" );
-
-	QUnit.load();
+		grunt.util.spawn( {
+			cmd: env,
+			args: [ "env-tests.js" ]
+		}, function( error, result, code ) {
+			if ( code ) {
+				grunt.log.error( "Failed tests on " + env );
+				grunt.log.error( result );
+			} else {
+				grunt.log.ok( "Passed tests on " + env );
+				grunt.log.ok( result );
+			}
+			process.chdir( oldWorkingDir );
+			done( code === 0 ? true : false );
+		});
+	});
 });
 
 grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "jscs", "qunit", "test-on-node" ] );
+grunt.registerTask( "test-on-envs", envs.map( function( env ) { return "test-on-" + env; }) );
+grunt.registerTask( "default", [ "build", "jshint", "jscs", "qunit", "test-on-envs" ] );
 
 };
