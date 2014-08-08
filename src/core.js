@@ -666,6 +666,12 @@ function registerLoggingCallback( key ) {
 	}
 
 	return function( callback ) {
+		if ( QUnit.objectType( callback ) !== "function" ) {
+			throw new Error(
+				"QUnit logging methods require a callback function as their first parameters."
+			);
+		}
+
 		config.callbacks[ key ].push( callback );
 	};
 }
