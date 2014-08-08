@@ -1,3 +1,17 @@
+1.15.0 / 2014-08-08
+==================
+
+* Assert: Implement Assert constructor with test context. This heavily improves debugging of async tests, since assertions can't leak into other tests anymore. Use the assert argument in your test callbacks to run assertions to get the full benefit of this.
+* Assert: Improved the default message from assert.ok. Now assert.ok() outputs the exact value it received, instead of only saying it wasn't thruthy.
+* Assert: Removal of raises, same and equals. These were deprecated a long time ago and finally removed. Use throws, deepEqual and equal instead.
+* Core: Pass total amount of tests to QUnit.begin callback as totalTests. Will be used by Karma and other reporters.
+* Dump: Move QUnit.jsDump to QUnit.dump. QUnit.jsDump still exists, but will be removed later. Use QUnit.dump.
+* Dump: Output non-enumerable properties of TypeError. Makes it easier to compare properties of error objects.
+* Reporter: Output only assertion count for green tests. Less visual clutter for passing tests.
+* Reporter: Move HTML reporter to a new JS file. The HTML reporter is still bundled, but the code has been refactored to move it to a separate file.
+* Test: Remove deprecated QUnit.current_testEnvironment
+* Throws: support for oldIE native Error types. Error objects in IE are buggy, this works around those issues.
+
 1.14.0 / 2014-01-31
 ==================
 

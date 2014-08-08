@@ -83,3 +83,8 @@ Michał Gołębiowski <m.goleb@gmail.com>
 XhmikosR <xhmikosr@yahoo.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
+Oleg Gaidarenko <markelog@gmail.com>
+Mike Sidorov <mikes.ekb@gmail.com>
+Don Kirkby <donkirkby@gmail.com>
+don <dkirkby@cfenet.ubc.ca>
+Sean Xu <jseanxu@live.com>

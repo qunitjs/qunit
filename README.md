@@ -39,9 +39,11 @@ To run `grunt`, you need [Node.js](http://nodejs.org/download/), which includes 
 
 Use [jquery-release](https://github.com/jquery/jquery-release). The following aren't yet handled there:
 
-Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update History.md. Clean up the changelog, removing merge commits or whitespace cleanups. Commit this before using the release script.
+* Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update History.md. Clean up the changelog, removing merge commits or whitespace cleanups.
+* Run `grunt authors` and add any new authors to AUTHORS.txt
+* Update the version property in `package.json` to have the right -pre version. Not necessary for patch releases.
 
-Then run the script.
+Commit these, then run the script.
 
 Update web sites, replacing previous versions with new ones:
 
