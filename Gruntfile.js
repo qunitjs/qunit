@@ -150,14 +150,30 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 });
 
 grunt.registerTask( "test-on-node", function() {
-	var done = this.async(),
+	var reporter,
+		done = this.async(),
 		QUnit = require( "./dist/qunit" );
 
 	QUnit.done(function( details ) {
 		done( details.failed === 0 );
 	});
 	QUnit.config.autorun = false;
-	QUnit.console( grunt.option( "verbose" ) );
+
+	reporter = QUnit.console( grunt.option( "verbose" ) );
+
+	reporter.log = function( text, newLine ) {
+		if ( !newLine ) {
+			grunt.log.write( text );
+		} else {
+			grunt.log.writeln( text );
+		}
+	};
+
+	reporter.error = function( text ) {
+
+		// A blank line for a pretty printed report
+		grunt.log.writeln( "" ).error( text );
+	};
 
 	require( "./test/logs" );
 	require( "./test/test" );
