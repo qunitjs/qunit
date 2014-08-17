@@ -5,3 +5,5 @@ before_install:
   - npm install -g grunt-cli
 script:
   - npm run-script ci
+git:
+  depth: 10
