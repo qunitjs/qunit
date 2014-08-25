@@ -27,12 +27,12 @@ QUnit.test( "dies on test", function() {
 	throw new Error( "foo" );
 });
 
-// Setup and teardown fail
-QUnit.module( "setup/teardown fail", {
-	setup: function() {
+// beforeEach/afterEach fail
+QUnit.module( "beforeEach/afterEach fail", {
+	beforeEach: function() {
 		throw new Error( "foo" );
 	},
-	teardown: function() {
+	afterEach: function() {
 		throw new Error( "bar" );
 	}
 });

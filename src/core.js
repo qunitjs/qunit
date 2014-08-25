@@ -80,8 +80,20 @@ QUnit = {
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
 		config.currentModule = name;
-		config.currentModuleTestEnvironment = testEnvironment;
 		config.modules[ name ] = true;
+
+		// DEPRECATED: handles setup/teardown functions,
+		// beforeEach and afterEach should be used instead
+		if ( testEnvironment && testEnvironment.setup ) {
+			testEnvironment.beforeEach = testEnvironment.setup;
+			delete testEnvironment.setup;
+		}
+		if ( testEnvironment && testEnvironment.teardown ) {
+			testEnvironment.afterEach = testEnvironment.teardown;
+			delete testEnvironment.teardown;
+		}
+
+		config.currentModuleTestEnvironment = testEnvironment;
 	},
 
 	asyncTest: function( testName, expected, callback ) {

@@ -8,7 +8,7 @@ function Test( settings ) {
 Test.count = 0;
 
 Test.prototype = {
-	setup: function() {
+	before: function() {
 		if (
 
 			// Emit moduleStart when we're switching from one module to another
@@ -37,10 +37,9 @@ Test.prototype = {
 
 		config.current = this;
 
-		this.testEnvironment = extend({
-			setup: function() {},
-			teardown: function() {}
-		}, this.moduleTestEnvironment );
+		this.testEnvironment = extend( {}, this.moduleTestEnvironment );
+		delete this.testEnvironment.beforeEach;
+		delete this.testEnvironment.afterEach;
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
@@ -59,7 +58,7 @@ Test.prototype = {
 		try {
 			this.hooks( "beforeEach" );
 		} catch ( e ) {
-			this.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
+			this.pushFailure( "beforeEach failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 		}
 	},
 	run: function() {
@@ -94,7 +93,7 @@ Test.prototype = {
 			}
 		}
 	},
-	teardown: function() {
+	after: function() {
 		config.current = this;
 		if ( config.notrycatch ) {
 			this.hooks( "afterEach" );
@@ -103,20 +102,18 @@ Test.prototype = {
 			try {
 				this.hooks( "afterEach" );
 			} catch ( e ) {
-				this.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
+				this.pushFailure( "afterEach failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			}
 		}
 		checkPollution();
 	},
 	hooks: function( handler ) {
-		var translate = {
-			beforeEach: "setup",
-			afterEach: "teardown"
-		};
 		if ( QUnit.config[ handler ] ) {
 			QUnit.config[ handler ].call( this.testEnvironment, this.assert );
 		}
-		this.testEnvironment[ translate[ handler ] ].call( this.testEnvironment, this.assert );
+		if ( this.moduleTestEnvironment && this.moduleTestEnvironment[ handler ] ) {
+			this.moduleTestEnvironment[ handler ].call( this.testEnvironment, this.assert );
+		}
 	},
 	finish: function() {
 		config.current = this;
@@ -169,13 +166,13 @@ Test.prototype = {
 		function run() {
 			// each of these can by async
 			synchronize(function() {
-				test.setup();
+				test.before();
 			});
 			synchronize(function() {
 				test.run();
 			});
 			synchronize(function() {
-				test.teardown();
+				test.after();
 			});
 			synchronize(function() {
 				test.finish();

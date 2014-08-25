@@ -42,7 +42,7 @@ function getPreviousTests( rTestName, rModuleName ) {
 	return matches;
 }
 
-QUnit.test( "module without setup/teardown (default)", function( assert ) {
+QUnit.test( "module without beforeEach/afterEach (default)", function( assert ) {
 	assert.expect( 1 );
 	assert.ok( true );
 });
@@ -68,18 +68,18 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.ok( true );
 });
 
-QUnit.module( "setup test", {
-	setup: function( assert ) {
+QUnit.module( "beforeEach test", {
+	beforeEach: function( assert ) {
 		assert.ok( true );
 	}
 });
 
-QUnit.test( "module with setup", function( assert ) {
+QUnit.test( "module with beforeEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 });
 
-QUnit.test( "module with setup, expect in test call", function( assert ) {
+QUnit.test( "module with beforeEach, expect in test call", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 });
@@ -88,9 +88,9 @@ QUnit.test( "module with setup, expect in test call", function( assert ) {
 if ( typeof document !== "undefined" ) {
 
 	QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
-		setup: function() {
+		beforeEach: function() {
 		},
-		teardown: function( assert ) {
+		afterEach: function( assert ) {
 
 			// We can't use ok(false) inside script tags since some browsers
 			// don't evaluate script tags inserted through innerHTML after domready.
@@ -116,12 +116,12 @@ if ( typeof document !== "undefined" ) {
 	});
 }
 
-QUnit.module( "setup/teardown test", {
-	setup: function( assert ) {
+QUnit.module( "beforeEach/afterEach test", {
+	beforeEach: function( assert ) {
 		state = true;
 		assert.ok( true );
 
-		// Assert that we can introduce and delete globals in setup/teardown
+		// Assert that we can introduce and delete globals in beforeEach/afterEach
 		// without noglobals sounding any alarm.
 
 		// Using an implied global variable instead of explicit window property
@@ -137,7 +137,7 @@ QUnit.module( "setup/teardown test", {
 			/*@end
 		@*/
 	},
-	teardown: function( assert ) {
+	afterEach: function( assert ) {
 		assert.ok( true );
 
 		/*@cc_on
@@ -150,20 +150,20 @@ QUnit.module( "setup/teardown test", {
 	}
 });
 
-QUnit.test( "module with setup/teardown", function( assert ) {
+QUnit.test( "module with beforeEach/afterEach", function( assert ) {
 	assert.expect( 3 );
 	assert.ok( true );
 });
 
-QUnit.module( "setup/teardown test 2" );
+QUnit.module( "beforeEach/afterEach test 2" );
 
-QUnit.test( "module without setup/teardown", function( assert ) {
+QUnit.test( "module without beforeEach/afterEach", function( assert ) {
 	assert.expect( 1 );
 	assert.ok( true );
 });
 
 QUnit.module( "Date test", {
-	setup: function( assert ) {
+	beforeEach: function( assert ) {
 		OrgDate = Date;
 		window.Date = function() {
 			assert.ok(
@@ -173,7 +173,7 @@ QUnit.module( "Date test", {
 			return new OrgDate();
 		};
 	},
-	teardown: function() {
+	afterEach: function() {
 		window.Date = OrgDate;
 	}
 });
@@ -186,13 +186,13 @@ QUnit.test( "sample test for Date test", function( assert ) {
 if ( typeof setTimeout !== "undefined" ) {
 state = "fail";
 
-QUnit.module( "teardown and stop", {
-	teardown: function( assert ) {
-		assert.equal( state, "done", "Test teardown." );
+QUnit.module( "afterEach and stop", {
+	afterEach: function( assert ) {
+		assert.equal( state, "done", "Test afterEach." );
 	}
 });
 
-QUnit.test( "teardown must be called after test ended", function( assert ) {
+QUnit.test( "afterEach must be called after test ended", function( assert ) {
 	assert.expect( 1 );
 	QUnit.stop();
 	setTimeout(function() {
@@ -226,8 +226,8 @@ QUnit.test( "parameter passed to start decrements semaphore n times", function( 
 	}, 18 );
 });
 
-QUnit.module( "async setup test", {
-	setup: function( assert ) {
+QUnit.module( "async beforeEach test", {
+	beforeEach: function( assert ) {
 		QUnit.stop();
 		setTimeout(function() {
 			assert.ok( true );
@@ -236,14 +236,14 @@ QUnit.module( "async setup test", {
 	}
 });
 
-QUnit.asyncTest( "module with async setup", function( assert ) {
+QUnit.asyncTest( "module with async beforeEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
 });
 
-QUnit.module( "async teardown test", {
-	teardown: function( assert ) {
+QUnit.module( "async afterEach test", {
+	afterEach: function( assert ) {
 		QUnit.stop();
 		setTimeout(function() {
 			assert.ok( true );
@@ -252,7 +252,7 @@ QUnit.module( "async teardown test", {
 	}
 });
 
-QUnit.asyncTest( "module with async teardown", function( assert ) {
+QUnit.asyncTest( "module with async afterEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
@@ -310,10 +310,10 @@ QUnit.test( "test synchronous calls to stop", function( assert ) {
 }
 
 QUnit.module( "save scope", {
-	setup: function() {
+	beforeEach: function() {
 		this.foo = "bar";
 	},
-	teardown: function( assert ) {
+	afterEach: function( assert ) {
 		assert.deepEqual( this.foo, "bar" );
 	}
 });
@@ -678,7 +678,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 		};
 
 	QUnit.module( "timing", {
-		setup: function() {
+		beforeEach: function() {
 			if ( delayNextSetup ) {
 				delayNextSetup = false;
 				sleep( 250 );
@@ -707,7 +707,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 			"Fast runtime for trivial test"
 		);
 		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250,
-			"Runtime includes setup"
+			"Runtime includes beforeEach"
 		);
 	});
 })();
@@ -738,13 +738,18 @@ QUnit.config.afterEach = function( assert ) {
 		assert.ok( true );
 		this.afterTest = false;
 	}
+
+	if ( this.contextTest ) {
+		assert.ok( true );
+		this.contextTest = false;
+	}
 };
 
 QUnit.module( "beforeEach/afterEach", {
-	setup: function() {
+	beforeEach: function() {
 		this.myModuleSetup = true;
 	},
-	teardown: function( assert ) {
+	afterEach: function( assert ) {
 		if ( this.moduleAfterTest ) {
 			assert.ok( true );
 			this.moduleAfterTest = false;
@@ -755,7 +760,7 @@ QUnit.module( "beforeEach/afterEach", {
 QUnit.test( "before", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( this.mySetup, "global beforeEach method" );
-	assert.ok( this.myModuleSetup, "module's teardown method" );
+	assert.ok( this.myModuleSetup, "module's afterEach method" );
 });
 
 QUnit.test( "after", function( assert ) {
@@ -764,8 +769,40 @@ QUnit.test( "after", function( assert ) {
 	// This will trigger an assertion on the global afterEach
 	this.afterTest = true;
 
-	// This will trigger an assertion on the module's teardown
+	// This will trigger an assertion on the module's afterEach
 	this.moduleAfterTest = true;
+});
+
+QUnit.module( "Test context object", {
+	beforeEach: function( assert ) {
+		var key,
+			keys = [];
+
+		for ( key in this ) {
+			keys.push( key );
+		}
+		assert.deepEqual( keys, [ "helper", "mySetup" ] );
+	},
+	afterEach: function() {},
+	helper: function() {}
+});
+
+QUnit.test( "keys", function( assert ) {
+	assert.expect( 2 );
+	this.contextTest = true;
+});
+
+QUnit.module( "Deprecated setup/teardown", {
+	setup: function() {
+		this.deprecatedSetup = true;
+	},
+	teardown: function( assert ) {
+		assert.ok( this.deprecatedSetup );
+	}
+});
+
+QUnit.test( "before/after order", function( assert ) {
+	assert.expect( 1 );
 });
 
 // Get a reference to the global object, like window in browsers
