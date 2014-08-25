@@ -728,6 +728,46 @@ QUnit.test( "mod2", function( assert ) {
 	assert.mod2( 3, 1, "3 % 2 == 1" );
 });
 
+// Before and after each tests
+QUnit.config.beforeEach = function() {
+	this.mySetup = true;
+};
+
+QUnit.config.afterEach = function( assert ) {
+	if ( this.afterTest ) {
+		assert.ok( true );
+		this.afterTest = false;
+	}
+};
+
+QUnit.module( "beforeEach/afterEach", {
+	setup: function() {
+		this.myModuleSetup = true;
+	},
+	teardown: function( assert ) {
+		if ( this.moduleAfterTest ) {
+			assert.ok( true );
+			this.moduleAfterTest = false;
+		}
+	}
+});
+
+QUnit.test( "before", function( assert ) {
+	assert.expect( 2 );
+	assert.ok( this.mySetup, "global beforeEach method" );
+	assert.ok( this.myModuleSetup, "module's teardown method" );
+});
+
+QUnit.test( "after", function( assert ) {
+	assert.expect( 2 );
+
+	// This will trigger an assertion on the global afterEach
+	this.afterTest = true;
+
+	// This will trigger an assertion on the module's teardown
+	this.moduleAfterTest = true;
+});
+
 // Get a reference to the global object, like window in browsers
 }( (function() {
 	return this;

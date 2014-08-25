@@ -53,11 +53,11 @@ Test.prototype = {
 			saveGlobal();
 		}
 		if ( config.notrycatch ) {
-			this.testEnvironment.setup.call( this.testEnvironment, this.assert );
+			this.hooks( "beforeEach" );
 			return;
 		}
 		try {
-			this.testEnvironment.setup.call( this.testEnvironment, this.assert );
+			this.hooks( "beforeEach" );
 		} catch ( e ) {
 			this.pushFailure( "Setup failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 		}
@@ -97,16 +97,26 @@ Test.prototype = {
 	teardown: function() {
 		config.current = this;
 		if ( config.notrycatch ) {
-			this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
+			this.hooks( "afterEach" );
 			return;
 		} else {
 			try {
-				this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
+				this.hooks( "afterEach" );
 			} catch ( e ) {
 				this.pushFailure( "Teardown failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 			}
 		}
 		checkPollution();
+	},
+	hooks: function( handler ) {
+		var translate = {
+			beforeEach: "setup",
+			afterEach: "teardown"
+		};
+		if ( QUnit.config[ handler ] ) {
+			QUnit.config[ handler ].call( this.testEnvironment, this.assert );
+		}
+		this.testEnvironment[ translate[ handler ] ].call( this.testEnvironment, this.assert );
 	},
 	finish: function() {
 		config.current = this;
