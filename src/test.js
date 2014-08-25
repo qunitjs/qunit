@@ -97,9 +97,6 @@ Test.prototype = {
 	teardown: function() {
 		config.current = this;
 		if ( config.notrycatch ) {
-			if ( typeof this.callbackRuntime === "undefined" ) {
-				this.callbackRuntime = now() - this.callbackStarted;
-			}
 			this.testEnvironment.teardown.call( this.testEnvironment, this.assert );
 			return;
 		} else {
