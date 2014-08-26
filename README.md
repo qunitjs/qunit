@@ -47,7 +47,6 @@ Commit these, then run the script.
 
 Update web sites, replacing previous versions with new ones:
 
-* jquery/jquery-wp-content themes/jquery/footer-qunit.php
 * jquery/qunitjs.com pages/index.html
 
 Finally announce on Twitter @qunitjs
