@@ -1,7 +1,3 @@
-(function( window ) {
-
-var OrgDate, state;
-
 function getPreviousTests( rTestName, rModuleName ) {
 	var testSpan, moduleSpan,
 		matches = [],
@@ -42,45 +38,12 @@ function getPreviousTests( rTestName, rModuleName ) {
 	return matches;
 }
 
-QUnit.test( "module without beforeEach/afterEach (default)", function( assert ) {
-	assert.expect( 1 );
-	assert.ok( true );
-});
-
-QUnit.test( "expect in test", function( assert ) {
-	assert.expect( 3 );
-	assert.ok( true );
-	assert.ok( true );
-	assert.ok( true );
-});
-
-QUnit.test( "expect in test", function( assert ) {
-	assert.expect( 1 );
-	assert.ok( true );
-});
-
 QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	var expected = assert.expect();
 	assert.equal( expected, 2 );
 	assert.expect( expected + 1 );
-	assert.ok( true );
-});
-
-QUnit.module( "beforeEach test", {
-	beforeEach: function( assert ) {
-		assert.ok( true );
-	}
-});
-
-QUnit.test( "module with beforeEach", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( true );
-});
-
-QUnit.test( "module with beforeEach, expect in test call", function( assert ) {
-	assert.expect( 2 );
 	assert.ok( true );
 });
 
@@ -116,171 +79,18 @@ if ( typeof document !== "undefined" ) {
 	});
 }
 
-QUnit.module( "beforeEach/afterEach test", {
-	beforeEach: function( assert ) {
-		state = true;
-		assert.ok( true );
-
-		// Assert that we can introduce and delete globals in beforeEach/afterEach
-		// without noglobals sounding any alarm.
-
-		// Using an implied global variable instead of explicit window property
-		// because there is no way to delete a window.property in IE6-8
-		// `delete x` only works for `x = 1, and `delete window.x` throws exception.
-		// No one-code fits all solution possible afaic. Resort to @cc.
-
-		/*@cc_on
-			@if (@_jscript_version < 9)
-				x = 1;
-			@else @*/
-				window.x = 1;
-			/*@end
-		@*/
-	},
-	afterEach: function( assert ) {
-		assert.ok( true );
-
-		/*@cc_on
-			@if (@_jscript_version < 9)
-				delete x;
-			@else @*/
-				delete window.x;
-			/*@end
-		@*/
-	}
-});
-
-QUnit.test( "module with beforeEach/afterEach", function( assert ) {
-	assert.expect( 3 );
-	assert.ok( true );
-});
-
-QUnit.module( "beforeEach/afterEach test 2" );
-
-QUnit.test( "module without beforeEach/afterEach", function( assert ) {
-	assert.expect( 1 );
-	assert.ok( true );
-});
-
-QUnit.module( "Date test", {
-	beforeEach: function( assert ) {
-		OrgDate = Date;
-		window.Date = function() {
-			assert.ok(
-				false,
-				"QUnit should internally be independent from Date-related manipulation and testing"
-			);
-			return new OrgDate();
-		};
-	},
-	afterEach: function() {
-		window.Date = OrgDate;
-	}
-});
-
-QUnit.test( "sample test for Date test", function( assert ) {
-	assert.expect( 1 );
-	assert.ok( true );
-});
-
-if ( typeof setTimeout !== "undefined" ) {
-state = "fail";
-
-QUnit.module( "afterEach and stop", {
-	afterEach: function( assert ) {
-		assert.equal( state, "done", "Test afterEach." );
-	}
-});
-
-QUnit.test( "afterEach must be called after test ended", function( assert ) {
-	assert.expect( 1 );
-	QUnit.stop();
-	setTimeout(function() {
-		state = "done";
-		QUnit.start();
-	}, 13 );
-});
-
-QUnit.test( "parameter passed to stop increments semaphore n times", function( assert ) {
-	assert.expect( 1 );
-	QUnit.stop( 3 );
-	setTimeout(function() {
-		state = "not enough starts";
-		QUnit.start();
-		QUnit.start();
-	}, 13 );
-	setTimeout(function() {
-		state = "done";
-		QUnit.start();
-	}, 15 );
-});
-
-QUnit.test( "parameter passed to start decrements semaphore n times", function( assert ) {
-	assert.expect( 1 );
-	QUnit.stop();
-	QUnit.stop();
-	QUnit.stop();
-	setTimeout(function() {
-		state = "done";
-		QUnit.start( 3 );
-	}, 18 );
-});
-
-QUnit.module( "async beforeEach test", {
-	beforeEach: function( assert ) {
-		QUnit.stop();
-		setTimeout(function() {
-			assert.ok( true );
-			QUnit.start();
-		}, 500 );
-	}
-});
-
-QUnit.asyncTest( "module with async beforeEach", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( true );
-	QUnit.start();
-});
-
-QUnit.module( "async afterEach test", {
-	afterEach: function( assert ) {
-		QUnit.stop();
-		setTimeout(function() {
-			assert.ok( true );
-			QUnit.start();
-		}, 500 );
-	}
-});
-
-QUnit.asyncTest( "module with async afterEach", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( true );
-	QUnit.start();
-});
-
 QUnit.module( "asyncTest" );
 
 QUnit.asyncTest( "asyncTest", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	setTimeout(function() {
-		state = "done";
 		assert.ok( true );
 		QUnit.start();
 	}, 13 );
 });
 
-QUnit.asyncTest( "asyncTest with expect()", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( true );
-	setTimeout(function() {
-		state = "done";
-		assert.ok( true );
-		QUnit.start();
-	}, 13 );
-});
-
-QUnit.test( "sync", function( assert ) {
+QUnit.test( "async assertions on a sync block", function( assert ) {
 	assert.expect( 2 );
 	QUnit.stop();
 	setTimeout(function() {
@@ -306,105 +116,6 @@ QUnit.test( "test synchronous calls to stop", function( assert ) {
 			QUnit.start();
 		}, 150 );
 	}, 150 );
-});
-}
-
-QUnit.module( "save scope", {
-	beforeEach: function() {
-		this.foo = "bar";
-	},
-	afterEach: function( assert ) {
-		assert.deepEqual( this.foo, "bar" );
-	}
-});
-
-QUnit.test( "scope check", function( assert ) {
-	assert.expect( 2 );
-	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.module( "simple testEnvironment setup", {
-	foo: "bar",
-	// example of meta-data
-	bugid: "#5311"
-});
-
-QUnit.test( "scope check", function( assert ) {
-	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.test( "modify testEnvironment", function( assert ) {
-	assert.expect( 0 );
-	this.foo = "hamster";
-});
-
-QUnit.test( "testEnvironment reset for next test", function( assert ) {
-	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.module( "testEnvironment with object", {
-	options: {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions" ]
-	}
-});
-
-QUnit.test( "scope check", function( assert ) {
-	assert.deepEqual( this.options, {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions" ]
-	});
-});
-
-QUnit.test( "modify testEnvironment", function( assert ) {
-	assert.expect( 0 );
-
-	// since we only do a shallow copy, nested children of testEnvironment can be modified
-	// and survice
-	this.options.ingredients.push( "carrots" );
-});
-
-QUnit.test( "testEnvironment reset for next test", function( assert ) {
-	assert.deepEqual( this.options, {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions", "carrots" ]
-	}, "Is this a bug or a feature? Could do a deep copy" );
-});
-
-QUnit.module( "testEnvironment tests" );
-
-function makeurl() {
-	var testEnv = QUnit.config.current.testEnvironment,
-		url = testEnv.url || "http://example.com/search",
-		q = testEnv.q || "a search test";
-	return url + "?q=" + encodeURIComponent( q );
-}
-
-QUnit.test( "makeurl working", function( assert ) {
-	assert.expect( 2 );
-	assert.equal(
-		QUnit.config.current.testEnvironment,
-		this,
-		"The current testEnvironment QUnit.config"
-	);
-	assert.equal(
-		makeurl(),
-		"http://example.com/search?q=a%20search%20test",
-		"makeurl returns a default url if nothing specified in the testEnvironment"
-	);
-});
-
-QUnit.module( "testEnvironment with makeurl settings", {
-	url: "http://google.com/",
-	q: "another_search_test"
-});
-
-QUnit.test( "makeurl working with settings from testEnvironment", function( assert ) {
-	assert.equal(
-		makeurl(),
-		"http://google.com/?q=another_search_test",
-		"rather than passing arguments, we use test metadata to from the url"
-	);
 });
 
 QUnit.module( "assertions" );
@@ -727,85 +438,3 @@ QUnit.test( "mod2", function( assert ) {
 	assert.mod2( 2, 0, "2 % 2 == 0" );
 	assert.mod2( 3, 1, "3 % 2 == 1" );
 });
-
-// Before and after each tests
-QUnit.config.beforeEach = function() {
-	this.mySetup = true;
-};
-
-QUnit.config.afterEach = function( assert ) {
-	if ( this.afterTest ) {
-		assert.ok( true );
-		this.afterTest = false;
-	}
-
-	if ( this.contextTest ) {
-		assert.ok( true );
-		this.contextTest = false;
-	}
-};
-
-QUnit.module( "beforeEach/afterEach", {
-	beforeEach: function() {
-		this.myModuleSetup = true;
-	},
-	afterEach: function( assert ) {
-		if ( this.moduleAfterTest ) {
-			assert.ok( true );
-			this.moduleAfterTest = false;
-		}
-	}
-});
-
-QUnit.test( "before", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( this.mySetup, "global beforeEach method" );
-	assert.ok( this.myModuleSetup, "module's afterEach method" );
-});
-
-QUnit.test( "after", function( assert ) {
-	assert.expect( 2 );
-
-	// This will trigger an assertion on the global afterEach
-	this.afterTest = true;
-
-	// This will trigger an assertion on the module's afterEach
-	this.moduleAfterTest = true;
-});
-
-QUnit.module( "Test context object", {
-	beforeEach: function( assert ) {
-		var key,
-			keys = [];
-
-		for ( key in this ) {
-			keys.push( key );
-		}
-		assert.deepEqual( keys, [ "helper", "mySetup" ] );
-	},
-	afterEach: function() {},
-	helper: function() {}
-});
-
-QUnit.test( "keys", function( assert ) {
-	assert.expect( 2 );
-	this.contextTest = true;
-});
-
-QUnit.module( "Deprecated setup/teardown", {
-	setup: function() {
-		this.deprecatedSetup = true;
-	},
-	teardown: function( assert ) {
-		assert.ok( this.deprecatedSetup );
-	}
-});
-
-QUnit.test( "before/after order", function( assert ) {
-	assert.expect( 1 );
-});
-
-// Get a reference to the global object, like window in browsers
-}( (function() {
-	return this;
-}.call()) ));

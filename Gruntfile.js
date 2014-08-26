@@ -189,6 +189,7 @@ grunt.registerTask( "test-on-node", function() {
 
 	require( "./test/logs" );
 	require( "./test/test" );
+	require( "./test/modules" );
 	require( "./test/deepEqual" );
 	require( "./test/globals" );
 
