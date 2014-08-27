@@ -47,7 +47,7 @@ Commit these, then run the script.
 
 Update web sites, replacing previous versions with new ones:
 
-* jquery/qunitjs.com pages/index.html
+* jquery/qunitjs.com pages/index.html and resources/*.html
 
 Finally announce on Twitter @qunitjs
 
