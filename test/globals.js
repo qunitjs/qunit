@@ -1,4 +1,4 @@
-/*global ok: false, equal: false */
+/*global ok: false, equal: false, global: false */
 (function( window ) {
 
 QUnit.module( "globals" );
@@ -33,9 +33,13 @@ QUnit.test( "QUnit object", function( assert ) {
 
 QUnit.test( "QUnit exported methods", function( assert ) {
 	var globals = [
-			"test", "asyncTest", "module",
+			"test", "asyncTest",
 			"start", "stop"
 		];
+
+	if ( !( typeof exports === "object" && exports && typeof module === "object" && module ) ) {
+		globals.push( "module" );
+	}
 
 	// 2 assertions per item on checkExported
 	assert.expect( globals.length * 2 );
@@ -58,6 +62,4 @@ QUnit.test( "Exported assertions", function() {
 });
 
 // Get a reference to the global object, like window in browsers
-}( (function() {
-	return this;
-}.call()) ));
+}( typeof global === "object" && global || this ));

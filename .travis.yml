@@ -2,6 +2,11 @@ language: node_js
 node_js:
   - "0.10"
 before_install:
-  - npm install -g grunt-cli
+  - "npm install -g grunt-cli"
+  - "sudo mkdir /opt/rhino-1.7R5 && sudo wget -O /opt/rhino-1.7R5/js.jar https://oss.sonatype.org/content/repositories/snapshots/org/mozilla/rhino/1.7R5-SNAPSHOT/rhino-1.7R5-20120629.144839-4.jar"
+  - "echo -e '#!/bin/sh\\njava -jar /opt/rhino-1.7R5/js.jar $@' | sudo tee /usr/local/bin/rhino && sudo chmod +x /usr/local/bin/rhino"
+  - "wget http://ringojs.org/downloads/ringojs-0.9.zip && sudo unzip ringojs-0.9 -d /opt && rm ringojs-0.9.zip"
+  - "sudo ln -s /opt/ringojs-0.9/bin/ringo /usr/local/bin/ringo && sudo chmod +x /usr/local/bin/ringo"
+  - "export PATH=\"$PATH:/usr/local/bin\""
 script:
-  - npm run-script ci
+  - "npm run-script ci"
