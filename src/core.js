@@ -552,12 +552,19 @@ function extractStacktrace( e, offset ) {
 		return e.sourceURL + ":" + e.line;
 	}
 }
+
 function sourceFromStacktrace( offset ) {
-	try {
-		throw new Error();
-	} catch ( e ) {
-		return extractStacktrace( e, offset );
+	var error = new Error();
+	if ( !error.stack ) {
+		try {
+			throw error;
+		} catch ( thrownError ) {
+
+			// This should already be true in most browsers
+			error = thrownError;
+		}
 	}
+	return extractStacktrace( error, offset );
 }
 
 function synchronize( callback, last ) {
