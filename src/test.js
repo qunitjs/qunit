@@ -193,7 +193,8 @@ Test.prototype = {
 				message: message,
 				actual: actual,
 				expected: expected,
-				testNumber: this.testNumber
+				testNumber: this.testNumber,
+				runtime: now() - this.started
 			};
 
 		if ( !result ) {
@@ -223,7 +224,8 @@ Test.prototype = {
 				result: false,
 				message: message || "error",
 				actual: actual || null,
-				testNumber: this.testNumber
+				testNumber: this.testNumber,
+				runtime: now() - this.started
 			};
 
 		if ( source ) {

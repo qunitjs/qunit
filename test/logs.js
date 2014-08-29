@@ -46,33 +46,39 @@ QUnit.log(function( context ) {
 	log++;
 	logContext = context;
 });
-
 QUnit.module( "logs1" );
 
 QUnit.test( "test1", function( assert ) {
-	assert.expect( 16 );
+	assert.expect( 17 );
 
 	assert.equal(
 		typeof totalTests,
 		"number",
 		"QUnit.begin should pass total amount of tests to callback"
 	);
+
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 1, "QUnit.testStart calls" );
 	assert.equal( testDone, 0, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
+
+	assert.equal( typeof logContext.runtime, "number", "log context: runtime" );
+
+	delete logContext.runtime;
 	assert.deepEqual( logContext, {
 		name: "test1",
 		module: "logs1",
 		result: true,
-		message: "QUnit.moduleDone calls",
-		actual: 0,
-		expected: 0,
+		message: "log context: runtime",
+		actual: "number",
+		expected: "number",
 		testNumber: 1
 	}, "log context after equal(actual, expected, message)" );
 
 	assert.equal( "foo", "foo" );
+
+	delete logContext.runtime;
 	assert.deepEqual( logContext, {
 		name: "test1",
 		module: "logs1",
@@ -84,6 +90,8 @@ QUnit.test( "test1", function( assert ) {
 	}, "log context after equal(actual, expected)" );
 
 	assert.ok( true, "ok(true, message)" );
+
+	delete logContext.runtime;
 	assert.deepEqual( logContext, {
 		module: "logs1",
 		name: "test1",
@@ -106,7 +114,7 @@ QUnit.test( "test1", function( assert ) {
 		name: "logs1"
 	}, "module context" );
 
-	assert.equal( log, 15, "QUnit.log calls" );
+	assert.equal( log, 16, "QUnit.log calls" );
 });
 
 QUnit.test( "test2", function( assert ) {
@@ -132,8 +140,8 @@ QUnit.test( "test2", function( assert ) {
 		module: "logs1",
 		name: "test1",
 		failed: 0,
-		passed: 16,
-		total: 16,
+		passed: 17,
+		total: 17,
 		testNumber: 1
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
@@ -146,7 +154,7 @@ QUnit.test( "test2", function( assert ) {
 	assert.deepEqual( moduleContext, {
 		name: "logs1"
 	}, "module context" );
-	assert.equal( log, 27, "QUnit.log calls" );
+	assert.equal( log, 28, "QUnit.log calls" );
 });
 
 QUnit.module( "logs2" );
@@ -167,14 +175,14 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		failed: 0,
-		passed: 28,
-		total: 28
+		passed: 29,
+		total: 29
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 36, "QUnit.log calls" );
+	assert.equal( log, 37, "QUnit.log calls" );
 });
 
 QUnit.test( "test2", function( assert ) {
@@ -194,7 +202,7 @@ QUnit.test( "test2", function( assert ) {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 44, "QUnit.log calls" );
+	assert.equal( log, 45, "QUnit.log calls" );
 });
 
 testAutorun = true;
@@ -227,16 +235,7 @@ QUnit.done(function() {
 	}, 5000 );
 });
 
-// Test Deprecated QUnit.init, this should reset the visible logs
-// Ref #530
-QUnit.init();
-
 QUnit.module( "deprecated log methods" );
-
-QUnit.test( "after QUnit.init()", function( assert ) {
-	assert.deepEqual( QUnit.config.stats, { all: 0, bad: 0 }, "clean test statistics" );
-	assert.deepEqual( QUnit.config.moduleStats, { all: 0, bad: 0 }, "clean module statistics" );
-});
 
 QUnit.test( "QUnit.reset()", function( assert ) {
 
