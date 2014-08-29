@@ -574,6 +574,7 @@ QUnit.log(function( details ) {
 
 	message = escapeText( details.message ) || ( details.result ? "okay" : "failed" );
 	message = "<span class='test-message'>" + message + "</span>";
+	message += "<span class='runtime'>@ " + details.runtime + " ms</span>";
 
 	// pushFailure doesn't provide details.expected
 	// when it calls, it's implicit to also not show expected and diff stuff
