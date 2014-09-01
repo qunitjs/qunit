@@ -15,6 +15,8 @@ QUnit.init = function() {
 	config.autorun = false;
 	config.filter = "";
 	config.queue = [];
+
+	// DEPRECATED: QUnit.config.semaphore will be removed in QUnit 2.0.
 	config.semaphore = 1;
 
 	// Return on non-browser environments
@@ -673,6 +675,7 @@ QUnit.testDone(function( details ) {
 });
 
 if ( !defined.document || document.readyState === "complete" ) {
+	config.pageLoaded = true;
 	config.autorun = true;
 }
 

@@ -79,45 +79,6 @@ if ( typeof document !== "undefined" ) {
 	});
 }
 
-QUnit.module( "asyncTest" );
-
-QUnit.asyncTest( "asyncTest", function( assert ) {
-	assert.expect( 2 );
-	assert.ok( true );
-	setTimeout(function() {
-		assert.ok( true );
-		QUnit.start();
-	}, 13 );
-});
-
-QUnit.test( "async assertions on a sync block", function( assert ) {
-	assert.expect( 2 );
-	QUnit.stop();
-	setTimeout(function() {
-		assert.ok( true );
-		QUnit.start();
-	}, 13 );
-	QUnit.stop();
-	setTimeout(function() {
-		assert.ok( true );
-		QUnit.start();
-	}, 125 );
-});
-
-QUnit.test( "test synchronous calls to stop", function( assert ) {
-	assert.expect( 2 );
-	QUnit.stop();
-	setTimeout(function() {
-		assert.ok( true, "first" );
-		QUnit.start();
-		QUnit.stop();
-		setTimeout(function() {
-			assert.ok( true, "second" );
-			QUnit.start();
-		}, 150 );
-	}, 150 );
-});
-
 QUnit.module( "assertions" );
 
 QUnit.test( "propEqual", function( assert ) {

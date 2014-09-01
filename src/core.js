@@ -9,6 +9,7 @@ var QUnit,
 	now = Date.now || function() {
 		return new Date().getTime();
 	},
+	globalStartCalled = false,
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
 	defined = {
@@ -96,6 +97,7 @@ QUnit = {
 		config.currentModuleTestEnvironment = testEnvironment;
 	},
 
+	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
 	asyncTest: function( testName, expected, callback ) {
 		if ( arguments.length === 2 ) {
 			callback = expected;
@@ -130,74 +132,63 @@ QUnit = {
 		test.queue();
 	},
 
+	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
+	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.
 	start: function( count ) {
-		var message;
+		var globalStartAlreadyCalled = globalStartCalled;
 
-		// QUnit hasn't been initialized yet.
-		// Note: RequireJS (et al) may delay onLoad
-		if ( config.semaphore === undefined ) {
-			QUnit.begin(function() {
-				// This is triggered at the top of QUnit.load, push start() to the event loop, to allow QUnit.load to finish first
-				setTimeout(function() {
-					QUnit.start( count );
-				});
-			});
-			return;
-		}
+		if ( !config.current ) {
+			globalStartCalled = true;
 
-		config.semaphore -= count || 1;
-		// don't start until equal number of stop-calls
-		if ( config.semaphore > 0 ) {
-			return;
-		}
+			if ( config.started ) {
+				throw new Error( "Called start() outside of a test context while already started" );
+			} else if ( globalStartAlreadyCalled || count > 1 ) {
+				throw new Error( "Called start() outside of a test context too many times" );
+			} else if ( config.autostart ) {
+				throw new Error( "Called start() outside of a test context when QUnit.config.autostart was true" );
+			} else if ( !config.pageLoaded ) {
 
-		// Set the starting time when the first test is run
-		QUnit.config.started = QUnit.config.started || now();
-		// ignore if start is called more often then stop
-		if ( config.semaphore < 0 ) {
-			config.semaphore = 0;
+				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
+				config.autostart = true;
+				return;
+			}
+		} else {
 
-			message = "Called start() while already started (QUnit.config.semaphore was 0 already)";
+			// If a test is running, adjust its semaphore
+			config.current.semaphore -= count || 1;
 
-			if ( config.current ) {
-				QUnit.pushFailure( message, sourceFromStacktrace( 2 ) );
-			} else {
-				throw new Error( message );
+			// Don't start until equal number of stop-calls
+			if ( config.current.semaphore > 0 ) {
+				return;
 			}
 
-			return;
-		}
-		// A slight delay, to avoid any current callbacks
-		if ( defined.setTimeout ) {
-			setTimeout(function() {
-				if ( config.semaphore > 0 ) {
-					return;
-				}
-				if ( config.timeout ) {
-					clearTimeout( config.timeout );
-				}
+			// throw an Error if start is called more often than stop
+			if ( config.current.semaphore < 0 ) {
+				config.current.semaphore = 0;
 
-				config.blocking = false;
-				process( true );
-			}, 13 );
-		} else {
-			config.blocking = false;
-			process( true );
+				QUnit.pushFailure(
+					"Called start() while already started (test's semaphore was 0 already)",
+					sourceFromStacktrace( 2 )
+				);
+				return;
+			}
 		}
+
+		resumeProcessing();
 	},
 
+	// DEPRECATED: QUnit.stop() will be removed in QUnit 2.0.
 	stop: function( count ) {
-		config.semaphore += count || 1;
-		config.blocking = true;
 
-		if ( config.testTimeout && defined.setTimeout ) {
-			clearTimeout( config.timeout );
-			config.timeout = setTimeout(function() {
-				QUnit.ok( false, "Test timed out" );
-				config.semaphore = 1;
-				QUnit.start();
-			}, config.testTimeout );
+		// If there isn't a test running, don't allow QUnit.stop() to be called
+		if ( !config.current ) {
+			throw new Error( "Called stop() outside of a test context" );
 		}
+
+		// If a test is running, adjust its semaphore
+		config.current.semaphore += count || 1;
+
+		pauseProcessing();
 	}
 };
 
@@ -401,6 +392,8 @@ extend( QUnit.constructor.prototype, {
 });
 
 QUnit.load = function() {
+	config.pageLoaded = true;
+
 	runLoggingCallbacks( "begin", {
 		totalTests: Test.count
 	});
@@ -412,14 +405,13 @@ QUnit.load = function() {
 		started: 0,
 		updateRate: 1000,
 		autostart: true,
-		filter: "",
-		semaphore: 1
+		filter: ""
 	}, true );
 
 	config.blocking = false;
 
 	if ( config.autostart ) {
-		QUnit.start();
+		resumeProcessing();
 	}
 };
 
@@ -611,6 +603,54 @@ function process( last ) {
 	config.depth--;
 	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
 		done();
+	}
+}
+
+function resumeProcessing() {
+
+	// If the test run hasn't officially begun yet
+	if ( !config.started ) {
+
+		// Record the time of the test run's beginning
+		config.started = now();
+
+		// TODO: Move the "begin" logging callback to here, see Issue #659
+
+	}
+
+	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
+	if ( defined.setTimeout ) {
+		setTimeout(function() {
+			if ( config.current && config.current.semaphore > 0 ) {
+				return;
+			}
+			if ( config.timeout ) {
+				clearTimeout( config.timeout );
+			}
+
+			config.blocking = false;
+			process( true );
+		}, 13 );
+	} else {
+		config.blocking = false;
+		process( true );
+	}
+}
+
+function pauseProcessing() {
+	config.blocking = true;
+
+	if ( config.testTimeout && defined.setTimeout ) {
+		clearTimeout( config.timeout );
+		config.timeout = setTimeout(function() {
+			if ( config.current ) {
+				config.current.semaphore = 0;
+				QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
+			} else {
+				throw new Error( "Test timed out" );
+			}
+			resumeProcessing();
+		}, config.testTimeout );
 	}
 }
 

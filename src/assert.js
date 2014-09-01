@@ -14,6 +14,25 @@ QUnit.assert = Assert.prototype = {
 		}
 	},
 
+	// Increment this Test's semaphore counter, then return a single-use function that decrements that counter a maximum of once.
+	async: function() {
+		var test = this.test,
+			popped = false;
+
+		test.semaphore += 1;
+		pauseProcessing();
+
+		return function done() {
+			if ( !popped ) {
+				test.semaphore -= 1;
+				popped = true;
+				resumeProcessing();
+			} else {
+				test.pushFailure( "Called the callback returned from `assert.async` more than once", sourceFromStacktrace( 2 ) );
+			}
+		};
+	},
+
 	// Exports test.push() to the user API
 	push: function() {
 		var assert = this;

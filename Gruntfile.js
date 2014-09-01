@@ -92,7 +92,8 @@ grunt.initConfig({
 		},
 		qunit: [
 			"test/index.html",
-			"test/async.html",
+			"test/autostart.html",
+			"test/startError.html",
 			"test/logs.html",
 			"test/setTimeout.html"
 		]
@@ -204,6 +205,7 @@ grunt.registerTask( "test-on-node", function() {
 
 	require( "./test/logs" );
 	require( "./test/test" );
+	require( "./test/async" );
 	require( "./test/modules" );
 	require( "./test/deepEqual" );
 	require( "./test/globals" );

@@ -3,6 +3,7 @@ function Test( settings ) {
 	this.assert = new Assert( this );
 	this.assertions = [];
 	this.testNumber = ++Test.count;
+	this.semaphore = 0;
 }
 
 Test.count = 0;

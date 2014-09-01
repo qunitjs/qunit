@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>QUnit Start Error Test Suite</title>
+	<link rel="stylesheet" href="../dist/qunit.css">
+</head>
+<body>
+	<div id="qunit"></div>
+	<script src="../dist/qunit.js"></script>
+	<script>
+		var autostartStartError, tooManyStartsError;
+
+		try {
+			QUnit.config.autostart = true;
+			QUnit.start();
+		}
+		catch ( thrownError ) {
+			autostartStartError = thrownError;
+		}
+
+		try {
+			QUnit.start();
+		}
+		catch ( thrownError ) {
+			tooManyStartsError = thrownError;
+		}
+	</script>
+
+	<!-- INTENTIONALLY reload QUnit -->
+	<script src="../dist/qunit.js"></script>
+
+	<script src="startError.js"></script>
+	<script src="swarminject.js"></script>
+</body>
+</html>
