@@ -254,7 +254,7 @@ QUnit.pushFailure = function() {
 	}
 
 	// Gets current test obj
-	var currentTest = QUnit.config.current.assert.test;
+	var currentTest = QUnit.config.current;
 
 	return currentTest.pushFailure.apply( currentTest, arguments );
 };
