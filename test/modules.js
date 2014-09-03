@@ -1,12 +1,12 @@
 // Before and after each tests
 QUnit.config.beforeEach = function() {
-	this.mySetup = true;
+	this.lastHook = "global-beforeEach";
 };
 
 QUnit.config.afterEach = function( assert ) {
-	if ( this.afterTest ) {
-		assert.ok( true );
-		this.afterTest = false;
+	if ( this.hooksTest ) {
+		assert.strictEqual( this.lastHook, "module-afterEach", "Global afterEach runs after module's afterEach" );
+		this.hooksTest = false;
 	}
 
 	if ( this.contextTest ) {
@@ -17,31 +17,25 @@ QUnit.config.afterEach = function( assert ) {
 
 QUnit.module( "beforeEach/afterEach", {
 	beforeEach: function( assert ) {
-		assert.ok( true, "beforeEach allow assertions inside" );
-		this.myModuleSetup = true;
+		assert.strictEqual( this.lastHook, "global-beforeEach", "Global beforeEach runs before module's beforeEach" );
+		this.lastHook = "module-beforeEach";
 	},
 	afterEach: function( assert ) {
-		if ( this.moduleAfterTest ) {
-			assert.ok( true );
-			this.moduleAfterTest = false;
+		if ( this.hooksTest ) {
+			assert.strictEqual( this.lastHook, "test-block", "Module's afterEach runs after current test block" );
+			this.lastHook = "module-afterEach";
 		}
 	}
 });
 
-QUnit.test( "before", function( assert ) {
-	assert.expect( 3 );
-	assert.ok( this.mySetup, "global beforeEach method" );
-	assert.ok( this.myModuleSetup, "module's afterEach method" );
-});
+QUnit.test( "hooks order", function( assert ) {
+	assert.expect( 4 );
 
-QUnit.test( "after", function( assert ) {
-	assert.expect( 3 );
+	// This will trigger an assertion on the global and one on the module's afterEach
+	this.hooksTest = true;
 
-	// This will trigger an assertion on the global afterEach
-	this.afterTest = true;
-
-	// This will trigger an assertion on the module's afterEach
-	this.moduleAfterTest = true;
+	assert.strictEqual( this.lastHook, "module-beforeEach", "Module's beforeEach runs before current test block" );
+	this.lastHook = "test-block";
 });
 
 QUnit.module( "Test context object", {
@@ -52,7 +46,7 @@ QUnit.module( "Test context object", {
 		for ( key in this ) {
 			keys.push( key );
 		}
-		assert.deepEqual( keys, [ "helper", "mySetup" ] );
+		assert.deepEqual( keys, [ "helper", "lastHook" ] );
 	},
 	afterEach: function() {},
 	helper: function() {}
