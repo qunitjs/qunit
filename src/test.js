@@ -72,16 +72,12 @@ Test.prototype = {
 
 		if ( config.notrycatch ) {
 			this.callback.call( this.testEnvironment, this.assert );
-			this.callbackRuntime = now() - this.callbackStarted;
 			return;
 		}
 
 		try {
 			this.callback.call( this.testEnvironment, this.assert );
-			this.callbackRuntime = now() - this.callbackStarted;
 		} catch ( e ) {
-			this.callbackRuntime = now() - this.callbackStarted;
-
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
 			// else next test will carry the responsibility
