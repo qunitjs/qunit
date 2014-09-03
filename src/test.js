@@ -91,7 +91,6 @@ Test.prototype = {
 		}
 	},
 	after: function() {
-		config.current = this;
 		if ( config.notrycatch ) {
 			this.hooks( "afterEach" );
 			return;
