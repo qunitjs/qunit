@@ -160,19 +160,22 @@ Test.prototype = {
 			test = this;
 
 		function run() {
+
 			// each of these can by async
-			synchronize(function() {
-				test.before();
-			});
-			synchronize(function() {
-				test.run();
-			});
-			synchronize(function() {
-				test.after();
-			});
-			synchronize(function() {
-				test.finish();
-			});
+			synchronize([
+				function() {
+					test.before();
+				},
+				function() {
+					test.run();
+				},
+				function() {
+					test.after();
+				},
+				function() {
+					test.finish();
+				}
+			]);
 		}
 
 		// `bad` initialized at top of scope
