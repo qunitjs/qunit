@@ -384,7 +384,7 @@ extend( QUnit.constructor.prototype, {
 	// done: { failed, passed, total, runtime }
 	done: registerLoggingCallback( "done" ),
 
-	// log: { result, actual, expected, message }
+	// log: { result, actual, expected, message, runtime }
 	log: registerLoggingCallback( "log" ),
 
 	// testStart: { name }
@@ -396,7 +396,7 @@ extend( QUnit.constructor.prototype, {
 	// moduleStart: { name }
 	moduleStart: registerLoggingCallback( "moduleStart" ),
 
-	// moduleDone: { name, failed, passed, total }
+	// moduleDone: { name, failed, passed, total, runtime }
 	moduleDone: registerLoggingCallback( "moduleDone" )
 });
 
@@ -464,7 +464,8 @@ function done() {
 			name: config.previousModule,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
-			total: config.moduleStats.all
+			total: config.moduleStats.all,
+			runtime: now() - config.moduleStats.started
 		});
 	}
 	delete config.previousModule;

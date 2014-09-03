@@ -63,16 +63,20 @@ QUnit.test( "test1", function( assert ) {
 	assert.equal( testDone, 0, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	assert.equal( typeof logContext.runtime, "number", "log context: runtime" );
+	assert.equal(
+		logContext.runtime >= 0 && logContext.runtime < 50,
+		true,
+		"log runtime was a reasonable number"
+	);
 
 	delete logContext.runtime;
 	assert.deepEqual( logContext, {
 		name: "test1",
 		module: "logs1",
 		result: true,
-		message: "log context: runtime",
-		actual: "number",
-		expected: "number",
+		message: "log runtime was a reasonable number",
+		actual: true,
+		expected: true,
 		testNumber: 1
 	}, "log context after equal(actual, expected, message)" );
 
@@ -125,15 +129,19 @@ QUnit.test( "test2", function( assert ) {
 	assert.equal( testDone, 1, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	assert.equal( typeof testDoneContext.runtime, "number", "testDone context: runtime" );
-	delete testDoneContext.runtime;
-	// DEPRECATED: remove this delete when removing the duration property
-	delete testDoneContext.duration;
+	assert.equal(
+		testDoneContext.runtime >= 0 && testDoneContext.runtime < 1000,
+		true,
+		"test runtime was a reasonable number"
+	);
 
 	assert.ok( testDoneContext.assertions instanceof Array, "testDone context: assertions" );
 
 	// TODO: more tests for testDoneContext.assertions
 
+	delete testDoneContext.runtime;
+	// DEPRECATED: remove this delete when removing the duration property
+	delete testDoneContext.duration;
 	// Delete testDoneContext.assertions so we can easily jump to next assertion
 	delete testDoneContext.assertions;
 	assert.deepEqual( testDoneContext, {
@@ -160,7 +168,7 @@ QUnit.test( "test2", function( assert ) {
 QUnit.module( "logs2" );
 
 QUnit.test( "test1", function( assert ) {
-	assert.expect( 9 );
+	assert.expect( 10 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
 	assert.equal( testStart, 3, "QUnit.testStart calls" );
@@ -172,6 +180,14 @@ QUnit.test( "test1", function( assert ) {
 		name: "test1",
 		testNumber: 3
 	}, "test context" );
+
+	assert.equal(
+		moduleDoneContext.runtime >= 0 && moduleDoneContext.runtime < 5000,
+		true,
+		"module runtime was a reasonable number"
+	);
+	delete moduleDoneContext.runtime;
+
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		failed: 0,
@@ -182,7 +198,7 @@ QUnit.test( "test1", function( assert ) {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 37, "QUnit.log calls" );
+	assert.equal( log, 38, "QUnit.log calls" );
 });
 
 QUnit.test( "test2", function( assert ) {
@@ -202,7 +218,7 @@ QUnit.test( "test2", function( assert ) {
 		name: "logs2"
 	}, "module context" );
 
-	assert.equal( log, 45, "QUnit.log calls" );
+	assert.equal( log, 46, "QUnit.log calls" );
 });
 
 testAutorun = true;
