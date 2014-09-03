@@ -25,11 +25,12 @@ Test.prototype = {
 					name: config.previousModule,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
-					total: config.moduleStats.all
+					total: config.moduleStats.all,
+					runtime: now() - config.moduleStats.started
 				});
 			}
 			config.previousModule = this.module;
-			config.moduleStats = { all: 0, bad: 0 };
+			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
 				name: this.module
 			});
