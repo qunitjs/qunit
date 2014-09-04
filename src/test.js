@@ -52,15 +52,6 @@ Test.prototype = {
 		if ( !config.pollution ) {
 			saveGlobal();
 		}
-		if ( config.notrycatch ) {
-			this.hooks( "beforeEach" );
-			return;
-		}
-		try {
-			this.hooks( "beforeEach" );
-		} catch ( e ) {
-			this.pushFailure( "beforeEach failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
-		}
 	},
 	run: function() {
 		config.current = this;
@@ -91,26 +82,34 @@ Test.prototype = {
 		}
 	},
 	after: function() {
-		config.current = this;
-		if ( config.notrycatch ) {
-			this.hooks( "afterEach" );
-			return;
-		} else {
-			try {
-				this.hooks( "afterEach" );
-			} catch ( e ) {
-				this.pushFailure( "afterEach failed on " + this.testName + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
-			}
-		}
 		checkPollution();
 	},
+	queueHook: function( hook, hookName ) {
+		var test = this;
+		return function runHook() {
+			config.current = test;
+			if ( config.notrycatch ) {
+				hook.call( test.testEnvironment, test.assert );
+				return;
+			}
+			try {
+				hook.call( test.testEnvironment, test.assert );
+			} catch ( error ) {
+				test.pushFailure( hookName + " failed on " + test.testName + ": " + ( error.message || error ), extractStacktrace( error, 0 ) );
+			}
+		};
+	},
 	hooks: function( handler ) {
-		if ( QUnit.config[ handler ] ) {
-			QUnit.config[ handler ].call( this.testEnvironment, this.assert );
+		var hooks = [];
+
+		if ( QUnit.objectType( config[ handler ] ) === "function" ) {
+			hooks.push( this.queueHook( config[ handler ], handler ) );
 		}
-		if ( this.moduleTestEnvironment && this.moduleTestEnvironment[ handler ] ) {
-			this.moduleTestEnvironment[ handler ].call( this.testEnvironment, this.assert );
+		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
+			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
 		}
+
+		return hooks;
 	},
 	finish: function() {
 		config.current = this;
@@ -161,19 +160,28 @@ Test.prototype = {
 			test = this;
 
 		function run() {
+
 			// each of these can by async
-			synchronize(function() {
-				test.before();
-			});
-			synchronize(function() {
-				test.run();
-			});
-			synchronize(function() {
-				test.after();
-			});
-			synchronize(function() {
-				test.finish();
-			});
+			synchronize([
+				function() {
+					test.before();
+				},
+
+				test.hooks( "beforeEach" ),
+
+				function() {
+					test.run();
+				},
+
+				test.hooks( "afterEach" ).reverse(),
+
+				function() {
+					test.after();
+				},
+				function() {
+					test.finish();
+				}
+			]);
 		}
 
 		// `bad` initialized at top of scope
