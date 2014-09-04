@@ -414,7 +414,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 		assert.expect( 2 );
 		var basics = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
 			slow = getPreviousTests( /^basics$/, /^timing$/ )[ 0 ];
-		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 50,
+		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 100,
 			"Fast runtime for trivial test"
 		);
 		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250,
