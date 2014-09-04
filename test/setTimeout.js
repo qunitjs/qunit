@@ -1,12 +1,12 @@
 QUnit.config.updateRate = 1;
 
 QUnit.module( "Module that mucks with time", {
-	beforeEach: function() {
+	setup: function() {
 		this.setTimeout = window.setTimeout;
 		window.setTimeout = function() {};
 	},
 
-	afterEach: function() {
+	teardown: function() {
 		window.setTimeout = this.setTimeout;
 	}
 });
