@@ -54,7 +54,7 @@ QUnit.init = function() {
 		result.id = "qunit-testresult";
 		result.className = "result";
 		tests.parentNode.insertBefore( result, tests );
-		result.innerHTML = "Running...<br/>&nbsp;";
+		result.innerHTML = "Running...<br />&#160;";
 	}
 };
 
@@ -213,7 +213,7 @@ function getUrlConfigHtml() {
 				"' name='" + escaped + "' type='checkbox'" +
 				( val.value ? " value='" + escapeText( val.value ) + "'" : "" ) +
 				( config[ val.id ] ? " checked='checked'" : "" ) +
-				" title='" + escapedTooltip + "'><label for='qunit-urlconfig-" + escaped +
+				" title='" + escapedTooltip + "' /><label for='qunit-urlconfig-" + escaped +
 				"' title='" + escapedTooltip + "'>" + val.label + "</label>";
 		} else {
 			urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
@@ -428,7 +428,7 @@ function appendTestResults() {
 		result.id = "qunit-testresult";
 		result.className = "result";
 		tests.parentNode.insertBefore( result, tests );
-		result.innerHTML = "Running...<br>&nbsp;";
+		result.innerHTML = "Running...<br />&#160;";
 	}
 }
 
@@ -473,7 +473,7 @@ QUnit.done(function( details ) {
 		html = [
 			"Tests completed in ",
 			details.runtime,
-			" milliseconds.<br>",
+			" milliseconds.<br />",
 			"<span class='passed'>",
 			details.passed,
 			"</span> assertions of <span class='total'>",
@@ -558,7 +558,7 @@ QUnit.testStart(function( details ) {
 
 	running = id( "qunit-testresult" );
 	if ( running ) {
-		running.innerHTML = "Running: <br>" + name;
+		running.innerHTML = "Running: <br />" + name;
 	}
 
 });

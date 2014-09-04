@@ -42,6 +42,7 @@
     "grunt-git-authors": "1.2.0",
     "grunt-jscs": "0.6.1",
     "grunt-qunit-istanbul": "0.4.5",
+    "grunt-search": "0.1.6",
     "load-grunt-tasks": "0.3.0",
     "testswarm": "1.1.0"
   },
