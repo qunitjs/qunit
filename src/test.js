@@ -39,8 +39,8 @@ Test.prototype = {
 		config.current = this;
 
 		this.testEnvironment = extend( {}, this.moduleTestEnvironment );
-		delete this.testEnvironment.beforeEach;
-		delete this.testEnvironment.afterEach;
+		delete this.testEnvironment.setup;
+		delete this.testEnvironment.teardown;
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
@@ -84,32 +84,20 @@ Test.prototype = {
 	after: function() {
 		checkPollution();
 	},
-	queueHook: function( hook, hookName ) {
-		var test = this;
-		return function runHook() {
-			config.current = test;
+	hooks: function( hookName ) {
+		var hook;
+		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ hookName ] ) === "function" ) {
+			hook = this.moduleTestEnvironment[ hookName ];
 			if ( config.notrycatch ) {
-				hook.call( test.testEnvironment, test.assert );
+				hook.call( this.testEnvironment, this.assert );
 				return;
 			}
 			try {
-				hook.call( test.testEnvironment, test.assert );
+				hook.call( this.testEnvironment, this.assert );
 			} catch ( error ) {
-				test.pushFailure( hookName + " failed on " + test.testName + ": " + ( error.message || error ), extractStacktrace( error, 0 ) );
+				this.pushFailure( hookName + " failed on " + this.testName + ": " + ( error.message || error ), extractStacktrace( error, 0 ) );
 			}
-		};
-	},
-	hooks: function( handler ) {
-		var hooks = [];
-
-		if ( QUnit.objectType( config[ handler ] ) === "function" ) {
-			hooks.push( this.queueHook( config[ handler ], handler ) );
 		}
-		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
-			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
-		}
-
-		return hooks;
 	},
 	finish: function() {
 		config.current = this;
@@ -166,15 +154,15 @@ Test.prototype = {
 				function() {
 					test.before();
 				},
-
-				test.hooks( "beforeEach" ),
-
+				function() {
+					test.hooks( "setup" );
+				},
 				function() {
 					test.run();
 				},
-
-				test.hooks( "afterEach" ).reverse(),
-
+				function() {
+					test.hooks( "teardown" );
+				},
 				function() {
 					test.after();
 				},

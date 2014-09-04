@@ -51,9 +51,7 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 if ( typeof document !== "undefined" ) {
 
 	QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
-		beforeEach: function() {
-		},
-		afterEach: function( assert ) {
+		setup: function( assert ) {
 
 			// We can't use ok(false) inside script tags since some browsers
 			// don't evaluate script tags inserted through innerHTML after domready.
@@ -389,7 +387,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 		};
 
 	QUnit.module( "timing", {
-		beforeEach: function() {
+		setup: function() {
 			if ( delayNextSetup ) {
 				delayNextSetup = false;
 				sleep( 250 );
@@ -418,7 +416,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 			"Fast runtime for trivial test"
 		);
 		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250,
-			"Runtime includes beforeEach"
+			"Runtime includes setup"
 		);
 	});
 })();
