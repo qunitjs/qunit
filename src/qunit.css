@@ -99,6 +99,10 @@
 	cursor: pointer;
 }
 
+#qunit-tests li.skipped strong {
+	cursor: default;
+}
+
 #qunit-tests li a {
 	padding: 0.5em;
 	color: #C2CCD1;
@@ -211,6 +215,21 @@
 
 #qunit-banner.qunit-fail                    { background-color: #EE5757; }
 
+/*** Skipped tests */
+
+#qunit-tests .skipped {
+	background-color: #EBECE9;
+}
+
+#qunit-tests .qunit-skipped-label {
+	background-color: #F4FF77;
+	display: inline-block;
+	font-style: normal;
+	color: #366097;
+	line-height: 1.8em;
+	padding: 0 0.5em;
+	margin: -0.4em 0.4em -0.4em 0;
+}
 
 /** Result */
 

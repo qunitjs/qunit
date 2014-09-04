@@ -1,8 +1,20 @@
 function Test( settings ) {
 	extend( this, settings );
-	this.assert = new Assert( this );
 	this.assertions = [];
 	this.testNumber = ++Test.count;
+	this.module = config.currentModule;
+	this.moduleTestEnvironment = config.currentModuleTestEnvironment;
+	this.stack = sourceFromStacktrace( 3 );
+
+	if ( settings.skip ) {
+
+		// Skipped tests will fully ignore any sent callback
+		this.callback = function() {};
+		this.async = false;
+		this.expected = 0;
+	} else {
+		this.assert = new Assert( this );
+	}
 }
 
 Test.count = 0;
@@ -102,6 +114,11 @@ Test.prototype = {
 	hooks: function( handler ) {
 		var hooks = [];
 
+		// hooks are also ignored on skipped tests
+		if ( this.skip ) {
+			return hooks;
+		}
+
 		if ( QUnit.objectType( config[ handler ] ) === "function" ) {
 			hooks.push( this.queueHook( config[ handler ], handler ) );
 		}
@@ -139,6 +156,7 @@ Test.prototype = {
 		runLoggingCallbacks( "testDone", {
 			name: this.testName,
 			module: this.module,
+			skipped: !!this.skip,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length,
@@ -158,6 +176,10 @@ Test.prototype = {
 	queue: function() {
 		var bad,
 			test = this;
+
+		if ( !this.valid() ) {
+			return;
+		}
 
 		function run() {
 
@@ -250,6 +272,47 @@ Test.prototype = {
 			result: false,
 			message: message
 		});
+	},
+
+	/** @return Boolean: true if this test should be ran */
+	valid: function() {
+		var include,
+			filter = config.filter && config.filter.toLowerCase(),
+			module = config.module && config.module.toLowerCase(),
+			fullName = ( this.module + ": " + this.testName ).toLowerCase();
+
+		// Internally-generated tests are always valid
+		if ( this.callback && this.callback.validTest ) {
+			delete this.callback.validTest;
+			return true;
+		}
+
+		if ( config.testNumber.length > 0 ) {
+			if ( inArray( this.testNumber, config.testNumber ) < 0 ) {
+				return false;
+			}
+		}
+
+		if ( module && ( !this.module || this.module.toLowerCase() !== module ) ) {
+			return false;
+		}
+
+		if ( !filter ) {
+			return true;
+		}
+
+		include = filter.charAt( 0 ) !== "!";
+		if ( !include ) {
+			filter = filter.slice( 1 );
+		}
+
+		// If the filter matches, we need to honour include
+		if ( fullName.indexOf( filter ) !== -1 ) {
+			return include;
+		}
+
+		// Otherwise, do the opposite
+		return !include;
 	}
 };
 

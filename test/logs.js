@@ -150,7 +150,8 @@ QUnit.test( "test2", function( assert ) {
 		failed: 0,
 		passed: 17,
 		total: 17,
-		testNumber: 1
+		testNumber: 1,
+		skipped: false
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
