@@ -114,7 +114,7 @@ Test.prototype = {
 	hooks: function( handler ) {
 		var hooks = [];
 
-		// hooks are also ignored on skipped tests
+		// Hooks are also ignored on skipped tests
 		if ( this.skip ) {
 			return hooks;
 		}
@@ -273,8 +273,6 @@ Test.prototype = {
 			message: message
 		});
 	},
-
-	/** @return Boolean: true if this test should be ran */
 	valid: function() {
 		var include,
 			filter = config.filter && config.filter.toLowerCase(),
