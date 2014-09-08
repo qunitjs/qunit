@@ -1,5 +1,3 @@
-// TODO disable reordering for this suite!
-
 var begin = 0,
 	moduleStart = 0,
 	moduleDone = 0,
