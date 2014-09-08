@@ -283,14 +283,11 @@ Test.prototype = {
 
 		// Internally-generated tests are always valid
 		if ( this.callback && this.callback.validTest ) {
-			delete this.callback.validTest;
 			return true;
 		}
 
-		if ( config.testNumber.length > 0 ) {
-			if ( inArray( this.testNumber, config.testNumber ) < 0 ) {
-				return false;
-			}
+		if ( config.testNumber.length > 0 && inArray( this.testNumber, config.testNumber ) < 0 ) {
+			return false;
 		}
 
 		if ( module && ( !this.module || this.module.toLowerCase() !== module ) ) {
