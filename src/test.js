@@ -65,6 +65,7 @@ Test.prototype = {
 			saveGlobal();
 		}
 	},
+
 	run: function() {
 		config.current = this;
 
@@ -93,9 +94,11 @@ Test.prototype = {
 			}
 		}
 	},
+
 	after: function() {
 		checkPollution();
 	},
+
 	queueHook: function( hook, hookName ) {
 		var test = this;
 		return function runHook() {
@@ -111,6 +114,7 @@ Test.prototype = {
 			}
 		};
 	},
+
 	hooks: function( handler ) {
 		var hooks = [];
 
@@ -128,6 +132,7 @@ Test.prototype = {
 
 		return hooks;
 	},
+
 	finish: function() {
 		config.current = this;
 		if ( config.requireExpects && this.expected === null ) {
