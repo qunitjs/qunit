@@ -222,6 +222,26 @@ QUnit.test( "test2", function( assert ) {
 	assert.equal( log, 46, "QUnit.log calls" );
 });
 
+QUnit.skip( "a skipped test" );
+
+QUnit.test( "test the log for the skipped test", function( assert ) {
+	assert.expect( 1 );
+
+	delete testDoneContext.runtime;
+	delete testDoneContext.duration;
+
+	assert.deepEqual( testDoneContext, {
+		assertions: [],
+		module: "logs2",
+		name: "a skipped test",
+		failed: 0,
+		passed: 0,
+		total: 0,
+		testNumber: 5,
+		skipped: true
+	}, "testDone context" );
+});
+
 testAutorun = true;
 
 QUnit.done(function() {
