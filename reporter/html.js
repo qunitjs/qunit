@@ -342,7 +342,7 @@ function toolbarModuleFilter() {
 
 			// Remove any existing filters
 			filter: undefined,
-			testNumber: undefined
+			testId: undefined
 		});
 	});
 
@@ -411,7 +411,7 @@ function appendBanner() {
 	if ( banner ) {
 		banner.className = "";
 		banner.innerHTML = "<a href='" +
-			QUnit.url({ filter: undefined, module: undefined, testNumber: undefined }) +
+			QUnit.url({ filter: undefined, module: undefined, testId: undefined }) +
 			"'>" + banner.innerHTML + "</a> ";
 	}
 }
@@ -542,13 +542,13 @@ QUnit.testStart(function( details ) {
 
 		a = document.createElement( "a" );
 		a.innerHTML = "Rerun";
-		a.href = QUnit.url({ testNumber: details.testNumber });
+		a.href = QUnit.url({ testId: details.testId });
 
 		li = document.createElement( "li" );
 		li.appendChild( b );
 		li.appendChild( a );
 		li.className = "running";
-		li.id = "qunit-test-output" + details.testNumber;
+		li.id = "qunit-test-output" + details.testId;
 
 		assertList = document.createElement( "ol" );
 		assertList.className = "qunit-assert-list";
@@ -568,7 +568,7 @@ QUnit.testStart(function( details ) {
 QUnit.log(function( details ) {
 	var assertList, assertLi,
 		message, expected, actual,
-		testItem = id( "qunit-test-output" + details.testNumber );
+		testItem = id( "qunit-test-output" + details.testId );
 
 	if ( !testItem ) {
 		return;
@@ -632,7 +632,7 @@ QUnit.testDone(function( details ) {
 		return;
 	}
 
-	testItem = id( "qunit-test-output" + details.testNumber );
+	testItem = id( "qunit-test-output" + details.testId );
 	assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
 
 	good = details.passed;

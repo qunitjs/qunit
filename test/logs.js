@@ -75,7 +75,7 @@ QUnit.test( "test1", function( assert ) {
 		message: "log runtime was a reasonable number",
 		actual: true,
 		expected: true,
-		testNumber: 1
+		testId: "646e9e25"
 	}, "log context after equal(actual, expected, message)" );
 
 	assert.equal( "foo", "foo" );
@@ -88,7 +88,7 @@ QUnit.test( "test1", function( assert ) {
 		message: undefined,
 		actual: "foo",
 		expected: "foo",
-		testNumber: 1
+		testId: "646e9e25"
 	}, "log context after equal(actual, expected)" );
 
 	assert.ok( true, "ok(true, message)" );
@@ -101,14 +101,14 @@ QUnit.test( "test1", function( assert ) {
 		message: "ok(true, message)",
 		actual: true,
 		expected: true,
-		testNumber: 1
+		testId: "646e9e25"
 	}, "log context after ok(true, message)" );
 
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
 		name: "test1",
-		testNumber: 1
+		testId: "646e9e25"
 	}, "test context" );
 
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
@@ -148,13 +148,13 @@ QUnit.test( "test2", function( assert ) {
 		failed: 0,
 		passed: 17,
 		total: 17,
-		testNumber: 1,
+		testId: "646e9e25",
 		skipped: false
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: "logs1",
 		name: "test2",
-		testNumber: 2
+		testId: "646e9e26"
 	}, "test context" );
 
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
@@ -177,7 +177,7 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( testContext, {
 		module: "logs2",
 		name: "test1",
-		testNumber: 3
+		testId: "9954d966"
 	}, "test context" );
 
 	assert.equal(
@@ -211,7 +211,7 @@ QUnit.test( "test2", function( assert ) {
 	assert.deepEqual( testContext, {
 		module: "logs2",
 		name: "test2",
-		testNumber: 4
+		testId: "9954d967"
 	}, "test context" );
 	assert.deepEqual( moduleContext, {
 		name: "logs2"
@@ -235,8 +235,8 @@ QUnit.test( "test the log for the skipped test", function( assert ) {
 		failed: 0,
 		passed: 0,
 		total: 0,
-		testNumber: 5,
-		skipped: true
+		skipped: true,
+		testId: "3e797d3a"
 	}, "testDone context" );
 });
 

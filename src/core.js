@@ -287,14 +287,13 @@ config = {
 	// Exact match of the module name
 	config.module = urlParams.module;
 
-	config.testNumber = [];
-	if ( urlParams.testNumber ) {
+	config.testId = [];
+	if ( urlParams.testId ) {
 
-		// Ensure that urlParams.testNumber is an array
-		urlParams.testNumber = [].concat( urlParams.testNumber );
-		for ( i = 0; i < urlParams.testNumber.length; i++ ) {
-			current = urlParams.testNumber[ i ];
-			config.testNumber.push( parseInt( current, 10 ) );
+		// Ensure that urlParams.testId is an array
+		urlParams.testId = [].concat( urlParams.testId );
+		for ( i = 0; i < urlParams.testId.length; i++ ) {
+			config.testId.push( urlParams.testId[ i ] );
 		}
 	}
 

@@ -1,11 +1,13 @@
 function Test( settings ) {
+	++Test.count;
+
 	extend( this, settings );
 	this.assertions = [];
-	this.testNumber = ++Test.count;
 	this.semaphore = 0;
 	this.module = config.currentModule;
 	this.moduleTestEnvironment = config.currentModuleTestEnvironment;
 	this.stack = sourceFromStacktrace( 3 );
+	this.testId = generateHash( this.module, this.testName );
 
 	if ( settings.skip ) {
 
@@ -59,7 +61,7 @@ Test.prototype = {
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
 			module: this.module,
-			testNumber: this.testNumber
+			testId: this.testId
 		});
 
 		if ( !config.pollution ) {
@@ -177,7 +179,7 @@ Test.prototype = {
 
 			// HTML Reporter use
 			assertions: this.assertions,
-			testNumber: this.testNumber,
+			testId: this.testId,
 
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
 			duration: this.runtime
@@ -240,7 +242,7 @@ Test.prototype = {
 				message: message,
 				actual: actual,
 				expected: expected,
-				testNumber: this.testNumber,
+				testId: this.testId,
 				runtime: now() - this.started
 			};
 
@@ -271,7 +273,7 @@ Test.prototype = {
 				result: false,
 				message: message || "error",
 				actual: actual || null,
-				testNumber: this.testNumber,
+				testId: this.testId,
 				runtime: now() - this.started
 			};
 
@@ -324,7 +326,7 @@ Test.prototype = {
 			return true;
 		}
 
-		if ( config.testNumber.length > 0 && inArray( this.testNumber, config.testNumber ) < 0 ) {
+		if ( config.testId.length > 0 && inArray( this.testId, config.testId ) < 0 ) {
 			return false;
 		}
 
@@ -362,3 +364,27 @@ QUnit.pushFailure = function() {
 
 	return currentTest.pushFailure.apply( currentTest, arguments );
 };
+
+// Based on Java's String.hashCode, a simple but not
+// rigorously collision resistant hashing function
+function generateHash( module, testName ) {
+	var hex,
+		i = 0,
+		hash = 0,
+		str = module + "\x1C" + testName,
+		len = str.length;
+
+	for ( ; i < len; i++ ) {
+		hash  = ( ( hash << 5 ) - hash ) + str.charCodeAt( i );
+		hash |= 0;
+	}
+
+	// Convert the possibly negative integer hash code into an 8 character hex string, which isn't
+	// strictly necessary but increases user understanding that the id is a SHA-like hash
+	hex = ( 0x100000000 + hash ).toString( 16 );
+	if ( hex.length < 8 ) {
+	    hex = "0000000" + hex;
+	}
+
+	return hex.slice( -8 );
+}
