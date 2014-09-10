@@ -663,7 +663,7 @@ QUnit.testDone(function( details ) {
 		addClass( testItem, "skipped" );
 		skipped = document.createElement( "em" );
 		skipped.className = "qunit-skipped-label";
-		skipped.innerHTML = "Skipped";
+		skipped.innerHTML = "skipped";
 		testItem.insertBefore( skipped, testTitle );
 	} else {
 		addEvent( testTitle, "click", function() {
