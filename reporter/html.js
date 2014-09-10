@@ -618,7 +618,7 @@ QUnit.log(function( details ) {
 
 QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
-		good, bad, testCounts,
+		good, bad, testCounts, skipped,
 		tests = id( "qunit-tests" );
 
 	// QUnit.reset() is deprecated and will be replaced for a new
@@ -659,17 +659,24 @@ QUnit.testDone(function( details ) {
 	testTitle.innerHTML += " <b class='counts'>(" + testCounts +
 		details.assertions.length + ")</b>";
 
-	addEvent( testTitle, "click", function() {
-		toggleClass( assertList, "qunit-collapsed" );
-	});
+	if ( details.skipped ) {
+		addClass( testItem, "skipped" );
+		skipped = document.createElement( "em" );
+		skipped.className = "qunit-skipped-label";
+		skipped.innerHTML = "skipped";
+		testItem.insertBefore( skipped, testTitle );
+	} else {
+		addEvent( testTitle, "click", function() {
+			toggleClass( assertList, "qunit-collapsed" );
+		});
 
-	time = document.createElement( "span" );
-	time.className = "runtime";
-	time.innerHTML = details.runtime + " ms";
+		testItem.className = bad ? "fail" : "pass";
 
-	testItem.className = bad ? "fail" : "pass";
-
-	testItem.insertBefore( time, assertList );
+		time = document.createElement( "span" );
+		time.className = "runtime";
+		time.innerHTML = details.runtime + " ms";
+		testItem.insertBefore( time, assertList );
+	}
 });
 
 if ( !defined.document || document.readyState === "complete" ) {

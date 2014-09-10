@@ -438,3 +438,25 @@ QUnit.test( "mod2", function( assert ) {
 	assert.mod2( 2, 0, "2 % 2 == 0" );
 	assert.mod2( 3, 1, "3 % 2 == 1" );
 });
+
+QUnit.module( "QUnit.skip", {
+	beforeEach: function( assert ) {
+
+		// skip test hooks for skipped tests
+		assert.ok( false, "skipped function" );
+		throw "Error";
+	},
+	afterEach: function( assert ) {
+		assert.ok( false, "skipped function" );
+		throw "Error";
+	}
+});
+
+QUnit.skip( "test blocks are skipped", function( assert ) {
+
+	// this test callback won't run, even with broken code
+	assert.expect( 1000 );
+	throw "Error";
+});
+
+QUnit.skip( "no function" );
