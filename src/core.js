@@ -1,6 +1,8 @@
 var QUnit,
 	config,
 	onErrorFnPrev,
+	currentModuleName,
+	currentSuite = new Suite( "" ),
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
@@ -79,9 +81,40 @@ var QUnit,
 // `QUnit` initialized at top of scope
 QUnit = {
 
+	beforeEach: function( callback ) {
+		currentSuite.beforeEach.push( callback );
+	},
+
+	afterEach: function( callback ) {
+		currentSuite.afterEach.push( callback );
+	},
+
+	suite: function( name, callback ) {
+
+		// Update the current Suite context (i.e. add the latest to the stack)
+		currentSuite = new Suite( name );
+
+		// For backward compatibility only
+		currentModuleName = currentSuite.getFullName();
+		config.modules[ currentModuleName ] = true;
+		// Update this immediately before each test
+		config.currentModuleTestEnvironment = null;
+
+		// TODO: Is `currentSuite` the right context?
+		callback.call( currentSuite );
+
+		// Revert the currentSuite after the callback has been executed
+		currentSuite = currentSuite.parent;
+
+		// For backward compatibility only
+		// Revert the currentModuleName to follow the currentSuite otherwise root-level tests can end
+		// up with the wrong module name
+		currentModuleName = currentSuite.getFullName();
+	},
+
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
-		config.currentModule = name;
+		currentModuleName = name;
 		config.modules[ name ] = true;
 
 		// DEPRECATED: handles setup/teardown functions,
@@ -253,7 +286,12 @@ config = {
 	// Set of all modules.
 	modules: {},
 
-	callbacks: {}
+	callbacks: {},
+
+	// When enabled, each test gets its own unique `this` context.
+	// When not enabled, all tests within a suite will share a `this` context.
+	atomicContext: true
+
 };
 
 // Initialize more QUnit.config and QUnit.urlParams

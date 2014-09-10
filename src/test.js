@@ -4,7 +4,8 @@ function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
-	this.module = config.currentModule;
+	this.module = currentSuite.getFullName() || currentModuleName;
+	this.suite = currentSuite;
 	this.moduleTestEnvironment = config.currentModuleTestEnvironment;
 	this.stack = sourceFromStacktrace( 3 );
 	this.testId = generateHash( this.module, this.testName );
@@ -53,9 +54,15 @@ Test.prototype = {
 
 		config.current = this;
 
-		this.testEnvironment = extend( {}, this.moduleTestEnvironment );
-		delete this.testEnvironment.beforeEach;
-		delete this.testEnvironment.afterEach;
+		// For suite-based tests, we always want this to start empty
+		this.testEnvironment = {};
+
+		// For module-based tests, copy over the module's environment
+		if ( this.suite.parent == null && this.module ) {
+			extend( this.testEnvironment, this.moduleTestEnvironment );
+			delete this.testEnvironment.beforeEach;
+			delete this.testEnvironment.afterEach;
+		}
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
@@ -126,7 +133,8 @@ Test.prototype = {
 	},
 
 	hooks: function( handler ) {
-		var hooks = [];
+		var i, len, suiteHooks,
+			hooks = [];
 
 		// Hooks are also ignored on skipped tests
 		if ( this.skip ) {
@@ -136,6 +144,14 @@ Test.prototype = {
 		if ( QUnit.objectType( config[ handler ] ) === "function" ) {
 			hooks.push( this.queueHook( config[ handler ], handler ) );
 		}
+
+		if ( this.suite ) {
+			suiteHooks = this.suite.hooks( handler );
+			for ( i = 0, len = suiteHooks.length; i < len; i++ ) {
+				hooks.push( this.queueHook( suiteHooks[ i ], handler ) );
+			}
+		}
+
 		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
 			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
 		}

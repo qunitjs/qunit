@@ -27,6 +27,7 @@ grunt.initConfig({
 			src: [
 				"src/intro.js",
 				"src/core.js",
+				"src/suite.js",
 				"src/test.js",
 				"src/assert.js",
 				"src/equiv.js",
@@ -92,6 +93,8 @@ grunt.initConfig({
 		},
 		qunit: [
 			"test/index.html",
+			"test/suitesOrder.html",
+			"test/suites.html",
 			"test/autostart.html",
 			"test/startError.html",
 			"test/logs.html",
@@ -137,7 +140,7 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 	}
 	timeout = timeout || 1000 * 60 * 15;
 
-	[ "index", "autostart", "startError", "setTimeout" ]
+	[ "index", "suitesOrder", "suites", "autostart", "startError", "setTimeout" ]
 		.forEach(function( suite ) {
 			runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
 		});
