@@ -1,42 +1,31 @@
-var globalStartError = {},
-	globalStopError = {};
+var globalStartError, globalStopError;
 
 QUnit.begin(function() {
-
-	// TODO: This setTimeout won't be necessary when Issue #659 is resolved
-	setTimeout(function() {
-		try {
-			QUnit.start();
-		}
-		catch ( thrownError ) {
-			globalStartError = thrownError;
-		}
-	}, 13);
+	try {
+		QUnit.start();
+	}
+	catch ( thrownError ) {
+		globalStartError = thrownError.message;
+	}
 });
 
 try {
 	QUnit.stop();
 }
 catch ( thrownError ) {
-	globalStopError = thrownError;
+	globalStopError = thrownError.message;
 }
 
 QUnit.module( "global start/stop errors" );
 
-QUnit.test( "Calling start() when already started should throw Error", function( assert ) {
+QUnit.test( "Call start() when already started", function( assert ) {
 	assert.expect( 1 );
-
-	// TODO: This test won't need to be asynchronous when Issue #659 is resolved
-	var done = assert.async();
-	setTimeout(function() {
-		assert.equal( globalStartError.message, "Called start() outside of a test context while already started" );
-		done();
-	}, 13);
+	assert.equal( globalStartError, "Called start() outside of a test context while already started" );
 });
 
-QUnit.test( "Calling stop() outside of test context should throw Error", function( assert ) {
+QUnit.test( "Call stop() outside of test context", function( assert ) {
 	assert.expect( 1 );
-	assert.equal( globalStopError.message, "Called stop() outside of a test context" );
+	assert.equal( globalStopError, "Called stop() outside of a test context" );
 });
 
 QUnit.module( "start/stop" );

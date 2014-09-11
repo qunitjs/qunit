@@ -10,6 +10,7 @@ var QUnit,
 		return new Date().getTime();
 	},
 	globalStartCalled = false,
+	runStarted = false,
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
 	defined = {
@@ -140,7 +141,7 @@ QUnit = {
 		if ( !config.current ) {
 			globalStartCalled = true;
 
-			if ( config.started ) {
+			if ( runStarted ) {
 				throw new Error( "Called start() outside of a test context while already started" );
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
 				throw new Error( "Called start() outside of a test context too many times" );
@@ -394,10 +395,6 @@ extend( QUnit.constructor.prototype, {
 QUnit.load = function() {
 	config.pageLoaded = true;
 
-	runLoggingCallbacks( "begin", {
-		totalTests: Test.count
-	});
-
 	// Initialize the configuration options
 	extend( config, {
 		stats: { all: 0, bad: 0 },
@@ -608,15 +605,7 @@ function process( last ) {
 
 function resumeProcessing() {
 
-	// If the test run hasn't officially begun yet
-	if ( !config.started ) {
-
-		// Record the time of the test run's beginning
-		config.started = now();
-
-		// TODO: Move the "begin" logging callback to here, see Issue #659
-
-	}
+	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
@@ -628,10 +617,35 @@ function resumeProcessing() {
 				clearTimeout( config.timeout );
 			}
 
+			// If the test run hasn't officially begun yet
+			if ( !config.started ) {
+
+				// Record the time of the test run's beginning
+				config.started = now();
+
+				// The test run is officially beginning now
+				runLoggingCallbacks( "begin", {
+					totalTests: Test.count
+				});
+			}
+
 			config.blocking = false;
 			process( true );
 		}, 13 );
 	} else {
+
+		// If the test run hasn't officially begun yet
+		if ( !config.started ) {
+
+			// Record the time of the test run's beginning
+			config.started = now();
+
+			// The test run is officially beginning now
+			runLoggingCallbacks( "begin", {
+				totalTests: Test.count
+			});
+		}
+
 		config.blocking = false;
 		process( true );
 	}

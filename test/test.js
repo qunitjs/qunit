@@ -343,17 +343,17 @@ QUnit.test( "running test name displayed", function( assert ) {
 });
 
 (function() {
-	var delayNextSetup,
-		sleep = function( n ) {
-			QUnit.stop();
-			setTimeout( function() { QUnit.start(); }, n );
-		};
+	var delayNextSetup;
 
 	QUnit.module( "timing", {
-		beforeEach: function() {
+		beforeEach: function( assert ) {
+			var done;
 			if ( delayNextSetup ) {
 				delayNextSetup = false;
-				sleep( 250 );
+				done = assert.async();
+				setTimeout(function() {
+					done();
+				}, 250 );
 			}
 		}
 	});
