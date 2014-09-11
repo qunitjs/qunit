@@ -604,7 +604,6 @@ function process( last ) {
 }
 
 function resumeProcessing() {
-
 	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)

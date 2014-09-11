@@ -54,7 +54,10 @@ Test.prototype = {
 			saveGlobal();
 		}
 	},
+
 	run: function() {
+		var promise;
+
 		config.current = this;
 
 		if ( this.async ) {
@@ -64,12 +67,14 @@ Test.prototype = {
 		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
-			this.callback.call( this.testEnvironment, this.assert );
+			promise = this.callback.call( this.testEnvironment, this.assert );
+			this.resolvePromise( promise );
 			return;
 		}
 
 		try {
-			this.callback.call( this.testEnvironment, this.assert );
+			promise = this.callback.call( this.testEnvironment, this.assert );
+			this.resolvePromise( promise );
 		} catch ( e ) {
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
@@ -82,24 +87,30 @@ Test.prototype = {
 			}
 		}
 	},
+
 	after: function() {
 		checkPollution();
 	},
+
 	queueHook: function( hook, hookName ) {
-		var test = this;
+		var promise,
+			test = this;
 		return function runHook() {
 			config.current = test;
 			if ( config.notrycatch ) {
-				hook.call( test.testEnvironment, test.assert );
+				promise = hook.call( test.testEnvironment, test.assert );
+				test.resolvePromise( promise, hookName );
 				return;
 			}
 			try {
-				hook.call( test.testEnvironment, test.assert );
+				promise = hook.call( test.testEnvironment, test.assert );
+				test.resolvePromise( promise, hookName );
 			} catch ( error ) {
 				test.pushFailure( hookName + " failed on " + test.testName + ": " + ( error.message || error ), extractStacktrace( error, 0 ) );
 			}
 		};
 	},
+
 	hooks: function( handler ) {
 		var hooks = [];
 
@@ -112,6 +123,7 @@ Test.prototype = {
 
 		return hooks;
 	},
+
 	finish: function() {
 		config.current = this;
 		if ( config.requireExpects && this.expected === null ) {
@@ -251,7 +263,34 @@ Test.prototype = {
 			result: false,
 			message: message
 		});
+	},
+
+	resolvePromise: function( promise, phase ) {
+		var then, message,
+			test = this;
+		if ( promise != null ) {
+			then = promise.then;
+			if ( QUnit.objectType( then ) === "function" ) {
+				QUnit.stop();
+				then.call(
+					promise,
+					QUnit.start,
+					function( error ) {
+						message = "Promise rejected " + ( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+							" " + test.testName + ": " + ( error.message || error );
+						test.pushFailure( message, extractStacktrace( error, 0 ) );
+
+						// else next test will carry the responsibility
+						saveGlobal();
+
+						// Unblock
+						QUnit.start();
+					}
+				);
+			}
+		}
 	}
+
 };
 
 QUnit.pushFailure = function() {
