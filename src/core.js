@@ -195,17 +195,6 @@ QUnit = {
 	}
 };
 
-// We use the prototype to distinguish between properties that should
-// be exposed as globals (and in exports) and those that shouldn't
-(function() {
-	function F() {}
-	F.prototype = QUnit;
-	QUnit = new F();
-
-	// Make F QUnit's constructor so that we can add to the prototype later
-	QUnit.constructor = F;
-}());
-
 /**
  * Config object: Maintain internal state
  * Later exposed as QUnit.config
@@ -369,14 +358,7 @@ extend( QUnit, {
 	extend: extend
 });
 
-/**
- * @deprecated: Created for backwards compatibility with test runner that set the hook function
- * into QUnit.{hook}, instead of invoking it and passing the hook function.
- * QUnit.constructor is set to the empty F() above so that we can add to it's prototype here.
- * Doing this allows us to tell if the following methods have been overwritten on the actual
- * QUnit object.
- */
-extend( QUnit.constructor.prototype, {
+extend( QUnit, {
 
 	// Logging callbacks; all receive a single argument with the listed properties
 	// run test/logs.html for any related changes
