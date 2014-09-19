@@ -13,7 +13,7 @@ function checkExported( assert, methods, isAssertion ) {
 
 		assert.strictEqual(
 			window[ method ],
-			QUnit.constructor.prototype[ method ],
+			QUnit[ method ],
 			"QUnit exports QUnit." + method + " to the global scope"
 		);
 
