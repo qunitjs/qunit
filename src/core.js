@@ -377,30 +377,34 @@ extend( QUnit, {
 	}
 });
 
-extend( QUnit, {
+// Register logging callbacks
+(function() {
+	var i, l, key,
+		callbacks = [ "begin", "done", "log", "testStart", "testDone", "moduleStart", "moduleDone" ];
 
-	// Logging callbacks; all receive a single argument with the listed properties
-	// run test/logs.html for any related changes
-	begin: registerLoggingCallback( "begin" ),
+	function registerLoggingCallback( key ) {
+		return function( callback ) {
+			if ( QUnit.objectType( callback ) !== "function" ) {
+				throw new Error(
+					"QUnit logging methods require a callback function as their first parameters."
+				);
+			}
 
-	// done: { failed, passed, total, runtime }
-	done: registerLoggingCallback( "done" ),
+			config.callbacks[ key ].push( callback );
+		};
+	}
 
-	// log: { result, actual, expected, message, runtime }
-	log: registerLoggingCallback( "log" ),
+	for ( i = 0, l = callbacks.length; i < l; i++ ) {
+		key = callbacks[ i ];
 
-	// testStart: { name }
-	testStart: registerLoggingCallback( "testStart" ),
+		// Initialize key collection of logging callback
+		if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
+			config.callbacks[ key ] = [];
+		}
 
-	// testDone: { name, failed, passed, total, runtime }
-	testDone: registerLoggingCallback( "testDone" ),
-
-	// moduleStart: { name }
-	moduleStart: registerLoggingCallback( "moduleStart" ),
-
-	// moduleDone: { name, failed, passed, total, runtime }
-	moduleDone: registerLoggingCallback( "moduleDone" )
-});
+		QUnit[ key ] = registerLoggingCallback( key );
+	}
+})();
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -683,24 +687,6 @@ function extend( a, b, undefOnly ) {
 	}
 
 	return a;
-}
-
-function registerLoggingCallback( key ) {
-
-	// Initialize key collection of logging callback
-	if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
-		config.callbacks[ key ] = [];
-	}
-
-	return function( callback ) {
-		if ( QUnit.objectType( callback ) !== "function" ) {
-			throw new Error(
-				"QUnit logging methods require a callback function as their first parameters."
-			);
-		}
-
-		config.callbacks[ key ].push( callback );
-	};
 }
 
 function runLoggingCallbacks( key, args ) {
