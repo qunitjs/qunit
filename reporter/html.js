@@ -16,9 +16,6 @@ QUnit.init = function() {
 	config.filter = "";
 	config.queue = [];
 
-	// DEPRECATED: QUnit.config.semaphore will be removed in QUnit 2.0.
-	config.semaphore = 1;
-
 	// Return on non-browser environments
 	// This is necessary to not break on node tests
 	if ( typeof window === "undefined" ) {
