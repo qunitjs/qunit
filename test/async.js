@@ -65,10 +65,9 @@ QUnit.test( "fails if start is called more than stop", function( assert ) {
 	assert.test.pushFailure = function( msg ) {
 		throw new Error( msg );
 	};
-
 	assert.throws(function() {
 		QUnit.start();
-	});
+	}, /Called start\(\) while already started \(test's semaphore was 0 already\)/ );
 });
 
 QUnit.module( "asyncTest" );
