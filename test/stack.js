@@ -28,7 +28,7 @@ QUnit.test( "dies on test", function() {
 });
 
 // beforeEach fail
-QUnit.module( "beforeEach/afterEach fail", {
+QUnit.module( "beforeEach fail", {
 	beforeEach: function() {
 		throw new Error( "foo" );
 	}
@@ -38,7 +38,7 @@ QUnit.test( "module fails", function() {
 });
 
 // afterEach fail
-QUnit.module( "beforeEach/afterEach fail", {
+QUnit.module( "afterEach fail", {
 	afterEach: function() {
 		throw new Error( "bar" );
 	}
