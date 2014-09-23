@@ -310,7 +310,7 @@ QUnit.test( "sole `done` is called synchronously BEFORE failing assertion", func
 
 QUnit.test( "sole `done` is called BEFORE passing assertion", function( assert ) {
 	var done,
-		_this = this;
+		testContext = this;
 
 	assert.expect( 1 );
 
@@ -323,13 +323,13 @@ QUnit.test( "sole `done` is called BEFORE passing assertion", function( assert )
 			// FAIL!!! (with duck-punch to force an Error to be thrown instead of a `pushFailure` call)
 			assert.ok( true, "should fail with a special `done`-related error message if called " +
 				"after `done` even if result is passing" );
-		}, _this.errorRegex );
+		}, testContext.errorRegex );
 	}, 50 );
 });
 
 QUnit.test( "sole `done` is called BEFORE failing assertion", function( assert ) {
 	var done,
-		_this = this;
+		testContext = this;
 
 	assert.expect( 1 );
 
@@ -342,13 +342,13 @@ QUnit.test( "sole `done` is called BEFORE failing assertion", function( assert )
 			// FAIL!!! (with duck-punch to force an Error to be thrown instead of a `pushFailure` call)
 			assert.ok( false, "should fail with a special `done`-related error message if called " +
 				"after `done` even if result is already failing" );
-		}, _this.errorRegex );
+		}, testContext.errorRegex );
 	}, 50 );
 });
 
 QUnit.test( "multiple `done` calls, final `done` is called BEFORE passing assertion", function( assert ) {
 	var done1, done2,
-		_this = this;
+		testContext = this;
 
 	assert.expect( 2 );
 	done1 = assert.async();
@@ -365,13 +365,13 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE passing assert
 			// FAIL!!! (with duck-punch to force an Error to be thrown instead of a `pushFailure` call)
 			assert.ok( true, "should fail with a special `done`-related error message if called " +
 				"after final `done` even if result is passing" );
-		}, _this.errorRegex );
+		}, testContext.errorRegex );
 	}, 50 );
 });
 
 QUnit.test( "multiple `done` calls, final `done` is called BEFORE failing assertion", function( assert ) {
 	var done1, done2,
-		_this = this;
+		testContext = this;
 
 	assert.expect( 2 );
 	done1 = assert.async();
@@ -388,13 +388,13 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE failing assert
 			// FAIL!!! (with duck-punch to force an Error to be thrown instead of a `pushFailure` call)
 			assert.ok( false, "should fail with a special `done`-related error message if called " +
 				"after `done` even if result is already failing" );
-		}, _this.errorRegex );
+		}, testContext.errorRegex );
 	}, 50 );
 });
 
 QUnit.test( "cannot allow assertions between first `done` call and second `assert.async` call", function( assert ) {
 	var done1, done2,
-		_this = this;
+		testContext = this;
 
 	assert.expect( 1 );
 	done1 = assert.async();
@@ -412,6 +412,6 @@ QUnit.test( "cannot allow assertions between first `done` call and second `asser
 				assert.ok( false, "Should never reach this point anyway" );
 				done2();
 			}, 13 );
-		}, _this.errorRegex );
+		}, testContext.errorRegex );
 	}, 13 );
 });
