@@ -27,17 +27,44 @@ QUnit.test( "dies on test", function() {
 	throw new Error( "foo" );
 });
 
-// beforeEach/afterEach fail
-QUnit.module( "beforeEach/afterEach fail", {
+// beforeEach die
+QUnit.module( "beforeEach fail", {
 	beforeEach: function() {
 		throw new Error( "foo" );
-	},
+	}
+});
+QUnit.test( "module fails", function() {
+	// ...
+});
+
+// afterEach die
+QUnit.module( "afterEach fail", {
 	afterEach: function() {
 		throw new Error( "bar" );
 	}
 });
 QUnit.test( "module fails", function() {
 	// ...
+});
+
+// assert.async post-resolution assertions fail
+QUnit.module( "assertions fail after assert.async flows are resolved" );
+
+QUnit.test( "assert.ok", function( assert ) {
+	assert.async()();
+	assert.ok( true, "This assertion should pass but have a failure logged before it" );
+});
+
+QUnit.test( "assert.equal", function( assert ) {
+	assert.async()();
+	assert.equal( 1, 1, "This assertion should pass but have a failure logged before it" );
+});
+
+QUnit.test( "assert.throws", function( assert ) {
+	assert.async()();
+	assert.throws(function() {
+		throw new Error( "foo" );
+	}, "This assertion should pass but have a failure logged before it" );
 });
 
 QUnit.module( "globals" );
