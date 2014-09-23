@@ -150,9 +150,9 @@ QUnit.test( "fails if callback is called more than once", function( assert ) {
 QUnit.module( "assert.async in beforeEach", {
 	beforeEach: function( assert ) {
 		var done = assert.async(),
-			currentTest = this;
+			testContext = this;
 		setTimeout(function() {
-			currentTest.state = "beforeEach";
+			testContext.state = "beforeEach";
 			done();
 		}, 50 );
 	}
@@ -172,9 +172,9 @@ QUnit.module( "assert.async before afterEach", {
 QUnit.test( "afterEach will synchronize", function( assert ) {
 	assert.expect( 1 );
 	var done = assert.async(),
-		currentTest = this;
+		testContext = this;
 	setTimeout(function() {
-		currentTest.state = "done";
+		testContext.state = "done";
 		done();
 	}, 25 );
 });
