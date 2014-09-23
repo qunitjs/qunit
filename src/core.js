@@ -551,6 +551,11 @@ function process( last ) {
 
 	while ( config.queue.length && !config.blocking ) {
 		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( now() - start ) < config.updateRate ) ) {
+			if ( config.current ) {
+
+				// Reset async tracking for each phase of the Test lifecycle
+				config.current.usedAsync = false;
+			}
 			config.queue.shift()();
 		} else {
 			setTimeout( next, 13 );

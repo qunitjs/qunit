@@ -4,6 +4,7 @@ function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
+	this.usedAsync = false;
 	this.module = config.currentModule;
 	this.moduleTestEnvironment = config.currentModuleTestEnvironment;
 	this.stack = sourceFromStacktrace( 3 );
