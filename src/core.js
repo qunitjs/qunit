@@ -286,11 +286,7 @@ config = {
 	// Set of all modules.
 	modules: {},
 
-	callbacks: {},
-
-	// When enabled, each test gets its own unique `this` context.
-	// When not enabled, all tests within a suite will share a `this` context.
-	atomicContext: true
+	callbacks: {}
 
 };
 
