@@ -1,6 +1,4 @@
-var QUnit,
-	config,
-	onErrorFnPrev,
+var QUnit, config, onErrorFnPrev,
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
@@ -13,6 +11,7 @@ var QUnit,
 	runStarted = false,
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
+	listeners = {},
 	defined = {
 		document: typeof window.document !== "undefined",
 		setTimeout: typeof window.setTimeout !== "undefined",
@@ -192,7 +191,28 @@ QUnit = {
 		config.current.semaphore += count || 1;
 
 		pauseProcessing();
+	},
+
+	on: function( type, listener ) {
+		// Validate
+		if ( QUnit.objectType( type ) !== "string" ) {
+			throw new Error( "Adding QUnit events requires an event type" );
+		}
+		if ( QUnit.objectType( listener ) !== "function" ) {
+			throw new Error( "Adding QUnit events requires a listener function" );
+		}
+
+		// Initialize collection of this logging callback
+		if ( !listeners[ type ] ) {
+			listeners[ type ] = [];
+		}
+
+		// Filter out duplicate listeners
+		if ( inArray( listener, listeners[ type ] ) < 0 ) {
+			listeners[ type ].push( listener );
+		}
 	}
+
 };
 
 // We use the prototype to distinguish between properties that should
@@ -362,35 +382,38 @@ extend( QUnit, {
 });
 
 /**
- * @deprecated: Created for backwards compatibility with test runner that set the hook function
+ * DEPRECATED: Created for backwards compatibility with test runner that set the hook function
  * into QUnit.{hook}, instead of invoking it and passing the hook function.
  * QUnit.constructor is set to the empty F() above so that we can add to it's prototype here.
  * Doing this allows us to tell if the following methods have been overwritten on the actual
  * QUnit object.
+ *
+ * DEPRECATED: These logging callbacks will removed in QUnit 2.0. Use `QUnit.on()` instead.
  */
 extend( QUnit.constructor.prototype, {
 
 	// Logging callbacks; all receive a single argument with the listed properties
 	// run test/logs.html for any related changes
-	begin: registerLoggingCallback( "begin" ),
+	begin: registerLoggingCallback( "runStart" ),
 
 	// done: { failed, passed, total, runtime }
-	done: registerLoggingCallback( "done" ),
+	done: registerLoggingCallback( "runEnd" ),
 
 	// log: { result, actual, expected, message, runtime }
-	log: registerLoggingCallback( "log" ),
+	log: registerLoggingCallback( "assert" ),
 
 	// testStart: { name }
 	testStart: registerLoggingCallback( "testStart" ),
 
 	// testDone: { name, failed, passed, total, runtime }
-	testDone: registerLoggingCallback( "testDone" ),
+	testDone: registerLoggingCallback( "testEnd" ),
 
 	// moduleStart: { name }
-	moduleStart: registerLoggingCallback( "moduleStart" ),
+	moduleStart: registerLoggingCallback( "suiteStart" ),
 
 	// moduleDone: { name, failed, passed, total, runtime }
-	moduleDone: registerLoggingCallback( "moduleDone" )
+	moduleDone: registerLoggingCallback( "suiteEnd" )
+
 });
 
 QUnit.load = function() {
@@ -445,12 +468,28 @@ window.onerror = function( error, filePath, linerNr ) {
 	return ret;
 };
 
+function emit( type, data ) {
+	var i, len, callbacks;
+
+	// Validate
+	if ( QUnit.objectType( type ) !== "string" ) {
+		throw new Error( "Emitting QUnit events requires an event type" );
+	}
+
+	callbacks = listeners[ type ];
+	if ( callbacks ) {
+		for ( i = 0, len = callbacks.length; i < len; i++ ) {
+			callbacks[ i ]( data );
+		}
+	}
+}
+
 function done() {
 	config.autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
-		runLoggingCallbacks( "moduleDone", {
+		emit( "suiteEnd", {
 			name: config.previousModule,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
@@ -463,7 +502,7 @@ function done() {
 	var runtime = now() - config.started,
 		passed = config.stats.all - config.stats.bad;
 
-	runLoggingCallbacks( "done", {
+	emit( "runEnd", {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
@@ -583,7 +622,7 @@ function resumeProcessing() {
 				config.started = now();
 
 				// The test run is officially beginning now
-				runLoggingCallbacks( "begin", {
+				emit( "runStart", {
 					totalTests: Test.count
 				});
 			}
@@ -600,7 +639,7 @@ function resumeProcessing() {
 			config.started = now();
 
 			// The test run is officially beginning now
-			runLoggingCallbacks( "begin", {
+			emit( "runStart", {
 				totalTests: Test.count
 			});
 		}
@@ -697,30 +736,9 @@ function extend( a, b, undefOnly ) {
 }
 
 function registerLoggingCallback( key ) {
-
-	// Initialize key collection of logging callback
-	if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
-		config.callbacks[ key ] = [];
-	}
-
 	return function( callback ) {
-		if ( QUnit.objectType( callback ) !== "function" ) {
-			throw new Error(
-				"QUnit logging methods require a callback function as their first parameters."
-			);
-		}
-
-		config.callbacks[ key ].push( callback );
+		return QUnit.on( key, callback );
 	};
-}
-
-function runLoggingCallbacks( key, args ) {
-	var i, l, callbacks;
-
-	callbacks = config.callbacks[ key ];
-	for ( i = 0, l = callbacks.length; i < l; i++ ) {
-		callbacks[ i ]( args );
-	}
 }
 
 // from jquery.js
