@@ -220,7 +220,7 @@ export function begin() {
 		}
 
 		// The test run is officially beginning now
-		runLoggingCallbacks( "begin", {
+		emit( "runStart", {
 			totalTests: Test.count,
 			modules: modulesLog
 		} );
@@ -264,7 +264,7 @@ function done() {
 
 	// Log the last module results
 	if ( config.previousModule ) {
-		runLoggingCallbacks( "moduleDone", {
+		emit( "suiteEnd", {
 			name: config.previousModule.name,
 			tests: config.previousModule.tests,
 			failed: config.moduleStats.bad,
@@ -278,7 +278,7 @@ function done() {
 	runtime = now() - config.started;
 	passed = config.stats.all - config.stats.bad;
 
-	runLoggingCallbacks( "done", {
+	emit( "runEnd", {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,

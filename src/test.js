@@ -67,7 +67,7 @@ Test.prototype = {
 				!hasOwn.call( config, "previousModule" )
 		) {
 			if ( hasOwn.call( config, "previousModule" ) ) {
-				runLoggingCallbacks( "moduleDone", {
+				emit( "suiteEnd", {
 					name: config.previousModule.name,
 					tests: config.previousModule.tests,
 					failed: config.moduleStats.bad,
@@ -78,7 +78,7 @@ Test.prototype = {
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
-			runLoggingCallbacks( "moduleStart", {
+			emit( "suiteStart", {
 				name: this.module.name,
 				tests: this.module.tests
 			} );
@@ -95,7 +95,7 @@ Test.prototype = {
 		this.testEnvironment = extend( {}, this.module.testEnvironment );
 
 		this.started = now();
-		runLoggingCallbacks( "testStart", {
+		emit( "testStart", {
 			name: this.testName,
 			module: this.module.name,
 			testId: this.testId
@@ -229,8 +229,7 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( this.module );
-		runLoggingCallbacks( "testDone", {
+		emit( "testEnd", {
 			name: this.testName,
 			module: this.module.name,
 			skipped: skipped,
@@ -329,7 +328,7 @@ Test.prototype = {
 			}
 		}
 
-		runLoggingCallbacks( "log", details );
+		emit( "assert", details );
 
 		this.assertions.push( {
 			result: !!resultInfo.result,
@@ -357,7 +356,7 @@ Test.prototype = {
 			details.source = source;
 		}
 
-		runLoggingCallbacks( "log", details );
+		emit( "assert", details );
 
 		this.assertions.push( {
 			result: false,

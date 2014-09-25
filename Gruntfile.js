@@ -94,6 +94,7 @@ grunt.initConfig( {
 			"test/startError.html",
 			"test/reorderError1.html",
 			"test/reorderError2.html",
+			"test/events.html",
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
@@ -167,6 +168,63 @@ grunt.initConfig( {
 		tasks: "default"
 	}
 } );
+=======
+});
+
+// TODO: Extract this task later, if feasible
+// Also spawn a separate process to keep tests atomic
+grunt.registerTask( "test-on-node", function() {
+	var testActive = false,
+		runDone = false,
+		done = this.async(),
+		QUnit = require( "./dist/qunit" );
+
+	global.QUnit = QUnit;
+
+	QUnit.on( "testStart", function() {
+		testActive = true;
+	});
+	QUnit.on( "assert", function( details ) {
+		if ( !testActive || details.result ) {
+			return;
+		}
+		var message = "name: " + details.name + " module: " + details.module +
+			" message: " + details.message;
+		grunt.log.error( message );
+	});
+	QUnit.on( "testEnd", function() {
+		testActive = false;
+	});
+	QUnit.on( "runEnd", function( details ) {
+		if ( runDone ) {
+			return;
+		}
+		var succeeded = ( details.failed === 0 ),
+			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
+				details.passed + ", failed: " + details.failed;
+		if ( succeeded ) {
+			grunt.log.ok( message );
+		} else {
+			grunt.log.error( message );
+		}
+		done( succeeded );
+		runDone = true;
+	});
+	QUnit.config.autorun = false;
+
+	require( "./test/logs" );
+	require( "./test/main/test" );
+	require( "./test/main/assert" );
+	require( "./test/main/async" );
+	require( "./test/main/promise" );
+	require( "./test/main/modules" );
+	require( "./test/main/deepEqual" );
+	require( "./test/main/stack" );
+	require( "./test/events" );
+	require( "./test/globals-node" );
+
+	QUnit.load();
+});
 
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
