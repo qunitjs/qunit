@@ -61,3 +61,12 @@ setTimeout(function() {
 setTimeout(function() {
 	throw new Error( "foo" );
 }, 0 );
+
+// Trigger failure by replacing logging callbacks
+QUnit.begin = function() {};
+QUnit.done = function() {};
+QUnit.log = function() {};
+QUnit.testStart = function() {};
+QUnit.testDone = function() {};
+QUnit.moduleStart = function() {};
+QUnit.moduleDone = function() {};
