@@ -61,3 +61,13 @@ setTimeout(function() {
 setTimeout(function() {
 	throw new Error( "foo" );
 }, 0 );
+
+// DEPRECATED: To be removed in QUnit 2.0.0
+// Trigger warnings by replacing the logging callbacks
+QUnit.begin = function() {};
+QUnit.done = function() {};
+QUnit.log = function() {};
+QUnit.testStart = function() {};
+QUnit.testDone = function() {};
+QUnit.moduleStart = function() {};
+QUnit.moduleDone = function() {};

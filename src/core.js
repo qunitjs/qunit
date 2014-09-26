@@ -1,6 +1,7 @@
 var QUnit,
 	config,
 	onErrorFnPrev,
+	loggingCallbacks = {},
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
@@ -383,7 +384,7 @@ extend( QUnit, {
 		callbacks = [ "begin", "done", "log", "testStart", "testDone", "moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {
-		return function( callback ) {
+		var loggingCallback = function( callback ) {
 			if ( QUnit.objectType( callback ) !== "function" ) {
 				throw new Error(
 					"QUnit logging methods require a callback function as their first parameters."
@@ -392,6 +393,13 @@ extend( QUnit, {
 
 			config.callbacks[ key ].push( callback );
 		};
+
+		// DEPRECATED: This will be removed on QUnit 2.0.0+
+		// Stores the registered functions allowing restoring
+		// at verifyLoggingCallbacks() if modified
+		loggingCallbacks[ key ] = loggingCallback;
+
+		return loggingCallback;
 	}
 
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
@@ -575,6 +583,8 @@ function resumeProcessing() {
 				// Record the time of the test run's beginning
 				config.started = now();
 
+				verifyLoggingCallbacks();
+
 				// The test run is officially beginning now
 				runLoggingCallbacks( "begin", {
 					totalTests: Test.count
@@ -591,6 +601,8 @@ function resumeProcessing() {
 
 			// Record the time of the test run's beginning
 			config.started = now();
+
+			verifyLoggingCallbacks();
 
 			// The test run is officially beginning now
 			runLoggingCallbacks( "begin", {
@@ -695,6 +707,34 @@ function runLoggingCallbacks( key, args ) {
 	callbacks = config.callbacks[ key ];
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
+	}
+}
+
+// DEPRECATED: This will be removed on 2.0.0+
+// This function verifies if the loggingCallbacks were modified by the user
+// If so, it will restore it, assign the given callback and print a console warning
+function verifyLoggingCallbacks() {
+	var loggingCallback, userCallback;
+
+	for ( loggingCallback in loggingCallbacks ) {
+		if ( QUnit[ loggingCallback ] !== loggingCallbacks[ loggingCallback ] ) {
+
+			userCallback = QUnit[ loggingCallback ];
+
+			// Restore the callback function
+			QUnit[ loggingCallback ] = loggingCallbacks[ loggingCallback ];
+
+			// Assign the deprecated given callback
+			QUnit[ loggingCallback ]( userCallback );
+
+			if ( window.console && window.console.warn ) {
+				window.console.warn(
+					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
+					"Please, check out the documentation on how to apply logging callbacks on QUnit." +
+					"Reference: http://api.qunitjs.com/category/callbacks/"
+				);
+			}
+		}
 	}
 }
 
