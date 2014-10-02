@@ -230,3 +230,10 @@ QUnit.test( "throws", function( assert ) {
 		"handle string typed thrown errors"
 	);
 });
+
+QUnit.test( "raises, alias for throws", function( assert ) {
+	assert.expect( 1 );
+	assert.raises(function() {
+		throw "my error";
+	});
+});

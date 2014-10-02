@@ -197,3 +197,10 @@ QUnit.assert = Assert.prototype = {
 		}
 	}
 };
+
+// Provide an alternative to assert.throws(), for enviroments that consider throws a reserved word
+// Known to us are: Closure Compiler, Narwhal
+(function() {
+	/*jshint sub:true */
+	Assert.prototype.raises = Assert.prototype[ "throws" ];
+}());
