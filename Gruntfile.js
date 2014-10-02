@@ -206,6 +206,7 @@ grunt.registerTask( "test-on-node", function() {
 
 	require( "./test/logs" );
 	require( "./test/test" );
+	require( "./test/assert" );
 	require( "./test/async" );
 	require( "./test/promise" );
 	require( "./test/modules" );
