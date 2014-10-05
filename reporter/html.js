@@ -349,53 +349,11 @@ function toolbarModuleFilter() {
 	return moduleFilter;
 }
 
-function toolbarFilter() {
-	var testList = id( "qunit-tests" ),
-		filter = document.createElement( "input" );
-
-	filter.type = "checkbox";
-	filter.id = "qunit-filter-pass";
-
-	addEvent( filter, "click", function() {
-		if ( filter.checked ) {
-			addClass( testList, "hidepass" );
-			if ( defined.sessionStorage ) {
-				sessionStorage.setItem( "qunit-filter-passed-tests", "true" );
-			}
-		} else {
-			removeClass( testList, "hidepass" );
-			if ( defined.sessionStorage ) {
-				sessionStorage.removeItem( "qunit-filter-passed-tests" );
-			}
-		}
-	});
-
-	if ( config.hidepassed || defined.sessionStorage &&
-			sessionStorage.getItem( "qunit-filter-passed-tests" ) ) {
-		filter.checked = true;
-
-		addClass( testList, "hidepass" );
-	}
-
-	return filter;
-}
-
-function toolbarLabel() {
-	var label = document.createElement( "label" );
-	label.setAttribute( "for", "qunit-filter-pass" );
-	label.setAttribute( "title", "Only show tests and assertions that fail. Stored in sessionStorage." );
-	label.innerHTML = "Hide passed tests";
-
-	return label;
-}
-
 function appendToolbar() {
 	var moduleFilter,
 		toolbar = id( "qunit-testrunner-toolbar" );
 
 	if ( toolbar ) {
-		toolbar.appendChild( toolbarFilter() );
-		toolbar.appendChild( toolbarLabel() );
 		toolbar.appendChild( toolbarUrlConfigContainer() );
 
 		moduleFilter = toolbarModuleFilter();
@@ -466,6 +424,10 @@ QUnit.begin(function() {
 	appendUserAgent();
 	appendToolbar();
 	storeFixture();
+
+	if ( qunit && config.hidepassed ) {
+		addClass( qunit.lastChild, "hidepass" );
+	}
 });
 
 QUnit.done(function( details ) {
