@@ -239,6 +239,11 @@ config = {
 	// when enabled, the id is set to `true` as a `QUnit.config` property
 	urlConfig: [
 		{
+			id: "hidepassed",
+			label: "Hide passed tests",
+			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
+		},
+		{
 			id: "noglobals",
 			label: "Check for Globals",
 			tooltip: "Enabling this will test if any test introduces new properties on the `window` object. Stored as query-strings."

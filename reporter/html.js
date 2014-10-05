@@ -253,6 +253,38 @@ function getUrlConfigHtml() {
 	return urlConfigHtml;
 }
 
+// Handle "click" events on toolbar checkboxes and "change" for select menus.
+// Updates the URL with the new state of `config.urlConfig` values.
+function toolbarChangeHandler() {
+	var updatedUrl, value,
+		field = this,
+		params = {};
+
+	// Detect if field is a select menu or a checkbox
+	if ( "selectedIndex" in field ) {
+		value = field.options[ field.selectedIndex ].value || undefined;
+	} else {
+		value = field.checked ? ( field.defaultValue || true ) : undefined;
+	}
+
+	params[ field.name ] = value;
+	updatedUrl = QUnit.url( params );
+
+	if ( "hidepassed" === field.name && "replaceState" in window.history ) {
+		config[ field.name ] = value || false;
+		if ( value ) {
+			addClass( id( "qunit-tests" ), "hidepass" );
+		} else {
+			removeClass( id( "qunit-tests" ), "hidepass" );
+		}
+
+		// It is not necessary to refresh the whole page
+		window.history.replaceState( null, "", updatedUrl );
+	} else {
+		window.location = updatedUrl;
+	}
+}
+
 function toolbarUrlConfigContainer() {
 	var urlConfigContainer = document.createElement( "span" );
 
@@ -261,21 +293,8 @@ function toolbarUrlConfigContainer() {
 	// For oldIE support:
 	// * Add handlers to the individual elements instead of the container
 	// * Use "click" instead of "change" for checkboxes
-	// * Fallback from event.target to event.srcElement
-	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", function( event ) {
-		var params = {},
-			target = event.target || event.srcElement;
-		params[ target.name ] = target.checked ?
-			target.defaultValue || true :
-			undefined;
-		window.location = QUnit.url( params );
-	});
-	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", function( event ) {
-		var params = {},
-			target = event.target || event.srcElement;
-		params[ target.name ] = target.options[ target.selectedIndex ].value || undefined;
-		window.location = QUnit.url( params );
-	});
+	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", toolbarChangeHandler );
+	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChangeHandler );
 
 	return urlConfigContainer;
 }
@@ -349,53 +368,11 @@ function toolbarModuleFilter() {
 	return moduleFilter;
 }
 
-function toolbarFilter() {
-	var testList = id( "qunit-tests" ),
-		filter = document.createElement( "input" );
-
-	filter.type = "checkbox";
-	filter.id = "qunit-filter-pass";
-
-	addEvent( filter, "click", function() {
-		if ( filter.checked ) {
-			addClass( testList, "hidepass" );
-			if ( defined.sessionStorage ) {
-				sessionStorage.setItem( "qunit-filter-passed-tests", "true" );
-			}
-		} else {
-			removeClass( testList, "hidepass" );
-			if ( defined.sessionStorage ) {
-				sessionStorage.removeItem( "qunit-filter-passed-tests" );
-			}
-		}
-	});
-
-	if ( config.hidepassed || defined.sessionStorage &&
-			sessionStorage.getItem( "qunit-filter-passed-tests" ) ) {
-		filter.checked = true;
-
-		addClass( testList, "hidepass" );
-	}
-
-	return filter;
-}
-
-function toolbarLabel() {
-	var label = document.createElement( "label" );
-	label.setAttribute( "for", "qunit-filter-pass" );
-	label.setAttribute( "title", "Only show tests and assertions that fail. Stored in sessionStorage." );
-	label.innerHTML = "Hide passed tests";
-
-	return label;
-}
-
 function appendToolbar() {
 	var moduleFilter,
 		toolbar = id( "qunit-testrunner-toolbar" );
 
 	if ( toolbar ) {
-		toolbar.appendChild( toolbarFilter() );
-		toolbar.appendChild( toolbarLabel() );
 		toolbar.appendChild( toolbarUrlConfigContainer() );
 
 		moduleFilter = toolbarModuleFilter();
@@ -466,6 +443,10 @@ QUnit.begin(function() {
 	appendUserAgent();
 	appendToolbar();
 	storeFixture();
+
+	if ( qunit && config.hidepassed ) {
+		addClass( qunit.lastChild, "hidepass" );
+	}
 });
 
 QUnit.done(function( details ) {
