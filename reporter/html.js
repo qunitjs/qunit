@@ -253,6 +253,25 @@ function getUrlConfigHtml() {
 	return urlConfigHtml;
 }
 
+// Handle "click" events on toolbar checkboxes and "change" for select menus.
+// Updates the URL with the new state of `config.urlConfig` values.
+function toolbarChangeHandler() {
+	var updatedUrl, value,
+		field = this,
+		params = {};
+
+	// Detect if field is a select menu or a checkbox
+	if ( "selectedIndex" in field ) {
+		value = field.options[ field.selectedIndex ].value || undefined;
+	} else {
+		value = field.checked ? ( field.defaultValue || true ) : undefined;
+	}
+
+	params[ field.name ] = value;
+	updatedUrl = QUnit.url( params );
+	window.location = updatedUrl;
+}
+
 function toolbarUrlConfigContainer() {
 	var urlConfigContainer = document.createElement( "span" );
 
@@ -261,21 +280,8 @@ function toolbarUrlConfigContainer() {
 	// For oldIE support:
 	// * Add handlers to the individual elements instead of the container
 	// * Use "click" instead of "change" for checkboxes
-	// * Fallback from event.target to event.srcElement
-	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", function( event ) {
-		var params = {},
-			target = event.target || event.srcElement;
-		params[ target.name ] = target.checked ?
-			target.defaultValue || true :
-			undefined;
-		window.location = QUnit.url( params );
-	});
-	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", function( event ) {
-		var params = {},
-			target = event.target || event.srcElement;
-		params[ target.name ] = target.options[ target.selectedIndex ].value || undefined;
-		window.location = QUnit.url( params );
-	});
+	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", toolbarChangeHandler );
+	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChangeHandler );
 
 	return urlConfigContainer;
 }
