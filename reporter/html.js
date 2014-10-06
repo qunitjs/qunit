@@ -269,7 +269,20 @@ function toolbarChangeHandler() {
 
 	params[ field.name ] = value;
 	updatedUrl = QUnit.url( params );
-	window.location = updatedUrl;
+
+	if ( "hidepassed" === field.name && "replaceState" in window.history ) {
+		config[ field.name ] = value || false;
+		if ( value ) {
+			addClass( id( "qunit-tests" ), "hidepass" );
+		} else {
+			removeClass( id( "qunit-tests" ), "hidepass" );
+		}
+
+		// It is not necessary to refresh the whole page
+		window.history.replaceState( null, "", updatedUrl );
+	} else {
+		window.location = updatedUrl;
+	}
 }
 
 function toolbarUrlConfigContainer() {
