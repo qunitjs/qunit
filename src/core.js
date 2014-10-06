@@ -350,8 +350,11 @@ extend( QUnit, {
 
 		for ( key in params ) {
 			if ( hasOwn.call( params, key ) ) {
-				querystring += encodeURIComponent( key ) + "=" +
-					encodeURIComponent( params[ key ] ) + "&";
+				querystring += encodeURIComponent( key );
+				if ( params[ key ] !== true ) {
+					querystring += "=" + encodeURIComponent( params[ key ] );
+				}
+				querystring += "&";
 			}
 		}
 		return window.location.protocol + "//" + window.location.host +
