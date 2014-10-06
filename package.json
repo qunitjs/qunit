@@ -33,7 +33,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "commitplease": "1.7.0",
+    "commitplease": "1.10.1",
     "grunt": "0.4.2",
     "grunt-contrib-concat": "0.3.0",
     "grunt-contrib-jshint": "0.10.0",
