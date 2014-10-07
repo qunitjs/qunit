@@ -1,7 +1,7 @@
 var QUnit,
 	config,
 	onErrorFnPrev,
-	loggingCallbacks,
+	loggingCallbacks = {},
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
@@ -383,8 +383,6 @@ extend( QUnit, {
 	var i, l, key,
 		callbacks = [ "begin", "done", "log", "testStart", "testDone", "moduleStart", "moduleDone" ];
 
-	loggingCallbacks = {};
-
 	function registerLoggingCallback( key ) {
 		var loggingCallback = function( callback ) {
 			if ( QUnit.objectType( callback ) !== "function" ) {
@@ -396,6 +394,9 @@ extend( QUnit, {
 			config.callbacks[ key ].push( callback );
 		};
 
+		// DEPRECATED: This will be removed on QUnit 2.0.0+
+		// Stores the registered functions allowing restoring
+		// at verifyLoggingCallbacks() if modified
 		loggingCallbacks[ key ] = loggingCallback;
 
 		return loggingCallback;
@@ -601,6 +602,8 @@ function resumeProcessing() {
 			// Record the time of the test run's beginning
 			config.started = now();
 
+			verifyLoggingCallbacks();
+
 			// The test run is officially beginning now
 			runLoggingCallbacks( "begin", {
 				totalTests: Test.count
@@ -707,6 +710,9 @@ function runLoggingCallbacks( key, args ) {
 	}
 }
 
+// DEPRECATED: This will be removed on 2.0.0+
+// This function verifies if the loggingCallbacks were modified by the user
+// If so, it will restore it, assign the given callback and print a console warning
 function verifyLoggingCallbacks() {
 	var loggingCallback, userCallback;
 
@@ -718,8 +724,9 @@ function verifyLoggingCallbacks() {
 			// Restore the callback function
 			QUnit[ loggingCallback ] = loggingCallbacks[ loggingCallback ];
 
-			// DEPRECATED: Assigning the logging callback as a value won't work on QUnit 2.0.0+
+			// Assign the deprecated given callback
 			QUnit[ loggingCallback ]( userCallback );
+
 			if ( window.console && window.console.warn ) {
 				window.console.warn(
 					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
