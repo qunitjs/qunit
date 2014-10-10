@@ -125,6 +125,7 @@ Test.prototype = {
 		};
 	},
 
+	// Currently only used for module level hooks, can be used to add global level ones
 	hooks: function( handler ) {
 		var hooks = [];
 
@@ -133,9 +134,6 @@ Test.prototype = {
 			return hooks;
 		}
 
-		if ( QUnit.objectType( config[ handler ] ) === "function" ) {
-			hooks.push( this.queueHook( config[ handler ], handler ) );
-		}
 		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
 			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
 		}

@@ -1,23 +1,5 @@
-// Before and after each tests
-QUnit.config.beforeEach = function() {
-	this.lastHook = "global-beforeEach";
-};
-
-QUnit.config.afterEach = function( assert ) {
-	if ( this.hooksTest ) {
-		assert.strictEqual( this.lastHook, "module-afterEach", "Global afterEach runs after module's afterEach" );
-		this.hooksTest = false;
-	}
-
-	if ( this.contextTest ) {
-		assert.ok( true );
-		this.contextTest = false;
-	}
-};
-
 QUnit.module( "beforeEach/afterEach", {
-	beforeEach: function( assert ) {
-		assert.strictEqual( this.lastHook, "global-beforeEach", "Global beforeEach runs before module's beforeEach" );
+	beforeEach: function() {
 		this.lastHook = "module-beforeEach";
 	},
 	afterEach: function( assert ) {
@@ -29,7 +11,7 @@ QUnit.module( "beforeEach/afterEach", {
 });
 
 QUnit.test( "hooks order", function( assert ) {
-	assert.expect( 4 );
+	assert.expect( 2 );
 
 	// This will trigger an assertion on the global and one on the module's afterEach
 	this.hooksTest = true;
@@ -46,14 +28,14 @@ QUnit.module( "Test context object", {
 		for ( key in this ) {
 			keys.push( key );
 		}
-		assert.deepEqual( keys, [ "helper", "lastHook" ] );
+		assert.deepEqual( keys, [ "helper" ] );
 	},
 	afterEach: function() {},
 	helper: function() {}
 });
 
 QUnit.test( "keys", function( assert ) {
-	assert.expect( 2 );
+	assert.expect( 1 );
 	this.contextTest = true;
 });
 
