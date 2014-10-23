@@ -94,6 +94,7 @@ grunt.initConfig({
 			"test/index.html",
 			"test/autostart.html",
 			"test/startError.html",
+			"test/events.html",
 			"test/logs.html",
 			"test/setTimeout.html"
 		]
@@ -173,10 +174,10 @@ grunt.registerTask( "test-on-node", function() {
 		done = this.async(),
 		QUnit = require( "./dist/qunit" );
 
-	QUnit.testStart(function() {
+	QUnit.on( "testStart", function() {
 		testActive = true;
 	});
-	QUnit.log(function( details ) {
+	QUnit.on( "assert", function( details ) {
 		if ( !testActive || details.result ) {
 			return;
 		}
@@ -184,10 +185,10 @@ grunt.registerTask( "test-on-node", function() {
 			" message: " + details.message;
 		grunt.log.error( message );
 	});
-	QUnit.testDone(function() {
+	QUnit.on( "testEnd", function() {
 		testActive = false;
 	});
-	QUnit.done(function( details ) {
+	QUnit.on( "runEnd", function( details ) {
 		if ( runDone ) {
 			return;
 		}
@@ -204,7 +205,7 @@ grunt.registerTask( "test-on-node", function() {
 	});
 	QUnit.config.autorun = false;
 
-	require( "./test/logs" );
+	require( "./test/events" );
 	require( "./test/test" );
 	require( "./test/assert" );
 	require( "./test/async" );

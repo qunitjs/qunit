@@ -5,6 +5,7 @@
 	"test_path": [
 		"test/index.html",
 		"test/startError.html",
+		"test/events.html",
 		"test/logs.html",
 		"test/setTimeout.html"
 	],
