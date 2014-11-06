@@ -1,6 +1,3 @@
 {
-	"preset": "jquery",
-
-	// Ref https://github.com/jquery/contribute.jquery.org/issues/80#issuecomment-45253460
-	"maximumLineLength": null
+	"preset": "jquery"
 }

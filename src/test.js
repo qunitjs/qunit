@@ -91,7 +91,8 @@ Test.prototype = {
 			promise = this.callback.call( this.testEnvironment, this.assert );
 			this.resolvePromise( promise );
 		} catch ( e ) {
-			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " + this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
+			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
+				this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -121,7 +122,8 @@ Test.prototype = {
 				promise = hook.call( test.testEnvironment, test.assert );
 				test.resolvePromise( promise, hookName );
 			} catch ( error ) {
-				test.pushFailure( hookName + " failed on " + test.testName + ": " + ( error.message || error ), extractStacktrace( error, 0 ) );
+				test.pushFailure( hookName + " failed on " + test.testName + ": " +
+					( error.message || error ), extractStacktrace( error, 0 ) );
 			}
 		};
 	},
@@ -135,7 +137,8 @@ Test.prototype = {
 			return hooks;
 		}
 
-		if ( this.moduleTestEnvironment && QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
+		if ( this.moduleTestEnvironment &&
+				QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
 			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
 		}
 
@@ -145,11 +148,14 @@ Test.prototype = {
 	finish: function() {
 		config.current = this;
 		if ( config.requireExpects && this.expected === null ) {
-			this.pushFailure( "Expected number of assertions to be defined, but expect() was not called.", this.stack );
+			this.pushFailure( "Expected number of assertions to be defined, but expect() was " +
+				"not called.", this.stack );
 		} else if ( this.expected !== null && this.expected !== this.assertions.length ) {
-			this.pushFailure( "Expected " + this.expected + " assertions, but " + this.assertions.length + " were run", this.stack );
+			this.pushFailure( "Expected " + this.expected + " assertions, but " +
+				this.assertions.length + " were run", this.stack );
 		} else if ( this.expected === null && !this.assertions.length ) {
-			this.pushFailure( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.", this.stack );
+			this.pushFailure( "Expected at least one assertion, but none were run - call " +
+				"expect(0) to accept zero assertions.", this.stack );
 		}
 
 		var i,
@@ -263,7 +269,8 @@ Test.prototype = {
 
 	pushFailure: function( message, source, actual ) {
 		if ( !this instanceof Test ) {
-			throw new Error( "pushFailure() assertion outside test context, was " + sourceFromStacktrace( 2 ) );
+			throw new Error( "pushFailure() assertion outside test context, was " +
+				sourceFromStacktrace( 2 ) );
 		}
 
 		var details = {
@@ -299,7 +306,8 @@ Test.prototype = {
 					promise,
 					QUnit.start,
 					function( error ) {
-						message = "Promise rejected " + ( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+						message = "Promise rejected " +
+							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
 							" " + test.testName + ": " + ( error.message || error );
 						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
@@ -355,7 +363,8 @@ Test.prototype = {
 
 QUnit.pushFailure = function() {
 	if ( !QUnit.config.current ) {
-		throw new Error( "pushFailure() assertion outside test context, in " + sourceFromStacktrace( 2 ) );
+		throw new Error( "pushFailure() assertion outside test context, in " +
+			sourceFromStacktrace( 2 ) );
 	}
 
 	// Gets current test obj
@@ -382,7 +391,7 @@ function generateHash( module, testName ) {
 	// strictly necessary but increases user understanding that the id is a SHA-like hash
 	hex = ( 0x100000000 + hash ).toString( 16 );
 	if ( hex.length < 8 ) {
-	    hex = "0000000" + hex;
+		hex = "0000000" + hex;
 	}
 
 	return hex.slice( -8 );

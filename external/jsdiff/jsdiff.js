@@ -1,3 +1,4 @@
+// jscs:disable maximumLineLength
 /*
  * Javascript Diff Algorithm
  *  By John Resig (http://ejohn.org/)
@@ -144,3 +145,4 @@ QUnit.diff = (function() {
 		return str;
 	};
 }());
+// jscs:enable

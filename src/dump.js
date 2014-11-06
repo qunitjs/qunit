@@ -72,7 +72,9 @@ QUnit.dump = (function() {
 					type = "date";
 				} else if ( QUnit.is( "function", obj ) ) {
 					type = "function";
-				} else if ( typeof obj.setInterval !== "undefined" && typeof obj.document !== "undefined" && typeof obj.nodeType === "undefined" ) {
+				} else if ( typeof obj.setInterval !== "undefined" &&
+						typeof obj.document !== "undefined" &&
+						typeof obj.nodeType === "undefined" ) {
 					type = "window";
 				} else if ( obj.nodeType === 9 ) {
 					type = "document";
@@ -84,7 +86,9 @@ QUnit.dump = (function() {
 					toString.call( obj ) === "[object Array]" ||
 
 					// NodeList objects
-					( typeof obj.length === "number" && typeof obj.item !== "undefined" && ( obj.length ? obj.item( 0 ) === obj[ 0 ] : ( obj.item( 0 ) === null && typeof obj[ 0 ] === "undefined" ) ) )
+					( typeof obj.length === "number" && typeof obj.item !== "undefined" &&
+					( obj.length ? obj.item( 0 ) === obj[ 0 ] : ( obj.item( 0 ) === null &&
+					typeof obj[ 0 ] === "undefined" ) ) )
 				) {
 					type = "array";
 				} else if ( obj.constructor === Error.prototype.constructor ) {
@@ -178,7 +182,8 @@ QUnit.dump = (function() {
 					for ( i = 0; i < keys.length; i++ ) {
 						key = keys[ i ];
 						val = map[ key ];
-						ret.push( dump.parse( key, "key" ) + ": " + dump.parse( val, undefined, stack ) );
+						ret.push( dump.parse( key, "key" ) + ": " +
+							dump.parse( val, undefined, stack ) );
 					}
 					dump.down();
 					return join( "{", ret, "}" );
@@ -195,10 +200,12 @@ QUnit.dump = (function() {
 						for ( i = 0, len = attrs.length; i < len; i++ ) {
 							val = attrs[ i ].nodeValue;
 
-							// IE6 includes all attributes in .attributes, even ones not explicitly set.
-							// Those have values like undefined, null, 0, false, "" or "inherit".
+							// IE6 includes all attributes in .attributes, even ones not explicitly
+							// set. Those have values like undefined, null, 0, false, "" or
+							// "inherit".
 							if ( val && val !== "inherit" ) {
-								ret += " " + attrs[ i ].nodeName + "=" + dump.parse( val, "attribute" );
+								ret += " " + attrs[ i ].nodeName + "=" +
+									dump.parse( val, "attribute" );
 							}
 						}
 					}

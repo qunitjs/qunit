@@ -118,12 +118,14 @@ config = {
 		{
 			id: "noglobals",
 			label: "Check for Globals",
-			tooltip: "Enabling this will test if any test introduces new properties on the `window` object. Stored as query-strings."
+			tooltip: "Enabling this will test if any test introduces new properties on the " +
+				"`window` object. Stored as query-strings."
 		},
 		{
 			id: "notrycatch",
 			label: "No try-catch",
-			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging exceptions in IE reasonable. Stored as query-strings."
+			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
+				"exceptions in IE reasonable. Stored as query-strings."
 		}
 	],
 
@@ -251,7 +253,8 @@ extend( QUnit, {
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
 				throw new Error( "Called start() outside of a test context too many times" );
 			} else if ( config.autostart ) {
-				throw new Error( "Called start() outside of a test context when QUnit.config.autostart was true" );
+				throw new Error( "Called start() outside of a test context when " +
+					"QUnit.config.autostart was true" );
 			} else if ( !config.pageLoaded ) {
 
 				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
@@ -381,7 +384,8 @@ extend( QUnit, {
 // Register logging callbacks
 (function() {
 	var i, l, key,
-		callbacks = [ "begin", "done", "log", "testStart", "testDone", "moduleStart", "moduleDone" ];
+		callbacks = [ "begin", "done", "log", "testStart", "testDone",
+			"moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {
 		var loggingCallback = function( callback ) {
@@ -551,7 +555,8 @@ function process( last ) {
 	config.depth = config.depth ? config.depth + 1 : 1;
 
 	while ( config.queue.length && !config.blocking ) {
-		if ( !defined.setTimeout || config.updateRate <= 0 || ( ( now() - start ) < config.updateRate ) ) {
+		if ( !defined.setTimeout || config.updateRate <= 0 ||
+				( ( now() - start ) < config.updateRate ) ) {
 			if ( config.current ) {
 
 				// Reset async tracking for each phase of the Test lifecycle
@@ -735,7 +740,7 @@ function verifyLoggingCallbacks() {
 			if ( window.console && window.console.warn ) {
 				window.console.warn(
 					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
-					"Please, check out the documentation on how to apply logging callbacks on QUnit." +
+					"Please, check out the documentation on how to apply logging callbacks.\n" +
 					"Reference: http://api.qunitjs.com/category/callbacks/"
 				);
 			}

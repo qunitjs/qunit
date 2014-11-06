@@ -66,8 +66,9 @@ grunt.initConfig({
 	search: {
 		options: {
 
-			// Ensure that the only HTML entities used are those with a special status in XHTML and that
-			// any common singleton/empty HTML elements end with the XHTML-compliant "/>" rather than ">"
+			// Ensure that the only HTML entities used are those with a special status in XHTML
+			// and that any common singleton/empty HTML elements end with the XHTML-compliant
+			// "/>"rather than ">"
 			searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g,
 			logFormat: "console",
 			failOnMatch: true
