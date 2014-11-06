@@ -117,65 +117,20 @@ QUnit.asyncTest( "module with async afterEach", function( assert ) {
 });
 
 QUnit.module( "save scope", {
-	beforeEach: function() {
+	foo: "foo",
+	beforeEach: function( assert ) {
+		assert.deepEqual( this.foo, "foo" );
 		this.foo = "bar";
 	},
 	afterEach: function( assert ) {
-		assert.deepEqual( this.foo, "bar" );
+		assert.deepEqual( this.foo, "foobar" );
 	}
 });
 
 QUnit.test( "scope check", function( assert ) {
-	assert.expect( 2 );
+	assert.expect( 3 );
 	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.module( "simple testEnvironment setup", {
-	foo: "bar",
-	// example of meta-data
-	bugid: "#5311"
-});
-
-QUnit.test( "scope check", function( assert ) {
-	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.test( "modify testEnvironment", function( assert ) {
-	assert.expect( 0 );
-	this.foo = "hamster";
-});
-
-QUnit.test( "testEnvironment reset for next test", function( assert ) {
-	assert.deepEqual( this.foo, "bar" );
-});
-
-QUnit.module( "testEnvironment with object", {
-	options: {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions" ]
-	}
-});
-
-QUnit.test( "scope check", function( assert ) {
-	assert.deepEqual( this.options, {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions" ]
-	});
-});
-
-QUnit.test( "modify testEnvironment", function( assert ) {
-	assert.expect( 0 );
-
-	// since we only do a shallow copy, nested children of testEnvironment can be modified
-	// and survice
-	this.options.ingredients.push( "carrots" );
-});
-
-QUnit.test( "testEnvironment reset for next test", function( assert ) {
-	assert.deepEqual( this.options, {
-		recipe: "soup",
-		ingredients: [ "hamster", "onions", "carrots" ]
-	}, "Is this a bug or a feature? Could do a deep copy" );
+	this.foo = "foobar";
 });
 
 QUnit.module( "Deprecated setup/teardown", {
