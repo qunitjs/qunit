@@ -20,6 +20,7 @@ QUnit.assert = Assert.prototype = {
 			popped = false;
 
 		test.semaphore += 1;
+		test.usedAsync = true;
 		pauseProcessing();
 
 		return function done() {
@@ -34,19 +35,27 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	// Exports test.push() to the user API
-	push: function() {
-		var assert = this;
+	push: function( /* result, actual, expected, message */ ) {
+		var assert = this,
+			currentTest = ( assert instanceof Assert && assert.test ) || QUnit.config.current;
 
 		// Backwards compatibility fix.
 		// Allows the direct use of global exported assertions and QUnit.assert.*
 		// Although, it's use is not recommended as it can leak assertions
 		// to other tests from async tests, because we only get a reference to the current test,
 		// not exactly the test where assertion were intended to be called.
-		if ( !QUnit.config.current ) {
+		if ( !currentTest ) {
 			throw new Error( "assertion outside test context, in " + sourceFromStacktrace( 2 ) );
 		}
+
+		if ( currentTest.usedAsync === true && currentTest.semaphore === 0 ) {
+			currentTest.pushFailure( "Assertion occurred after the final `assert.async` was resolved", sourceFromStacktrace( 2 ) );
+
+			// Allow this assertion to continue running anyway...
+		}
+
 		if ( !( assert instanceof Assert ) ) {
-			assert = QUnit.config.current.assert;
+			assert = currentTest.assert;
 		}
 		return assert.test.push.apply( assert.test, arguments );
 	},
@@ -60,11 +69,7 @@ QUnit.assert = Assert.prototype = {
 	ok: function( result, message ) {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
 			QUnit.dump.parse( result ) );
-		if ( !!result ) {
-			this.push( true, result, true, message );
-		} else {
-			this.test.pushFailure( message, null, result );
-		}
+		this.push( !!result, result, true, message );
 	},
 
 	/**
