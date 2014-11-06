@@ -4,7 +4,8 @@ QUnit.module( "beforeEach/afterEach", {
 	},
 	afterEach: function( assert ) {
 		if ( this.hooksTest ) {
-			assert.strictEqual( this.lastHook, "test-block", "Module's afterEach runs after current test block" );
+			assert.strictEqual( this.lastHook, "test-block",
+				"Module's afterEach runs after current test block" );
 			this.lastHook = "module-afterEach";
 		}
 	}
@@ -16,7 +17,8 @@ QUnit.test( "hooks order", function( assert ) {
 	// This will trigger an assertion on the global and one on the module's afterEach
 	this.hooksTest = true;
 
-	assert.strictEqual( this.lastHook, "module-beforeEach", "Module's beforeEach runs before current test block" );
+	assert.strictEqual( this.lastHook, "module-beforeEach",
+		"Module's beforeEach runs before current test block" );
 	this.lastHook = "test-block";
 });
 

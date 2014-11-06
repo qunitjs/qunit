@@ -4,7 +4,8 @@ function createMockPromise( assert ) {
 	// Return a mock self-fulfilling Promise ("thenable")
 	var thenable = {
 		then: function( fulfilledCallback /*, rejectedCallback */ ) {
-			assert.strictEqual( this, thenable, "`then` was invoked with the Promise as the context" );
+			assert.strictEqual( this, thenable, "`then` was invoked with the Promise as the " +
+				"context" );
 			setTimeout( function() {
 				return fulfilledCallback.call( thenable, {} );
 			}, 13 );

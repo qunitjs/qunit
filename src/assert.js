@@ -5,7 +5,8 @@ function Assert( testContext ) {
 // Assert helpers
 QUnit.assert = Assert.prototype = {
 
-	// Specify the number of expected assertions to guarantee that failed test (no assertions are run at all) don't slip through.
+	// Specify the number of expected assertions to guarantee that failed test
+	// (no assertions are run at all) don't slip through.
 	expect: function( asserts ) {
 		if ( arguments.length === 1 ) {
 			this.test.expected = asserts;
@@ -14,7 +15,8 @@ QUnit.assert = Assert.prototype = {
 		}
 	},
 
-	// Increment this Test's semaphore counter, then return a single-use function that decrements that counter a maximum of once.
+	// Increment this Test's semaphore counter, then return a single-use function that
+	// decrements that counter a maximum of once.
 	async: function() {
 		var test = this.test,
 			popped = false;
@@ -29,7 +31,8 @@ QUnit.assert = Assert.prototype = {
 				popped = true;
 				resumeProcessing();
 			} else {
-				test.pushFailure( "Called the callback returned from `assert.async` more than once", sourceFromStacktrace( 2 ) );
+				test.pushFailure( "Called the callback returned from `assert.async` more than once",
+					sourceFromStacktrace( 2 ) );
 			}
 		};
 	},
@@ -49,7 +52,8 @@ QUnit.assert = Assert.prototype = {
 		}
 
 		if ( currentTest.usedAsync === true && currentTest.semaphore === 0 ) {
-			currentTest.pushFailure( "Assertion occurred after the final `assert.async` was resolved", sourceFromStacktrace( 2 ) );
+			currentTest.pushFailure( "Assertion after the final `assert.async` was resolved",
+				sourceFromStacktrace( 2 ) );
 
 			// Allow this assertion to continue running anyway...
 		}
@@ -77,7 +81,7 @@ QUnit.assert = Assert.prototype = {
 	 * Prints out both actual and expected values.
 	 * @name equal
 	 * @function
-	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
+	 * @example equal( format( "{0} bytes.", 2), "2 bytes.", "replaces {0} with next argument" );
 	 */
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
