@@ -277,12 +277,15 @@ function toolbarUrlConfigContainer() {
 }
 
 function getModuleNames() {
-	var i,
+	var i, l, name,
 		moduleNames = [];
 
-	for ( i in config.modules ) {
-		if ( config.modules.hasOwnProperty( i ) ) {
-			moduleNames.push( i );
+	for ( i = 0, l = config.modules.length; i < l; i++ ) {
+		name = config.modules[ i ].name;
+
+		// Push only unique names
+		if ( moduleNames.indexOf( name ) < 0 ) {
+			moduleNames.push( name );
 		}
 	}
 

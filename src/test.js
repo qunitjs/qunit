@@ -5,10 +5,16 @@ function Test( settings ) {
 	this.assertions = [];
 	this.semaphore = 0;
 	this.usedAsync = false;
-	this.module = config.currentModule;
-	this.moduleTestEnvironment = config.currentModuleTestEnvironment;
+	this.module = config.currentModule || { name: "", tests: [] };
 	this.stack = sourceFromStacktrace( 3 );
-	this.testId = generateHash( this.module, this.testName );
+
+	// Register unique strings
+	while ( this.module.tests.indexOf( this.testName ) >= 0 ) {
+		this.testName += " ";
+	}
+	this.module.tests.push( this.testName );
+
+	this.testId = generateHash( this.module.name, this.testName );
 
 	if ( settings.skip ) {
 
@@ -38,7 +44,7 @@ Test.prototype = {
 		) {
 			if ( hasOwn.call( config, "previousModule" ) ) {
 				runLoggingCallbacks( "moduleDone", {
-					name: config.previousModule,
+					name: config.previousModule.name,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
@@ -48,20 +54,20 @@ Test.prototype = {
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
-				name: this.module
+				name: this.module.name
 			});
 		}
 
 		config.current = this;
 
-		this.testEnvironment = extend( {}, this.moduleTestEnvironment );
+		this.testEnvironment = extend( {}, this.module.testEnvironment );
 		delete this.testEnvironment.beforeEach;
 		delete this.testEnvironment.afterEach;
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
-			module: this.module,
+			module: this.module.name,
 			testId: this.testId
 		});
 
@@ -132,14 +138,14 @@ Test.prototype = {
 	hooks: function( handler ) {
 		var hooks = [];
 
-		// Hooks are also ignored on skipped tests
+		// Hooks are ignored on skipped tests
 		if ( this.skip ) {
 			return hooks;
 		}
 
-		if ( this.moduleTestEnvironment &&
-				QUnit.objectType( this.moduleTestEnvironment[ handler ] ) === "function" ) {
-			hooks.push( this.queueHook( this.moduleTestEnvironment[ handler ], handler ) );
+		if ( this.module.testEnvironment &&
+				QUnit.objectType( this.module.testEnvironment[ handler ] ) === "function" ) {
+			hooks.push( this.queueHook( this.module.testEnvironment[ handler ], handler ) );
 		}
 
 		return hooks;
@@ -175,7 +181,7 @@ Test.prototype = {
 
 		runLoggingCallbacks( "testDone", {
 			name: this.testName,
-			module: this.module,
+			module: this.module.name,
 			skipped: !!this.skip,
 			failed: bad,
 			passed: this.assertions.length - bad,
@@ -234,7 +240,7 @@ Test.prototype = {
 		// `bad` initialized at top of scope
 		// defer when previous test run passed, if storage is available
 		bad = QUnit.config.reorder && defined.sessionStorage &&
-				+sessionStorage.getItem( "qunit-test-" + this.module + "-" + this.testName );
+				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		if ( bad ) {
 			run();
@@ -246,7 +252,7 @@ Test.prototype = {
 	push: function( result, actual, expected, message ) {
 		var source,
 			details = {
-				module: this.module,
+				module: this.module.name,
 				name: this.testName,
 				result: result,
 				message: message,
@@ -279,7 +285,7 @@ Test.prototype = {
 		}
 
 		var details = {
-				module: this.module,
+				module: this.module.name,
 				name: this.testName,
 				result: false,
 				message: message || "error",
@@ -331,7 +337,7 @@ Test.prototype = {
 		var include,
 			filter = config.filter && config.filter.toLowerCase(),
 			module = config.moduleFilter && config.moduleFilter.toLowerCase(),
-			fullName = ( this.module + ": " + this.testName ).toLowerCase();
+			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
 
 		// Internally-generated tests are always valid
 		if ( this.callback && this.callback.validTest ) {
@@ -342,7 +348,7 @@ Test.prototype = {
 			return false;
 		}
 
-		if ( module && ( !this.module || this.module.toLowerCase() !== module ) ) {
+		if ( module && ( !this.module.name || this.module.name.toLowerCase() !== module ) ) {
 			return false;
 		}
 
