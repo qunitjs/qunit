@@ -34,7 +34,7 @@ Test.prototype = {
 		if (
 
 			// Emit moduleStart when we're switching from one module to another
-			this.module.name !== config.previousModule ||
+			this.module !== config.previousModule ||
 
 				// They could be equal (both undefined) but if the previousModule property doesn't
 				// yet exist it means this is the first test in a suite that isn't wrapped in a
@@ -44,14 +44,14 @@ Test.prototype = {
 		) {
 			if ( hasOwn.call( config, "previousModule" ) ) {
 				runLoggingCallbacks( "moduleDone", {
-					name: config.previousModule,
+					name: config.previousModule.name,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
 					runtime: now() - config.moduleStats.started
 				});
 			}
-			config.previousModule = this.module.name;
+			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
 				name: this.module.name

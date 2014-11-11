@@ -462,7 +462,7 @@ function done() {
 	// Log the last module results
 	if ( config.previousModule ) {
 		runLoggingCallbacks( "moduleDone", {
-			name: config.previousModule,
+			name: config.previousModule.name,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
