@@ -325,7 +325,7 @@ Test.prototype = {
 	valid: function() {
 		var include,
 			filter = config.filter && config.filter.toLowerCase(),
-			module = config.module && config.module.toLowerCase(),
+			module = config.moduleFilter && config.moduleFilter.toLowerCase(),
 			fullName = ( this.module + ": " + this.testName ).toLowerCase();
 
 		// Internally-generated tests are always valid

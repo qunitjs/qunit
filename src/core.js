@@ -164,7 +164,7 @@ config = {
 	config.filter = urlParams.filter;
 
 	// Exact match of the module name
-	config.module = urlParams.module;
+	config.moduleFilter = urlParams.module;
 
 	config.testId = [];
 	if ( urlParams.testId ) {
