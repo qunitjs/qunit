@@ -10,14 +10,13 @@ var begin = 0,
 	testContext,
 	testDoneContext,
 	logContext,
-	testAutorun;
+	testAutorun,
+	beginModules;
 
 QUnit.begin(function( args ) {
 	totalTests = args.totalTests;
+	beginModules = args.modules;
 	begin++;
-});
-
-QUnit.done(function() {
 });
 
 QUnit.moduleStart(function( context ) {
@@ -47,12 +46,55 @@ QUnit.log(function( context ) {
 QUnit.module( "logs1" );
 
 QUnit.test( "test1", function( assert ) {
-	assert.expect( 17 );
+	assert.expect( 18 );
 
 	assert.equal(
 		typeof totalTests,
 		"number",
 		"QUnit.begin should pass total amount of tests to callback"
+	);
+
+	while ( beginModules.length > 2 ) {
+		beginModules.pop();
+	}
+
+	assert.deepEqual( beginModules, [
+			{
+				name: "logs1",
+				tests: [
+					{
+						"name": "test1",
+						"testId": "646e9e25"
+					},
+					{
+						"name": "test2",
+						"testId": "646e9e26"
+					}
+				]
+			},
+			{
+				name: "logs2",
+				tests: [
+					{
+						"name": "test1",
+						"testId": "9954d966"
+					},
+					{
+						"name": "test2",
+						"testId": "9954d967"
+					},
+					{
+						"name": "a skipped test",
+						"testId": "3e797d3a"
+					},
+					{
+						"name": "test the log for the skipped test",
+						"testId": "d3266148"
+					}
+				]
+			}
+		],
+		"QUnit.begin details registered modules and their respective tests"
 	);
 
 	assert.equal( begin, 1, "QUnit.begin calls" );
@@ -113,10 +155,20 @@ QUnit.test( "test1", function( assert ) {
 
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
-		name: "logs1"
+		name: "logs1",
+		tests: [
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
+		]
 	}, "module context" );
 
-	assert.equal( log, 16, "QUnit.log calls" );
+	assert.equal( log, 17, "QUnit.log calls" );
 });
 
 QUnit.test( "test2", function( assert ) {
@@ -146,8 +198,8 @@ QUnit.test( "test2", function( assert ) {
 		module: "logs1",
 		name: "test1",
 		failed: 0,
-		passed: 17,
-		total: 17,
+		passed: 18,
+		total: 18,
 		testId: "646e9e25",
 		skipped: false
 	}, "testDone context" );
@@ -159,9 +211,19 @@ QUnit.test( "test2", function( assert ) {
 
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
-		name: "logs1"
+		name: "logs1",
+		tests: [
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
+		]
 	}, "module context" );
-	assert.equal( log, 28, "QUnit.log calls" );
+	assert.equal( log, 29, "QUnit.log calls" );
 });
 
 QUnit.module( "logs2" );
@@ -189,15 +251,43 @@ QUnit.test( "test1", function( assert ) {
 
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
+		tests: [
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
+		],
 		failed: 0,
-		passed: 29,
-		total: 29
+		passed: 30,
+		total: 30
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, {
-		name: "logs2"
+		name: "logs2",
+		tests: [
+			{
+				"name": "test1",
+				"testId": "9954d966"
+			},
+			{
+				"name": "test2",
+				"testId": "9954d967"
+			},
+			{
+				"name": "a skipped test",
+				"testId": "3e797d3a"
+			},
+			{
+				"name": "test the log for the skipped test",
+				"testId": "d3266148"
+			}
+		]
 	}, "module context" );
 
-	assert.equal( log, 38, "QUnit.log calls" );
+	assert.equal( log, 39, "QUnit.log calls" );
 });
 
 QUnit.test( "test2", function( assert ) {
@@ -214,10 +304,28 @@ QUnit.test( "test2", function( assert ) {
 		testId: "9954d967"
 	}, "test context" );
 	assert.deepEqual( moduleContext, {
-		name: "logs2"
+		name: "logs2",
+		tests: [
+			{
+				"name": "test1",
+				"testId": "9954d966"
+			},
+			{
+				"name": "test2",
+				"testId": "9954d967"
+			},
+			{
+				"name": "a skipped test",
+				"testId": "3e797d3a"
+			},
+			{
+				"name": "test the log for the skipped test",
+				"testId": "d3266148"
+			}
+		]
 	}, "module context" );
 
-	assert.equal( log, 46, "QUnit.log calls" );
+	assert.equal( log, 47, "QUnit.log calls" );
 });
 
 QUnit.skip( "a skipped test" );
