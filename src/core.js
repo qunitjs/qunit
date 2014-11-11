@@ -457,12 +457,15 @@ window.onerror = function( error, filePath, linerNr ) {
 };
 
 function done() {
+	var i, l, modulesLog, runtime, passed;
+
 	config.autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
 		runLoggingCallbacks( "moduleDone", {
 			name: config.previousModule.name,
+			tests: config.previousModule.tests,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
@@ -471,10 +474,20 @@ function done() {
 	}
 	delete config.previousModule;
 
-	var runtime = now() - config.started,
-		passed = config.stats.all - config.stats.bad;
+	modulesLog = [];
+	runtime = now() - config.started;
+	passed = config.stats.all - config.stats.bad;
+
+	// Avoid unnecessary information by not logging modules' test environments
+	for ( i = 0, l = config.modules.length; i < l; i++ ) {
+		modulesLog.push({
+			name: config.modules[ i ].name,
+			tests: config.modules[ i ].tests
+		});
+	}
 
 	runLoggingCallbacks( "done", {
+		modules: modulesLog,
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
@@ -586,6 +599,9 @@ function resumeProcessing() {
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
 		setTimeout(function() {
+			var i, l,
+				modulesLog = [];
+
 			if ( config.current && config.current.semaphore > 0 ) {
 				return;
 			}
@@ -601,9 +617,18 @@ function resumeProcessing() {
 
 				verifyLoggingCallbacks();
 
+				// Avoid unnecessary information by not logging modules' test environments
+				for ( i = 0, l = config.modules.length; i < l; i++ ) {
+					modulesLog.push({
+						name: config.modules[ i ].name,
+						tests: config.modules[ i ].tests
+					});
+				}
+
 				// The test run is officially beginning now
 				runLoggingCallbacks( "begin", {
-					totalTests: Test.count
+					totalTests: Test.count,
+					modules: modulesLog
 				});
 			}
 

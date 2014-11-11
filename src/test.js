@@ -45,6 +45,7 @@ Test.prototype = {
 			if ( hasOwn.call( config, "previousModule" ) ) {
 				runLoggingCallbacks( "moduleDone", {
 					name: config.previousModule.name,
+					tests: config.previousModule.tests,
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
@@ -54,7 +55,8 @@ Test.prototype = {
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
-				name: this.module.name
+				name: this.module.name,
+				tests: this.module.tests
 			});
 		}
 
