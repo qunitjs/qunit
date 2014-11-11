@@ -130,7 +130,7 @@ config = {
 	],
 
 	// Set of all modules.
-	modules: {},
+	modules: [],
 
 	callbacks: {}
 };
@@ -186,8 +186,7 @@ extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
-		config.currentModule = name;
-		config.modules[ name ] = true;
+		var currentModule;
 
 		// DEPRECATED: handles setup/teardown functions,
 		// beforeEach and afterEach should be used instead
@@ -200,7 +199,14 @@ extend( QUnit, {
 			delete testEnvironment.teardown;
 		}
 
-		config.currentModuleTestEnvironment = testEnvironment;
+		currentModule = {
+			name: name,
+			testEnvironment: testEnvironment,
+			tests: []
+		};
+
+		config.modules.push( currentModule );
+		config.currentModule = currentModule;
 	},
 
 	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
@@ -456,7 +462,7 @@ function done() {
 	// Log the last module results
 	if ( config.previousModule ) {
 		runLoggingCallbacks( "moduleDone", {
-			name: config.previousModule,
+			name: config.previousModule.name,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
