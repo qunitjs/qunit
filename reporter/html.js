@@ -297,14 +297,26 @@ function toolbarUrlConfigContainer() {
 }
 
 function getModuleNames() {
-	var i, l, name,
+	var i, l, name, ai, al, inArray,
 		moduleNames = [];
 
 	for ( i = 0, l = config.modules.length; i < l; i++ ) {
 		name = config.modules[ i ].name;
 
+		// Array.prototype.indexOf is not compatible on IE<9
+		if ( moduleNames.indexOf && moduleNames.indexOf( name ) < 0 ) {
+			inArray = true;
+		} else if ( !moduleNames.indexOf ) {
+			for ( ai = 0, al = moduleNames.length; ai < al; i++ ) {
+				if ( moduleNames[ ai ] === name ) {
+					inArray = true;
+					break;
+				}
+			}
+		}
+
 		// Push only unique names
-		if ( moduleNames.indexOf( name ) < 0 ) {
+		if ( inArray ) {
 			moduleNames.push( name );
 		}
 	}
