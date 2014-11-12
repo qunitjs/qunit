@@ -333,7 +333,7 @@ Test.prototype = {
 	valid: function() {
 		var include,
 			filter = config.filter && config.filter.toLowerCase(),
-			module = config.moduleFilter && config.moduleFilter.toLowerCase(),
+			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
 
 		// Internally-generated tests are always valid

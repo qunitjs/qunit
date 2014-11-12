@@ -339,13 +339,13 @@ function toolbarModuleFilterHtml() {
 
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label>" +
 		"<select id='qunit-modulefilter' name='modulefilter'><option value='' " +
-		( config.moduleFilter === undefined ? "selected='selected'" : "" ) +
+		( QUnit.urlParams.module === undefined ? "selected='selected'" : "" ) +
 		">< All Modules ></option>";
 
 	for ( i = 0; i < moduleNames.length; i++ ) {
 		moduleFilterHtml += "<option value='" +
 			escapeText( encodeURIComponent( moduleNames[ i ] ) ) + "' " +
-			( config.moduleFilter === moduleNames[ i ] ? "selected='selected'" : "" ) +
+			( QUnit.urlParams.module === moduleNames[ i ] ? "selected='selected'" : "" ) +
 			">" + escapeText( moduleNames[ i ] ) + "</option>";
 	}
 	moduleFilterHtml += "</select>";
