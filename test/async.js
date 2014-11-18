@@ -1,7 +1,7 @@
 var globalStartError, globalStopError;
 
 function _setupForFailingAssertionsAfterAsyncDone( assert ) {
-	var errorRegex = new RegExp( "Assertion occurred after the final `assert\\.async` " +
+	var errorRegex = new RegExp( "Assertion after the final `assert\\.async` " +
 		"was resolved" );
 
 	// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
