@@ -2,13 +2,14 @@
 
 QUnit.module( "global start unrecoverable errors" );
 
-QUnit.test( "Calling start() when QUnit.config.autostart is true throws", function( assert ) {
+QUnit.test( "start() throws when QUnit.config.autostart === true", function( assert ) {
 	assert.expect( 1 );
 	assert.equal( autostartStartError.message,
 		"Called start() outside of a test context when QUnit.config.autostart was true" );
 });
 
-QUnit.test( "Too many calls to start() outside of test context throws", function( assert ) {
+QUnit.test( "Throws after calling start() too many times outside of a test context",
+		function( assert ) {
 	assert.expect( 1 );
 	assert.equal( tooManyStartsError.message,
 		"Called start() outside of a test context too many times" );
