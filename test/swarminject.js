@@ -1,6 +1,6 @@
 // load testswarm agent
 (function() {
-	var url = window.location.search;
+	var url = location.search;
 	url = decodeURIComponent( url.slice( url.indexOf( "swarmURL=" ) + 9 ) );
 	if ( !url || url.indexOf( "http" ) !== 0 ) {
 		return;

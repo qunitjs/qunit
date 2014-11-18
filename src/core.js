@@ -351,8 +351,8 @@ extend( QUnit, {
 				querystring += "&";
 			}
 		}
-		return window.location.protocol + "//" + window.location.host +
-			window.location.pathname + querystring.slice( 0, -1 );
+		return location.protocol + "//" + location.host +
+			location.pathname + querystring.slice( 0, -1 );
 	},
 
 	extend: extend,
