@@ -52,7 +52,7 @@
     "prepublish": "grunt build"
   },
   "commitplease": {
-    "components": [ "Assert", "Build", "CSS", "Core", "Dump", "HTML Reporter", "Test", "Tests" ]
+    "components": [ "All", "Assert", "Build", "CSS", "Core", "Dump", "HTML Reporter", "Test" ]
   },
   "main": "qunit/qunit.js"
 }
