@@ -72,9 +72,9 @@ QUnit.dump = (function() {
 					type = "date";
 				} else if ( QUnit.is( "function", obj ) ) {
 					type = "function";
-				} else if ( typeof obj.setInterval !== "undefined" &&
-						typeof obj.document !== "undefined" &&
-						typeof obj.nodeType === "undefined" ) {
+				} else if ( obj.setInterval !== undefined &&
+						obj.document !== undefined &&
+						obj.nodeType === undefined ) {
 					type = "window";
 				} else if ( obj.nodeType === 9 ) {
 					type = "document";
@@ -86,9 +86,9 @@ QUnit.dump = (function() {
 					toString.call( obj ) === "[object Array]" ||
 
 					// NodeList objects
-					( typeof obj.length === "number" && typeof obj.item !== "undefined" &&
+					( typeof obj.length === "number" && obj.item !== undefined &&
 					( obj.length ? obj.item( 0 ) === obj[ 0 ] : ( obj.item( 0 ) === null &&
-					typeof obj[ 0 ] === "undefined" ) ) )
+					obj[ 0 ] === undefined ) ) )
 				) {
 					type = "array";
 				} else if ( obj.constructor === Error.prototype.constructor ) {
