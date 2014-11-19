@@ -15,8 +15,8 @@ var QUnit,
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout,
 	defined = {
-		document: typeof window.document !== "undefined",
-		setTimeout: typeof window.setTimeout !== "undefined",
+		document: window.document !== undefined,
+		setTimeout: window.setTimeout !== undefined,
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
 			try {
