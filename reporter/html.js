@@ -85,7 +85,7 @@ if ( typeof window === "undefined" ) {
 var config = QUnit.config,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
-		document: typeof window.document !== "undefined",
+		document: window.document !== undefined,
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
 			try {

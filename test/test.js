@@ -3,7 +3,7 @@ function getPreviousTests( rTestName, rModuleName ) {
 		matches = [],
 		i = 0,
 		rModule = /(^| )module-name( |$)/,
-		testNames = typeof document.getElementsByClassName !== "undefined" ?
+		testNames = document.getElementsByClassName ?
 			document.getElementsByClassName( "test-name" ) :
 			(function( spans ) {
 				var span,
