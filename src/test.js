@@ -9,7 +9,7 @@ function Test( settings ) {
 	this.stack = sourceFromStacktrace( 3 );
 
 	// Register unique strings
-	while ( this.module.tests.indexOf( this.testName ) >= 0 ) {
+	while ( inArray( this.testName, this.module.tests ) >= 0 ) {
 		this.testName += " ";
 	}
 	this.module.tests.push( this.testName );
