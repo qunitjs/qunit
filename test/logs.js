@@ -286,38 +286,13 @@ QUnit.test( "test the log for the skipped test", function( assert ) {
 
 testAutorun = true;
 
-QUnit.done(function( details ) {
+QUnit.done(function() {
 
 	if ( !testAutorun ) {
 		return;
 	}
 
 	testAutorun = false;
-
-	QUnit.module( "done callback details" );
-
-	while ( details.modules.length > 2 ) {
-		details.modules.pop();
-	}
-
-	QUnit.test( "modules and tests list", function( assert ) {
-		assert.deepEqual( details.modules, [
-				{
-					name: "logs1",
-					tests: [ "test1", "test2" ]
-				},
-				{
-					name: "logs2",
-					tests: [
-						"test1", "test2",
-						"a skipped test",
-						"test the log for the skipped test"
-					]
-				}
-			],
-			"QUnit.done details registered modules and their respective tests"
-		);
-	});
 
 	moduleStart = moduleDone = 0;
 

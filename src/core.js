@@ -454,7 +454,7 @@ window.onerror = function( error, filePath, linerNr ) {
 };
 
 function done() {
-	var i, l, modulesLog, runtime, passed;
+	var runtime, passed;
 
 	config.autorun = true;
 
@@ -471,20 +471,10 @@ function done() {
 	}
 	delete config.previousModule;
 
-	modulesLog = [];
 	runtime = now() - config.started;
 	passed = config.stats.all - config.stats.bad;
 
-	// Avoid unnecessary information by not logging modules' test environments
-	for ( i = 0, l = config.modules.length; i < l; i++ ) {
-		modulesLog.push({
-			name: config.modules[ i ].name,
-			tests: config.modules[ i ].tests
-		});
-	}
-
 	runLoggingCallbacks( "done", {
-		modules: modulesLog,
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
