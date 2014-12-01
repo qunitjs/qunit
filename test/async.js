@@ -59,12 +59,12 @@ QUnit.test( "parallel calls", function( assert ) {
 	setTimeout(function() {
 		assert.ok( true );
 		QUnit.start();
-	}, 13 );
+	});
 	QUnit.stop();
 	setTimeout(function() {
 		assert.ok( true );
 		QUnit.start();
-	}, 125 );
+	});
 });
 
 QUnit.test( "waterfall calls", function( assert ) {
@@ -77,8 +77,8 @@ QUnit.test( "waterfall calls", function( assert ) {
 		setTimeout(function() {
 			assert.ok( true, "second" );
 			QUnit.start();
-		}, 150 );
-	}, 150 );
+		});
+	});
 });
 
 QUnit.test( "fails if start is called more than stop", function( assert ) {
@@ -101,7 +101,7 @@ QUnit.asyncTest( "asyncTest", function( assert ) {
 	setTimeout(function() {
 		assert.ok( true );
 		QUnit.start();
-	}, 13 );
+	});
 });
 
 QUnit.module( "assert.async" );
@@ -113,7 +113,7 @@ QUnit.test( "single call", function( assert ) {
   setTimeout(function() {
     assert.ok( true );
     done();
-  }, 13 );
+  });
 });
 
 QUnit.test( "parallel calls", function( assert ) {
@@ -124,11 +124,11 @@ QUnit.test( "parallel calls", function( assert ) {
 	setTimeout(function() {
 		assert.ok( true );
 		done1();
-	}, 13 );
+	});
 	setTimeout(function() {
 		assert.ok( true );
 		done2();
-	}, 13 );
+	});
 });
 
 QUnit.test( "waterfall calls", function( assert ) {
@@ -143,8 +143,8 @@ QUnit.test( "waterfall calls", function( assert ) {
 		setTimeout(function() {
 			assert.ok( true, "second" );
 			done2();
-		}, 13 );
-	}, 13 );
+		});
+	});
 });
 
 QUnit.test( "fails if callback is called more than once in test", function( assert ) {
@@ -232,7 +232,7 @@ QUnit.module( "assert.async in beforeEach", {
 		setTimeout(function() {
 			testContext.state = "beforeEach";
 			done();
-		}, 13 );
+		});
 	}
 });
 
@@ -256,7 +256,7 @@ QUnit.test( "afterEach will synchronize", function( assert ) {
 	setTimeout(function() {
 		testContext.state = "done";
 		done();
-	}, 13 );
+	});
 });
 
 QUnit.module( "assert.async in afterEach", {
@@ -265,7 +265,7 @@ QUnit.module( "assert.async in afterEach", {
 		setTimeout(function() {
 			assert.ok( true, "afterEach synchronized before test was finished" );
 			done();
-		}, 13 );
+		});
 	}
 });
 
@@ -293,7 +293,7 @@ QUnit.test( "sole `done` is called last", function( assert ) {
   setTimeout(function() {
     assert.ok( true, "should pass if called before `done`" );
     done();
-  }, 13 );
+  });
 });
 
 QUnit.test( "multiple `done` calls, no assertions after final `done`", function( assert ) {
@@ -305,11 +305,11 @@ QUnit.test( "multiple `done` calls, no assertions after final `done`", function(
   setTimeout(function() {
     done1();
     assert.ok( true, "should pass if called after this `done` but before final `done`" );
-  }, 13 );
+  });
   setTimeout(function() {
     assert.ok( true, "should pass if called before final `done`" );
     done2();
-  }, 13 );
+  });
 });
 
 QUnit.module( "assertions after final assert.async callback in test callback fail", {
@@ -346,7 +346,7 @@ QUnit.test( "sole `done` is called BEFORE assertion", function( assert ) {
 			assert.ok( true, "should fail with a special `done`-related error message if called " +
 				"after `done` even if result is passing" );
 		});
-	}, 13 );
+	});
 });
 
 QUnit.test( "multiple `done` calls, final `done` is called BEFORE assertion", function( assert ) {
@@ -358,7 +358,7 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE assertion", fu
 	setTimeout(function() {
 		done1();
 		assert.ok( true, "should pass as this is not after the final `done`" );
-	}, 13 );
+	});
 	setTimeout(function() {
 		done2();
 
@@ -368,7 +368,7 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE assertion", fu
 			assert.ok( true, "should fail with a special `done`-related error message if called " +
 				"after final `done` even if result is passing" );
 		});
-	}, 13 );
+	});
 });
 
 QUnit.test( "cannot allow assertions between first `done` call and second `assert.async` call",
@@ -391,9 +391,9 @@ QUnit.test( "cannot allow assertions between first `done` call and second `asser
 			setTimeout(function() {
 				assert.ok( false, "Should never reach this point anyway" );
 				done2();
-			}, 13 );
+			});
 		});
-	}, 13 );
+	});
 });
 
 QUnit.module( "assert after last done in beforeEach fail, but allow other phases to run", {

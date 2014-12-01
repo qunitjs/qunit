@@ -57,7 +57,7 @@ QUnit.test( "afterEach must be called after test ended", function( assert ) {
 	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start();
-	}, 13 );
+	});
 });
 
 QUnit.test( "parameter passed to stop increments semaphore n times", function( assert ) {
@@ -67,11 +67,11 @@ QUnit.test( "parameter passed to stop increments semaphore n times", function( a
 	setTimeout(function() {
 		QUnit.start();
 		QUnit.start();
-	}, 13 );
+	});
 	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start();
-	}, 15 );
+	}, 1 );
 });
 
 QUnit.test( "parameter passed to start decrements semaphore n times", function( assert ) {
@@ -83,7 +83,7 @@ QUnit.test( "parameter passed to start decrements semaphore n times", function( 
 	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start( 3 );
-	}, 18 );
+	});
 });
 
 QUnit.module( "async beforeEach test", {
@@ -92,7 +92,7 @@ QUnit.module( "async beforeEach test", {
 		setTimeout(function() {
 			assert.ok( true );
 			QUnit.start();
-		}, 500 );
+		});
 	}
 });
 
@@ -108,7 +108,7 @@ QUnit.module( "async afterEach test", {
 		setTimeout(function() {
 			assert.ok( true );
 			QUnit.start();
-		}, 500 );
+		});
 	}
 });
 

@@ -120,7 +120,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 				done = assert.async();
 				setTimeout(function() {
 					done();
-				}, 250 );
+				}, 101 );
 			}
 		}
 	});
@@ -145,7 +145,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 		assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 100,
 			"Fast runtime for trivial test"
 		);
-		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 250,
+		assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 100,
 			"Runtime includes beforeEach"
 		);
 	});
