@@ -192,7 +192,11 @@ extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
-		var currentModule;
+		var currentModule = {
+			name: name,
+			testEnvironment: testEnvironment,
+			tests: []
+		};
 
 		// DEPRECATED: handles setup/teardown functions,
 		// beforeEach and afterEach should be used instead
@@ -204,12 +208,6 @@ extend( QUnit, {
 			testEnvironment.afterEach = testEnvironment.teardown;
 			delete testEnvironment.teardown;
 		}
-
-		currentModule = {
-			name: name,
-			testEnvironment: testEnvironment,
-			tests: []
-		};
 
 		config.modules.push( currentModule );
 		config.currentModule = currentModule;

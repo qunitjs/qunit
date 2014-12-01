@@ -96,7 +96,8 @@ var config = QUnit.config,
 				return false;
 			}
 		}())
-	};
+	},
+	testCount = 0;
 
 /**
 * Escape text for attribute or text content.
@@ -450,7 +451,8 @@ function appendTest( name, testId, moduleName ) {
 	}
 
 	title = document.createElement( "strong" );
-	title.innerHTML = getNameHtml( name, moduleName );
+	title.innerHTML = ++testCount + ". " +
+		getNameHtml( name, moduleName );
 
 	rerunTrigger = document.createElement( "a" );
 	rerunTrigger.innerHTML = "Rerun";
