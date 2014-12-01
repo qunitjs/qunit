@@ -96,7 +96,8 @@ var config = QUnit.config,
 				return false;
 			}
 		}())
-	};
+	},
+	modulesList = [];
 
 /**
 * Escape text for attribute or text content.
@@ -296,47 +297,28 @@ function toolbarUrlConfigContainer() {
 	return urlConfigContainer;
 }
 
-function getModuleNames() {
-	var i, l, name, ai, al,
-		moduleNames = [];
-
-	for ( i = 0, l = config.modules.length; i < l; i++ ) {
-		name = config.modules[ i ].name;
-
-		for ( ai = 0, al = moduleNames.length; ai < al; i++ ) {
-			if ( moduleNames[ ai ] === name ) {
-				moduleNames.push( name );
-				break;
-			}
-		}
-	}
-
-	moduleNames.sort(function( a, b ) {
-		return a.localeCompare( b );
-	});
-
-	return moduleNames;
-}
-
 function toolbarModuleFilterHtml() {
 	var i,
-		moduleFilterHtml = "",
-		moduleNames = getModuleNames();
+		moduleFilterHtml = "";
 
-	if ( moduleNames.length <= 1 ) {
+	if ( !modulesList.length ) {
 		return false;
 	}
+
+	modulesList.sort(function( a, b ) {
+		return a.localeCompare( b );
+	});
 
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label>" +
 		"<select id='qunit-modulefilter' name='modulefilter'><option value='' " +
 		( QUnit.urlParams.module === undefined ? "selected='selected'" : "" ) +
 		">< All Modules ></option>";
 
-	for ( i = 0; i < moduleNames.length; i++ ) {
+	for ( i = 0; i < modulesList.length; i++ ) {
 		moduleFilterHtml += "<option value='" +
-			escapeText( encodeURIComponent( moduleNames[ i ] ) ) + "' " +
-			( QUnit.urlParams.module === moduleNames[ i ] ? "selected='selected'" : "" ) +
-			">" + escapeText( moduleNames[ i ] ) + "</option>";
+			escapeText( encodeURIComponent( modulesList[ i ] ) ) + "' " +
+			( QUnit.urlParams.module === modulesList[ i ] ? "selected='selected'" : "" ) +
+			">" + escapeText( modulesList[ i ] ) + "</option>";
 	}
 	moduleFilterHtml += "</select>";
 
@@ -344,7 +326,8 @@ function toolbarModuleFilterHtml() {
 }
 
 function toolbarModuleFilter() {
-	var moduleFilter = document.createElement( "span" ),
+	var toolbar = id( "qunit-testrunner-toolbar" ),
+		moduleFilter = document.createElement( "span" ),
 		moduleFilterHtml = toolbarModuleFilterHtml();
 
 	if ( !moduleFilterHtml ) {
@@ -367,20 +350,14 @@ function toolbarModuleFilter() {
 		});
 	});
 
-	return moduleFilter;
+	toolbar.appendChild( moduleFilter );
 }
 
 function appendToolbar() {
-	var moduleFilter,
-		toolbar = id( "qunit-testrunner-toolbar" );
+	var toolbar = id( "qunit-testrunner-toolbar" );
 
 	if ( toolbar ) {
 		toolbar.appendChild( toolbarUrlConfigContainer() );
-
-		moduleFilter = toolbarModuleFilter();
-		if ( moduleFilter ) {
-			toolbar.appendChild( moduleFilter );
-		}
 	}
 }
 
@@ -433,6 +410,10 @@ function appendTestsList( modules ) {
 	for ( i = 0, l = modules.length; i < l; i++ ) {
 		moduleObj = modules[ i ];
 
+		if ( moduleObj.name ) {
+			modulesList.push( moduleObj.name );
+		}
+
 		for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
 			test = moduleObj.tests[ x ];
 
@@ -473,23 +454,28 @@ function appendTest( name, testId, moduleName ) {
 QUnit.begin(function( details ) {
 	var qunit = id( "qunit" );
 
-	if ( qunit ) {
-		qunit.innerHTML =
+	// Fixture is the only one necessary to run without the #qunit element
+	storeFixture();
+
+	if ( !qunit ) {
+		return;
+	}
+
+	qunit.innerHTML =
 		"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 		"<h2 id='qunit-banner'></h2>" +
 		"<div id='qunit-testrunner-toolbar'></div>" +
 		"<h2 id='qunit-userAgent'></h2>" +
 		"<ol id='qunit-tests'></ol>";
-	}
 
 	appendBanner();
 	appendTestResults();
 	appendUserAgent();
 	appendToolbar();
 	appendTestsList( details.modules );
-	storeFixture();
+	toolbarModuleFilter();
 
-	if ( qunit && config.hidepassed ) {
+	if ( config.hidepassed ) {
 		addClass( qunit.lastChild, "hidepass" );
 	}
 });
