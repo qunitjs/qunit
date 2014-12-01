@@ -117,7 +117,7 @@ grunt.initConfig({
 			".jshintrc",
 			"*.js",
 			"build/*.js",
-			"{src,test}/**/*.js"
+			"{src,test,external,reporter}/**/*.js"
 		],
 		tasks: "default"
 	}

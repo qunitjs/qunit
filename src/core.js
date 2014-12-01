@@ -130,10 +130,19 @@ config = {
 	],
 
 	// Set of all modules.
-	modules: {},
+	modules: [],
+
+	// The first unnamed module
+	currentModule: {
+		name: "",
+		tests: []
+	},
 
 	callbacks: {}
 };
+
+// Push a loose unnamed module to the modules collection
+config.modules.push( config.currentModule );
 
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
@@ -163,9 +172,6 @@ config = {
 	// String search anywhere in moduleName+testName
 	config.filter = urlParams.filter;
 
-	// Exact match of the module name
-	config.module = urlParams.module;
-
 	config.testId = [];
 	if ( urlParams.testId ) {
 
@@ -186,8 +192,11 @@ extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment ) {
-		config.currentModule = name;
-		config.modules[ name ] = true;
+		var currentModule = {
+			name: name,
+			testEnvironment: testEnvironment,
+			tests: []
+		};
 
 		// DEPRECATED: handles setup/teardown functions,
 		// beforeEach and afterEach should be used instead
@@ -200,7 +209,8 @@ extend( QUnit, {
 			delete testEnvironment.teardown;
 		}
 
-		config.currentModuleTestEnvironment = testEnvironment;
+		config.modules.push( currentModule );
+		config.currentModule = currentModule;
 	},
 
 	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
@@ -451,12 +461,15 @@ window.onerror = function( error, filePath, linerNr ) {
 };
 
 function done() {
+	var runtime, passed;
+
 	config.autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
 		runLoggingCallbacks( "moduleDone", {
-			name: config.previousModule,
+			name: config.previousModule.name,
+			tests: config.previousModule.tests,
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
@@ -465,8 +478,8 @@ function done() {
 	}
 	delete config.previousModule;
 
-	var runtime = now() - config.started,
-		passed = config.stats.all - config.stats.bad;
+	runtime = now() - config.started;
+	passed = config.stats.all - config.stats.bad;
 
 	runLoggingCallbacks( "done", {
 		failed: config.stats.bad,
@@ -574,6 +587,42 @@ function process( last ) {
 	}
 }
 
+function begin() {
+	var i, l,
+		modulesLog = [];
+
+	// If the test run hasn't officially begun yet
+	if ( !config.started ) {
+
+		// Record the time of the test run's beginning
+		config.started = now();
+
+		verifyLoggingCallbacks();
+
+		// Delete the loose unnamed module if unused.
+		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
+			config.modules.shift();
+		}
+
+		// Avoid unnecessary information by not logging modules' test environments
+		for ( i = 0, l = config.modules.length; i < l; i++ ) {
+			modulesLog.push({
+				name: config.modules[ i ].name,
+				tests: config.modules[ i ].tests
+			});
+		}
+
+		// The test run is officially beginning now
+		runLoggingCallbacks( "begin", {
+			totalTests: Test.count,
+			modules: modulesLog
+		});
+	}
+
+	config.blocking = false;
+	process( true );
+}
+
 function resumeProcessing() {
 	runStarted = true;
 
@@ -587,41 +636,10 @@ function resumeProcessing() {
 				clearTimeout( config.timeout );
 			}
 
-			// If the test run hasn't officially begun yet
-			if ( !config.started ) {
-
-				// Record the time of the test run's beginning
-				config.started = now();
-
-				verifyLoggingCallbacks();
-
-				// The test run is officially beginning now
-				runLoggingCallbacks( "begin", {
-					totalTests: Test.count
-				});
-			}
-
-			config.blocking = false;
-			process( true );
+			begin();
 		}, 13 );
 	} else {
-
-		// If the test run hasn't officially begun yet
-		if ( !config.started ) {
-
-			// Record the time of the test run's beginning
-			config.started = now();
-
-			verifyLoggingCallbacks();
-
-			// The test run is officially beginning now
-			runLoggingCallbacks( "begin", {
-				totalTests: Test.count
-			});
-		}
-
-		config.blocking = false;
-		process( true );
+		begin();
 	}
 }
 
