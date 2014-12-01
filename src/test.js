@@ -1,20 +1,28 @@
 function Test( settings ) {
+	var i, l;
+
 	++Test.count;
 
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
 	this.usedAsync = false;
-	this.module = config.currentModule || { name: "", tests: [] };
+	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 
 	// Register unique strings
-	while ( inArray( this.testName, this.module.tests ) >= 0 ) {
-		this.testName += " ";
+	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {
+		if ( this.module.tests[ i ].name === this.testName ) {
+			this.testName += " ";
+		}
 	}
-	this.module.tests.push( this.testName );
 
 	this.testId = generateHash( this.module.name, this.testName );
+
+	this.module.tests.push({
+		name: this.testName,
+		testId: this.testId
+	});
 
 	if ( settings.skip ) {
 

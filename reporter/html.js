@@ -427,8 +427,50 @@ function appendUserAgent() {
 	}
 }
 
+function appendTestsList( modules ) {
+	var i, l, x, z, test, moduleObj;
+
+	for ( i = 0, l = modules.length; i < l; i++ ) {
+		moduleObj = modules[ i ];
+
+		for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
+			test = moduleObj.tests[ x ];
+
+			appendTest( test.name, test.testId, moduleObj.name );
+		}
+	}
+}
+
+function appendTest( name, testId, moduleName ) {
+	var title, rerunTrigger, testBlock, assertList,
+		tests = id( "qunit-tests" );
+
+	if ( !tests ) {
+		return;
+	}
+
+	title = document.createElement( "strong" );
+	title.innerHTML = getNameHtml( name, moduleName );
+
+	rerunTrigger = document.createElement( "a" );
+	rerunTrigger.innerHTML = "Rerun";
+	rerunTrigger.href = QUnit.url({ testId: testId });
+
+	testBlock = document.createElement( "li" );
+	testBlock.appendChild( title );
+	testBlock.appendChild( rerunTrigger );
+	testBlock.id = "qunit-test-output-" + testId;
+
+	assertList = document.createElement( "ol" );
+	assertList.className = "qunit-assert-list";
+
+	testBlock.appendChild( assertList );
+
+	tests.appendChild( testBlock );
+}
+
 // HTML Reporter initialization and load
-QUnit.begin(function() {
+QUnit.begin(function( details ) {
 	var qunit = id( "qunit" );
 
 	if ( qunit ) {
@@ -444,6 +486,7 @@ QUnit.begin(function() {
 	appendTestResults();
 	appendUserAgent();
 	appendToolbar();
+	appendTestsList( details.modules );
 	storeFixture();
 
 	if ( qunit && config.hidepassed ) {
@@ -515,35 +558,20 @@ function getNameHtml( name, module ) {
 }
 
 QUnit.testStart(function( details ) {
-	var a, b, li, running, assertList,
-		name = getNameHtml( details.name, details.module ),
-		tests = id( "qunit-tests" );
+	var running, testBlock;
 
-	if ( tests ) {
-		b = document.createElement( "strong" );
-		b.innerHTML = name;
+	testBlock = id( "qunit-test-output-" + details.testId );
+	if ( testBlock ) {
+		testBlock.className = "running";
+	} else {
 
-		a = document.createElement( "a" );
-		a.innerHTML = "Rerun";
-		a.href = QUnit.url({ testId: details.testId });
-
-		li = document.createElement( "li" );
-		li.appendChild( b );
-		li.appendChild( a );
-		li.className = "running";
-		li.id = "qunit-test-output" + details.testId;
-
-		assertList = document.createElement( "ol" );
-		assertList.className = "qunit-assert-list";
-
-		li.appendChild( assertList );
-
-		tests.appendChild( li );
+		// Report later registered tests
+		appendTest( details.name, details.testId, details.module );
 	}
 
 	running = id( "qunit-testresult" );
 	if ( running ) {
-		running.innerHTML = "Running: <br />" + name;
+		running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
 	}
 
 });
@@ -551,7 +579,7 @@ QUnit.testStart(function( details ) {
 QUnit.log(function( details ) {
 	var assertList, assertLi,
 		message, expected, actual,
-		testItem = id( "qunit-test-output" + details.testId );
+		testItem = id( "qunit-test-output-" + details.testId );
 
 	if ( !testItem ) {
 		return;
@@ -615,7 +643,8 @@ QUnit.testDone(function( details ) {
 		return;
 	}
 
-	testItem = id( "qunit-test-output" + details.testId );
+	testItem = id( "qunit-test-output-" + details.testId );
+
 	assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
 
 	good = details.passed;

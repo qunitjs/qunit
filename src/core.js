@@ -132,8 +132,17 @@ config = {
 	// Set of all modules.
 	modules: [],
 
+	// The first unnamed module
+	currentModule: {
+		name: "",
+		tests: []
+	},
+
 	callbacks: {}
 };
+
+// Push a loose unnamed module to the modules collection
+config.modules.push( config.currentModule );
 
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
@@ -580,15 +589,48 @@ function process( last ) {
 	}
 }
 
+function begin() {
+	var i, l,
+		modulesLog = [];
+
+	// If the test run hasn't officially begun yet
+	if ( !config.started ) {
+
+		// Record the time of the test run's beginning
+		config.started = now();
+
+		verifyLoggingCallbacks();
+
+		// Delete the loose unnamed module if unused.
+		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
+			config.modules.shift();
+		}
+
+		// Avoid unnecessary information by not logging modules' test environments
+		for ( i = 0, l = config.modules.length; i < l; i++ ) {
+			modulesLog.push({
+				name: config.modules[ i ].name,
+				tests: config.modules[ i ].tests
+			});
+		}
+
+		// The test run is officially beginning now
+		runLoggingCallbacks( "begin", {
+			totalTests: Test.count,
+			modules: modulesLog
+		});
+	}
+
+	config.blocking = false;
+	process( true );
+}
+
 function resumeProcessing() {
 	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
 		setTimeout(function() {
-			var i, l,
-				modulesLog = [];
-
 			if ( config.current && config.current.semaphore > 0 ) {
 				return;
 			}
@@ -596,50 +638,10 @@ function resumeProcessing() {
 				clearTimeout( config.timeout );
 			}
 
-			// If the test run hasn't officially begun yet
-			if ( !config.started ) {
-
-				// Record the time of the test run's beginning
-				config.started = now();
-
-				verifyLoggingCallbacks();
-
-				// Avoid unnecessary information by not logging modules' test environments
-				for ( i = 0, l = config.modules.length; i < l; i++ ) {
-					modulesLog.push({
-						name: config.modules[ i ].name,
-						tests: config.modules[ i ].tests
-					});
-				}
-
-				// The test run is officially beginning now
-				runLoggingCallbacks( "begin", {
-					totalTests: Test.count,
-					modules: modulesLog
-				});
-			}
-
-			config.blocking = false;
-			process( true );
+			begin();
 		}, 13 );
 	} else {
-
-		// If the test run hasn't officially begun yet
-		if ( !config.started ) {
-
-			// Record the time of the test run's beginning
-			config.started = now();
-
-			verifyLoggingCallbacks();
-
-			// The test run is officially beginning now
-			runLoggingCallbacks( "begin", {
-				totalTests: Test.count
-			});
-		}
-
-		config.blocking = false;
-		process( true );
+		begin();
 	}
 }
 

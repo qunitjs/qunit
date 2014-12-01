@@ -61,14 +61,36 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( beginModules, [
 			{
 				name: "logs1",
-				tests: [ "test1", "test2" ]
+				tests: [
+					{
+						"name": "test1",
+						"testId": "646e9e25"
+					},
+					{
+						"name": "test2",
+						"testId": "646e9e26"
+					}
+				]
 			},
 			{
 				name: "logs2",
 				tests: [
-					"test1", "test2",
-					"a skipped test",
-					"test the log for the skipped test"
+					{
+						"name": "test1",
+						"testId": "9954d966"
+					},
+					{
+						"name": "test2",
+						"testId": "9954d967"
+					},
+					{
+						"name": "a skipped test",
+						"testId": "3e797d3a"
+					},
+					{
+						"name": "test the log for the skipped test",
+						"testId": "d3266148"
+					}
 				]
 			}
 		],
@@ -135,8 +157,14 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( moduleContext, {
 		name: "logs1",
 		tests: [
-			"test1",
-			"test2"
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
 		]
 	}, "module context" );
 
@@ -185,8 +213,14 @@ QUnit.test( "test2", function( assert ) {
 	assert.deepEqual( moduleContext, {
 		name: "logs1",
 		tests: [
-			"test1",
-			"test2"
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
 		]
 	}, "module context" );
 	assert.equal( log, 29, "QUnit.log calls" );
@@ -218,8 +252,14 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( moduleDoneContext, {
 		name: "logs1",
 		tests: [
-			"test1",
-			"test2"
+			{
+				"name": "test1",
+				"testId": "646e9e25"
+			},
+			{
+				"name": "test2",
+				"testId": "646e9e26"
+			}
 		],
 		failed: 0,
 		passed: 30,
@@ -228,10 +268,22 @@ QUnit.test( "test1", function( assert ) {
 	assert.deepEqual( moduleContext, {
 		name: "logs2",
 		tests: [
-			"test1",
-			"test2",
-			"a skipped test",
-			"test the log for the skipped test"
+			{
+				"name": "test1",
+				"testId": "9954d966"
+			},
+			{
+				"name": "test2",
+				"testId": "9954d967"
+			},
+			{
+				"name": "a skipped test",
+				"testId": "3e797d3a"
+			},
+			{
+				"name": "test the log for the skipped test",
+				"testId": "d3266148"
+			}
 		]
 	}, "module context" );
 
@@ -254,10 +306,22 @@ QUnit.test( "test2", function( assert ) {
 	assert.deepEqual( moduleContext, {
 		name: "logs2",
 		tests: [
-			"test1",
-			"test2",
-			"a skipped test",
-			"test the log for the skipped test"
+			{
+				"name": "test1",
+				"testId": "9954d966"
+			},
+			{
+				"name": "test2",
+				"testId": "9954d967"
+			},
+			{
+				"name": "a skipped test",
+				"testId": "3e797d3a"
+			},
+			{
+				"name": "test the log for the skipped test",
+				"testId": "d3266148"
+			}
 		]
 	}, "module context" );
 
