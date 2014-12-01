@@ -57,26 +57,6 @@ QUnit.init = function() {
 	}
 };
 
-// Resets the test setup. Useful for tests that modify the DOM.
-/*
-DEPRECATED: Use multiple tests instead of resetting inside a test.
-Use testStart or testDone for custom cleanup.
-This method will throw an error in 2.0, and will be removed in 2.1
-*/
-QUnit.reset = function() {
-
-	// Return on non-browser environments
-	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
-		return;
-	}
-
-	var fixture = id( "qunit-fixture" );
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
-};
-
 // Don't load the HTML Reporter on non-Browser environments
 if ( typeof window === "undefined" ) {
 	return;
@@ -600,11 +580,6 @@ QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad, testCounts, skipped,
 		tests = id( "qunit-tests" );
-
-	// QUnit.reset() is deprecated and will be replaced for a new
-	// fixture reset function on QUnit 2.0/2.1.
-	// It's still called here for backwards compatibility handling
-	QUnit.reset();
 
 	if ( !tests ) {
 		return;
