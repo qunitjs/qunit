@@ -3,6 +3,16 @@
 // Run with: $ node test/node-test.js
 var QUnit = require( "../dist/qunit" );
 
+QUnit.testStart(function( details ) {
+	var output = "- ";
+	if ( details.module ) {
+		output += details.module + ": ";
+	}
+	console.log( output + details.name );
+});
+
+QUnit.module( "Node" );
+
 QUnit.log(function( details ) {
 	if ( !details.result ) {
 		var output = "FAILED: " + ( details.message ? details.message + ", " : "" );

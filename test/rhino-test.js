@@ -1,7 +1,17 @@
 /*jshint node:true, undef:false */
 /*globals QUnit:true */
-// Run with: $ narwhal test/narwhal-test.js
-var QUnit = require( "../dist/qunit" );
+// Run with: $ rhino -require test/rhino-test.js
+var QUnit = require( "../dist/qunit" ).QUnit;
+
+QUnit.testStart(function( details ) {
+	var output = "- ";
+	if ( details.module ) {
+		output += details.module + ": ";
+	}
+	print( output + details.name );
+});
+
+QUnit.module( "Rhino" );
 
 QUnit.log(function( details ) {
 	if ( !details.result ) {
