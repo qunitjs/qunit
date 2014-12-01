@@ -97,7 +97,6 @@ var config = QUnit.config,
 			}
 		}())
 	},
-	testCount = 0,
 	modulesList = [];
 
 /**
@@ -432,8 +431,7 @@ function appendTest( name, testId, moduleName ) {
 	}
 
 	title = document.createElement( "strong" );
-	title.innerHTML = ++testCount + ". " +
-		getNameHtml( name, moduleName );
+	title.innerHTML = getNameHtml( name, moduleName );
 
 	rerunTrigger = document.createElement( "a" );
 	rerunTrigger.innerHTML = "Rerun";
