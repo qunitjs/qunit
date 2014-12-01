@@ -381,7 +381,7 @@ QUnit.reset = function() {
 	}
 
 	var fixture = defined.document && document.getElementById &&
-			document.getElementById( name );
+			document.getElementById( "qunit-fixture" );
 
 	if ( fixture ) {
 		fixture.innerHTML = config.fixture;
