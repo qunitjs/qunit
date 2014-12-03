@@ -88,3 +88,5 @@ Mike Sidorov <mikes.ekb@gmail.com>
 Don Kirkby <donkirkby@gmail.com>
 don <dkirkby@cfenet.ubc.ca>
 Sean Xu <jseanxu@live.com>
+Matthew Beale <matt.beale@madhatted.com>
+Mislav Marohnić <mislav.marohnic@gmail.com>
