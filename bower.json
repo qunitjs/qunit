@@ -13,5 +13,6 @@
     "Gruntfile.js",
     "node_modules",
     "test"
-  ]
+  ],
+  "version": "1.16.0"
 }
