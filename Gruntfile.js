@@ -215,6 +215,7 @@ grunt.registerTask( "test-on-node", function() {
 	require( "./test/modules" );
 	require( "./test/deepEqual" );
 	require( "./test/globals" );
+	require( "./test/globals-node" );
 
 	QUnit.load();
 });
