@@ -267,6 +267,7 @@ function toolbarUrlConfigContainer() {
 	var urlConfigContainer = document.createElement( "span" );
 
 	urlConfigContainer.innerHTML = getUrlConfigHtml();
+	addClass( urlConfigContainer, "qunit-url-config" );
 
 	// For oldIE support:
 	// * Add handlers to the individual elements instead of the container
@@ -275,6 +276,30 @@ function toolbarUrlConfigContainer() {
 	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChanged );
 
 	return urlConfigContainer;
+}
+
+function toolbarLooseFilter() {
+	var filter = document.createElement( "form" ),
+		label = document.createElement( "label" ),
+		input = document.createElement( "input" ),
+		button = document.createElement( "button" );
+
+	addClass( filter, "qunit-filter" );
+
+	label.innerHTML = "Filter: ";
+
+	input.type = "text";
+	input.value = config.filter || "";
+	input.name = "filter";
+
+	button.innerHTML = "Go";
+
+	label.appendChild( input );
+
+	filter.appendChild( label );
+	filter.appendChild( button );
+
+	return filter;
 }
 
 function toolbarModuleFilterHtml() {
@@ -338,6 +363,7 @@ function appendToolbar() {
 
 	if ( toolbar ) {
 		toolbar.appendChild( toolbarUrlConfigContainer() );
+		toolbar.appendChild( toolbarLooseFilter() );
 	}
 }
 

@@ -77,6 +77,18 @@
 
 #qunit-modulefilter-container {
 	float: right;
+	padding: 0.2em;
+}
+
+.qunit-url-config {
+	display: inline-block;
+	padding: 0.1em;
+}
+
+.qunit-filter {
+	display: block;
+	float: right;
+	margin-left: 1em;
 }
 
 /** Tests: Pass/Fail */
