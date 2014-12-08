@@ -345,7 +345,7 @@ Test.prototype = {
 
 	valid: function() {
 		var include,
-			filter = config.filter && config.filter.toLowerCase(),
+			filter = config.filter,
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
 
@@ -368,7 +368,7 @@ Test.prototype = {
 
 		include = filter.charAt( 0 ) !== "!";
 		if ( !include ) {
-			filter = filter.slice( 1 );
+			filter = filter.toLowerCase().slice( 1 );
 		}
 
 		// If the filter matches, we need to honour include

@@ -167,6 +167,10 @@ config.modules.push( config.currentModule );
 		}
 	}
 
+	if ( urlParams.filter === true ) {
+		delete urlParams.filter;
+	}
+
 	QUnit.urlParams = urlParams;
 
 	// String search anywhere in moduleName+testName
