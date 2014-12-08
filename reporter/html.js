@@ -266,10 +266,25 @@ function toolbarChanged() {
 	}
 }
 
+function urlFilter() {
+	var selectBox = id( "qunit-modulefilter" ),
+		selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value ),
+		filter = id( "qunit-filter-input" ).value;
+
+	window.location = QUnit.url({
+		module: ( selection === "" ) ? undefined : selection,
+		filter: ( filter === "" ) ? undefined : filter,
+
+		// Remove testId filter
+		testId: undefined
+	});
+}
+
 function toolbarUrlConfigContainer() {
 	var urlConfigContainer = document.createElement( "span" );
 
 	urlConfigContainer.innerHTML = getUrlConfigHtml();
+	addClass( urlConfigContainer, "qunit-url-config" );
 
 	// For oldIE support:
 	// * Add handlers to the individual elements instead of the container
@@ -278,6 +293,40 @@ function toolbarUrlConfigContainer() {
 	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChanged );
 
 	return urlConfigContainer;
+}
+
+function toolbarLooseFilter() {
+	var filter = document.createElement( "form" ),
+		label = document.createElement( "label" ),
+		input = document.createElement( "input" ),
+		button = document.createElement( "button" );
+
+	addClass( filter, "qunit-filter" );
+
+	label.innerHTML = "Filter: ";
+
+	input.type = "text";
+	input.value = config.filter || "";
+	input.name = "filter";
+	input.id = "qunit-filter-input";
+
+	button.innerHTML = "Go";
+
+	label.appendChild( input );
+
+	filter.appendChild( label );
+	filter.appendChild( button );
+	addEvent( filter, "submit", function( ev ) {
+		urlFilter();
+
+		if ( ev && ev.preventDefault ) {
+			ev.preventDefault();
+		}
+
+		return false;
+	});
+
+	return filter;
 }
 
 function toolbarModuleFilterHtml() {
@@ -320,18 +369,7 @@ function toolbarModuleFilter() {
 	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 	moduleFilter.innerHTML = moduleFilterHtml;
 
-	addEvent( moduleFilter.lastChild, "change", function() {
-		var selectBox = moduleFilter.getElementsByTagName( "select" )[ 0 ],
-			selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value );
-
-		window.location = QUnit.url({
-			module: ( selection === "" ) ? undefined : selection,
-
-			// Remove any existing filters
-			filter: undefined,
-			testId: undefined
-		});
-	});
+	addEvent( moduleFilter.lastChild, "change", urlFilter );
 
 	toolbar.appendChild( moduleFilter );
 }
@@ -341,6 +379,7 @@ function appendToolbar() {
 
 	if ( toolbar ) {
 		toolbar.appendChild( toolbarUrlConfigContainer() );
+		toolbar.appendChild( toolbarLooseFilter() );
 	}
 }
 
