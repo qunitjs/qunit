@@ -635,7 +635,7 @@ QUnit.testDone(function( details ) {
 		details.assertions.length + ")</b>";
 
 	if ( details.skipped ) {
-		addClass( testItem, "skipped" );
+		testItem.className = "skipped";
 		skipped = document.createElement( "em" );
 		skipped.className = "qunit-skipped-label";
 		skipped.innerHTML = "skipped";

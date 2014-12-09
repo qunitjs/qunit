@@ -95,11 +95,15 @@
 	display: none;
 }
 
-#qunit-tests li.pass, #qunit-tests li.running, #qunit-tests li.fail {
+#qunit-tests li.running,
+#qunit-tests li.pass,
+#qunit-tests li.fail,
+#qunit-tests li.skipped {
 	display: list-item;
 }
 
-#qunit-tests.hidepass li.pass, #qunit-tests.hidepass li.running  {
+#qunit-tests.hidepass li.running,
+#qunit-tests.hidepass li.pass {
 	display: none;
 }
 
