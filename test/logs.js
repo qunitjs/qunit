@@ -8,6 +8,7 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 	testStart = 0,
 	testDone = 0,
 	log = 0,
+	isBrowser = typeof window !== "undefined" && window.document,
 	module1Context = {
 		name: "logs1",
 		tests: [
@@ -333,14 +334,8 @@ QUnit.done(function() {
 
 QUnit.module( "deprecated log methods" );
 
-QUnit.test( "QUnit.reset()", function( assert ) {
-
-	// Skip non-browsers
-	if ( typeof window === "undefined" || !window.document ) {
-		assert.expect( 0 );
-		return;
-	}
-
+// Browser-only QUnit.reset test
+QUnit.test( "QUnit.reset()", isBrowser && function( assert ) {
 	var myFixture = document.getElementById( "qunit-fixture" );
 
 	myFixture.innerHTML = "<em>something different from QUnit.config.fixture</em>";
