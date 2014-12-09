@@ -1,6 +1,7 @@
 var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
 	testAutorun, beginModules,
-	module1Test1, module1Test2, module2Test1, module2Test2, module2Test3, module2Test4,
+	module1Test1, module1Test2,
+	module2Test1, module2Test2, module2Test3, module2Test4, module2Test5, module2Test6,
 	begin = 0,
 	moduleStart = 0,
 	moduleDone = 0,
@@ -38,6 +39,14 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 			(module2Test4 = {
 				"name": "test the log for the skipped test",
 				"testId": "d3266148"
+			}),
+			(module2Test5 = {
+				"name": "an implicitly-skipped test",
+				"testId": "99068b23"
+			}),
+			(module2Test6 = {
+				"name": "test the log for the implicitly-skipped test",
+				"testId": "826e8db7"
 			})
 		]
 	};
@@ -269,6 +278,26 @@ QUnit.test( module2Test4.name, function( assert ) {
 		total: 0,
 		skipped: true,
 		testId: module2Test3.testId
+	}, "testDone context" );
+});
+
+QUnit.test( module2Test5.name, false );
+
+QUnit.test( module2Test6.name, function( assert ) {
+	assert.expect( 1 );
+
+	delete testDoneContext.runtime;
+	delete testDoneContext.duration;
+
+	assert.deepEqual( testDoneContext, {
+		assertions: [],
+		module: module2Context.name,
+		name: module2Test5.name,
+		failed: 0,
+		passed: 0,
+		total: 0,
+		skipped: true,
+		testId: module2Test5.testId
 	}, "testDone context" );
 });
 
