@@ -235,7 +235,8 @@ extend( QUnit, {
 			testName: testName,
 			expected: expected,
 			async: async,
-			callback: callback
+			callback: callback,
+			skip: !callback
 		});
 
 		test.queue();
