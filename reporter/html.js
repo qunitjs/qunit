@@ -187,7 +187,10 @@ function getUrlConfigHtml() {
 		escaped = escapeText( val.id );
 		escapedTooltip = escapeText( val.tooltip );
 
-		config[ val.id ] = QUnit.urlParams[ val.id ];
+		if ( config[ val.id ] === undefined ) {
+			config[ val.id ] = QUnit.urlParams[ val.id ];
+		}
+
 		if ( !val.value || typeof val.value === "string" ) {
 			urlConfigHtml += "<input id='qunit-urlconfig-" + escaped +
 				"' name='" + escaped + "' type='checkbox'" +
