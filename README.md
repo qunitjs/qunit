@@ -49,6 +49,8 @@ Update web sites, replacing previous versions with new ones:
 
 * jquery/qunitjs.com pages/index.html and resources/*.html
 
+Update [GitHub releases](https://github.com/jquery/qunit/releases).
+
 Finally announce on Twitter @qunitjs
 
 	Released @VERSION: https://github.com/jquery/qunit/tree/@VERSION
