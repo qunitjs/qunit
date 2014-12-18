@@ -263,6 +263,20 @@ function toolbarChanged() {
 	}
 }
 
+function urlFilter() {
+	var selectBox = id( "qunit-modulefilter" ),
+		selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value ),
+		filter = id( "qunit-filter-input" ).value;
+
+	window.location = QUnit.url({
+		module: ( selection === "" ) ? undefined : selection,
+		filter: ( filter === "" ) ? undefined : filter,
+
+		// Remove testId filter
+		testId: undefined
+	});
+}
+
 function toolbarUrlConfigContainer() {
 	var urlConfigContainer = document.createElement( "span" );
 
@@ -291,6 +305,7 @@ function toolbarLooseFilter() {
 	input.type = "text";
 	input.value = config.filter || "";
 	input.name = "filter";
+	input.id = "qunit-filter-input";
 
 	button.innerHTML = "Go";
 
@@ -298,6 +313,15 @@ function toolbarLooseFilter() {
 
 	filter.appendChild( label );
 	filter.appendChild( button );
+	addEvent( filter, "submit", function( ev ) {
+		urlFilter();
+
+		if ( ev && ev.preventDefault ) {
+			ev.preventDefault();
+		}
+
+		return false;
+	});
 
 	return filter;
 }
@@ -342,18 +366,7 @@ function toolbarModuleFilter() {
 	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 	moduleFilter.innerHTML = moduleFilterHtml;
 
-	addEvent( moduleFilter.lastChild, "change", function() {
-		var selectBox = moduleFilter.getElementsByTagName( "select" )[ 0 ],
-			selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value );
-
-		window.location = QUnit.url({
-			module: ( selection === "" ) ? undefined : selection,
-
-			// Remove any existing filters
-			filter: undefined,
-			testId: undefined
-		});
-	});
+	addEvent( moduleFilter.lastChild, "change", urlFilter );
 
 	toolbar.appendChild( moduleFilter );
 }
