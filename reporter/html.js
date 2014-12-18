@@ -249,7 +249,7 @@ function toolbarChanged() {
 	}
 
 	params[ field.name ] = value;
-	updatedUrl = QUnit.url( params );
+	updatedUrl = setUrl( params );
 
 	if ( "hidepassed" === field.name && "replaceState" in window.history ) {
 		config[ field.name ] = value || false;
@@ -266,12 +266,34 @@ function toolbarChanged() {
 	}
 }
 
-function urlFilter() {
+function setUrl( params ) {
+	var key,
+		querystring = "?";
+
+	params = QUnit.extend( QUnit.extend( {}, QUnit.urlParams ), params );
+
+	for ( key in params ) {
+		if ( hasOwn.call( params, key ) ) {
+			if ( params[ key ] === undefined ) {
+				continue;
+			}
+			querystring += encodeURIComponent( key );
+			if ( params[ key ] !== true ) {
+				querystring += "=" + encodeURIComponent( params[ key ] );
+			}
+			querystring += "&";
+		}
+	}
+	return location.protocol + "//" + location.host +
+		location.pathname + querystring.slice( 0, -1 );
+}
+
+function applyUrlParams() {
 	var selectBox = id( "qunit-modulefilter" ),
 		selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value ),
 		filter = id( "qunit-filter-input" ).value;
 
-	window.location = QUnit.url({
+	window.location = setUrl({
 		module: ( selection === "" ) ? undefined : selection,
 		filter: ( filter === "" ) ? undefined : filter,
 
@@ -317,7 +339,7 @@ function toolbarLooseFilter() {
 	filter.appendChild( label );
 	filter.appendChild( button );
 	addEvent( filter, "submit", function( ev ) {
-		urlFilter();
+		applyUrlParams();
 
 		if ( ev && ev.preventDefault ) {
 			ev.preventDefault();
@@ -369,7 +391,7 @@ function toolbarModuleFilter() {
 	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 	moduleFilter.innerHTML = moduleFilterHtml;
 
-	addEvent( moduleFilter.lastChild, "change", urlFilter );
+	addEvent( moduleFilter.lastChild, "change", applyUrlParams );
 
 	toolbar.appendChild( moduleFilter );
 }
@@ -389,7 +411,7 @@ function appendBanner() {
 	if ( banner ) {
 		banner.className = "";
 		banner.innerHTML = "<a href='" +
-			QUnit.url({ filter: undefined, module: undefined, testId: undefined }) +
+			setUrl({ filter: undefined, module: undefined, testId: undefined }) +
 			"'>" + banner.innerHTML + "</a> ";
 	}
 }
@@ -457,7 +479,7 @@ function appendTest( name, testId, moduleName ) {
 
 	rerunTrigger = document.createElement( "a" );
 	rerunTrigger.innerHTML = "Rerun";
-	rerunTrigger.href = QUnit.url({ testId: testId });
+	rerunTrigger.href = setUrl({ testId: testId });
 
 	testBlock = document.createElement( "li" );
 	testBlock.appendChild( title );
