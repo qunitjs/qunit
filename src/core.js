@@ -354,27 +354,6 @@ extend( QUnit, {
 		return undefined;
 	},
 
-	url: function( params ) {
-		params = extend( extend( {}, QUnit.urlParams ), params );
-		var key,
-			querystring = "?";
-
-		for ( key in params ) {
-			if ( hasOwn.call( params, key ) ) {
-				if ( params[ key ] === undefined ) {
-					continue;
-				}
-				querystring += encodeURIComponent( key );
-				if ( params[ key ] !== true ) {
-					querystring += "=" + encodeURIComponent( params[ key ] );
-				}
-				querystring += "&";
-			}
-		}
-		return location.protocol + "//" + location.host +
-			location.pathname + querystring.slice( 0, -1 );
-	},
-
 	extend: extend,
 
 	load: function() {
