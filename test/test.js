@@ -40,24 +40,27 @@ QUnit.test( "mod2", function( assert ) {
 	assert.mod2( 3, 1, "3 % 2 == 1" );
 });
 
-QUnit.module( "QUnit.skip", {
-	beforeEach: function( assert ) {
+QUnit.module( "skip", {
 
-		// skip test hooks for skipped tests
-		assert.ok( false, "skipped function" );
+	// skip test hooks for skipped tests
+	beforeEach: function( assert ) {
+		assert.ok( false, "skipped beforeEach" );
 		throw "Error";
 	},
 	afterEach: function( assert ) {
-		assert.ok( false, "skipped function" );
+		assert.ok( false, "skipped afterEach" );
 		throw "Error";
 	}
 });
 
-QUnit.skip( "test blocks are skipped", function( assert ) {
+QUnit.skip( "QUnit.skip ignores callback functions", function( assert ) {
 
 	// this test callback won't run, even with broken code
 	assert.expect( 1000 );
 	throw "Error";
 });
 
-QUnit.skip( "no function" );
+// Tests without callbacks are also skipped
+QUnit.test( "QUnit.test with no callback" );
+QUnit.test( "QUnit.test with undefined callback", undefined );
+QUnit.test( "QUnit.test with false callback", false );

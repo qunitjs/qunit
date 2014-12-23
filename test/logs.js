@@ -1,12 +1,14 @@
 var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
 	testAutorun, beginModules,
-	module1Test1, module1Test2, module2Test1, module2Test2, module2Test3, module2Test4,
+	module1Test1, module1Test2,
+	module2Test1, module2Test2, module2Test3, module2Test4, module2Test5, module2Test6,
 	begin = 0,
 	moduleStart = 0,
 	moduleDone = 0,
 	testStart = 0,
 	testDone = 0,
 	log = 0,
+	isBrowser = typeof window !== "undefined" && window.document,
 	module1Context = {
 		name: "logs1",
 		tests: [
@@ -38,6 +40,14 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 			(module2Test4 = {
 				"name": "test the log for the skipped test",
 				"testId": "d3266148"
+			}),
+			(module2Test5 = {
+				"name": "an implicitly-skipped test",
+				"testId": "99068b23"
+			}),
+			(module2Test6 = {
+				"name": "test the log for the implicitly-skipped test",
+				"testId": "826e8db7"
 			})
 		]
 	};
@@ -272,6 +282,26 @@ QUnit.test( module2Test4.name, function( assert ) {
 	}, "testDone context" );
 });
 
+QUnit.test( module2Test5.name, false );
+
+QUnit.test( module2Test6.name, function( assert ) {
+	assert.expect( 1 );
+
+	delete testDoneContext.runtime;
+	delete testDoneContext.duration;
+
+	assert.deepEqual( testDoneContext, {
+		assertions: [],
+		module: module2Context.name,
+		name: module2Test5.name,
+		failed: 0,
+		passed: 0,
+		total: 0,
+		skipped: true,
+		testId: module2Test5.testId
+	}, "testDone context" );
+});
+
 testAutorun = true;
 
 QUnit.done(function() {
@@ -304,14 +334,8 @@ QUnit.done(function() {
 
 QUnit.module( "deprecated log methods" );
 
-QUnit.test( "QUnit.reset()", function( assert ) {
-
-	// Skip non-browsers
-	if ( typeof window === "undefined" || !window.document ) {
-		assert.expect( 0 );
-		return;
-	}
-
+// Browser-only QUnit.reset test
+QUnit.test( "QUnit.reset()", isBrowser && function( assert ) {
 	var myFixture = document.getElementById( "qunit-fixture" );
 
 	myFixture.innerHTML = "<em>something different from QUnit.config.fixture</em>";
