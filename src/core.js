@@ -547,7 +547,7 @@ function process( last ) {
 		process( last );
 	}
 	var start = now();
-	config.depth = config.depth ? config.depth + 1 : 1;
+	config.depth = ( config.depth || 0 ) + 1;
 
 	while ( config.queue.length && !config.blocking ) {
 		if ( !defined.setTimeout || config.updateRate <= 0 ||
