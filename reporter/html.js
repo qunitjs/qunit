@@ -444,7 +444,8 @@ function storeFixture() {
 function appendUserAgent() {
 	var userAgent = id( "qunit-userAgent" );
 	if ( userAgent ) {
-		userAgent.innerHTML = navigator.userAgent;
+		userAgent.innerHTML = "";
+		userAgent.appendChild( document.createTextNode( navigator.userAgent ) );
 	}
 }
 
