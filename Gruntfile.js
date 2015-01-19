@@ -96,7 +96,8 @@ grunt.initConfig({
 			"test/autostart.html",
 			"test/startError.html",
 			"test/logs.html",
-			"test/setTimeout.html"
+			"test/setTimeout.html",
+			"test/reporter-html-no-qunit-element.html"
 		]
 	},
 	coveralls: {
