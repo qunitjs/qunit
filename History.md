@@ -1,3 +1,15 @@
+1.17.0 / 2015-01-19
+==================
+
+  * Build: Remove bower.json from ignored files
+  * Build: Support Node.js export parity with CommonJS
+  * HTML Reporter: Add the filter field
+  * HTML Reporter: Don't hide skipped tests
+  * HTML Reporter: Fix regression for old markup
+  * HTML Reporter: Prevent XSS attacks
+  * HTML Reporter: QUnit.url is now a private function in the HTML Reporter
+  * HTML Reporter: url params can be set by code
+
 1.16.0 / 2014-12-03
 ==================
 
