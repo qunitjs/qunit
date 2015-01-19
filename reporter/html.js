@@ -384,7 +384,7 @@ function toolbarModuleFilter() {
 		moduleFilter = document.createElement( "span" ),
 		moduleFilterHtml = toolbarModuleFilterHtml();
 
-	if ( !moduleFilterHtml ) {
+	if ( !toolbar || !moduleFilterHtml ) {
 		return false;
 	}
 
