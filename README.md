@@ -37,21 +37,27 @@ To run `grunt`, you need [Node.js](http://nodejs.org/download/), which includes 
 
 ## Releases
 
-Use [jquery-release](https://github.com/jquery/jquery-release). The following aren't yet handled there:
+Use [jquery-release](https://github.com/jquery/jquery-release). The following aren't handled there, do that first:
 
-* Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update History.md. Clean up the changelog, removing merge commits or whitespace cleanups.
+* Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update `History.md`. Clean up the changelog, removing merge commits, whitespace cleanups or other irrelevant commits.
 * Run `grunt authors` and add any new authors to AUTHORS.txt
 * Update the version property in `package.json` to have the right -pre version. Not necessary for patch releases.
 
-Commit these, then run the script.
+Commit these:
 
-Update web sites, replacing previous versions with new ones:
+	Build: Prepare @VERSION release, including authors and history update
 
-* jquery/qunitjs.com pages/index.html and resources/*.html
+Then run the script:
 
-Update [GitHub releases](https://github.com/jquery/qunit/releases).
+	node release.js --remote=jquery/qunit
 
-Finally announce on Twitter @qunitjs
+Update `jquery/qunitjs.com`, replacing previous versions with new ones:
 
-	Released @VERSION: https://github.com/jquery/qunit/tree/@VERSION
-	Changelog: https://github.com/jquery/qunit/blob/@VERSION/History.md
+* pages/index.html
+* resources/*.html
+
+Update [GitHub releases](https://github.com/jquery/qunit/releases), use the changelog from `History.md`.
+
+Finally announce on Twitter @qunitjs (add highlights if possible, otherwise a 2nd tweet might do):
+
+	Released @VERSION: https://github.com/jquery/qunit/releases/tag/1.17.0
