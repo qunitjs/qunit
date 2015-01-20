@@ -116,7 +116,11 @@
 
 #qunit-tests.hidepass li.running,
 #qunit-tests.hidepass li.pass {
-	display: none;
+	position: absolute;
+	left: -100px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
 }
 
 #qunit-tests li strong {
