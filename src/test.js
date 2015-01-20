@@ -1,3 +1,11 @@
+import { extend, runLoggingCallbacks, now, saveGlobal, checkPollution, synchronize, defined, inArray, config } from "./core";
+import { sourceFromStacktrace, extractStacktrace } from "./sourceFromStacktrace";
+import Assert from "./assert";
+
+export default Test;
+
+var hasOwn = Object.prototype.hasOwnProperty;
+
 function Test( settings ) {
 	var i, l;
 
@@ -380,40 +388,6 @@ Test.prototype = {
 		return !include;
 	}
 
-};
-
-// Resets the test setup. Useful for tests that modify the DOM.
-/*
-DEPRECATED: Use multiple tests instead of resetting inside a test.
-Use testStart or testDone for custom cleanup.
-This method will throw an error in 2.0, and will be removed in 2.1
-*/
-QUnit.reset = function() {
-
-	// Return on non-browser environments
-	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
-		return;
-	}
-
-	var fixture = defined.document && document.getElementById &&
-			document.getElementById( "qunit-fixture" );
-
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
-};
-
-QUnit.pushFailure = function() {
-	if ( !QUnit.config.current ) {
-		throw new Error( "pushFailure() assertion outside test context, in " +
-			sourceFromStacktrace( 2 ) );
-	}
-
-	// Gets current test obj
-	var currentTest = QUnit.config.current;
-
-	return currentTest.pushFailure.apply( currentTest, arguments );
 };
 
 // Based on Java's String.hashCode, a simple but not

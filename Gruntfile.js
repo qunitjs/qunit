@@ -3,6 +3,8 @@ module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
 
+var to5ify = require( "6to5ify" );
+
 function process( code, filepath ) {
 
 	// Make coverage ignore external files
@@ -22,26 +24,22 @@ function process( code, filepath ) {
 grunt.initConfig({
 	pkg: grunt.file.readJSON( "package.json" ),
 	concat: {
-		"src-js": {
-			options: { process: process },
-			src: [
-				"src/intro.js",
-				"src/core.js",
-				"src/test.js",
-				"src/assert.js",
-				"src/equiv.js",
-				"src/dump.js",
-				"src/export.js",
-				"src/outro.js",
-				"external/jsdiff/jsdiff.js",
-				"reporter/html.js"
-			],
-			dest: "dist/qunit.js"
-		},
 		"src-css": {
 			options: { process: process },
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
+		}
+	},
+	browserify: {
+		options: {
+			bundleExternal: true,
+			debug: true,
+			transform: [ to5ify ]
+		},
+		dist: {
+			files: {
+				"dist/qunit.js": "src/core.js"
+			}
 		}
 	},
 	jshint: {
@@ -50,8 +48,8 @@ grunt.initConfig({
 		},
 		all: [
 			"*.js",
-			"{test,dist}/**/*.js",
-			"build/*.js"
+			"{src,test}/**/*.js",
+			"build/release.js"
 		]
 	},
 	jscs: {
@@ -220,7 +218,7 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "jscs", "search", "qunit", "test-on-node" ] );
+grunt.registerTask( "build", [ "browserify", "concat" ] );
+grunt.registerTask( "default", [ "jshint", "jscs", "build", "search", "qunit", "test-on-node" ] );
 
 };

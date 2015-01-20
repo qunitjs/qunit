@@ -16,6 +16,8 @@
 	"browser": true,
 	"es3": true,
 
+	"esnext": true,
+
 	"globals": {
 		"QUnit": false,
 		"exports": false,
