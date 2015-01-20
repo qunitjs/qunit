@@ -418,6 +418,76 @@ window.onerror = function( error, filePath, linerNr ) {
 	return ret;
 };
 
+function done() {
+	var runtime, passed;
+
+	config.autorun = true;
+
+	// Log the last module results
+	if ( config.previousModule ) {
+		runLoggingCallbacks( "moduleDone", {
+			name: config.previousModule.name,
+			tests: config.previousModule.tests,
+			failed: config.moduleStats.bad,
+			passed: config.moduleStats.all - config.moduleStats.bad,
+			total: config.moduleStats.all,
+			runtime: now() - config.moduleStats.started
+		});
+	}
+	delete config.previousModule;
+
+	runtime = now() - config.started;
+	passed = config.stats.all - config.stats.bad;
+
+	runLoggingCallbacks( "done", {
+		failed: config.stats.bad,
+		passed: passed,
+		total: config.stats.all,
+		runtime: runtime
+	});
+}
+
+export function synchronize( callback, last ) {
+	if ( QUnit.objectType( callback ) === "array" ) {
+		while ( callback.length ) {
+			synchronize( callback.shift() );
+		}
+		return;
+	}
+	config.queue.push( callback );
+
+	if ( config.autorun && !config.blocking ) {
+		process( last );
+	}
+}
+
+function process( last ) {
+	function next() {
+		process( last );
+	}
+	var start = now();
+	config.depth = ( config.depth || 0 ) + 1;
+
+	while ( config.queue.length && !config.blocking ) {
+		if ( !defined.setTimeout || config.updateRate <= 0 ||
+				( ( now() - start ) < config.updateRate ) ) {
+			if ( config.current ) {
+
+				// Reset async tracking for each phase of the Test lifecycle
+				config.current.usedAsync = false;
+			}
+			config.queue.shift()();
+		} else {
+			setTimeout( next, 13 );
+			break;
+		}
+	}
+	config.depth--;
+	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
+		done();
+	}
+}
+
 function begin() {
 	var i, l,
 		modulesLog = [];
@@ -498,76 +568,6 @@ export function runLoggingCallbacks( key, args ) {
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
 	}
-}
-
-export function synchronize( callback, last ) {
-	if ( QUnit.objectType( callback ) === "array" ) {
-		while ( callback.length ) {
-			synchronize( callback.shift() );
-		}
-		return;
-	}
-	config.queue.push( callback );
-
-	if ( config.autorun && !config.blocking ) {
-		process( last );
-	}
-}
-
-function process( last ) {
-	function next() {
-		process( last );
-	}
-	var start = now();
-	config.depth = ( config.depth || 0 ) + 1;
-
-	while ( config.queue.length && !config.blocking ) {
-		if ( !defined.setTimeout || config.updateRate <= 0 ||
-				( ( now() - start ) < config.updateRate ) ) {
-			if ( config.current ) {
-
-				// Reset async tracking for each phase of the Test lifecycle
-				config.current.usedAsync = false;
-			}
-			config.queue.shift()();
-		} else {
-			setTimeout( next, 13 );
-			break;
-		}
-	}
-	config.depth--;
-	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
-		done();
-	}
-}
-
-function done() {
-	var runtime, passed;
-
-	config.autorun = true;
-
-	// Log the last module results
-	if ( config.previousModule ) {
-		runLoggingCallbacks( "moduleDone", {
-			name: config.previousModule.name,
-			tests: config.previousModule.tests,
-			failed: config.moduleStats.bad,
-			passed: config.moduleStats.all - config.moduleStats.bad,
-			total: config.moduleStats.all,
-			runtime: now() - config.moduleStats.started
-		});
-	}
-	delete config.previousModule;
-
-	runtime = now() - config.started;
-	passed = config.stats.all - config.stats.bad;
-
-	runLoggingCallbacks( "done", {
-		failed: config.stats.bad,
-		passed: passed,
-		total: config.stats.all,
-		runtime: runtime
-	});
 }
 
 // DEPRECATED: This will be removed on 2.0.0+
