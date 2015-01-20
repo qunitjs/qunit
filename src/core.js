@@ -32,6 +32,25 @@ var QUnit,
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout;
 
+export var now = Date.now || function() {
+	return new Date().getTime();
+};
+
+export var defined = {
+	document: window.document !== undefined,
+	setTimeout: window.setTimeout !== undefined,
+	sessionStorage: (function() {
+		var x = "qunit-test-string";
+		try {
+			sessionStorage.setItem( x, x );
+			sessionStorage.removeItem( x );
+			return true;
+		} catch ( e ) {
+			return false;
+		}
+	}())
+};
+
 QUnit = {};
 
 /**
@@ -561,6 +580,109 @@ export function pauseProcessing() {
 	}
 }
 
+// Resets the test setup. Useful for tests that modify the DOM.
+/*
+DEPRECATED: Use multiple tests instead of resetting inside a test.
+Use testStart or testDone for custom cleanup.
+This method will throw an error in 2.0, and will be removed in 2.1
+*/
+QUnit.reset = function() {
+
+	// Return on non-browser environments
+	// This is necessary to not break on node tests
+	if ( typeof window === "undefined" ) {
+		return;
+	}
+
+	var fixture = defined.document && document.getElementById &&
+			document.getElementById( "qunit-fixture" );
+
+	if ( fixture ) {
+		fixture.innerHTML = config.fixture;
+	}
+};
+
+QUnit.pushFailure = function() {
+	if ( !QUnit.config.current ) {
+		throw new Error( "pushFailure() assertion outside test context, in " +
+			sourceFromStacktrace( 2 ) );
+	}
+
+	// Gets current test obj
+	var currentTest = QUnit.config.current;
+
+	return currentTest.pushFailure.apply( currentTest, arguments );
+};
+
+export function saveGlobal() {
+	config.pollution = [];
+
+	if ( config.noglobals ) {
+		for ( var key in window ) {
+			if ( Object.prototype.hasOwnProperty.call( window, key ) ) {
+				// in Opera sometimes DOM element ids show up here, ignore them
+				if ( /^qunit-test-output/.test( key ) ) {
+					continue;
+				}
+				config.pollution.push( key );
+			}
+		}
+	}
+}
+
+export function checkPollution() {
+	var newGlobals,
+		deletedGlobals,
+		old = config.pollution;
+
+	saveGlobal();
+
+	newGlobals = diff( config.pollution, old );
+	if ( newGlobals.length > 0 ) {
+		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
+	}
+
+	deletedGlobals = diff( old, config.pollution );
+	if ( deletedGlobals.length > 0 ) {
+		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
+	}
+}
+
+// returns a new Array with the elements that are in a but not in b
+export function diff( a, b ) {
+	var i, j,
+		result = a.slice();
+
+	for ( i = 0; i < result.length; i++ ) {
+		for ( j = 0; j < b.length; j++ ) {
+			if ( result[ i ] === b[ j ] ) {
+				result.splice( i, 1 );
+				i--;
+				break;
+			}
+		}
+	}
+	return result;
+}
+
+export function extend( a, b, undefOnly ) {
+	for ( var prop in b ) {
+		if ( hasOwn.call( b, prop ) ) {
+
+			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
+			if ( !( prop === "constructor" && a === window ) ) {
+				if ( b[ prop ] === undefined ) {
+					delete a[ prop ];
+				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
+					a[ prop ] = b[ prop ];
+				}
+			}
+		}
+	}
+
+	return a;
+}
+
 export function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
@@ -598,77 +720,6 @@ function verifyLoggingCallbacks() {
 	}
 }
 
-// Resets the test setup. Useful for tests that modify the DOM.
-/*
-DEPRECATED: Use multiple tests instead of resetting inside a test.
-Use testStart or testDone for custom cleanup.
-This method will throw an error in 2.0, and will be removed in 2.1
-*/
-QUnit.reset = function() {
-
-	// Return on non-browser environments
-	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
-		return;
-	}
-
-	var fixture = defined.document && document.getElementById &&
-			document.getElementById( "qunit-fixture" );
-
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
-};
-
-QUnit.pushFailure = function() {
-	if ( !QUnit.config.current ) {
-		throw new Error( "pushFailure() assertion outside test context, in " +
-			sourceFromStacktrace( 2 ) );
-	}
-
-	// Gets current test obj
-	var currentTest = QUnit.config.current;
-
-	return currentTest.pushFailure.apply( currentTest, arguments );
-};
-
-export function extend( a, b, undefOnly ) {
-	for ( var prop in b ) {
-		if ( hasOwn.call( b, prop ) ) {
-
-			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
-			if ( !( prop === "constructor" && a === window ) ) {
-				if ( b[ prop ] === undefined ) {
-					delete a[ prop ];
-				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
-					a[ prop ] = b[ prop ];
-				}
-			}
-		}
-	}
-
-	return a;
-}
-
-export var now = Date.now || function() {
-	return new Date().getTime();
-};
-
-export var defined = {
-	document: window.document !== undefined,
-	setTimeout: window.setTimeout !== undefined,
-	sessionStorage: (function() {
-		var x = "qunit-test-string";
-		try {
-			sessionStorage.setItem( x, x );
-			sessionStorage.removeItem( x );
-			return true;
-		} catch ( e ) {
-			return false;
-		}
-	}())
-};
-
 export function inArray( elem, array ) {
 	if ( array.indexOf ) {
 		return array.indexOf( elem );
@@ -681,57 +732,6 @@ export function inArray( elem, array ) {
 	}
 
 	return -1;
-}
-
-export function checkPollution() {
-	var newGlobals,
-		deletedGlobals,
-		old = config.pollution;
-
-	saveGlobal();
-
-	newGlobals = diff( config.pollution, old );
-	if ( newGlobals.length > 0 ) {
-		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
-	}
-
-	deletedGlobals = diff( old, config.pollution );
-	if ( deletedGlobals.length > 0 ) {
-		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
-	}
-}
-
-export function saveGlobal() {
-	config.pollution = [];
-
-	if ( config.noglobals ) {
-		for ( var key in window ) {
-			if ( Object.prototype.hasOwnProperty.call( window, key ) ) {
-				// in Opera sometimes DOM element ids show up here, ignore them
-				if ( /^qunit-test-output/.test( key ) ) {
-					continue;
-				}
-				config.pollution.push( key );
-			}
-		}
-	}
-}
-
-// returns a new Array with the elements that are in a but not in b
-export function diff( a, b ) {
-	var i, j,
-		result = a.slice();
-
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
-			if ( result[ i ] === b[ j ] ) {
-				result.splice( i, 1 );
-				i--;
-				break;
-			}
-		}
-	}
-	return result;
 }
 
 QUnit.assert = Assert.prototype;
