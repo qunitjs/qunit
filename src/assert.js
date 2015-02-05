@@ -64,87 +64,46 @@ QUnit.assert = Assert.prototype = {
 		return assert.test.push.apply( assert.test, arguments );
 	},
 
-	/**
-	 * Asserts rough true-ish result.
-	 * @name ok
-	 * @function
-	 * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
-	 */
 	ok: function( result, message ) {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
 			QUnit.dump.parse( result ) );
 		this.push( !!result, result, true, message );
 	},
 
-	/**
-	 * Assert that the first two arguments are equal, with an optional message.
-	 * Prints out both actual and expected values.
-	 * @name equal
-	 * @function
-	 * @example equal( format( "{0} bytes.", 2), "2 bytes.", "replaces {0} with next argument" );
-	 */
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
 		this.push( expected == actual, actual, expected, message );
 	},
 
-	/**
-	 * @name notEqual
-	 * @function
-	 */
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
 		this.push( expected != actual, actual, expected, message );
 	},
 
-	/**
-	 * @name propEqual
-	 * @function
-	 */
 	propEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
 		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
-	/**
-	 * @name notPropEqual
-	 * @function
-	 */
 	notPropEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
 		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
-	/**
-	 * @name deepEqual
-	 * @function
-	 */
 	deepEqual: function( actual, expected, message ) {
 		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
-	/**
-	 * @name notDeepEqual
-	 * @function
-	 */
 	notDeepEqual: function( actual, expected, message ) {
 		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
-	/**
-	 * @name strictEqual
-	 * @function
-	 */
 	strictEqual: function( actual, expected, message ) {
 		this.push( expected === actual, actual, expected, message );
 	},
 
-	/**
-	 * @name notStrictEqual
-	 * @function
-	 */
 	notStrictEqual: function( actual, expected, message ) {
 		this.push( expected !== actual, actual, expected, message );
 	},
