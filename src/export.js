@@ -29,6 +29,7 @@ if ( typeof window !== "undefined" ) {
 				"start",
 				"stop",
 				"ok",
+				"notOk",
 				"equal",
 				"notEqual",
 				"propEqual",

@@ -70,6 +70,12 @@ QUnit.assert = Assert.prototype = {
 		this.push( !!result, result, true, message );
 	},
 
+	notOk: function( result, message ) {
+		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
+			QUnit.dump.parse( result ) );
+		this.push( !result, result, false, message );
+	},
+
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
 		this.push( expected == actual, actual, expected, message );
