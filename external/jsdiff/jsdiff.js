@@ -13,7 +13,7 @@
  *
  * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) == "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over"
  */
-QUnit.diff = (function() {
+export default function diff() {
 	var hasOwn = Object.prototype.hasOwnProperty;
 
 	/*jshint eqeqeq:false, eqnull:true */

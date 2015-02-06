@@ -1,3 +1,6 @@
+import QUnit from "./core";
+import Assert from "./assert";
+
 // For browser, export only select globals
 if ( typeof window !== "undefined" ) {
 

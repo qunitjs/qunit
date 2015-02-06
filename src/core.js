@@ -1,144 +1,73 @@
+/*!
+ * QUnit @VERSION
+ * http://qunitjs.com/
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license
+ * http://jquery.org/license
+ *
+ * Date: @DATE
+ */
+
+import sourceFromStacktrace from "sourceFromStacktrace";
+import Assert from "assert";
+import Test from "test";
+import config from "config";
+
+// Only this module can modify these values
+/*globals QUnit:true, Date:true, setTimeout:true, clearTimeout:true*/
+
 var QUnit,
-	config,
 	onErrorFnPrev,
 	loggingCallbacks = {},
-	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
-	now = Date.now || function() {
-		return new Date().getTime();
-	},
 	globalStartCalled = false,
 	runStarted = false,
 	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout,
-	defined = {
-		document: window.document !== undefined,
-		setTimeout: window.setTimeout !== undefined,
-		sessionStorage: (function() {
-			var x = "qunit-test-string";
-			try {
-				sessionStorage.setItem( x, x );
-				sessionStorage.removeItem( x );
-				return true;
-			} catch ( e ) {
-				return false;
-			}
-		}())
-	},
-	/**
-	 * Provides a normalized error string, correcting an issue
-	 * with IE 7 (and prior) where Error.prototype.toString is
-	 * not properly implemented
-	 *
-	 * Based on http://es5.github.com/#x15.11.4.4
-	 *
-	 * @param {String|Error} error
-	 * @return {String} error message
-	 */
-	errorString = function( error ) {
-		var name, message,
-			errorString = error.toString();
-		if ( errorString.substring( 0, 7 ) === "[object" ) {
-			name = error.name ? error.name.toString() : "Error";
-			message = error.message ? error.message.toString() : "";
-			if ( name && message ) {
-				return name + ": " + message;
-			} else if ( name ) {
-				return name;
-			} else if ( message ) {
-				return message;
-			} else {
-				return "Error";
-			}
-		} else {
-			return errorString;
+	clearTimeout = window.clearTimeout;
+
+export var now = Date.now || function() {
+	return new Date().getTime();
+};
+
+export var defined = {
+	document: window.document !== undefined,
+	setTimeout: window.setTimeout !== undefined,
+	sessionStorage: (function() {
+		var x = "qunit-test-string";
+		try {
+			sessionStorage.setItem( x, x );
+			sessionStorage.removeItem( x );
+			return true;
+		} catch ( e ) {
+			return false;
 		}
-	},
-	/**
-	 * Makes a clone of an object using only Array or Object as base,
-	 * and copies over the own enumerable properties.
-	 *
-	 * @param {Object} obj
-	 * @return {Object} New object with only the own properties (recursively).
-	 */
-	objectValues = function( obj ) {
-		var key, val,
-			vals = QUnit.is( "array", obj ) ? [] : {};
-		for ( key in obj ) {
-			if ( hasOwn.call( obj, key ) ) {
-				val = obj[ key ];
-				vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
-			}
-		}
-		return vals;
-	};
+	}())
+};
 
 QUnit = {};
 
 /**
- * Config object: Maintain internal state
- * Later exposed as QUnit.config
- * `config` initialized at top of scope
+ * Makes a clone of an object using only Array or Object as base,
+ * and copies over the own enumerable properties.
+ *
+ * @param {Object} obj
+ * @return {Object} New object with only the own properties (recursively).
  */
-config = {
-	// The queue of tests to run
-	queue: [],
-
-	// block until document ready
-	blocking: true,
-
-	// by default, run previously failed tests first
-	// very useful in combination with "Hide passed tests" checked
-	reorder: true,
-
-	// by default, modify document.title when suite is done
-	altertitle: true,
-
-	// by default, scroll to top of the page when suite is done
-	scrolltop: true,
-
-	// when enabled, all tests must call expect()
-	requireExpects: false,
-
-	// add checkboxes that are persisted in the query-string
-	// when enabled, the id is set to `true` as a `QUnit.config` property
-	urlConfig: [
-		{
-			id: "hidepassed",
-			label: "Hide passed tests",
-			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
-		},
-		{
-			id: "noglobals",
-			label: "Check for Globals",
-			tooltip: "Enabling this will test if any test introduces new properties on the " +
-				"`window` object. Stored as query-strings."
-		},
-		{
-			id: "notrycatch",
-			label: "No try-catch",
-			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
-				"exceptions in IE reasonable. Stored as query-strings."
+export function objectValues( obj ) {
+	var key, val,
+		vals = QUnit.is( "array", obj ) ? [] : {};
+	for ( key in obj ) {
+		if ( hasOwn.call( obj, key ) ) {
+			val = obj[ key ];
+			vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
 		}
-	],
-
-	// Set of all modules.
-	modules: [],
-
-	// The first unnamed module
-	currentModule: {
-		name: "",
-		tests: []
-	},
-
-	callbacks: {}
-};
-
-// Push a loose unnamed module to the modules collection
-config.modules.push( config.currentModule );
+	}
+	return vals;
+}
 
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
@@ -185,6 +114,8 @@ config.modules.push( config.currentModule );
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
 }());
+
+export var urlParams = QUnit.urlParams;
 
 // Root QUnit object.
 // `QUnit` initialized at top of scope
@@ -471,64 +402,7 @@ function done() {
 	});
 }
 
-// Doesn't support IE6 to IE9
-// See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-function extractStacktrace( e, offset ) {
-	offset = offset === undefined ? 4 : offset;
-
-	var stack, include, i;
-
-	if ( e.stacktrace ) {
-
-		// Opera 12.x
-		return e.stacktrace.split( "\n" )[ offset + 3 ];
-	} else if ( e.stack ) {
-
-		// Firefox, Chrome, Safari 6+, IE10+, PhantomJS and Node
-		stack = e.stack.split( "\n" );
-		if ( /^error$/i.test( stack[ 0 ] ) ) {
-			stack.shift();
-		}
-		if ( fileName ) {
-			include = [];
-			for ( i = offset; i < stack.length; i++ ) {
-				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
-					break;
-				}
-				include.push( stack[ i ] );
-			}
-			if ( include.length ) {
-				return include.join( "\n" );
-			}
-		}
-		return stack[ offset ];
-	} else if ( e.sourceURL ) {
-
-		// Safari < 6
-		// exclude useless self-reference for generated Error objects
-		if ( /qunit.js$/.test( e.sourceURL ) ) {
-			return;
-		}
-
-		// for actual exceptions, this is useful
-		return e.sourceURL + ":" + e.line;
-	}
-}
-
-function sourceFromStacktrace( offset ) {
-	var e = new Error();
-	if ( !e.stack ) {
-		try {
-			throw e;
-		} catch ( err ) {
-			// This should already be true in most browsers
-			e = err;
-		}
-	}
-	return extractStacktrace( e, offset );
-}
-
-function synchronize( callback, last ) {
+export function synchronize( callback, last ) {
 	if ( QUnit.objectType( callback ) === "array" ) {
 		while ( callback.length ) {
 			synchronize( callback.shift() );
@@ -605,7 +479,7 @@ function begin() {
 	process( true );
 }
 
-function resumeProcessing() {
+export function resumeProcessing() {
 	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
@@ -625,7 +499,7 @@ function resumeProcessing() {
 	}
 }
 
-function pauseProcessing() {
+export function pauseProcessing() {
 	config.blocking = true;
 
 	if ( config.testTimeout && defined.setTimeout ) {
@@ -642,12 +516,46 @@ function pauseProcessing() {
 	}
 }
 
-function saveGlobal() {
+// Resets the test setup. Useful for tests that modify the DOM.
+/*
+DEPRECATED: Use multiple tests instead of resetting inside a test.
+Use testStart or testDone for custom cleanup.
+This method will throw an error in 2.0, and will be removed in 2.1
+*/
+QUnit.reset = function() {
+
+	// Return on non-browser environments
+	// This is necessary to not break on node tests
+	if ( typeof window === "undefined" ) {
+		return;
+	}
+
+	var fixture = defined.document && document.getElementById &&
+			document.getElementById( "qunit-fixture" );
+
+	if ( fixture ) {
+		fixture.innerHTML = config.fixture;
+	}
+};
+
+QUnit.pushFailure = function() {
+	if ( !QUnit.config.current ) {
+		throw new Error( "pushFailure() assertion outside test context, in " +
+			sourceFromStacktrace( 2 ) );
+	}
+
+	// Gets current test obj
+	var currentTest = QUnit.config.current;
+
+	return currentTest.pushFailure.apply( currentTest, arguments );
+};
+
+export function saveGlobal() {
 	config.pollution = [];
 
 	if ( config.noglobals ) {
 		for ( var key in window ) {
-			if ( hasOwn.call( window, key ) ) {
+			if ( Object.prototype.hasOwnProperty.call( window, key ) ) {
 				// in Opera sometimes DOM element ids show up here, ignore them
 				if ( /^qunit-test-output/.test( key ) ) {
 					continue;
@@ -658,7 +566,7 @@ function saveGlobal() {
 	}
 }
 
-function checkPollution() {
+export function checkPollution() {
 	var newGlobals,
 		deletedGlobals,
 		old = config.pollution;
@@ -677,7 +585,7 @@ function checkPollution() {
 }
 
 // returns a new Array with the elements that are in a but not in b
-function diff( a, b ) {
+export function diff( a, b ) {
 	var i, j,
 		result = a.slice();
 
@@ -693,7 +601,7 @@ function diff( a, b ) {
 	return result;
 }
 
-function extend( a, b, undefOnly ) {
+export function extend( a, b, undefOnly ) {
 	for ( var prop in b ) {
 		if ( hasOwn.call( b, prop ) ) {
 
@@ -711,7 +619,7 @@ function extend( a, b, undefOnly ) {
 	return a;
 }
 
-function runLoggingCallbacks( key, args ) {
+export function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
 	callbacks = config.callbacks[ key ];
@@ -748,8 +656,7 @@ function verifyLoggingCallbacks() {
 	}
 }
 
-// from jquery.js
-function inArray( elem, array ) {
+export function inArray( elem, array ) {
 	if ( array.indexOf ) {
 		return array.indexOf( elem );
 	}
@@ -762,3 +669,7 @@ function inArray( elem, array ) {
 
 	return -1;
 }
+
+QUnit.assert = Assert.prototype;
+
+export default QUnit = QUnit;

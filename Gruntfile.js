@@ -22,26 +22,22 @@ function process( code, filepath ) {
 grunt.initConfig({
 	pkg: grunt.file.readJSON( "package.json" ),
 	concat: {
-		"src-js": {
-			options: { process: process },
-			src: [
-				"src/intro.js",
-				"src/core.js",
-				"src/test.js",
-				"src/assert.js",
-				"src/equiv.js",
-				"src/dump.js",
-				"src/export.js",
-				"src/outro.js",
-				"external/jsdiff/jsdiff.js",
-				"reporter/html.js"
-			],
-			dest: "dist/qunit.js"
-		},
 		"src-css": {
 			options: { process: process },
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
+		}
+	},
+	esperanto: {
+		options: {
+			type: "umd",
+			bundleOpts: {
+				name: "QUnit"
+			}
+		},
+		core: {
+			src: "src/core.js",
+			dest: "dist/qunit.js"
 		}
 	},
 	jshint: {
@@ -50,8 +46,8 @@ grunt.initConfig({
 		},
 		all: [
 			"*.js",
-			"{test,dist}/**/*.js",
-			"build/*.js"
+			"{src,test}/**/*.js",
+			"build/release.js"
 		]
 	},
 	jscs: {
@@ -222,7 +218,32 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "jscs", "search", "qunit", "test-on-node" ] );
+grunt.registerTask('build', function() {
+	var esperanto = require('esperanto'),
+		done = this.async();
+
+	grunt.log.write('Building QUnit...');
+	esperanto.bundle({
+		base: 'src',
+		entry: 'build.js'
+	}).then(function (bundle) {
+		var umd = bundle.toUmd({
+			name: 'QUnit',
+			strict: 'true'
+		});
+		grunt.file.write('dist/qunit.js', umd.code);
+	}).then(
+		function() {
+			grunt.log.ok();
+			done();
+		},
+		function(error) {
+			grunt.log.error();
+			done(error);
+		}
+	);
+});
+
+grunt.registerTask( "default", [ "jshint", "jscs", "build", "search", "qunit", "test-on-node" ] );
 
 };

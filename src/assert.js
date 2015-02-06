@@ -1,9 +1,14 @@
+import { pauseProcessing, resumeProcessing, objectValues } from "./core";
+import sourceFromStacktrace from "./sourceFromStacktrace";
+
+export default Assert;
+
 function Assert( testContext ) {
 	this.test = testContext;
 }
 
 // Assert helpers
-QUnit.assert = Assert.prototype = {
+Assert.prototype = {
 
 	// Specify the number of expected assertions to guarantee that failed test
 	// (no assertions are run at all) don't slip through.
@@ -165,6 +170,36 @@ QUnit.assert = Assert.prototype = {
 		}
 	}
 };
+
+/**
+ * Provides a normalized error string, correcting an issue
+ * with IE 7 (and prior) where Error.prototype.toString is
+ * not properly implemented
+ *
+ * Based on http://es5.github.com/#x15.11.4.4
+ *
+ * @param {String|Error} error
+ * @return {String} error message
+ */
+function errorString( error ) {
+	var name, message,
+		errorStr = error.toString();
+	if ( errorStr.substring( 0, 7 ) === "[object" ) {
+		name = error.name ? error.name.toString() : "Error";
+		message = error.message ? error.message.toString() : "";
+		if ( name && message ) {
+			return name + ": " + message;
+		} else if ( name ) {
+			return name;
+		} else if ( message ) {
+			return message;
+		} else {
+			return "Error";
+		}
+	} else {
+		return errorStr;
+	}
+}
 
 // Provide an alternative to assert.throws(), for enviroments that consider throws a reserved word
 // Known to us are: Closure Compiler, Narwhal
