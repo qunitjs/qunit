@@ -44,7 +44,9 @@ export function extractStacktrace( e, offset ) {
 	}
 }
 
-export function sourceFromStacktrace( offset ) {
+export default sourceFromStacktrace;
+
+function sourceFromStacktrace( offset ) {
 	var e = new Error();
 	if ( !e.stack ) {
 		try {

@@ -9,10 +9,11 @@
  * Date: @DATE
  */
 
-import { sourceFromStacktrace } from "./sourceFromStacktrace";
-import Assert from "./assert";
-import dump from "./dump";
-import equiv from "./equiv";
+import { sourceFromStacktrace } from "sourceFromStacktrace";
+import Assert from "assert";
+import dump from "dump";
+import equiv from "equiv";
+import Test from "test";
 
 // Only this module can modify these values
 /*globals QUnit:true, Date:true, setTimeout:true, clearTimeout:true*/
@@ -113,8 +114,6 @@ export var config = {
 
 // Push a loose unnamed module to the modules collection
 config.modules.push( config.currentModule );
-
-import Test from "./test";
 
 /**
  * Makes a clone of an object using only Array or Object as base,
@@ -741,8 +740,7 @@ QUnit.equiv = equiv;
 // back compat
 QUnit.jsDump = dump;
 
-import "./export";
-import "../external/jsdiff/jsdiff";
-import "../reporter/html";
+import __jsdiff from "../external/jsdiff/jsdiff";
+import __html from "../reporter/html";
 
 export default QUnit;

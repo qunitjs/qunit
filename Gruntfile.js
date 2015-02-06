@@ -32,8 +32,7 @@ grunt.initConfig({
 		options: {
 			type: "umd",
 			bundleOpts: {
-				name: "QUnit",
-				amdName: "QUnit"
+				name: "QUnit"
 			}
 		},
 		core: {
@@ -217,34 +216,31 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerMultiTask("esperanto", "Wrapper for the esperanto module transpiler", function() {
-	var options = this.options({
-			separator: "\n",
-			bundleOpts: {}
-		}),
-		esperanto = require( "esperanto" );
+grunt.registerTask('build', function() {
+	var esperanto = require('esperanto'),
+		done = this.async();
 
-	function transpile(code) {
-		return esperanto.toUmd( code, options.bundleOpts ).code;
-	}
-
-	this.files.forEach(function( f ) {
-		grunt.file.write(
-			f.dest,
-			f.src.filter(function( n, e ) {
-					if ( !( e = grunt.file.exists( n ) ) ) {
-						grunt.log.warn( "Source file " + n + " not found." );
-					}
-					return e;
-				})
-				.map( grunt.file.read )
-				.map( transpile )
-				.join( options.separator )
-		);
-	});
+	grunt.log.write('Building QUnit...');
+	esperanto.bundle({
+		base: 'src',
+		entry: 'core.js'
+	}).then(function (bundle) {
+		var umd = bundle.toUmd({
+			name: 'QUnit'
+		});
+		grunt.file.write('dist/qunit.js', umd.code);
+	}).then(
+		function() {
+			grunt.log.ok();
+			done();
+		},
+		function(error) {
+			grunt.log.error();
+			done(error);
+		}
+	);
 });
 
-grunt.registerTask( "build", [ "esperanto" ] );
 grunt.registerTask( "default", [ "jshint", "jscs", "build", "search", "qunit", "test-on-node" ] );
 
 };
