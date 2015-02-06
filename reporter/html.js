@@ -1,25 +1,11 @@
-(function() {
+import QUnit, { config, defined, urlParams } from "../src/core";
 
 // Don't load the HTML Reporter on non-Browser environments
 if ( typeof window === "undefined" ) {
 	return;
 }
 
-var config = QUnit.config,
-	hasOwn = Object.prototype.hasOwnProperty,
-	defined = {
-		document: window.document !== undefined,
-		sessionStorage: (function() {
-			var x = "qunit-test-string";
-			try {
-				sessionStorage.setItem( x, x );
-				sessionStorage.removeItem( x );
-				return true;
-			} catch ( e ) {
-				return false;
-			}
-		}())
-	},
+var hasOwn = Object.prototype.hasOwnProperty,
 	modulesList = [];
 
 /**
@@ -445,8 +431,20 @@ function appendTest( name, testId, moduleName ) {
 	tests.appendChild( testBlock );
 }
 
+function getNameHtml( name, module ) {
+	var nameHtml = "";
+
+	if ( module ) {
+		nameHtml = "<span class='module-name'>" + escapeText( module ) + "</span>: ";
+	}
+
+	nameHtml += "<span class='test-name'>" + escapeText( name ) + "</span>";
+
+	return nameHtml;
+}
+
 // HTML Reporter initialization and load
-QUnit.begin(function( details ) {
+export var begin = function( details ) {
 	var qunit = id( "qunit" );
 
 	// Fixture is the only one necessary to run without the #qunit element
@@ -472,9 +470,9 @@ QUnit.begin(function( details ) {
 	if ( qunit && config.hidepassed ) {
 		addClass( qunit.lastChild, "hidepass" );
 	}
-});
+};
 
-QUnit.done(function( details ) {
+export var done = function( details ) {
 	var i, key,
 		banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
@@ -523,21 +521,9 @@ QUnit.done(function( details ) {
 	if ( config.scrolltop && window.scrollTo ) {
 		window.scrollTo( 0, 0 );
 	}
-});
+};
 
-function getNameHtml( name, module ) {
-	var nameHtml = "";
-
-	if ( module ) {
-		nameHtml = "<span class='module-name'>" + escapeText( module ) + "</span>: ";
-	}
-
-	nameHtml += "<span class='test-name'>" + escapeText( name ) + "</span>";
-
-	return nameHtml;
-}
-
-QUnit.testStart(function( details ) {
+export var testStart = function( details ) {
 	var running, testBlock;
 
 	testBlock = id( "qunit-test-output-" + details.testId );
@@ -554,9 +540,9 @@ QUnit.testStart(function( details ) {
 		running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
 	}
 
-});
+};
 
-QUnit.log(function( details ) {
+export var log = function( details ) {
 	var assertList, assertLi,
 		message, expected, actual,
 		testItem = id( "qunit-test-output-" + details.testId );
@@ -607,9 +593,9 @@ QUnit.log(function( details ) {
 	assertLi.className = details.result ? "pass" : "fail";
 	assertLi.innerHTML = message;
 	assertList.appendChild( assertLi );
-});
+};
 
-QUnit.testDone(function( details ) {
+export var testDone = function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad, testCounts, skipped,
 		tests = id( "qunit-tests" );
@@ -666,7 +652,7 @@ QUnit.testDone(function( details ) {
 		time.innerHTML = details.runtime + " ms";
 		testItem.insertBefore( time, assertList );
 	}
-});
+};
 
 if ( !defined.document || document.readyState === "complete" ) {
 	config.pageLoaded = true;
@@ -676,5 +662,3 @@ if ( !defined.document || document.readyState === "complete" ) {
 if ( defined.document ) {
 	addEvent( window, "load", QUnit.load );
 }
-
-})();

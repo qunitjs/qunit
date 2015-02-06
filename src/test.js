@@ -1,6 +1,8 @@
-import { extend, runLoggingCallbacks, now, saveGlobal, checkPollution, synchronize, defined, inArray, config } from "./core";
-import { sourceFromStacktrace, extractStacktrace } from "./sourceFromStacktrace";
-import Assert from "./assert";
+import { extend, runLoggingCallbacks, now, saveGlobal, checkPollution, synchronize, defined, inArray } from "./core";
+import config from "config";
+import sourceFromStacktrace from "sourceFromStacktrace";
+import { extractStacktrace } from "sourceFromStacktrace";
+import Assert from "assert";
 
 export default Test;
 

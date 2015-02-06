@@ -9,11 +9,10 @@
  * Date: @DATE
  */
 
-import { sourceFromStacktrace } from "sourceFromStacktrace";
+import sourceFromStacktrace from "sourceFromStacktrace";
 import Assert from "assert";
-import dump from "dump";
-import equiv from "equiv";
 import Test from "test";
+import config from "config";
 
 // Only this module can modify these values
 /*globals QUnit:true, Date:true, setTimeout:true, clearTimeout:true*/
@@ -25,9 +24,6 @@ var QUnit,
 	hasOwn = Object.prototype.hasOwnProperty,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
-	now = Date.now || function() {
-		return new Date().getTime();
-	},
 	globalStartCalled = false,
 	runStarted = false,
 	setTimeout = window.setTimeout,
@@ -53,67 +49,6 @@ export var defined = {
 };
 
 QUnit = {};
-
-/**
- * Config object: Maintain internal state
- * Later exposed as QUnit.config
- */
-export var config = {
-	// The queue of tests to run
-	queue: [],
-
-	// block until document ready
-	blocking: true,
-
-	// by default, run previously failed tests first
-	// very useful in combination with "Hide passed tests" checked
-	reorder: true,
-
-	// by default, modify document.title when suite is done
-	altertitle: true,
-
-	// by default, scroll to top of the page when suite is done
-	scrolltop: true,
-
-	// when enabled, all tests must call expect()
-	requireExpects: false,
-
-	// add checkboxes that are persisted in the query-string
-	// when enabled, the id is set to `true` as a `QUnit.config` property
-	urlConfig: [
-		{
-			id: "hidepassed",
-			label: "Hide passed tests",
-			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
-		},
-		{
-			id: "noglobals",
-			label: "Check for Globals",
-			tooltip: "Enabling this will test if any test introduces new properties on the " +
-				"`window` object. Stored as query-strings."
-		},
-		{
-			id: "notrycatch",
-			label: "No try-catch",
-			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
-				"exceptions in IE reasonable. Stored as query-strings."
-		}
-	],
-
-	// Set of all modules.
-	modules: [],
-
-	// The first unnamed module
-	currentModule: {
-		name: "",
-		tests: []
-	},
-
-	callbacks: {}
-};
-
-// Push a loose unnamed module to the modules collection
-config.modules.push( config.currentModule );
 
 /**
  * Makes a clone of an object using only Array or Object as base,
@@ -179,6 +114,8 @@ export function objectValues( obj ) {
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
 }());
+
+export var urlParams = QUnit.urlParams;
 
 // Root QUnit object.
 // `QUnit` initialized at top of scope
@@ -734,13 +671,5 @@ export function inArray( elem, array ) {
 }
 
 QUnit.assert = Assert.prototype;
-QUnit.dump = dump;
-QUnit.equiv = equiv;
 
-// back compat
-QUnit.jsDump = dump;
-
-import __jsdiff from "../external/jsdiff/jsdiff";
-import __html from "../reporter/html";
-
-export default QUnit;
+export default QUnit = QUnit;

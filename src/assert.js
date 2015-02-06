@@ -1,5 +1,5 @@
 import { pauseProcessing, resumeProcessing, objectValues } from "./core";
-import { sourceFromStacktrace } from "./sourceFromStacktrace";
+import sourceFromStacktrace from "./sourceFromStacktrace";
 
 export default Assert;
 

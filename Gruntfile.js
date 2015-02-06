@@ -223,10 +223,11 @@ grunt.registerTask('build', function() {
 	grunt.log.write('Building QUnit...');
 	esperanto.bundle({
 		base: 'src',
-		entry: 'core.js'
+		entry: 'build.js'
 	}).then(function (bundle) {
 		var umd = bundle.toUmd({
-			name: 'QUnit'
+			name: 'QUnit',
+			strict: 'true'
 		});
 		grunt.file.write('dist/qunit.js', umd.code);
 	}).then(
