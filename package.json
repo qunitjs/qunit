@@ -33,10 +33,9 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "6to5ify": "3.1.2",
     "commitplease": "2.0.0",
-    "grunt": "0.4.2",
-    "grunt-browserify": "3.3.0",
+    "esperanto": "^0.6.8",
+    "grunt": "0.4.5",
     "grunt-contrib-concat": "0.3.0",
     "grunt-contrib-jshint": "0.10.0",
     "grunt-contrib-watch": "0.5.3",
