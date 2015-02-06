@@ -36,12 +36,36 @@ grunt.initConfig({
 				"external/jsdiff/jsdiff.js",
 				"reporter/html.js"
 			],
-			dest: "dist/qunit.js"
+			dest: "dist/qunit.es6"
 		},
 		"src-css": {
 			options: { process: process },
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
+		}
+	},
+	esperanto: {
+		umd: {
+			options: {
+				type: "umd",
+				bundleOpts: {
+					name: "QUnit",
+					amdName: "QUnit",
+					strict: true
+				}
+			},
+			src: "dist/qunit.es6",
+			dest: "dist/qunit.js"
+		},
+		cjs: {
+			options: {
+				type: "cjs",
+				bundleOpts: {
+					strict: true
+				}
+			},
+			src: "dist/qunit.es6",
+			dest: "dist/qunit.cjs.js"
 		}
 	},
 	jshint: {
@@ -50,7 +74,8 @@ grunt.initConfig({
 		},
 		all: [
 			"*.js",
-			"{test,dist}/**/*.js",
+			"test/**/*.js",
+			"dist/qunit.es6",
 			"build/*.js"
 		]
 	},
@@ -176,7 +201,7 @@ grunt.registerTask( "test-on-node", function() {
 	var testActive = false,
 		runDone = false,
 		done = this.async(),
-		QUnit = require( "./dist/qunit" );
+		QUnit = require( "./dist/qunit.cjs" );
 
 	QUnit.testStart(function() {
 		testActive = true;
@@ -222,7 +247,7 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "build", [ "concat" ] );
+grunt.registerTask( "build", [ "concat", "esperanto" ] );
 grunt.registerTask( "default", [ "build", "jshint", "jscs", "search", "qunit", "test-on-node" ] );
 
 };
