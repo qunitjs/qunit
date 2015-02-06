@@ -8,5 +8,3 @@
  *
  * Date: @DATE
  */
-
-(function( window ) {

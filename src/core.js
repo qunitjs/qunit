@@ -1,22 +1,21 @@
-var QUnit,
-	config,
+var config,
 	onErrorFnPrev,
 	loggingCallbacks = {},
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
 	// Keep a local reference to Date (GH-283)
-	Date = window.Date,
-	now = Date.now || function() {
-		return new Date().getTime();
+	_Date = Date,
+	now = _Date.now || function() {
+		return new _Date().getTime();
 	},
 	globalStartCalled = false,
 	runStarted = false,
-	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout,
+	_setTimeout = setTimeout,
+	_clearTimeout = clearTimeout,
 	defined = {
-		document: window.document !== undefined,
-		setTimeout: window.setTimeout !== undefined,
+		document: document !== undefined,
+		setTimeout: _setTimeout !== undefined,
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
 			try {
@@ -75,8 +74,6 @@ var QUnit,
 		}
 		return vals;
 	};
-
-QUnit = {};
 
 /**
  * Config object: Maintain internal state
@@ -143,7 +140,8 @@ config.modules.push( config.currentModule );
 // Initialize more QUnit.config and QUnit.urlParams
 (function() {
 	var i, current,
-		location = window.location || { search: "", protocol: "file:" },
+		location = ( window !== undefined && window.location ) ||
+			{ search: "", protocol: "file:" },
 		params = location.search.slice( 1 ).split( "&" ),
 		length = params.length,
 		urlParams = {};
@@ -410,37 +408,40 @@ extend( QUnit, {
 	}
 })();
 
-// `onErrorFnPrev` initialized at top of scope
-// Preserve other handlers
-onErrorFnPrev = window.onerror;
+if ( window !== undefined ) {
 
-// Cover uncaught exceptions
-// Returning true will suppress the default browser handler,
-// returning false will let it run.
-window.onerror = function( error, filePath, linerNr ) {
-	var ret = false;
-	if ( onErrorFnPrev ) {
-		ret = onErrorFnPrev( error, filePath, linerNr );
-	}
+	// `onErrorFnPrev` initialized at top of scope
+	// Preserve other handlers
+	onErrorFnPrev = window.onerror;
 
-	// Treat return value as window.onerror itself does,
-	// Only do our handling if not suppressed.
-	if ( ret !== true ) {
-		if ( QUnit.config.current ) {
-			if ( QUnit.config.current.ignoreGlobalErrors ) {
-				return true;
-			}
-			QUnit.pushFailure( error, filePath + ":" + linerNr );
-		} else {
-			QUnit.test( "global failure", extend(function() {
-				QUnit.pushFailure( error, filePath + ":" + linerNr );
-			}, { validTest: true } ) );
+	// Cover uncaught exceptions
+	// Returning true will suppress the default browser handler,
+	// returning false will let it run.
+	window.onerror = function( error, filePath, linerNr ) {
+		var ret = false;
+		if ( onErrorFnPrev ) {
+			ret = onErrorFnPrev( error, filePath, linerNr );
 		}
-		return false;
-	}
 
-	return ret;
-};
+		// Treat return value as window.onerror itself does,
+		// Only do our handling if not suppressed.
+		if ( ret !== true ) {
+			if ( QUnit.config.current ) {
+				if ( QUnit.config.current.ignoreGlobalErrors ) {
+					return true;
+				}
+				QUnit.pushFailure( error, filePath + ":" + linerNr );
+			} else {
+				QUnit.test( "global failure", extend(function() {
+					QUnit.pushFailure( error, filePath + ":" + linerNr );
+				}, { validTest: true } ) );
+			}
+			return false;
+		}
+
+		return ret;
+	};
+}
 
 function done() {
 	var runtime, passed;
@@ -559,7 +560,7 @@ function process( last ) {
 			}
 			config.queue.shift()();
 		} else {
-			setTimeout( next, 13 );
+			_setTimeout( next, 13 );
 			break;
 		}
 	}
@@ -610,12 +611,12 @@ function resumeProcessing() {
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
-		setTimeout(function() {
+		_setTimeout(function() {
 			if ( config.current && config.current.semaphore > 0 ) {
 				return;
 			}
 			if ( config.timeout ) {
-				clearTimeout( config.timeout );
+				_clearTimeout( config.timeout );
 			}
 
 			begin();
@@ -629,8 +630,8 @@ function pauseProcessing() {
 	config.blocking = true;
 
 	if ( config.testTimeout && defined.setTimeout ) {
-		clearTimeout( config.timeout );
-		config.timeout = setTimeout(function() {
+		_clearTimeout( config.timeout );
+		config.timeout = _setTimeout(function() {
 			if ( config.current ) {
 				config.current.semaphore = 0;
 				QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );

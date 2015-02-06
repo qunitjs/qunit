@@ -392,7 +392,7 @@ QUnit.reset = function() {
 
 	// Return on non-browser environments
 	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
+	if ( typeof global === "undefined" ) {
 		return;
 	}
 

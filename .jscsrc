@@ -1,3 +1,4 @@
 {
-	"preset": "jquery"
+	"preset": "jquery",
+	"esnext": true
 }
