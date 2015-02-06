@@ -3,8 +3,6 @@ module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
 
-var to5ify = require( "6to5ify" );
-
 function process( code, filepath ) {
 
 	// Make coverage ignore external files
@@ -30,16 +28,17 @@ grunt.initConfig({
 			dest: "dist/qunit.css"
 		}
 	},
-	browserify: {
+	esperanto: {
 		options: {
-			bundleExternal: true,
-			debug: true,
-			transform: [ to5ify ]
-		},
-		dist: {
-			files: {
-				"dist/qunit.js": "src/core.js"
+			type: "umd",
+			bundleOpts: {
+				name: "QUnit",
+				amdName: "QUnit"
 			}
+		},
+		core: {
+			src: "src/core.js",
+			dest: "dist/qunit.js"
 		}
 	},
 	jshint: {
@@ -218,7 +217,34 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.load();
 });
 
-grunt.registerTask( "build", [ "browserify", "concat" ] );
+grunt.registerMultiTask("esperanto", "Wrapper for the esperanto module transpiler", function() {
+	var options = this.options({
+			separator: "\n",
+			bundleOpts: {}
+		}),
+		esperanto = require( "esperanto" );
+
+	function transpile(code) {
+		return esperanto.toUmd( code, options.bundleOpts ).code;
+	}
+
+	this.files.forEach(function( f ) {
+		grunt.file.write(
+			f.dest,
+			f.src.filter(function( n, e ) {
+					if ( !( e = grunt.file.exists( n ) ) ) {
+						grunt.log.warn( "Source file " + n + " not found." );
+					}
+					return e;
+				})
+				.map( grunt.file.read )
+				.map( transpile )
+				.join( options.separator )
+		);
+	});
+});
+
+grunt.registerTask( "build", [ "esperanto" ] );
 grunt.registerTask( "default", [ "jshint", "jscs", "build", "search", "qunit", "test-on-node" ] );
 
 };
