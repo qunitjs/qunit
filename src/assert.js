@@ -119,15 +119,17 @@ QUnit.assert = Assert.prototype = {
 			expected = null;
 		}
 
-		if (this.test)
+		if (this.test) {
 			this.test.ignoreGlobalErrors = true;
+		}
 		try {
 			block.call( this.test.testEnvironment );
 		} catch (e) {
 			actual = e;
 		}
-		if (this.test)
+		if (this.test) {
 			this.test.ignoreGlobalErrors = false;
+		}
 
 		if ( actual ) {
 			expectedType = QUnit.objectType( expected );
