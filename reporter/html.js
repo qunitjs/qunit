@@ -289,12 +289,16 @@ function setUrl( params ) {
 }
 
 function applyUrlParams() {
-	var selectBox = id( "qunit-modulefilter" ),
-		selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value ),
+	var selectedModule,
+		modulesList = id( "qunit-modulefilter" ),
 		filter = id( "qunit-filter-input" ).value;
 
+	selectedModule = modulesList ?
+		decodeURIComponent( modulesList.options[ modulesList.selectedIndex ].value ) :
+		undefined;
+
 	window.location = setUrl({
-		module: ( selection === "" ) ? undefined : selection,
+		module: ( selectedModule === "" ) ? undefined : selectedModule,
 		filter: ( filter === "" ) ? undefined : filter,
 
 		// Remove testId filter
