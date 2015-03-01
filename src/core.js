@@ -176,7 +176,7 @@ config.modules.push( config.currentModule );
 	if ( urlParams.testId ) {
 
 		// Ensure that urlParams.testId is an array
-		urlParams.testId = [].concat( urlParams.testId );
+		urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
 		for ( i = 0; i < urlParams.testId.length; i++ ) {
 			config.testId.push( urlParams.testId[ i ] );
 		}
