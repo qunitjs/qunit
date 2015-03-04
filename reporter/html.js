@@ -728,7 +728,10 @@ QUnit.testDone(function( details ) {
 	if ( Error().stack ) {
 		sourceName = document.createElement( "p" );
 		sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
-		addClass( sourceName, "qunit-collapsed qunit-source" );
+		addClass( sourceName, "qunit-source" );
+		if ( bad === 0 ) {
+			addClass( sourceName, "qunit-collapsed" );
+		}
 		addEvent( testTitle, "click", function() {
 			toggleClass( sourceName, "qunit-collapsed" );
 		});
