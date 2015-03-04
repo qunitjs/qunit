@@ -106,7 +106,7 @@ QUnit.test( "setup", function( assert ) {
 QUnit.test( "basics", function( assert ) {
 	assert.expect( 2 );
 	var previous = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
-		runtime = previous.lastChild.previousSibling;
+		runtime = previous.lastChild.previousSibling.previousSibling;
 	assert.ok( /(^| )runtime( |$)/.test( runtime.className ), "Runtime element exists" );
 	assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
 });
@@ -115,10 +115,10 @@ QUnit.test( "values", function( assert ) {
 	assert.expect( 2 );
 	var basics = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
 		slow = getPreviousTests( /^basics$/, /^timing$/ )[ 0 ];
-	assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 100,
+	assert.ok( parseInt( basics.lastChild.previousSibling.previousSibling.innerHTML, 10 ) < 100,
 		"Fast runtime for trivial test"
 	);
-	assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 100,
+	assert.ok( parseInt( slow.lastChild.previousSibling.previousSibling.innerHTML, 10 ) > 100,
 		"Runtime includes beforeEach"
 	);
 });
