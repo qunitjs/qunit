@@ -174,7 +174,7 @@ QUnit.dump = (function() {
 					nonEnumerableProperties = [ "message", "name" ];
 					for ( i in nonEnumerableProperties ) {
 						key = nonEnumerableProperties[ i ];
-						if ( key in map && !inArray( key, keys ) ) {
+						if ( key in map && !( key in keys ) ) {
 							keys.push( key );
 						}
 					}
