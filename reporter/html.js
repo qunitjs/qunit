@@ -691,13 +691,8 @@ QUnit.testDone(function( details ) {
 		}
 	}
 
-	sourceName = document.createElement( "p" );
-	sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
-	testItem.appendChild( sourceName );
-
 	if ( bad === 0 ) {
 		addClass( assertList, "qunit-collapsed" );
-		addClass( sourceName, "qunit-collapsed" );
 	}
 
 	// testItem.firstChild is the test name
@@ -716,13 +711,9 @@ QUnit.testDone(function( details ) {
 		skipped.className = "qunit-skipped-label";
 		skipped.innerHTML = "skipped";
 		testItem.insertBefore( skipped, testTitle );
-		addEvent( testTitle, "click", function() {
-			toggleClass( sourceName, "qunit-collapsed" );
-		});
 	} else {
 		addEvent( testTitle, "click", function() {
 			toggleClass( assertList, "qunit-collapsed" );
-			toggleClass( sourceName, "qunit-collapsed" );
 		});
 
 		testItem.className = bad ? "fail" : "pass";
@@ -733,6 +724,13 @@ QUnit.testDone(function( details ) {
 		testItem.insertBefore( time, assertList );
 	}
 
+	sourceName = document.createElement( "p" );
+	sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
+	addClass( sourceName, "qunit-collapsed qunit-source" );
+	addEvent( testTitle, "click", function() {
+		toggleClass( sourceName, "qunit-collapsed" );
+	});
+	testItem.appendChild( sourceName );
 });
 
 if ( !defined.document || document.readyState === "complete" ) {

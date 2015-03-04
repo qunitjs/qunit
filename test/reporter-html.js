@@ -94,3 +94,31 @@ QUnit.test( "values", function( assert ) {
 		"Runtime includes beforeEach"
 	);
 });
+
+QUnit.module( "source" );
+
+QUnit.test( "setup", function( assert ) {
+	assert.expect( 0 );
+});
+
+QUnit.test( "logs location", function( assert ) {
+	var source, sourceText,
+		previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
+			.previousSibling;
+
+	source = previous.lastChild;
+
+	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
+	assert.equal( source.firstChild.innerHTML, "Source: " );
+
+	if ( source.textContent ) {
+		sourceText = source.lastChild.textContent;
+	} else {
+		sourceText = source.lastChild.innerText;
+	}
+
+	// test/reporter-html.js is a direct reference to this test file
+	assert.ok( /\/test\/reporter-html\.js\:\d+/.test( sourceText ),
+		"Source references to the current file and line number"
+	);
+});
