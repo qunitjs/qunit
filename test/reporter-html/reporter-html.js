@@ -95,3 +95,34 @@ QUnit.test( "values", function( assert ) {
 		"Runtime includes beforeEach"
 	);
 });
+
+QUnit.module( "source" );
+
+QUnit.test( "setup", function( assert ) {
+	assert.expect( 0 );
+});
+
+QUnit.test( "logs location", function( assert ) {
+	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
+		.previousSibling;
+	var source = previous.lastChild;
+	var stack = QUnit.stack();
+
+	// Verify QUnit supported stack trace
+	if ( !stack ) {
+		assert.equal(
+			/(^| )qunit-source( |$)/.test( source.className ),
+			false,
+			"Don't add source information on unsupported environments"
+		);
+		return;
+	}
+
+	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
+	assert.equal( source.firstChild.innerHTML, "Source: " );
+
+	// test/reporter-html/reporter-html.js is a direct reference to this test file
+	assert.ok( /\/test\/reporter-html\/reporter-html\.js\:\d+/.test( source.innerHTML ),
+		"Source references to the current file and line number"
+	);
+});
