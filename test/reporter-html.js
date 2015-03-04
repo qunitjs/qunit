@@ -102,23 +102,26 @@ QUnit.test( "setup", function( assert ) {
 });
 
 QUnit.test( "logs location", function( assert ) {
-	var source, sourceText,
+	var source,
 		previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
 			.previousSibling;
 
 	source = previous.lastChild;
 
+	if ( !Error().stack ) {
+		assert.equal(
+			/(^| )qunit-source( |$)/.test( source.className ),
+			false,
+			"Don't add source information on non-supported environments"
+		);
+		return;
+	}
+
 	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
 	assert.equal( source.firstChild.innerHTML, "Source: " );
 
-	if ( source.textContent ) {
-		sourceText = source.lastChild.textContent;
-	} else {
-		sourceText = source.lastChild.innerText;
-	}
-
 	// test/reporter-html.js is a direct reference to this test file
-	assert.ok( /\/test\/reporter-html\.js\:\d+/.test( sourceText ),
+	assert.ok( /\/test\/reporter-html\.js\:\d+/.test( source.innerHTML ),
 		"Source references to the current file and line number"
 	);
 });

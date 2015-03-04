@@ -724,13 +724,16 @@ QUnit.testDone(function( details ) {
 		testItem.insertBefore( time, assertList );
 	}
 
-	sourceName = document.createElement( "p" );
-	sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
-	addClass( sourceName, "qunit-collapsed qunit-source" );
-	addEvent( testTitle, "click", function() {
-		toggleClass( sourceName, "qunit-collapsed" );
-	});
-	testItem.appendChild( sourceName );
+	// Only add this information if stackTrace is supported
+	if ( Error().stack ) {
+		sourceName = document.createElement( "p" );
+		sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
+		addClass( sourceName, "qunit-collapsed qunit-source" );
+		addEvent( testTitle, "click", function() {
+			toggleClass( sourceName, "qunit-collapsed" );
+		});
+		testItem.appendChild( sourceName );
+	}
 });
 
 if ( !defined.document || document.readyState === "complete" ) {
