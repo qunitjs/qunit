@@ -672,7 +672,7 @@ QUnit.log(function( details ) {
 
 QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
-		good, bad, testCounts, skipped,
+		good, bad, testCounts, skipped, sourceName,
 		tests = id( "qunit-tests" );
 
 	if ( !tests ) {
@@ -726,6 +726,17 @@ QUnit.testDone(function( details ) {
 		time.className = "runtime";
 		time.innerHTML = details.runtime + " ms";
 		testItem.insertBefore( time, assertList );
+	}
+
+	// Only add this information if stackTrace is supported
+	if ( Error().stack ) {
+		sourceName = document.createElement( "p" );
+		sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
+		addClass( sourceName, "qunit-collapsed qunit-source" );
+		addEvent( testTitle, "click", function() {
+			toggleClass( sourceName, "qunit-collapsed" );
+		});
+		testItem.appendChild( sourceName );
 	}
 });
 
