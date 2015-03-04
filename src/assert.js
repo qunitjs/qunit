@@ -117,7 +117,8 @@ QUnit.assert = Assert.prototype = {
 	"throws": function( block, expected, message ) {
 		var actual, expectedType,
 			expectedOutput = expected,
-			ok = false;
+			ok = false,
+			currentTest = ( this instanceof Assert && this.test ) || QUnit.config.current;
 
 		// 'expected' is optional unless doing string comparison
 		if ( message == null && typeof expected === "string" ) {
@@ -125,13 +126,13 @@ QUnit.assert = Assert.prototype = {
 			expected = null;
 		}
 
-		this.test.ignoreGlobalErrors = true;
+		currentTest.ignoreGlobalErrors = true;
 		try {
-			block.call( this.test.testEnvironment );
+			block.call( currentTest.testEnvironment );
 		} catch (e) {
 			actual = e;
 		}
-		this.test.ignoreGlobalErrors = false;
+		currentTest.ignoreGlobalErrors = false;
 
 		if ( actual ) {
 			expectedType = QUnit.objectType( expected );
@@ -165,9 +166,9 @@ QUnit.assert = Assert.prototype = {
 				ok = true;
 			}
 
-			this.push( ok, actual, expectedOutput, message );
+			currentTest.assert.push( ok, actual, expectedOutput, message );
 		} else {
-			this.test.pushFailure( message, null, "No exception was thrown." );
+			currentTest.pushFailure( message, null, "No exception was thrown." );
 		}
 	}
 };
