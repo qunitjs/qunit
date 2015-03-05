@@ -612,7 +612,12 @@ QUnit.testStart(function( details ) {
 
 	running = id( "qunit-testresult" );
 	if ( running ) {
-		running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
+		if ( details.bad === true ) {
+			running.innerHTML = "Rerunning failed: <br />" +
+				getNameHtml( details.name, details.module );
+		} else {
+			running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
+		}
 	}
 
 });
