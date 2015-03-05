@@ -115,6 +115,22 @@ QUnit.diff = (function() {
 			nSpace.push( " " );
 		}
 
+		for ( i = 0; i < oSpace.length; i++ ) {
+			if ( oSpace[i].length > 1 ) {
+				if ( ( oSpace[i][0] == "\n") && (oSpace[i][1] == " " ) ) {
+					oSpace[i] = "\n";
+				}
+			}
+		}
+
+		for ( i = 0; i < nSpace.length; i++ ) {
+			if ( nSpace[i].length > 1 ) {
+				if ( ( nSpace[i][0] == "\n") && (nSpace[i][1] == " " ) ) {
+					nSpace[i] = "\n";
+				}
+			}
+		}
+
 		if ( out.n.length === 0 ) {
 			for ( i = 0; i < out.o.length; i++ ) {
 				str += "<del>" + out.o[ i ] + oSpace[ i ] + "</del>";
@@ -135,7 +151,11 @@ QUnit.diff = (function() {
 					pre = "";
 
 					for ( n = out.n[ i ].row + 1; n < out.o.length && out.o[ n ].text == null; n++ ) {
-						pre += "<del>" + out.o[ n ] + oSpace[ n ] + "</del>";
+						if ( oSpace[n] == "\n" ) {
+							pre += "<del>" + out.o[ n ] + "</del>";
+						} else {
+							pre += "<del>" + out.o[ n ] + oSpace[ n ] + "</del>";
+						}
 					}
 					str += " " + out.n[ i ].text + nSpace[ i ] + pre;
 				}
