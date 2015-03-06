@@ -1,5 +1,51 @@
 QUnit.module( "assert" );
 
+QUnit.test( "ok", function( assert ) {
+	assert.ok( true );
+	assert.ok( 1 );
+	assert.ok( "1" );
+	assert.ok( Infinity );
+	assert.ok( {} );
+	assert.ok( [] );
+});
+
+QUnit.test( "notOk", function( assert ) {
+	assert.notOk( false );
+	assert.notOk( 0 );
+	assert.notOk( "" );
+	assert.notOk( null );
+	assert.notOk( undefined );
+	assert.notOk( NaN );
+});
+
+QUnit.test( "equal", function( assert ) {
+	assert.equal( 1, 1 );
+	assert.equal( "foo", "foo" );
+	assert.equal( "foo", [ "foo" ] );
+	assert.equal( "foo", { toString: function() { return "foo"; } } );
+	assert.equal( 0, [ 0 ] );
+});
+
+QUnit.test( "notEqual", function( assert ) {
+	assert.notEqual( 1, 2 );
+	assert.notEqual( "foo", "bar" );
+	assert.notEqual( {}, {} );
+	assert.notEqual( [], [] );
+});
+
+QUnit.test( "strictEqual", function( assert ) {
+	assert.strictEqual( 1, 1 );
+	assert.strictEqual( "foo", "foo" );
+});
+
+QUnit.test( "notStrictEqual", function( assert ) {
+	assert.notStrictEqual( 1, 2 );
+	assert.notStrictEqual( "foo", "bar" );
+	assert.notStrictEqual( "foo", [ "foo" ] );
+	assert.notStrictEqual( "1", 1 );
+	assert.notStrictEqual( "foo", { toString: function() { return "foo"; } } );
+});
+
 QUnit.test( "propEqual", function( assert ) {
 	assert.expect( 5 );
 	var objectCreate = Object.create || function( origin ) {
@@ -236,4 +282,125 @@ QUnit.test( "raises, alias for throws", function( assert ) {
 	assert.raises(function() {
 		throw "my error";
 	});
+});
+
+QUnit.module( "failing assertions", {
+	beforeEach: function( assert ) {
+		var originalPush = assert.push;
+
+		assert.push = function( result, actual, expected, message ) {
+
+			// inverts the result so we can test failing assertions
+			originalPush( !result, actual, expected, message );
+		};
+	}
+});
+
+QUnit.test( "ok", function( assert ) {
+	assert.ok( false );
+	assert.ok( 0 );
+	assert.ok( "" );
+	assert.ok( null );
+	assert.ok( undefined );
+	assert.ok( NaN );
+});
+
+QUnit.test( "notOk", function( assert ) {
+	assert.notOk( true );
+	assert.notOk( 1 );
+	assert.notOk( "1" );
+	assert.notOk( Infinity );
+	assert.notOk( {} );
+	assert.notOk( [] );
+});
+
+QUnit.test( "equal", function( assert ) {
+	assert.equal( 1, 2 );
+	assert.equal( "foo", "bar" );
+	assert.equal( {}, {} );
+	assert.equal( [], [] );
+});
+
+QUnit.test( "notEqual", function( assert ) {
+	assert.notEqual( 1, 1 );
+	assert.notEqual( "foo", "foo" );
+	assert.notEqual( "foo", [ "foo" ] );
+	assert.notEqual( "foo", { toString: function() { return "foo"; } } );
+	assert.notEqual( 0, [ 0 ] );
+});
+
+QUnit.test( "strictEqual", function( assert ) {
+	assert.strictEqual( 1, 2 );
+	assert.strictEqual( "foo", "bar" );
+	assert.strictEqual( "foo", [ "foo" ] );
+	assert.strictEqual( "1", 1 );
+	assert.strictEqual( "foo", { toString: function() { return "foo"; } } );
+});
+
+QUnit.test( "notStrictEqual", function( assert ) {
+	assert.notStrictEqual( 1, 1 );
+	assert.notStrictEqual( "foo", "foo" );
+});
+
+QUnit.test( "deepEqual", function( assert ) {
+	assert.deepEqual( [ "foo", "bar" ], [ "foo" ] );
+});
+
+QUnit.test( "notDeepEqual", function( assert ) {
+	assert.notDeepEqual( [ "foo", "bar" ], [ "foo", "bar" ] );
+});
+
+QUnit.test( "propEqual", function( assert ) {
+	function Foo( x, y, z ) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	Foo.prototype.baz = function() {};
+	Foo.prototype.bar = "prototype";
+
+	assert.propEqual(
+		new Foo( "1", 2, 3 ),
+		{
+			x: 1,
+			y: "2",
+			z: 3
+		}
+	);
+});
+
+QUnit.test( "notPropEqual", function( assert ) {
+	function Foo( x, y, z ) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	Foo.prototype.baz = function() {};
+	Foo.prototype.bar = "prototype";
+
+	assert.notPropEqual(
+		new Foo( 1, "2", [] ),
+		{
+			x: 1,
+			y: "2",
+			z: []
+		}
+	);
+});
+
+QUnit.test( "throws", function( assert ) {
+	assert.throws(
+		function() {
+			return;
+		},
+		"throws fails without a thrown error"
+	);
+
+	assert.throws(
+		function() {
+			throw "foo";
+		},
+		/bar/,
+		"throws fail when regexp doens't match the error message"
+	);
 });
