@@ -63,6 +63,7 @@ QUnit.init = function() {
 };
 
 var config = QUnit.config,
+	collapseNext = false,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
@@ -746,6 +747,16 @@ QUnit.testDone(function( details ) {
 	}
 
 	if ( bad === 0 ) {
+
+		// Collapse the passing tests
+		addClass( assertList, "qunit-collapsed" );
+	} else if ( bad && config.collapse && !collapseNext ) {
+
+		// Skip collapsing the first failing test
+		collapseNext = true;
+	} else {
+
+		// Collapse remaining tests
 		addClass( assertList, "qunit-collapsed" );
 	}
 
