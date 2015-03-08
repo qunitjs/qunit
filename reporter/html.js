@@ -28,6 +28,7 @@ QUnit.init = function() {
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 			"<h2 id='qunit-banner'></h2>" +
 			"<div id='qunit-testrunner-toolbar'></div>" +
+			"<h2 id='qunit-version'></h2>" +
 			"<h2 id='qunit-userAgent'></h2>" +
 			"<ol id='qunit-tests'></ol>";
 	}
@@ -454,9 +455,20 @@ function storeFixture() {
 
 function appendUserAgent() {
 	var userAgent = id( "qunit-userAgent" );
+
 	if ( userAgent ) {
 		userAgent.innerHTML = "";
 		userAgent.appendChild( document.createTextNode( navigator.userAgent ) );
+	}
+}
+
+function appendVersion() {
+	var version = id( "qunit-version" ),
+		value = "@VERSION";
+
+	if ( version ) {
+		version.innerHTML = "";
+		version.appendChild( document.createTextNode( "QUnit " + value ) );
 	}
 }
 
@@ -518,6 +530,7 @@ QUnit.begin(function( details ) {
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 			"<h2 id='qunit-banner'></h2>" +
 			"<div id='qunit-testrunner-toolbar'></div>" +
+			"<h2 id='qunit-version'></h2>" +
 			"<h2 id='qunit-userAgent'></h2>" +
 			"<ol id='qunit-tests'></ol>";
 	}
@@ -525,6 +538,7 @@ QUnit.begin(function( details ) {
 	appendHeader();
 	appendBanner();
 	appendTestResults();
+	appendVersion();
 	appendUserAgent();
 	appendToolbar();
 	appendTestsList( details.modules );
