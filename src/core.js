@@ -7,6 +7,7 @@ var QUnit,
 	hasOwn = Object.prototype.hasOwnProperty,
 	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
+	version = "@VERSION",
 	now = Date.now || function() {
 		return new Date().getTime();
 	},
@@ -184,6 +185,10 @@ config.modules.push( config.currentModule );
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
+
+	// Expose the current QUnit version
+	// `version` initialized at top of scope
+	QUnit.version = version;
 }());
 
 // Root QUnit object.
