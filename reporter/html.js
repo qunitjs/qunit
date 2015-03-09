@@ -453,13 +453,14 @@ function storeFixture() {
 }
 
 function appendUserAgent() {
-	var userAgent = id( "qunit-userAgent" ),
-		versionInfo = "QUnit " + QUnit.version;
+	var userAgent = id( "qunit-userAgent" );
 
 	if ( userAgent ) {
 		userAgent.innerHTML = "";
 		userAgent.appendChild(
-			document.createTextNode( navigator.userAgent + ": " + versionInfo )
+			document.createTextNode(
+				navigator.userAgent + "; " + "QUnit " + QUnit.version
+			)
 		);
 	}
 }
