@@ -165,11 +165,9 @@ QUnit.assert = Assert.prototype = {
 				expectedOutput = null;
 				ok = true;
 			}
-
-			currentTest.assert.push( ok, actual, expectedOutput, message );
-		} else {
-			currentTest.pushFailure( message, null, "No exception was thrown." );
 		}
+
+		currentTest.assert.push( ok, actual, expectedOutput, message );
 	}
 };
 
