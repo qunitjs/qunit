@@ -185,8 +185,8 @@ QUnit.equiv = (function() {
 						bProperties.push( i ); // collect b's properties
 					}
 
-					// Ensures identical properties name
-					return eq && innerEquiv( aProperties.sort(), bProperties.sort() );
+					// Ensures b doesn't have any property that a doesn't
+					return eq && aProperties.length === bProperties.length;
 				}
 			};
 		}());
