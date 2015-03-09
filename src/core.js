@@ -186,7 +186,6 @@ config.modules.push( config.currentModule );
 	QUnit.isLocal = location.protocol === "file:";
 
 	// Expose the current QUnit version
-	// `version` initialized at top of scope
 	QUnit.version = "@VERSION";
 }());
 
