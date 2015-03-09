@@ -145,7 +145,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );
 	assert.deepEqual( testContext, {
-		bad: false,
+		wasBad: false,
 		module: module1Context.name,
 		name: module1Test1.name,
 		testId: module1Test1.testId
@@ -191,7 +191,7 @@ QUnit.test( module1Test2.name, function( assert ) {
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: module1Context.name,
-		bad: false,
+		wasBad: false,
 		name: module1Test2.name,
 		testId: module1Test2.testId
 	}, "test context" );
@@ -213,7 +213,7 @@ QUnit.test( module2Test1.name, function( assert ) {
 
 	assert.deepEqual( testContext, {
 		module: module2Context.name,
-		bad: false,
+		wasBad: false,
 		name: module2Test1.name,
 		testId: module2Test1.testId
 	}, "test context" );
@@ -247,7 +247,7 @@ QUnit.test( module2Test2.name, function( assert ) {
 
 	assert.deepEqual( testContext, {
 		module: module2Context.name,
-		bad: false,
+		wasBad: false,
 		name: module2Test2.name,
 		testId: module2Test2.testId
 	}, "test context" );

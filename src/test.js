@@ -80,7 +80,7 @@ Test.prototype = {
 			name: this.testName,
 			module: this.module.name,
 			testId: this.testId,
-			bad: this.wasBad
+			wasBad: this.wasBad
 		});
 
 		if ( !config.pollution ) {
