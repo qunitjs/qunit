@@ -28,6 +28,24 @@ QUnit.equiv = (function() {
 			/* jshint camelcase: false, proto: true */
 			return obj.__proto__;
 		},
+
+		objectsHaveSameKeys = function( b, a ) {
+			var i;
+			for ( i in b ) {
+				if ( !( i in a ) ) {
+					return false;
+				}
+			}
+
+			for ( i in a ) {
+				if ( !(i in b ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		},
+
 		callbacks = (function() {
 
 			// for string, boolean, number and null
@@ -186,7 +204,7 @@ QUnit.equiv = (function() {
 					}
 
 					// Ensures b doesn't have any property that a doesn't
-					return eq && aProperties.length === bProperties.length;
+					return eq && objectsHaveSameKeys( a, b );
 				}
 			};
 		}());
