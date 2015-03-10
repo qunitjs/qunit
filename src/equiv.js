@@ -14,8 +14,11 @@ QUnit.equiv = (function() {
 		}
 	}
 
-	// the real equiv function
-	var innerEquiv,
+	// the real deep equiv function
+	var deepEquiv,
+
+		// the real prop equiv function
+		propEquiv,
 
 		// stack to decide between skip/abort functions
 		callers = [],
@@ -116,7 +119,7 @@ QUnit.equiv = (function() {
 								}
 							}
 						}
-						if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
+						if ( !loop && !deepEquiv( a[ i ], b[ i ] ) ) {
 							parents.pop();
 							parentsB.pop();
 							return false;
@@ -171,7 +174,7 @@ QUnit.equiv = (function() {
 							}
 						}
 						aProperties.push( i );
-						if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
+						if ( !loop && !deepEquiv( a[ i ], b[ i ] ) ) {
 							eq = false;
 							break;
 						}
@@ -186,12 +189,11 @@ QUnit.equiv = (function() {
 					}
 
 					// Ensures identical properties name
-					return eq && innerEquiv( aProperties.sort(), bProperties.sort() );
+					return eq && deepEquiv( aProperties.sort(), bProperties.sort() );
 				}
 			};
 		}());
-
-	innerEquiv = function() { // can take multiple arguments
+	deepEquiv = function ( ) { // can take multiple arguments
 		var args = [].slice.apply( arguments );
 		if ( args.length < 2 ) {
 			return true; // end transition
@@ -212,8 +214,77 @@ QUnit.equiv = (function() {
 
 			// apply transition with (1..n) arguments
 		}( args[ 0 ], args[ 1 ] ) ) &&
-			innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
+			deepEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
+	},
+	propEquiv = function ( ) {
+		var args = [].slice.apply( arguments );
+		if ( args.length < 2 ) {
+			return true;
+		}
+
+		return ( (function ( a, b ) {
+			if ( a === b ) {
+				return true;
+			} else if ( a === null || b === null || typeof a === "undefined" ||
+					typeof b === "undefined" ||
+					QUnit.objectType( a ) !== QUnit.objectType( b ) ) {
+				return false;
+			} else {
+				/*jshint forin:false */
+				var i, j, loop, aCircular, bCircular, currentProperty, subEquiv,
+					// Default to true
+					eq = true,
+					aProperties = Object.keys(a),
+					bProperties = Object.keys(b);
+
+					// stack constructor before traversing properties
+					callers.push( a.constructor );
+
+					// track reference to avoid circular references
+					parents.push( a );
+					parentsB.push( b );
+
+					for ( i = 0; i < aProperties.length; i++ ){
+						currentProperty = aProperties[i];
+						loop = false;
+						for ( j = 0; j < parents.length; j++ ) {
+
+							aCircular = parents[j] === a[currentProperty];
+							bCircular = parentsB[j] === b[currentProperty];
+
+							if ( aCircular || bCircular ){
+								if ( a[ currentProperty ] === b[ currentProperty ] ||
+										aCircular && bCircular ){
+									loop = true;
+								} else {
+									eq = false;
+									break;
+								}
+							}
+
+						}
+
+						subEquiv = Object( a[ currentProperty ] ) !== a[currentProperty] ?
+							deepEquiv : propEquiv;
+
+						if ( !loop && !subEquiv( a[ currentProperty ], b[ currentProperty ] ) ) {
+							eq = false;
+							break;
+						}
+					}
+					parents.pop();
+					parentsB.pop();
+					callers.pop(); // unstack, we are done
+
+					return eq && deepEquiv(aProperties.sort(), bProperties.sort());
+			}
+		}( args[ 0 ], args[ 1 ] ) ) &&
+			propEquiv.apply(this, args.splice( 1, args.length - 1 ) ) );
+
 	};
 
-	return innerEquiv;
+	return {
+		deep: deepEquiv,
+		props: propEquiv
+	};
 }());
