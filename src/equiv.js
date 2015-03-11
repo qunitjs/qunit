@@ -229,52 +229,53 @@ QUnit.equiv = (function() {
 			} else {
 				/*jshint forin:false */
 				var i, j, loop, aCircular, bCircular, currentProperty, subEquiv,
-					// Default to true
-					eq = true,
-					aProperties = ownObjectKeys( a ),
-					bProperties = ownObjectKeys( b );
+				// Default to true
+				eq = true,
+				aProperties = ownObjectKeys( a ),
+				bProperties = ownObjectKeys( b );
 
-					// stack constructor before traversing properties
-					callers.push( a.constructor );
+				// stack constructor before traversing properties
+				callers.push( a.constructor );
 
-					// track reference to avoid circular references
-					parents.push( a );
-					parentsB.push( b );
+				// track reference to avoid circular references
+				parents.push( a );
+				parentsB.push( b );
 
-					for ( i = 0; i < aProperties.length; i++ ){
-						currentProperty = aProperties[i];
-						loop = false;
-						for ( j = 0; j < parents.length; j++ ) {
+				for ( i = 0; i < aProperties.length; i++ ){
+					currentProperty = aProperties[i];
+					loop = false;
+					for ( j = 0; j < parents.length; j++ ) {
 
-							aCircular = parents[j] === a[currentProperty];
-							bCircular = parentsB[j] === b[currentProperty];
+						aCircular = parents[j] === a[currentProperty];
+						bCircular = parentsB[j] === b[currentProperty];
 
-							if ( aCircular || bCircular ){
-								if ( a[ currentProperty ] === b[ currentProperty ] ||
-										aCircular && bCircular ){
-									loop = true;
-								} else {
-									eq = false;
-									break;
-								}
+						if ( aCircular || bCircular ){
+							if ( a[ currentProperty ] === b[ currentProperty ] ||
+									aCircular && bCircular ){
+								loop = true;
+							} else {
+								eq = false;
+								break;
 							}
-
 						}
 
-						// we'll only use prop equivalence to compare objects
-						subEquiv = QUnit.is( "object", a[ currentProperty ] ) ?
-							propEquiv : deepEquiv;
-
-						if ( !loop && !subEquiv( a[ currentProperty ], b[ currentProperty ] ) ) {
-							eq = false;
-							break;
-						}
 					}
-					parents.pop();
-					parentsB.pop();
-					callers.pop(); // unstack, we are done
 
-					return eq && deepEquiv(aProperties.sort(), bProperties.sort());
+					// we'll only use prop equivalence to compare objects
+					subEquiv = QUnit.is( "object", a[ currentProperty ] ) ?
+						propEquiv : deepEquiv;
+
+					if ( !loop && !subEquiv( a[ currentProperty ], b[ currentProperty ] ) ) {
+						eq = false;
+						break;
+					}
+				}
+				parents.pop();
+				parentsB.pop();
+				callers.pop(); // unstack, we are done
+
+				// ensure both objects have the same properties
+				return eq && deepEquiv(aProperties.sort(), bProperties.sort());
 			}
 		}( args[ 0 ], args[ 1 ] ) ) &&
 			propEquiv.apply(this, args.splice( 1, args.length - 1 ) ) );
