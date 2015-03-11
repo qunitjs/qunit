@@ -56,42 +56,6 @@ var QUnit,
 		} else {
 			return errorString;
 		}
-	},
-	/**
-	 * Makes a clone of an object using only Array or Object as base,
-	 * and copies over the own enumerable properties.
-	 *
-	 * @param {Object} obj
-	 * @return {Object} New object with only the own properties (recursively).
-	 */
-	objectValues = function( obj ) {
-		var key, val,
-			vals = QUnit.is( "array", obj ) ? [] : {};
-		for ( key in obj ) {
-			if ( hasOwn.call( obj, key ) ) {
-				val = obj[ key ];
-				vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
-			}
-		}
-		return vals;
-	},
-	/**
-	 * Gets the keys of an object which are both enumerable and own
-	 *
-	 * @param {Object} obj
-	 * @return {Array} Array with the enumerable and own keys of the object given
-	 */
-	ownObjectKeys = function( obj ) {
-		var i,
-			keys = [];
-
-		for ( i in obj ) {
-			if ( hasOwn.call( obj, i ) ) {
-				keys.push( i );
-			}
-		}
-
-		return keys;
 	};
 
 QUnit = {};
