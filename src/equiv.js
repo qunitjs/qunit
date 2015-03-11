@@ -223,8 +223,10 @@ QUnit.equiv = (function() {
 		}
 
 		return ( (function ( a, b ) {
-			if ( !QUnit.is( "object", a ) || !QUnit.is( "object", b ) ) {
-				// Warning should come here, waiting for an answer
+			if ( a === b ) {
+				return true;
+			} else if ( !QUnit.is( "object", a ) || !QUnit.is( "object", b ) ) {
+				// if the test author submits parameters that are not objects, check for deepEquiv
 				return deepEquiv( a, b );
 			} else {
 				/*jshint forin:false */
