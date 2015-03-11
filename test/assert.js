@@ -1,6 +1,5 @@
 QUnit.module( "assert" );
 
-
 QUnit.test( "ok", function( assert ) {
 	assert.ok( true );
 	assert.ok( 1 );
