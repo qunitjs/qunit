@@ -2,6 +2,25 @@
 // Author: Philippe Rathé <prathe@gmail.com>
 QUnit.equiv = (function() {
 
+	/**
+	 * Gets the keys of an object which are both enumerable and own
+	 *
+	 * @param {Object} obj
+	 * @return {Array} Array with the enumerable and own keys of the object given
+	 */
+	function ownObjectKeys( obj ) {
+		var i,
+			keys = [];
+
+		for ( i in obj ) {
+			if ( hasOwn.call( obj, i ) ) {
+				keys.push( i );
+			}
+		}
+
+		return keys;
+	}
+
 	// Call the o related callback with the given arguments.
 	function bindCallbacks( o, callbacks, args ) {
 		var prop = QUnit.objectType( o );
@@ -14,10 +33,13 @@ QUnit.equiv = (function() {
 		}
 	}
 
-	// the real deep equiv function
-	var deepEquiv,
+	// the real equiv function
+	var innerEquiv,
 
-		// the real prop equiv function
+		// the function that performs deep equivalence checks
+		deepEquiv,
+
+		// the function that performs property equivalence checks
 		propEquiv,
 
 		// stack to decide between skip/abort functions
@@ -280,10 +302,9 @@ QUnit.equiv = (function() {
 		}( args[ 0 ], args[ 1 ] ) ) &&
 			propEquiv.apply(this, args.splice( 1, args.length - 1 ) ) );
 
-	};
+	},
+	innerEquiv = deepEquiv; // default equivalence check
+	innerEquiv.props = propEquiv;
 
-	return {
-		deep: deepEquiv,
-		props: propEquiv
-	};
+	return innerEquiv;
 }());

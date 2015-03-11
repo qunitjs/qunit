@@ -95,11 +95,11 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	deepEqual: function( actual, expected, message ) {
-		this.push( QUnit.equiv.deep( actual, expected ), actual, expected, message );
+		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	notDeepEqual: function( actual, expected, message ) {
-		this.push( !QUnit.equiv.deep( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
 	},
 
 	strictEqual: function( actual, expected, message ) {
