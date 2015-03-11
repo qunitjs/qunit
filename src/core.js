@@ -202,6 +202,9 @@ config.modules.push( config.currentModule );
 
 	// Figure out if we're running the tests from a server or not
 	QUnit.isLocal = location.protocol === "file:";
+
+	// Expose the current QUnit version
+	QUnit.version = "@VERSION";
 }());
 
 // Root QUnit object.
