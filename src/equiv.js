@@ -223,19 +223,16 @@ QUnit.equiv = (function() {
 		}
 
 		return ( (function ( a, b ) {
-			if ( a === b ) {
-				return true;
-			} else if ( a === null || b === null || typeof a === "undefined" ||
-					typeof b === "undefined" ||
-					QUnit.objectType( a ) !== QUnit.objectType( b ) ) {
-				return false;
+			if ( !QUnit.is( "object", a ) || !QUnit.is( "object", b ) ) {
+				// Warning should come here, waiting for an answer
+				return deepEquiv( a, b );
 			} else {
 				/*jshint forin:false */
 				var i, j, loop, aCircular, bCircular, currentProperty, subEquiv,
 					// Default to true
 					eq = true,
-					aProperties = Object.keys(a),
-					bProperties = Object.keys(b);
+					aProperties = ownObjectKeys( a ),
+					bProperties = ownObjectKeys( b );
 
 					// stack constructor before traversing properties
 					callers.push( a.constructor );
@@ -264,8 +261,9 @@ QUnit.equiv = (function() {
 
 						}
 
-						subEquiv = Object( a[ currentProperty ] ) !== a[currentProperty] ?
-							deepEquiv : propEquiv;
+						// we'll only use prop equivalence to compare objects
+						subEquiv = QUnit.is( "object", a[ currentProperty ] ) ?
+							propEquiv : deepEquiv;
 
 						if ( !loop && !subEquiv( a[ currentProperty ], b[ currentProperty ] ) ) {
 							eq = false;

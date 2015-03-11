@@ -74,6 +74,24 @@ var QUnit,
 			}
 		}
 		return vals;
+	},
+	/**
+	 * Gets the keys of an object which are both enumerable and own
+	 *
+	 * @param {Object} obj
+	 * @return {Array} Array with the enumerable and own keys of the object given
+	 */
+	ownObjectKeys = function( obj ) {
+		var i,
+			keys = [];
+
+		for ( i in obj ) {
+			if ( hasOwn.call( obj, i ) ) {
+				keys.push( i );
+			}
+		}
+
+		return keys;
 	};
 
 QUnit = {};

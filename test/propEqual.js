@@ -554,7 +554,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			],
 			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
 			b: "b",
-			c: fn2 // propEquals does not care about the content of the function
+			c: fn1 
 		},
 
 		diff1 = {
@@ -621,6 +621,19 @@ QUnit.test( "Complex objects", function( assert ) {
 			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
 			b: "b",
 			c: fn1
+		},
+
+		diff6 = {
+			a: [
+				"string", null, 0, "1", 1, {
+					prop: null,
+					foo: [ 1, 2, null, {}, [], [ 1, 2, 3 ] ],
+					bar: undefined
+				}, 3, "Hey!", "ÎšÎ¬Î½Îµ Ï€Î¬Î½Ï„Î± Î³Î½Ï‰ÏÎ¯Î¶Î¿Ï…Î¼Îµ Î±Ï‚ Ï„Ï‰Î½, Î¼Î·Ï‡Î±Î½Î®Ï‚ ÎµÏ€Î¹Î´Î¹ÏŒÏÎ¸Ï‰ÏƒÎ·Ï‚ ÎµÏ€Î¹Î´Î¹Î¿ÏÎ¸ÏŽÏƒÎµÎ¹Ï‚ ÏŽÏ‚ Î¼Î¹Î±. ÎšÎ»Ï€ Î±Ï‚"
+			],
+			unicode: "è€ æ±‰è¯ä¸å˜åœ¨ æ¸¯æ¾³å’Œæµ·å¤–çš„åŽäººåœˆä¸ è´µå·ž æˆ‘åŽ»äº†ä¹¦åº— çŽ°åœ¨å°šæœ‰äº‰",
+			b: "b",
+			c: fn2 // different: fn2 instead of fn1
 		};
 
 	assert.equal( QUnit.equiv.props( same1, same2 ), true );
@@ -634,6 +647,7 @@ QUnit.test( "Complex objects", function( assert ) {
 	assert.equal( QUnit.equiv.props( same1, diff3 ), false );
 	assert.equal( QUnit.equiv.props( same1, diff4 ), false );
 	assert.equal( QUnit.equiv.props( same1, diff5 ), false );
+	assert.equal( QUnit.equiv.props( same1, diff6 ), false );
 	assert.equal( QUnit.equiv.props( diff5, diff1 ), false );
 });
 
