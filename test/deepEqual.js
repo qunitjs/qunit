@@ -1,73 +1,73 @@
-QUnit.module( "equiv" );
+QUnit.module( "deepEquiv" );
 
 QUnit.test( "Primitive types and constants", function( assert ) {
-	assert.equal( QUnit.equiv( null, null ), true, "null" );
-	assert.equal( QUnit.equiv( null, {} ), false, "null" );
-	assert.equal( QUnit.equiv( null, undefined ), false, "null" );
-	assert.equal( QUnit.equiv( null, 0 ), false, "null" );
-	assert.equal( QUnit.equiv( null, false ), false, "null" );
-	assert.equal( QUnit.equiv( null, "" ), false, "null" );
-	assert.equal( QUnit.equiv( null, [] ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, null ), true, "null" );
+	assert.equal( QUnit.equiv.deep( null, {} ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, undefined ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, 0 ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, false ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, "" ), false, "null" );
+	assert.equal( QUnit.equiv.deep( null, [] ), false, "null" );
 
-	assert.equal( QUnit.equiv( undefined, undefined ), true, "undefined" );
-	assert.equal( QUnit.equiv( undefined, null ), false, "undefined" );
-	assert.equal( QUnit.equiv( undefined, 0 ), false, "undefined" );
-	assert.equal( QUnit.equiv( undefined, false ), false, "undefined" );
-	assert.equal( QUnit.equiv( undefined, {} ), false, "undefined" );
-	assert.equal( QUnit.equiv( undefined, [] ), false, "undefined" );
-	assert.equal( QUnit.equiv( undefined, "" ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, undefined ), true, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, null ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, 0 ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, false ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, {} ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, [] ), false, "undefined" );
+	assert.equal( QUnit.equiv.deep( undefined, "" ), false, "undefined" );
 
 	// Nan usually doest not equal to Nan using the '==' operator.
 	// Only isNaN() is able to do it.
-	assert.equal( QUnit.equiv( 0 / 0, 0 / 0 ), true, "NaN" ); // NaN VS NaN
-	assert.equal( QUnit.equiv( 1 / 0, 2 / 0 ), true, "Infinity" ); // Infinity VS Infinity
-	assert.equal( QUnit.equiv( -1 / 0, 2 / 0 ), false, "-Infinity, Infinity" ); // -Infinity VS Infinity
-	assert.equal( QUnit.equiv( -1 / 0, -2 / 0 ), true, "-Infinity, -Infinity" ); // -Infinity VS -Infinity
-	assert.equal( QUnit.equiv( 0 / 0, 1 / 0 ), false, "NaN, Infinity" ); // Nan VS Infinity
-	assert.equal( QUnit.equiv( 1 / 0, 0 / 0 ), false, "NaN, Infinity" ); // Nan VS Infinity
-	assert.equal( QUnit.equiv( 0 / 0, null ), false, "NaN" );
-	assert.equal( QUnit.equiv( 0 / 0, undefined ), false, "NaN" );
-	assert.equal( QUnit.equiv( 0 / 0, 0 ), false, "NaN" );
-	assert.equal( QUnit.equiv( 0 / 0, false ), false, "NaN" );
-	assert.equal( QUnit.equiv( 0 / 0, function() {} ), false, "NaN" );
-	assert.equal( QUnit.equiv( 1 / 0, null ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, undefined ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, 0 ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, 1 ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, false ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, true ), false, "NaN, Infinity" );
-	assert.equal( QUnit.equiv( 1 / 0, function() {} ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 0 / 0, 0 / 0 ), true, "NaN" ); // NaN VS NaN
+	assert.equal( QUnit.equiv.deep( 1 / 0, 2 / 0 ), true, "Infinity" ); // Infinity VS Infinity
+	assert.equal( QUnit.equiv.deep( -1 / 0, 2 / 0 ), false, "-Infinity, Infinity" ); // -Infinity VS Infinity
+	assert.equal( QUnit.equiv.deep( -1 / 0, -2 / 0 ), true, "-Infinity, -Infinity" ); // -Infinity VS -Infinity
+	assert.equal( QUnit.equiv.deep( 0 / 0, 1 / 0 ), false, "NaN, Infinity" ); // Nan VS Infinity
+	assert.equal( QUnit.equiv.deep( 1 / 0, 0 / 0 ), false, "NaN, Infinity" ); // Nan VS Infinity
+	assert.equal( QUnit.equiv.deep( 0 / 0, null ), false, "NaN" );
+	assert.equal( QUnit.equiv.deep( 0 / 0, undefined ), false, "NaN" );
+	assert.equal( QUnit.equiv.deep( 0 / 0, 0 ), false, "NaN" );
+	assert.equal( QUnit.equiv.deep( 0 / 0, false ), false, "NaN" );
+	assert.equal( QUnit.equiv.deep( 0 / 0, function() {} ), false, "NaN" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, null ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, undefined ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, 0 ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, 1 ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, false ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, true ), false, "NaN, Infinity" );
+	assert.equal( QUnit.equiv.deep( 1 / 0, function() {} ), false, "NaN, Infinity" );
 
-	assert.equal( QUnit.equiv( 0, 0 ), true, "number" );
-	assert.equal( QUnit.equiv( 0, 1 ), false, "number" );
-	assert.equal( QUnit.equiv( 1, 0 ), false, "number" );
-	assert.equal( QUnit.equiv( 1, 1 ), true, "number" );
-	assert.equal( QUnit.equiv( 1.1, 1.1 ), true, "number" );
-	assert.equal( QUnit.equiv( 0.0000005, 0.0000005 ), true, "number" );
-	assert.equal( QUnit.equiv( 0, "" ), false, "number" );
-	assert.equal( QUnit.equiv( 0, "0" ), false, "number" );
-	assert.equal( QUnit.equiv( 1, "1" ), false, "number" );
-	assert.equal( QUnit.equiv( 0, false ), false, "number" );
-	assert.equal( QUnit.equiv( 1, true ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 0, 0 ), true, "number" );
+	assert.equal( QUnit.equiv.deep( 0, 1 ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 1, 0 ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 1, 1 ), true, "number" );
+	assert.equal( QUnit.equiv.deep( 1.1, 1.1 ), true, "number" );
+	assert.equal( QUnit.equiv.deep( 0.0000005, 0.0000005 ), true, "number" );
+	assert.equal( QUnit.equiv.deep( 0, "" ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 0, "0" ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 1, "1" ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 0, false ), false, "number" );
+	assert.equal( QUnit.equiv.deep( 1, true ), false, "number" );
 
-	assert.equal( QUnit.equiv( true, true ), true, "boolean" );
-	assert.equal( QUnit.equiv( true, false ), false, "boolean" );
-	assert.equal( QUnit.equiv( false, true ), false, "boolean" );
-	assert.equal( QUnit.equiv( false, 0 ), false, "boolean" );
-	assert.equal( QUnit.equiv( false, null ), false, "boolean" );
-	assert.equal( QUnit.equiv( false, undefined ), false, "boolean" );
-	assert.equal( QUnit.equiv( true, 1 ), false, "boolean" );
-	assert.equal( QUnit.equiv( true, null ), false, "boolean" );
-	assert.equal( QUnit.equiv( true, undefined ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( true, true ), true, "boolean" );
+	assert.equal( QUnit.equiv.deep( true, false ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( false, true ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( false, 0 ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( false, null ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( false, undefined ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( true, 1 ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( true, null ), false, "boolean" );
+	assert.equal( QUnit.equiv.deep( true, undefined ), false, "boolean" );
 
-	assert.equal( QUnit.equiv( "", "" ), true, "string" );
-	assert.equal( QUnit.equiv( "a", "a" ), true, "string" );
-	assert.equal( QUnit.equiv( "foobar", "foobar" ), true, "string" );
-	assert.equal( QUnit.equiv( "foobar", "foo" ), false, "string" );
-	assert.equal( QUnit.equiv( "", 0 ), false, "string" );
-	assert.equal( QUnit.equiv( "", false ), false, "string" );
-	assert.equal( QUnit.equiv( "", null ), false, "string" );
-	assert.equal( QUnit.equiv( "", undefined ), false, "string" );
+	assert.equal( QUnit.equiv.deep( "", "" ), true, "string" );
+	assert.equal( QUnit.equiv.deep( "a", "a" ), true, "string" );
+	assert.equal( QUnit.equiv.deep( "foobar", "foobar" ), true, "string" );
+	assert.equal( QUnit.equiv.deep( "foobar", "foo" ), false, "string" );
+	assert.equal( QUnit.equiv.deep( "", 0 ), false, "string" );
+	assert.equal( QUnit.equiv.deep( "", false ), false, "string" );
+	assert.equal( QUnit.equiv.deep( "", null ), false, "string" );
+	assert.equal( QUnit.equiv.deep( "", undefined ), false, "string" );
 
 	// Rename for lint validation.
 	// We know this is bad, we are asserting whether we can coop with bad code like this.
@@ -78,64 +78,64 @@ QUnit.test( "Primitive types and constants", function( assert ) {
 
 	// primitives vs. objects
 
-	assert.equal( QUnit.equiv( 0, new SafeNumber() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber(), 0 ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( 1, new SafeNumber( 1 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber( 1 ), 1 ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber( 0 ), 1 ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( 0, new SafeNumber( 1 ) ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( 0, new SafeNumber() ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeNumber(), 0 ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( 1, new SafeNumber( 1 ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeNumber( 1 ), 1 ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeNumber( 0 ), 1 ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( 0, new SafeNumber( 1 ) ), false, "primitives vs. objects" );
 
-	assert.equal( QUnit.equiv( new SafeString(), "" ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "", new SafeString() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString( "My String" ), "My String" ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "My String", new SafeString( "My String" ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "Bad String", new SafeString( "My String" ) ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString( "Bad String" ), "My String" ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeString(), "" ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( "", new SafeString() ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeString( "My String" ), "My String" ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( "My String", new SafeString( "My String" ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( "Bad String", new SafeString( "My String" ) ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeString( "Bad String" ), "My String" ), false, "primitives vs. objects" );
 
-	assert.equal( QUnit.equiv( false, new SafeBoolean() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean(), false ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( true ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( true ), true ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( 1 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( false, new SafeBoolean( false ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( false ), false ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( false, new SafeBoolean( 0 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( false ) ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( false ), true ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( false, new SafeBoolean() ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeBoolean(), false ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( true, new SafeBoolean( true ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeBoolean( true ), true ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( true, new SafeBoolean( 1 ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( false, new SafeBoolean( false ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeBoolean( false ), false ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( false, new SafeBoolean( 0 ) ), true, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( true, new SafeBoolean( false ) ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv.deep( new SafeBoolean( false ), true ), false, "primitives vs. objects" );
 
-	assert.equal( QUnit.equiv( new SafeObject(), {} ), true, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( {}, new SafeObject() ), true, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( new SafeObject(), { a: 1 } ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( { a: 1 }, new SafeObject() ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( { a: undefined }, new SafeObject() ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( new SafeObject(), {} ), true, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( {}, new SafeObject() ), true, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( new SafeObject(), { a: 1 } ), false, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( { a: 1 }, new SafeObject() ), false, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( { a: undefined }, new SafeObject() ), false, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv.deep( new SafeObject(), { a: undefined } ), false, "object literal vs. instantiation" );
 });
 
 QUnit.test( "Objects basics", function( assert ) {
-	assert.equal( QUnit.equiv( {}, {} ), true );
-	assert.equal( QUnit.equiv( {}, null ), false );
-	assert.equal( QUnit.equiv( {}, undefined ), false );
-	assert.equal( QUnit.equiv( {}, 0 ), false );
-	assert.equal( QUnit.equiv( {}, false ), false );
+	assert.equal( QUnit.equiv.deep( {}, {} ), true );
+	assert.equal( QUnit.equiv.deep( {}, null ), false );
+	assert.equal( QUnit.equiv.deep( {}, undefined ), false );
+	assert.equal( QUnit.equiv.deep( {}, 0 ), false );
+	assert.equal( QUnit.equiv.deep( {}, false ), false );
 
 	// This test is a hard one, it is very important
 	// REASONS:
 	//      1) They are of the same type "object"
 	//      2) [] instanceof Object is true
 	//      3) Their properties are the same (doesn't exists)
-	assert.equal( QUnit.equiv( {}, [] ), false );
+	assert.equal( QUnit.equiv.deep( {}, [] ), false );
 
-	assert.equal( QUnit.equiv( { a: 1 }, { a: 1 } ), true );
-	assert.equal( QUnit.equiv( { a: 1 }, { a: "1" } ), false );
-	assert.equal( QUnit.equiv( { a: [] }, { a: [] } ), true );
-	assert.equal( QUnit.equiv( { a: {} }, { a: null } ), false );
-	assert.equal( QUnit.equiv( { a: 1 }, {} ), false );
-	assert.equal( QUnit.equiv( {}, { a: 1 } ), false );
+	assert.equal( QUnit.equiv.deep( { a: 1 }, { a: 1 } ), true );
+	assert.equal( QUnit.equiv.deep( { a: 1 }, { a: "1" } ), false );
+	assert.equal( QUnit.equiv.deep( { a: [] }, { a: [] } ), true );
+	assert.equal( QUnit.equiv.deep( { a: {} }, { a: null } ), false );
+	assert.equal( QUnit.equiv.deep( { a: 1 }, {} ), false );
+	assert.equal( QUnit.equiv.deep( {}, { a: 1 } ), false );
 
 	// Hard ones
-	assert.equal( QUnit.equiv( { a: undefined }, {} ), false );
-	assert.equal( QUnit.equiv( {}, { a: undefined } ), false );
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep( { a: undefined }, {} ), false );
+	assert.equal( QUnit.equiv.deep( {}, { a: undefined } ), false );
+	assert.equal( QUnit.equiv.deep(
 		{
 			a: [ { bar: undefined } ]
 		},
@@ -147,55 +147,55 @@ QUnit.test( "Objects basics", function( assert ) {
 	// Objects with no prototype, created via Object.create(null), are used e.g. as dictionaries.
 	// Being able to test equivalence against object literals is quite useful.
 	if ( typeof Object.create === "function" ) {
-		assert.equal( QUnit.equiv( Object.create( null ), {} ), true, "empty object without prototype VS empty object" );
+		assert.equal( QUnit.equiv.deep( Object.create( null ), {} ), true, "empty object without prototype VS empty object" );
 
 		var nonEmptyWithNoProto = Object.create( null );
 		nonEmptyWithNoProto.foo = "bar";
 
-		assert.equal( QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ), true, "object without prototype VS object" );
+		assert.equal( QUnit.equiv.deep( nonEmptyWithNoProto, { foo: "bar" } ), true, "object without prototype VS object" );
 	}
 });
 
 QUnit.test( "Arrays basics", function( assert ) {
 
-	assert.equal( QUnit.equiv( [], [] ), true );
+	assert.equal( QUnit.equiv.deep( [], [] ), true );
 
 	// May be a hard one, can invoke a crash at execution.
 	// because their types are both "object" but null isn't
 	// like a true object, it doesn't have any property at all.
-	assert.equal( QUnit.equiv( [], null ), false );
+	assert.equal( QUnit.equiv.deep( [], null ), false );
 
-	assert.equal( QUnit.equiv( [], undefined ), false );
-	assert.equal( QUnit.equiv( [], false ), false );
-	assert.equal( QUnit.equiv( [], 0 ), false );
-	assert.equal( QUnit.equiv( [], "" ), false );
+	assert.equal( QUnit.equiv.deep( [], undefined ), false );
+	assert.equal( QUnit.equiv.deep( [], false ), false );
+	assert.equal( QUnit.equiv.deep( [], 0 ), false );
+	assert.equal( QUnit.equiv.deep( [], "" ), false );
 
 	// May be a hard one, but less hard
 	// than {} with [] (note the order)
-	assert.equal( QUnit.equiv( [], {} ), false );
+	assert.equal( QUnit.equiv.deep( [], {} ), false );
 
-	assert.equal( QUnit.equiv( [ null ], [] ), false );
-	assert.equal( QUnit.equiv( [ undefined ], [] ), false );
-	assert.equal( QUnit.equiv( [], [ null ] ), false );
-	assert.equal( QUnit.equiv( [], [ undefined ] ), false );
-	assert.equal( QUnit.equiv( [ null ], [ undefined ]), false );
-	assert.equal( QUnit.equiv( [ [] ], [ [] ] ), true );
-	assert.equal( QUnit.equiv( [ [], [], [] ], [ [], [], [] ] ), true );
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep( [ null ], [] ), false );
+	assert.equal( QUnit.equiv.deep( [ undefined ], [] ), false );
+	assert.equal( QUnit.equiv.deep( [], [ null ] ), false );
+	assert.equal( QUnit.equiv.deep( [], [ undefined ] ), false );
+	assert.equal( QUnit.equiv.deep( [ null ], [ undefined ]), false );
+	assert.equal( QUnit.equiv.deep( [ [] ], [ [] ] ), true );
+	assert.equal( QUnit.equiv.deep( [ [], [], [] ], [ [], [], [] ] ), true );
+	assert.equal( QUnit.equiv.deep(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]),
 					true );
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // shorter
 					false );
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ {} ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // deepest element not an array
 					false );
 
 	// same multidimensional
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
@@ -241,7 +241,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 							true, "Multidimensional" );
 
 	// different multidimensional
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
@@ -287,7 +287,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 							false, "Multidimensional" );
 
 	// different multidimensional
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 							[ 1,2,3,4,5,6,7,8,9, [
 								1,2,3,4,5,6,7,8,9, [
 									1,2,3,4,5,[
@@ -345,19 +345,19 @@ QUnit.test( "Functions", function( assert ) {
 			return 0 // this comment and no semicoma as difference
 		};
 
-	assert.equal( QUnit.equiv( function() {}, function() {} ), false, "Anonymous functions" ); // exact source code
-	assert.equal( QUnit.equiv(function() {}, function() {
+	assert.equal( QUnit.equiv.deep( function() {}, function() {} ), false, "Anonymous functions" ); // exact source code
+	assert.equal( QUnit.equiv.deep(function() {}, function() {
 		return true;
 	}), false, "Anonymous functions" );
 
-	assert.equal( QUnit.equiv( f0, f0 ), true, "Function references" ); // same references
-	assert.equal( QUnit.equiv( f0, f1 ), false, "Function references" ); // exact source code, different references
-	assert.equal( QUnit.equiv( f2, f3 ), false, "Function references" ); // equivalent source code, different references
-	assert.equal( QUnit.equiv( f1, f2 ), false, "Function references" ); // different source code, different references
-	assert.equal( QUnit.equiv( function() {}, true ), false );
-	assert.equal( QUnit.equiv( function() {}, undefined ), false );
-	assert.equal( QUnit.equiv( function() {}, null ), false );
-	assert.equal( QUnit.equiv( function() {}, {} ), false );
+	assert.equal( QUnit.equiv.deep( f0, f0 ), true, "Function references" ); // same references
+	assert.equal( QUnit.equiv.deep( f0, f1 ), false, "Function references" ); // exact source code, different references
+	assert.equal( QUnit.equiv.deep( f2, f3 ), false, "Function references" ); // equivalent source code, different references
+	assert.equal( QUnit.equiv.deep( f1, f2 ), false, "Function references" ); // different source code, different references
+	assert.equal( QUnit.equiv.deep( function() {}, true ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, undefined ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, null ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, {} ), false );
 });
 
 QUnit.test( "Date instances", function( assert ) {
@@ -376,13 +376,13 @@ QUnit.test( "Date instances", function( assert ) {
 	d3 = new Date(); // The very now
 
 	// Anyway their types differs, just in case the code fails in the order in which it deals with date
-	assert.equal( QUnit.equiv( d1, 0 ), false ); // d1.valueOf() returns 0, but d1 and 0 are different
+	assert.equal( QUnit.equiv.deep( d1, 0 ), false ); // d1.valueOf() returns 0, but d1 and 0 are different
 
 	// test same values date and different instances equality
-	assert.equal( QUnit.equiv( d1, d2 ), true );
+	assert.equal( QUnit.equiv.deep( d1, d2 ), true );
 
 	// test different date and different instances difference
-	assert.equal( QUnit.equiv( d1, d3 ), false );
+	assert.equal( QUnit.equiv.deep( d1, d3 ), false );
 });
 
 QUnit.test( "RegExp", function( assert ) {
@@ -408,40 +408,40 @@ QUnit.test( "RegExp", function( assert ) {
 		rg1 = /foo/g,
 		rg2 = /foo/g;
 
-	assert.equal( QUnit.equiv( r2, r3 ), true, "Modifier order" );
-	assert.equal( QUnit.equiv( r2, r4 ), true, "Modifier order" );
-	assert.equal( QUnit.equiv( r2, r5 ), true, "Modifier order" );
-	assert.equal( QUnit.equiv( r2, r6 ), true, "Modifier order" );
-	assert.equal( QUnit.equiv( r2, r7 ), true, "Modifier order" );
-	assert.equal( QUnit.equiv( r1, r2 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( r2, r3 ), true, "Modifier order" );
+	assert.equal( QUnit.equiv.deep( r2, r4 ), true, "Modifier order" );
+	assert.equal( QUnit.equiv.deep( r2, r5 ), true, "Modifier order" );
+	assert.equal( QUnit.equiv.deep( r2, r6 ), true, "Modifier order" );
+	assert.equal( QUnit.equiv.deep( r2, r7 ), true, "Modifier order" );
+	assert.equal( QUnit.equiv.deep( r1, r2 ), false, "Modifier" );
 
-	assert.equal( QUnit.equiv( ri1, ri2 ), true, "Modifier" );
-	assert.equal( QUnit.equiv( r1, ri1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( ri1, rm1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( r1, rm1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( rm1, ri1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( rm1, rm2 ), true, "Modifier" );
-	assert.equal( QUnit.equiv( rg1, rm1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( rm1, rg1 ), false, "Modifier" );
-	assert.equal( QUnit.equiv( rg1, rg2 ), true, "Modifier" );
+	assert.equal( QUnit.equiv.deep( ri1, ri2 ), true, "Modifier" );
+	assert.equal( QUnit.equiv.deep( r1, ri1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( ri1, rm1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( r1, rm1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( rm1, ri1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( rm1, rm2 ), true, "Modifier" );
+	assert.equal( QUnit.equiv.deep( rg1, rm1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( rm1, rg1 ), false, "Modifier" );
+	assert.equal( QUnit.equiv.deep( rg1, rg2 ), true, "Modifier" );
 
 	// Different regex, same modifiers
 	r1 = /[a-z]/gi;
 	r2 = /[0-9]/gi; // oops! different
-	assert.equal( QUnit.equiv( r1, r2 ), false, "Regex pattern" );
+	assert.equal( QUnit.equiv.deep( r1, r2 ), false, "Regex pattern" );
 
 	r1 = /0/ig;
 	r2 = /"0"/ig; // oops! different
-	assert.equal( QUnit.equiv( r1, r2 ), false, "Regex pattern" );
+	assert.equal( QUnit.equiv.deep( r1, r2 ), false, "Regex pattern" );
 
 	r1 = /[\n\r\u2028\u2029]/g;
 	r2 = /[\n\r\u2028\u2029]/g;
 	r3 = /[\n\r\u2028\u2028]/g; // differs from r1
 	r4 = /[\n\r\u2028\u2029]/; // differs from r1
 
-	assert.equal( QUnit.equiv( r1, r2 ), true, "Regex pattern" );
-	assert.equal( QUnit.equiv( r1, r3 ), false, "Regex pattern" );
-	assert.equal( QUnit.equiv( r1, r4 ), false, "Regex pattern" );
+	assert.equal( QUnit.equiv.deep( r1, r2 ), true, "Regex pattern" );
+	assert.equal( QUnit.equiv.deep( r1, r3 ), false, "Regex pattern" );
+	assert.equal( QUnit.equiv.deep( r1, r4 ), false, "Regex pattern" );
 
 	// More complex regex
 	regex1 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
@@ -455,15 +455,15 @@ QUnit.test( "RegExp", function( assert ) {
 	r3a = new RegExp( regex3, "gi" ); // diff from r23, not same modifier
 	r3b = new RegExp( regex3, "ig" ); // same as r23a
 
-	assert.equal( QUnit.equiv( r1, r2 ), true, "Complex Regex" );
-	assert.equal( QUnit.equiv( r1, r3 ), false, "Complex Regex" );
-	assert.equal( QUnit.equiv( r3, r3a ), false, "Complex Regex" );
-	assert.equal( QUnit.equiv( r3a, r3b ), true, "Complex Regex" );
+	assert.equal( QUnit.equiv.deep( r1, r2 ), true, "Complex Regex" );
+	assert.equal( QUnit.equiv.deep( r1, r3 ), false, "Complex Regex" );
+	assert.equal( QUnit.equiv.deep( r3, r3a ), false, "Complex Regex" );
+	assert.equal( QUnit.equiv.deep( r3a, r3b ), true, "Complex Regex" );
 
 	// typeof r1 is "function" in some browsers and "object" in others so we must cover this test
 	r1 = / /;
-	assert.equal( QUnit.equiv( r1, function() {} ), false, "Regex internal" );
-	assert.equal( QUnit.equiv( r1, {} ), false, "Regex internal" );
+	assert.equal( QUnit.equiv.deep( r1, function() {} ), false, "Regex internal" );
+	assert.equal( QUnit.equiv.deep( r1, {} ), false, "Regex internal" );
 });
 
 QUnit.test( "Complex objects", function( assert ) {
@@ -477,7 +477,7 @@ QUnit.test( "Complex objects", function( assert ) {
 
 	// Try to invert the order of some properties to make sure it is covered.
 	// It can failed when properties are compared between unsorted arrays.
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 		{
 			a: 1,
 			b: null,
@@ -572,7 +572,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		}
 	), true);
 
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 		{
 			a: 1,
 			b: null,
@@ -667,7 +667,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		}
 	), false);
 
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 		{
 			a: 1,
 			b: null,
@@ -762,7 +762,7 @@ QUnit.test( "Complex objects", function( assert ) {
 		}
 	), false);
 
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 		{
 			a: 1,
 			b: null,
@@ -962,26 +962,26 @@ QUnit.test( "Complex objects", function( assert ) {
 			c: fn2 // different: fn2 instead of fn1
 		};
 
-	assert.equal( QUnit.equiv( same1, same2 ), true );
-	assert.equal( QUnit.equiv( same2, same1 ), true );
-	assert.equal( QUnit.equiv( same2, diff1 ), false );
-	assert.equal( QUnit.equiv( diff1, same2 ), false );
+	assert.equal( QUnit.equiv.deep( same1, same2 ), true );
+	assert.equal( QUnit.equiv.deep( same2, same1 ), true );
+	assert.equal( QUnit.equiv.deep( same2, diff1 ), false );
+	assert.equal( QUnit.equiv.deep( diff1, same2 ), false );
 
-	assert.equal( QUnit.equiv( same1, diff1 ), false );
-	assert.equal( QUnit.equiv( same1, diff2 ), false );
-	assert.equal( QUnit.equiv( same1, diff3 ), false );
-	assert.equal( QUnit.equiv( same1, diff3 ), false );
-	assert.equal( QUnit.equiv( same1, diff4 ), false );
-	assert.equal( QUnit.equiv( same1, diff5 ), false );
-	assert.equal( QUnit.equiv( same1, diff6 ), false );
-	assert.equal( QUnit.equiv( diff5, diff1 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff1 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff2 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff3 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff3 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff4 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff5 ), false );
+	assert.equal( QUnit.equiv.deep( same1, diff6 ), false );
+	assert.equal( QUnit.equiv.deep( diff5, diff1 ), false );
 });
 
 QUnit.test( "Complex Arrays", function( assert ) {
 
 	function fn() {}
 
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 				[ 1, 2, 3, true, {}, null, [
 					{
 						a: [ "", "1", 0 ]
@@ -996,7 +996,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 				], "foo" ] ),
 			true );
 
-	assert.equal( QUnit.equiv(
+	assert.equal( QUnit.equiv.deep(
 				[ 1, 2, 3, true, {}, null, [
 					{
 						a: [ "", "1", 0 ]
@@ -1035,7 +1035,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 		}
 	}, {} ] ] ];
 
-	assert.equal( QUnit.equiv( a,
+	assert.equal( QUnit.equiv.deep( a,
 			[ {
 				b: fn,
 				c: false,
@@ -1060,7 +1060,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 				}
 			}, {}]]]), true);
 
-	assert.equal( QUnit.equiv( a,
+	assert.equal( QUnit.equiv.deep( a,
 			[ {
 				b: fn,
 				c: false,
@@ -1085,7 +1085,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv( a,
+	assert.equal( QUnit.equiv.deep( a,
 			[ {
 				b: fn,
 				c: false,
@@ -1110,7 +1110,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv( a,
+	assert.equal( QUnit.equiv.deep( a,
 			[ {
 				b: fn,
 				c: false,
@@ -1135,7 +1135,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 				}
 			}, {}]]]), false);
 
-	assert.equal( QUnit.equiv( a,
+	assert.equal( QUnit.equiv.deep( a,
 			[ {
 				b: fn,
 				c: false,
@@ -1176,26 +1176,26 @@ QUnit.test( "Prototypal inheritance", function( assert ) {
 
 	// Try this test many times after test on instances that hold function
 	// to make sure that our code does not mess with last object constructor memoization.
-	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, function() {} ), false );
 
 	// Hoozit inherit from Gizmo
 	// hoozit instanceof Hoozit; // true
 	// hoozit instanceof Gizmo; // true
-	assert.equal( QUnit.equiv( hoozit, gizmo ), true );
+	assert.equal( QUnit.equiv.deep( hoozit, gizmo ), true );
 
 	Gizmo.prototype.bar = true; // not a function just in case we skip them
 
 	// Hoozit inherit from Gizmo
 	// They are equivalent
-	assert.equal( QUnit.equiv( hoozit, gizmo ), true );
+	assert.equal( QUnit.equiv.deep( hoozit, gizmo ), true );
 
 	// Make sure this is still true !important
 	// The reason for this is that I forgot to reset the last
 	// caller to where it were called from.
-	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, function() {} ), false );
 
 	// Make sure this is still true !important
-	assert.equal( QUnit.equiv( hoozit, gizmo ), true );
+	assert.equal( QUnit.equiv.deep( hoozit, gizmo ), true );
 
 	Hoozit.prototype.foo = true; // not a function just in case we skip them
 
@@ -1203,10 +1203,10 @@ QUnit.test( "Prototypal inheritance", function( assert ) {
 	// gizmo instanceof Gizmo; // true
 	// gizmo instanceof Hoozit; // false
 	// They are not equivalent
-	assert.equal( QUnit.equiv( hoozit, gizmo ), false );
+	assert.equal( QUnit.equiv.deep( hoozit, gizmo ), false );
 
 	// Make sure this is still true !important
-	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
+	assert.equal( QUnit.equiv.deep( function() {}, function() {} ), false );
 });
 
 QUnit.test( "Instances", function( assert ) {
@@ -1222,14 +1222,14 @@ QUnit.test( "Instances", function( assert ) {
 	b1 = new B();
 	b2 = new B();
 
-	assert.equal( QUnit.equiv( a1, a2 ), true, "Same property, same constructor" );
+	assert.equal( QUnit.equiv.deep( a1, a2 ), true, "Same property, same constructor" );
 
 	// b1.fn and b2.fn are functions but they are different references
 	// But we decided to skip function for instances.
-	assert.equal( QUnit.equiv( b1, b2 ), true, "Same property, same constructor" );
+	assert.equal( QUnit.equiv.deep( b1, b2 ), true, "Same property, same constructor" );
 
 	// failed
-	assert.equal( QUnit.equiv( a1, b1 ), false, "Same properties but different constructor" );
+	assert.equal( QUnit.equiv.deep( a1, b1 ), false, "Same properties but different constructor" );
 
 	function Car( year ) {
 		var privateVar = 0;
@@ -1260,10 +1260,10 @@ QUnit.test( "Instances", function( assert ) {
 	 *   - isOld: function () {}
 	 */
 
-	assert.equal( QUnit.equiv( car, car ), true );
-	assert.equal( QUnit.equiv( car, carDiff ), false );
-	assert.equal( QUnit.equiv( car, carSame ), true );
-	assert.equal( QUnit.equiv( car, human ), false );
+	assert.equal( QUnit.equiv.deep( car, car ), true );
+	assert.equal( QUnit.equiv.deep( car, carDiff ), false );
+	assert.equal( QUnit.equiv.deep( car, carSame ), true );
+	assert.equal( QUnit.equiv.deep( car, human ), false );
 });
 
 QUnit.test(
@@ -1368,25 +1368,25 @@ QUnit.test(
 
 		a1 = new A(function() {});
 		a2 = new A(function() {});
-		assert.equal( QUnit.equiv( a1, a2 ), true );
+		assert.equal( QUnit.equiv.deep( a1, a2 ), true );
 
-		assert.equal( QUnit.equiv( a1, a2 ), true ); // different instances
+		assert.equal( QUnit.equiv.deep( a1, a2 ), true ); // different instances
 
 		b1 = new B(function() {});
 		b2 = new B(function() {});
-		assert.equal( QUnit.equiv( b1, b2 ), true );
+		assert.equal( QUnit.equiv.deep( b1, b2 ), true );
 
 		c1 = new C(function() {});
 		c2 = new C(function() {});
-		assert.equal( QUnit.equiv( c1, c2 ), true );
+		assert.equal( QUnit.equiv.deep( c1, c2 ), true );
 
 		d1 = new D(function() {});
 		d2 = new D(function() {});
-		assert.equal( QUnit.equiv( d1, d2 ), false );
+		assert.equal( QUnit.equiv.deep( d1, d2 ), false );
 
 		e1 = new E(function() {});
 		e2 = new E(function() {});
-		assert.equal( QUnit.equiv( e1, e2 ), false );
+		assert.equal( QUnit.equiv.deep( e1, e2 ), false );
 	}
 );
 
@@ -1399,19 +1399,19 @@ QUnit.test( "Object with circular references", function( assert ) {
 		};
 	circularA.abc = circularA;
 	circularB.abc = circularB;
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on object (ambiguous test)"
 	);
 
 	circularA.def = 1;
 	circularB.def = 1;
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on object (ambiguous test)"
 	);
 
 	circularA.def = 1;
 	circularB.def = 0;
-	assert.equal( QUnit.equiv( circularA, circularB ), false,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), false,
 		"Should not repeat test on object (unambiguous test)"
 	);
 });
@@ -1421,19 +1421,19 @@ QUnit.test( "Array with circular references", function( assert ) {
 		circularB = [];
 	circularA.push( circularA );
 	circularB.push( circularB );
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on array (ambiguous test)"
 	);
 
 	circularA.push( "abc" );
 	circularB.push( "abc" );
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on array (ambiguous test)"
 	);
 
 	circularA.push( "hello" );
 	circularB.push( "goodbye" );
-	assert.equal( QUnit.equiv( circularA, circularB ), false,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), false,
 		"Should not repeat test on array (unambiguous test)"
 	);
 });
@@ -1450,19 +1450,19 @@ QUnit.test( "Mixed object/array with references to self wont loop", function( as
 
 	circularA.push( circularA );
 	circularB.push( circularB );
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on object/array (ambiguous test)"
 	);
 
 	circularA[ 0 ].def = 1;
 	circularB[ 0 ].def = 1;
-	assert.equal( QUnit.equiv( circularA, circularB ), true,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), true,
 		"Should not repeat test on object/array (ambiguous test)"
 	);
 
 	circularA[ 0 ].def = 1;
 	circularB[ 0 ].def = 0;
-	assert.equal( QUnit.equiv( circularA, circularB ), false,
+	assert.equal( QUnit.equiv.deep( circularA, circularB ), false,
 		"Should not repeat test on object/array (unambiguous test)"
 	);
 });
@@ -1479,28 +1479,28 @@ QUnit.test( "Compare self-referent to tree", function( assert ) {
 	circularA[ 1 ] = circularA;
 	circularO.o = circularO;
 
-	assert.equal( QUnit.equiv( circularA, treeA ), false,
+	assert.equal( QUnit.equiv.deep( circularA, treeA ), false,
 		"Array: Should not consider circular equal to tree"
 	);
-	assert.equal( QUnit.equiv( circularO, treeO ), false,
+	assert.equal( QUnit.equiv.deep( circularO, treeO ), false,
 		"Object: Should not consider circular equal to tree"
 	);
 
 	temp = [ 0, circularA ];
-	assert.equal( QUnit.equiv( circularA, temp ), true,
+	assert.equal( QUnit.equiv.deep( circularA, temp ), true,
 		"Array: Reference is circular for one, but equal on other"
 	);
-	assert.equal( QUnit.equiv( temp, circularA ), true,
+	assert.equal( QUnit.equiv.deep( temp, circularA ), true,
 		"Array: Reference is circular for one, but equal on other"
 	);
 
 	temp = {
 		o: circularO
 	};
-	assert.equal( QUnit.equiv( circularO, temp ), true,
+	assert.equal( QUnit.equiv.deep( circularO, temp ), true,
 		"Object: Reference is circular for one, but equal on other"
 	);
-	assert.equal( QUnit.equiv( temp, circularO ), true,
+	assert.equal( QUnit.equiv.deep( temp, circularO ), true,
 		"Object: Reference is circular for one, but equal on other"
 	);
 });
@@ -1515,7 +1515,7 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 		Function.prototype.ignoreCase = false;
 		Function.prototype.source = "my regex";
 		var re = /my regex/gm;
-		assert.equal( QUnit.equiv( re, function() {}), false,
+		assert.equal( QUnit.equiv.deep( re, function() {}), false,
 			"A function that looks that a regex isn't a regex"
 		);
 
@@ -1523,7 +1523,7 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 		// and ALSO especially that we can make differences
 		// between RegExp and Function constructor because
 		// typeof on a RegExpt instance is "function"
-		assert.equal( QUnit.equiv(function() {}, re ), false,
+		assert.equal( QUnit.equiv.deep(function() {}, re ), false,
 			"Same conversely, but ensures that function and regexp are distinct because their constructor are different"
 		);
 	}
