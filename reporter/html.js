@@ -459,7 +459,7 @@ function appendUserAgent() {
 		userAgent.innerHTML = "";
 		userAgent.appendChild(
 			document.createTextNode(
-				"QUnit " + QUnit.version  + " @ " + navigator.userAgent
+				"QUnit " + QUnit.version  + " ; " + navigator.userAgent
 			)
 		);
 	}
