@@ -118,7 +118,14 @@ function addEvent( elem, type, fn ) {
 	} else if ( elem.attachEvent ) {
 
 		// support: IE <9
-		elem.attachEvent( "on" + type, fn );
+		elem.attachEvent( "on" + type, function() {
+			var event = window.event;
+			if ( !event.target ) {
+				event.target = event.srcElement || document;
+			}
+
+			fn.call( elem, event );
+		});
 	}
 }
 
