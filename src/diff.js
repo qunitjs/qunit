@@ -1,7 +1,11 @@
 /*istanbul ignore next */
 // jscs:disable maximumLineLength
 /*
- * This file is a modified version of google-diff-match-patch's JavaScript implementation (https://code.google.com/p/google-diff-match-patch/source/browse/trunk/javascript/diff_match_patch_uncompressed.js), modifications are licensed as more fully set forth in LICENSE.txt. The original source of google-diff-match-patch is attributable and licensed as follows:
+ * This file is a modified version of google-diff-match-patch's JavaScript implementation
+ * (https://code.google.com/p/google-diff-match-patch/source/browse/trunk/javascript/diff_match_patch_uncompressed.js),
+ * modifications are licensed as more fully set forth in LICENSE.txt.
+ *
+ * The original source of google-diff-match-patch is attributable and licensed as follows:
  *
  * Copyright 2006 Google Inc.
  * http://code.google.com/p/google-diff-match-patch/
