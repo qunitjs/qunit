@@ -33,7 +33,7 @@ grunt.initConfig({
 				"src/dump.js",
 				"src/export.js",
 				"src/outro.js",
-				"external/jsdiff/jsdiff.js",
+				"src/diff.js",
 				"reporter/html.js"
 			],
 			dest: "dist/qunit.js"
@@ -75,7 +75,6 @@ grunt.initConfig({
 		},
 		xhtml: [
 			"src/**/*.js",
-			"external/**/*.js",
 			"reporter/**/*.js"
 		]
 	},
@@ -119,7 +118,7 @@ grunt.initConfig({
 			".jshintrc",
 			"*.js",
 			"build/*.js",
-			"{src,test,external,reporter}/**/*.js",
+			"{src,test,reporter}/**/*.js",
 			"src/qunit.css",
 			"test/**/*.html"
 		],
