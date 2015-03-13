@@ -1,4 +1,4 @@
-QUnit.module( "propEquiv" );
+QUnit.module( "equiv.props" );
 
 QUnit.test("Primitive types and constants", function ( assert ) {
 	assert.equal( QUnit.equiv.props( null, null ), true, "null" );

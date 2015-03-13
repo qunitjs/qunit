@@ -1,4 +1,4 @@
-QUnit.module( "deepEquiv" );
+QUnit.module( "equiv" );
 
 QUnit.test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( null, null ), true, "null" );
