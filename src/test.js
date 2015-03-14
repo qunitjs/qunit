@@ -9,6 +9,7 @@ function Test( settings ) {
 	this.usedAsync = false;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
+	this.wasBad = false;
 
 	// Register unique strings
 	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {
@@ -78,7 +79,8 @@ Test.prototype = {
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
 			module: this.module.name,
-			testId: this.testId
+			testId: this.testId,
+			wasBad: this.wasBad
 		});
 
 		if ( !config.pollution ) {
@@ -253,6 +255,7 @@ Test.prototype = {
 				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		if ( bad ) {
+			test.wasBad = true;
 			run();
 		} else {
 			synchronize( run, true );

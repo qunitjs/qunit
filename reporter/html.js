@@ -624,7 +624,10 @@ QUnit.testStart(function( details ) {
 
 	running = id( "qunit-testresult" );
 	if ( running ) {
-		running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
+		running.innerHTML = details.wasBad ?
+			"Rerunning previously failed test: <br />" :
+			"Running: <br />" +
+				getNameHtml( details.name, details.module );
 	}
 
 });
