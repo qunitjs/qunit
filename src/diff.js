@@ -1084,3 +1084,4 @@ QUnit.diff = (function() {
         return text;
     };
 }());
+// jscs:enable
