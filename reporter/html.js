@@ -63,6 +63,7 @@ if ( typeof window === "undefined" ) {
 }
 
 var config = QUnit.config,
+	collapse = config.collapse,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
@@ -710,11 +711,11 @@ QUnit.testDone(function( details ) {
 	if ( bad === 0 ) {
 		addClass( assertList, "qunit-collapsed" );
 	} else {
-		if ( config.collapse === false ) {
-			config.collapse = -1;
-		} else if ( config.collapse === true ) {
-			config.collapse = 1;
-		} else if ( config.collapse === 1 ) {
+		if ( collapse === false ) {
+			collapse = -1;
+		} else if ( collapse === true ) {
+			collapse = 1;
+		} else if ( collapse === 1 ) {
 			addClass( assertList, "qunit-collapsed" );
 		}
 	}
