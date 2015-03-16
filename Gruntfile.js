@@ -26,6 +26,10 @@ grunt.initConfig({
 			options: { process: process },
 			src: [
 				"src/intro.js",
+				"src/core/utilities.js",
+				"src/core/extend.js",
+				"src/core/urlParams.js",
+				"src/core/config.js",
 				"src/core.js",
 				"src/test.js",
 				"src/assert.js",

@@ -1,5 +1,4 @@
 var QUnit,
-	config,
 	onErrorFnPrev,
 	loggingCallbacks = {},
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
@@ -78,116 +77,12 @@ var QUnit,
 
 QUnit = {};
 
-/**
- * Config object: Maintain internal state
- * Later exposed as QUnit.config
- * `config` initialized at top of scope
- */
-config = {
-	// The queue of tests to run
-	queue: [],
+QUnit.urlParams = getUrlParams();
 
-	// block until document ready
-	blocking: true,
+QUnit.isLocal = location.protocol === "file:";
 
-	// by default, run previously failed tests first
-	// very useful in combination with "Hide passed tests" checked
-	reorder: true,
-
-	// by default, modify document.title when suite is done
-	altertitle: true,
-
-	// by default, scroll to top of the page when suite is done
-	scrolltop: true,
-
-	// when enabled, all tests must call expect()
-	requireExpects: false,
-
-	// add checkboxes that are persisted in the query-string
-	// when enabled, the id is set to `true` as a `QUnit.config` property
-	urlConfig: [
-		{
-			id: "hidepassed",
-			label: "Hide passed tests",
-			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
-		},
-		{
-			id: "noglobals",
-			label: "Check for Globals",
-			tooltip: "Enabling this will test if any test introduces new properties on the " +
-				"`window` object. Stored as query-strings."
-		},
-		{
-			id: "notrycatch",
-			label: "No try-catch",
-			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
-				"exceptions in IE reasonable. Stored as query-strings."
-		}
-	],
-
-	// Set of all modules.
-	modules: [],
-
-	// The first unnamed module
-	currentModule: {
-		name: "",
-		tests: []
-	},
-
-	callbacks: {}
-};
-
-// Push a loose unnamed module to the modules collection
-config.modules.push( config.currentModule );
-
-// Initialize more QUnit.config and QUnit.urlParams
-(function() {
-	var i, current,
-		location = window.location || { search: "", protocol: "file:" },
-		params = location.search.slice( 1 ).split( "&" ),
-		length = params.length,
-		urlParams = {};
-
-	if ( params[ 0 ] ) {
-		for ( i = 0; i < length; i++ ) {
-			current = params[ i ].split( "=" );
-			current[ 0 ] = decodeURIComponent( current[ 0 ] );
-
-			// allow just a key to turn on a flag, e.g., test.html?noglobals
-			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-			if ( urlParams[ current[ 0 ] ] ) {
-				urlParams[ current[ 0 ] ] = [].concat( urlParams[ current[ 0 ] ], current[ 1 ] );
-			} else {
-				urlParams[ current[ 0 ] ] = current[ 1 ];
-			}
-		}
-	}
-
-	if ( urlParams.filter === true ) {
-		delete urlParams.filter;
-	}
-
-	QUnit.urlParams = urlParams;
-
-	// String search anywhere in moduleName+testName
-	config.filter = urlParams.filter;
-
-	config.testId = [];
-	if ( urlParams.testId ) {
-
-		// Ensure that urlParams.testId is an array
-		urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
-		for ( i = 0; i < urlParams.testId.length; i++ ) {
-			config.testId.push( urlParams.testId[ i ] );
-		}
-	}
-
-	// Figure out if we're running the tests from a server or not
-	QUnit.isLocal = location.protocol === "file:";
-
-	// Expose the current QUnit version
-	QUnit.version = "@VERSION";
-}());
+// Expose the current QUnit version
+QUnit.version = "@VERSION";
 
 // Root QUnit object.
 // `QUnit` initialized at top of scope
@@ -679,41 +574,6 @@ function checkPollution() {
 	}
 }
 
-// returns a new Array with the elements that are in a but not in b
-function diff( a, b ) {
-	var i, j,
-		result = a.slice();
-
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
-			if ( result[ i ] === b[ j ] ) {
-				result.splice( i, 1 );
-				i--;
-				break;
-			}
-		}
-	}
-	return result;
-}
-
-function extend( a, b, undefOnly ) {
-	for ( var prop in b ) {
-		if ( hasOwn.call( b, prop ) ) {
-
-			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
-			if ( !( prop === "constructor" && a === window ) ) {
-				if ( b[ prop ] === undefined ) {
-					delete a[ prop ];
-				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
-					a[ prop ] = b[ prop ];
-				}
-			}
-		}
-	}
-
-	return a;
-}
-
 function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
@@ -749,19 +609,4 @@ function verifyLoggingCallbacks() {
 			}
 		}
 	}
-}
-
-// from jquery.js
-function inArray( elem, array ) {
-	if ( array.indexOf ) {
-		return array.indexOf( elem );
-	}
-
-	for ( var i = 0, length = array.length; i < length; i++ ) {
-		if ( array[ i ] === elem ) {
-			return i;
-		}
-	}
-
-	return -1;
 }
