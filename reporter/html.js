@@ -611,7 +611,7 @@ function getNameHtml( name, module ) {
 }
 
 QUnit.testStart(function( details ) {
-	var running, testBlock;
+	var running, testBlock, bad;
 
 	testBlock = id( "qunit-test-output-" + details.testId );
 	if ( testBlock ) {
@@ -624,7 +624,13 @@ QUnit.testStart(function( details ) {
 
 	running = id( "qunit-testresult" );
 	if ( running ) {
-		running.innerHTML = "Running: <br />" + getNameHtml( details.name, details.module );
+		bad = QUnit.config.reorder && defined.sessionStorage &&
+			+sessionStorage.getItem( "qunit-test-" + details.module + "-" + details.name );
+
+		running.innerHTML = ( bad ?
+			"Rerunning previously failed test: <br />" :
+			"Running: <br />" ) +
+			getNameHtml( details.name, details.module );
 	}
 
 });
