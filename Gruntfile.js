@@ -60,7 +60,7 @@ grunt.initConfig({
 		},
 		all: [
 			"<%= jshint.all %>",
-			"!test/deepEqual.js"
+			"!test/main/deepEqual.js"
 		]
 	},
 	search: {
@@ -209,13 +209,13 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.config.autorun = false;
 
 	require( "./test/logs" );
-	require( "./test/test" );
-	require( "./test/assert" );
-	require( "./test/async" );
-	require( "./test/promise" );
-	require( "./test/modules" );
-	require( "./test/deepEqual" );
-	require( "./test/globals" );
+	require( "./test/main/test" );
+	require( "./test/main/assert" );
+	require( "./test/main/async" );
+	require( "./test/main/promise" );
+	require( "./test/main/modules" );
+	require( "./test/main/deepEqual" );
+	require( "./test/main/globals" );
 	require( "./test/globals-node" );
 
 	QUnit.load();
