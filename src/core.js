@@ -211,42 +211,10 @@ extend( QUnit, {
 	config: config,
 
 	// Safe object type checking
-	is: function( type, obj ) {
-		return QUnit.objectType( obj ) === type;
-	},
+	is: is,
 
-	objectType: function( obj ) {
-		if ( typeof obj === "undefined" ) {
-			return "undefined";
-		}
+	objectType: objectType,
 
-		// Consider: typeof null === object
-		if ( obj === null ) {
-			return "null";
-		}
-
-		var match = toString.call( obj ).match( /^\[object\s(.*)\]$/ ),
-			type = match && match[ 1 ] || "";
-
-		switch ( type ) {
-			case "Number":
-				if ( isNaN( obj ) ) {
-					return "nan";
-				}
-				return "number";
-			case "String":
-			case "Boolean":
-			case "Array":
-			case "Date":
-			case "RegExp":
-			case "Function":
-				return type.toLowerCase();
-		}
-		if ( typeof obj === "object" ) {
-			return "object";
-		}
-		return undefined;
-	},
 
 	extend: extend,
 
@@ -367,63 +335,6 @@ function done() {
 		total: config.stats.all,
 		runtime: runtime
 	});
-}
-
-// Doesn't support IE6 to IE9
-// See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-function extractStacktrace( e, offset ) {
-	offset = offset === undefined ? 4 : offset;
-
-	var stack, include, i;
-
-	if ( e.stacktrace ) {
-
-		// Opera 12.x
-		return e.stacktrace.split( "\n" )[ offset + 3 ];
-	} else if ( e.stack ) {
-
-		// Firefox, Chrome, Safari 6+, IE10+, PhantomJS and Node
-		stack = e.stack.split( "\n" );
-		if ( /^error$/i.test( stack[ 0 ] ) ) {
-			stack.shift();
-		}
-		if ( fileName ) {
-			include = [];
-			for ( i = offset; i < stack.length; i++ ) {
-				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
-					break;
-				}
-				include.push( stack[ i ] );
-			}
-			if ( include.length ) {
-				return include.join( "\n" );
-			}
-		}
-		return stack[ offset ];
-	} else if ( e.sourceURL ) {
-
-		// Safari < 6
-		// exclude useless self-reference for generated Error objects
-		if ( /qunit.js$/.test( e.sourceURL ) ) {
-			return;
-		}
-
-		// for actual exceptions, this is useful
-		return e.sourceURL + ":" + e.line;
-	}
-}
-
-function sourceFromStacktrace( offset ) {
-	var e = new Error();
-	if ( !e.stack ) {
-		try {
-			throw e;
-		} catch ( err ) {
-			// This should already be true in most browsers
-			e = err;
-		}
-	}
-	return extractStacktrace( e, offset );
 }
 
 function synchronize( callback, last ) {
