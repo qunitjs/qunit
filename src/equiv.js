@@ -198,6 +198,15 @@ QUnit.equiv = (function() {
 		}
 
 		return ( (function( a, b ) {
+			// convert typedarrays into real arrays
+			if ( a && QUnit.objectType( a ) === "typedarray" ) {
+				a = Array.prototype.slice.call( a );
+			}
+
+			if ( b && QUnit.objectType( b ) === "typedarray" ) {
+				b = Array.prototype.slice.call( b );
+			}
+
 			if ( a === b ) {
 				return true; // catch the most you can
 			} else if ( a === null || b === null || typeof a === "undefined" ||
