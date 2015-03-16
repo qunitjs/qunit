@@ -1,6 +1,8 @@
 /*jshint node:true */
-(function() {
 
+// Don't execute this file directly on Node, this is part of
+// Grunt's test-on-node task
+(function() {
 QUnit.module( "globals for Node.js only" );
 
 QUnit.test( "QUnit exports", function( assert ) {
