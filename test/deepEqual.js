@@ -156,6 +156,19 @@ QUnit.test( "Objects basics", function( assert ) {
 	}
 });
 
+QUnit.test( "Typed arrays", function( assert ) {
+	assert.equal( QUnit.equiv( new Uint8Array(0), new Uint8Array(4) ), false );
+	assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(0) ), false );
+	assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(4) ), true );
+	assert.equal( QUnit.equiv( new Uint8Array(new Uint8Array(4)), new Uint8Array(new Uint8Array(4)) ), true );
+
+	assert.equal( QUnit.equiv( new Uint8Array(4), [] ), false, "typed array vs standard array" );
+	assert.equal( QUnit.equiv( new Uint8Array(4), [0, 0, 0, 0] ), true, "typed array vs standard array" );
+	assert.equal( QUnit.equiv( [0, 0, 0, 0], new Uint8Array(4) ), true, "typed array vs standard array" );
+	assert.equal( QUnit.equiv( [0, 1, 0, 0], new Uint8Array(4) ), false, "typed array vs standard array" );
+
+});
+
 QUnit.test( "Arrays basics", function( assert ) {
 
 	assert.equal( QUnit.equiv( [], [] ), true );
