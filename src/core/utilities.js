@@ -1,3 +1,13 @@
+var toString = Object.prototype.toString,
+	hasOwn = Object.prototype.hasOwnProperty,
+	Date = window.Date,
+	now = Date.now || function() {
+		return new Date().getTime();
+	},
+	setTimeout = window.setTimeout,
+	clearTimeout = window.clearTimeout,
+	location = window.location || { search: "", protocol: "file:" };
+
 // returns a new Array with the elements that are in a but not in b
 function diff( a, b ) {
 	var i, j,

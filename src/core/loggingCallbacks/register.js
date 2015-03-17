@@ -1,3 +1,5 @@
+var loggingCallbacks = {};
+
 // Register logging callbacks
 function registerLoggingCallbacks() {
 	var i, l, key,
