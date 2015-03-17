@@ -101,7 +101,7 @@ config = {
 	scrolltop: true,
 
 	// By default, only expand the first failed test
-	// When disabled (False), all the failed tests are expanded
+	// When set to false, all failed tests are expanded
 	collapse: true,
 
 	// when enabled, all tests must call expect()
