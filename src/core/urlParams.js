@@ -1,4 +1,3 @@
-// Initialize more QUnit.config and QUnit.urlParams
 var getUrlParams = function() {
 	var i, current,
 		location = window.location || { search: "", protocol: "file:" },
