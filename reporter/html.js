@@ -635,9 +635,15 @@ QUnit.testStart(function( details ) {
 
 });
 
+function stripHtml( string ) {
+	// strip tags, html entity and whitespaces
+	return string.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&quot;/g, "").replace(/\s+/g, "");
+}
+
 QUnit.log(function( details ) {
 	var assertList, assertLi,
-		message, expected, actual,
+		message, expected, actual, diff,
+		lengthChanged = true,
 		testItem = id( "qunit-test-output-" + details.testId );
 
 	if ( !testItem ) {
@@ -659,10 +665,16 @@ QUnit.log(function( details ) {
 			"</pre></td></tr>";
 
 		if ( actual !== expected ) {
+			diff = QUnit.diff( expected, actual );
+			lengthChanged = stripHtml( diff ).length !==
+				stripHtml( expected ).length +
+				stripHtml( actual ).length;
+
+			// don't show diff if expected and actual are totally different
 			message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
 				actual + "</pre></td></tr>" +
-				"<tr class='test-diff'><th>Diff: </th><td><pre>" +
-				QUnit.diff( expected, actual ) + "</pre></td></tr>";
+				( lengthChanged ? "<tr class='test-diff'><th>Diff: </th><td><pre>" +
+					diff + "</pre></td></tr>" : "" );
 		}
 
 		if ( details.source ) {
