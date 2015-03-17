@@ -168,7 +168,6 @@ extend( QUnit, {
 
 	objectType: objectType,
 
-
 	extend: extend,
 
 	load: function() {
