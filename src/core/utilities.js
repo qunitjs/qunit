@@ -29,3 +29,52 @@ function inArray( elem, array ) {
 
 	return -1;
 }
+
+/**
+ * Provides a normalized error string, correcting an issue
+ * with IE 7 (and prior) where Error.prototype.toString is
+ * not properly implemented
+ *
+ * Based on http://es5.github.com/#x15.11.4.4
+ *
+ * @param {String|Error} error
+ * @return {String} error message
+ */
+function errorString ( error ) {
+	var name, message,
+		resultErrorString = error.toString();
+	if ( resultErrorString.substring( 0, 7 ) === "[object" ) {
+		name = error.name ? error.name.toString() : "Error";
+		message = error.message ? error.message.toString() : "";
+		if ( name && message ) {
+			return name + ": " + message;
+		} else if ( name ) {
+			return name;
+		} else if ( message ) {
+			return message;
+		} else {
+			return "Error";
+		}
+	} else {
+		return resultErrorString;
+	}
+}
+
+/**
+ * Makes a clone of an object using only Array or Object as base,
+ * and copies over the own enumerable properties.
+ *
+ * @param {Object} obj
+ * @return {Object} New object with only the own properties (recursively).
+ */
+function objectValues ( obj ) {
+	var key, val,
+		vals = QUnit.is( "array", obj ) ? [] : {};
+	for ( key in obj ) {
+		if ( hasOwn.call( obj, key ) ) {
+			val = obj[ key ];
+			vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
+		}
+	}
+	return vals;
+}

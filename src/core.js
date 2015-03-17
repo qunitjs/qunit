@@ -26,53 +26,6 @@ var QUnit,
 				return false;
 			}
 		}())
-	},
-	/**
-	 * Provides a normalized error string, correcting an issue
-	 * with IE 7 (and prior) where Error.prototype.toString is
-	 * not properly implemented
-	 *
-	 * Based on http://es5.github.com/#x15.11.4.4
-	 *
-	 * @param {String|Error} error
-	 * @return {String} error message
-	 */
-	errorString = function( error ) {
-		var name, message,
-			errorString = error.toString();
-		if ( errorString.substring( 0, 7 ) === "[object" ) {
-			name = error.name ? error.name.toString() : "Error";
-			message = error.message ? error.message.toString() : "";
-			if ( name && message ) {
-				return name + ": " + message;
-			} else if ( name ) {
-				return name;
-			} else if ( message ) {
-				return message;
-			} else {
-				return "Error";
-			}
-		} else {
-			return errorString;
-		}
-	},
-	/**
-	 * Makes a clone of an object using only Array or Object as base,
-	 * and copies over the own enumerable properties.
-	 *
-	 * @param {Object} obj
-	 * @return {Object} New object with only the own properties (recursively).
-	 */
-	objectValues = function( obj ) {
-		var key, val,
-			vals = QUnit.is( "array", obj ) ? [] : {};
-		for ( key in obj ) {
-			if ( hasOwn.call( obj, key ) ) {
-				val = obj[ key ];
-				vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
-			}
-		}
-		return vals;
 	};
 
 QUnit = {};
@@ -239,42 +192,8 @@ extend( QUnit, {
 	}
 });
 
-// Register logging callbacks
-(function() {
-	var i, l, key,
-		callbacks = [ "begin", "done", "log", "testStart", "testDone",
-			"moduleStart", "moduleDone" ];
-
-	function registerLoggingCallback( key ) {
-		var loggingCallback = function( callback ) {
-			if ( QUnit.objectType( callback ) !== "function" ) {
-				throw new Error(
-					"QUnit logging methods require a callback function as their first parameters."
-				);
-			}
-
-			config.callbacks[ key ].push( callback );
-		};
-
-		// DEPRECATED: This will be removed on QUnit 2.0.0+
-		// Stores the registered functions allowing restoring
-		// at verifyLoggingCallbacks() if modified
-		loggingCallbacks[ key ] = loggingCallback;
-
-		return loggingCallback;
-	}
-
-	for ( i = 0, l = callbacks.length; i < l; i++ ) {
-		key = callbacks[ i ];
-
-		// Initialize key collection of logging callback
-		if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
-			config.callbacks[ key ] = [];
-		}
-
-		QUnit[ key ] = registerLoggingCallback( key );
-	}
-})();
+// Registers login callbacks
+extend( QUnit, registerLoginCallbacks() );
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
