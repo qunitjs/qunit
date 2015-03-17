@@ -64,7 +64,7 @@ if ( typeof window === "undefined" ) {
 
 var config = QUnit.config,
 	collapse = config.collapse,
-	collapse_check = collapse,
+	collapseCheck = collapse,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
@@ -686,7 +686,7 @@ QUnit.log(function( details ) {
 
 QUnit.testDone(function( details ) {
 	var testTitle, time, testItem, assertList,
-		good, bad, testCounts, skipped, local_collapse,
+		good, bad, testCounts, skipped, localCollapse,
 		tests = id( "qunit-tests" );
 
 	if ( !tests ) {
@@ -709,10 +709,10 @@ QUnit.testDone(function( details ) {
 		}
 	}
 
-	local_collapse = config.collapse;
+	localCollapse = config.collapse;
 
-	if (local_collapse != collapse_check) {
-		collapse = local_collapse;
+	if (localCollapse !== collapseCheck) {
+		collapse = localCollapse;
 	}
 
 	if ( bad === 0 ) {
