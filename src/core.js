@@ -26,7 +26,8 @@ var QUnit,
 				return false;
 			}
 		}())
-	};
+	},
+	location = window.location || { search: "", protocol: "file:" };
 
 QUnit = {};
 
