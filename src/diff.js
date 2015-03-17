@@ -27,7 +27,7 @@
  *
  * Usage: QUnit.diff(expected, actual)
  *
- * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) === "the  quick <del>brown </del> fox <del>jumped </del><ins>jumps </ins> over"
+ * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) === "the  quick <del>brown </del> fox jump<ins>s</ins><del>ed</del over"
  */
 QUnit.diff = (function() {
 
