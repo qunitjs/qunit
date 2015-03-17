@@ -1,5 +1,5 @@
 // Register logging callbacks
-function registerLoginCallbacks() {
+function registerLoggingCallbacks() {
 	var i, l, key,
 		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
 			"moduleStart", "moduleDone" ],

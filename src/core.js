@@ -192,8 +192,8 @@ extend( QUnit, {
 	}
 });
 
-// Registers login callbacks
-extend( QUnit, registerLoginCallbacks() );
+// Registers logging callbacks
+extend( QUnit, registerLoggingCallbacks() );
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers

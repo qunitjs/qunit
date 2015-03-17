@@ -32,7 +32,7 @@ grunt.initConfig({
 				"src/core/urlParams.js",
 				"src/core/stacktrace.js",
 				"src/core/config.js",
-				"src/core/registerLoginCallbacks.js",
+				"src/core/registerLoggingCallbacks.js",
 				"src/core.js",
 				"src/test.js",
 				"src/assert.js",
