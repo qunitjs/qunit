@@ -348,6 +348,16 @@ extend( QUnit, {
 				return type.toLowerCase();
 		}
 		if ( typeof obj === "object" ) {
+			if ( obj instanceof Int8Array ||
+				obj instanceof Uint8Array ||
+				obj instanceof Int16Array ||
+				obj instanceof Uint16Array ||
+				obj instanceof Int32Array ||
+				obj instanceof Uint32Array ||
+				obj instanceof Float32Array ) {
+				return "typedarray";
+			}
+
 			return "object";
 		}
 		return undefined;
