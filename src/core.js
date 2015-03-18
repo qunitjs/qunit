@@ -42,41 +42,11 @@ extend( QUnit, {
 	},
 
 	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
-	asyncTest: function( testName, expected, callback ) {
-		if ( arguments.length === 2 ) {
-			callback = expected;
-			expected = null;
-		}
+	asyncTest: asyncTest,
 
-		QUnit.test( testName, expected, callback, true );
-	},
+	test: test,
 
-	test: function( testName, expected, callback, async ) {
-		var test;
-
-		if ( arguments.length === 2 ) {
-			callback = expected;
-			expected = null;
-		}
-
-		test = new Test({
-			testName: testName,
-			expected: expected,
-			async: async,
-			callback: callback
-		});
-
-		test.queue();
-	},
-
-	skip: function( testName ) {
-		var test = new Test({
-			testName: testName,
-			skip: true
-		});
-
-		test.queue();
-	},
+	skip: skip,
 
 	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
 	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.

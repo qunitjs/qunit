@@ -41,6 +41,8 @@ grunt.initConfig({
 				"src/core/control/pauseProcessing.js",
 				"src/core/control/resumeProcessing.js",
 				"src/core/control/done.js",
+				"src/core/module.js",
+				"src/core/test.js",
 				"src/core.js",
 				"src/test.js",
 				"src/assert.js",
