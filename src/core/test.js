@@ -1,5 +1,5 @@
 // Will be exposed as QUnit.asyncTest
-function( testName, expected, callback ) {
+function asyncTest( testName, expected, callback ) {
 	if ( arguments.length === 2 ) {
 		callback = expected;
 		expected = null;
