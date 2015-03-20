@@ -3,7 +3,7 @@
 var QUnit = require( "../dist/qunit" );
 
 // Options: { output: "minimal" || "verbose" }
-QUnit.reporter();
+QUnit.stdout();
 
 // Load QUnit tests
 require( "./logs" );

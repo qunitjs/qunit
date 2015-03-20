@@ -1,6 +1,6 @@
 /*jshint node:true*/
-QUnit.reporter = function( options ) {
-	var chalk = require("chalk");
+QUnit.stdout = function( options ) {
+	var chalk = require( "chalk" );
 	var testActive = false,
 		runDone = false;
 	var log = {
