@@ -1,6 +1,6 @@
 /*globals QUnit:true*/
 /*jshint node:true*/
-var QUnit = require( "../dist/QUnit" );
+var QUnit = require( "../dist/qunit" );
 
 // Options: { output: "minimal" || "verbose" }
 QUnit.reporter();
