@@ -756,13 +756,15 @@ QUnit.testDone(function( details ) {
 	}
 });
 
-if ( !defined.document || document.readyState === "complete" ) {
+if ( defined.document ) {
+	if ( document.readyState === "complete" ) {
+		QUnit.load();
+	} else {
+		addEvent( window, "load", QUnit.load );
+	}
+} else {
 	config.pageLoaded = true;
 	config.autorun = true;
-}
-
-if ( defined.document ) {
-	addEvent( window, "load", QUnit.load );
 }
 
 })();
