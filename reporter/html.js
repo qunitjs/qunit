@@ -663,6 +663,12 @@ QUnit.log(function( details ) {
 				actual + "</pre></td></tr>" +
 				"<tr class='test-diff'><th>Diff: </th><td><pre>" +
 				QUnit.diff( expected, actual ) + "</pre></td></tr>";
+		} else {
+			if ( expected.indexOf( "[object Array]" ) !== -1 ||
+					expected.indexOf( "[object Object]" ) !== -1 ) {
+				message += "<tr class='test-message'><th>Message: </th><td>" +
+					"Diff suppressed as depth of object is more than max depth. </td></tr>";
+			}
 		}
 
 		if ( details.source ) {
