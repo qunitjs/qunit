@@ -663,6 +663,15 @@ QUnit.log(function( details ) {
 				actual + "</pre></td></tr>" +
 				"<tr class='test-diff'><th>Diff: </th><td><pre>" +
 				QUnit.diff( expected, actual ) + "</pre></td></tr>";
+		} else {
+			if ( expected.indexOf( "[object Array]" ) !== -1 ||
+					expected.indexOf( "[object Object]" ) !== -1 ) {
+				message += "<tr class='test-message'><th>Message: </th><td>" +
+					"Diff suppressed as the depth of object is more than current max depth (" +
+					QUnit.config.maxDepth + ").<p>Hint: Use <code>QUnit.dump.maxDepth</code> to " +
+					" run with a higher max depth or <a href='" + setUrl({ maxDepth: -1 }) + "'>" +
+					"Rerun</a> without max depth.</p></td></tr>";
+			}
 		}
 
 		if ( details.source ) {
