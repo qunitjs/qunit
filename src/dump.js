@@ -23,7 +23,7 @@ QUnit.dump = (function() {
 		var i = arr.length,
 			ret = new Array( i );
 
-		if ( dump.maxDepth && dump.depth > dump.maxDepth ) {
+		if ( config.maxDepth && dump.depth > config.maxDepth ) {
 			return "[object Array]";
 		}
 
@@ -36,6 +36,7 @@ QUnit.dump = (function() {
 	}
 
 	var reName = /^function (\w+)/,
+		config = QUnit.config,
 		dump = {
 
 			// objType is used mostly internally, you can fix a (custom) type in advance
@@ -127,7 +128,6 @@ QUnit.dump = (function() {
 			join: join,
 			//
 			depth: 1,
-			maxDepth: 5,
 
 			// This is the list of parsers, to modify them, use dump.setParser
 			parsers: {
@@ -160,7 +160,7 @@ QUnit.dump = (function() {
 					var keys, key, val, i, nonEnumerableProperties,
 						ret = [];
 
-					if ( dump.maxDepth && dump.depth > dump.maxDepth ) {
+					if ( config.maxDepth && dump.depth > config.maxDepth ) {
 						return "[object Object]";
 					}
 

@@ -103,6 +103,9 @@ config = {
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 
+	// Set Maxdepth of Object to be dumped.
+	maxDepth: 5,
+
 	// add checkboxes that are persisted in the query-string
 	// when enabled, the id is set to `true` as a `QUnit.config` property
 	urlConfig: [
