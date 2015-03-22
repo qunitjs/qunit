@@ -60,7 +60,8 @@ grunt.initConfig({
 		},
 		all: [
 			"<%= jshint.all %>",
-			"!test/deepEqual.js"
+			"!test/deepEqual.js",
+			"!test/propEqual.js"
 		]
 	},
 	search: {

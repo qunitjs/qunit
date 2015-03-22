@@ -87,15 +87,11 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	propEqual: function( actual, expected, message ) {
-		actual = objectValues( actual );
-		expected = objectValues( expected );
-		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( QUnit.equiv.props( actual, expected ), actual, expected, message );
 	},
 
 	notPropEqual: function( actual, expected, message ) {
-		actual = objectValues( actual );
-		expected = objectValues( expected );
-		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv.props( actual, expected ), actual, expected, message );
 	},
 
 	deepEqual: function( actual, expected, message ) {
