@@ -1,6 +1,6 @@
 QUnit.module( "dump", {
 	teardown: function() {
-		QUnit.dump.maxDepth = null;
+		QUnit.config.maxDepth = null;
 	}
 });
 
@@ -29,22 +29,22 @@ QUnit.test( "dump output, shallow", function( assert ) {
 		left: 0
 	};
 	assert.expect( 4 );
-	QUnit.dump.maxDepth = 1;
+	QUnit.config.maxDepth = 1;
 	assert.equal( QUnit.dump.parse( obj ), "{\n  \"left\": 0,\n  \"top\": [object Object]\n}" );
 
-	QUnit.dump.maxDepth = 2;
+	QUnit.config.maxDepth = 2;
 	assert.equal(
 		QUnit.dump.parse( obj ),
 		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": [object Object]\n  }\n}"
 	);
 
-	QUnit.dump.maxDepth = 3;
+	QUnit.config.maxDepth = 3;
 	assert.equal(
 		QUnit.dump.parse( obj ),
 		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
 	);
 
-	QUnit.dump.maxDepth = 5;
+	QUnit.config.maxDepth = 5;
 	assert.equal(
 		QUnit.dump.parse( obj ),
 		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
