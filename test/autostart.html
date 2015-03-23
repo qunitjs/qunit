@@ -36,8 +36,10 @@
 		}, asyncDelay );
 
 		QUnit.load = (function( _load ) {
-			times.pageLoaded = now();
-			_load.call( QUnit );
+			return function() {
+				times.pageLoaded = now();
+				_load.call( QUnit );
+			};
 		})( QUnit.load );
 
 		QUnit.begin(function( data ) {
