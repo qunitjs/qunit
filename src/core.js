@@ -103,6 +103,9 @@ config = {
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 
+	// depth up-to which object will be dumped
+	maxDepth: 5,
+
 	// add checkboxes that are persisted in the query-string
 	// when enabled, the id is set to `true` as a `QUnit.config` property
 	urlConfig: [
@@ -171,6 +174,12 @@ config.modules.push( config.currentModule );
 
 	// String search anywhere in moduleName+testName
 	config.filter = urlParams.filter;
+
+	if ( urlParams.maxDepth ) {
+		config.maxDepth = parseInt( urlParams.maxDepth, 10 ) === -1 ?
+			Number.POSITIVE_INFINITY :
+			urlParams.maxDepth;
+	}
 
 	config.testId = [];
 	if ( urlParams.testId ) {
