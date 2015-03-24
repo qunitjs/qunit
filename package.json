@@ -31,10 +31,11 @@
     "qunit/qunit.css",
     "LICENSE.txt"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "chalk": "1.0.0"
+  },
   "devDependencies": {
     "browserstack-runner": "0.2.2",
-    "chalk": "^1.0.0",
     "commitplease": "2.0.0",
     "grunt": "0.4.2",
     "grunt-contrib-concat": "0.3.0",
