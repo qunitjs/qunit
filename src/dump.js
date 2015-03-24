@@ -127,7 +127,7 @@ QUnit.dump = (function() {
 			join: join,
 			//
 			depth: 1,
-			maxDepth: 5,
+			maxDepth: QUnit.config.maxDepth,
 
 			// This is the list of parsers, to modify them, use dump.setParser
 			parsers: {
