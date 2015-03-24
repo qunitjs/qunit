@@ -53,9 +53,9 @@ if ( typeof window !== "undefined" ) {
 if ( typeof module !== "undefined" && module && module.exports ) {
 	/*jshint node:true*/
 
-	// Load node modules
+	// Load node reporter
 	QUnit.stdout = function( options ) {
-		var stdout = require( "../reporter/stdout" );
+		var stdout = require( "qunit-reporter-stdout" );
 
 		return stdout( QUnit, options );
 	};
