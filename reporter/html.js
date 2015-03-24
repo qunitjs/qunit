@@ -667,7 +667,10 @@ QUnit.log(function( details ) {
 			if ( expected.indexOf( "[object Array]" ) !== -1 ||
 					expected.indexOf( "[object Object]" ) !== -1 ) {
 				message += "<tr class='test-message'><th>Message: </th><td>" +
-					"Diff suppressed as depth of object is more than max depth. </td></tr>";
+					"Diff suppressed as the depth of object is more than current max depth (" +
+					QUnit.config.maxDepth + ").<p>Hint: Use 'QUnit.config.maxDepth' to run " +
+					" with a higher max depth or <a href='?maxDepth=-1'>" +
+					"Rerun</a> without max depth</p></td></tr>";
 			}
 		}
 
