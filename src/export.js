@@ -51,10 +51,21 @@ if ( typeof window !== "undefined" ) {
 
 // For nodejs
 if ( typeof module !== "undefined" && module && module.exports ) {
+	/*jshint node:true*/
+
+	// Load node modules
+	QUnit.stdout = function( options ) {
+		var stdout = require( "../reporter/stdout" );
+
+		return stdout( QUnit, options );
+	};
+
 	module.exports = QUnit;
 
 	// For consistency with CommonJS environments' exports
 	module.exports.QUnit = QUnit;
+
+	/*jshint node:false*/
 }
 
 // For CommonJS with exports, but without module.exports, like Rhino

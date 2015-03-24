@@ -1,5 +1,5 @@
 /*jshint node:true*/
-QUnit.stdout = function( options ) {
+module.exports = function( QUnit, options ) {
 	var chalk = require( "chalk" );
 	var testActive = false,
 		runDone = false;
@@ -86,7 +86,7 @@ QUnit.stdout = function( options ) {
 			return;
 		}
 		var succeeded = ( details.failed === 0 ),
-			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
+			message = details.total + " assertions in " + details.runtime + "ms, passed: " +
 				details.passed + ", failed: " + details.failed;
 
 		log.write( "\n" );
@@ -100,4 +100,3 @@ QUnit.stdout = function( options ) {
 		log.write( "\n\n" );
 	});
 };
-/*jshint node:false*/
