@@ -128,6 +128,9 @@ config = {
 	// Set of all modules.
 	modules: [],
 
+	// Stack of nested modules
+	moduleStack: [],
+
 	// The first unnamed module
 	currentModule: {
 		name: "",
@@ -194,12 +197,15 @@ config.modules.push( config.currentModule );
 extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
-	module: function( name, testEnvironment ) {
-		var currentModule = {
-			name: name,
-			testEnvironment: testEnvironment,
-			tests: []
-		};
+	module: function (name, testEnvironment, executeNow) {
+		var currentModule = config.currentModule;
+		var module;
+		if (arguments.length === 2) {
+			if (testEnvironment instanceof Function) {
+				executeNow = testEnvironment;
+				testEnvironment = undefined;
+			}
+		}
 
 		// DEPRECATED: handles setup/teardown functions,
 		// beforeEach and afterEach should be used instead
@@ -212,8 +218,33 @@ extend( QUnit, {
 			delete testEnvironment.teardown;
 		}
 
-		config.modules.push( currentModule );
-		config.currentModule = currentModule;
+		module = createModule();
+		if (executeNow instanceof Function) {
+			config.moduleStack.push( module );
+			setCurrentModule( module );
+			executeNow();
+			config.moduleStack.pop();
+			module = module.parentModule || currentModule;
+		}
+		setCurrentModule( module );
+
+		function createModule() {
+			var parentModule = config.moduleStack.length ? config.moduleStack.slice( -1 )[ 0 ] : null;
+			var moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
+			var module = {
+				name: moduleName,
+				parentModule: parentModule,
+				testEnvironment: testEnvironment,
+				tests: []
+			};
+			config.modules.push( module );
+			return module;
+		}
+
+		function setCurrentModule(module) {
+			config.currentModule = module;
+		}
+
 	},
 
 	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
