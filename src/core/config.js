@@ -55,6 +55,9 @@ var config = {
 	// Set of all modules.
 	modules: [],
 
+	// Stack of nested modules
+	moduleStack: [],
+
 	// The first unnamed module
 	currentModule: {
 		name: "",

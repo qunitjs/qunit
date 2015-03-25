@@ -100,14 +100,12 @@ Test.prototype = {
 		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
-			promise = this.callback.call( this.testEnvironment, this.assert );
-			this.resolvePromise( promise );
+			runTest( this );
 			return;
 		}
 
 		try {
-			promise = this.callback.call( this.testEnvironment, this.assert );
-			this.resolvePromise( promise );
+			runTest( this );
 		} catch ( e ) {
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
 				this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
@@ -119,6 +117,11 @@ Test.prototype = {
 			if ( config.blocking ) {
 				QUnit.start();
 			}
+		}
+
+		function runTest( test ) {
+			promise = test.callback.call( test.testEnvironment, test.assert );
+			test.resolvePromise( promise );
 		}
 	},
 
@@ -132,16 +135,19 @@ Test.prototype = {
 		return function runHook() {
 			config.current = test;
 			if ( config.notrycatch ) {
-				promise = hook.call( test.testEnvironment, test.assert );
-				test.resolvePromise( promise, hookName );
+				callHook();
 				return;
 			}
 			try {
-				promise = hook.call( test.testEnvironment, test.assert );
-				test.resolvePromise( promise, hookName );
+				callHook();
 			} catch ( error ) {
 				test.pushFailure( hookName + " failed on " + test.testName + ": " +
-					( error.message || error ), extractStacktrace( error, 0 ) );
+				( error.message || error ), extractStacktrace( error, 0 ) );
+			}
+
+			function callHook() {
+				promise = hook.call( test.testEnvironment, test.assert );
+				test.resolvePromise( promise, hookName );
 			}
 		};
 	},
@@ -150,16 +156,20 @@ Test.prototype = {
 	hooks: function( handler ) {
 		var hooks = [];
 
+		function processHooks( test, module ) {
+			if ( module.parentModule ) {
+				processHooks( test, module.parentModule );
+			}
+			if ( module.testEnvironment &&
+				QUnit.objectType( module.testEnvironment[ handler ] ) === "function" ) {
+				hooks.push( test.queueHook( module.testEnvironment[ handler ], handler ) );
+			}
+		}
+
 		// Hooks are ignored on skipped tests
-		if ( this.skip ) {
-			return hooks;
+		if ( !this.skip ) {
+			processHooks( this, this.module );
 		}
-
-		if ( this.module.testEnvironment &&
-				QUnit.objectType( this.module.testEnvironment[ handler ] ) === "function" ) {
-			hooks.push( this.queueHook( this.module.testEnvironment[ handler ], handler ) );
-		}
-
 		return hooks;
 	},
 
@@ -355,6 +365,17 @@ Test.prototype = {
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
 
+		function testInModuleChain( testModule ) {
+			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
+			if ( testModuleName === module ) {
+				return true;
+			} else if ( testModule.parentModule ) {
+				return testInModuleChain( testModule.parentModule );
+			} else {
+				return false;
+			}
+		}
+
 		// Internally-generated tests are always valid
 		if ( this.callback && this.callback.validTest ) {
 			return true;
@@ -364,7 +385,7 @@ Test.prototype = {
 			return false;
 		}
 
-		if ( module && ( !this.module.name || this.module.name.toLowerCase() !== module ) ) {
+		if ( module && !testInModuleChain( this.module ) ) {
 			return false;
 		}
 
@@ -385,7 +406,6 @@ Test.prototype = {
 		// Otherwise, do the opposite
 		return !include;
 	}
-
 };
 
 // Resets the test setup. Useful for tests that modify the DOM.
