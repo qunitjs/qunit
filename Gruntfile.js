@@ -170,56 +170,13 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 		});
 });
 
-// TODO: Extract this task later, if feasible
-// Also spawn a separate process to keep tests atomic
 grunt.registerTask( "test-on-node", function() {
-	var testActive = false,
-		runDone = false,
-		done = this.async(),
-		QUnit = require( "./dist/qunit" );
+	var done = this.async();
+	var reporterDone = require( "./test/reporter-stdout.js" );
 
-	QUnit.testStart(function() {
-		testActive = true;
+	reporterDone(function( details ) {
+		done( details.failed === 0 );
 	});
-	QUnit.log(function( details ) {
-		if ( !testActive || details.result ) {
-			return;
-		}
-		var message = "name: " + details.name + " module: " + details.module +
-			" message: " + details.message;
-		grunt.log.error( message );
-	});
-	QUnit.testDone(function() {
-		testActive = false;
-	});
-	QUnit.done(function( details ) {
-		if ( runDone ) {
-			return;
-		}
-		var succeeded = ( details.failed === 0 ),
-			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
-				details.passed + ", failed: " + details.failed;
-		if ( succeeded ) {
-			grunt.log.ok( message );
-		} else {
-			grunt.log.error( message );
-		}
-		done( succeeded );
-		runDone = true;
-	});
-	QUnit.config.autorun = false;
-
-	require( "./test/logs" );
-	require( "./test/test" );
-	require( "./test/assert" );
-	require( "./test/async" );
-	require( "./test/promise" );
-	require( "./test/modules" );
-	require( "./test/deepEqual" );
-	require( "./test/globals" );
-	require( "./test/globals-node" );
-
-	QUnit.load();
 });
 
 grunt.registerTask( "build", [ "concat" ] );
