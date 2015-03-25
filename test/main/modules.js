@@ -147,3 +147,57 @@ QUnit.module( "Deprecated setup/teardown", {
 QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
 });
+
+QUnit.module( "pre-nested modules");
+
+QUnit.module( "nested modules", function() {
+	QUnit.module( "first outer", {
+			afterEach: function( assert ) {
+				assert.ok( true, "first outer module afterEach called" );
+			},
+			beforeEach: function( assert ) {
+				assert.ok( true, "first outer beforeEach called" );
+			}
+		},
+		function() {
+			QUnit.module( "first inner", {
+					afterEach: function( assert ) {
+						assert.ok( true, "first inner module afterEach called" );
+					},
+					beforeEach: function( assert ) {
+						assert.ok( true, "first inner module beforeEach called" );
+					}
+				},
+				function() {
+					QUnit.test( "in module, before- and afterEach called in out-in-out " +
+						"order",
+						function( assert ) {
+							var module = assert.test.module;
+							assert.equal( module.name,
+								"nested modules > first outer > first inner" );
+							assert.expect( 5 );
+						});
+				});
+			QUnit.test( "test after nested module is processed", function( assert ) {
+				var module = assert.test.module;
+				assert.equal( module.name, "nested modules > first outer" );
+				assert.expect( 3 );
+			});
+			QUnit.module( "second inner" );
+			QUnit.test( "test after non-nesting module declared", function( assert ) {
+				var module = assert.test.module;
+				assert.equal( module.name, "nested modules > first outer > second inner" );
+				assert.expect( 3 );
+			});
+		});
+	QUnit.module( "second outer" );
+	QUnit.test( "test after all nesting modules processed and new module declared",
+		function( assert ) {
+			var module = assert.test.module;
+			assert.equal( module.name, "nested modules > second outer" );
+		});
+});
+
+QUnit.test( "modules with nested functions does not spread beyond", function( assert ) {
+	assert.equal( assert.test.module.name, "pre-nested modules" );
+});
