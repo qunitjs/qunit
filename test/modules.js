@@ -3,7 +3,7 @@ QUnit.module( "beforeEach/afterEach", {
 		this.lastHook = "module-beforeEach";
 	},
 	afterEach: function( assert ) {
-		if (this.hooksTest) {
+		if ( this.hooksTest ) {
 			assert.strictEqual( this.lastHook, "test-block",
 				"Module's afterEach runs after current test block" );
 			this.lastHook = "module-afterEach";
@@ -27,7 +27,7 @@ QUnit.module( "Test context object", {
 		var key,
 			keys = [];
 
-		for (key in this) {
+		for ( key in this ) {
 			keys.push( key );
 		}
 		assert.deepEqual( keys, [ "helper" ] );
@@ -151,12 +151,18 @@ QUnit.test( "before/after order", function( assert ) {
 } );
 
 QUnit.module( "1", {
+		afterEach: function( assert ) {
+			assert.ok( true, "outer module afterEach called" );
+		},
 		beforeEach: function( assert ) {
 			assert.ok( true, "outer beforeEach called" );
 		}
 	},
 	function() {
 		QUnit.module( "1.1", {
+				afterEach: function( assert ) {
+					assert.ok( true, "inner module afterEach called" );
+				},
 				beforeEach: function( assert ) {
 					assert.ok( true, "inner module beforeEach called" );
 				}
@@ -166,19 +172,19 @@ QUnit.module( "1", {
 					function( assert ) {
 						var module = assert.test.module;
 						assert.equal( module.name, "1 > 1.1" );
-						assert.expect( 3 );
+						assert.expect( 5 );
 					} );
 			} );
 		QUnit.test( "test after nested module is processed", function( assert ) {
 			var module = assert.test.module;
 			assert.equal( module.name, "1" );
-			assert.expect( 2 );
+			assert.expect( 3 );
 		} );
 		QUnit.module( "1.2" );
 		QUnit.test( "test after non-nesting module declared", function( assert ) {
 			var module = assert.test.module;
 			assert.equal( module.name, "1 > 1.2" );
-			assert.expect( 2 );
+			assert.expect( 3 );
 		} );
 	} );
 QUnit.module( "2" );
