@@ -202,6 +202,9 @@ Test.prototype = {
 			assertions: this.assertions,
 			testId: this.testId,
 
+			// Source of Test
+			source: this.stack,
+
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
 			duration: this.runtime
 		});
