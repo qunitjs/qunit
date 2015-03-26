@@ -3,13 +3,13 @@ QUnit.module( "beforeEach/afterEach", {
 		this.lastHook = "module-beforeEach";
 	},
 	afterEach: function( assert ) {
-		if ( this.hooksTest ) {
+		if (this.hooksTest) {
 			assert.strictEqual( this.lastHook, "test-block",
 				"Module's afterEach runs after current test block" );
 			this.lastHook = "module-afterEach";
 		}
 	}
-});
+} );
 
 QUnit.test( "hooks order", function( assert ) {
 	assert.expect( 2 );
@@ -20,26 +20,28 @@ QUnit.test( "hooks order", function( assert ) {
 	assert.strictEqual( this.lastHook, "module-beforeEach",
 		"Module's beforeEach runs before current test block" );
 	this.lastHook = "test-block";
-});
+} );
 
 QUnit.module( "Test context object", {
 	beforeEach: function( assert ) {
 		var key,
 			keys = [];
 
-		for ( key in this ) {
+		for (key in this) {
 			keys.push( key );
 		}
 		assert.deepEqual( keys, [ "helper" ] );
 	},
-	afterEach: function() {},
-	helper: function() {}
-});
+	afterEach: function() {
+	},
+	helper: function() {
+	}
+} );
 
 QUnit.test( "keys", function( assert ) {
 	assert.expect( 1 );
 	this.contextTest = true;
-});
+} );
 
 QUnit.module( "afterEach and QUnit.stop", {
 	beforeEach: function() {
@@ -48,31 +50,31 @@ QUnit.module( "afterEach and QUnit.stop", {
 	afterEach: function( assert ) {
 		assert.strictEqual( this.state, true, "Test afterEach." );
 	}
-});
+} );
 
 QUnit.test( "afterEach must be called after test ended", function( assert ) {
 	var testContext = this;
 	assert.expect( 1 );
 	QUnit.stop();
-	setTimeout(function() {
+	setTimeout( function() {
 		testContext.state = true;
 		QUnit.start();
-	});
-});
+	} );
+} );
 
 QUnit.test( "parameter passed to stop increments semaphore n times", function( assert ) {
 	var testContext = this;
 	assert.expect( 1 );
 	QUnit.stop( 3 );
-	setTimeout(function() {
+	setTimeout( function() {
 		QUnit.start();
 		QUnit.start();
-	});
-	setTimeout(function() {
+	} );
+	setTimeout( function() {
 		testContext.state = true;
 		QUnit.start();
 	}, 1 );
-});
+} );
 
 QUnit.test( "parameter passed to start decrements semaphore n times", function( assert ) {
 	var testContext = this;
@@ -80,43 +82,43 @@ QUnit.test( "parameter passed to start decrements semaphore n times", function( 
 	QUnit.stop();
 	QUnit.stop();
 	QUnit.stop();
-	setTimeout(function() {
+	setTimeout( function() {
 		testContext.state = true;
 		QUnit.start( 3 );
-	});
-});
+	} );
+} );
 
 QUnit.module( "async beforeEach test", {
 	beforeEach: function( assert ) {
 		QUnit.stop();
-		setTimeout(function() {
+		setTimeout( function() {
 			assert.ok( true );
 			QUnit.start();
-		});
+		} );
 	}
-});
+} );
 
 QUnit.asyncTest( "module with async beforeEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
-});
+} );
 
 QUnit.module( "async afterEach test", {
 	afterEach: function( assert ) {
 		QUnit.stop();
-		setTimeout(function() {
+		setTimeout( function() {
 			assert.ok( true );
 			QUnit.start();
-		});
+		} );
 	}
-});
+} );
 
 QUnit.asyncTest( "module with async afterEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
-});
+} );
 
 QUnit.module( "save scope", {
 	foo: "foo",
@@ -127,13 +129,13 @@ QUnit.module( "save scope", {
 	afterEach: function( assert ) {
 		assert.deepEqual( this.foo, "foobar" );
 	}
-});
+} );
 
 QUnit.test( "scope check", function( assert ) {
 	assert.expect( 3 );
 	assert.deepEqual( this.foo, "bar" );
 	this.foo = "foobar";
-});
+} );
 
 QUnit.module( "Deprecated setup/teardown", {
 	setup: function() {
@@ -142,37 +144,45 @@ QUnit.module( "Deprecated setup/teardown", {
 	teardown: function( assert ) {
 		assert.ok( this.deprecatedSetup );
 	}
-});
+} );
 
 QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
-QUnit.module("1", function () {
-	QUnit.module("1.1", {
-			beforeEach: function () {
-				this.beforeEachCalled = true;
-			}
-		},
-		function () {
-			QUnit.test("test in nested module's, beforeEach called", function (assert) {
-				var module = assert.test.module;
-				assert.equal(module.name, "1 > 1.1");
-				assert.ok(this.beforeEachCalled);
-			});
-		});
-	QUnit.test("test after nested module is processed", function (assert) {
-		var module = assert.test.module;
-		assert.equal(module.name, "1");
-	});
-	QUnit.module("1.2");
-	QUnit.test("test after non-nesting module declared", function (assert) {
-		var module = assert.test.module;
-		assert.equal(module.name, "1 > 1.2");
-	});
-});
-QUnit.module("2");
-QUnit.test("test after all nesting modules processed and new module declared", function (assert) {
+QUnit.module( "1", {
+		beforeEach: function( assert ) {
+			assert.ok( true, "outer beforeEach called" );
+		}
+	},
+	function() {
+		QUnit.module( "1.1", {
+				beforeEach: function( assert ) {
+					assert.ok( true, "inner module beforeEach called" );
+				}
+			},
+			function() {
+				QUnit.test( "test in nested module's, all 'beforeEach's called",
+					function( assert ) {
+						var module = assert.test.module;
+						assert.equal( module.name, "1 > 1.1" );
+						assert.expect( 3 );
+					} );
+			} );
+		QUnit.test( "test after nested module is processed", function( assert ) {
+			var module = assert.test.module;
+			assert.equal( module.name, "1" );
+			assert.expect( 2 );
+		} );
+		QUnit.module( "1.2" );
+		QUnit.test( "test after non-nesting module declared", function( assert ) {
+			var module = assert.test.module;
+			assert.equal( module.name, "1 > 1.2" );
+			assert.expect( 2 );
+		} );
+	} );
+QUnit.module( "2" );
+QUnit.test( "test after all nesting modules processed and new module declared", function( assert ) {
 	var module = assert.test.module;
-	assert.equal(module.name, "2");
-});
+	assert.equal( module.name, "2" );
+} );
