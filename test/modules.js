@@ -147,3 +147,32 @@ QUnit.module( "Deprecated setup/teardown", {
 QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
 });
+
+QUnit.module("1", function () {
+	QUnit.module("1.1", {
+			beforeEach: function () {
+				this.beforeEachCalled = true;
+			}
+		},
+		function () {
+			QUnit.test("test in nested module's, beforeEach called", function (assert) {
+				var module = assert.test.module;
+				assert.equal(module.name, "1 > 1.1");
+				assert.ok(this.beforeEachCalled);
+			});
+		});
+	QUnit.test("test after nested module is processed", function (assert) {
+		var module = assert.test.module;
+		assert.equal(module.name, "1");
+	});
+	QUnit.module("1.2");
+	QUnit.test("test after non-nesting module declared", function (assert) {
+		var module = assert.test.module;
+		assert.equal(module.name, "1 > 1.2");
+	});
+});
+QUnit.module("2");
+QUnit.test("test after all nesting modules processed and new module declared", function (assert) {
+	var module = assert.test.module;
+	assert.equal(module.name, "2");
+});
