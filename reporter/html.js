@@ -643,7 +643,7 @@ function stripHtml( string ) {
 QUnit.log(function( details ) {
 	var assertList, assertLi,
 		message, expected, actual, diff,
-		lengthChanged = true,
+		showDiff = false,
 		testItem = id( "qunit-test-output-" + details.testId );
 
 	if ( !testItem ) {
@@ -665,16 +665,24 @@ QUnit.log(function( details ) {
 			"</pre></td></tr>";
 
 		if ( actual !== expected ) {
-			diff = QUnit.diff( expected, actual );
-			lengthChanged = stripHtml( diff ).length !==
-				stripHtml( expected ).length +
-				stripHtml( actual ).length;
 
-			// don't show diff if expected and actual are totally different
 			message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
-				actual + "</pre></td></tr>" +
-				( lengthChanged ? "<tr class='test-diff'><th>Diff: </th><td><pre>" +
-					diff + "</pre></td></tr>" : "" );
+				actual + "</pre></td></tr>";
+
+			// Don't show diff if actual or expected are booleans
+			if ( !( /^(true|false)$/.test( actual ) ) &&
+					!( /^(true|false)$/.test( expected ) ) ) {
+				diff = QUnit.diff( expected, actual );
+				showDiff = stripHtml( diff ).length !==
+					stripHtml( expected ).length +
+					stripHtml( actual ).length;
+			}
+
+			// Don't show diff if expected and actual are totally different
+			if ( showDiff ) {
+				message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
+					diff + "</pre></td></tr>";
+			}
 		} else if ( expected.indexOf( "[object Array]" ) !== -1 ||
 				expected.indexOf( "[object Object]" ) !== -1 ) {
 			message += "<tr class='test-message'><th>Message: </th><td>" +
