@@ -150,45 +150,50 @@ QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
 } );
 
-QUnit.module( "1", {
-		afterEach: function( assert ) {
-			assert.ok( true, "outer module afterEach called" );
-		},
-		beforeEach: function( assert ) {
-			assert.ok( true, "outer beforeEach called" );
-		}
-	},
-	function() {
-		QUnit.module( "1.1", {
-				afterEach: function( assert ) {
-					assert.ok( true, "inner module afterEach called" );
-				},
-				beforeEach: function( assert ) {
-					assert.ok( true, "inner module beforeEach called" );
-				}
+QUnit.module( "nested modules", function() {
+	QUnit.module( "first outer", {
+			afterEach: function( assert ) {
+				assert.ok( true, "first outer module afterEach called" );
 			},
-			function() {
-				QUnit.test( "test in nested module's, all 'beforeEach's called",
-					function( assert ) {
-						var module = assert.test.module;
-						assert.equal( module.name, "1 > 1.1" );
-						assert.expect( 5 );
-					} );
+			beforeEach: function( assert ) {
+				assert.ok( true, "first outer beforeEach called" );
+			}
+		},
+		function() {
+			QUnit.module( "first inner", {
+					afterEach: function( assert ) {
+						assert.ok( true, "first inner module afterEach called" );
+					},
+					beforeEach: function( assert ) {
+						assert.ok( true, "first inner module beforeEach called" );
+					}
+				},
+				function() {
+					QUnit.test( "test in nested module, before- and afterEach called in out-in-out " +
+						"order",
+						function( assert ) {
+							var module = assert.test.module;
+							assert.equal( module.name,
+								"nested modules > first outer > first inner" );
+							assert.expect( 5 );
+						} );
+				} );
+			QUnit.test( "test after nested module is processed", function( assert ) {
+				var module = assert.test.module;
+				assert.equal( module.name, "nested modules > first outer" );
+				assert.expect( 3 );
 			} );
-		QUnit.test( "test after nested module is processed", function( assert ) {
-			var module = assert.test.module;
-			assert.equal( module.name, "1" );
-			assert.expect( 3 );
+			QUnit.module( "second inner" );
+			QUnit.test( "test after non-nesting module declared", function( assert ) {
+				var module = assert.test.module;
+				assert.equal( module.name, "nested modules > first outer > second inner" );
+				assert.expect( 3 );
+			} );
 		} );
-		QUnit.module( "1.2" );
-		QUnit.test( "test after non-nesting module declared", function( assert ) {
+	QUnit.module( "second outer" );
+	QUnit.test( "test after all nesting modules processed and new module declared",
+		function( assert ) {
 			var module = assert.test.module;
-			assert.equal( module.name, "1 > 1.2" );
-			assert.expect( 3 );
+			assert.equal( module.name, "nested modules > second outer" );
 		} );
-	} );
-QUnit.module( "2" );
-QUnit.test( "test after all nesting modules processed and new module declared", function( assert ) {
-	var module = assert.test.module;
-	assert.equal( module.name, "2" );
 } );

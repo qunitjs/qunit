@@ -262,8 +262,8 @@ Test.prototype = {
 
 		// `bad` initialized at top of scope
 		// defer when previous test run passed, if storage is available
-		bad = QUnit.config.reorder && defined.sessionStorage &&
-		+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
+		bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem(
+			"qunit-test-" + this.module.name + "-" + this.testName );
 
 		if ( bad ) {
 			run();
@@ -371,7 +371,7 @@ Test.prototype = {
 			return false;
 		}
 
-		if ( module && ( !this.module.name || this.module.name.toLowerCase() !== module ) ) {
+		if ( module && !testInModuleChain( this.module ) ) {
 			return false;
 		}
 
@@ -391,8 +391,18 @@ Test.prototype = {
 
 		// Otherwise, do the opposite
 		return !include;
-	}
 
+		function testInModuleChain( testModule ) {
+			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
+			if ( testModuleName === module ) {
+				return true;
+			} else if ( testModule.parentModule ) {
+				return testInModuleChain( testModule.parentModule );
+			} else {
+				return false;
+			}
+		}
+	}
 };
 
 // Resets the test setup. Useful for tests that modify the DOM.
