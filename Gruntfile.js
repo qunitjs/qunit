@@ -97,6 +97,7 @@ grunt.initConfig({
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
+			"test/reporter-html/index.html",
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html"
 		]
@@ -142,7 +143,7 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 	}
 	timeout = timeout || 1000 * 60 * 15;
 
-	[ "index", "autostart", "startError", "setTimeout" ]
+	[ "index", "autostart", "startError", "setTimeout", "reporter-html/index" ]
 		.forEach(function( suite ) {
 			runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
 		});

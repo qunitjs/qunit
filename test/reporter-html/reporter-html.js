@@ -1,3 +1,6 @@
+// The following tests need to run on their respective order
+QUnit.config.reorder = false;
+
 QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 	beforeEach: function() {
 	},
