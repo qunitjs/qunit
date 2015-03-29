@@ -50,7 +50,7 @@ grunt.initConfig({
 				"src/dump.js",
 				"src/export.js",
 				"src/outro.js",
-				"external/jsdiff/jsdiff.js",
+				"src/diff.js",
 				"reporter/html.js"
 			],
 			dest: "dist/qunit.js"
@@ -77,7 +77,7 @@ grunt.initConfig({
 		},
 		all: [
 			"<%= jshint.all %>",
-			"!test/deepEqual.js"
+			"!test/main/deepEqual.js"
 		]
 	},
 	search: {
@@ -92,7 +92,6 @@ grunt.initConfig({
 		},
 		xhtml: [
 			"src/**/*.js",
-			"external/**/*.js",
 			"reporter/**/*.js"
 		]
 	},
@@ -114,8 +113,8 @@ grunt.initConfig({
 			"test/startError.html",
 			"test/logs.html",
 			"test/setTimeout.html",
-			"test/reporter-html-legacy-markup.html",
-			"test/reporter-html-no-qunit-element.html"
+			"test/reporter-html/legacy-markup.html",
+			"test/reporter-html/no-qunit-element.html"
 		]
 	},
 	coveralls: {
@@ -136,7 +135,7 @@ grunt.initConfig({
 			".jshintrc",
 			"*.js",
 			"build/*.js",
-			"{src,test,external,reporter}/**/*.js",
+			"{src,test,reporter}/**/*.js",
 			"src/qunit.css",
 			"test/**/*.html"
 		],
@@ -227,13 +226,13 @@ grunt.registerTask( "test-on-node", function() {
 	QUnit.config.autorun = false;
 
 	require( "./test/logs" );
-	require( "./test/test" );
-	require( "./test/assert" );
-	require( "./test/async" );
-	require( "./test/promise" );
-	require( "./test/modules" );
-	require( "./test/deepEqual" );
-	require( "./test/globals" );
+	require( "./test/main/test" );
+	require( "./test/main/assert" );
+	require( "./test/main/async" );
+	require( "./test/main/promise" );
+	require( "./test/main/modules" );
+	require( "./test/main/deepEqual" );
+	require( "./test/main/globals" );
 	require( "./test/globals-node" );
 
 	QUnit.load();

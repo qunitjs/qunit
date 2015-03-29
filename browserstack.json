@@ -10,18 +10,33 @@
 	],
 	"browsers": [
 		"chrome_previous",
-		"chrome_latest",
+		"chrome_current",
 		"firefox_previous",
-		"firefox_latest",
+		"firefox_current",
+		"opera_12_1",
 		"opera_previous",
-		"opera_latest",
+		"opera_current",
+		"safari_5_1",
+		"safari_6",
 		"safari_previous",
-		"safari_latest",
+		"safari_current",
 		"ie_6",
 		"ie_7",
 		"ie_8",
 		"ie_9",
 		"ie_10",
-		"ie_11"
+		"ie_11",
+		{
+			"os": "iOS",
+			"os_version": "6.0"
+		},
+		{
+			"os": "iOS",
+			"os_version": "7.0"
+		},
+		{
+			"os": "iOS",
+			"os_version": "8.0"
+		}
 	]
 }

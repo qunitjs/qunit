@@ -21,6 +21,9 @@ var i,
 	// by default, scroll to top of the page when suite is done
 	scrolltop: true,
 
+	// depth up-to which object will be dumped
+	maxDepth: 5,
+
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 

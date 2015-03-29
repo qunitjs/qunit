@@ -5,8 +5,7 @@ var toString = Object.prototype.toString,
 		return new Date().getTime();
 	},
 	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout,
-	location = window.location || { search: "", protocol: "file:" };
+	clearTimeout = window.clearTimeout;
 
 // returns a new Array with the elements that are in a but not in b
 function diff( a, b ) {

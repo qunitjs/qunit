@@ -9,11 +9,6 @@ QUnit = {};
 
 QUnit.urlParams = getUrlParams();
 
-QUnit.isLocal = location.protocol === "file:";
-
-// Expose the current QUnit version
-QUnit.version = "@VERSION";
-
 // Root QUnit object.
 // `QUnit` initialized at top of scope
 extend( QUnit, {
