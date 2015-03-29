@@ -6,11 +6,17 @@ var QUnit,
 	Date = window.Date,
 	now = Date.now || function() {
 		return new Date().getTime();
-	};
+	},
+	location = window.location || { search: "", protocol: "file:" };
 
 QUnit = {};
 
 QUnit.urlParams = urlParams;
+
+QUnit.isLocal = location.protocol === "file:";
+
+// Expose the current QUnit version
+QUnit.version = "@VERSION";
 
 extend( QUnit, {
 
