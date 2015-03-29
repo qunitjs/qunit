@@ -3,8 +3,7 @@
  * Later exposed as QUnit.config
  * `config` initialized at top of scope
  */
-var i,
-	config = {
+var config = {
 	// The queue of tests to run
 	queue: [],
 
@@ -76,7 +75,7 @@ config.testId = [];
 if ( urlParams.testId ) {
 	// Ensure that urlParams.testId is an array
 	urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
-	for (i = 0; i < urlParams.testId.length; i++ ) {
+	for (var i = 0; i < urlParams.testId.length; i++ ) {
 		config.testId.push( urlParams.testId[ i ] );
 	}
 }
