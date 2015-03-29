@@ -1,16 +1,17 @@
 var QUnit,
 	onErrorFnPrev,
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
-	// Keep a local reference to Date (GH-283)
 	globalStartCalled = false,
-	runStarted = false;
+	runStarted = false,
+	Date = window.Date,
+	now = Date.now || function() {
+		return new Date().getTime();
+	};
 
 QUnit = {};
 
-QUnit.urlParams = getUrlParams();
+QUnit.urlParams = urlParams;
 
-// Root QUnit object.
-// `QUnit` initialized at top of scope
 extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
@@ -105,7 +106,6 @@ extend( QUnit, {
 
 	config: config,
 
-	// Safe object type checking
 	is: is,
 
 	objectType: objectType,
@@ -133,8 +133,7 @@ extend( QUnit, {
 	}
 });
 
-// Registers logging callbacks
-extend( QUnit, registerLoggingCallbacks() );
+registerLoggingCallbacks(QUnit);
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers

@@ -1,9 +1,5 @@
 var toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
-	Date = window.Date,
-	now = Date.now || function() {
-		return new Date().getTime();
-	},
 	setTimeout = window.setTimeout,
 	clearTimeout = window.clearTimeout;
 
@@ -109,6 +105,7 @@ function objectType( obj ) {
 	return undefined;
 }
 
+// Safe object type checking
 function is( type, obj ) {
 	return QUnit.objectType( obj ) === type;
 }
@@ -140,7 +137,7 @@ var getUrlParams = function() {
 
 var defined = {
 	document: window.document !== undefined,
-	setTimeout: window.setTimeout !== undefined,
+	setTimeout: setTimeout !== undefined,
 	sessionStorage: (function() {
 		var x = "qunit-test-string";
 		try {

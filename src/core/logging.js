@@ -1,11 +1,10 @@
 var loggingCallbacks = {};
 
 // Register logging callbacks
-function registerLoggingCallbacks() {
+function registerLoggingCallbacks( obj ) {
 	var i, l, key,
 		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
-			"moduleStart", "moduleDone" ],
-		callbacks = {};
+			"moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {
 		var loggingCallback = function( callback ) {
@@ -34,10 +33,8 @@ function registerLoggingCallbacks() {
 			config.callbacks[ key ] = [];
 		}
 
-		callbacks[ key ] = registerLoggingCallback( key );
+		obj[ key ] = registerLoggingCallback( key );
 	}
-
-	return callbacks;
 }
 
 function runLoggingCallbacks( key, args ) {
