@@ -18,6 +18,54 @@
 		};
 
 	(function() {
+		/**
+		 * @param {HTMLElement} elem
+		 * @param {string} type
+		 * @param {Function} fn
+		 */
+		function addEvent( elem, type, fn ) {
+			if ( elem.addEventListener ) {
+
+				// Standards-based browsers
+				elem.addEventListener( type, fn, false );
+			} else if ( elem.attachEvent ) {
+
+				// support: IE <9
+				elem.attachEvent( "on" + type, function() {
+					var event = window.event;
+					if ( !event.target ) {
+						event.target = event.srcElement || document;
+					}
+
+					fn.call( elem, event );
+				});
+			}
+		}
+
+		/**
+		 * @param {HTMLElement} elem
+		 * @param {string} type
+		 * @param {Function} fn
+		 */
+		function removeEvent( elem, type, fn ) {
+			if ( elem.removeEventListener ) {
+
+				// Standards-based browsers
+				elem.removeEventListener( type, fn, false );
+			} else if ( elem.detachEvent ) {
+
+				// support: IE <9
+				elem.detachEvent( "on" + type, function() {
+					var event = window.event;
+					if ( !event.target ) {
+						event.target = event.srcElement || document;
+					}
+
+					fn.call( elem, event );
+				});
+			}
+		}
+
 		var now = Date.now || function() {
 			return new Date().getTime();
 		};
@@ -35,10 +83,16 @@
 			document.getElementsByTagName( "head" )[0].appendChild( script );
 		}, asyncDelay );
 
-		QUnit.load = (function( _load ) {
+		// Unregister old load function load
+		removeEvent( window, "load", QUnit.load );
+
+		// register new load function
+		addEvent( window, "load", function(){
 			times.pageLoaded = now();
-			_load.call( QUnit );
-		})( QUnit.load );
+			QUnit.load();
+		} );
+
+
 
 		QUnit.begin(function( data ) {
 			beginData = data;
