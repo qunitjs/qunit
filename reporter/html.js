@@ -64,6 +64,7 @@ if ( typeof window === "undefined" ) {
 
 var config = QUnit.config,
 	hasOwn = Object.prototype.hasOwnProperty,
+	focus = false,
 	defined = {
 		document: window.document !== undefined,
 		sessionStorage: (function() {
@@ -307,7 +308,7 @@ function applyUrlParams() {
 	window.location = setUrl({
 		module: ( selectedModule === "" ) ? undefined : selectedModule,
 		filter: ( filter === "" ) ? undefined : filter,
-
+		focus: ( focus === false ) ? undefined : "true",
 		// Remove testId filter
 		testId: undefined
 	});
@@ -342,6 +343,16 @@ function toolbarLooseFilter() {
 	input.value = config.filter || "";
 	input.name = "filter";
 	input.id = "qunit-filter-input";
+	input.onkeyup = function( ev ) {
+		focus = true;
+		applyUrlParams();
+
+		if ( ev && ev.preventDefault ) {
+			ev.preventDefault();
+		}
+
+		return false;
+	};
 
 	button.innerHTML = "Go";
 
@@ -350,6 +361,7 @@ function toolbarLooseFilter() {
 	filter.appendChild( label );
 	filter.appendChild( button );
 	addEvent( filter, "submit", function( ev ) {
+		focus = false;
 		applyUrlParams();
 
 		if ( ev && ev.preventDefault ) {
@@ -421,7 +433,7 @@ function appendHeader() {
 
 	if ( header ) {
 		header.innerHTML = "<a href='" +
-			setUrl({ filter: undefined, module: undefined, testId: undefined }) +
+			setUrl({ filter: undefined, module: undefined, testId: undefined, focus: undefined }) +
 			"'>" + header.innerHTML + "</a> ";
 	}
 }
@@ -541,6 +553,10 @@ QUnit.begin(function( details ) {
 	appendToolbar();
 	appendTestsList( details.modules );
 	toolbarModuleFilter();
+
+	if ( ( QUnit.urlParams.filter ) && ( QUnit.urlParams.focus === "true" ) ) {
+		id( "qunit-filter-input" ).focus();
+	}
 
 	if ( qunit && config.hidepassed ) {
 		addClass( qunit.lastChild, "hidepass" );
