@@ -157,15 +157,22 @@ QUnit.test( "Objects basics", function( assert ) {
 });
 
 QUnit.test( "Typed arrays", function( assert ) {
-	assert.equal( QUnit.equiv( new Uint8Array(0), new Uint8Array(4) ), false );
-	assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(0) ), false );
-	assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(4) ), true );
-	assert.equal( QUnit.equiv( new Uint8Array(new Uint8Array(4)), new Uint8Array(new Uint8Array(4)) ), true );
+	// Check if typed arrays are supported
+	if ( typeof( Int8Array ) === "function" ) {
+		// Compare typed arrays with typed arrays
+		assert.equal( QUnit.equiv( new Uint8Array(0), new Uint8Array(4) ), false );
+		assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(0) ), false );
+		assert.equal( QUnit.equiv( new Uint8Array(4), new Uint8Array(4) ), true );
+		assert.equal( QUnit.equiv( new Uint8Array(new Uint8Array(4)), new Uint8Array(new Uint8Array(4)) ), true );
 
-	assert.equal( QUnit.equiv( new Uint8Array(4), [] ), false, "typed array vs standard array" );
-	assert.equal( QUnit.equiv( new Uint8Array(4), [0, 0, 0, 0] ), true, "typed array vs standard array" );
-	assert.equal( QUnit.equiv( [0, 0, 0, 0], new Uint8Array(4) ), true, "typed array vs standard array" );
-	assert.equal( QUnit.equiv( [0, 1, 0, 0], new Uint8Array(4) ), false, "typed array vs standard array" );
+		// Compare typed arrays with standard arrays
+		assert.equal( QUnit.equiv( new Uint8Array(4), [] ), false, "typed array vs standard array" );
+		assert.equal( QUnit.equiv( new Uint8Array(4), [0, 0, 0, 0] ), true, "typed array vs standard array" );
+		assert.equal( QUnit.equiv( [0, 0, 0, 0], new Uint8Array(4) ), true, "typed array vs standard array" );
+		assert.equal( QUnit.equiv( [0, 1, 0, 0], new Uint8Array(4) ), false, "typed array vs standard array" );
+	} else {
+		assert.expect(0);
+	}
 
 });
 
