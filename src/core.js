@@ -17,6 +17,7 @@ var QUnit,
 	defined = {
 		document: window.document !== undefined,
 		setTimeout: window.setTimeout !== undefined,
+		typedArray: typeof( Int8Array ) === "function",
 		sessionStorage: (function() {
 			var x = "qunit-test-string";
 			try {
@@ -348,13 +349,13 @@ extend( QUnit, {
 				return type.toLowerCase();
 		}
 		if ( typeof obj === "object" ) {
-			if ( obj instanceof Int8Array ||
-				obj instanceof Uint8Array ||
-				obj instanceof Int16Array ||
-				obj instanceof Uint16Array ||
-				obj instanceof Int32Array ||
-				obj instanceof Uint32Array ||
-				obj instanceof Float32Array ) {
+			if ( defined.typedArray && obj instanceof Int8Array ||
+					obj instanceof Uint8Array ||
+					obj instanceof Int16Array ||
+					obj instanceof Uint16Array ||
+					obj instanceof Int32Array ||
+					obj instanceof Uint32Array ||
+					obj instanceof Float32Array ) {
 				return "typedarray";
 			}
 
