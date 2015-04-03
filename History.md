@@ -1,3 +1,23 @@
+1.18.0 / 2015-04-03
+==================
+
+  * Assert: throws uses push method only
+  * Assert: Fix missing test on exported throws
+  * Assert: Implements notOk to assert falsy values
+  * Core: More graceful handling of AMD
+  * Core: Simplify stack trace methods
+  * Core: Expose Dump maxDepth property
+  * Core: Expose QUnit version as QUnit.version property
+  * Core: Handle multiple testId parameters
+  * Dump: Fix .name/.property doublettes
+  * HTML Reporter: New diff using Google's Diff-Patch-Match Library
+  * HTML Reporter: Make it more obvious why diff is suppressed.
+  * HTML Reporter: Change display text for bad tests
+  * HTML Reporter: Fix checkbox and select handling in IE <9
+  * HTML Reporter: Fix test filter without any module
+  * HTML Reporter: Retain failed tests numbers
+  * Test: lowercase the valid test filter before using it
+
 1.17.1 / 2015-01-20
 ==================
 

@@ -1,3 +1,5 @@
+Authors ordered by first contribution
+
 Jörn Zaefferer <joern.zaefferer@gmail.com>
 Ariel Flesler <aflesler@gmail.com>
 Scott González <scott.gonzalez@gmail.com>
@@ -79,7 +81,7 @@ Leonardo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
 Corey Frang <gnarf37@gmail.com>
 Nathan Dauber <nathan@radialogica.com>
-Michał Gołębiowski <m.goleb@gmail.com>
+Michał Gołębiowski <m.goleb@gmail.com>
 XhmikosR <xhmikosr@yahoo.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
@@ -93,3 +95,10 @@ Mislav Marohnić <mislav.marohnic@gmail.com>
 Anne-Gaelle Colom <coloma@westminster.ac.uk>
 Leonardo Braga <leonardo.braga@gmail.com>
 Jon Bretman <jon.bretman@lyst.com>
+Jonny Buchanan <jonathan.buchanan@gmail.com>
+Adrian Phinney <adrian.phinney@gmail.com>
+Lam Chau <lamchau@gmail.com>
+Henning Beyer <bubens@unpunk.de>
+Jesús Leganés Combarro <piranna@gmail.com>
+Shivam Dixit <shivamd001@gmail.com>
+Gaurav Mittal <gaurav.mittal@students.iiit.ac.in>
