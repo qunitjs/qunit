@@ -96,6 +96,7 @@ grunt.initConfig({
 			"test/startError.html",
 			"test/logs.html",
 			"test/setTimeout.html",
+			"test/amd.html",
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html"
 		]
