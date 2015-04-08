@@ -32,7 +32,7 @@
     "LICENSE.txt"
   ],
   "dependencies": {
-    "qunit-reporter-stdout": "0.1.0"
+    "qunit-reporter-stdout": "0.2.0"
   },
   "devDependencies": {
     "browserstack-runner": "0.2.2",
