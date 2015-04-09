@@ -6,7 +6,8 @@
 		"test/index.html",
 		"test/startError.html",
 		"test/logs.html",
-		"test/setTimeout.html"
+		"test/setTimeout.html",
+		"test/amd.html"
 	],
 	"browsers": [
 		"chrome_previous",
