@@ -755,7 +755,7 @@ QUnit.testDone(function( details ) {
 		testItem.insertBefore( time, assertList );
 	}
 
-	// Only add this information if stackTrace is supported
+	// Show the source of the test when showing assertions
 	if ( details.source ) {
 		sourceName = document.createElement( "p" );
 		sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
