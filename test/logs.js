@@ -100,10 +100,21 @@ QUnit.test( module1Test1.name, function( assert ) {
 	assert.equal( testDone, 0, "QUnit.testDone calls" );
 	assert.equal( moduleDone, 0, "QUnit.moduleDone calls" );
 
-	assert.ok(
-		/test\/logs\.js/.test( logContext.source ),
-		"log assertion stacktrace"
-	);
+	if ( logContext.source ) {
+		assert.ok(
+			/test\/logs\.js/.test( logContext.source ),
+			"log assertion stacktrace"
+		);
+	} else {
+
+		// If stacktrace is not supported, confirm that both source and
+		// QUnit.stack() return the same thing.
+		assert.strictEqual(
+			logContext.source,
+			QUnit.stack(),
+			"empty assertion for non supported browsers"
+		);
+	}
 
 	assert.equal(
 		logContext.runtime >= 0 && logContext.runtime < 50,
