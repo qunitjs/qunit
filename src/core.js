@@ -385,7 +385,7 @@ extend( QUnit, {
 	},
 
 	stack: function( offset ) {
-		offset = offset || 2;
+		offset = ( offset || 0 ) + 2;
 		return sourceFromStacktrace( offset );
 	}
 });
