@@ -6,7 +6,7 @@
 	// Flag this test as skipped on browsers that doesn't support stack trace
 	QUnit[ stack ? "test" : "skip" ]( "returns the proper stack line", function( assert ) {
 		assert.ok( /\/test\/main\/stack\.js/.test( stack ) );
-		assert.ok( /\/test\/main\/stack\.js/.test( QUnit.stack( 0 ) ), "0 is the default offset" );
+		assert.equal( QUnit.stack( 0 ), "" );
 
 		stack = QUnit.stack( 2 );
 		assert.ok( stack, "can use offset argument to return a different stacktrace line" );
