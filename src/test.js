@@ -263,32 +263,22 @@ Test.prototype = {
 	},
 
 	push: function( result, actual, expected, message ) {
-		var source,
-			details = {
-				module: this.module.name,
-				name: this.testName,
-				result: result,
-				message: message,
-				actual: actual,
-				expected: expected,
-				testId: this.testId,
-				runtime: now() - this.started
-			};
+		runLoggingCallbacks( "log", {
+			module: this.module.name,
+			name: this.testName,
+			result: result,
+			message: message,
+			actual: actual,
+			expected: expected,
+			testId: this.testId,
+			runtime: now() - this.started,
+			source: sourceFromStacktrace()
+		} );
 
-		if ( !result ) {
-			source = sourceFromStacktrace();
-
-			if ( source ) {
-				details.source = source;
-			}
-		}
-
-		runLoggingCallbacks( "log", details );
-
-		this.assertions.push({
+		this.assertions.push( {
 			result: !!result,
 			message: message
-		});
+		} );
 	},
 
 	pushFailure: function( message, source, actual ) {
