@@ -8,6 +8,7 @@
 		"test/logs.html",
 		"test/setTimeout.html",
 		"test/amd.html",
+		"test/autostart.html",
 		"test/reporter-html/index.html"
 	],
 	"browsers": [

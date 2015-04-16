@@ -10,35 +10,26 @@
 	<script src="../dist/qunit.js"></script>
 	<script>
 	var beginData,
-		asyncDelay = 1000,
-		times = {
-			autostartOff: 0,
-			pageLoaded: 0,
-			runStarted: 0
-		};
+		times = {};
 
 	(function() {
 		var now = Date.now || function() {
 			return new Date().getTime();
 		};
+		var asyncDelay = 1000;
 
 		QUnit.config.autostart = false;
 
 		// Mark the current time
-		times.autostartOff = now();
+		times.autostartOff = now() + asyncDelay;
 
 		// Simulate a delay in loading the tests, as when they are loaded
 		// asynchronously using requirejs, steal, etc.
 		setTimeout(function() {
 			var script = document.createElement( "script" );
 			script.src = "autostart.js";
-			document.getElementsByTagName( "head" )[0].appendChild( script );
+			document.getElementsByTagName( "head" )[ 0 ].appendChild( script );
 		}, asyncDelay );
-
-		QUnit.load = (function( _load ) {
-			times.pageLoaded = now();
-			_load.call( QUnit );
-		})( QUnit.load );
 
 		QUnit.begin(function( data ) {
 			beginData = data;
