@@ -178,16 +178,6 @@ QUnit.assert = Assert.prototype = {
 	Assert.prototype.raises = Assert.prototype[ "throws" ];
 }());
 
-/**
- * Provides a normalized error string, correcting an issue
- * with IE 7 (and prior) where Error.prototype.toString is
- * not properly implemented
- *
- * Based on http://es5.github.com/#x15.11.4.4
- *
- * @param {String|Error} error
- * @return {String} error message
- */
 function errorString( error ) {
 	var name, message,
 		resultErrorString = error.toString();

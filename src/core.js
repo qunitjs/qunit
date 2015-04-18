@@ -139,7 +139,7 @@ extend( QUnit, {
 	}
 });
 
-registerLoggingCallbacks(QUnit);
+registerLoggingCallbacks( QUnit );
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
