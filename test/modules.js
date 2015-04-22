@@ -9,7 +9,7 @@ QUnit.module( "beforeEach/afterEach", {
 			this.lastHook = "module-afterEach";
 		}
 	}
-} );
+});
 
 QUnit.test( "hooks order", function( assert ) {
 	assert.expect( 2 );
@@ -20,7 +20,7 @@ QUnit.test( "hooks order", function( assert ) {
 	assert.strictEqual( this.lastHook, "module-beforeEach",
 		"Module's beforeEach runs before current test block" );
 	this.lastHook = "test-block";
-} );
+});
 
 QUnit.module( "Test context object", {
 	beforeEach: function( assert ) {
@@ -32,16 +32,14 @@ QUnit.module( "Test context object", {
 		}
 		assert.deepEqual( keys, [ "helper" ] );
 	},
-	afterEach: function() {
-	},
-	helper: function() {
-	}
-} );
+	afterEach: function() {},
+	helper: function() {}
+});
 
 QUnit.test( "keys", function( assert ) {
 	assert.expect( 1 );
 	this.contextTest = true;
-} );
+});
 
 QUnit.module( "afterEach and QUnit.stop", {
 	beforeEach: function() {
@@ -50,31 +48,31 @@ QUnit.module( "afterEach and QUnit.stop", {
 	afterEach: function( assert ) {
 		assert.strictEqual( this.state, true, "Test afterEach." );
 	}
-} );
+});
 
 QUnit.test( "afterEach must be called after test ended", function( assert ) {
 	var testContext = this;
 	assert.expect( 1 );
 	QUnit.stop();
-	setTimeout( function() {
+	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start();
-	} );
-} );
+	});
+});
 
 QUnit.test( "parameter passed to stop increments semaphore n times", function( assert ) {
 	var testContext = this;
 	assert.expect( 1 );
 	QUnit.stop( 3 );
-	setTimeout( function() {
+	setTimeout(function() {
 		QUnit.start();
 		QUnit.start();
-	} );
-	setTimeout( function() {
+	});
+	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start();
 	}, 1 );
-} );
+});
 
 QUnit.test( "parameter passed to start decrements semaphore n times", function( assert ) {
 	var testContext = this;
@@ -82,43 +80,43 @@ QUnit.test( "parameter passed to start decrements semaphore n times", function( 
 	QUnit.stop();
 	QUnit.stop();
 	QUnit.stop();
-	setTimeout( function() {
+	setTimeout(function() {
 		testContext.state = true;
 		QUnit.start( 3 );
-	} );
-} );
+	});
+});
 
 QUnit.module( "async beforeEach test", {
 	beforeEach: function( assert ) {
 		QUnit.stop();
-		setTimeout( function() {
+		setTimeout(function() {
 			assert.ok( true );
 			QUnit.start();
-		} );
+		});
 	}
-} );
+});
 
 QUnit.asyncTest( "module with async beforeEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
-} );
+});
 
 QUnit.module( "async afterEach test", {
 	afterEach: function( assert ) {
 		QUnit.stop();
-		setTimeout( function() {
+		setTimeout(function() {
 			assert.ok( true );
 			QUnit.start();
-		} );
+		});
 	}
-} );
+});
 
 QUnit.asyncTest( "module with async afterEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
 	QUnit.start();
-} );
+});
 
 QUnit.module( "save scope", {
 	foo: "foo",
@@ -129,13 +127,13 @@ QUnit.module( "save scope", {
 	afterEach: function( assert ) {
 		assert.deepEqual( this.foo, "foobar" );
 	}
-} );
+});
 
 QUnit.test( "scope check", function( assert ) {
 	assert.expect( 3 );
 	assert.deepEqual( this.foo, "bar" );
 	this.foo = "foobar";
-} );
+});
 
 QUnit.module( "Deprecated setup/teardown", {
 	setup: function() {
@@ -144,11 +142,11 @@ QUnit.module( "Deprecated setup/teardown", {
 	teardown: function( assert ) {
 		assert.ok( this.deprecatedSetup );
 	}
-} );
+});
 
 QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
-} );
+});
 
 QUnit.module( "nested modules", function() {
 	QUnit.module( "first outer", {
@@ -176,24 +174,24 @@ QUnit.module( "nested modules", function() {
 							assert.equal( module.name,
 								"nested modules > first outer > first inner" );
 							assert.expect( 5 );
-						} );
-				} );
+						});
+				});
 			QUnit.test( "test after nested module is processed", function( assert ) {
 				var module = assert.test.module;
 				assert.equal( module.name, "nested modules > first outer" );
 				assert.expect( 3 );
-			} );
+			});
 			QUnit.module( "second inner" );
 			QUnit.test( "test after non-nesting module declared", function( assert ) {
 				var module = assert.test.module;
 				assert.equal( module.name, "nested modules > first outer > second inner" );
 				assert.expect( 3 );
-			} );
-		} );
+			});
+		});
 	QUnit.module( "second outer" );
 	QUnit.test( "test after all nesting modules processed and new module declared",
 		function( assert ) {
 			var module = assert.test.module;
 			assert.equal( module.name, "nested modules > second outer" );
-		} );
-} );
+		});
+});

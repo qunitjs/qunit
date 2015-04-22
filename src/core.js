@@ -2,15 +2,14 @@ var QUnit,
 	config,
 	onErrorFnPrev,
 	loggingCallbacks = {},
-	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//,
-		"" ),
+	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
 	toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty,
-// Keep a local reference to Date (GH-283)
+	// Keep a local reference to Date (GH-283)
 	Date = window.Date,
 	now = Date.now || function() {
-			return new Date().getTime();
-		},
+		return new Date().getTime();
+	},
 	globalStartCalled = false,
 	runStarted = false,
 	setTimeout = window.setTimeout,
@@ -24,8 +23,7 @@ var QUnit,
 				sessionStorage.setItem( x, x );
 				sessionStorage.removeItem( x );
 				return true;
-			}
-			catch ( e ) {
+			} catch ( e ) {
 				return false;
 			}
 		}())
@@ -117,13 +115,13 @@ config = {
 			id: "noglobals",
 			label: "Check for Globals",
 			tooltip: "Enabling this will test if any test introduces new properties on the " +
-			"`window` object. Stored as query-strings."
+				"`window` object. Stored as query-strings."
 		},
 		{
 			id: "notrycatch",
 			label: "No try-catch",
 			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
-			"exceptions in IE reasonable. Stored as query-strings."
+				"exceptions in IE reasonable. Stored as query-strings."
 		}
 	],
 
@@ -269,12 +267,12 @@ extend( QUnit, {
 			expected = null;
 		}
 
-		test = new Test( {
+		test = new Test({
 			testName: testName,
 			expected: expected,
 			async: async,
 			callback: callback
-		} );
+		});
 
 		test.queue();
 	},
@@ -302,7 +300,7 @@ extend( QUnit, {
 				throw new Error( "Called start() outside of a test context too many times" );
 			} else if ( config.autostart ) {
 				throw new Error( "Called start() outside of a test context when " +
-				"QUnit.config.autostart was true" );
+					"QUnit.config.autostart was true" );
 			} else if ( !config.pageLoaded ) {
 
 				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
@@ -415,7 +413,7 @@ extend( QUnit, {
 (function() {
 	var i, l, key,
 		callbacks = [ "begin", "done", "log", "testStart", "testDone",
-		              "moduleStart", "moduleDone" ];
+			"moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {
 		var loggingCallback = function( callback ) {
@@ -470,7 +468,7 @@ window.onerror = function( error, filePath, linerNr ) {
 			}
 			QUnit.pushFailure( error, filePath + ":" + linerNr );
 		} else {
-			QUnit.test( "global failure", extend( function() {
+			QUnit.test( "global failure", extend(function() {
 				QUnit.pushFailure( error, filePath + ":" + linerNr );
 			}, { validTest: true } ) );
 		}
@@ -494,7 +492,7 @@ function done() {
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
 			runtime: now() - config.moduleStats.started
-		} );
+		});
 	}
 	delete config.previousModule;
 
@@ -558,8 +556,7 @@ function sourceFromStacktrace( offset ) {
 	if ( !e.stack ) {
 		try {
 			throw e;
-		}
-		catch ( err ) {
+		} catch ( err ) {
 			// This should already be true in most browsers
 			e = err;
 		}
@@ -585,13 +582,12 @@ function process( last ) {
 	function next() {
 		process( last );
 	}
-
 	var start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
 	while ( config.queue.length && !config.blocking ) {
 		if ( !defined.setTimeout || config.updateRate <= 0 ||
-			( ( now() - start ) < config.updateRate ) ) {
+				( ( now() - start ) < config.updateRate ) ) {
 			if ( config.current ) {
 
 				// Reset async tracking for each phase of the Test lifecycle
@@ -628,17 +624,17 @@ function begin() {
 
 		// Avoid unnecessary information by not logging modules' test environments
 		for ( i = 0, l = config.modules.length; i < l; i++ ) {
-			modulesLog.push( {
+			modulesLog.push({
 				name: config.modules[ i ].name,
 				tests: config.modules[ i ].tests
-			} );
+			});
 		}
 
 		// The test run is officially beginning now
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
-		} );
+		});
 	}
 
 	config.blocking = false;
@@ -650,7 +646,7 @@ function resumeProcessing() {
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
-		setTimeout( function() {
+		setTimeout(function() {
 			if ( config.current && config.current.semaphore > 0 ) {
 				return;
 			}
@@ -670,7 +666,7 @@ function pauseProcessing() {
 
 	if ( config.testTimeout && defined.setTimeout ) {
 		clearTimeout( config.timeout );
-		config.timeout = setTimeout( function() {
+		config.timeout = setTimeout(function() {
 			if ( config.current ) {
 				config.current.semaphore = 0;
 				QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
