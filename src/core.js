@@ -278,10 +278,10 @@ extend( QUnit, {
 	},
 
 	skip: function( testName ) {
-		var test = new Test( {
+		var test = new Test({
 			testName: testName,
 			skip: true
-		} );
+		});
 
 		test.queue();
 	},
@@ -407,7 +407,7 @@ extend( QUnit, {
 			resumeProcessing();
 		}
 	}
-} );
+});
 
 // Register logging callbacks
 (function() {
@@ -504,7 +504,7 @@ function done() {
 		passed: passed,
 		total: config.stats.all,
 		runtime: runtime
-	} );
+	});
 }
 
 // Doesn't support IE6 to IE9

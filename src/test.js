@@ -106,7 +106,7 @@ Test.prototype = {
 			runTest( this );
 		} catch ( e ) {
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
-			this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
+				this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
 			// else next test will carry the responsibility
 			saveGlobal();
@@ -260,7 +260,7 @@ Test.prototype = {
 		// `bad` initialized at top of scope
 		// defer when previous test run passed, if storage is available
 		bad = QUnit.config.reorder && defined.sessionStorage &&
-				+sessionStorage.getItem("qunit-test-" + this.module.name + "-" + this.testName );
+				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		if ( bad ) {
 			run();
@@ -338,8 +338,8 @@ Test.prototype = {
 					QUnit.start,
 					function( error ) {
 						message = "Promise rejected " +
-						( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
-						" " + test.testName + ": " + ( error.message || error );
+							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+							" " + test.testName + ": " + ( error.message || error );
 						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
 						// else next test will carry the responsibility
