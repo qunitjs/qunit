@@ -1,5 +1,10 @@
 (function() {
 
+// Don't load the HTML Reporter on non-Browser environments
+if ( typeof window === "undefined" || !window.document ) {
+	return;
+}
+
 // Deprecated QUnit.init - Ref #530
 // Re-initialize the configuration options
 QUnit.init = function() {
@@ -56,11 +61,6 @@ QUnit.init = function() {
 		result.innerHTML = "Running...<br />&#160;";
 	}
 };
-
-// Don't load the HTML Reporter on non-Browser environments
-if ( typeof window === "undefined" ) {
-	return;
-}
 
 var config = QUnit.config,
 	hasOwn = Object.prototype.hasOwnProperty,

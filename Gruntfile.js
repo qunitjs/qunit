@@ -140,6 +140,8 @@ grunt.registerTask( "test-on-node", function() {
 		done = this.async(),
 		QUnit = require( "./dist/qunit" );
 
+	global.QUnit = QUnit;
+
 	QUnit.testStart(function() {
 		testActive = true;
 	});
@@ -178,7 +180,6 @@ grunt.registerTask( "test-on-node", function() {
 	require( "./test/main/promise" );
 	require( "./test/main/modules" );
 	require( "./test/main/deepEqual" );
-	require( "./test/main/globals" );
 	require( "./test/main/stack" );
 	require( "./test/globals-node" );
 
