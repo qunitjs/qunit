@@ -293,3 +293,9 @@
 	width: 1000px;
 	height: 1000px;
 }
+
+/** Diff */
+
+.blob-code {
+	background-color: #ebebeb;
+}

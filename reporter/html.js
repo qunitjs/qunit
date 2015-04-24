@@ -63,6 +63,8 @@ if ( typeof window === "undefined" ) {
 }
 
 var config = QUnit.config,
+	depthExpand = 0,
+	expanderiator = 0,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
@@ -610,6 +612,83 @@ function getNameHtml( name, module ) {
 	return nameHtml;
 }
 
+function expandingDiff( diff ) {
+	var i, j, diffStr, tempArray, finalDiff,
+		childArray, parentArray;
+
+	diffStr = diff.split("<del>");
+	tempArray = [];
+	for (i = 0; i < diffStr.length; i++) {
+		parentArray = [];
+		if (diffStr[i].indexOf("</del>") > -1) {
+			diffStr[i] = "<del>" + diffStr[i];
+			parentArray = diffStr[i].split("</del>");
+			parentArray[0] = parentArray[0] + "</del>";
+			tempArray.push(parentArray[0]);
+			tempArray.push(parentArray[1]);
+		} else {
+			tempArray.push(diffStr[i]);
+		}
+	}
+
+	diffStr = tempArray;
+	tempArray = [];
+	childArray = [];
+	for (i = 0; i < diffStr.length; i++) {
+		parentArray = [];
+		if (diffStr[i].indexOf("<ins>") > -1) {
+			parentArray = diffStr[i].split("<ins>");
+			for (j = 0; j < parentArray.length; j++) {
+				childArray = [];
+				if (parentArray[j].indexOf("</ins>") > -1) {
+					parentArray[j] = "<ins>" + parentArray[j];
+					childArray = parentArray[j].split("</ins>");
+					childArray[0] = childArray[0] + "</ins>";
+					tempArray.push(childArray[0]);
+					tempArray.push(childArray[1]);
+				} else {
+					tempArray.push(parentArray[j]);
+				}
+			}
+		} else {
+			tempArray.push(diffStr[i]);
+		}
+	}
+
+	diffStr = tempArray;
+	tempArray = [];
+	for (i = 0; i < diffStr.length; i++ ) {
+		if ( (diffStr[i].indexOf("<del>") > -1) || (diffStr[i].indexOf("<ins>") > -1) ) {
+			tempArray.push(diffStr[i]);
+		} else if (diffStr[i] !== "") {
+			parentArray = diffStr[i].split("\n");
+			if (parentArray.length > 5) {
+				parentArray[1] = parentArray[1] + " <span id='expander-" + (depthExpand) +
+						"'><strong>[+]</strong></span>";
+				parentArray[2] = "<span class='qunit-collapsed blob-code' id='expanding-" +
+						(depthExpand++) + "'>" + parentArray[2];
+				parentArray[parentArray.length - 3] = parentArray[parentArray.length - 3] +
+								"</span>";
+				for (j = 0; j < parentArray.length; j++) {
+					tempArray.push(parentArray[j]);
+					if (j !== parentArray.length - 1) {
+						tempArray.push("\n");
+					}
+				}
+			} else {
+				tempArray.push(diffStr[i]);
+			}
+		}
+	}
+
+	diffStr = tempArray;
+	finalDiff = "";
+	for (i = 0;i < diffStr.length; i++) {
+		finalDiff += diffStr[i];
+	}
+	return finalDiff;
+}
+
 QUnit.testStart(function( details ) {
 	var running, testBlock, bad;
 
@@ -636,7 +715,7 @@ QUnit.testStart(function( details ) {
 });
 
 QUnit.log(function( details ) {
-	var assertList, assertLi,
+	var assertList, assertLi, diff,
 		message, expected, actual,
 		testItem = id( "qunit-test-output-" + details.testId );
 
@@ -654,6 +733,10 @@ QUnit.log(function( details ) {
 	if ( !details.result && hasOwn.call( details, "expected" ) ) {
 		expected = escapeText( QUnit.dump.parse( details.expected ) );
 		actual = escapeText( QUnit.dump.parse( details.actual ) );
+
+		diff = QUnit.diff( expected, actual );
+		diff = expandingDiff(diff);
+
 		message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +
 			expected +
 			"</pre></td></tr>";
@@ -662,7 +745,7 @@ QUnit.log(function( details ) {
 			message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
 				actual + "</pre></td></tr>" +
 				"<tr class='test-diff'><th>Diff: </th><td><pre>" +
-				QUnit.diff( expected, actual ) + "</pre></td></tr>";
+				diff + "</pre></td></tr>";
 		} else {
 			if ( expected.indexOf( "[object Array]" ) !== -1 ||
 					expected.indexOf( "[object Object]" ) !== -1 ) {
@@ -724,6 +807,30 @@ QUnit.testDone(function( details ) {
 
 	if ( bad === 0 ) {
 		addClass( assertList, "qunit-collapsed" );
+	}
+
+	function setExpandEvent() {
+		var expander = "expander-" + expanderiator,
+			expanding = "expanding-" + expanderiator;
+
+		addEvent( id(expander), "click", function() {
+			toggleClass( id(expanding), "qunit-collapsed" );
+			if (id(expander).innerHTML === "<strong>[+]</strong>") {
+				id(expander).innerHTML = "<strong>[-]</strong>";
+			} else {
+				id(expander).innerHTML = "<strong>[+]</strong>";
+			}
+
+		});
+
+		expanderiator++;
+		if (expanderiator < depthExpand) {
+			setExpandEvent();
+		}
+	}
+
+	if (expanderiator < depthExpand) {
+		setExpandEvent();
 	}
 
 	// testItem.firstChild is the test name
