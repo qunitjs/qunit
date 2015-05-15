@@ -635,9 +635,15 @@ QUnit.testStart(function( details ) {
 
 });
 
+function stripHtml( string ) {
+	// strip tags, html entity and whitespaces
+	return string.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&quot;/g, "").replace(/\s+/g, "");
+}
+
 QUnit.log(function( details ) {
 	var assertList, assertLi,
-		message, expected, actual,
+		message, expected, actual, diff,
+		showDiff = false,
 		testItem = id( "qunit-test-output-" + details.testId );
 
 	if ( !testItem ) {
@@ -659,19 +665,31 @@ QUnit.log(function( details ) {
 			"</pre></td></tr>";
 
 		if ( actual !== expected ) {
+
 			message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
-				actual + "</pre></td></tr>" +
-				"<tr class='test-diff'><th>Diff: </th><td><pre>" +
-				QUnit.diff( expected, actual ) + "</pre></td></tr>";
-		} else {
-			if ( expected.indexOf( "[object Array]" ) !== -1 ||
-					expected.indexOf( "[object Object]" ) !== -1 ) {
-				message += "<tr class='test-message'><th>Message: </th><td>" +
-					"Diff suppressed as the depth of object is more than current max depth (" +
-					QUnit.config.maxDepth + ").<p>Hint: Use <code>QUnit.dump.maxDepth</code> to " +
-					" run with a higher max depth or <a href='" + setUrl({ maxDepth: -1 }) + "'>" +
-					"Rerun</a> without max depth.</p></td></tr>";
+				actual + "</pre></td></tr>";
+
+			// Don't show diff if actual or expected are booleans
+			if ( !( /^(true|false)$/.test( actual ) ) &&
+					!( /^(true|false)$/.test( expected ) ) ) {
+				diff = QUnit.diff( expected, actual );
+				showDiff = stripHtml( diff ).length !==
+					stripHtml( expected ).length +
+					stripHtml( actual ).length;
 			}
+
+			// Don't show diff if expected and actual are totally different
+			if ( showDiff ) {
+				message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
+					diff + "</pre></td></tr>";
+			}
+		} else if ( expected.indexOf( "[object Array]" ) !== -1 ||
+				expected.indexOf( "[object Object]" ) !== -1 ) {
+			message += "<tr class='test-message'><th>Message: </th><td>" +
+				"Diff suppressed as the depth of object is more than current max depth (" +
+				QUnit.config.maxDepth + ").<p>Hint: Use <code>QUnit.dump.maxDepth</code> to " +
+				" run with a higher max depth or <a href='" + setUrl({ maxDepth: -1 }) + "'>" +
+				"Rerun</a> without max depth.</p></td></tr>";
 		}
 
 		if ( details.source ) {
