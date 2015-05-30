@@ -114,7 +114,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 		message: "log runtime was a reasonable number",
 		actual: true,
 		expected: true,
-        negative: false,
+		negative: false,
 		testId: module1Test1.testId
 	}, "log context after equal(actual, expected, message)" );
 
@@ -128,7 +128,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 		message: undefined,
 		actual: "foo",
 		expected: "foo",
-        negative: false,
+		negative: false,
 		testId: module1Test1.testId
 	}, "log context after equal(actual, expected)" );
 
@@ -142,7 +142,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 		message: "ok(true, message)",
 		actual: true,
 		expected: true,
-        negative: false,
+		negative: false,
 		testId: module1Test1.testId
 	}, "log context after ok(true, message)" );
 

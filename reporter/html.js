@@ -652,11 +652,11 @@ QUnit.log(function( details ) {
 	// when it calls, it's implicit to also not show expected and diff stuff
 	// Also, we need to check details.expected existence, as it can exist and be undefined
 	if ( !details.result && hasOwn.call( details, "expected" ) ) {
-        if ( details.negative ) {
-            expected = escapeText( "NOT " + QUnit.dump.parse( details.expected ) );
-        } else {
-            expected = escapeText( QUnit.dump.parse( details.expected ) );
-        }
+		if ( details.negative ) {
+			expected = escapeText( "NOT " + QUnit.dump.parse( details.expected ) );
+		} else {
+			expected = escapeText( QUnit.dump.parse( details.expected ) );
+		}
 
 		actual = escapeText( QUnit.dump.parse( details.actual ) );
 		message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +

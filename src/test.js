@@ -272,7 +272,7 @@ Test.prototype = {
 				actual: actual,
 				expected: expected,
 				testId: this.testId,
-                negative: negative || false,
+				negative: negative || false,
 				runtime: now() - this.started
 			};
 
