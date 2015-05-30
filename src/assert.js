@@ -38,7 +38,7 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	// Exports test.push() to the user API
-	push: function( /* result, actual, expected, message */ ) {
+	push: function( /* result, actual, expected, message, negative */ ) {
 		var assert = this,
 			currentTest = ( assert instanceof Assert && assert.test ) || QUnit.config.current;
 
@@ -73,7 +73,7 @@ QUnit.assert = Assert.prototype = {
 	notOk: function( result, message ) {
 		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
 			QUnit.dump.parse( result ) );
-		this.push( !result, result, false, message );
+		this.push( !result, result, false, message, true );
 	},
 
 	equal: function( actual, expected, message ) {
@@ -83,7 +83,7 @@ QUnit.assert = Assert.prototype = {
 
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		this.push( expected != actual, actual, expected, message );
+		this.push( expected != actual, actual, expected, message, true );
 	},
 
 	propEqual: function( actual, expected, message ) {
@@ -95,7 +95,7 @@ QUnit.assert = Assert.prototype = {
 	notPropEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
-		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv( actual, expected ), actual, expected, message, true );
 	},
 
 	deepEqual: function( actual, expected, message ) {
@@ -103,7 +103,7 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	notDeepEqual: function( actual, expected, message ) {
-		this.push( !QUnit.equiv( actual, expected ), actual, expected, message );
+		this.push( !QUnit.equiv( actual, expected ), actual, expected, message, true );
 	},
 
 	strictEqual: function( actual, expected, message ) {
@@ -111,7 +111,7 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	notStrictEqual: function( actual, expected, message ) {
-		this.push( expected !== actual, actual, expected, message );
+		this.push( expected !== actual, actual, expected, message, true );
 	},
 
 	"throws": function( block, expected, message ) {

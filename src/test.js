@@ -262,7 +262,7 @@ Test.prototype = {
 		}
 	},
 
-	push: function( result, actual, expected, message ) {
+	push: function( result, actual, expected, message, negative ) {
 		var source,
 			details = {
 				module: this.module.name,
@@ -272,6 +272,7 @@ Test.prototype = {
 				actual: actual,
 				expected: expected,
 				testId: this.testId,
+                negative: negative || false,
 				runtime: now() - this.started
 			};
 
