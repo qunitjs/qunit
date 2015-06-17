@@ -1,46 +1,5 @@
-(function() {
-
-var delayNextSetup;
-
-function getPreviousTests( rTestName, rModuleName ) {
-	var testSpan, moduleSpan,
-		matches = [],
-		i = 0,
-		rModule = /(^| )module-name( |$)/,
-		testNames = document.getElementsByClassName ?
-			document.getElementsByClassName( "test-name" ) :
-			(function( spans ) {
-				var span,
-					tests = [],
-					i = 0,
-					rTest = /(^| )test-name( |$)/;
-				for ( ; ( span = spans[ i ] ); i++ ) {
-					if ( rTest.test( span.className ) ) {
-						tests.push( span );
-					}
-				}
-				return tests;
-			})( document.getElementsByTagName( "span" ) );
-
-	for ( ; ( testSpan = testNames[ i ] ); i++ ) {
-		moduleSpan = testSpan;
-		while ( ( moduleSpan = moduleSpan.previousSibling ) ) {
-			if ( rModule.test( moduleSpan.className ) ) {
-				break;
-			}
-		}
-		if ( ( !rTestName || rTestName.test( testSpan.innerHTML ) ) &&
-			( !rModuleName || moduleSpan && rModuleName.test( moduleSpan.innerHTML ) ) ) {
-
-			while ( ( testSpan = testSpan.parentNode ) ) {
-				if ( testSpan.nodeName.toLowerCase() === "li" ) {
-					matches.push( testSpan );
-				}
-			}
-		}
-	}
-	return matches;
-}
+// The following tests need to run on their respective order
+QUnit.config.reorder = false;
 
 QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 	beforeEach: function() {
@@ -86,10 +45,22 @@ QUnit.test( "running test name displayed", function( assert ) {
 });
 
 QUnit.module( "timing", {
-	beforeEach: function( assert ) {
+	getPreviousTest: function( assert ) {
+		return document.getElementById( "qunit-test-output-" + assert.test.testId  )
+			.previousSibling;
+	},
+	filterClass: function( elements ) {
+		var i;
+		for ( i = 0; i < elements.length; i++ ) {
+			if ( /(^| )runtime( |$)/.test( elements[ i ].className ) ) {
+				return elements[ i ];
+			}
+		}
+	},
+	afterEach: function( assert ) {
 		var done;
-		if ( delayNextSetup ) {
-			delayNextSetup = false;
+		if ( this.delayNextSetup ) {
+			this.delayNextSetup = false;
 			done = assert.async();
 			setTimeout(function() {
 				done();
@@ -100,27 +71,61 @@ QUnit.module( "timing", {
 
 QUnit.test( "setup", function( assert ) {
 	assert.expect( 0 );
-	delayNextSetup = true;
+	this.delayNextSetup = true;
 });
 
 QUnit.test( "basics", function( assert ) {
-	assert.expect( 2 );
-	var previous = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
-		runtime = previous.lastChild.previousSibling;
-	assert.ok( /(^| )runtime( |$)/.test( runtime.className ), "Runtime element exists" );
+	assert.expect( 1 );
+	var previous = this.getPreviousTest( assert ),
+		runtime = this.filterClass( previous.getElementsByTagName( "span" ) );
+
 	assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
 });
 
 QUnit.test( "values", function( assert ) {
 	assert.expect( 2 );
-	var basics = getPreviousTests( /^setup$/, /^timing$/ )[ 0 ],
-		slow = getPreviousTests( /^basics$/, /^timing$/ )[ 0 ];
-	assert.ok( parseInt( basics.lastChild.previousSibling.innerHTML, 10 ) < 100,
+
+	var basics = this.getPreviousTest( assert ),
+		setup = basics.previousSibling;
+
+	basics = this.filterClass( basics.getElementsByTagName( "span" ) );
+	setup = this.filterClass( setup.getElementsByTagName( "span" ) );
+
+	assert.ok( parseInt( basics.innerHTML, 10 ) < 100,
 		"Fast runtime for trivial test"
 	);
-	assert.ok( parseInt( slow.lastChild.previousSibling.innerHTML, 10 ) > 100,
+	assert.ok( parseInt( setup.innerHTML, 10 ) > 100,
 		"Runtime includes beforeEach"
 	);
 });
 
-})();
+QUnit.module( "source" );
+
+QUnit.test( "setup", function( assert ) {
+	assert.expect( 0 );
+});
+
+QUnit.test( "logs location", function( assert ) {
+	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
+		.previousSibling;
+	var source = previous.lastChild;
+	var stack = QUnit.stack();
+
+	// Verify QUnit supported stack trace
+	if ( !stack ) {
+		assert.equal(
+			/(^| )qunit-source( |$)/.test( source.className ),
+			false,
+			"Don't add source information on unsupported environments"
+		);
+		return;
+	}
+
+	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
+	assert.equal( source.firstChild.innerHTML, "Source: " );
+
+	// test/reporter-html/reporter-html.js is a direct reference to this test file
+	assert.ok( /\/test\/reporter-html\/reporter-html\.js\:\d+/.test( source.innerHTML ),
+		"Source references to the current file and line number"
+	);
+});

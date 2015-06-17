@@ -7,7 +7,9 @@
 		"test/startError.html",
 		"test/logs.html",
 		"test/setTimeout.html",
-		"test/amd.html"
+		"test/amd.html",
+		"test/autostart.html",
+		"test/reporter-html/index.html"
 	],
 	"browsers": [
 		"chrome_previous",
@@ -36,7 +38,7 @@
 		},
 		{
 			"os": "iOS",
-			"os_version": "8.0"
+			"os_version": "8.3"
 		}
 	]
 }

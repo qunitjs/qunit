@@ -136,6 +136,11 @@ extend( QUnit, {
 		if ( config.autostart ) {
 			resumeProcessing();
 		}
+	},
+
+	stack: function( offset ) {
+		offset = ( offset || 0 ) + 2;
+		return sourceFromStacktrace( offset );
 	}
 });
 
