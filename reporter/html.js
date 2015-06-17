@@ -794,7 +794,14 @@ QUnit.testDone(function( details ) {
 });
 
 if ( defined.document ) {
-	if ( document.readyState === "complete" ) {
+
+	// Avoid readyState issue with phantomjs
+	// Ref: #818
+	var notPhantom = ( function( p ) {
+		return !( p && p.version && p.version.major > 0 );
+	} )( window.phantom );
+
+	if ( notPhantom && document.readyState === "complete" ) {
 		QUnit.load();
 	} else {
 		addEvent( window, "load", QUnit.load );
