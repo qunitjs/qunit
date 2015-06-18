@@ -658,7 +658,12 @@ QUnit.log(function( details ) {
 	// when it calls, it's implicit to also not show expected and diff stuff
 	// Also, we need to check details.expected existence, as it can exist and be undefined
 	if ( !details.result && hasOwn.call( details, "expected" ) ) {
-		expected = escapeText( QUnit.dump.parse( details.expected ) );
+		if ( details.negative ) {
+			expected = escapeText( "NOT " + QUnit.dump.parse( details.expected ) );
+		} else {
+			expected = escapeText( QUnit.dump.parse( details.expected ) );
+		}
+
 		actual = escapeText( QUnit.dump.parse( details.actual ) );
 		message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +
 			expected +
@@ -789,7 +794,14 @@ QUnit.testDone(function( details ) {
 });
 
 if ( defined.document ) {
-	if ( document.readyState === "complete" ) {
+
+	// Avoid readyState issue with phantomjs
+	// Ref: #818
+	var notPhantom = ( function( p ) {
+		return !( p && p.version && p.version.major > 0 );
+	} )( window.phantom );
+
+	if ( notPhantom && document.readyState === "complete" ) {
 		QUnit.load();
 	} else {
 		addEvent( window, "load", QUnit.load );
