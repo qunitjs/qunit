@@ -100,6 +100,10 @@ config = {
 	// by default, scroll to top of the page when suite is done
 	scrolltop: true,
 
+	// By default, only expand the first failed test
+	// When set to false, all failed tests are expanded
+	collapse: true,
+
 	// when enabled, all tests must call expect()
 	requireExpects: false,
 

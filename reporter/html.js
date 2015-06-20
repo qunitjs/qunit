@@ -63,6 +63,9 @@ if ( typeof window === "undefined" ) {
 }
 
 var config = QUnit.config,
+	collapse = config.collapse,
+	collapseCheck = collapse,
+	collapseFirst = 0,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
@@ -745,8 +748,18 @@ QUnit.testDone(function( details ) {
 		}
 	}
 
+	if (config.collapse !== collapseCheck) {
+		collapse = config.collapse;
+	}
+
 	if ( bad === 0 ) {
 		addClass( assertList, "qunit-collapsed" );
+	} else {
+		if (( collapse === true ) && (collapseFirst === 0 )) {
+			collapseFirst = 1;
+		} else if ( collapseFirst === 1 ) {
+			addClass( assertList, "qunit-collapsed" );
+		}
 	}
 
 	// testItem.firstChild is the test name
