@@ -7,3 +7,7 @@ before_install:
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
 script:
   - npm run-script ci
+sudo: false
+cache:
+  directories:
+    - node_modules
