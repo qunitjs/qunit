@@ -443,3 +443,91 @@ function generateHash( module, testName ) {
 
 	return hex.slice( -8 );
 }
+
+function synchronize( callback, last ) {
+	if ( QUnit.objectType( callback ) === "array" ) {
+		while ( callback.length ) {
+			synchronize( callback.shift() );
+		}
+		return;
+	}
+	config.queue.push( callback );
+
+	if ( config.autorun && !config.blocking ) {
+		process( last );
+	}
+}
+
+function saveGlobal() {
+	config.pollution = [];
+
+	if ( config.noglobals ) {
+		for ( var key in window ) {
+			if ( hasOwn.call( window, key ) ) {
+
+				// in Opera sometimes DOM element ids show up here, ignore them
+				if ( /^qunit-test-output/.test( key ) ) {
+					continue;
+				}
+				config.pollution.push( key );
+			}
+		}
+	}
+}
+
+function checkPollution() {
+	var newGlobals,
+		deletedGlobals,
+		old = config.pollution;
+
+	saveGlobal();
+
+	newGlobals = diff( config.pollution, old );
+	if ( newGlobals.length > 0 ) {
+		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
+	}
+
+	deletedGlobals = diff( old, config.pollution );
+	if ( deletedGlobals.length > 0 ) {
+		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
+	}
+}
+
+// Will be exposed as QUnit.asyncTest
+function asyncTest( testName, expected, callback ) {
+	if ( arguments.length === 2 ) {
+		callback = expected;
+		expected = null;
+	}
+
+	QUnit.test( testName, expected, callback, true );
+}
+
+// Will be exposed as QUnit.test
+function test( testName, expected, callback, async ) {
+	var newTest;
+
+	if ( arguments.length === 2 ) {
+		callback = expected;
+		expected = null;
+	}
+
+	newTest = new Test({
+		testName: testName,
+		expected: expected,
+		async: async,
+		callback: callback
+	});
+
+	newTest.queue();
+}
+
+// Will be exposed as QUnit.skip
+function skip( testName ) {
+	var test = new Test({
+		testName: testName,
+		skip: true
+	});
+
+	test.queue();
+}

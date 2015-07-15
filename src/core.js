@@ -1,205 +1,23 @@
 var QUnit,
-	config,
 	onErrorFnPrev,
-	loggingCallbacks = {},
 	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
-	toString = Object.prototype.toString,
-	hasOwn = Object.prototype.hasOwnProperty,
-	// Keep a local reference to Date (GH-283)
+	globalStartCalled = false,
+	runStarted = false,
 	Date = window.Date,
 	now = Date.now || function() {
 		return new Date().getTime();
 	},
-	globalStartCalled = false,
-	runStarted = false,
-	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout,
-	defined = {
-		document: window.document !== undefined,
-		setTimeout: window.setTimeout !== undefined,
-		sessionStorage: (function() {
-			var x = "qunit-test-string";
-			try {
-				sessionStorage.setItem( x, x );
-				sessionStorage.removeItem( x );
-				return true;
-			} catch ( e ) {
-				return false;
-			}
-		}())
-	},
-	/**
-	 * Provides a normalized error string, correcting an issue
-	 * with IE 7 (and prior) where Error.prototype.toString is
-	 * not properly implemented
-	 *
-	 * Based on http://es5.github.com/#x15.11.4.4
-	 *
-	 * @param {String|Error} error
-	 * @return {String} error message
-	 */
-	errorString = function( error ) {
-		var name, message,
-			errorString = error.toString();
-		if ( errorString.substring( 0, 7 ) === "[object" ) {
-			name = error.name ? error.name.toString() : "Error";
-			message = error.message ? error.message.toString() : "";
-			if ( name && message ) {
-				return name + ": " + message;
-			} else if ( name ) {
-				return name;
-			} else if ( message ) {
-				return message;
-			} else {
-				return "Error";
-			}
-		} else {
-			return errorString;
-		}
-	},
-	/**
-	 * Makes a clone of an object using only Array or Object as base,
-	 * and copies over the own enumerable properties.
-	 *
-	 * @param {Object} obj
-	 * @return {Object} New object with only the own properties (recursively).
-	 */
-	objectValues = function( obj ) {
-		var key, val,
-			vals = QUnit.is( "array", obj ) ? [] : {};
-		for ( key in obj ) {
-			if ( hasOwn.call( obj, key ) ) {
-				val = obj[ key ];
-				vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
-			}
-		}
-		return vals;
-	};
+	location = window.location || { search: "", protocol: "file:" };
 
 QUnit = {};
 
-/**
- * Config object: Maintain internal state
- * Later exposed as QUnit.config
- * `config` initialized at top of scope
- */
-config = {
-	// The queue of tests to run
-	queue: [],
+QUnit.urlParams = urlParams;
 
-	// block until document ready
-	blocking: true,
+QUnit.isLocal = location.protocol === "file:";
 
-	// by default, run previously failed tests first
-	// very useful in combination with "Hide passed tests" checked
-	reorder: true,
+// Expose the current QUnit version
+QUnit.version = "@VERSION";
 
-	// by default, modify document.title when suite is done
-	altertitle: true,
-
-	// by default, scroll to top of the page when suite is done
-	scrolltop: true,
-
-	// when enabled, all tests must call expect()
-	requireExpects: false,
-
-	// depth up-to which object will be dumped
-	maxDepth: 5,
-
-	// add checkboxes that are persisted in the query-string
-	// when enabled, the id is set to `true` as a `QUnit.config` property
-	urlConfig: [
-		{
-			id: "hidepassed",
-			label: "Hide passed tests",
-			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
-		},
-		{
-			id: "noglobals",
-			label: "Check for Globals",
-			tooltip: "Enabling this will test if any test introduces new properties on the " +
-				"`window` object. Stored as query-strings."
-		},
-		{
-			id: "notrycatch",
-			label: "No try-catch",
-			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
-				"exceptions in IE reasonable. Stored as query-strings."
-		}
-	],
-
-	// Set of all modules.
-	modules: [],
-
-	// The first unnamed module
-	currentModule: {
-		name: "",
-		tests: []
-	},
-
-	callbacks: {}
-};
-
-// Push a loose unnamed module to the modules collection
-config.modules.push( config.currentModule );
-
-// Initialize more QUnit.config and QUnit.urlParams
-(function() {
-	var i, current,
-		location = window.location || { search: "", protocol: "file:" },
-		params = location.search.slice( 1 ).split( "&" ),
-		length = params.length,
-		urlParams = {};
-
-	if ( params[ 0 ] ) {
-		for ( i = 0; i < length; i++ ) {
-			current = params[ i ].split( "=" );
-			current[ 0 ] = decodeURIComponent( current[ 0 ] );
-
-			// allow just a key to turn on a flag, e.g., test.html?noglobals
-			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-			if ( urlParams[ current[ 0 ] ] ) {
-				urlParams[ current[ 0 ] ] = [].concat( urlParams[ current[ 0 ] ], current[ 1 ] );
-			} else {
-				urlParams[ current[ 0 ] ] = current[ 1 ];
-			}
-		}
-	}
-
-	if ( urlParams.filter === true ) {
-		delete urlParams.filter;
-	}
-
-	QUnit.urlParams = urlParams;
-
-	// String search anywhere in moduleName+testName
-	config.filter = urlParams.filter;
-
-	if ( urlParams.maxDepth ) {
-		config.maxDepth = parseInt( urlParams.maxDepth, 10 ) === -1 ?
-			Number.POSITIVE_INFINITY :
-			urlParams.maxDepth;
-	}
-
-	config.testId = [];
-	if ( urlParams.testId ) {
-
-		// Ensure that urlParams.testId is an array
-		urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
-		for ( i = 0; i < urlParams.testId.length; i++ ) {
-			config.testId.push( urlParams.testId[ i ] );
-		}
-	}
-
-	// Figure out if we're running the tests from a server or not
-	QUnit.isLocal = location.protocol === "file:";
-
-	// Expose the current QUnit version
-	QUnit.version = "@VERSION";
-}());
-
-// Root QUnit object.
-// `QUnit` initialized at top of scope
 extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
@@ -226,41 +44,11 @@ extend( QUnit, {
 	},
 
 	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
-	asyncTest: function( testName, expected, callback ) {
-		if ( arguments.length === 2 ) {
-			callback = expected;
-			expected = null;
-		}
+	asyncTest: asyncTest,
 
-		QUnit.test( testName, expected, callback, true );
-	},
+	test: test,
 
-	test: function( testName, expected, callback, async ) {
-		var test;
-
-		if ( arguments.length === 2 ) {
-			callback = expected;
-			expected = null;
-		}
-
-		test = new Test({
-			testName: testName,
-			expected: expected,
-			async: async,
-			callback: callback
-		});
-
-		test.queue();
-	},
-
-	skip: function( testName ) {
-		var test = new Test({
-			testName: testName,
-			skip: true
-		});
-
-		test.queue();
-	},
+	skip: skip,
 
 	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
 	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.
@@ -324,43 +112,9 @@ extend( QUnit, {
 
 	config: config,
 
-	// Safe object type checking
-	is: function( type, obj ) {
-		return QUnit.objectType( obj ) === type;
-	},
+	is: is,
 
-	objectType: function( obj ) {
-		if ( typeof obj === "undefined" ) {
-			return "undefined";
-		}
-
-		// Consider: typeof null === object
-		if ( obj === null ) {
-			return "null";
-		}
-
-		var match = toString.call( obj ).match( /^\[object\s(.*)\]$/ ),
-			type = match && match[ 1 ] || "";
-
-		switch ( type ) {
-			case "Number":
-				if ( isNaN( obj ) ) {
-					return "nan";
-				}
-				return "number";
-			case "String":
-			case "Boolean":
-			case "Array":
-			case "Date":
-			case "RegExp":
-			case "Function":
-				return type.toLowerCase();
-		}
-		if ( typeof obj === "object" ) {
-			return "object";
-		}
-		return undefined;
-	},
+	objectType: objectType,
 
 	extend: extend,
 
@@ -390,42 +144,7 @@ extend( QUnit, {
 	}
 });
 
-// Register logging callbacks
-(function() {
-	var i, l, key,
-		callbacks = [ "begin", "done", "log", "testStart", "testDone",
-			"moduleStart", "moduleDone" ];
-
-	function registerLoggingCallback( key ) {
-		var loggingCallback = function( callback ) {
-			if ( QUnit.objectType( callback ) !== "function" ) {
-				throw new Error(
-					"QUnit logging methods require a callback function as their first parameters."
-				);
-			}
-
-			config.callbacks[ key ].push( callback );
-		};
-
-		// DEPRECATED: This will be removed on QUnit 2.0.0+
-		// Stores the registered functions allowing restoring
-		// at verifyLoggingCallbacks() if modified
-		loggingCallbacks[ key ] = loggingCallback;
-
-		return loggingCallback;
-	}
-
-	for ( i = 0, l = callbacks.length; i < l; i++ ) {
-		key = callbacks[ i ];
-
-		// Initialize key collection of logging callback
-		if ( QUnit.objectType( config.callbacks[ key ] ) === "undefined" ) {
-			config.callbacks[ key ] = [];
-		}
-
-		QUnit[ key ] = registerLoggingCallback( key );
-	}
-})();
+registerLoggingCallbacks( QUnit );
 
 // `onErrorFnPrev` initialized at top of scope
 // Preserve other handlers
@@ -458,131 +177,6 @@ window.onerror = function( error, filePath, linerNr ) {
 
 	return ret;
 };
-
-function done() {
-	var runtime, passed;
-
-	config.autorun = true;
-
-	// Log the last module results
-	if ( config.previousModule ) {
-		runLoggingCallbacks( "moduleDone", {
-			name: config.previousModule.name,
-			tests: config.previousModule.tests,
-			failed: config.moduleStats.bad,
-			passed: config.moduleStats.all - config.moduleStats.bad,
-			total: config.moduleStats.all,
-			runtime: now() - config.moduleStats.started
-		});
-	}
-	delete config.previousModule;
-
-	runtime = now() - config.started;
-	passed = config.stats.all - config.stats.bad;
-
-	runLoggingCallbacks( "done", {
-		failed: config.stats.bad,
-		passed: passed,
-		total: config.stats.all,
-		runtime: runtime
-	});
-}
-
-// Doesn't support IE6 to IE9, it will return undefined on these browsers
-// See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-function extractStacktrace( e, offset ) {
-	offset = offset === undefined ? 4 : offset;
-
-	var stack, include, i;
-
-	if ( e.stack ) {
-		stack = e.stack.split( "\n" );
-		if ( /^error$/i.test( stack[ 0 ] ) ) {
-			stack.shift();
-		}
-		if ( fileName ) {
-			include = [];
-			for ( i = offset; i < stack.length; i++ ) {
-				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
-					break;
-				}
-				include.push( stack[ i ] );
-			}
-			if ( include.length ) {
-				return include.join( "\n" );
-			}
-		}
-		return stack[ offset ];
-
-	// Support: Safari <=6 only
-	} else if ( e.sourceURL ) {
-
-		// exclude useless self-reference for generated Error objects
-		if ( /qunit.js$/.test( e.sourceURL ) ) {
-			return;
-		}
-
-		// for actual exceptions, this is useful
-		return e.sourceURL + ":" + e.line;
-	}
-}
-
-function sourceFromStacktrace( offset ) {
-	var error = new Error();
-
-	// Support: Safari <=7 only, IE <=10 - 11 only
-	// Not all browsers generate the `stack` property for `new Error()`, see also #636
-	if ( !error.stack ) {
-		try {
-			throw error;
-		} catch ( err ) {
-			error = err;
-		}
-	}
-
-	return extractStacktrace( error, offset );
-}
-
-function synchronize( callback, last ) {
-	if ( QUnit.objectType( callback ) === "array" ) {
-		while ( callback.length ) {
-			synchronize( callback.shift() );
-		}
-		return;
-	}
-	config.queue.push( callback );
-
-	if ( config.autorun && !config.blocking ) {
-		process( last );
-	}
-}
-
-function process( last ) {
-	function next() {
-		process( last );
-	}
-	var start = now();
-	config.depth = ( config.depth || 0 ) + 1;
-
-	while ( config.queue.length && !config.blocking ) {
-		if ( !defined.setTimeout || config.updateRate <= 0 ||
-				( ( now() - start ) < config.updateRate ) ) {
-			if ( config.current ) {
-
-				// Reset async tracking for each phase of the Test lifecycle
-				config.current.usedAsync = false;
-			}
-			config.queue.shift()();
-		} else {
-			setTimeout( next, 13 );
-			break;
-		}
-	}
-	config.depth--;
-	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
-		done();
-	}
-}
 
 function begin() {
 	var i, l,
@@ -620,23 +214,30 @@ function begin() {
 	process( true );
 }
 
-function resumeProcessing() {
-	runStarted = true;
+function process( last ) {
+	function next() {
+		process( last );
+	}
+	var start = now();
+	config.depth = ( config.depth || 0 ) + 1;
 
-	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
-	if ( defined.setTimeout ) {
-		setTimeout(function() {
-			if ( config.current && config.current.semaphore > 0 ) {
-				return;
-			}
-			if ( config.timeout ) {
-				clearTimeout( config.timeout );
-			}
+	while ( config.queue.length && !config.blocking ) {
+		if ( !defined.setTimeout || config.updateRate <= 0 ||
+				( ( now() - start ) < config.updateRate ) ) {
+			if ( config.current ) {
 
-			begin();
-		}, 13 );
-	} else {
-		begin();
+				// Reset async tracking for each phase of the Test lifecycle
+				config.current.usedAsync = false;
+			}
+			config.queue.shift()();
+		} else {
+			setTimeout( next, 13 );
+			break;
+		}
+	}
+	config.depth--;
+	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
+		done();
 	}
 }
 
@@ -657,123 +258,51 @@ function pauseProcessing() {
 	}
 }
 
-function saveGlobal() {
-	config.pollution = [];
+function resumeProcessing() {
+	runStarted = true;
 
-	if ( config.noglobals ) {
-		for ( var key in window ) {
-			if ( hasOwn.call( window, key ) ) {
-				// in Opera sometimes DOM element ids show up here, ignore them
-				if ( /^qunit-test-output/.test( key ) ) {
-					continue;
-				}
-				config.pollution.push( key );
+	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
+	if ( defined.setTimeout ) {
+		setTimeout(function() {
+			if ( config.current && config.current.semaphore > 0 ) {
+				return;
 			}
-		}
-	}
-}
-
-function checkPollution() {
-	var newGlobals,
-		deletedGlobals,
-		old = config.pollution;
-
-	saveGlobal();
-
-	newGlobals = diff( config.pollution, old );
-	if ( newGlobals.length > 0 ) {
-		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
-	}
-
-	deletedGlobals = diff( old, config.pollution );
-	if ( deletedGlobals.length > 0 ) {
-		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
-	}
-}
-
-// returns a new Array with the elements that are in a but not in b
-function diff( a, b ) {
-	var i, j,
-		result = a.slice();
-
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
-			if ( result[ i ] === b[ j ] ) {
-				result.splice( i, 1 );
-				i--;
-				break;
+			if ( config.timeout ) {
+				clearTimeout( config.timeout );
 			}
-		}
-	}
-	return result;
-}
 
-function extend( a, b, undefOnly ) {
-	for ( var prop in b ) {
-		if ( hasOwn.call( b, prop ) ) {
-
-			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
-			if ( !( prop === "constructor" && a === window ) ) {
-				if ( b[ prop ] === undefined ) {
-					delete a[ prop ];
-				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
-					a[ prop ] = b[ prop ];
-				}
-			}
-		}
-	}
-
-	return a;
-}
-
-function runLoggingCallbacks( key, args ) {
-	var i, l, callbacks;
-
-	callbacks = config.callbacks[ key ];
-	for ( i = 0, l = callbacks.length; i < l; i++ ) {
-		callbacks[ i ]( args );
+			begin();
+		}, 13 );
+	} else {
+		begin();
 	}
 }
 
-// DEPRECATED: This will be removed on 2.0.0+
-// This function verifies if the loggingCallbacks were modified by the user
-// If so, it will restore it, assign the given callback and print a console warning
-function verifyLoggingCallbacks() {
-	var loggingCallback, userCallback;
+function done() {
+	var runtime, passed;
 
-	for ( loggingCallback in loggingCallbacks ) {
-		if ( QUnit[ loggingCallback ] !== loggingCallbacks[ loggingCallback ] ) {
+	config.autorun = true;
 
-			userCallback = QUnit[ loggingCallback ];
-
-			// Restore the callback function
-			QUnit[ loggingCallback ] = loggingCallbacks[ loggingCallback ];
-
-			// Assign the deprecated given callback
-			QUnit[ loggingCallback ]( userCallback );
-
-			if ( window.console && window.console.warn ) {
-				window.console.warn(
-					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
-					"Please, check out the documentation on how to apply logging callbacks.\n" +
-					"Reference: http://api.qunitjs.com/category/callbacks/"
-				);
-			}
-		}
+	// Log the last module results
+	if ( config.previousModule ) {
+		runLoggingCallbacks( "moduleDone", {
+			name: config.previousModule.name,
+			tests: config.previousModule.tests,
+			failed: config.moduleStats.bad,
+			passed: config.moduleStats.all - config.moduleStats.bad,
+			total: config.moduleStats.all,
+			runtime: now() - config.moduleStats.started
+		});
 	}
-}
+	delete config.previousModule;
 
-// from jquery.js
-function inArray( elem, array ) {
-	if ( array.indexOf ) {
-		return array.indexOf( elem );
-	}
+	runtime = now() - config.started;
+	passed = config.stats.all - config.stats.bad;
 
-	for ( var i = 0, length = array.length; i < length; i++ ) {
-		if ( array[ i ] === elem ) {
-			return i;
-		}
-	}
-
-	return -1;
+	runLoggingCallbacks( "done", {
+		failed: config.stats.bad,
+		passed: passed,
+		total: config.stats.all,
+		runtime: runtime
+	});
 }
