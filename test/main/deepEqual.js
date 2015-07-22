@@ -1528,3 +1528,202 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 		);
 	}
 );
+
+QUnit.module( "equiv Maps and Sets" );
+
+var hasES6Set = ( function() {
+	if ( typeof Set !== "function" ) {
+		return false;
+	}
+
+	try {
+		// some platforms don't support iterables in Set constructors
+		var s = new Set( [ 1, 2, 3 ] );
+		if ( s.size !== 3 || !s.has( 2 ) ) {
+			return false;
+		}
+
+		// in IE 11, QUnit.objectType( new Set() ) === "object"
+		return ( QUnit.objectType( s ) === "set" );
+	}
+	catch ( e ) {
+		return false;
+	}
+} )();
+
+var hasES6Map = ( function() {
+	if ( typeof Map !== "function" ) {
+		return false;
+	}
+
+	try {
+		// some platforms don't support array-like iterables in Map constructors
+		var m = new Map( [ [ 1, 2 ] ] );
+		if ( m.size !== 2 || !m.has( 1 ) ) {
+			return false;
+		}
+
+		// in IE 11, QUnit.objectType( new Map() ) === "object"
+		return ( QUnit.objectType( m ) === "map" );
+	}
+	catch ( e ) {
+		return false;
+	}
+} )();
+
+QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
+	var s1, s2, s3, s4, o1, o2, o3, m1, m2, m3;
+
+	// Empty sets
+	s1 = new Set();
+	s2 = new Set( [] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Empty sets" );
+
+	// Simple cases
+	s1 = new Set( [ 1 ] );
+	s2 = new Set( [ 1 ] );
+	s3 = new Set( [ 3 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Single element sets [1] vs [1]" );
+	assert.equal( QUnit.equiv( s1, s3 ), false, "Single element sets [1] vs [3]" );
+
+	// Tricky values
+	s1 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
+	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Mutiple-element sets of tricky values" );
+
+	// Sets Containing objects
+	o1 = { foo: 0, bar: true };
+	o2 = { foo: 0, bar: true };
+	o3 = { foo: 1, bar: true };
+	s1 = new Set( [ o1, o3 ] );
+	s2 = new Set( [ o1, o3 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing same objects" );
+	s1 = new Set( [ o1 ] );
+	s2 = new Set( [ o2 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing deeply-equal objects" );
+	s1 = new Set( [ o1 ] );
+	s2 = new Set( [ o3 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), false, "Sets containing different objects" );
+
+	// Sets containing sets
+	s1 = new Set( [ 1, 2, 3 ] );
+	s2 = new Set( [ 1, 2, 3 ] );
+	s3 = new Set( [ s1 ] );
+	s4 = new Set( [ s2 ] );
+	assert.equal( QUnit.equiv( s3, s4 ), true, "Sets containing deeply-equal sets" );
+
+	// Sets containing different sets
+	s1 = new Set( [ 1, 2, 3 ] );
+	s2 = new Set( [ 1, 2, 3, 4 ] );
+	s3 = new Set( [ s1 ] );
+	s4 = new Set( [ s2 ] );
+	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different sets" );
+
+	// Sets containing maps
+	m1 = new Map( [ [ 1, 1 ] ] );
+	m2 = new Map( [ [ 1, 1 ] ] );
+	m3 = new Map( [ [ 1, 3 ] ] );
+	s3 = new Set( [ m1 ] );
+	s4 = new Set( [ m2 ] );
+	assert.equal( QUnit.equiv( s3, s4 ), true, "Sets containing different but deeply-equal maps" );
+	s3 = new Set( [ m1 ] );
+	s4 = new Set( [ m3 ] );
+	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different maps" );
+});
+
+QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
+	var m1, m2, m3, m4, o1, o2, o3, s1, s2, s3;
+
+	// Empty maps
+	m1 = new Map();
+	m2 = new Map( [] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Empty maps" );
+
+	// Simple cases
+	m1 = new Map( [ [ 1, 1 ] ] );
+	m2 = new Map( [ [ 1, 1 ] ] );
+	m3 = new Map( [ [ 1, 3 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Single element maps [1,1] vs [1,1]" );
+	assert.equal( QUnit.equiv( m1, m3 ), false, "Single element maps [1,1] vs [1,3]" );
+
+	// Tricky values
+	m1 =  new Map( [
+		[ undefined, undefined ],
+		[ null, null ],
+		[ false, false ],
+		[ 0, 0 ],
+		[ NaN, NaN ],
+		[ Infinity, Infinity ],
+		[ -Infinity, -Infinity ]
+	] );
+	m2 = new Map( [
+		[ undefined, undefined ],
+		[ null, null ],
+		[ false, false ],
+		[ 0, 0 ],
+		[ NaN, NaN ],
+		[ Infinity, Infinity ],
+		[ -Infinity, -Infinity ]
+	] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Mutiple-element maps of tricky values" );
+
+	// Same keys, different values
+	m1 = new Map( [
+		[ 1, "one" ],
+		[ 2, "two" ]
+	] );
+	m2 = new Map( [
+		[ 1, 1 ],
+		[ 2, 2 ]
+	] );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps with same keys, different values" );
+
+	// Maps Containing objects
+	o1 = { foo: 0, bar: true };
+	o2 = { foo: 0, bar: true };
+	o3 = { foo: 1, bar: true };
+	m1 = new Map( [
+		[ 1, o1 ],
+		[ 2, o3 ]
+	] );
+	m2 = new Map( [
+		[ 1, o1 ],
+		[ 2, o3 ]
+	] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing same objects" );
+	m1 = new Map( [ [ 1, o1 ] ] );
+	m2 = new Map( [ [ 1, o2 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal objects" );
+
+	// Maps containing different objects
+	m1 = new Map( [ [ 1, o1 ] ] );
+	m2 = new Map( [ [ 1, o3 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different objects" );
+
+	// Maps containing maps
+	m1 = new Map( [ [ 1, 1 ] ] );
+	m2 = new Map( [ [ 1, 1 ] ] );
+	m3 = new Map( [ [ "myMap", m1 ] ] );
+	m4 = new Map( [ [ "myMap", m2 ] ] );
+	assert.equal( QUnit.equiv( m3, m4 ), true, "Maps containing deeply-equal maps" );
+
+	// Maps containing different maps
+	m1 = new Map( [ [ 1, 1 ] ] );
+	m2 = new Map( [ [ 1, 2 ] ] );
+	m3 = new Map( [ [ "myMap", m1 ] ] );
+	m4 = new Map( [ [ "myMap", m2 ] ] );
+	assert.equal( QUnit.equiv( m3, m4 ), false, "Maps containing different maps" );
+
+	// Maps containing sets
+	s1 = new Set( [ 1, 2, 3 ] );
+	s2 = new Set( [ 1, 2, 3 ] );
+	s3 = new Set( [ 1, 2, 3, 4 ] );
+	m1 = new Map( [ [ 1, s1 ] ] );
+	m2 = new Map( [ [ 1, s2 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal sets" );
+
+	// Maps containing different sets
+	m1 = new Map( [ [ 1, s1 ] ] );
+	m2 = new Map( [	[ 1, s3 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing diffrent sets" );
+});

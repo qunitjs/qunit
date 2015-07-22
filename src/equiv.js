@@ -127,6 +127,46 @@ QUnit.equiv = (function() {
 					return true;
 				},
 
+				"set": function( b, a ) {
+					var aArray, bArray;
+
+					// b could be any object here
+					if ( QUnit.objectType( b ) !== "set" ) {
+						return false;
+					}
+
+					aArray = [];
+					a.forEach( function( v ) {
+						aArray.push( v );
+					});
+					bArray = [];
+					b.forEach( function( v ) {
+						bArray.push( v );
+					});
+
+					return innerEquiv( bArray, aArray );
+				},
+
+				"map": function( b, a ) {
+					var aArray, bArray;
+
+					// b could be any object here
+					if ( QUnit.objectType( b ) !== "map" ) {
+						return false;
+					}
+
+					aArray = [];
+					a.forEach( function( v, k ) {
+						aArray.push( [ k, v ] );
+					});
+					bArray = [];
+					b.forEach( function( v, k ) {
+						bArray.push( [ k, v ] );
+					});
+
+					return innerEquiv( bArray, aArray );
+				},
+
 				"object": function( b, a ) {
 
 					/*jshint forin:false */
