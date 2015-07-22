@@ -135,7 +135,6 @@ QUnit.equiv = (function() {
 						return false;
 					}
 
-					// reduce sets to arrays
 					aArray = [];
 					a.forEach( function( v ) {
 						aArray.push(v);
@@ -156,7 +155,6 @@ QUnit.equiv = (function() {
 						return false;
 					}
 
-					// reduce sets to arrays
 					aArray = [];
 					a.forEach( function( v, k ) {
 						aArray.push([k, v]);
