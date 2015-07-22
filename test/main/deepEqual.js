@@ -1567,23 +1567,23 @@ var hasES6Map = (function() {
 	return true;
 })();
 
-QUnit[ hasES6Set ? "test" : "skip" ]('Sets', function ( assert ) {
+QUnit[ hasES6Set ? "test" : "skip" ]("Sets", function ( assert ) {
 	var s1, s2, s3, s4, o1, o2, o3, m1, m2, m3;
 
 	// Empty sets
 	s1 = new Set();
 	s2 = new Set();
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Empty Sets');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Empty Sets");
 	s1 = new Set([]);
 	s2 = new Set([]);
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Empty sets init with empty arrays');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Empty sets init with empty arrays");
 
 	// Simple cases
 	s1 = new Set( [1] );
 	s2 = new Set( [1] );
 	s3 = new Set( [3] );
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Single element sets [1] vs [1]');
-	assert.equal( QUnit.equiv( s1, s3 ), false, 'Single element sets [1] vs [3]');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Single element sets [1] vs [1]");
+	assert.equal( QUnit.equiv( s1, s3 ), false, "Single element sets [1] vs [3]");
 
 	// Tricky values
 	s1 = new Set();
@@ -1595,35 +1595,35 @@ QUnit[ hasES6Set ? "test" : "skip" ]('Sets', function ( assert ) {
 	s1.add( Infinity );
 	s1.add( -Infinity );
 	s2 = new Set([ undefined, null, false, 0, NaN, Infinity, -Infinity ]);
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Mutiple-element sets of tricky values');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Mutiple-element sets of tricky values");
 
 	// Sets Containing objects
-	o1 = {'foo': 0, 'bar': true};
-	o2 = {'foo': 0, 'bar': true};
-	o3 = {'foo': 1, 'bar': true};
+	o1 = {"foo": 0, "bar": true};
+	o2 = {"foo": 0, "bar": true};
+	o3 = {"foo": 1, "bar": true};
 	s1 = new Set([ o1, o3 ]);
 	s2 = new Set([ o1, o3 ]);
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Sets containing same objects');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing same objects");
 	s1 = new Set([ o1 ]);
 	s2 = new Set([ o2 ]);
-	assert.equal( QUnit.equiv( s1, s2 ), true, 'Sets containing deeply-equal objects');
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing deeply-equal objects");
 	s1 = new Set([ o1 ]);
 	s2 = new Set([ o3 ]);
-	assert.equal( QUnit.equiv( s1, s2 ), false, 'Sets containing different objects');
+	assert.equal( QUnit.equiv( s1, s2 ), false, "Sets containing different objects");
 
 	// Sets containing sets
 	s1 = new Set([ 1, 2, 3 ]);
 	s2 = new Set([ 1, 2, 3 ]);
 	s3 = new Set([ s1 ]);
 	s4 = new Set([ s2 ]);
-	assert.equal( QUnit.equiv( s3, s4 ), true, 'Sets containing deeply-equal sets');
+	assert.equal( QUnit.equiv( s3, s4 ), true, "Sets containing deeply-equal sets");
 	
 	// Sets containing different sets
 	s1 = new Set([ 1, 2, 3 ]);
 	s2 = new Set([ 1, 2, 3, 4 ]);
 	s3 = new Set([ s1 ]);
 	s4 = new Set([ s2 ]);
-	assert.equal( QUnit.equiv( s3, s4 ), false, 'Sets containing different sets');
+	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different sets");
 	
 	// Sets containing maps
 	m1 = new Map([ [ 1,1 ] ]);
@@ -1631,29 +1631,29 @@ QUnit[ hasES6Set ? "test" : "skip" ]('Sets', function ( assert ) {
 	m3 = new Map([ [ 1,3 ] ]);
 	s3 = new Set([ m1 ]);
 	s4 = new Set([ m2 ]);
-	assert.equal( QUnit.equiv( s3, s4 ), true, 'Sets containing different but deeply-equal maps');
+	assert.equal( QUnit.equiv( s3, s4 ), true, "Sets containing different but deeply-equal maps");
 	s3 = new Set([ m1 ]);
 	s4 = new Set([ m3 ]);
-	assert.equal( QUnit.equiv( s3, s4 ), false, 'Sets containing different maps');
+	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different maps");
 });
 
-QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
+QUnit[ hasES6Map ? "test" : "skip" ]("Maps", function ( assert ) {
 	var m1, m2, m3, m4, o1, o2, o3, s1, s2, s3;
 
 	// Empty maps
 	m1 = new Map();
 	m2 = new Map();
-	assert.equal( QUnit.equiv(m1, m2), true, 'Empty maps');
+	assert.equal( QUnit.equiv(m1, m2), true, "Empty maps");
 	m1 = new Map([]);
 	m2 = new Map([]);
-	assert.equal( QUnit.equiv(m1, m2), true, 'Empty maps init with empty arrays');
+	assert.equal( QUnit.equiv(m1, m2), true, "Empty maps init with empty arrays");
 
 	// Simple cases
 	m1 = new Map([ [ 1,1 ] ]);
 	m2 = new Map([ [ 1,1 ] ]);
 	m3 = new Map([ [ 1,3 ] ]);
-	assert.equal( QUnit.equiv( m1, m2 ), true, 'Single element maps [1,1] vs [1,1]');
-	assert.equal( QUnit.equiv( m1, m3 ), false, 'Single element maps [1,1] vs [1,3]');
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Single element maps [1,1] vs [1,1]");
+	assert.equal( QUnit.equiv( m1, m3 ), false, "Single element maps [1,1] vs [1,3]");
 
 	// Tricky values
 	m1 = new Map();
@@ -1673,7 +1673,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 		[ Infinity, Infinity ],
 		[ -Infinity, -Infinity ]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), true, 'Mutiple-element maps of tricky values');
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Mutiple-element maps of tricky values");
 
 	// Same keys, different values
 	m1 = new Map([
@@ -1684,12 +1684,12 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 		[ 1, 1],
 		[ 2, 2]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), false, 'Same key, different values');
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Same key, different values");
 
 	// Maps Containing objects
-	o1 = {'foo':0, 'bar':true};
-	o2 = {'foo':0, 'bar':true};
-	o3 = {'foo':1, 'bar':true};
+	o1 = {"foo":0, "bar":true};
+	o2 = {"foo":0, "bar":true};
+	o3 = {"foo":1, "bar":true};
 	m1 = new Map([
 		[ 1, o1 ],
 		[ 2, o3 ]
@@ -1698,14 +1698,14 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 		[ 1, o1 ],
 		[ 2, o3 ]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), true, 'Maps containing same objects');
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing same objects");
 	m1 = new Map([
 		[ 1, o1]
 	]);
 	m2 = new Map([
 		[ 1, o2]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), true, 'Maps containing diffrent but deeply-equal objects');
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal objects");
 
 	// Maps containing different objects
 	m1 = new Map([
@@ -1714,21 +1714,21 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 	m2 = new Map([
 		[ 1, o3 ]
 	]);
-	assert.equal( QUnit.equiv( m1, m2), false, 'Maps containing different objects');
+	assert.equal( QUnit.equiv( m1, m2), false, "Maps containing different objects");
 
 	// Maps containing maps
 	m1 = new Map([ [ 1,1 ] ]);
 	m2 = new Map([ [ 1,1 ] ]);
-	m3 = new Map([ [ 'myMap', m1] ]);
-	m4 = new Map([ [ 'myMap', m2] ]);
-	assert.equal( QUnit.equiv( m3, m4 ), true, 'Maps containing deeply-equal maps');
+	m3 = new Map([ [ "myMap", m1] ]);
+	m4 = new Map([ [ "myMap", m2] ]);
+	assert.equal( QUnit.equiv( m3, m4 ), true, "Maps containing deeply-equal maps");
 
 	// Maps containing different maps
 	m1 = new Map([ [ 1,1 ] ]);
 	m2 = new Map([ [ 1,2 ] ]);
-	m3 = new Map([ [ 'myMap', m1] ]);
-	m4 = new Map([ [ 'myMap', m2] ]);
-	assert.equal( QUnit.equiv( m3, m4 ), false, 'Maps containing different maps');
+	m3 = new Map([ [ "myMap", m1] ]);
+	m4 = new Map([ [ "myMap", m2] ]);
+	assert.equal( QUnit.equiv( m3, m4 ), false, "Maps containing different maps");
 
 	// Maps containing sets
 	s1 = new Set([ 1, 2, 3 ]);
@@ -1740,7 +1740,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 	m2 = new Map([
 		[1, s2]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), true, 'Maps containing diffrent but deeply-equal sets');
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal sets");
 	
 	// Maps containing different sets
 	m1 = new Map([
@@ -1749,5 +1749,5 @@ QUnit[ hasES6Map ? "test" : "skip" ]('Maps', function ( assert ) {
 	m2 = new Map([
 		[1, s3]
 	]);
-	assert.equal( QUnit.equiv( m1, m2 ), false, 'Maps containing diffrent sets');
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing diffrent sets");
 });
