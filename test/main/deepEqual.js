@@ -1677,8 +1677,8 @@ QUnit[ hasES6Map ? "test" : "skip" ]("Maps", function ( assert ) {
 
 	// Same keys, different values
 	m1 = new Map([
-		[ 1, 'one' ],
-		[ 2, 'two' ]
+		[ 1, "one" ],
+		[ 2, "two" ]
 	]);
 	m2 = new Map([
 		[ 1, 1],
