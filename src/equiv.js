@@ -126,7 +126,7 @@ QUnit.equiv = (function() {
 					parentsB.pop();
 					return true;
 				},
-				
+
 				"set": function( b, a ) {
 					var aArray, bArray;
 
@@ -146,7 +146,7 @@ QUnit.equiv = (function() {
 
 					return innerEquiv( bArray, aArray );
 				},
-				
+
 				"map": function( b, a ) {
 					var aArray, bArray;
 
@@ -157,11 +157,11 @@ QUnit.equiv = (function() {
 
 					aArray = [];
 					a.forEach( function( v, k ) {
-						aArray.push([k, v]);
+						aArray.push( [ k, v ] );
 					});
 					bArray = [];
 					b.forEach( function( v, k ) {
-						bArray.push([k, v]);
+						bArray.push( [ k, v ] );
 					});
 
 					return innerEquiv( bArray, aArray );
