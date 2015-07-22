@@ -351,6 +351,8 @@ extend( QUnit, {
 			case "String":
 			case "Boolean":
 			case "Array":
+			case "Set":
+			case "Map":
 			case "Date":
 			case "RegExp":
 			case "Function":
