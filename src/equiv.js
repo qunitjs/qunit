@@ -130,7 +130,7 @@ QUnit.equiv = (function() {
 				"set": function( b, a ) {
 					var aArray, bArray;
 
-					// b could be an object literal here
+					// b could be any object here
 					if ( QUnit.objectType( b ) !== "set" ) {
 						return false;
 					}
@@ -150,7 +150,7 @@ QUnit.equiv = (function() {
 				"map": function( b, a ) {
 					var aArray, bArray;
 
-					// b could be an object literal here
+					// b could be any object here
 					if ( QUnit.objectType( b ) !== "map" ) {
 						return false;
 					}
