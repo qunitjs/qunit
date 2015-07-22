@@ -129,12 +129,12 @@ QUnit.equiv = (function() {
 				
 				"set": function( b, a ) {
 					var aArray, bArray;
-					
+
 					// b could be an object literal here
 					if ( QUnit.objectType( b ) !== "set" ) {
 						return false;
 					}
-					
+
 					// reduce sets to arrays
 					aArray = [];
 					a.forEach( function( v ) {
@@ -144,18 +144,18 @@ QUnit.equiv = (function() {
 					b.forEach( function( v ) {
 						bArray.push(v);
 					});
-					
+
 					return innerEquiv( bArray, aArray );
 				},
 				
 				"map": function( b, a ) {
 					var aArray, bArray;
-					
+
 					// b could be an object literal here
 					if ( QUnit.objectType( b ) !== "map" ) {
 						return false;
 					}
-					
+
 					// reduce sets to arrays
 					aArray = [];
 					a.forEach( function( v, k ) {
@@ -165,7 +165,7 @@ QUnit.equiv = (function() {
 					b.forEach( function( v, k ) {
 						bArray.push([k, v]);
 					});
-					
+
 					return innerEquiv( bArray, aArray );
 				},
 
