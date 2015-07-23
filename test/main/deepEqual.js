@@ -1530,41 +1530,25 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 );
 
 QUnit.module( "equiv Maps and Sets");
-// Note: we cannot do simple check for constructor existence,
-// as IE 11 implementation of Sets/Maps is incomplete.
-//  - in IE 11, Sets/Maps do not support constructors, e.g. new Set( [1] ) fails.
+
 //  - in IE 11, QUnit.objectType( new Set() ) === 'object'
-//
-// This is a more robust way of checking for ES6 Set/Map support.
 var hasES6Set = (function() {
-	try {
-		var s = new Set([ 1, 2, 3 ]);
-		if (s.size !== 3 || !s.has(2)) {
-			return false;
-		}
-	}
-	catch (e) {
+	if ( typeof Set !== 'function' ) {
 		return false;
 	}
 
-	return true;
+	var s = new Set();
+	return ( QUnit.objectType( s ) === 'set' );
 })();
 
+//  - in IE 11, QUnit.objectType( new Map() ) === 'object'
 var hasES6Map = (function() {
-	try {
-		var m = new Map([
-			[ 1, 2],
-			[ 3, 4]
-		]);
-		if (m.size !== 2 || !m.has(1)) {
-			return false;
-		}
-	}
-	catch (e) {
+	if ( typeof Map !== 'function' ) {
 		return false;
 	}
 
-	return true;
+	var m = new Map();
+	return ( QUnit.objectType( m ) === 'map' );
 })();
 
 QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
