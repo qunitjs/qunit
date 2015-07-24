@@ -1531,24 +1531,44 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 
 QUnit.module( "equiv Maps and Sets");
 
-// - in IE 11, QUnit.objectType( new Set() ) === "object"
 var hasES6Set = (function() {
 	if ( typeof Set !== "function" ) {
 		return false;
 	}
 
-	var s = new Set();
-	return ( QUnit.objectType( s ) === "set" );
+	try {
+		// some platforms don't support iterables in Set constructors
+		var s = new Set([ 1, 2, 3 ]);
+		if ( s.size !== 3 || !s.has( 2 ) ) {
+			return false;
+		}
+		
+		// in IE 11, QUnit.objectType( new Set() ) === "object"
+		return ( QUnit.objectType( s ) === "set" );
+	}
+	catch (e) {
+		return false;
+	}
 })();
 
-// - in IE 11, QUnit.objectType( new Map() ) === "object"
 var hasES6Map = (function() {
 	if ( typeof Map !== "function" ) {
 		return false;
 	}
 
-	var m = new Map();
-	return ( QUnit.objectType( m ) === "map" );
+	try {
+		// some platforms don't support array-like iterables in Map constructors
+		var m = new Map([ [ 1, 2 ] ]);
+		if ( m.size !== 2 || !m.has( 1 ) ) {
+			return false;
+		}
+		
+		// in IE 11, QUnit.objectType( new Map() ) === "object"
+		return ( QUnit.objectType( m ) === "map" );
+	}
+	catch (e) {
+		return false;
+	}
 })();
 
 QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
