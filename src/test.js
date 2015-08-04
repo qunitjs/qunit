@@ -70,9 +70,11 @@ Test.prototype = {
 
 		config.current = this;
 
+		if ( this.module.testEnvironment ) {
+			delete this.module.testEnvironment.beforeEach;
+			delete this.module.testEnvironment.afterEach;
+		}
 		this.testEnvironment = extend( {}, this.module.testEnvironment );
-		delete this.testEnvironment.beforeEach;
-		delete this.testEnvironment.afterEach;
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
