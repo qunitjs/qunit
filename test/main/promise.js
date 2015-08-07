@@ -73,3 +73,16 @@ QUnit.test( "fulfilled Promise", function( assert ) {
 	// Adds 1 assertion
 	return createMockPromise( assert );
 });
+
+QUnit.test( "fulfilled Promise with non-Promise async assertion", function( assert ) {
+	assert.expect( 2 );
+
+	var done = assert.async();
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	}, 100 );
+
+	// Adds 1 assertion
+	return createMockPromise( assert );
+});

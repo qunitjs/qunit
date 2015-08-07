@@ -329,7 +329,7 @@ Test.prototype = {
 				QUnit.stop();
 				then.call(
 					promise,
-					QUnit.start,
+					function() { QUnit.start(); },
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
