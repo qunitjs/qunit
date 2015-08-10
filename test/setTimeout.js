@@ -1,4 +1,4 @@
-QUnit.config.updateRate = 1;
+(function( window ) {
 
 QUnit.module( "Module that mucks with time", {
 	beforeEach: function() {
@@ -18,3 +18,7 @@ QUnit.test( "just a test", function( assert ) {
 QUnit.test( "just a test", function( assert ) {
 	assert.ok( true );
 });
+
+}( (function() {
+	return this;
+})() ));
