@@ -1,4 +1,5 @@
 /*jshint node:true */
+/*globals JSON:false*/
 module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );

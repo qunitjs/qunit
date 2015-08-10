@@ -1,3 +1,5 @@
+/* globals Set:false, Map:false */
+
 QUnit.module( "equiv" );
 
 QUnit.test( "Primitive types and constants", function( assert ) {

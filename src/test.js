@@ -293,7 +293,7 @@ Test.prototype = {
 	},
 
 	pushFailure: function( message, source, actual ) {
-		if ( !this instanceof Test ) {
+		if ( !( this instanceof Test ) ) {
 			throw new Error( "pushFailure() assertion outside test context, was " +
 				sourceFromStacktrace( 2 ) );
 		}
