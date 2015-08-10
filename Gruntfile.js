@@ -147,7 +147,7 @@ grunt.registerTask( "testswarm", function( commit, configFile, projectName, brow
 	}
 	timeout = timeout || 1000 * 60 * 15;
 
-	[ "index", "autostart", "startError", "setTimeout", "reporter-html/index" ]
+	[ "index", "autostart", "startError", "setTimeout" ]
 		.forEach(function( suite ) {
 			runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
 		});
