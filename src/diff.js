@@ -1,4 +1,3 @@
-/*istanbul ignore next */
 // jscs:disable maximumLineLength
 /*
  * This file is a modified version of google-diff-match-patch's JavaScript implementation
@@ -30,7 +29,6 @@
  * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) === "the  quick <del>brown </del> fox jump<ins>s</ins><del>ed</del over"
  */
 QUnit.diff = (function() {
-
 	function DiffMatchPatch() {
 
 		// Defaults.
@@ -1077,7 +1075,6 @@ QUnit.diff = (function() {
 		var diff, output, text;
 		diff = new DiffMatchPatch();
 		output = diff.DiffMain(o, n);
-		//console.log(output);
 		diff.diffCleanupEfficiency(output);
 		text = diff.diffPrettyHtml(output);
 
