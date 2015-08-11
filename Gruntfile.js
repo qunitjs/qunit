@@ -1,5 +1,4 @@
 /*jshint node:true */
-/*globals JSON:false*/
 module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
@@ -131,49 +130,6 @@ grunt.initConfig({
 		],
 		tasks: "default"
 	}
-});
-
-grunt.registerTask( "testswarm", function( commit, configFile, projectName, browserSets, timeout ) {
-	var config,
-		testswarm = require( "testswarm" ),
-		runs = {},
-		done = this.async();
-
-	projectName = projectName || "qunit";
-	config = grunt.file.readJSON( configFile )[ projectName ];
-	browserSets = browserSets || config.browserSets;
-	if ( browserSets[ 0 ] === "[" ) {
-		// We got an array, parse it
-		browserSets = JSON.parse( browserSets );
-	}
-	timeout = timeout || 1000 * 60 * 15;
-
-	[ "index", "autostart", "startError", "setTimeout" ]
-		.forEach(function( suite ) {
-			runs[ suite ] = config.testUrl + commit + "/test/" + suite + ".html";
-		});
-
-	testswarm
-		.createClient({
-			url: config.swarmUrl
-		})
-		.addReporter( testswarm.reporters.cli )
-		.auth({
-			id: config.authUsername,
-			token: config.authToken
-		})
-		.addjob({
-			name: "Commit <a href='https://github.com/jquery/qunit/commit/" + commit + "'>" +
-				commit.substr( 0, 10 ) + "</a>",
-			runs: runs,
-			browserSets: browserSets,
-			timeout: timeout
-		}, function( err, passed ) {
-			if ( err ) {
-				grunt.log.error( err );
-			}
-			done( passed );
-		});
 });
 
 // TODO: Extract this task later, if feasible
