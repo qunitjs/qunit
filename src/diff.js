@@ -1,4 +1,3 @@
-// jscs:disable maximumLineLength
 /*
  * This file is a modified version of google-diff-match-patch's JavaScript implementation
  * (https://code.google.com/p/google-diff-match-patch/source/browse/trunk/javascript/diff_match_patch_uncompressed.js),
@@ -26,7 +25,6 @@
  *
  * Usage: QUnit.diff(expected, actual)
  *
- * QUnit.diff( "the quick brown fox jumped over", "the quick fox jumps over" ) === "the  quick <del>brown </del> fox jump<ins>s</ins><del>ed</del over"
  */
 QUnit.diff = ( function() {
 	function DiffMatchPatch() {
@@ -168,8 +166,14 @@ QUnit.diff = ( function() {
 				if ( lastequality && ( ( preIns && preDel && postIns && postDel ) ||
 						( ( lastequality.length < 2 ) &&
 						( preIns + preDel + postIns + postDel ) === 3 ) ) ) {
+
 					// Duplicate record.
-					diffs.splice( equalities[ equalitiesLength - 1 ], 0, [ DIFF_DELETE, lastequality ] );
+					diffs.splice(
+						equalities[ equalitiesLength - 1 ],
+						0,
+						[ DIFF_DELETE, lastequality ]
+					);
+
 					// Change second copy to insert.
 					diffs[ equalities[ equalitiesLength - 1 ] + 1 ][ 0 ] = DIFF_INSERT;
 					equalitiesLength--; // Throw away the equality we just deleted;
@@ -241,7 +245,8 @@ QUnit.diff = ( function() {
 		pointermid = pointermax;
 		pointerstart = 0;
 		while ( pointermin < pointermid ) {
-			if ( text1.substring( pointerstart, pointermid ) === text2.substring( pointerstart, pointermid ) ) {
+			if ( text1.substring( pointerstart, pointermid ) ===
+					text2.substring( pointerstart, pointermid ) ) {
 				pointermin = pointermid;
 				pointerstart = pointermin;
 			} else {
@@ -261,7 +266,9 @@ QUnit.diff = ( function() {
 	DiffMatchPatch.prototype.diffCommonSuffix = function( text1, text2 ) {
 		var pointermid, pointermax, pointermin, pointerend;
 		// Quick check for common null cases.
-		if ( !text1 || !text2 || text1.charAt( text1.length - 1 ) !== text2.charAt( text2.length - 1 ) ) {
+		if ( !text1 ||
+				!text2 ||
+				text1.charAt( text1.length - 1 ) !== text2.charAt( text2.length - 1 ) ) {
 			return 0;
 		}
 		// Binary search.
@@ -725,16 +732,26 @@ QUnit.diff = ( function() {
 						Math.max( lengthInsertions1, lengthDeletions1 ) ) &&
 						( lastequality.length <= Math.max( lengthInsertions2,
 							lengthDeletions2 ) ) ) {
+
 					// Duplicate record.
-					diffs.splice( equalities[ equalitiesLength - 1 ], 0, [ DIFF_DELETE, lastequality ] );
+					diffs.splice(
+						equalities[ equalitiesLength - 1 ],
+						0,
+						[ DIFF_DELETE, lastequality ]
+					);
+
 					// Change second copy to insert.
 					diffs[ equalities[ equalitiesLength - 1 ] + 1 ][ 0 ] = DIFF_INSERT;
+
 					// Throw away the equality we just deleted.
 					equalitiesLength--;
+
 					// Throw away the previous equality (it needs to be reevaluated).
 					equalitiesLength--;
 					pointer = equalitiesLength > 0 ? equalities[ equalitiesLength - 1 ] : -1;
-					lengthInsertions1 = 0; // Reset the counters.
+
+					// Reset the counters.
+					lengthInsertions1 = 0;
 					lengthDeletions1 = 0;
 					lengthInsertions2 = 0;
 					lengthDeletions2 = 0;
@@ -768,7 +785,11 @@ QUnit.diff = ( function() {
 					if ( overlapLength1 >= deletion.length / 2 ||
 							overlapLength1 >= insertion.length / 2 ) {
 						// Overlap found.  Insert an equality and trim the surrounding edits.
-						diffs.splice( pointer, 0, [ DIFF_EQUAL, insertion.substring( 0, overlapLength1 ) ] );
+						diffs.splice(
+							pointer,
+							0,
+							[ DIFF_EQUAL, insertion.substring( 0, overlapLength1 ) ]
+						);
 						diffs[ pointer - 1 ][ 1 ] =
 							deletion.substring( 0, deletion.length - overlapLength1 );
 						diffs[ pointer + 1 ][ 1 ] = insertion.substring( overlapLength1 );
@@ -777,9 +798,15 @@ QUnit.diff = ( function() {
 				} else {
 					if ( overlapLength2 >= deletion.length / 2 ||
 							overlapLength2 >= insertion.length / 2 ) {
+
 						// Reverse overlap found.
 						// Insert an equality and swap and trim the surrounding edits.
-						diffs.splice( pointer, 0, [ DIFF_EQUAL, deletion.substring( 0, overlapLength2 ) ] );
+						diffs.splice(
+							pointer,
+							0,
+							[ DIFF_EQUAL, deletion.substring( 0, overlapLength2 ) ]
+						);
+
 						diffs[ pointer - 1 ][ 0 ] = DIFF_INSERT;
 						diffs[ pointer - 1 ][ 1 ] =
 							insertion.substring( 0, insertion.length - overlapLength2 );
@@ -938,7 +965,7 @@ QUnit.diff = ( function() {
 	 */
 	DiffMatchPatch.prototype.diffCleanupMerge = function( diffs ) {
 		var pointer, countDelete, countInsert, textInsert, textDelete,
-			commonlength, changes;
+			commonlength, changes, diffPointer, position;
 		diffs.push( [ DIFF_EQUAL, "" ] ); // Add a dummy entry at the end.
 		pointer = 0;
 		countDelete = 0;
@@ -998,12 +1025,16 @@ QUnit.diff = ( function() {
 						diffs.splice( pointer - countDelete,
 							countDelete + countInsert, [ DIFF_DELETE, textDelete ] );
 					} else {
-						diffs.splice( pointer - countDelete - countInsert,
-							countDelete + countInsert, [ DIFF_DELETE, textDelete ], [ DIFF_INSERT, textInsert ] );
+						diffs.splice(
+							pointer - countDelete - countInsert,
+							countDelete + countInsert,
+							[ DIFF_DELETE, textDelete ], [ DIFF_INSERT, textInsert ]
+						);
 					}
 					pointer = pointer - countDelete - countInsert +
 						( countDelete ? 1 : 0 ) + ( countInsert ? 1 : 0 ) + 1;
 				} else if ( pointer !== 0 && diffs[ pointer - 1 ][ 0 ] === DIFF_EQUAL ) {
+
 					// Merge this equality with the previous one.
 					diffs[ pointer - 1 ][ 1 ] += diffs[ pointer ][ 1 ];
 					diffs.splice( pointer, 1 );
@@ -1026,22 +1057,31 @@ QUnit.diff = ( function() {
 		// e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
 		changes = false;
 		pointer = 1;
+
 		// Intentionally ignore the first and last element (don't need checking).
 		while ( pointer < diffs.length - 1 ) {
 			if ( diffs[ pointer - 1 ][ 0 ] === DIFF_EQUAL &&
 					diffs[ pointer + 1 ][ 0 ] === DIFF_EQUAL ) {
+
+				diffPointer = diffs[ pointer ][ 1 ];
+				position = diffPointer.substring(
+					diffPointer.length - diffs[ pointer - 1 ][ 1 ].length
+				);
+
 				// This is a single edit surrounded by equalities.
-				if ( diffs[ pointer ][ 1 ].substring( diffs[ pointer ][ 1 ].length -
-							diffs[ pointer - 1 ][ 1 ].length ) === diffs[ pointer - 1 ][ 1 ] ) {
+				if ( position === diffs[ pointer - 1 ][ 1 ] ) {
+
 					// Shift the edit over the previous equality.
 					diffs[ pointer ][ 1 ] = diffs[ pointer - 1 ][ 1 ] +
 						diffs[ pointer ][ 1 ].substring( 0, diffs[ pointer ][ 1 ].length -
 							diffs[ pointer - 1 ][ 1 ].length );
-					diffs[ pointer + 1 ][ 1 ] = diffs[ pointer - 1 ][ 1 ] + diffs[ pointer + 1 ][ 1 ];
+					diffs[ pointer + 1 ][ 1 ] =
+						diffs[ pointer - 1 ][ 1 ] + diffs[ pointer + 1 ][ 1 ];
 					diffs.splice( pointer - 1, 1 );
 					changes = true;
-				} else if ( diffs[ pointer ][ 1 ].substring( 0, diffs[ pointer + 1 ][ 1 ].length ) ===
+				} else if ( diffPointer.substring( 0, diffs[ pointer + 1 ][ 1 ].length ) ===
 						diffs[ pointer + 1 ][ 1 ] ) {
+
 					// Shift the edit over the next equality.
 					diffs[ pointer - 1 ][ 1 ] += diffs[ pointer + 1 ][ 1 ];
 					diffs[ pointer ][ 1 ] =
@@ -1069,4 +1109,3 @@ QUnit.diff = ( function() {
 		return text;
 	};
 }() );
-// jscs:enable
