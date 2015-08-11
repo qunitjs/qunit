@@ -1,19 +1,7 @@
-var QUnit,
-	onErrorFnPrev,
-	fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" ),
-	globalStartCalled = false,
-	runStarted = false,
-	Date = window.Date,
-	now = Date.now || function() {
-		return new Date().getTime();
-	},
-	location = window.location || { search: "", protocol: "file:" };
-
-QUnit = {};
-
 QUnit.urlParams = urlParams;
 
-QUnit.isLocal = location.protocol === "file:";
+// Figure out if we're running the tests from a server or not
+QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
@@ -145,38 +133,6 @@ extend( QUnit, {
 });
 
 registerLoggingCallbacks( QUnit );
-
-// `onErrorFnPrev` initialized at top of scope
-// Preserve other handlers
-onErrorFnPrev = window.onerror;
-
-// Cover uncaught exceptions
-// Returning true will suppress the default browser handler,
-// returning false will let it run.
-window.onerror = function( error, filePath, linerNr ) {
-	var ret = false;
-	if ( onErrorFnPrev ) {
-		ret = onErrorFnPrev( error, filePath, linerNr );
-	}
-
-	// Treat return value as window.onerror itself does,
-	// Only do our handling if not suppressed.
-	if ( ret !== true ) {
-		if ( QUnit.config.current ) {
-			if ( QUnit.config.current.ignoreGlobalErrors ) {
-				return true;
-			}
-			QUnit.pushFailure( error, filePath + ":" + linerNr );
-		} else {
-			QUnit.test( "global failure", extend(function() {
-				QUnit.pushFailure( error, filePath + ":" + linerNr );
-			}, { validTest: true } ) );
-		}
-		return false;
-	}
-
-	return ret;
-};
 
 function begin() {
 	var i, l,

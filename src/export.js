@@ -1,5 +1,5 @@
 // For browser, export only select globals
-if ( typeof window !== "undefined" && window.document !== "undefined" ) {
+if ( defined.document ) {
 
 	// Deprecated
 	// Extend assert methods to QUnit and Global scope through Backwards compatibility

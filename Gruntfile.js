@@ -26,10 +26,12 @@ grunt.initConfig({
 			options: { process: process },
 			src: [
 				"src/intro.js",
+				"src/core/initialize.js",
 				"src/core/utilities.js",
 				"src/core/stacktrace.js",
 				"src/core/config.js",
 				"src/core/logging.js",
+				"src/core/onerror.js",
 				"src/core.js",
 				"src/test.js",
 				"src/assert.js",
