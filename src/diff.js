@@ -30,14 +30,6 @@
  */
 QUnit.diff = ( function() {
 	function DiffMatchPatch() {
-
-		// Defaults.
-		// Redefine these in your program to override the defaults.
-
-		// Number of seconds to map a diff before giving up (0 for infinity).
-		this.DiffTimeout = 1.0;
-		// Cost of an empty edit operation in terms of edit characters.
-		this.DiffEditCost = 4;
 	}
 
 	//  DIFF FUNCTIONS
@@ -59,23 +51,14 @@ QUnit.diff = ( function() {
 	 * @param {boolean=} optChecklines Optional speedup flag. If present and false,
 	 *     then don't run a line-level diff first to identify the changed areas.
 	 *     Defaults to true, which does a faster, slightly less optimal diff.
-	 * @param {number} optDeadline Optional time when the diff should be complete
-	 *     by.  Used internally for recursive calls.  Users should set DiffTimeout
-	 *     instead.
 	 * @return {!Array.<!DiffMatchPatch.Diff>} Array of diff tuples.
 	 */
-	DiffMatchPatch.prototype.DiffMain = function( text1, text2, optChecklines, optDeadline ) {
+	DiffMatchPatch.prototype.DiffMain = function( text1, text2, optChecklines ) {
 		var deadline, checklines, commonlength,
 			commonprefix, commonsuffix, diffs;
-		// Set a deadline by which time the diff must be complete.
-		if ( typeof optDeadline === "undefined" ) {
-			if ( this.DiffTimeout <= 0 ) {
-				optDeadline = Number.MAX_VALUE;
-			} else {
-				optDeadline = ( new Date() ).getTime() + this.DiffTimeout * 1000;
-			}
-		}
-		deadline = optDeadline;
+
+		// The diff must be complete in up to 1 second.
+		deadline = ( new Date() ).getTime() + 1000;
 
 		// Check for null inputs.
 		if ( text1 === null || text2 === null ) {
@@ -105,7 +88,6 @@ QUnit.diff = ( function() {
 		text2 = text2.substring( commonlength );
 
 		// Trim off common suffix (speedup).
-		/////////
 		commonlength = this.diffCommonSuffix( text1, text2 );
 		commonsuffix = text1.substring( text1.length - commonlength );
 		text1 = text1.substring( 0, text1.length - commonlength );
@@ -148,25 +130,33 @@ QUnit.diff = ( function() {
 		// Is there a deletion operation after the last equality.
 		postDel = false;
 		while ( pointer < diffs.length ) {
-			if ( diffs[ pointer ][ 0 ] === DIFF_EQUAL ) { // Equality found.
-				if ( diffs[ pointer ][ 1 ].length < this.DiffEditCost && ( postIns || postDel ) ) {
+
+			// Equality found.
+			if ( diffs[ pointer ][ 0 ] === DIFF_EQUAL ) {
+				if ( diffs[ pointer ][ 1 ].length < 4 && ( postIns || postDel ) ) {
+
 					// Candidate found.
 					equalities[ equalitiesLength++ ] = pointer;
 					preIns = postIns;
 					preDel = postDel;
 					lastequality = diffs[ pointer ][ 1 ];
 				} else {
+
 					// Not a candidate, and can never become one.
 					equalitiesLength = 0;
 					lastequality = null;
 				}
 				postIns = postDel = false;
-			} else { // An insertion or deletion.
+
+			// An insertion or deletion.
+			} else {
+
 				if ( diffs[ pointer ][ 0 ] === DIFF_DELETE ) {
 					postDel = true;
 				} else {
 					postIns = true;
 				}
+
 				/*
 				 * Five types to be split:
 				 * <ins>A</ins><del>B</del>XY<ins>C</ins><del>D</del>
@@ -176,7 +166,7 @@ QUnit.diff = ( function() {
 				 * <ins>A</ins><del>B</del>X<del>C</del>
 				 */
 				if ( lastequality && ( ( preIns && preDel && postIns && postDel ) ||
-						( ( lastequality.length < this.DiffEditCost / 2 ) &&
+						( ( lastequality.length < 2 ) &&
 						( preIns + preDel + postIns + postDel ) === 3 ) ) ) {
 					// Duplicate record.
 					diffs.splice( equalities[ equalitiesLength - 1 ], 0, [ DIFF_DELETE, lastequality ] );
@@ -390,10 +380,7 @@ QUnit.diff = ( function() {
 		var longtext, shorttext, dmp,
 			text1A, text2B, text2A, text1B, midCommon,
 			hm1, hm2, hm;
-		if ( this.DiffTimeout <= 0 ) {
-			// Don't risk returning a non-optimal diff if we have unlimited time.
-			return null;
-		}
+
 		longtext = text1.length > text2.length ? text1 : text2;
 		shorttext = text1.length > text2.length ? text2 : text1;
 		if ( longtext.length < 4 || shorttext.length * 2 < longtext.length ) {
