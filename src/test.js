@@ -398,7 +398,7 @@ QUnit.reset = function() {
 
 	// Return on non-browser environments
 	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
+	if ( !defined.document ) {
 		return;
 	}
 
@@ -464,8 +464,8 @@ function saveGlobal() {
 	config.pollution = [];
 
 	if ( config.noglobals ) {
-		for ( var key in window ) {
-			if ( hasOwn.call( window, key ) ) {
+		for ( var key in global ) {
+			if ( hasOwn.call( global, key ) ) {
 
 				// in Opera sometimes DOM element ids show up here, ignore them
 				if ( /^qunit-test-output/.test( key ) ) {

@@ -38,7 +38,7 @@ var config = {
 			id: "noglobals",
 			label: "Check for Globals",
 			tooltip: "Enabling this will test if any test introduces new properties on the " +
-				"`window` object. Stored as query-strings."
+				"global object (`window` in Browsers). Stored as query-strings."
 		},
 		{
 			id: "notrycatch",
@@ -58,8 +58,9 @@ var config = {
 	},
 
 	callbacks: {}
-},
-	urlParams = getUrlParams();
+};
+
+var urlParams = defined.document ? getUrlParams() : {};
 
 // Push a loose unnamed module to the modules collection
 config.modules.push( config.currentModule );

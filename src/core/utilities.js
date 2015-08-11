@@ -1,7 +1,5 @@
 var toString = Object.prototype.toString,
-	hasOwn = Object.prototype.hasOwnProperty,
-	setTimeout = window.setTimeout,
-	clearTimeout = window.clearTimeout;
+	hasOwn = Object.prototype.hasOwnProperty;
 
 // returns a new Array with the elements that are in a but not in b
 function diff( a, b ) {
@@ -59,7 +57,7 @@ function extend( a, b, undefOnly ) {
 		if ( hasOwn.call( b, prop ) ) {
 
 			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
-			if ( !( prop === "constructor" && a === window ) ) {
+			if ( !( prop === "constructor" && a === global ) ) {
 				if ( b[ prop ] === undefined ) {
 					delete a[ prop ];
 				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
@@ -113,11 +111,12 @@ function is( type, obj ) {
 }
 
 var getUrlParams = function() {
-	var i, current,
-		location = window.location || { search: "", protocol: "file:" },
-		params = location.search.slice( 1 ).split( "&" ),
-		length = params.length,
-		urlParams = {};
+	var i, current, location, params, length;
+	var urlParams = {};
+
+	location = window.location;
+	params = location.search.slice( 1 ).split( "&" );
+	length = params.length;
 
 	if ( params[ 0 ] ) {
 		for ( i = 0; i < length; i++ ) {
@@ -135,19 +134,4 @@ var getUrlParams = function() {
 	}
 
 	return urlParams;
-};
-
-var defined = {
-	document: window.document !== undefined,
-	setTimeout: setTimeout !== undefined,
-	sessionStorage: (function() {
-		var x = "qunit-test-string";
-		try {
-			sessionStorage.setItem( x, x );
-			sessionStorage.removeItem( x );
-			return true;
-		} catch ( e ) {
-			return false;
-		}
-	}() )
 };
