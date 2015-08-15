@@ -3,21 +3,6 @@ QUnit.module( "diff" );
 QUnit.test( "throws if arguments are not strings", function( assert ) {
 	assert.throws(function() { QUnit.diff( {}, "" ); });
 	assert.throws(function() { QUnit.diff( "", {} ); });
-
-	assert.throws(function() { QUnit.diff( [], "" ); });
-	assert.throws(function() { QUnit.diff( "", [] ); });
-
-	assert.throws(function() { QUnit.diff( undefined, "" ); });
-	assert.throws(function() { QUnit.diff( "", undefined ); });
-
-	assert.throws(function() { QUnit.diff( null, "" ); });
-	assert.throws(function() { QUnit.diff( "", null ); });
-
-	assert.throws(function() { QUnit.diff( 42, "" ); });
-	assert.throws(function() { QUnit.diff( "", 42 ); });
-
-	assert.throws(function() { QUnit.diff( true, "" ); });
-	assert.throws(function() { QUnit.diff( "", true ); });
 });
 
 QUnit.test( "different strings", function( assert ) {
@@ -27,23 +12,23 @@ QUnit.test( "different strings", function( assert ) {
 	assert.equal(
 		QUnit.diff( a, b ),
 		"<del>ab</del><ins>xk</ins><span>cd</span>",
-		"QUnit.diff( a, b )"
+		"QUnit.diff( 'abcd', 'xkcd' )"
 	);
 	assert.equal(
 		QUnit.diff( b, a ),
 		"<del>xk</del><ins>ab</ins><span>cd</span>",
-		"QUnit.diff( b, a )"
+		"QUnit.diff( 'xkcd', 'abcd' )"
 	);
 
 	assert.equal(
 		QUnit.diff( a, "" ),
 		"<del>abcd</del>",
-		"QUnit.diff( a, '' )"
+		"QUnit.diff( 'abcd', '' )"
 	);
 	assert.equal(
 		QUnit.diff( "", a ),
 		"<ins>abcd</ins>",
-		"QUnit.diff( '', a )"
+		"QUnit.diff( '', 'abcd' )"
 	);
 
 	assert.equal(
@@ -66,7 +51,7 @@ QUnit.test( "additions", function( assert ) {
 	assert.equal(
 		QUnit.diff( a, b ),
 		"<span>do less</span><ins>, write more</ins><span>!</span>",
-		"QUnit.diff( a, b )"
+		"QUnit.diff( 'do less!', 'do less, write more!' )"
 	);
 });
 
@@ -77,7 +62,7 @@ QUnit.test( "removals", function( assert ) {
 	assert.equal(
 		QUnit.diff( a, b ),
 		"<span>do less</span><del>, write more</del><span>!</span>",
-		"QUnit.diff( a, b )"
+		"QUnit.diff( 'do less, write more!', 'do less!' )"
 	);
 });
 
