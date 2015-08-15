@@ -1,4 +1,7 @@
-if ( defined.document ) {
+( function() {
+	if ( !defined.document ) {
+		return;
+	}
 
 	// `onErrorFnPrev` initialized at top of scope
 	// Preserve other handlers
@@ -31,4 +34,4 @@ if ( defined.document ) {
 
 		return ret;
 	};
-}
+} )();

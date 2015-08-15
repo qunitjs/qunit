@@ -2,8 +2,8 @@ var QUnit = {};
 
 var Date = global.Date;
 var now = Date.now || function() {
-			return new Date().getTime();
-		};
+	return new Date().getTime();
+};
 
 var setTimeout = global.setTimeout;
 var clearTimeout = global.clearTimeout;

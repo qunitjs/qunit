@@ -57,7 +57,7 @@ function extend( a, b, undefOnly ) {
 		if ( hasOwn.call( b, prop ) ) {
 
 			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
-			if ( !( prop === "constructor" && a === global ) ) {
+			if ( prop !== "constructor" || a !== global ) {
 				if ( b[ prop ] === undefined ) {
 					delete a[ prop ];
 				} else if ( !( undefOnly && typeof a[ prop ] !== "undefined" ) ) {
@@ -111,12 +111,11 @@ function is( type, obj ) {
 }
 
 var getUrlParams = function() {
-	var i, current, location, params, length;
+	var i, current;
 	var urlParams = {};
-
-	location = window.location;
-	params = location.search.slice( 1 ).split( "&" );
-	length = params.length;
+	var location = window.location;
+	var params = location.search.slice( 1 ).split( "&" );
+	var length = params.length;
 
 	if ( params[ 0 ] ) {
 		for ( i = 0; i < length; i++ ) {
