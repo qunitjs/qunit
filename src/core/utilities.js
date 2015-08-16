@@ -57,6 +57,8 @@ function extend( a, b, undefOnly ) {
 		if ( hasOwn.call( b, prop ) ) {
 
 			// Avoid "Member not found" error in IE8 caused by messing with window.constructor
+			// This block runs on every environment, so `global` is being used instead of `window`
+			// to avoid errors on node.
 			if ( prop !== "constructor" || a !== global ) {
 				if ( b[ prop ] === undefined ) {
 					delete a[ prop ];
