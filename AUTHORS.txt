@@ -81,7 +81,7 @@ Leonardo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
 Corey Frang <gnarf37@gmail.com>
 Nathan Dauber <nathan@radialogica.com>
-Michał Gołębiowski <m.goleb@gmail.com>
+Michał Gołębiowski <m.goleb@gmail.com>
 XhmikosR <xhmikosr@yahoo.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
@@ -102,3 +102,9 @@ Henning Beyer <bubens@unpunk.de>
 Jesús Leganés Combarro <piranna@gmail.com>
 Shivam Dixit <shivamd001@gmail.com>
 Gaurav Mittal <gaurav.mittal@students.iiit.ac.in>
+Kevin Partington <kevin.partington@kernelpanicstudios.com>
+Braulio Valdivielso Martínez <brlvldvlsmrtnz@gmail.com>
+Shinnosuke Watanabe <snnskwtnb@gmail.com>
+Aurelio De Rosa <aurelioderosa@gmail.com>
+Toh Chee Chuan <chuan@yokestudio.com>
+Stefan Penner <stefan.penner@gmail.com>
