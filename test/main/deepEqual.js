@@ -161,6 +161,12 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ]( "Objects with nu
 			"empty object without prototype VS empty object"
 		);
 
+		assert.equal(
+			QUnit.equiv( {}, Object.create( null ) ),
+			true,
+			"empty object VS empty object without prototype"
+		);
+
 		nonEmptyWithNoProto = Object.create( null );
 		nonEmptyWithNoProto.foo = "bar";
 
@@ -168,6 +174,12 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ]( "Objects with nu
 			QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
 			true,
 			"object without prototype VS object"
+		);
+
+		assert.equal(
+			QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
+			true,
+			"object VS object without prototype"
 		);
 	}
 );
