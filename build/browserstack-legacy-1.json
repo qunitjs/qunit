@@ -17,10 +17,6 @@
 		},
 		{
 			"browser": "safari",
-			"browser_version": "6.2"
-		},
-		{
-			"browser": "safari",
 			"browser_version": "8.0"
 		},
 		"ie_6",
