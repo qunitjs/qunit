@@ -148,41 +148,41 @@ QUnit.test( "Objects basics", function( assert ) {
 
 });
 
-QUnit[ typeof Object.create === "function" ? "test" : "skip" ]( "Objects with null prototypes",
-	function( assert ) {
-		var nonEmptyWithNoProto;
+QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
+	"Objects with null prototypes", function( assert ) {
 
-		// Objects with no prototype, created via Object.create(null), are used
-		// e.g. as dictionaries.
-		// Being able to test equivalence against object literals is quite useful.
-		assert.equal(
-			QUnit.equiv( Object.create( null ), {} ),
-			true,
-			"empty object without prototype VS empty object"
-		);
+	var nonEmptyWithNoProto;
 
-		assert.equal(
-			QUnit.equiv( {}, Object.create( null ) ),
-			true,
-			"empty object VS empty object without prototype"
-		);
+	// Objects with no prototype, created via Object.create(null), are used
+	// e.g. as dictionaries.
+	// Being able to test equivalence against object literals is quite useful.
+	assert.equal(
+		QUnit.equiv( Object.create( null ), {} ),
+		true,
+		"empty object without prototype VS empty object"
+	);
 
-		nonEmptyWithNoProto = Object.create( null );
-		nonEmptyWithNoProto.foo = "bar";
+	assert.equal(
+		QUnit.equiv( {}, Object.create( null ) ),
+		true,
+		"empty object VS empty object without prototype"
+	);
 
-		assert.equal(
-			QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
-			true,
-			"object without prototype VS object"
-		);
+	nonEmptyWithNoProto = Object.create( null );
+	nonEmptyWithNoProto.foo = "bar";
 
-		assert.equal(
-			QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
-			true,
-			"object VS object without prototype"
-		);
-	}
-);
+	assert.equal(
+		QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
+		true,
+		"object without prototype VS object"
+	);
+
+	assert.equal(
+		QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
+		true,
+		"object VS object without prototype"
+	);
+});
 
 QUnit.test( "Arrays basics", function( assert ) {
 
