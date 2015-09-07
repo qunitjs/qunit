@@ -9,12 +9,6 @@ QUnit.equiv = (function() {
 	var parents = [];
 	var parentsB = [];
 
-	var getProto = Object.getPrototypeOf || function( obj ) {
-
-			/*jshint proto: true */
-			return obj.__proto__;
-		};
-
 	function useStrictEquality( b, a ) {
 
 		/*jshint eqeqeq:false */
@@ -27,6 +21,29 @@ QUnit.equiv = (function() {
 		} else {
 			return a === b;
 		}
+	}
+
+	function compareConstructors( a, b ) {
+		var getProto = Object.getPrototypeOf || function( obj ) {
+
+			/*jshint proto: true */
+			return obj.__proto__;
+		};
+		var protoA = getProto( a );
+		var protoB = getProto( b );
+
+		// Comparing constructors is more strict than using `instanceof`
+		if ( a.constructor !== b.constructor ) {
+
+			// Allow objects with no prototype to be equivalent to
+			// objects with Object as their constructor.
+			if ( !( ( protoA === null && protoB === Object.prototype ) ||
+				( protoB === null && protoA === Object.prototype ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	var callbacks = {
@@ -157,18 +174,9 @@ QUnit.equiv = (function() {
 			var eq = true;
 			var aProperties = [];
 			var bProperties = [];
-			var protoA = getProto( a );
-			var protoB = getProto( b );
 
-			// Comparing constructors is more strict than using `instanceof`
-			if ( a.constructor !== b.constructor ) {
-
-				// Allow objects with no prototype to be equivalent to
-				// objects with Object as their constructor.
-				if ( !( ( protoA === null && protoB === Object.prototype ) ||
-					( protoB === null && protoA === Object.prototype ) ) ) {
-					return false;
-				}
+			if ( compareConstructors( a, b ) === false ) {
+				return false;
 			}
 
 			// Stack constructor before traversing properties
