@@ -1,0 +1,25 @@
+{
+	"username": "BROWSERSTACK_USERNAME",
+	"key": "BROWSERSTACK_KEY",
+	"test_framework": "qunit",
+	"test_path": [
+		"test/index.html",
+		"test/startError.html",
+		"test/logs.html",
+		"test/amd.html",
+		"test/autostart.html"
+	],
+	"browsers": [
+		"chrome_current",
+		"firefox_current",
+		"opera_current",
+		"safari_current",
+		"ie_10",
+		"ie_11",
+		"edge_latest",
+		{
+			"os": "iOS",
+			"os_version": "8.3"
+		}
+	]
+}
