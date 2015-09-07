@@ -1,22 +1,22 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
+	- "0.10"
 before_install:
-  - npm install -g grunt-cli
-  - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
-  - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
+	- npm install -g grunt-cli
+	- true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
+	- true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
 script:
-  - npm run-script ci
+	- npm run-script ci
 cache:
-  directories:
-    - node_modules
+	directories:
+		- node_modules
 notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#jquery-dev"
-    template:
-      - "%{repository}#%{build_number} (%{branch} - %{commit} %{author}): %{message} - %{build_url}"
+	irc:
+		channels:
+			- "chat.freenode.net#jquery-dev"
+		template:
+			- "%{repository}#%{build_number} (%{branch} - %{commit} %{author}): %{message} - %{build_url}"
 env:
 	- BROWSERSTACK_JSON="build/browserstack-1.json"
 	- BROWSERSTACK_JSON="build/browserstack-2.json"
