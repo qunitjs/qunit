@@ -4,22 +4,13 @@
 	"test_framework": "qunit",
 	"test_path": [
 		"test/index.html",
-		"test/logs.html",
-		"test/amd.html"
+		"test/logs.html"
 	],
 	"browsers": [
-		"chrome_previous",
 		"chrome_current",
-		"firefox_previous",
 		"firefox_current",
 		"opera_current",
-		"safari_previous",
 		"safari_current",
-		"ie_6",
-		"ie_7",
-		"ie_8",
-		"ie_9",
-		"ie_10",
 		"ie_11",
 		"edge_latest",
 		{
