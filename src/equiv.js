@@ -2,33 +2,19 @@
 // Author: Philippe Rathé <prathe@gmail.com>
 QUnit.equiv = (function() {
 
-	// Call the o related callback with the given arguments.
-	function bindCallbacks( o, callbacks, args ) {
-		var prop = QUnit.objectType( o );
-		if ( prop ) {
-			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
-				return callbacks[ prop ].apply( callbacks, args );
-			} else {
-				return callbacks[ prop ]; // or undefined
-			}
-		}
-	}
+	// stack to decide between skip/abort functions
+	var callers = [];
 
-	// the real equiv function
-	var innerEquiv,
+	// stack to avoiding loops from circular referencing
+	var parents = [];
+	var parentsB = [];
 
-		// stack to decide between skip/abort functions
-		callers = [],
-
-		// stack to avoiding loops from circular referencing
-		parents = [],
-		parentsB = [],
-
-		getProto = Object.getPrototypeOf || function( obj ) {
+	var getProto = Object.getPrototypeOf || function( obj ) {
 			/* jshint proto: true */
 			return obj.__proto__;
-		},
-		callbacks = (function() {
+		};
+
+	var callbacks = (function() {
 
 			// for string, boolean, number and null
 			function useStrictEquality( b, a ) {
@@ -232,7 +218,20 @@ QUnit.equiv = (function() {
 			};
 		}());
 
-	innerEquiv = function() { // can take multiple arguments
+	// Call the o related callback with the given arguments.
+	function bindCallbacks( o, callbacks, args ) {
+		var prop = QUnit.objectType( o );
+		if ( prop ) {
+			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
+				return callbacks[ prop ].apply( callbacks, args );
+			} else {
+				return callbacks[ prop ]; // or undefined
+			}
+		}
+	}
+
+	// the real equiv function
+	function innerEquiv() {
 		var args = [].slice.apply( arguments );
 		if ( args.length < 2 ) {
 			return true; // end transition
@@ -254,7 +253,7 @@ QUnit.equiv = (function() {
 			// apply transition with (1..n) arguments
 		}( args[ 0 ], args[ 1 ] ) ) &&
 			innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
-	};
+	}
 
 	return innerEquiv;
 }());
