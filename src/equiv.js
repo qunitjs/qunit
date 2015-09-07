@@ -25,7 +25,7 @@ QUnit.equiv = (function() {
 		parentsB = [],
 
 		getProto = Object.getPrototypeOf || function( obj ) {
-			/* jshint camelcase: false, proto: true */
+			/* jshint proto: true */
 			return obj.__proto__;
 		},
 		callbacks = (function() {
@@ -168,13 +168,14 @@ QUnit.equiv = (function() {
 				},
 
 				"object": function( b, a ) {
+					var i, j, loop, aCircular, bCircular;
 
-					/*jshint forin:false */
-					var i, j, loop, aCircular, bCircular,
-						// Default to true
-						eq = true,
-						aProperties = [],
-						bProperties = [];
+					// Default to true
+					var eq = true;
+					var aProperties = [];
+					var bProperties = [];
+					var protoA = getProto( a );
+					var protoB = getProto( b );
 
 					// comparing constructors is more strict than using
 					// instanceof
@@ -182,8 +183,8 @@ QUnit.equiv = (function() {
 
 						// Allow objects with no prototype to be equivalent to
 						// objects with Object as their constructor.
-						if ( !( ( getProto( a ) === null && getProto( b ) === Object.prototype ) ||
-							( getProto( b ) === null && getProto( a ) === Object.prototype ) ) ) {
+						if ( !( ( protoA === null && protoB === Object.prototype ) ||
+							( protoB === null && protoA === Object.prototype ) ) ) {
 							return false;
 						}
 					}
