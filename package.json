@@ -43,7 +43,7 @@
     "requirejs": "2.1.16"
   },
   "scripts": {
-    "ci": "grunt && grunt coveralls && browserstack-runner",
+    "ci": "grunt && grunt coveralls && sh build/run-browserstack.sh",
     "test": "grunt",
     "prepublish": "grunt build"
   },
