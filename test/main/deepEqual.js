@@ -184,6 +184,30 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 	);
 });
 
+// Ref #851
+QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
+	"Object prototype constructor is null", function( assert ) {
+
+	// Ref #851
+	// Unfortunately, in practice `Object.create(null)` is fairly costly.
+	// To mitigate this cost a specialized NullObject can be used. This
+	// Object has similar safe characteristics, but with dramatically
+	// reduced allocation costs.
+	function NullObject() {}
+	NullObject.prototype = Object.create( null, {
+		constructor: {
+			value: null
+		}
+	});
+
+	var a = new NullObject();
+	a.foo = 1;
+	var b = { foo: 1 };
+
+	assert.ok( QUnit.equiv( a, b ) );
+	assert.ok( QUnit.equiv( b, a ) );
+});
+
 QUnit.test( "Arrays basics", function( assert ) {
 
 	assert.equal( QUnit.equiv( [], [] ), true );
