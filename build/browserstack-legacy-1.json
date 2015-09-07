@@ -1,0 +1,40 @@
+{
+	"username": "BROWSERSTACK_USERNAME",
+	"key": "BROWSERSTACK_KEY",
+	"test_framework": "qunit",
+	"test_path": [
+		"test/index.html",
+		"test/logs.html"
+	],
+	"browsers": [
+		"chrome_previous",
+		"firefox_previous",
+		"opera_previous",
+		"safari_5_1",
+		{
+			"browser": "safari",
+			"browser_version": "6.0"
+		},
+		{
+			"browser": "safari",
+			"browser_version": "6.2"
+		},
+		{
+			"browser": "safari",
+			"browser_version": "7.1"
+		},
+		"ie_6",
+		"ie_7",
+		"ie_8",
+		"ie_9",
+		"ie_10",
+		{
+			"os": "iOS",
+			"os_version": "6.0"
+		},
+		{
+			"os": "iOS",
+			"os_version": "7.0"
+		}
+	]
+}

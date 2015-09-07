@@ -17,6 +17,3 @@ notifications:
       - "chat.freenode.net#jquery-dev"
     template:
       - "%{repository}#%{build_number} (%{branch} - %{commit} %{author}): %{message} - %{build_url}"
-env:
-  - BROWSERSTACK_JSON="./build/browserstack-1.json"
-  - BROWSERSTACK_JSON="./build/browserstack-2.json"
