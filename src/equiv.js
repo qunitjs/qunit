@@ -33,17 +33,18 @@ QUnit.equiv = (function() {
 		var protoB = getProto( b );
 
 		// Comparing constructors is more strict than using `instanceof`
-		if ( a.constructor !== b.constructor ) {
-
-			// Allow objects with no prototype to be equivalent to
-			// objects with Object as their constructor.
-			if ( !( ( protoA === null && protoB === Object.prototype ) ||
-				( protoB === null && protoA === Object.prototype ) ) ) {
-				return false;
-			}
+		if ( a.constructor === b.constructor ) {
+			return true;
 		}
 
-		return true;
+		// Allow objects with no prototype to be equivalent to
+		// objects with Object as their constructor.
+		if ( ( protoA === null && protoB === Object.prototype ) ||
+				( protoB === null && protoA === Object.prototype ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	var callbacks = {
