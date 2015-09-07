@@ -37,6 +37,16 @@ QUnit.equiv = (function() {
 			return true;
 		}
 
+		// Ref #851
+		// If the obj prototype descends from a null constructor, treat it
+		// as a null prototype.
+		if ( protoA && protoA.constructor === null ) {
+			protoA = null;
+		}
+		if ( protoB && protoB.constructor === null ) {
+			protoB = null;
+		}
+
 		// Allow objects with no prototype to be equivalent to
 		// objects with Object as their constructor.
 		if ( ( protoA === null && protoB === Object.prototype ) ||
