@@ -148,12 +148,13 @@ QUnit.test( "Objects basics", function( assert ) {
 
 });
 
-QUnit.test( "Objects with and without prototypes", function( assert ) {
-	var nonEmptyWithNoProto;
+QUnit[ typeof Object.create === "function" ? "test" : "skip" ]( "Objects with null prototypes",
+	function( assert ) {
+		var nonEmptyWithNoProto;
 
-	// Objects with no prototype, created via Object.create(null), are used e.g. as dictionaries.
-	// Being able to test equivalence against object literals is quite useful.
-	if ( typeof Object.create === "function" ) {
+		// Objects with no prototype, created via Object.create(null), are used
+		// e.g. as dictionaries.
+		// Being able to test equivalence against object literals is quite useful.
 		assert.equal(
 			QUnit.equiv( Object.create( null ), {} ),
 			true,
@@ -169,7 +170,7 @@ QUnit.test( "Objects with and without prototypes", function( assert ) {
 			"object without prototype VS object"
 		);
 	}
-});
+);
 
 QUnit.test( "Arrays basics", function( assert ) {
 
