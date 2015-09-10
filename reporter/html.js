@@ -392,12 +392,13 @@ function toolbarModuleFilterHtml() {
 
 function toolbarModuleFilter() {
 	var toolbar = id( "qunit-testrunner-toolbar" ),
-		moduleFilter = document.createElement( "span" ),
 		moduleFilterHtml = toolbarModuleFilterHtml();
 
 	if ( !toolbar || !moduleFilterHtml ) {
 		return false;
 	}
+	
+	var moduleFilter = document.createElement( "span" );
 
 	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 	moduleFilter.innerHTML = moduleFilterHtml;
