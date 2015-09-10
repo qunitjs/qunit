@@ -15,25 +15,36 @@ QUnit.assert = Assert.prototype = {
 		}
 	},
 
-	// Increment this Test's semaphore counter, then return a single-use function that
+	// Increment this Test's semaphore counter, then return a function that
 	// decrements that counter a maximum of once.
-	async: function() {
+	async: function( count ) {
 		var test = this.test,
-			popped = false;
+			popped = false,
+			acceptCallCount = count;
+
+		if ( typeof acceptCallCount === "undefined" ) {
+			acceptCallCount = 1;
+		}
 
 		test.semaphore += 1;
 		test.usedAsync = true;
 		pauseProcessing();
 
 		return function done() {
-			if ( !popped ) {
-				test.semaphore -= 1;
-				popped = true;
-				resumeProcessing();
-			} else {
-				test.pushFailure( "Called the callback returned from `assert.async` more than once",
+
+			if ( popped ) {
+				test.pushFailure( "Too many calls to the `assert.async` callback",
 					sourceFromStacktrace( 2 ) );
+				return;
 			}
+			acceptCallCount -= 1;
+			if ( acceptCallCount > 0 ) {
+				return;
+			}
+
+			test.semaphore -= 1;
+			popped = true;
+			resumeProcessing();
 		};
 	},
 
