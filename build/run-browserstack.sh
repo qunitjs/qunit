@@ -7,5 +7,9 @@ for run in \
 	"./build/browserstack-legacy-2.json"
 do
 	export BROWSERSTACK_JSON=$run
-	node_modules/.bin/browserstack-runner
+	if ! node_modules/.bin/browserstack-runner ; then
+		exit 1
+	fi
 done
+
+exit 0
