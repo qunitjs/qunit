@@ -15,7 +15,8 @@
 		"edge_latest",
 		{
 			"os": "iOS",
-			"os_version": "8.3"
+			"os_version": "8.3",
+			"real_mobile": false
 		}
 	]
 }
