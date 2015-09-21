@@ -183,9 +183,10 @@ QUnit.test( "fails if callback is called more than once in test", function( asse
 		throw new Error( msg );
 	};
 
+	var overDone = assert.async();
+	overDone();
+
 	assert.throws(function() {
-		var overDone = assert.async();
-		overDone();
 		overDone();
 	}, new RegExp( "Too many calls to the `assert.async` callback" ) );
 
@@ -205,11 +206,12 @@ QUnit.test( "fails if callback is called more than callback call count", functio
 		throw new Error( msg );
 	};
 
+	var overDone = assert.async( 3 );
+	overDone();
+	overDone();
+	overDone();
+
 	assert.throws(function() {
-		var overDone = assert.async( 3 );
-		overDone();
-		overDone();
-		overDone();
 		overDone();
 	}, new RegExp( "Too many calls to the `assert.async` callback" ) );
 
@@ -231,9 +233,10 @@ QUnit.module( "assert.async fails if callback is called more than once in", {
 			throw new Error( msg );
 		};
 
+		var overDone = assert.async();
+		overDone();
+
 		assert.throws(function() {
-			var overDone = assert.async();
-			overDone();
 			overDone();
 		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
 
@@ -259,9 +262,10 @@ QUnit.module( "assert.async fails if callback is called more than once in", {
 			throw new Error( msg );
 		};
 
+		var overDone = assert.async();
+		overDone();
+
 		assert.throws(function() {
-			var overDone = assert.async();
-			overDone();
 			overDone();
 		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
 
