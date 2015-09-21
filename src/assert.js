@@ -32,18 +32,21 @@ QUnit.assert = Assert.prototype = {
 
 		return function done() {
 			acceptCallCount -= 1;
-			if ( acceptCallCount <= 0 ) {
-				if ( !popped ) {
-					test.semaphore -= 1;
-					popped = true;
-					resumeProcessing();
-				} else {
-					test.pushFailure( "Too many called the callback returned from `assert.async`",
-						sourceFromStacktrace( 2 ) );
-				}
-			} else {
+
+			if ( acceptCallCount > 0 ) {
 				pauseProcessing();
+				return;
 			}
+
+			if ( popped ) {
+				test.pushFailure( "Too many calls to the `assert.async` callback",
+					sourceFromStacktrace( 2 ) );
+				return;
+			}
+
+			test.semaphore -= 1;
+			popped = true;
+			resumeProcessing();
 		};
 	},
 
