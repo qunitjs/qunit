@@ -201,3 +201,44 @@ QUnit.module( "nested modules", function() {
 QUnit.test( "modules with nested functions does not spread beyond", function( assert ) {
 	assert.equal( assert.test.module.name, "pre-nested modules" );
 });
+
+QUnit.module( "contained suite arguments", function( hooks ) {
+	QUnit.test( "hook functions", function( assert ) {
+		assert.strictEqual( typeof hooks.beforeEach, "function" );
+		assert.strictEqual( typeof hooks.afterEach, "function" );
+	} );
+
+	QUnit.module( "outer hooks", function( hooks ) {
+		var beforeEach = hooks.beforeEach;
+		var afterEach = hooks.afterEach;
+
+		beforeEach( function( assert ) {
+			assert.ok( true, "beforeEach called" );
+		} );
+
+		afterEach( function( assert ) {
+			assert.ok( true, "afterEach called" );
+		} );
+
+		QUnit.test( "call hooks", function( assert ) {
+			assert.expect( 2 );
+		} );
+
+		QUnit.module( "stacked inner hooks", function( hooks ) {
+			var beforeEach = hooks.beforeEach;
+			var afterEach = hooks.afterEach;
+
+			beforeEach( function( assert ) {
+				assert.ok( true, "nested beforeEach called" );
+			} );
+
+			afterEach( function( assert ) {
+				assert.ok( true, "nested afterEach called" );
+			} );
+
+			QUnit.test( "call hooks", function( assert ) {
+				assert.expect( 4 );
+			} );
+		} );
+	} );
+} );

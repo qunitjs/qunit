@@ -10,8 +10,9 @@ extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment, executeNow ) {
+		var module, moduleFns;
 		var currentModule = config.currentModule;
-		var module;
+
 		if ( arguments.length === 2 ) {
 			if ( testEnvironment instanceof Function ) {
 				executeNow = testEnvironment;
@@ -32,10 +33,15 @@ extend( QUnit, {
 
 		module = createModule();
 
+		moduleFns = {
+			beforeEach: setHook( module, "beforeEach" ),
+			afterEach: setHook( module, "afterEach" )
+		};
+
 		if ( executeNow instanceof Function ) {
 			config.moduleStack.push( module );
 			setCurrentModule( module );
-			executeNow();
+			executeNow( moduleFns );
 			config.moduleStack.pop();
 			module = module.parentModule || currentModule;
 		}
@@ -293,4 +299,14 @@ function done() {
 		total: config.stats.all,
 		runtime: runtime
 	});
+}
+
+function setHook( module, hookName ) {
+	if ( module.testEnvironment === undefined ) {
+		module.testEnvironment = {};
+	}
+
+	return function( callback ) {
+		module.testEnvironment[ hookName ] = callback;
+	};
 }
