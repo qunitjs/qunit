@@ -169,6 +169,15 @@ QUnit.test( "fails if callback is called more than once in test", function( asse
 	done();
 });
 
+QUnit.module( "async test defined by test callback" );
+
+QUnit.test( "defined done", function( assert, done ) {
+	setTimeout(function() {
+		assert.ok( true );
+		done();
+	});
+});
+
 QUnit.module( "assert.async fails if callback is called more than once in", {
 	beforeEach: function( assert ) {
 

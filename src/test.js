@@ -89,7 +89,7 @@ Test.prototype = {
 	},
 
 	run: function() {
-		var promise;
+		var promise, done;
 
 		config.current = this;
 
@@ -97,16 +97,20 @@ Test.prototype = {
 			QUnit.stop();
 		}
 
+		if ( this.callback.length > 1 ) {
+			done = this.assert.async.call( this.assert );
+		}
+
 		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
-			promise = this.callback.call( this.testEnvironment, this.assert );
+			promise = this.callback.call( this.testEnvironment, this.assert, done );
 			this.resolvePromise( promise );
 			return;
 		}
 
 		try {
-			promise = this.callback.call( this.testEnvironment, this.assert );
+			promise = this.callback.call( this.testEnvironment, this.assert, done );
 			this.resolvePromise( promise );
 		} catch ( e ) {
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
