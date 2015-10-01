@@ -242,3 +242,55 @@ QUnit.module( "contained suite arguments", function( hooks ) {
 		} );
 	} );
 } );
+
+QUnit.module( "contained suite `this`", function( hooks ) {
+	this.outer = 1;
+
+	hooks.beforeEach( function() {
+		this.outer++;
+	} );
+
+	hooks.afterEach( function( assert ) {
+		assert.equal(
+			this.outer, 42,
+			"in-test environment modifications are visible by afterEach callbacks"
+		);
+	} );
+
+	QUnit.test( "`this` is shared from modules to the tests", function( assert ) {
+		assert.equal( this.outer, 2 );
+		this.outer = 42;
+	} );
+
+	QUnit.test( "sibling tests don't share environments", function( assert ) {
+		assert.equal( this.outer, 2 );
+		this.outer = 42;
+	} );
+
+	QUnit.module( "nested suite `this`", function( hooks ) {
+		this.inner = true;
+
+		hooks.beforeEach( function( assert ) {
+			assert.ok( this.outer );
+			assert.ok( this.inner );
+		} );
+
+		hooks.afterEach( function( assert ) {
+			assert.ok( this.outer );
+			assert.ok( this.inner );
+
+			// This change affects the outermodule afterEach assertion.
+			this.outer = 42;
+		} );
+
+		QUnit.test( "inner modules share outer environments", function( assert ) {
+			assert.ok( this.outer );
+			assert.ok( this.inner );
+		} );
+	} );
+
+	QUnit.test( "tests can't see environments from nested modules", function( assert )  {
+		assert.strictEqual( this.inner, undefined );
+		this.outer = 42;
+	} );
+} );
