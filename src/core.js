@@ -41,7 +41,7 @@ extend( QUnit, {
 		if ( executeNow instanceof Function ) {
 			config.moduleStack.push( module );
 			setCurrentModule( module );
-			executeNow( moduleFns );
+			executeNow.call( module.testEnvironment, moduleFns );
 			config.moduleStack.pop();
 			module = module.parentModule || currentModule;
 		}
@@ -56,9 +56,18 @@ extend( QUnit, {
 			var module = {
 				name: moduleName,
 				parentModule: parentModule,
-				testEnvironment: testEnvironment,
 				tests: []
 			};
+
+			var env = {};
+			if ( parentModule ) {
+				extend( env, parentModule.testEnvironment );
+				delete env.beforeEach;
+				delete env.afterEach;
+			}
+			extend( env, testEnvironment );
+			module.testEnvironment = env;
+
 			config.modules.push( module );
 			return module;
 		}
