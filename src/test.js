@@ -230,7 +230,7 @@ Test.prototype = {
 	},
 
 	queue: function() {
-		var bad,
+		var priority,
 			test = this;
 
 		if ( !this.valid() ) {
@@ -262,16 +262,11 @@ Test.prototype = {
 			]);
 		}
 
-		// `bad` initialized at top of scope
-		// defer when previous test run passed, if storage is available
-		bad = QUnit.config.reorder && defined.sessionStorage &&
+		// Prioritize previously failed tests, detected from sessionStorage
+		priority = QUnit.config.reorder && defined.sessionStorage &&
 				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
-		if ( bad ) {
-			run();
-		} else {
-			synchronize( run, true );
-		}
+		return synchronize( run, priority );
 	},
 
 	push: function( result, actual, expected, message, negative ) {
@@ -466,19 +461,42 @@ function generateHash( module, testName ) {
 	return hex.slice( -8 );
 }
 
-function synchronize( callback, last ) {
+function synchronize( callback, priority ) {
+	var last = !priority;
+
 	if ( QUnit.objectType( callback ) === "array" ) {
 		while ( callback.length ) {
 			synchronize( callback.shift() );
 		}
 		return;
 	}
-	config.queue.push( callback );
+
+	if ( priority ) {
+		priorityFill( callback );
+	} else {
+		config.queue.push( callback );
+	}
 
 	if ( config.autorun && !config.blocking ) {
 		process( last );
 	}
 }
+
+// Place previously failed tests on a queue priority line, respecting the order they get assigned.
+function priorityFill( callback ) {
+	var queue, prioritizedQueue;
+
+	queue = config.queue.slice( priorityFill.pos );
+	prioritizedQueue = config.queue.slice( 0, -config.queue.length + priorityFill.pos );
+
+	queue.unshift( callback );
+	queue.unshift.apply( queue, prioritizedQueue );
+
+	config.queue = queue;
+
+	priorityFill.pos += 1;
+}
+priorityFill.pos = 0;
 
 function saveGlobal() {
 	config.pollution = [];
