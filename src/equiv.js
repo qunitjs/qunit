@@ -236,16 +236,9 @@ QUnit.equiv = (function() {
 		}
 	};
 
-	// Call the o related callback with the given arguments.
-	function bindCallbacks( o, callbacks, args ) {
-		var prop = QUnit.objectType( o );
-		if ( prop ) {
-			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
-				return callbacks[ prop ].apply( callbacks, args );
-			} else {
-				return callbacks[ prop ]; // or undefined
-			}
-		}
+	function typeEquiv( a, b ) {
+		var prop = QUnit.objectType( a );
+		return callbacks[ prop ]( b, a );
 	}
 
 	// The real equiv function
@@ -269,7 +262,7 @@ QUnit.equiv = (function() {
 				// Don't lose time with error prone cases
 				return false;
 			} else {
-				return bindCallbacks( a, callbacks, [ b, a ] );
+				return typeEquiv( a, b );
 			}
 
 		// Apply transition with (1..n) arguments

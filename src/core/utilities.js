@@ -83,7 +83,7 @@ function objectType( obj ) {
 	}
 
 	var match = toString.call( obj ).match( /^\[object\s(.*)\]$/ ),
-		type = match && match[ 1 ] || "";
+		type = match && match[ 1 ];
 
 	switch ( type ) {
 		case "Number":
@@ -104,7 +104,6 @@ function objectType( obj ) {
 	if ( typeof obj === "object" ) {
 		return "object";
 	}
-	return undefined;
 }
 
 // Safe object type checking
