@@ -99,6 +99,7 @@ function objectType( obj ) {
 		case "Date":
 		case "RegExp":
 		case "Function":
+		case "Symbol":
 			return type.toLowerCase();
 	}
 	if ( typeof obj === "object" ) {

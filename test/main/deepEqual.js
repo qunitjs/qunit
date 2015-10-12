@@ -1,4 +1,4 @@
-/* globals Set:false, Map:false */
+/* globals Set:false, Map:false, Symbol:false */
 
 QUnit.module( "equiv" );
 
@@ -1779,3 +1779,20 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m2 = new Map( [	[ 1, s3 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing diffrent sets" );
 });
+
+QUnit.module( "equiv Symbols" );
+
+var hasES6Symbol = ( function() {
+	return typeof Symbol === "function";
+} )();
+
+QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function ( assert ) {
+	var a = Symbol( 1 );
+	var b = Symbol( 1 );
+
+	assert.equal( QUnit.equiv( a, a ), true, "Same symbol is equivalent" );
+	assert.equal(
+		QUnit.equiv( a, b ), false,
+		"Not equivalent to another similar symbol built build on the same token"
+	);
+} );

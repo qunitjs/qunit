@@ -63,6 +63,7 @@ QUnit.equiv = (function() {
 		"number": useStrictEquality,
 		"null": useStrictEquality,
 		"undefined": useStrictEquality,
+		"symbol": useStrictEquality,
 
 		"nan": function( b ) {
 			return isNaN( b );
