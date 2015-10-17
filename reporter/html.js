@@ -460,6 +460,17 @@ function storeFixture() {
 	}
 }
 
+function appendFilteredTest() {
+	var testId = QUnit.config.testId;
+	if ( !testId || testId.length <= 0 ) {
+		return "";
+	}
+	return "<div id='qunit-filteredTest'>Rerunning selected tests: " + testId.join(", ") +
+		" <a id='qunit-clearFilter' href='" +
+		setUrl({ filter: undefined, module: undefined, testId: undefined }) +
+		"'>" + "Run all tests" + "</a></div>";
+}
+
 function appendUserAgent() {
 	var userAgent = id( "qunit-userAgent" );
 
@@ -467,7 +478,7 @@ function appendUserAgent() {
 		userAgent.innerHTML = "";
 		userAgent.appendChild(
 			document.createTextNode(
-				"QUnit " + QUnit.version  + "; " + navigator.userAgent
+				"QUnit " + QUnit.version + "; " + navigator.userAgent
 			)
 		);
 	}
@@ -531,6 +542,7 @@ QUnit.begin(function( details ) {
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 			"<h2 id='qunit-banner'></h2>" +
 			"<div id='qunit-testrunner-toolbar'></div>" +
+			appendFilteredTest() +
 			"<h2 id='qunit-userAgent'></h2>" +
 			"<ol id='qunit-tests'></ol>";
 	}
