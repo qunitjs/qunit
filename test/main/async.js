@@ -94,6 +94,19 @@ QUnit.test( "fails if start is called more than stop", function( assert ) {
 		"already\\)" ) );
 });
 
+QUnit.test( "fails if start is called with a non-numeric argument", function( assert ) {
+	QUnit.stop();
+
+	// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
+	assert.test.pushFailure = function( msg ) {
+		throw new Error( msg );
+	};
+
+	assert.throws(function() {
+		QUnit.start( "ok" );
+	}, /Called start\(\) with a non\-numeric decrement\./ );
+});
+
 QUnit.module( "asyncTest" );
 
 QUnit.asyncTest( "asyncTest", function( assert ) {
