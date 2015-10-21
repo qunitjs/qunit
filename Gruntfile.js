@@ -106,7 +106,8 @@ grunt.initConfig({
 			"test/reporter-html/index.html",
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html",
-			"test/reporter-html/single-testid.html"
+			"test/reporter-html/single-testid.html",
+			"test/only.html"
 		]
 	},
 	coveralls: {
