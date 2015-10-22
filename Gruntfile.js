@@ -198,7 +198,7 @@ grunt.registerTask( "test-on-node", function() {
 	});
 	QUnit.config.autorun = false;
 
-	require( "./test/logs" );
+	require( "./test/events" );
 	require( "./test/main/test" );
 	require( "./test/main/assert" );
 	require( "./test/main/async" );
@@ -206,7 +206,6 @@ grunt.registerTask( "test-on-node", function() {
 	require( "./test/main/modules" );
 	require( "./test/main/deepEqual" );
 	require( "./test/main/stack" );
-	require( "./test/events" );
 	require( "./test/globals-node" );
 
 	QUnit.load();
