@@ -64,9 +64,9 @@ grunt.initConfig({
 		options: {
 			config: ".jscsrc"
 		},
-		all: [
-			"<%= jshint.all %>",
-			"!test/main/deepEqual.js"
+		all:	[
+				"<%= jshint.all %>",
+				"!test/main/deepEqual.js"
 		]
 	},
 	search: {
@@ -119,9 +119,25 @@ grunt.initConfig({
 			src: "build/report/lcov/lcov.info"
 		}
 	},
+	concurrent: {
+		target1: [
+			  "build"
+		],
+		target2: [
+			"jshint",
+			"jscs",
+			"search",
+			"qunit"
+		],
+		target3: [
+			"test-on-node"
+		]
+	},
 	watch: {
 		options: {
-			atBegin: true
+			atBegin: true,
+			spawn: false,
+			interrupt: true
 		},
 		files: [
 			".jshintrc",
@@ -190,6 +206,7 @@ grunt.registerTask( "test-on-node", function() {
 });
 
 grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "jscs", "search", "qunit", "test-on-node" ] );
+grunt.registerTask( "default", [ "concurrent:target1", "concurrent:target2", "concurrent:target3" ]
+ );
 
 };
