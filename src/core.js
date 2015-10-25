@@ -85,6 +85,8 @@ extend( QUnit, {
 
 	skip: skip,
 
+	only: only,
+
 	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
 	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.
 	start: function( count ) {

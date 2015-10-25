@@ -64,9 +64,9 @@ grunt.initConfig({
 		options: {
 			config: ".jscsrc"
 		},
-		all:	[
-				"<%= jshint.all %>",
-				"!test/main/deepEqual.js"
+		all: [
+			"<%= jshint.all %>",
+			"!test/main/deepEqual.js"
 		]
 	},
 	search: {
@@ -106,7 +106,8 @@ grunt.initConfig({
 			"test/reporter-html/index.html",
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html",
-			"test/reporter-html/single-testid.html"
+			"test/reporter-html/single-testid.html",
+			"test/only.html"
 		]
 	},
 	coveralls: {
@@ -120,16 +121,15 @@ grunt.initConfig({
 		}
 	},
 	concurrent: {
-		target1: [
-			  "build"
+		build: [
+			  "concat:src-js",
+				"concat:src-css"
 		],
-		target2: [
+		test: [
 			"jshint",
 			"jscs",
 			"search",
-			"qunit"
-		],
-		target3: [
+			"qunit",
 			"test-on-node"
 		]
 	},
@@ -206,7 +206,6 @@ grunt.registerTask( "test-on-node", function() {
 });
 
 grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "concurrent:target1", "concurrent:target2", "concurrent:target3" ]
- );
+grunt.registerTask( "default", [ "concurrent:build", "concurrent:test" ] );
 
 };
