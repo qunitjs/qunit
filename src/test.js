@@ -550,6 +550,13 @@ function test( testName, expected, callback, async ) {
 	if ( arguments.length === 2 ) {
 		callback = expected;
 		expected = null;
+	} else if ( arguments.length === 3 && typeof expected !== "function" ) {
+		if ( global.console && global.console.warn ) {
+			global.console.warn(
+				"'expected' argument of QUnit.test is deprecated. " +
+				"Call the expect() function explicitly instead."
+			);
+		}
 	}
 
 	newTest = new Test({

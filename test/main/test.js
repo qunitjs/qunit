@@ -7,6 +7,10 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.ok( true );
 });
 
+QUnit.test( "expected of QUnit.test is deprecated", 42, function( assert ) {
+	assert.expect( 0 );
+});
+
 if ( typeof document !== "undefined" ) {
 
 QUnit.module( "fixture" );
