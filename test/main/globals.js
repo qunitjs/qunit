@@ -1,4 +1,4 @@
-/*global ok: false, equal: false, throws: false */
+/*global ok: false, equal: false, throws: false, raises: false */
 (function( window ) {
 
 QUnit.module( "globals" );
@@ -41,11 +41,14 @@ QUnit.test( "QUnit exported methods", function( assert ) {
 
 // Test deprecated exported Assert methods
 QUnit.test( "Exported assertions", function() {
-	QUnit.expect( 9 );
+	QUnit.expect( 12 );
 
 	QUnit.ok( true );
 	QUnit.equal( 2, 2 );
 	QUnit.throws(function() {
+		throw "error";
+	});
+	QUnit.raises(function() {
 		throw "error";
 	});
 
@@ -54,10 +57,16 @@ QUnit.test( "Exported assertions", function() {
 	throws(function() {
 		throw "error";
 	});
+	raises(function() {
+		throw "error";
+	});
 
 	QUnit.assert.ok( true );
 	QUnit.assert.equal( 2, 2 );
 	QUnit.assert.throws(function() {
+		throw "error";
+	});
+	QUnit.assert.raises(function() {
 		throw "error";
 	});
 });

@@ -38,7 +38,8 @@ if ( defined.document ) {
 				"notDeepEqual",
 				"strictEqual",
 				"notStrictEqual",
-				"throws"
+				"throws",
+				"raises"
 			];
 
 		for ( i = 0, l = keys.length; i < l; i++ ) {
