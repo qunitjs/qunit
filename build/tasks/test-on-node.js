@@ -15,13 +15,13 @@ module.exports = function( grunt ) {
 		var done = this.async();
 
 		async.series( runs, function( error, result ) {
-			var total = result.reduce( function( previous, details ) {
+			var total = result.reduce(function( previous, details ) {
 					return previous + details.total;
 				}, 0 );
-			var failed = result.reduce( function( previous, details ) {
+			var failed = result.reduce(function( previous, details ) {
 					return previous + details.failed;
 				}, 0 );
-			var runtime = result.reduce( function( previous, details ) {
+			var runtime = result.reduce(function( previous, details ) {
 					return previous + details.runtime;
 				}, 0 );
 
@@ -59,24 +59,24 @@ module.exports = function( grunt ) {
 		var runDone = false;
 		var testActive = false;
 
-		QUnit.begin( function() {
+		QUnit.on( "runStart", function() {
 			grunt.log.ok( "Testing " + file + " ..." );
-		} );
-		QUnit.testStart( function() {
+		});
+		QUnit.on( "testStart", function() {
 			testActive = true;
-		} );
-		QUnit.log( function( details ) {
+		});
+		QUnit.on( "assert", function( details ) {
 			if ( !testActive || details.result ) {
 				return;
 			}
 			var message = "name: " + details.name + " module: " + details.module +
 				" message: " + details.message;
 			grunt.log.error( message );
-		} );
-		QUnit.testDone( function() {
+		});
+		QUnit.on( "testEnd", function() {
 			testActive = false;
-		} );
-		QUnit.done( function( details ) {
+		});
+		QUnit.on( "runEnd", function( details ) {
 			if ( runDone ) {
 				return;
 			}
