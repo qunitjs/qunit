@@ -120,9 +120,24 @@ grunt.initConfig({
 			src: "build/report/lcov/lcov.info"
 		}
 	},
+	concurrent: {
+		build: [
+			  "concat:src-js",
+				"concat:src-css"
+		],
+		test: [
+			"jshint",
+			"jscs",
+			"search",
+			"qunit",
+			"test-on-node"
+		]
+	},
 	watch: {
 		options: {
-			atBegin: true
+			atBegin: true,
+			spawn: false,
+			interrupt: true
 		},
 		files: [
 			".jshintrc",
@@ -191,6 +206,6 @@ grunt.registerTask( "test-on-node", function() {
 });
 
 grunt.registerTask( "build", [ "concat" ] );
-grunt.registerTask( "default", [ "build", "jshint", "jscs", "search", "qunit", "test-on-node" ] );
+grunt.registerTask( "default", [ "concurrent:build", "concurrent:test" ] );
 
 };
