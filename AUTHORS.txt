@@ -81,7 +81,7 @@ Leonardo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
 Corey Frang <gnarf37@gmail.com>
 Nathan Dauber <nathan@radialogica.com>
-Michał Gołębiowski <m.goleb@gmail.com>
+Michał Gołębiowski <m.goleb@gmail.com>
 XhmikosR <xhmikosr@yahoo.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
@@ -108,3 +108,10 @@ Shinnosuke Watanabe <snnskwtnb@gmail.com>
 Aurelio De Rosa <aurelioderosa@gmail.com>
 Toh Chee Chuan <chuan@yokestudio.com>
 Stefan Penner <stefan.penner@gmail.com>
+Taehee Kim <slhyvaa@nate.com>
+YongWoo Jeon <yongwoo.jeon@navercorp.com>
+Stephen Jones <askelkana@gmail.com>
+Ralph Dugue <rdugue1@gmail.com>
+bianca c [arghgr] <tenmillionpeople@gmail.com>
+Erik Benoist <ebenoist@gmail.com>
+Sergio Cinos <sergio.cinos@gmail.com>

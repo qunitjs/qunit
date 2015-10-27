@@ -1,4 +1,21 @@
 
+1.20.0 / 2015-10-27
+==================
+
+  * Assert: Exposes assert.raises() to the global scope
+  * Assert: Add a calls count parameter on assert.async
+  * Build: Improve grunt speed using grunt-concurrent
+  * Core: Implement QUnit.only
+  * Core: Support Symbol types on QUnit.equiv
+  * Core: QUnit.start fails if called with a non-numeric argument
+  * Core: Implement Nested modules
+  * Core: Equivalency for desdendants of null constructors
+  * HTML Reporter: Adds indicator for filtered test
+  * HTML Reporter: Collapse details for successive failed tests
+  * Test: Fix regression when a failing test canceled the module hooks
+  * Tests: Isolate and improve tests for Object equivalency
+  * Tests: Split browserstack runs on CI to avoid timeout errors
+
 1.19.0 / 2015-09-01
 ==================
 
