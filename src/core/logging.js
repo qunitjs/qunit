@@ -66,18 +66,17 @@ function verifyLoggingCallbacks() {
 }
 
 function emit( type, data ) {
-	var i, len, callbacks;
+	var i, callbacks;
 
 	// Validate
 	if ( QUnit.objectType( type ) !== "string" ) {
 		throw new Error( "Emitting QUnit events requires an event type" );
 	}
 
-	callbacks = listeners[ type ];
-	if ( callbacks ) {
-		for ( i = 0; i < callbacks.length; i++ ) {
-			callbacks[ i ]( data );
-		}
+	// Ensure a consistent event run
+	callbacks = [].slice.call( listeners[ type ] || [] );
+	for ( i = 0; i < callbacks.length; i++ ) {
+		callbacks[ i ]( data );
 	}
 }
 
