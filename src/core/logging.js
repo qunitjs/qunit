@@ -75,7 +75,7 @@ function emit( type, data ) {
 
 	callbacks = listeners[ type ];
 	if ( callbacks ) {
-		for ( i = 0, len = callbacks.length; i < len; i++ ) {
+		for ( i = 0; i < callbacks.length; i++ ) {
 			callbacks[ i ]( data );
 		}
 	}
