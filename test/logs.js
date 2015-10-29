@@ -310,7 +310,7 @@ QUnit.done( function() {
 			assert.equal( moduleDone, 1, "test in progress" );
 		} );
 	}, 5000 );
-});
+} );
 
 QUnit.module( "deprecated log methods" );
 
