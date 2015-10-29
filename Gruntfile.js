@@ -178,7 +178,7 @@ grunt.registerTask( "test-on-node", function() {
 	} );
 	QUnit.testDone( function() {
 		testActive = false;
-	});
+	} );
 	QUnit.done( function( details ) {
 		if ( runDone ) {
 			return;
