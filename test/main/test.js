@@ -43,7 +43,7 @@ QUnit.test( "mod2", function( assert ) {
 QUnit.module( "QUnit.skip", {
 	beforeEach: function( assert ) {
 
-		// skip test hooks for skipped tests
+		// Skip test hooks for skipped tests
 		assert.ok( false, "skipped function" );
 		throw "Error";
 	},
@@ -55,7 +55,7 @@ QUnit.module( "QUnit.skip", {
 
 QUnit.skip( "test blocks are skipped", function( assert ) {
 
-	// this test callback won't run, even with broken code
+	// This test callback won't run, even with broken code
 	assert.expect( 1000 );
 	throw "Error";
 } );
