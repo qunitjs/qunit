@@ -37,7 +37,7 @@ QUnit.test( "QUnit exported methods", function( assert ) {
 	assert.expect( globals.length * 2 );
 
 	checkExported( assert, globals );
-});
+} );
 
 // Test deprecated exported Assert methods
 QUnit.test( "Exported assertions", function() {
@@ -45,33 +45,33 @@ QUnit.test( "Exported assertions", function() {
 
 	QUnit.ok( true );
 	QUnit.equal( 2, 2 );
-	QUnit.throws(function() {
+	QUnit.throws( function() {
 		throw "error";
-	});
-	QUnit.raises(function() {
+	} );
+	QUnit.raises( function() {
 		throw "error";
-	});
+	} );
 
 	ok( true );
 	equal( 2, 2 );
-	throws(function() {
+	throws( function() {
 		throw "error";
-	});
-	raises(function() {
+	} );
+	raises( function() {
 		throw "error";
-	});
+	} );
 
 	QUnit.assert.ok( true );
 	QUnit.assert.equal( 2, 2 );
-	QUnit.assert.throws(function() {
+	QUnit.assert.throws( function() {
 		throw "error";
-	});
-	QUnit.assert.raises(function() {
+	} );
+	QUnit.assert.raises( function() {
 		throw "error";
-	});
-});
+	} );
+} );
 
 // Get a reference to the global object, like window in browsers
-}( (function() {
+}( ( function() {
 	return this;
-}.call()) ));
+}.call() ) ) );
