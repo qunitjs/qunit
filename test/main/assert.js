@@ -251,7 +251,7 @@ QUnit.test( "throws", function( assert ) {
 			/*jshint ignore:start */
 			( window.execScript || function( data ) {
 				window.eval.call( window, data );
-			})( "throw 'error';" );
+			} )( "throw 'error';" );
 
 			/*jshint ignore:end */
 		},
@@ -290,7 +290,7 @@ QUnit.module( "failing assertions", {
 
 		assert.push = function( result, actual, expected, message ) {
 
-			// inverts the result so we can test failing assertions
+			// Inverts the result so we can test failing assertions
 			originalPush( !result, actual, expected, message );
 		};
 	}
@@ -303,7 +303,7 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( null );
 	assert.ok( undefined );
 	assert.ok( NaN );
-});
+} );
 
 QUnit.test( "notOk", function( assert ) {
 	assert.notOk( true );
