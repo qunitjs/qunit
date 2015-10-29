@@ -2,7 +2,7 @@
 
 // Don't execute this file directly on Node, this is part of
 // Grunt's test-on-node task
-(function() {
+( function() {
 QUnit.module( "globals for Node.js only" );
 
 QUnit.test( "QUnit exports", function( assert ) {
@@ -17,6 +17,6 @@ QUnit.test( "QUnit exports", function( assert ) {
 		qunit,
 		"Required module QUnit's property QUnit is self-referencing"
 	);
-});
+} );
 
-})();
+} )();
