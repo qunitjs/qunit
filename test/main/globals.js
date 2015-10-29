@@ -1,5 +1,5 @@
 /*global ok: false, equal: false, throws: false, raises: false */
-(function( window ) {
+( function( window ) {
 
 QUnit.module( "globals" );
 
