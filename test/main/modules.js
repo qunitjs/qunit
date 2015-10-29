@@ -105,7 +105,7 @@ QUnit.asyncTest( "module with async beforeEach", function( assert ) {
 QUnit.module( "async afterEach test", {
 	afterEach: function( assert ) {
 		QUnit.stop();
-		setTimeout(function() {
+		setTimeout( function() {
 			assert.ok( true );
 			QUnit.start();
 		} );
@@ -148,7 +148,7 @@ QUnit.test( "before/after order", function( assert ) {
 	assert.expect( 1 );
 } );
 
-QUnit.module( "pre-nested modules");
+QUnit.module( "pre-nested modules" );
 
 QUnit.module( "nested modules", function() {
 	QUnit.module( "first outer", {
@@ -176,13 +176,13 @@ QUnit.module( "nested modules", function() {
 							assert.equal( module.name,
 								"nested modules > first outer > first inner" );
 							assert.expect( 5 );
-						});
-				});
+						} );
+				} );
 			QUnit.test( "test after nested module is processed", function( assert ) {
 				var module = assert.test.module;
 				assert.equal( module.name, "nested modules > first outer" );
 				assert.expect( 3 );
-			});
+			} );
 			QUnit.module( "second inner" );
 			QUnit.test( "test after non-nesting module declared", function( assert ) {
 				var module = assert.test.module;
