@@ -165,10 +165,10 @@ grunt.registerTask( "test-on-node", function() {
 
 	global.QUnit = QUnit;
 
-	QUnit.testStart(function() {
+	QUnit.testStart( function() {
 		testActive = true;
 	} );
-	QUnit.log(function( details ) {
+	QUnit.log( function( details ) {
 		if ( !testActive || details.result ) {
 			return;
 		}
@@ -176,10 +176,10 @@ grunt.registerTask( "test-on-node", function() {
 			" message: " + details.message;
 		grunt.log.error( message );
 	} );
-	QUnit.testDone(function() {
+	QUnit.testDone( function() {
 		testActive = false;
 	});
-	QUnit.done(function( details ) {
+	QUnit.done( function( details ) {
 		if ( runDone ) {
 			return;
 		}
