@@ -70,6 +70,8 @@ grunt.initConfig( {
 		},
 		all: [
 			"<%= jshint.all %>",
+			"!dist/**",
+			"!node_modules/**",
 			"!test/main/deepEqual.js"
 		]
 	},
