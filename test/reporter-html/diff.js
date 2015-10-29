@@ -1,9 +1,9 @@
 QUnit.module( "diff" );
 
 QUnit.test( "throws if arguments are not strings", function( assert ) {
-	assert.throws(function() { QUnit.diff( {}, "" ); });
-	assert.throws(function() { QUnit.diff( "", {} ); });
-});
+	assert.throws( function() { QUnit.diff( {}, "" ); } );
+	assert.throws( function() { QUnit.diff( "", {} ); } );
+} );
 
 QUnit.test( "different strings", function( assert ) {
 	var a = "abcd";
@@ -42,7 +42,7 @@ QUnit.test( "different strings", function( assert ) {
 		"<del>tru</del><ins>fals</ins><span>e</span>",
 		"QUnit.diff( 'true', 'false' )"
 	);
-});
+} );
 
 QUnit.test( "additions", function( assert ) {
 	var a = "do less!";
@@ -53,7 +53,7 @@ QUnit.test( "additions", function( assert ) {
 		"<span>do less</span><ins>, write more</ins><span>!</span>",
 		"QUnit.diff( 'do less!', 'do less, write more!' )"
 	);
-});
+} );
 
 QUnit.test( "removals", function( assert ) {
 	var a = "do less, write more!";
@@ -64,7 +64,7 @@ QUnit.test( "removals", function( assert ) {
 		"<span>do less</span><del>, write more</del><span>!</span>",
 		"QUnit.diff( 'do less, write more!', 'do less!' )"
 	);
-});
+} );
 
 QUnit.test( "equality shifts", function( assert ) {
 
@@ -75,7 +75,7 @@ QUnit.test( "equality shifts", function( assert ) {
 	assert.equal(
 		QUnit.diff( a, b ), "<ins>AB</ins><span>AC</span>"
 	);
-});
+} );
 
 QUnit.test( "test with line mode on long strings", function( assert ) {
 	var a = "QUnit is a powerful, easy-to-use JavaScript unit testing framework. " +
@@ -103,7 +103,7 @@ QUnit.test( "test with line mode on long strings", function( assert ) {
 		" jQuery. A rewrite in 2009 fixed that, and now QUnit runs completely " +
 		"standalone. </ins>"
 	);
-});
+} );
 
 QUnit.test( "simplified diffs", function( assert ) {
 	assert.equal(
@@ -133,7 +133,7 @@ QUnit.test( "simplified diffs", function( assert ) {
 		QUnit.diff( "xxxabc", "defxxx" ),
 		"<ins>def</ins><span>xxx</span><del>abc</del>"
 	);
-});
+} );
 
 QUnit.test( "equal values", function( assert ) {
 	assert.equal(
@@ -145,4 +145,4 @@ QUnit.test( "equal values", function( assert ) {
 		QUnit.diff( "", "" ),
 		""
 	);
-});
+} );
