@@ -5,7 +5,7 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.equal( expected, 2 );
 	assert.expect( expected + 1 );
 	assert.ok( true );
-});
+} );
 
 if ( typeof document !== "undefined" ) {
 
@@ -14,7 +14,7 @@ QUnit.module( "fixture" );
 QUnit.test( "setup", function( assert ) {
 	assert.expect( 0 );
 	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";
-});
+} );
 
 QUnit.test( "basics", function( assert ) {
 	assert.equal(
@@ -22,7 +22,7 @@ QUnit.test( "basics", function( assert ) {
 		"test markup",
 		"automatically reset"
 	);
-});
+} );
 
 }
 
@@ -38,7 +38,7 @@ QUnit.test( "mod2", function( assert ) {
 
 	assert.mod2( 2, 0, "2 % 2 == 0" );
 	assert.mod2( 3, 1, "3 % 2 == 1" );
-});
+} );
 
 QUnit.module( "QUnit.skip", {
 	beforeEach: function( assert ) {
@@ -51,13 +51,13 @@ QUnit.module( "QUnit.skip", {
 		assert.ok( false, "skipped function" );
 		throw "Error";
 	}
-});
+} );
 
 QUnit.skip( "test blocks are skipped", function( assert ) {
 
 	// this test callback won't run, even with broken code
 	assert.expect( 1000 );
 	throw "Error";
-});
+} );
 
 QUnit.skip( "no function" );
