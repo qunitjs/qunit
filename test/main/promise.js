@@ -23,7 +23,7 @@ QUnit.module( "Module with Promise-aware beforeEach", {
 
 QUnit.test( "non-Promise", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
 QUnit.module( "Module with Promise-aware beforeEach", {
 	beforeEach: function( assert ) {
