@@ -1374,7 +1374,7 @@ QUnit.test(
 				a: true,
 				b: fnOutside, // ok make reference to a function in all instances scope
 
-				// This function won't be ingored.
+				// This function won't be ignored.
 				// It isn't visible for all C instances
 				// and it is not in a property of an instance.
 				// (in an Object instances e.g. the object literal)
