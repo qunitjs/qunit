@@ -264,7 +264,7 @@
   * Add testswarm integration as grunt task
   * Added padding on URL config checkboxes.
   * Cleanup composite addon: Use callback registration instead of overwriting them. Set the correct src on rerun link (and dblclick). Remove the composite test itself, as that was a crazy hack not worth maintaining
-  * Cleanup reset() test and usage - run testDone callback first, to allow listeneres ignoring reset assertions
+  * Cleanup reset() test and usage - run testDone callback first, to allow listeners ignoring reset assertions
   * Double clicking on composite test rows opens individual test page
   * test-message for all message-bearing API reporting details
 
