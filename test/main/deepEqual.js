@@ -1641,7 +1641,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	// Tricky values
 	s1 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
-	assert.equal( QUnit.equiv( s1, s2 ), true, "Mutiple-element sets of tricky values" );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
 	// Sets Containing objects
 	o1 = { foo: 0, bar: true };
@@ -1717,7 +1717,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 		[ Infinity, Infinity ],
 		[ -Infinity, -Infinity ]
 	] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Mutiple-element maps of tricky values" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Multiple-element maps of tricky values" );
 
 	// Same keys, different values
 	m1 = new Map( [
