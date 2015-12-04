@@ -9,7 +9,7 @@
   * Core: Support Symbol types on QUnit.equiv
   * Core: QUnit.start fails if called with a non-numeric argument
   * Core: Implement Nested modules
-  * Core: Equivalency for desdendants of null constructors
+  * Core: Equivalency for descendants of null constructors
   * HTML Reporter: Adds indicator for filtered test
   * HTML Reporter: Collapse details for successive failed tests
   * Test: Fix regression when a failing test canceled the module hooks
