@@ -318,7 +318,7 @@
   * Fix CommonJS export by assigning QUnit to module.exports.
   * Remove the testEnvironmentArg to test(). Most obscure, never used anywhere. test() is still heavily overloaded with argument shifting, this makes it a little more sane. Fixes #172
   * Serialize expected and actual values only when test fails. Speeds up output of valid tests, especially for lots of large objects. Fixes #183
-  * Fix sourceFromsTacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
+  * Fix sourceFromsStacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
   * Fix references to test/deepEqual.js
   * In autorun mode, moduleDone is called without matching moduleStart. Fix issue #184
   * Fixture test: allow anything falsy in test as getAttribute in oldIE will return empty string instead of null. We don't really care.
