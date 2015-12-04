@@ -1374,7 +1374,7 @@ QUnit.test(
 				a: true,
 				b: fnOutside, // ok make reference to a function in all instances scope
 
-				// This function won't be ingored.
+				// This function won't be ignored.
 				// It isn't visible for all C instances
 				// and it is not in a property of an instance.
 				// (in an Object instances e.g. the object literal)
@@ -1641,7 +1641,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	// Tricky values
 	s1 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
-	assert.equal( QUnit.equiv( s1, s2 ), true, "Mutiple-element sets of tricky values" );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
 	// Sets Containing objects
 	o1 = { foo: 0, bar: true };
@@ -1717,7 +1717,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 		[ Infinity, Infinity ],
 		[ -Infinity, -Infinity ]
 	] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Mutiple-element maps of tricky values" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Multiple-element maps of tricky values" );
 
 	// Same keys, different values
 	m1 = new Map( [
@@ -1745,7 +1745,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing same objects" );
 	m1 = new Map( [ [ 1, o1 ] ] );
 	m2 = new Map( [ [ 1, o2 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal objects" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects" );
 
 	// Maps containing different objects
 	m1 = new Map( [ [ 1, o1 ] ] );
@@ -1772,12 +1772,12 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	s3 = new Set( [ 1, 2, 3, 4 ] );
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [ [ 1, s2 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal sets" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal sets" );
 
 	// Maps containing different sets
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [	[ 1, s3 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing diffrent sets" );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
 });
 
 QUnit.module( "equiv Symbols" );

@@ -9,7 +9,7 @@
   * Core: Support Symbol types on QUnit.equiv
   * Core: QUnit.start fails if called with a non-numeric argument
   * Core: Implement Nested modules
-  * Core: Equivalency for desdendants of null constructors
+  * Core: Equivalency for descendants of null constructors
   * HTML Reporter: Adds indicator for filtered test
   * HTML Reporter: Collapse details for successive failed tests
   * Test: Fix regression when a failing test canceled the module hooks
@@ -264,7 +264,7 @@
   * Add testswarm integration as grunt task
   * Added padding on URL config checkboxes.
   * Cleanup composite addon: Use callback registration instead of overwriting them. Set the correct src on rerun link (and dblclick). Remove the composite test itself, as that was a crazy hack not worth maintaining
-  * Cleanup reset() test and usage - run testDone callback first, to allow listeneres ignoring reset assertions
+  * Cleanup reset() test and usage - run testDone callback first, to allow listeners ignoring reset assertions
   * Double clicking on composite test rows opens individual test page
   * test-message for all message-bearing API reporting details
 
@@ -318,7 +318,7 @@
   * Fix CommonJS export by assigning QUnit to module.exports.
   * Remove the testEnvironmentArg to test(). Most obscure, never used anywhere. test() is still heavily overloaded with argument shifting, this makes it a little more sane. Fixes #172
   * Serialize expected and actual values only when test fails. Speeds up output of valid tests, especially for lots of large objects. Fixes #183
-  * Fix sourceFromsTacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
+  * Fix sourceFromsStacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
   * Fix references to test/deepEqual.js
   * In autorun mode, moduleDone is called without matching moduleStart. Fix issue #184
   * Fixture test: allow anything falsy in test as getAttribute in oldIE will return empty string instead of null. We don't really care.
@@ -349,7 +349,7 @@
   * Using node-qunit port, the start/stop function are not exposed so we need to prefix any call to them with 'QUnit'. Aka: start() -> QUnit.start()
   * Remove the 'let teardown clean up globals test' - IE<9 doesn't support (==buggy) deleting window properties, and that's not worth the trouble, as everything else passes just fine. Fixes #155
   * Fix globals in test.js, part 2
-  * Fix globals in test.js. ?tell wwalser to use ?noglobals everyonce in a while
+  * Fix globals in test.js. ?tell wwalser to use ?noglobals every once in a while
   * Extend readme regarding release process
 
 1.1.0 / 2011-10-11
@@ -513,7 +513,7 @@
   * Optimized and cleaned up CSS file
   * Making the reset-method non-global (only module, test and assertions should be global), and fixing the fixture reset by using jQuery's html() method again, doesn't work with innerHTML, yet
   * Introducing #qunit-fixture element, deprecating the (never documented) #main element. Doesn't require inline styles and is now independent of jQuery.
-  * Ammending previous commit: Remove jQuery-core specific resets (will be replaced within jQuery testsuite). Fixes issue #19 - QUnit.reset() removes global jQuery ajax event handlers
+  * Amending previous commit: Remove jQuery-core specific resets (will be replaced within jQuery testsuite). Fixes issue #19 - QUnit.reset() removes global jQuery ajax event handlers
   * Remove jQuery-core specific resets (will be replaced within jQuery testsuite). Fixes issue #19 - QUnit.reset() removes global jQuery ajax event handlers
   * Cleaning up rubble from the previous commit.
   * Added raises assertion, reusing some of kensnyder's code.
