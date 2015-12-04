@@ -1745,7 +1745,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing same objects" );
 	m1 = new Map( [ [ 1, o1 ] ] );
 	m2 = new Map( [ [ 1, o2 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal objects" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects" );
 
 	// Maps containing different objects
 	m1 = new Map( [ [ 1, o1 ] ] );
@@ -1772,12 +1772,12 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	s3 = new Set( [ 1, 2, 3, 4 ] );
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [ [ 1, s2 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing diffrent but deeply-equal sets" );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal sets" );
 
 	// Maps containing different sets
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [	[ 1, s3 ] ] );
-	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing diffrent sets" );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
 });
 
 QUnit.module( "equiv Symbols" );
