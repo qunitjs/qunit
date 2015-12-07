@@ -30,7 +30,7 @@
   "devDependencies": {
     "browserstack-runner": "0.3.7",
     "commitplease": "2.0.0",
-    "grunt": "0.4.2",
+    "grunt": "0.4.5",
     "grunt-concurrent": "2.0.3",
     "grunt-contrib-concat": "0.3.0",
     "grunt-contrib-jshint": "0.11.2",
