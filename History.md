@@ -322,7 +322,7 @@
   * Fix references to test/deepEqual.js
   * In autorun mode, moduleDone is called without matching moduleStart. Fix issue #184
   * Fixture test: allow anything falsy in test as getAttribute in oldIE will return empty string instead of null. We don't really care.
-  * Keep label and checkbox together ( http://i.imgur.com/5Wk3A.png )
+  * Keep label and checkbox together ( https://i.imgur.com/5Wk3A.png )
   * Add readme for themes
   * Fix bad global in reset()
   * Some cleanup in theme addons
@@ -543,8 +543,8 @@
   * Expose QUnit.config, but don't make config a global
   * Expose QUnit.config as global to make external workarounds easier
   * Merge branch 'asyncsetup'
-  * Allowing async setup and teardown. Fixes http://github.com/jquery/qunit/issues#issue/20
-  * Always output expected and actual result (no reason not to). Fixes http://github.com/jquery/qunit/issues#issue/21
+  * Allowing async setup and teardown. Fixes https://github.com/jquery/qunit/issues#issue/20
+  * Always output expected and actual result (no reason not to). Fixes https://github.com/jquery/qunit/issues#issue/21
   * More changes to the detection of types in jsDump's typeOf.
   * Change the typeOf checks in QUnit to be more accurate.
   * Added test for jsDump and modified its options to properly output results when document.createTextNode is used; currently tests for DOM elements cause a stackoverflow error in IEs, works fine, with the correct output, elsewhere
@@ -568,7 +568,7 @@
   * IE 6 and 7 weren't respecting the CSS rules for the banner, used a different technique instead.
   * Went a bit further and made extra-sure that the target was specified correctly.
   * Fixed problem where double-clicking an entry in IE caused an error to occur.
-  * Path for http://dev.jquery.com/ticket/5426 - fix the microformat test result
+  * Path for https://dev.jquery.com/ticket/5426 - fix the microformat test result
   * Fixed test() to use 'expected' 2nd param
   * Remove the named function expressions, to stop Safari 2 from freaking out. Fixes #5.
   * Each test can extend the module testEnvironment
@@ -630,7 +630,7 @@
   * qunit: added missing semicolons
   * qunit: fixed a semicolon, that should have been a comma
   * QUnit: implemented error handling for Opera as proposed by #3628
-  * qunit: fix for http://dev.jquery.com/ticket/3215 changing wording of testresults, to something more positive (x of y passed, z failed)
+  * qunit: fix for https://dev.jquery.com/ticket/3215 changing wording of testresults, to something more positive (x of y passed, z failed)
   * QUnit: testrunner.js: Ensures equality of types (String, Boolean, Number) declared with the 'new' prefix. See comments #3, #4 and #5 on http://philrathe.com/articles/equiv
   * qunit: wrap name of test in span when a module is used for better styling
   * qunit: auto-prepend default mark (#header, #banner, #userAgent, #tests) when not present
