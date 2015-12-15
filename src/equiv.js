@@ -10,10 +10,11 @@ QUnit.equiv = (function() {
 	var parentsB = [];
 
 	function useStrictEquality( b, a ) {
-
 		/*jshint eqeqeq:false */
-		if ( b instanceof a.constructor || a instanceof b.constructor ) {
-
+		if ( b instanceof a.constructor && a instanceof b.constructor ) {
+			// Compare same constructor.
+			return a.toString() == b.toString();
+		} else if ( b instanceof a.constructor || a instanceof b.constructor ) {
 			// To catch short annotation VS 'new' annotation of a declaration. e.g.:
 			// `var i = 1;`
 			// `var j = new Number(1);`

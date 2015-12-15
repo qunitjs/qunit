@@ -1581,6 +1581,35 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 	}
 );
 
+QUnit.test( "Compare primitive objects", function( assert ) {
+	var SafeNumber = Number,
+	SafeString = String,
+	SafeBoolean = Boolean;
+
+	assert.equal( QUnit.equiv(new SafeNumber(1), new SafeNumber(1) ), true,
+		"Number: When create same parameter should be equal."
+	);
+	assert.equal( QUnit.equiv(new SafeNumber(1), new SafeNumber(2) ), false,
+		"Number: When create different parameter should be not equal."
+	);
+
+	assert.equal( QUnit.equiv(new SafeString("foo"), new SafeString("foo") ), true,
+		"String: When create same parameter should be equal."
+	);
+	assert.equal( QUnit.equiv(new SafeString("foo"), new SafeString("bar") ), false,
+		"String: When create different parameter should be not equal."
+	);
+
+	assert.equal( QUnit.equiv(new SafeBoolean(true), new SafeBoolean(true) ), true,
+		"Boolean: When create same parameter should be equal."
+	);
+	assert.equal( QUnit.equiv(new SafeBoolean(true), new SafeBoolean(false) ), false,
+		"Boolean: When create different parameter should be not equal."
+	);
+
+
+});
+
 QUnit.module( "equiv Maps and Sets" );
 
 var hasES6Set = ( function() {
