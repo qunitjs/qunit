@@ -11,16 +11,17 @@ QUnit.equiv = (function() {
 
 	function useStrictEquality( b, a ) {
 
-		/*jshint eqeqeq:false */
-		if ( b instanceof a.constructor || a instanceof b.constructor ) {
-
-			// To catch short annotation VS 'new' annotation of a declaration. e.g.:
-			// `var i = 1;`
-			// `var j = new Number(1);`
-			return a == b;
-		} else {
-			return a === b;
+		// To catch short annotation VS 'new' annotation of a declaration. e.g.:
+		// `var i = 1;`
+		// `var j = new Number(1);`
+		if ( typeof a === "object" ) {
+			a = a.valueOf();
 		}
+		if ( typeof b === "object" ) {
+			b = b.valueOf();
+		}
+
+		return a === b;
 	}
 
 	function compareConstructors( a, b ) {
