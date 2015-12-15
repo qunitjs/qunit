@@ -1581,33 +1581,37 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 	}
 );
 
-QUnit.test( "Compare primitive objects", function( assert ) {
-	var SafeNumber = Number,
-	SafeString = String,
-	SafeBoolean = Boolean;
+QUnit.test( "Compare Number values", function( assert ) {
+	var SafeNumber = Number;
 
-	assert.equal( QUnit.equiv(new SafeNumber(1), new SafeNumber(1) ), true,
-		"Number: When create same parameter should be equal."
+	assert.ok( QUnit.equiv(new SafeNumber( 1 ), new SafeNumber( 1 ) ),
+		"Number objects with same values are equivalent."
 	);
-	assert.equal( QUnit.equiv(new SafeNumber(1), new SafeNumber(2) ), false,
-		"Number: When create different parameter should be not equal."
+	assert.notOk( QUnit.equiv(new SafeNumber( 1 ), new SafeNumber( 2 ) ),
+		"Number objects with different values are not equivalent."
 	);
+});
 
-	assert.equal( QUnit.equiv(new SafeString("foo"), new SafeString("foo") ), true,
-		"String: When create same parameter should be equal."
-	);
-	assert.equal( QUnit.equiv(new SafeString("foo"), new SafeString("bar") ), false,
-		"String: When create different parameter should be not equal."
-	);
+QUnit.test( "Compare String values", function( assert ) {
+	var SafeString = String;
 
-	assert.equal( QUnit.equiv(new SafeBoolean(true), new SafeBoolean(true) ), true,
-		"Boolean: When create same parameter should be equal."
+	assert.ok( QUnit.equiv(new SafeString( "foo" ), new SafeString( "foo" ) ),
+		"String objects with same values are equivalent."
 	);
-	assert.equal( QUnit.equiv(new SafeBoolean(true), new SafeBoolean(false) ), false,
-		"Boolean: When create different parameter should be not equal."
+	assert.notOk( QUnit.equiv(new SafeString( "foo" ), new SafeString( "bar" ) ),
+		"String objects with different values are not equivalent."
 	);
+});
 
+QUnit.test( "Compare Boolean values", function( assert ) {
+	var SafeBoolean = Boolean;
 
+	assert.ok( QUnit.equiv(new SafeBoolean( true ), new SafeBoolean( true ) ),
+		"Boolean objects with same values are equivalent."
+	);
+	assert.notOk( QUnit.equiv(new SafeBoolean( true ), new SafeBoolean( false ) ),
+		"Boolean objects with different values are not equivalent."
+	);
 });
 
 QUnit.module( "equiv Maps and Sets" );
