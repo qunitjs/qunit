@@ -356,10 +356,10 @@ Test.prototype = {
 	},
 
 	valid: function() {
-		var include,
-			filter = config.filter && config.filter.toLowerCase(),
+		var filter = config.filter,
+			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
-			fullName = ( this.module.name + ": " + this.testName ).toLowerCase();
+			fullName = ( this.module.name + ": " + this.testName );
 
 		function testInModuleChain( testModule ) {
 			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
@@ -389,7 +389,23 @@ Test.prototype = {
 			return true;
 		}
 
-		include = filter.charAt( 0 ) !== "!";
+		return regexFilter ?
+			this.regexFilter( !!regexFilter[1], regexFilter[2], regexFilter[3], fullName ) :
+			this.stringFilter( filter, fullName );
+	},
+
+	regexFilter: function( exclude, pattern, flags, fullName ) {
+		var regex = new RegExp( pattern, flags );
+		var match = regex.test( fullName );
+
+		return match !== exclude;
+	},
+
+	stringFilter: function( filter, fullName ) {
+		filter = filter.toLowerCase();
+		fullName = fullName.toLowerCase();
+
+		var include = filter.charAt( 0 ) !== "!";
 		if ( !include ) {
 			filter = filter.slice( 1 );
 		}
