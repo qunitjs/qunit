@@ -240,7 +240,7 @@ QUnit.dump = (function() {
 				key: quote,
 				// function calls it internally, it's the content of the function
 				functionCode: "[code]",
-				// node calls it internally, it's an html attribute value
+				// node calls it internally, it's a html attribute value
 				attribute: quote,
 				string: quote,
 				date: quote,
