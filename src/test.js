@@ -485,15 +485,15 @@ function synchronize( callback, priority ) {
 
 // Place previously failed tests on a queue priority line, respecting the order they get assigned.
 function priorityFill( callback ) {
-	var queue, prioritizedQueue;
+	var highPrioritized,
+		lowPrioritized;
 
-	queue = config.queue.slice( priorityFill.pos );
-	prioritizedQueue = config.queue.slice( 0, -config.queue.length + priorityFill.pos );
+	highPrioritized = config.queue.slice( 0, priorityFill.pos );
+	lowPrioritized = config.queue.slice( priorityFill.pos,  config.queue.length - 1 );
+	highPrioritized.push( callback );
+	highPrioritized.unshift.apply( highPrioritized, lowPrioritized );
 
-	queue.unshift( callback );
-	queue.unshift.apply( queue, prioritizedQueue );
-
-	config.queue = queue;
+	config.queue = highPrioritized;
 
 	priorityFill.pos += 1;
 }
