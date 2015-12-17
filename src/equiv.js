@@ -10,8 +10,10 @@ QUnit.equiv = (function() {
 	var parentsB = [];
 
 	function useStrictEquality( b, a ) {
+
 		/*jshint eqeqeq:false */
 		if ( b instanceof a.constructor && a instanceof b.constructor ) {
+
 			// Compare same constructor.
 			return a.toString() == b.toString();
 		} else if ( b instanceof a.constructor || a instanceof b.constructor ) {

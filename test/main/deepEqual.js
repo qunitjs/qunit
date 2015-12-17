@@ -1581,7 +1581,9 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 	}
 );
 
-QUnit.test( "Compare Number values", function( assert ) {
+QUnit.module( "Compare primitive values" );
+
+QUnit.test( "Number", function( assert ) {
 	var SafeNumber = Number;
 
 	assert.ok( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ),
@@ -1592,7 +1594,7 @@ QUnit.test( "Compare Number values", function( assert ) {
 	);
 });
 
-QUnit.test( "Compare String values", function( assert ) {
+QUnit.test( "String", function( assert ) {
 	var SafeString = String;
 
 	assert.ok( QUnit.equiv( new SafeString( "foo" ), new SafeString( "foo" ) ),
@@ -1603,7 +1605,7 @@ QUnit.test( "Compare String values", function( assert ) {
 	);
 });
 
-QUnit.test( "Compare Boolean values", function( assert ) {
+QUnit.test( "Boolean", function( assert ) {
 	var SafeBoolean = Boolean;
 
 	assert.ok( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ),
