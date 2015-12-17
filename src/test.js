@@ -487,12 +487,12 @@ function synchronize( callback, priority ) {
 function priorityFill( callback ) {
 	var highPrioritized, lowPrioritized;
 
-	highPrioritized = config.queue.slice( 0, priorityFill.pos );
-	lowPrioritized = config.queue.slice( priorityFill.pos, config.queue.length - 1 );
+	highPrioritized = config.queue.splice( 0, priorityFill.pos );
+	lowPrioritized = config.queue;
 	highPrioritized.push( callback );
-	highPrioritized.unshift.apply( highPrioritized, lowPrioritized );
+	lowPrioritized.unshift.apply( lowPrioritized, highPrioritized );
 
-	config.queue = highPrioritized;
+	config.queue = lowPrioritized;
 
 	priorityFill.pos += 1;
 }
