@@ -100,6 +100,7 @@ grunt.initConfig({
 			"test/index.html",
 			"test/autostart.html",
 			"test/startError.html",
+			"test/reorderError.html",
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
