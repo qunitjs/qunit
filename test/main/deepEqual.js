@@ -1581,6 +1581,41 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 	}
 );
 
+QUnit.module( "Compare primitive values" );
+
+QUnit.test( "Number", function( assert ) {
+	var SafeNumber = Number;
+
+	assert.ok( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ),
+		"Number objects with same values are equivalent."
+	);
+	assert.notOk( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 2 ) ),
+		"Number objects with different values are not equivalent."
+	);
+});
+
+QUnit.test( "String", function( assert ) {
+	var SafeString = String;
+
+	assert.ok( QUnit.equiv( new SafeString( "foo" ), new SafeString( "foo" ) ),
+		"String objects with same values are equivalent."
+	);
+	assert.notOk( QUnit.equiv( new SafeString( "foo" ), new SafeString( "bar" ) ),
+		"String objects with different values are not equivalent."
+	);
+});
+
+QUnit.test( "Boolean", function( assert ) {
+	var SafeBoolean = Boolean;
+
+	assert.ok( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ),
+		"Boolean objects with same values are equivalent."
+	);
+	assert.notOk( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( false ) ),
+		"Boolean objects with different values are not equivalent."
+	);
+});
+
 QUnit.module( "equiv Maps and Sets" );
 
 var hasES6Set = ( function() {
