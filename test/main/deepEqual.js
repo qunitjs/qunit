@@ -80,44 +80,44 @@ QUnit.test( "Primitive types and constants", function( assert ) {
 
 	// primitives vs. objects
 
-	assert.equal( QUnit.equiv( 0, new SafeNumber() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber(), 0 ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber(), new SafeNumber() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( 1, new SafeNumber( 1 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber( 1 ), 1 ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeNumber( 0 ), 1 ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( 0, new SafeNumber( 1 ) ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv( 0, new SafeNumber() ), true, "number 0 primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeNumber(), 0 ), true, "number 0 object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeNumber(), new SafeNumber() ), true, "empty number objects" );
+	assert.equal( QUnit.equiv( 1, new SafeNumber( 1 ) ), true, "number 1 primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeNumber( 1 ), 1 ), true, "number 1 object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ), true, "number 1 objects" );
+	assert.equal( QUnit.equiv( 0, new SafeNumber( 1 ) ), false, "differing number primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeNumber( 0 ), 1 ), false, "differing number object vs. primitive" );
 
-	assert.equal( QUnit.equiv( new SafeString(), "" ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "", new SafeString() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString(), new SafeString() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString( "My String" ), "My String" ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "My String", new SafeString( "My String" ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString( "My String" ), new SafeString( "My String" ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( "Bad String", new SafeString( "My String" ) ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeString( "Bad String" ), "My String" ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv( "", new SafeString() ), true, "empty string primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeString(), "" ), true, "empty string object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeString(), new SafeString() ), true, "empty string objects" );
+	assert.equal( QUnit.equiv( "My String", new SafeString( "My String" ) ), true, "nonempty string primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeString( "My String" ), "My String" ), true, "nonempty string object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeString( "My String" ), new SafeString( "My String" ) ), true, "nonempty string objects" );
+	assert.equal( QUnit.equiv( "Bad String", new SafeString( "My String" ) ), false, "differing string primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeString( "Bad String" ), "My String" ), false, "differing string object vs. primitive" );
 
-	assert.equal( QUnit.equiv( false, new SafeBoolean() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean(), false ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean(), new SafeBoolean() ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( true ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( true ), true ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( 1 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( false, new SafeBoolean( false ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( false ), false ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( false ), new SafeBoolean( false ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( false, new SafeBoolean( 0 ) ), true, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( true, new SafeBoolean( false ) ), false, "primitives vs. objects" );
-	assert.equal( QUnit.equiv( new SafeBoolean( false ), true ), false, "primitives vs. objects" );
+	assert.equal( QUnit.equiv( false, new SafeBoolean() ), true, "boolean false primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeBoolean(), false ), true, "boolean empty object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeBoolean(), new SafeBoolean() ), true, "empty boolean objects" );
+	assert.equal( QUnit.equiv( true, new SafeBoolean( true ) ), true, "boolean true primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeBoolean( true ), true ), true, "boolean true object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ), true, "boolean true objects" );
+	assert.equal( QUnit.equiv( true, new SafeBoolean( 1 ) ), true, "boolean true primitive vs. truthy object" );
+	assert.equal( QUnit.equiv( false, new SafeBoolean( false ) ), true, "boolean false primitive vs. false object" );
+	assert.equal( QUnit.equiv( new SafeBoolean( false ), false ), true, "boolean false object vs. primitive" );
+	assert.equal( QUnit.equiv( new SafeBoolean( false ), new SafeBoolean( false ) ), true, "boolean false objects" );
+	assert.equal( QUnit.equiv( false, new SafeBoolean( 0 ) ), true, "boolean false primitive vs. 0 object" );
+	assert.equal( QUnit.equiv( true, new SafeBoolean( false ) ), false, "differing boolean primitive vs. object" );
+	assert.equal( QUnit.equiv( new SafeBoolean( false ), true ), false, "differing boolean object vs. primitive" );
 
-	assert.equal( QUnit.equiv( new SafeObject(), {} ), true, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( {}, new SafeObject() ), true, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( new SafeObject(), { a: 1 } ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( { a: 1 }, new SafeObject() ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( { a: undefined }, new SafeObject() ), false, "object literal vs. instantiation" );
-	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "object literal vs. instantiation" );
+	assert.equal( QUnit.equiv( new SafeObject(), {} ), true, "empty object instantiation vs. literal" );
+	assert.equal( QUnit.equiv( {}, new SafeObject() ), true, "empty object literal vs. instantiation" );
+	assert.equal( QUnit.equiv( new SafeObject(), { a: 1 } ), false, "empty object instantiation vs. nonempty literal" );
+	assert.equal( QUnit.equiv( { a: 1 }, new SafeObject() ), false, "nonempty object literal vs. empty instantiation" );
+	assert.equal( QUnit.equiv( { a: undefined }, new SafeObject() ), false, "other nonempty object literal vs. empty instantiation" );
+	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "empty object instantiation vs. other nonempty literal" );
 });
 
 QUnit.test( "Objects basics", function( assert ) {
