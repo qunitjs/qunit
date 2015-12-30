@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>QUnit Main Test Suite</title>
+	<link rel="stylesheet" href="../dist/qunit.css">
+	<script src="../dist/qunit.js"></script>
+	<script>
+
+	// Second Case.
+	// 1. First test failed in first module.
+	// 2. First test failed in second module.
+	// 3. Test count should be 2.
+	if ( window.sessionStorage ) {
+		var totalCount = 0;
+		sessionStorage[ "qunit-test-First fail module-2-should be fail" ] = 1;
+		sessionStorage[ "qunit-test-Second fail module-2-should be fail" ] = 1;
+		QUnit.done( function( details ) {
+			totalCount = details.failed;
+			delete sessionStorage[ "qunit-test-First fail module-2-should be fail" ];
+			delete sessionStorage[ "qunit-test-Second fail module-2-should be fail" ];
+		});
+
+		QUnit.module( "First fail module-2" );
+		QUnit.test( "should be fail", function( assert ) {
+			assert.equal( 1, 2 );
+		});
+
+		QUnit.module( "Second fail module-2" );
+		QUnit.test( "should be fail", function( assert ) {
+			assert.equal( 1, 2 );
+		});
+	}
+	</script>
+	<script src="../dist/qunit.js"></script>
+	<script src="reorderError2.js"></script>
+</head>
+<body>
+	<div id="qunit"></div>
+</body>
+</html>

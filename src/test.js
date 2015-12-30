@@ -1,4 +1,5 @@
 var focused = false;
+var priorityCount = 0;
 
 function Test( settings ) {
 	var i, l;
@@ -489,7 +490,7 @@ function synchronize( callback, priority ) {
 	}
 
 	if ( priority ) {
-		priorityFill( callback );
+		config.queue.splice( priorityCount++, 0, callback);
 	} else {
 		config.queue.push( callback );
 	}
@@ -498,22 +499,6 @@ function synchronize( callback, priority ) {
 		process( last );
 	}
 }
-
-// Place previously failed tests on a queue priority line, respecting the order they get assigned.
-function priorityFill( callback ) {
-	var queue, prioritizedQueue;
-
-	queue = config.queue.slice( priorityFill.pos );
-	prioritizedQueue = config.queue.slice( 0, -config.queue.length + priorityFill.pos );
-
-	queue.unshift( callback );
-	queue.unshift.apply( queue, prioritizedQueue );
-
-	config.queue = queue;
-
-	priorityFill.pos += 1;
-}
-priorityFill.pos = 0;
 
 function saveGlobal() {
 	config.pollution = [];
