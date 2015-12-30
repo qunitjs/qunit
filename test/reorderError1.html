@@ -6,46 +6,42 @@
 	<link rel="stylesheet" href="../dist/qunit.css">
 	<script src="../dist/qunit.js"></script>
 	<script>
-	// When failed test that checked test call count.
+
+	// Asserts it does not skip tests after reordering
 	// Ref #907
 	// This issues has 2 case.
 	// First Case.
 	// 1. First test failed and second test successed in first module.
 	// 2. First test failed in second module.
 	// 3. Test count should be 3.
-
 	if ( window.sessionStorage ) {
-		// Given
 		var totalCount = 0;
-		sessionStorage["qunit-test-First fail module-should be fail"] = 1;
-		sessionStorage["qunit-test-Second fail module-should be fail"] = 1;
+		sessionStorage[ "qunit-test-First fail module-1-should be fail" ] = 1;
+		sessionStorage[ "qunit-test-Second fail module-1-should be fail" ] = 1;
 		QUnit.done( function( details ) {
 			totalCount = details.total;
-			delete sessionStorage["qunit-test-First fail module-should be fail"];
-			delete sessionStorage["qunit-test-Second fail module-should be fail"];
+			delete sessionStorage[ "qunit-test-First fail module-1-should be fail" ];
+			delete sessionStorage[ "qunit-test-Second fail module-1-should be fail" ];
 		});
 
-		// When
-		QUnit.module( "First fail module" );
+		QUnit.module( "First fail module-1" );
 		QUnit.test( "should be success", function( assert ) {
-		    assert.equal( 1, 1 );
+			assert.equal( 1, 1 );
 		});
 		QUnit.test( "should be fail", function( assert ) {
-		    assert.equal( 1, 2 );
+			assert.equal( 1, 2 );
 		});
 
-		QUnit.module( "Second fail module" );
+		QUnit.module( "Second fail module-1" );
 		QUnit.test( "should be fail", function( assert ) {
-		    assert.equal( 1, 2 );
+			assert.equal( 1, 2 );
 		});
 	}
 	</script>
 	<script src="../dist/qunit.js"></script>
 	<script src="reorderError1.js"></script>
-
 </head>
 <body>
 	<div id="qunit"></div>
-	<div id="qunit-fixture">test markup</div>
 </body>
 </html>
