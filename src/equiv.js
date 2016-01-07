@@ -59,6 +59,10 @@ QUnit.equiv = (function() {
 		return false;
 	}
 
+	function getRegExpFlags( regexp ) {
+		return "flags" in regexp ? regexp.flags : regexp.toString().match( /[gimuy]*$/ )[ 0 ];
+	}
+
 	var callbacks = {
 		"string": useStrictEquality,
 		"boolean": useStrictEquality,
@@ -76,10 +80,7 @@ QUnit.equiv = (function() {
 			return a.source === b.source &&
 
 				// Include flags in the comparison
-				a.global === b.global &&
-				a.ignoreCase === b.ignoreCase &&
-				a.multiline === b.multiline &&
-				a.sticky === b.sticky;
+				getRegExpFlags( a ) === getRegExpFlags( b );
 		},
 
 		// - skip when the property is a method of an instance (OOP)
