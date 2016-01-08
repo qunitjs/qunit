@@ -60,7 +60,7 @@ QUnit.equiv = (function() {
 	}
 
 	function getRegExpFlags( regexp ) {
-		return regexp.flags || regexp.toString().match(/[gimuy]*$/)[0];
+		return "flags" in regexp ? regexp.flags : regexp.toString().match( /[gimuy]*$/ )[ 0 ];
 	}
 
 	var callbacks = {
@@ -80,7 +80,7 @@ QUnit.equiv = (function() {
 			return a.source === b.source &&
 
 				// Include flags in the comparison
-				getRegExpFlags(a) === getRegExpFlags(b);
+				getRegExpFlags( a ) === getRegExpFlags( b );
 		},
 
 		// - skip when the property is a method of an instance (OOP)

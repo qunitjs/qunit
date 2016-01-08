@@ -452,7 +452,7 @@ QUnit.test( "RegExp", function( assert ) {
 	// typeof a === "function";    // Oops, false in IE and Opera, true in FF and Safari ("object")
 
 	// Tests same regex with same modifiers in different order
-	var regex1, regex2, regex3, r3a, r3b,
+	var regex1, regex2, regex3, r3a, r3b, ru1, ru2,
 		r1 = /foo/,
 		r2 = /foo/gim,
 		r3 = /foo/gmi,
@@ -483,6 +483,24 @@ QUnit.test( "RegExp", function( assert ) {
 	assert.equal( QUnit.equiv( rg1, rm1 ), false, "Modifier" );
 	assert.equal( QUnit.equiv( rm1, rg1 ), false, "Modifier" );
 	assert.equal( QUnit.equiv( rg1, rg2 ), true, "Modifier" );
+
+	// Compare unicode
+	try {
+		/* jshint -W033, -W117 */
+		r2 = /foo/umig;
+		r3 = /foo/mgiu;
+		/* jshint +W033, +W117 */
+		assert.equal( QUnit.equiv( r2, r3 ), true, "Modifier order" );
+		assert.equal( QUnit.equiv( r1, r2 ), false, "Modifier" );
+
+		/* jshint -W033, -W117 */
+		ru1 = /\u{1D306}/u;
+		ru2 = /\u{1D306}/u;
+		/* jshint +W033, +W117 */
+		assert.equal( QUnit.equiv( ru1, rg1 ), false, "Modifier" );
+		assert.equal( QUnit.equiv( rg1, ru1 ), false, "Modifier" );
+		assert.equal( QUnit.equiv( ru1, ru2 ), true, "Modifier" );
+	} catch ( e ) {}
 
 	// Different regex, same modifiers
 	r1 = /[a-z]/gi;
