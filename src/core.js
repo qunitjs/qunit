@@ -32,8 +32,10 @@ extend( QUnit, {
 		module = createModule();
 
 		moduleFns = {
+			before: setHook( module, "before" ),
 			beforeEach: setHook( module, "beforeEach" ),
-			afterEach: setHook( module, "afterEach" )
+			afterEach: setHook( module, "afterEach" ),
+			after: setHook( module, "after" )
 		};
 
 		if ( executeNow instanceof Function ) {
@@ -55,11 +57,13 @@ extend( QUnit, {
 				name: moduleName,
 				parentModule: parentModule,
 				tests: [],
-				moduleId: generateHash( moduleName )
+				moduleId: generateHash( moduleName ),
+				testsRun: 0
 			};
 
 			var env = {};
 			if ( parentModule ) {
+				parentModule.childModule = module;
 				extend( env, parentModule.testEnvironment );
 				delete env.beforeEach;
 				delete env.afterEach;
