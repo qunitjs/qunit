@@ -145,7 +145,6 @@ extend( QUnit, {
 
 	// DEPRECATED: QUnit.stop() will be removed in QUnit 2.0.
 	stop: function( count ) {
-
 		// If there isn't a test running, don't allow QUnit.stop() to be called
 		if ( !config.current ) {
 			throw new Error( "Called stop() outside of a test context" );
@@ -318,6 +317,7 @@ function done() {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
+		warnings: config.stats.warnings,
 		runtime: runtime
 	} );
 }

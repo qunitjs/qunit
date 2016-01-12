@@ -37,6 +37,7 @@ function Test( settings ) {
 	} else {
 		this.assert = new Assert( this );
 	}
+
 }
 
 Test.count = 0;
@@ -196,6 +197,8 @@ Test.prototype = {
 		this.runtime = now() - this.started;
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
+
+		config.stats.warnings = QUnit.warning.log;
 
 		for ( i = 0; i < this.assertions.length; i++ ) {
 			if ( !this.assertions[ i ].result ) {
@@ -444,7 +447,6 @@ Use testStart or testDone for custom cleanup.
 This method will throw an error in 2.0, and will be removed in 2.1
 */
 QUnit.reset = function() {
-
 	// Return on non-browser environments
 	// This is necessary to not break on node tests
 	if ( !defined.document ) {

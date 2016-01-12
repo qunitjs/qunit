@@ -16,6 +16,12 @@
 	}
 }() );
 
+function globalWarning( key ) {
+	return function() {
+		return QUnit[ key ].apply( this, arguments );
+	};
+}
+
 // For browser, export only select globals
 if ( defined.document ) {
 
@@ -43,7 +49,7 @@ if ( defined.document ) {
 			];
 
 		for ( i = 0, l = keys.length; i < l; i++ ) {
-			window[ keys[ i ] ] = QUnit[ keys[ i ] ];
+			window[ keys[ i ] ] = globalWarning( keys[ i ] );
 		}
 	}() );
 

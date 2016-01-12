@@ -49,6 +49,8 @@ module.exports = function( grunt ) {
 
 		QUnit.config.autorun = false;
 
+		QUnit.warning.off();
+
 		require( "../../" + file );
 
 		QUnit.load();

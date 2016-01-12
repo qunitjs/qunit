@@ -42,6 +42,7 @@ grunt.initConfig( {
 				"src/equiv.js",
 				"src/dump.js",
 				"src/export.js",
+				"src/warning.js",
 				"src/outro.js",
 				"reporter/intro.js",
 				"reporter/urlparams.js",
@@ -122,7 +123,9 @@ grunt.initConfig( {
 			"test/random.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
-			"test/string-filter.html"
+			"test/string-filter.html",
+			"test/warning.html",
+			"test/warning-once.html"
 		]
 	},
 	coveralls: {

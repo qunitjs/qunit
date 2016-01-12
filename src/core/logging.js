@@ -55,6 +55,8 @@ function verifyLoggingCallbacks() {
 	for ( loggingCallback in loggingCallbacks ) {
 		if ( QUnit[ loggingCallback ] !== loggingCallbacks[ loggingCallback ] ) {
 
+			QUnit.warning( "loggingCallbacks" );
+
 			userCallback = QUnit[ loggingCallback ];
 
 			// Restore the callback function
