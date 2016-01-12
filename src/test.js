@@ -76,8 +76,10 @@ Test.prototype = {
 		config.current = this;
 
 		if ( this.module.testEnvironment ) {
+			delete this.module.testEnvironment.before;
 			delete this.module.testEnvironment.beforeEach;
 			delete this.module.testEnvironment.afterEach;
+			delete this.module.testEnvironment.after;
 		}
 		this.testEnvironment = extend( {}, this.module.testEnvironment );
 
@@ -134,10 +136,22 @@ Test.prototype = {
 		checkPollution();
 	},
 
-	queueHook: function( hook, hookName ) {
+	queueHook: function( hook, hookName, hookOwner ) {
 		var promise,
 			test = this;
 		return function runHook() {
+			if ( hookName === "before" ) {
+				if ( hookOwner.testsRun !== 0 ) {
+					return;
+				}
+
+				test.preserveEnvironment = true;
+			}
+
+			if ( hookName === "after" && hookOwner.testsRun !== numberOfTests( hookOwner ) - 1 ) {
+				return;
+			}
+
 			config.current = test;
 			if ( config.notrycatch ) {
 				callHook();
@@ -167,7 +181,7 @@ Test.prototype = {
 			}
 			if ( module.testEnvironment &&
 				QUnit.objectType( module.testEnvironment[ handler ] ) === "function" ) {
-				hooks.push( test.queueHook( module.testEnvironment[ handler ], handler ) );
+				hooks.push( test.queueHook( module.testEnvironment[ handler ], handler, module ) );
 			}
 		}
 
@@ -206,6 +220,7 @@ Test.prototype = {
 			}
 		}
 
+		notifyTestsRan( this.module );
 		runLoggingCallbacks( "testDone", {
 			name: this.testName,
 			module: this.module.name,
@@ -231,6 +246,13 @@ Test.prototype = {
 		config.current = undefined;
 	},
 
+	preserveTestEnvironment: function() {
+		if ( this.preserveEnvironment ) {
+			this.module.testEnvironment = this.testEnvironment;
+			this.testEnvironment = extend( {}, this.module.testEnvironment );
+		}
+	},
+
 	queue: function() {
 		var priority,
 			test = this;
@@ -247,16 +269,25 @@ Test.prototype = {
 					test.before();
 				},
 
+				test.hooks( "before" ),
+
+				function() {
+					test.preserveTestEnvironment();
+				},
+
 				test.hooks( "beforeEach" ),
+
 				function() {
 					test.run();
 				},
 
 				test.hooks( "afterEach" ).reverse(),
+				test.hooks( "after" ).reverse(),
 
 				function() {
 					test.after();
 				},
+
 				function() {
 					test.finish();
 				}
@@ -661,4 +692,19 @@ function internalStart( test ) {
 	}
 
 	resumeProcessing( test );
+}
+
+function numberOfTests( module ) {
+	var count = module.tests.length;
+	while ( module = module.childModule ) {
+		count += module.tests.length;
+	}
+	return count;
+}
+
+function notifyTestsRan( module ) {
+	module.testsRun++;
+	while ( module = module.parentModule ) {
+		module.testsRun++;
+	}
 }

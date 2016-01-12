@@ -14,6 +14,29 @@ function createMockPromise( assert ) {
 	return thenable;
 }
 
+QUnit.module( "Module with Promise-aware before", {
+	before: function( assert ) {
+		assert.ok( true );
+		return {};
+	}
+} );
+
+QUnit.test( "non-Promise", function( assert ) {
+	assert.expect( 1 );
+} );
+
+QUnit.module( "Module with Promise-aware before", {
+	before: function( assert ) {
+
+		// Adds 1 assertion
+		return createMockPromise( assert );
+	}
+} );
+
+QUnit.test( "fulfilled Promise", function( assert ) {
+	assert.expect( 1 );
+} );
+
 QUnit.module( "Module with Promise-aware beforeEach", {
 	beforeEach: function( assert ) {
 		assert.ok( true );
@@ -50,6 +73,29 @@ QUnit.test( "non-Promise", function( assert ) {
 
 QUnit.module( "Module with Promise-aware afterEach", {
 	afterEach: function( assert ) {
+
+		// Adds 1 assertion
+		return createMockPromise( assert );
+	}
+} );
+
+QUnit.test( "fulfilled Promise", function( assert ) {
+	assert.expect( 1 );
+} );
+
+QUnit.module( "Module with Promise-aware after", {
+	after: function( assert ) {
+		assert.ok( true );
+		return {};
+	}
+} );
+
+QUnit.test( "non-Promise", function( assert ) {
+	assert.expect( 1 );
+} );
+
+QUnit.module( "Module with Promise-aware after", {
+	after: function( assert ) {
 
 		// Adds 1 assertion
 		return createMockPromise( assert );

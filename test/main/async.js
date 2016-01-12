@@ -136,6 +136,33 @@ QUnit.test( "fails if callback is called more than callback call count", functio
 } );
 
 QUnit.module( "assert.async fails if callback is called more than once in", {
+	before: function( assert ) {
+
+		// Having an outer async flow in this test avoids the need to manually modify QUnit
+		// internals in order to avoid post-`done` assertions causing additional failures
+		var done = assert.async();
+
+		assert.expect( 1 );
+
+		// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
+		assert.test.pushFailure = function( msg ) {
+			throw new Error( msg );
+		};
+
+		var overDone = assert.async();
+		overDone();
+
+		assert.throws( function() {
+			overDone();
+		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+
+		done();
+	}
+} );
+
+QUnit.test( "before", function() {} );
+
+QUnit.module( "assert.async fails if callback is called more than once in", {
 	beforeEach: function( assert ) {
 
 		// Having an outer async flow in this test avoids the need to manually modify QUnit
@@ -189,6 +216,50 @@ QUnit.module( "assert.async fails if callback is called more than once in", {
 
 QUnit.test( "afterEach", function( /* assert */ ) { } );
 
+QUnit.module( "assert.async fails if callback is called more than once in", {
+	after: function( assert ) {
+
+		// Having an outer async flow in this test avoids the need to manually modify QUnit
+		// internals in order to avoid post-`done` assertions causing additional failures
+		var done = assert.async();
+
+		assert.expect( 1 );
+
+		// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
+		assert.test.pushFailure = function( msg ) {
+			throw new Error( msg );
+		};
+
+		var overDone = assert.async();
+		overDone();
+
+		assert.throws( function() {
+			overDone();
+		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+
+		done();
+	}
+} );
+
+QUnit.test( "after", function() {} );
+
+QUnit.module( "assert.async in before", {
+	before: function( assert ) {
+		var done = assert.async(),
+			testContext = this;
+		setTimeout( function() {
+			testContext.state = "before";
+			done();
+		} );
+	}
+} );
+
+QUnit.test( "before synchronized", function( assert ) {
+	assert.expect( 1 );
+	assert.equal( this.state, "before", "before synchronized before test callback was " +
+		"executed" );
+} );
+
 QUnit.module( "assert.async in beforeEach", {
 	beforeEach: function( assert ) {
 		var done = assert.async(),
@@ -234,6 +305,37 @@ QUnit.module( "assert.async in afterEach", {
 } );
 
 QUnit.test( "afterEach will synchronize", function( assert ) {
+	assert.expect( 1 );
+} );
+
+QUnit.module( "assert.async before after", {
+	after: function( assert ) {
+		assert.equal( this.state, "done", "test callback synchronized before after was " +
+			"executed" );
+	}
+} );
+
+QUnit.test( "after will synchronize", function( assert ) {
+	assert.expect( 1 );
+	var done = assert.async(),
+		testContext = this;
+	setTimeout( function() {
+		testContext.state = "done";
+		done();
+	} );
+} );
+
+QUnit.module( "assert.async in after", {
+	after: function( assert ) {
+		var done = assert.async();
+		setTimeout( function() {
+			assert.ok( true, "after synchronized before test was finished" );
+			done();
+		} );
+	}
+} );
+
+QUnit.test( "after will synchronize", function( assert ) {
 	assert.expect( 1 );
 } );
 
@@ -360,6 +462,30 @@ QUnit.test( "cannot allow assertions between first `done` call and second `asser
 	} );
 } );
 
+QUnit.module( "assert after last done in before fail, but allow other phases to run", {
+	before: function( assert ) {
+		_setupForFailingAssertionsAfterAsyncDone.call( this, assert );
+
+		// THIS IS THE ACTUAL TEST!
+		assert.expect( 3 );
+		this._assertCatch( function() {
+			assert.async()();
+
+			// FAIL!!! (with duck-punch to force an Error to be thrown instead of `pushFailure`)
+			assert.ok( true, "should fail with a special `done`-related error message if called " +
+				"after final `done` even if result is passing" );
+		} );
+	},
+
+	after: function( assert ) {
+		assert.ok( true, "This assertion should still run in after" );
+	}
+} );
+
+QUnit.test( "before will fail but test and after will still run", function( assert ) {
+	assert.ok( true, "This assertion should still run in the test callback" );
+} );
+
 QUnit.module( "assert after last done in beforeEach fail, but allow other phases to run", {
 	beforeEach: function( assert ) {
 		_setupForFailingAssertionsAfterAsyncDone.call( this, assert );
@@ -385,19 +511,27 @@ QUnit.test( "beforeEach will fail but test and afterEach will still run", functi
 } );
 
 QUnit.module( "assert after last done in test fail, but allow other phases to run", {
+	before: function( assert ) {
+		assert.ok( true, "This assertion should still run in before" );
+	},
+
 	beforeEach: function( assert ) {
 		_setupForFailingAssertionsAfterAsyncDone.call( this, assert );
 
-		assert.expect( 3 );
+		assert.expect( 5 );
 		assert.ok( true, "This assertion should still run in beforeEach" );
 	},
 
 	afterEach: function( assert ) {
 		assert.ok( true, "This assertion should still run in afterEach" );
+	},
+
+	after: function( assert ) {
+		assert.ok( true, "This assertion should still run in after" );
 	}
 } );
 
-QUnit.test( "test will fail, but beforeEach and afterEach will still run", function( assert ) {
+QUnit.test( "test will fail, but other hooks will still run", function( assert ) {
 	this._assertCatch( function() {
 		assert.async()();
 
@@ -427,5 +561,28 @@ QUnit.module( "assert after last done in afterEach fail, but allow other phases 
 } );
 
 QUnit.test( "afterEach will fail but beforeEach and test will still run", function( assert ) {
+	assert.ok( true, "This assertion should still run in the test callback" );
+} );
+
+QUnit.module( "assert after last done in after fail, but allow other phases to run", {
+	before: function( assert ) {
+		_setupForFailingAssertionsAfterAsyncDone.call( this, assert );
+
+		assert.expect( 3 );
+		assert.ok( true, "This assertion should still run in before" );
+	},
+
+	after: function( assert ) {
+		this._assertCatch( function() {
+			assert.async()();
+
+			// FAIL!!! (with duck-punch to force an Error to be thrown instead of `pushFailure`)
+			assert.ok( true, "should fail with a special `done`-related error message if called " +
+				"after final `done` even if result is passing" );
+		} );
+	}
+} );
+
+QUnit.test( "after will fail but before and test will still run", function( assert ) {
 	assert.ok( true, "This assertion should still run in the test callback" );
 } );
