@@ -49,7 +49,21 @@ QUnit.assert = Assert.prototype = {
 	},
 
 	// Exports test.push() to the user API
-	push: function( /* result, actual, expected, message, negative */ ) {
+	// Alias of pushResult.
+	push: function( result, actual, expected, message, negative ) {
+		var currentAssert = this instanceof Assert ? this : QUnit.config.current.assert;
+		return currentAssert.pushResult( {
+			result: result,
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: negative
+		} );
+	},
+
+	pushResult: function( resultInfo ) {
+
+		// resultInfo = { result, actual, expected, message, negative }
 		var assert = this,
 			currentTest = ( assert instanceof Assert && assert.test ) || QUnit.config.current;
 
@@ -72,57 +86,112 @@ QUnit.assert = Assert.prototype = {
 		if ( !( assert instanceof Assert ) ) {
 			assert = currentTest.assert;
 		}
-		return assert.test.push.apply( assert.test, arguments );
+
+		return assert.test.pushResult( resultInfo );
 	},
 
 	ok: function( result, message ) {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
 			QUnit.dump.parse( result ) );
-		this.push( !!result, result, true, message );
+		this.pushResult( {
+			result: !!result,
+			actual: result,
+			expected: true,
+			message: message
+		} );
 	},
 
 	notOk: function( result, message ) {
 		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
 			QUnit.dump.parse( result ) );
-		this.push( !result, result, false, message );
+		this.pushResult( {
+			result: !result,
+			actual: result,
+			expected: false,
+			message: message
+		} );
 	},
 
 	equal: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		this.push( expected == actual, actual, expected, message );
+		this.pushResult( {
+			result: expected == actual,
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	},
 
 	notEqual: function( actual, expected, message ) {
 		/*jshint eqeqeq:false */
-		this.push( expected != actual, actual, expected, message, true );
+		this.pushResult( {
+			result: expected != actual,
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: true
+		} );
 	},
 
 	propEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
-		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	},
 
 	notPropEqual: function( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
-		this.push( !QUnit.equiv( actual, expected ), actual, expected, message, true );
+		this.pushResult( {
+			result: !QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: true
+		} );
 	},
 
 	deepEqual: function( actual, expected, message ) {
-		this.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	},
 
 	notDeepEqual: function( actual, expected, message ) {
-		this.push( !QUnit.equiv( actual, expected ), actual, expected, message, true );
+		this.pushResult( {
+			result: !QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: true
+		} );
 	},
 
 	strictEqual: function( actual, expected, message ) {
-		this.push( expected === actual, actual, expected, message );
+		this.pushResult( {
+			result: expected === actual,
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	},
 
 	notStrictEqual: function( actual, expected, message ) {
-		this.push( expected !== actual, actual, expected, message, true );
+		this.pushResult( {
+			result: expected !== actual,
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: true
+		} );
 	},
 
 	"throws": function( block, expected, message ) {
@@ -178,7 +247,12 @@ QUnit.assert = Assert.prototype = {
 			}
 		}
 
-		currentTest.assert.push( ok, actual, expectedOutput, message );
+		currentTest.assert.pushResult( {
+			result: ok,
+			actual: actual,
+			expected: expectedOutput,
+			message: message
+		} );
 	}
 };
 

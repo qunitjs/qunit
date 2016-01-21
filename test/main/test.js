@@ -30,7 +30,16 @@ QUnit.module( "custom assertions" );
 
 QUnit.assert.mod2 = function( value, expected, message ) {
 	var actual = value % 2;
-	this.push( actual === expected, actual, expected, message );
+	this.pushResult( {
+		result: actual === expected,
+		actual: actual,
+		expected: expected,
+		message: message
+	} );
+};
+
+QUnit.assert.testForPush = function( value, expected, message ) {
+	this.push( true, value, expected, message, false );
 };
 
 QUnit.test( "mod2", function( assert ) {
@@ -38,6 +47,21 @@ QUnit.test( "mod2", function( assert ) {
 
 	assert.mod2( 2, 0, "2 % 2 == 0" );
 	assert.mod2( 3, 1, "3 % 2 == 1" );
+});
+
+QUnit.test( "testForPush", function( assert ) {
+	assert.expect( 6 );
+
+	QUnit.log( function( detail ) {
+		if ( detail.message === "should be call pushResult" ) {
+			assert.equal( detail.result, true );
+			assert.equal( detail.actual, 1 );
+			assert.equal( detail.expected, 1 );
+			assert.equal( detail.message, "should be call pushResult" );
+			assert.equal( detail.negative, false );
+		}
+	} );
+	assert.testForPush( 1, 1, "should be call pushResult" );
 });
 
 QUnit.module( "QUnit.skip", {
