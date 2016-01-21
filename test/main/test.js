@@ -30,7 +30,12 @@ QUnit.module( "custom assertions" );
 
 QUnit.assert.mod2 = function( value, expected, message ) {
 	var actual = value % 2;
-	this.push( actual === expected, actual, expected, message );
+	this.pushResult( {
+		result: actual === expected,
+		actual: actual,
+		expected: expected,
+		message: message
+	} );
 };
 
 QUnit.test( "mod2", function( assert ) {

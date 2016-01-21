@@ -286,12 +286,12 @@ QUnit.test( "raises, alias for throws", function( assert ) {
 
 QUnit.module( "failing assertions", {
 	beforeEach: function( assert ) {
-		var originalPush = assert.push;
+		var originalPushResult = assert.pushResult;
 
-		assert.push = function( result, actual, expected, message ) {
-
+		assert.pushResult = function( resultInfo ) {
 			// inverts the result so we can test failing assertions
-			originalPush( !result, actual, expected, message );
+			resultInfo.result = !resultInfo.result;
+			originalPushResult( resultInfo );
 		};
 	}
 });

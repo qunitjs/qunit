@@ -271,21 +271,23 @@ Test.prototype = {
 		return synchronize( run, priority );
 	},
 
-	push: function( result, actual, expected, message, negative ) {
+	pushResult: function( resultInfo ) {
+
+		// resultInfo = { result, actual, expected, message, negative }
 		var source,
 			details = {
 				module: this.module.name,
 				name: this.testName,
-				result: result,
-				message: message,
-				actual: actual,
-				expected: expected,
+				result: resultInfo.result,
+				message: resultInfo.message,
+				actual: resultInfo.actual,
+				expected: resultInfo.expected,
 				testId: this.testId,
-				negative: negative || false,
+				negative: resultInfo.negative || false,
 				runtime: now() - this.started
 			};
 
-		if ( !result ) {
+		if ( !resultInfo.result ) {
 			source = sourceFromStacktrace();
 
 			if ( source ) {
@@ -296,8 +298,8 @@ Test.prototype = {
 		runLoggingCallbacks( "log", details );
 
 		this.assertions.push({
-			result: !!result,
-			message: message
+			result: !!resultInfo.result,
+			message: resultInfo.message
 		});
 	},
 
