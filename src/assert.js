@@ -48,7 +48,19 @@ QUnit.assert = Assert.prototype = {
 		};
 	},
 
-	// Exports test.pushResult() to the user API
+	// Exports test.push() to the user API
+	// Alias of pushResult.
+	push: function( result, actual, expected, message, negative ) {
+		var currentAssert = this instanceof Assert ? this : QUnit.config.current.assert;
+		return currentAssert.pushResult( {
+			result: result,
+			actual: actual,
+			expected: expected,
+			message: message,
+			negative: negative
+		} );
+	},
+
 	pushResult: function( resultInfo ) {
 
 		// resultInfo = { result, actual, expected, message, negative }
@@ -74,6 +86,7 @@ QUnit.assert = Assert.prototype = {
 		if ( !( assert instanceof Assert ) ) {
 			assert = currentTest.assert;
 		}
+
 		return assert.test.pushResult( resultInfo );
 	},
 

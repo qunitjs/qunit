@@ -287,7 +287,6 @@ QUnit.test( "raises, alias for throws", function( assert ) {
 QUnit.module( "failing assertions", {
 	beforeEach: function( assert ) {
 		var originalPushResult = assert.pushResult;
-
 		assert.pushResult = function( resultInfo ) {
 			// inverts the result so we can test failing assertions
 			resultInfo.result = !resultInfo.result;
