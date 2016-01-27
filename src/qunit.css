@@ -120,6 +120,10 @@
 	display: list-item;
 }
 
+#qunit-tests.hidepass {
+	position: relative;
+}
+
 #qunit-tests.hidepass li.running,
 #qunit-tests.hidepass li.pass {
 	visibility: hidden;
