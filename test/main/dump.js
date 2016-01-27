@@ -75,30 +75,26 @@ QUnit.test( "dump, TypeError properties", function( assert ) {
 
 	dumpedTypeErrorWithEnumerable = QUnit.dump.parse( typeError );
 
-	assert.pushResult( {
-		result: dumpedCustomError.indexOf(expectedCustomMessage) >= 0,
-		actual: dumpedCustomError,
-		expected: expectedCustomMessage,
-		message: "custom error contains message field"
-	} );
-	assert.pushResult( {
-		result: dumpedTypeError.indexOf(expectedTypeMessage) >= 0,
-		actual: dumpedTypeError,
-		expected: expectedTypeMessage,
-		message: "type error contains message field"
-	} );
-	assert.pushResult( {
-		result: dumpedTypeError.indexOf(expectedTypeName) >= 0,
-		actual: dumpedTypeError,
-		expected: expectedTypeName,
-		message: "type error contains name field"
-	} );
-	assert.pushResult( {
-		result: dumpedTypeErrorWithEnumerable.indexOf(expectedTypeMessage) >= 0,
-		actual: dumpedTypeErrorWithEnumerable,
-		expected: expectedTypeMessage,
-		message: "type error with enumerable field contains message field"
-	} );
+	assert.push(
+		dumpedCustomError.indexOf(expectedCustomMessage) >= 0,
+		dumpedCustomError,
+		expectedCustomMessage,
+		"custom error contains message field" );
+	assert.push(
+		dumpedTypeError.indexOf(expectedTypeMessage) >= 0,
+		dumpedTypeError,
+		expectedTypeMessage,
+		"type error contains message field" );
+	assert.push(
+		dumpedTypeError.indexOf(expectedTypeName) >= 0,
+		dumpedTypeError,
+		expectedTypeName,
+		"type error contains name field" );
+	assert.push(
+		dumpedTypeErrorWithEnumerable.indexOf(expectedTypeMessage) >= 0,
+		dumpedTypeErrorWithEnumerable,
+		expectedTypeMessage,
+		"type error with enumerable field contains message field" );
 });
 
 QUnit.module( "dump, recursions", {
