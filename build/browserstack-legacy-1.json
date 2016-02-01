@@ -10,11 +10,6 @@
 		"chrome_previous",
 		"firefox_previous",
 		"opera_previous",
-		"safari_5_1",
-		{
-			"browser": "safari",
-			"browser_version": "6.0"
-		},
 		{
 			"browser": "safari",
 			"browser_version": "8.0"
