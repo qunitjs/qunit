@@ -1,4 +1,16 @@
 
+1.21.0 / 2016-02-01
+==================
+
+  * Assert: Improve size and speed of QUnit.equiv
+  * Assert: Fully support Object-wrapped primitives in deepEqual
+  * Assert: Register notOk as a non-negative assertion
+  * CSS: Fix hidden test results under static parents
+  * Core: Improve regular expression comparisons
+  * Core: Support filtering by regular expression
+  * Test: Prevents skiping tests after rerun reordering
+  * Tests: Differentiate QUnit.equiv assertions
+
 1.20.0 / 2015-10-27
 ==================
 
