@@ -136,3 +136,12 @@ var getUrlParams = function() {
 
 	return urlParams;
 };
+
+function deprecateWarns( message ) {
+	var console = global.console;
+	message = "DEPRECATED: " + message;
+	if ( console && console.warn ) {
+		console.warn( message );
+	}
+	QUnit.warnings.push( message );
+}

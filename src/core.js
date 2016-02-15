@@ -6,6 +6,8 @@ QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
 
+QUnit.warnings = [];
+
 extend( QUnit, {
 
 	// call on start of module test to prepend name to all tests
