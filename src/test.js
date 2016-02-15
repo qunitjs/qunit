@@ -60,7 +60,8 @@ Test.prototype = {
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
-					runtime: now() - config.moduleStats.started
+					runtime: now() - config.moduleStats.started,
+					warnings: QUnit.warnings
 				});
 			}
 			config.previousModule = this.module;
@@ -221,7 +222,8 @@ Test.prototype = {
 			source: this.stack,
 
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
-			duration: this.runtime
+			duration: this.runtime,
+			warnings: QUnit.warnings
 		});
 
 		// QUnit.reset() is deprecated and will be replaced for a new
@@ -282,7 +284,8 @@ Test.prototype = {
 				expected: expected,
 				testId: this.testId,
 				negative: negative || false,
-				runtime: now() - this.started
+				runtime: now() - this.started,
+				warnings: QUnit.warnings
 			};
 
 		if ( !result ) {
@@ -314,7 +317,8 @@ Test.prototype = {
 				message: message || "error",
 				actual: actual || null,
 				testId: this.testId,
-				runtime: now() - this.started
+				runtime: now() - this.started,
+				warnings: QUnit.warnings
 			};
 
 		if ( source ) {
@@ -554,6 +558,11 @@ function test( testName, expected, callback, async ) {
 	if ( arguments.length === 2 ) {
 		callback = expected;
 		expected = null;
+	} else if ( arguments.length === 3 && typeof expected !== "function" ) {
+		deprecateWarns(
+			"'expected' argument of QUnit.test is deprecated. " +
+			"Call the expect() function explicitly instead."
+		);
 	}
 
 	newTest = new Test({

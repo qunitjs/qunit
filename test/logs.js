@@ -107,6 +107,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	);
 
 	delete logContext.runtime;
+	delete logContext.warnings;
 	assert.deepEqual( logContext, {
 		name: module1Test1.name,
 		module: module1Context.name,
@@ -121,6 +122,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	assert.equal( "foo", "foo" );
 
 	delete logContext.runtime;
+	delete logContext.warnings;
 	assert.deepEqual( logContext, {
 		name: module1Test1.name,
 		module: module1Context.name,
@@ -135,6 +137,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	assert.ok( true, "ok(true, message)" );
 
 	delete logContext.runtime;
+	delete logContext.warnings;
 	assert.deepEqual( logContext, {
 		module: module1Context.name,
 		name: module1Test1.name,
@@ -188,6 +191,7 @@ QUnit.test( module1Test2.name, function( assert ) {
 	// Delete testDoneContext.source
 	delete testDoneContext.source;
 
+	delete testDoneContext.warnings;
 	assert.deepEqual( testDoneContext, {
 		module: module1Context.name,
 		name: module1Test1.name,
@@ -230,6 +234,7 @@ QUnit.test( module2Test1.name, function( assert ) {
 		"module runtime was a reasonable number"
 	);
 	delete moduleDoneContext.runtime;
+	delete moduleDoneContext.warnings;
 
 	assert.deepEqual( moduleDoneContext, {
 		name: module1Context.name,
@@ -269,6 +274,7 @@ QUnit.test( module2Test4.name, function( assert ) {
 	delete testDoneContext.runtime;
 	delete testDoneContext.duration;
 	delete testDoneContext.source;
+	delete testDoneContext.warnings;
 
 	assert.deepEqual( testDoneContext, {
 		assertions: [],

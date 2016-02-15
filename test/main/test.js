@@ -7,8 +7,19 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.ok( true );
 });
 
-if ( typeof document !== "undefined" ) {
+if ( typeof document === "undefined" ) {
 
+QUnit.test("expected of QUnit.test is deprecated", 1, function( assert ) {
+	assert.equal(
+		QUnit.warnings[0],
+		"DEPRECATED: 'expected' argument of QUnit.test is deprecated. " +
+		"Call the expect() function explicitly instead."
+	);
+});
+
+}
+
+if ( typeof document !== "undefined" ) {
 QUnit.module( "fixture" );
 
 QUnit.test( "setup", function( assert ) {

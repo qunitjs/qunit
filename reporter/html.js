@@ -574,7 +574,9 @@ QUnit.done(function( details ) {
 			details.total,
 			"</span> passed, <span class='failed'>",
 			details.failed,
-			"</span> failed."
+			"</span> failed.",
+			QUnit.warnings.length,
+			" warnings"
 		].join( "" );
 
 	if ( banner ) {
@@ -665,6 +667,9 @@ QUnit.log(function( details ) {
 
 	message = escapeText( details.message ) || ( details.result ? "okay" : "failed" );
 	message = "<span class='test-message'>" + message + "</span>";
+	if ( details.warnings !== undefined ) {
+		message += "<span class='test-warning'>" + details.warnings + "</span>";
+	}
 	message += "<span class='runtime'>@ " + details.runtime + " ms</span>";
 
 	// pushFailure doesn't provide details.expected
