@@ -111,6 +111,7 @@ grunt.initConfig({
 			"test/reporter-html/no-qunit-element.html",
 			"test/reporter-html/single-testid.html",
 			"test/only.html",
+			"test/random.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
 			"test/string-filter.html"

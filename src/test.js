@@ -1,5 +1,6 @@
 var focused = false;
 var priorityCount = 0;
+var unitSampler;
 
 function Test( settings ) {
 	var i, l;
@@ -268,7 +269,7 @@ Test.prototype = {
 		priority = QUnit.config.reorder && defined.sessionStorage &&
 				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
-		return synchronize( run, priority );
+		return synchronize( run, priority, config.seed );
 	},
 
 	pushResult: function( resultInfo ) {
@@ -481,8 +482,9 @@ function generateHash( module, testName ) {
 	return hex.slice( -8 );
 }
 
-function synchronize( callback, priority ) {
-	var last = !priority;
+function synchronize( callback, priority, seed ) {
+	var last = !priority,
+		index;
 
 	if ( QUnit.objectType( callback ) === "array" ) {
 		while ( callback.length ) {
@@ -493,6 +495,14 @@ function synchronize( callback, priority ) {
 
 	if ( priority ) {
 		config.queue.splice( priorityCount++, 0, callback );
+	} else if ( seed ) {
+		if ( !unitSampler ) {
+			unitSampler = unitSamplerGenerator( seed );
+		}
+
+		// Insert into a random position after all priority items
+		index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
+		config.queue.splice( priorityCount + index, 0, callback );
 	} else {
 		config.queue.push( callback );
 	}
@@ -500,6 +510,25 @@ function synchronize( callback, priority ) {
 	if ( config.autorun && !config.blocking ) {
 		process( last );
 	}
+}
+
+function unitSamplerGenerator( seed ) {
+
+	// 32-bit xorshift, requires only a nonzero seed
+	// http://excamera.com/sphinx/article-xorshift.html
+	var sample = parseInt( generateHash( seed ), 16 ) || -1;
+	return function() {
+		sample ^= sample << 13;
+		sample ^= sample >>> 17;
+		sample ^= sample << 5;
+
+		// ECMAScript has no unsigned number type
+		if ( sample < 0 ) {
+			sample += 0x100000000;
+		}
+
+		return sample / 0x100000000;
+	};
 }
 
 function saveGlobal() {
