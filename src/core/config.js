@@ -79,6 +79,16 @@ if ( urlParams.filter === true ) {
 // String search anywhere in moduleName+testName
 config.filter = urlParams.filter;
 
+// Randomize the order in which tests are run
+if ( urlParams.seed ) {
+	config.seed = urlParams.seed;
+
+	// Generate a random seed if the seed option is specified without a value
+	if ( config.seed === true ) {
+		config.seed = Math.random().toString( 36 ).slice( 2 );
+	}
+}
+
 config.testId = [];
 if ( urlParams.testId ) {
 	// Ensure that urlParams.testId is an array
