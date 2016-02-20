@@ -531,7 +531,7 @@ function appendTest( name, testId, moduleName ) {
 }
 
 // HTML Reporter initialization and load
-QUnit.begin(function( details ) {
+QUnit.on( "runStart", function( details ) {
 	var qunit = id( "qunit" );
 
 	// Fixture is the only one necessary to run without the #qunit element
@@ -560,7 +560,7 @@ QUnit.begin(function( details ) {
 	}
 });
 
-QUnit.done(function( details ) {
+QUnit.on( "runEnd", function( details ) {
 	var i, key,
 		banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
@@ -623,7 +623,7 @@ function getNameHtml( name, module ) {
 	return nameHtml;
 }
 
-QUnit.testStart(function( details ) {
+QUnit.on( "testStart", function( details ) {
 	var running, testBlock, bad;
 
 	testBlock = id( "qunit-test-output-" + details.testId );
@@ -653,7 +653,7 @@ function stripHtml( string ) {
 	return string.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&quot;/g, "").replace(/\s+/g, "");
 }
 
-QUnit.log(function( details ) {
+QUnit.on( "assert", function( details ) {
 	var assertList, assertLi,
 		message, expected, actual, diff,
 		showDiff = false,
@@ -733,7 +733,7 @@ QUnit.log(function( details ) {
 	assertList.appendChild( assertLi );
 });
 
-QUnit.testDone(function( details ) {
+QUnit.on( "testEnd", function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad, testCounts, skipped, sourceName,
 		tests = id( "qunit-tests" );
