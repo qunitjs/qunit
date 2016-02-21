@@ -57,7 +57,8 @@ grunt.initConfig({
 		all: [
 			"*.js",
 			"{test,dist}/**/*.js",
-			"build/*.js"
+			"build/*.js",
+			"build/tasks/**/*.js"
 		]
 	},
 	jscs: {
@@ -125,6 +126,23 @@ grunt.initConfig({
 			src: "build/report/lcov/lcov.info"
 		}
 	},
+	"test-on-node": {
+		files: [
+			"test/logs",
+			"test/main/test",
+			"test/main/assert",
+			"test/main/async",
+			"test/main/promise",
+			"test/main/modules",
+			"test/main/deepEqual",
+			"test/main/stack",
+			"test/globals-node",
+			"test/only",
+			"test/setTimeout",
+			"test/main/dump",
+			"test/reporter-html/diff"
+		]
+	},
 	concurrent: {
 		build: [
 			"concat:src-js",
@@ -156,60 +174,7 @@ grunt.initConfig({
 	}
 });
 
-// TODO: Extract this task later, if feasible
-// Also spawn a separate process to keep tests atomic
-grunt.registerTask( "test-on-node", function() {
-	var testActive = false,
-		runDone = false,
-		done = this.async(),
-		QUnit = require( "./dist/qunit" );
-
-	global.QUnit = QUnit;
-
-	QUnit.testStart(function() {
-		testActive = true;
-	});
-	QUnit.log(function( details ) {
-		if ( !testActive || details.result ) {
-			return;
-		}
-		var message = "name: " + details.name + " module: " + details.module +
-			" message: " + details.message;
-		grunt.log.error( message );
-	});
-	QUnit.testDone(function() {
-		testActive = false;
-	});
-	QUnit.done(function( details ) {
-		if ( runDone ) {
-			return;
-		}
-		var succeeded = ( details.failed === 0 ),
-			message = details.total + " assertions in (" + details.runtime + "ms), passed: " +
-				details.passed + ", failed: " + details.failed;
-		if ( succeeded ) {
-			grunt.log.ok( message );
-		} else {
-			grunt.log.error( message );
-		}
-		done( succeeded );
-		runDone = true;
-	});
-	QUnit.config.autorun = false;
-
-	require( "./test/logs" );
-	require( "./test/main/test" );
-	require( "./test/main/assert" );
-	require( "./test/main/async" );
-	require( "./test/main/promise" );
-	require( "./test/main/modules" );
-	require( "./test/main/deepEqual" );
-	require( "./test/main/stack" );
-	require( "./test/globals-node" );
-
-	QUnit.load();
-});
-
+grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "concat" ] );
 grunt.registerTask( "default", [ "concurrent:build", "concurrent:test" ] );
 

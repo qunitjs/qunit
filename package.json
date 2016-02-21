@@ -28,6 +28,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "async": "1.4.2",
     "browserstack-runner": "0.3.7",
     "commitplease": "2.0.0",
     "grunt": "0.4.5",
