@@ -1,7 +1,8 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - "0.12"
+  - "4"
 before_install:
   - npm install -g grunt-cli
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
