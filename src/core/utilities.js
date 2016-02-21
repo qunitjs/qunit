@@ -113,23 +113,24 @@ function is( type, obj ) {
 }
 
 var getUrlParams = function() {
-	var i, current;
+	var i, param, name, value;
 	var urlParams = {};
 	var location = window.location;
 	var params = location.search.slice( 1 ).split( "&" );
 	var length = params.length;
 
-	if ( params[ 0 ] ) {
-		for ( i = 0; i < length; i++ ) {
-			current = params[ i ].split( "=" );
-			current[ 0 ] = decodeURIComponent( current[ 0 ] );
+	for ( i = 0; i < length; i++ ) {
+		if ( params[ i ] ) {
+			param = params[ i ].split( "=" );
+			name = decodeURIComponent( param[ 0 ] );
 
 			// allow just a key to turn on a flag, e.g., test.html?noglobals
-			current[ 1 ] = current[ 1 ] ? decodeURIComponent( current[ 1 ] ) : true;
-			if ( urlParams[ current[ 0 ] ] ) {
-				urlParams[ current[ 0 ] ] = [].concat( urlParams[ current[ 0 ] ], current[ 1 ] );
+			value = param.length === 1 ||
+				decodeURIComponent( param.slice( 1 ).join( "=" ) ) ;
+			if ( urlParams[ name ] ) {
+				urlParams[ name ] = [].concat( urlParams[ name ], value );
 			} else {
-				urlParams[ current[ 0 ] ] = current[ 1 ];
+				urlParams[ name ] = value;
 			}
 		}
 	}

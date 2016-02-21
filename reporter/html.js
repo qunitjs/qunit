@@ -422,7 +422,7 @@ function appendHeader() {
 
 	if ( header ) {
 		header.innerHTML = "<a href='" +
-			setUrl({ filter: undefined, module: undefined, testId: undefined }) +
+			escapeText( setUrl( { filter: undefined, module: undefined, testId: undefined } ) ) +
 			"'>" + header.innerHTML + "</a> ";
 	}
 }
@@ -465,9 +465,10 @@ function appendFilteredTest() {
 	if ( !testId || testId.length <= 0 ) {
 		return "";
 	}
-	return "<div id='qunit-filteredTest'>Rerunning selected tests: " + testId.join(", ") +
+	return "<div id='qunit-filteredTest'>Rerunning selected tests: " +
+		escapeText( testId.join(", ") ) +
 		" <a id='qunit-clearFilter' href='" +
-		setUrl({ filter: undefined, module: undefined, testId: undefined }) +
+		escapeText( setUrl( { filter: undefined, module: undefined, testId: undefined } ) ) +
 		"'>" + "Run all tests" + "</a></div>";
 }
 
@@ -706,7 +707,8 @@ QUnit.log(function( details ) {
 			message += "<tr class='test-message'><th>Message: </th><td>" +
 				"Diff suppressed as the depth of object is more than current max depth (" +
 				QUnit.config.maxDepth + ").<p>Hint: Use <code>QUnit.dump.maxDepth</code> to " +
-				" run with a higher max depth or <a href='" + setUrl({ maxDepth: -1 }) + "'>" +
+				" run with a higher max depth or <a href='" +
+				escapeText( setUrl( { maxDepth: -1 } ) ) + "'>" +
 				"Rerun</a> without max depth.</p></td></tr>";
 		}
 
