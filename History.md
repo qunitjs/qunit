@@ -1,4 +1,11 @@
 
+1.22.0 / 2016-02-23
+==================
+
+  * Assert: Implement Assert#pushResult
+  * Assert: Extend Assert methods to QUnit for backwards compatibility
+  * HTML Reporter: Escape setUrl output
+
 1.21.0 / 2016-02-01
 ==================
 

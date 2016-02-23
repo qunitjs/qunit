@@ -120,3 +120,4 @@ Jon Dufresne <jon.dufresne@gmail.com>
 Maksim Gudow <mmd1337@gmail.com>
 Trent Willis <twillis@linkedin.com>
 Frank Weigel <frank.weigel@sap.com>
+Jürg Lehni <juerg@scratchdisk.com>
