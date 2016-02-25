@@ -10,18 +10,18 @@ module.exports = function( grunt ) {
 			return function( runEnd ) {
 				runQUnit( file, runEnd );
 			};
-		});
+		} );
 
 		var done = this.async();
 
 		async.series( runs, function( error, result ) {
-			var total = result.reduce(function( previous, details ) {
+			var total = result.reduce( function( previous, details ) {
 					return previous + details.total;
 				}, 0 );
-			var failed = result.reduce(function( previous, details ) {
+			var failed = result.reduce( function( previous, details ) {
 					return previous + details.failed;
 				}, 0 );
-			var runtime = result.reduce(function( previous, details ) {
+			var runtime = result.reduce( function( previous, details ) {
 					return previous + details.runtime;
 				}, 0 );
 
@@ -30,8 +30,8 @@ module.exports = function( grunt ) {
 				"with "  + failed + " failed assertions" );
 
 			done( !error );
-		});
-	});
+		} );
+	} );
 
 	function runQUnit( file, runEnd ) {
 
@@ -60,10 +60,10 @@ module.exports = function( grunt ) {
 
 		QUnit.begin( function() {
 			grunt.log.ok( "Testing " + file + " ..." );
-		});
+		} );
 		QUnit.testStart( function() {
 			testActive = true;
-		});
+		} );
 		QUnit.log( function( details ) {
 			if ( !testActive || details.result ) {
 				return;
@@ -71,10 +71,10 @@ module.exports = function( grunt ) {
 			var message = "name: " + details.name + " module: " + details.module +
 				" message: " + details.message;
 			grunt.log.error( message );
-		});
+		} );
 		QUnit.testDone( function() {
 			testActive = false;
-		});
+		} );
 		QUnit.done( function( details ) {
 			if ( runDone ) {
 				return;
@@ -90,6 +90,6 @@ module.exports = function( grunt ) {
 
 			runDone = true;
 			runEnd( details.failed, details );
-		});
+		} );
 	}
 };

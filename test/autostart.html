@@ -12,7 +12,7 @@
 	var beginData,
 		times = {};
 
-	(function() {
+	( function() {
 		var now = Date.now || function() {
 			return new Date().getTime();
 		};
@@ -25,17 +25,17 @@
 
 		// Simulate a delay in loading the tests, as when they are loaded
 		// asynchronously using requirejs, steal, etc.
-		setTimeout(function() {
+		setTimeout( function() {
 			var script = document.createElement( "script" );
 			script.src = "autostart.js";
 			document.getElementsByTagName( "head" )[ 0 ].appendChild( script );
 		}, asyncDelay );
 
-		QUnit.begin(function( data ) {
+		QUnit.begin( function( data ) {
 			beginData = data;
 			times.runStarted = now();
-		});
-	})();
+		} );
+	}() );
 	</script>
 </body>
 </html>

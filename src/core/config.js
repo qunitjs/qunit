@@ -4,33 +4,34 @@
  * `config` initialized at top of scope
  */
 var config = {
+
 	// The queue of tests to run
 	queue: [],
 
-	// block until document ready
+	// Block until document ready
 	blocking: true,
 
-	// by default, run previously failed tests first
+	// By default, run previously failed tests first
 	// very useful in combination with "Hide passed tests" checked
 	reorder: true,
 
-	// by default, modify document.title when suite is done
+	// By default, modify document.title when suite is done
 	altertitle: true,
 
 	// HTML Reporter: collapse every test except the first failing test
 	// If false, all failing tests will be expanded
 	collapse: true,
 
-	// by default, scroll to top of the page when suite is done
+	// By default, scroll to top of the page when suite is done
 	scrolltop: true,
 
-	// depth up-to which object will be dumped
+	// Depth up-to which object will be dumped
 	maxDepth: 5,
 
-	// when enabled, all tests must call expect()
+	// When enabled, all tests must call expect()
 	requireExpects: false,
 
-	// add checkboxes that are persisted in the query-string
+	// Add checkboxes that are persisted in the query-string
 	// when enabled, the id is set to `true` as a `QUnit.config` property
 	urlConfig: [
 		{
@@ -91,9 +92,10 @@ if ( urlParams.seed ) {
 
 config.testId = [];
 if ( urlParams.testId ) {
+
 	// Ensure that urlParams.testId is an array
 	urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
-	for (var i = 0; i < urlParams.testId.length; i++ ) {
+	for ( var i = 0; i < urlParams.testId.length; i++ ) {
 		config.testId.push( urlParams.testId[ i ] );
 	}
 }

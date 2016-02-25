@@ -9,4 +9,4 @@
  * Date: @DATE
  */
 
-(function( global ) {
+( function( global ) {

@@ -118,7 +118,7 @@ QUnit.test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( { a: 1 }, new SafeObject() ), false, "nonempty object literal vs. empty instantiation" );
 	assert.equal( QUnit.equiv( { a: undefined }, new SafeObject() ), false, "other nonempty object literal vs. empty instantiation" );
 	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "empty object instantiation vs. other nonempty literal" );
-});
+} );
 
 QUnit.test( "Objects basics", function( assert ) {
 	assert.equal( QUnit.equiv( {}, {} ), true );
@@ -153,7 +153,7 @@ QUnit.test( "Objects basics", function( assert ) {
 		}
 	), false );
 
-});
+} );
 
 QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 	"Objects with null prototypes", function( assert ) {
@@ -189,7 +189,7 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 		true,
 		"object VS object without prototype"
 	);
-});
+} );
 
 // Ref #851
 QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
@@ -205,7 +205,7 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 		constructor: {
 			value: null
 		}
-	});
+	} );
 
 	var a = new NullObject();
 	a.foo = 1;
@@ -213,7 +213,7 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 
 	assert.ok( QUnit.equiv( a, b ) );
 	assert.ok( QUnit.equiv( b, a ) );
-});
+} );
 
 QUnit.test( "Arrays basics", function( assert ) {
 
@@ -390,7 +390,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 								]
 							]]]),
 							false, "Multidimensional" );
-});
+} );
 
 QUnit.test( "Functions", function( assert ) {
 	var f0 = function() {},
@@ -405,7 +405,7 @@ QUnit.test( "Functions", function( assert ) {
 		};
 
 	assert.equal( QUnit.equiv( function() {}, function() {} ), false, "Anonymous functions" ); // exact source code
-	assert.equal( QUnit.equiv(function() {}, function() {
+	assert.equal( QUnit.equiv( function() {}, function() {
 		return true;
 	}), false, "Anonymous functions" );
 
@@ -417,7 +417,7 @@ QUnit.test( "Functions", function( assert ) {
 	assert.equal( QUnit.equiv( function() {}, undefined ), false );
 	assert.equal( QUnit.equiv( function() {}, null ), false );
 	assert.equal( QUnit.equiv( function() {}, {} ), false );
-});
+} );
 
 QUnit.test( "Date instances", function( assert ) {
 
@@ -442,7 +442,7 @@ QUnit.test( "Date instances", function( assert ) {
 
 	// test different date and different instances difference
 	assert.equal( QUnit.equiv( d1, d3 ), false );
-});
+} );
 
 QUnit.test( "RegExp", function( assert ) {
 	// Must test cases that imply those traps:
@@ -537,7 +537,7 @@ QUnit.test( "RegExp", function( assert ) {
 	r1 = / /;
 	assert.equal( QUnit.equiv( r1, function() {} ), false, "Regex internal" );
 	assert.equal( QUnit.equiv( r1, {} ), false, "Regex internal" );
-});
+} );
 
 QUnit.test( "Complex objects", function( assert ) {
 
@@ -1048,7 +1048,7 @@ QUnit.test( "Complex objects", function( assert ) {
 	assert.equal( QUnit.equiv( same1, diff5 ), false );
 	assert.equal( QUnit.equiv( same1, diff6 ), false );
 	assert.equal( QUnit.equiv( diff5, diff1 ), false );
-});
+} );
 
 QUnit.test( "Complex Arrays", function( assert ) {
 
@@ -1232,7 +1232,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					b: {}
 				}
 			}, {}]]]), false);
-});
+} );
 
 QUnit.test( "Prototypal inheritance", function( assert ) {
 	function Gizmo( id ) {
@@ -1280,7 +1280,7 @@ QUnit.test( "Prototypal inheritance", function( assert ) {
 
 	// Make sure this is still true !important
 	assert.equal( QUnit.equiv( function() {}, function() {} ), false );
-});
+} );
 
 QUnit.test( "Instances", function( assert ) {
 	var a1, a2, b1, b2, car, carSame, carDiff, human;
@@ -1337,7 +1337,7 @@ QUnit.test( "Instances", function( assert ) {
 	assert.equal( QUnit.equiv( car, carDiff ), false );
 	assert.equal( QUnit.equiv( car, carSame ), true );
 	assert.equal( QUnit.equiv( car, human ), false );
-});
+} );
 
 QUnit.test(
 	"Complex instance nesting (with function values in literals and/or in nested instances)",
@@ -1354,7 +1354,7 @@ QUnit.test(
 		function B( fn ) {
 			this.fn = fn;
 			this.fn1 = function() {};
-			this.a = new A(function() {});
+			this.a = new A( function() {} );
 		}
 
 		function fnOutside() {
@@ -1376,12 +1376,12 @@ QUnit.test(
 			// This function will be ignored.
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
-			this.b1 = new B(function() {});
+			this.b1 = new B( function() {} );
 			this.b2 = new B({
 				x: {
-					b2: new B(function() {})
+					b2: new B( function() {})
 				}
-			});
+			} );
 		}
 
 		function D( fn ) {
@@ -1406,12 +1406,12 @@ QUnit.test(
 			// This function will be ignored.
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
-			this.b1 = new B(function() {});
+			this.b1 = new B( function() {} );
 			this.b2 = new B({
 				x: {
-					b2: new B(function() {})
+					b2: new B( function() {})
 				}
-			});
+			} );
 		}
 
 		function E( fn ) {
@@ -1430,35 +1430,35 @@ QUnit.test(
 			// This function will be ignored.
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
-			this.b1 = new B(function() {});
+			this.b1 = new B( function() {} );
 			this.b2 = new B({
 				x: {
 					b1: new B( { a: function() {} } ),
-					b2: new B(function() {})
+					b2: new B( function() {})
 				}
-			});
+			} );
 		}
 
-		a1 = new A(function() {});
-		a2 = new A(function() {});
+		a1 = new A( function() {} );
+		a2 = new A( function() {} );
 		assert.equal( QUnit.equiv( a1, a2 ), true );
 
 		assert.equal( QUnit.equiv( a1, a2 ), true ); // different instances
 
-		b1 = new B(function() {});
-		b2 = new B(function() {});
+		b1 = new B( function() {} );
+		b2 = new B( function() {} );
 		assert.equal( QUnit.equiv( b1, b2 ), true );
 
-		c1 = new C(function() {});
-		c2 = new C(function() {});
+		c1 = new C( function() {} );
+		c2 = new C( function() {} );
 		assert.equal( QUnit.equiv( c1, c2 ), true );
 
-		d1 = new D(function() {});
-		d2 = new D(function() {});
+		d1 = new D( function() {} );
+		d2 = new D( function() {} );
 		assert.equal( QUnit.equiv( d1, d2 ), false );
 
-		e1 = new E(function() {});
-		e2 = new E(function() {});
+		e1 = new E( function() {} );
+		e2 = new E( function() {} );
 		assert.equal( QUnit.equiv( e1, e2 ), false );
 	}
 );
@@ -1487,7 +1487,7 @@ QUnit.test( "Object with circular references", function( assert ) {
 	assert.equal( QUnit.equiv( circularA, circularB ), false,
 		"Should not repeat test on object (unambiguous test)"
 	);
-});
+} );
 
 QUnit.test( "Array with circular references", function( assert ) {
 	var circularA = [],
@@ -1509,7 +1509,7 @@ QUnit.test( "Array with circular references", function( assert ) {
 	assert.equal( QUnit.equiv( circularA, circularB ), false,
 		"Should not repeat test on array (unambiguous test)"
 	);
-});
+} );
 
 QUnit.test( "Mixed object/array with references to self wont loop", function( assert ) {
 	var circularA = [ {
@@ -1538,7 +1538,7 @@ QUnit.test( "Mixed object/array with references to self wont loop", function( as
 	assert.equal( QUnit.equiv( circularA, circularB ), false,
 		"Should not repeat test on object/array (unambiguous test)"
 	);
-});
+} );
 
 QUnit.test( "Compare self-referent to tree", function( assert ) {
 	var temp,
@@ -1576,7 +1576,7 @@ QUnit.test( "Compare self-referent to tree", function( assert ) {
 	assert.equal( QUnit.equiv( temp, circularO ), true,
 		"Object: Reference is circular for one, but equal on other"
 	);
-});
+} );
 
 QUnit.test( "Test that must be done at the end because they extend some primitive's prototype",
 	function( assert ) {
@@ -1596,7 +1596,7 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 		// and ALSO especially that we can make differences
 		// between RegExp and Function constructor because
 		// typeof on a RegExpt instance is "function"
-		assert.equal( QUnit.equiv(function() {}, re ), false,
+		assert.equal( QUnit.equiv( function() {}, re ), false,
 			"Same conversely, but ensures that function and regexp are distinct because their constructor are different"
 		);
 	}
@@ -1626,7 +1626,7 @@ QUnit.test( "Number", function( assert ) {
 	assert.notOk( QUnit.equiv( new SafeNumber( 1 / 0 ), new SafeNumber( -1 / 0 ) ),
 		"Positive and negative infinite Number objects are not equivalent."
 	);
-});
+} );
 
 QUnit.test( "String", function( assert ) {
 	var SafeString = String;
@@ -1644,7 +1644,7 @@ QUnit.test( "String", function( assert ) {
 	assert.notOk( QUnit.equiv( new SafeString( "" ), new SafeString( "foo" ) ),
 		"Empty and nonempty String objects are not equivalent."
 	);
-});
+} );
 
 QUnit.test( "Boolean", function( assert ) {
 	var SafeBoolean = Boolean;
@@ -1659,7 +1659,7 @@ QUnit.test( "Boolean", function( assert ) {
 	assert.notOk( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( false ) ),
 		"Boolean objects with different values are not equivalent."
 	);
-});
+} );
 
 QUnit.module( "equiv Maps and Sets" );
 
@@ -1681,7 +1681,7 @@ var hasES6Set = ( function() {
 	catch ( e ) {
 		return false;
 	}
-} )();
+}() );
 
 var hasES6Map = ( function() {
 	if ( typeof Map !== "function" ) {
@@ -1701,7 +1701,7 @@ var hasES6Map = ( function() {
 	catch ( e ) {
 		return false;
 	}
-} )();
+}() );
 
 QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	var s1, s2, s3, s4, o1, o2, o3, m1, m2, m3;
@@ -1761,7 +1761,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	s3 = new Set( [ m1 ] );
 	s4 = new Set( [ m3 ] );
 	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different maps" );
-});
+} );
 
 QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	var m1, m2, m3, m4, o1, o2, o3, s1, s2, s3;
@@ -1858,13 +1858,13 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [	[ 1, s3 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
-});
+} );
 
 QUnit.module( "equiv Symbols" );
 
 var hasES6Symbol = ( function() {
 	return typeof Symbol === "function";
-} )();
+}() );
 
 QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function ( assert ) {
 	var a = Symbol( 1 );

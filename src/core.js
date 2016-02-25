@@ -8,7 +8,7 @@ QUnit.version = "@VERSION";
 
 extend( QUnit, {
 
-	// call on start of module test to prepend name to all tests
+	// Call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment, executeNow ) {
 		var module, moduleFns;
 		var currentModule = config.currentModule;
@@ -129,7 +129,7 @@ extend( QUnit, {
 				return;
 			}
 
-			// throw an Error if start is called more often than stop
+			// Throw an Error if start is called more often than stop
 			if ( config.current.semaphore < 0 ) {
 				config.current.semaphore = 0;
 
@@ -190,7 +190,7 @@ extend( QUnit, {
 		offset = ( offset || 0 ) + 2;
 		return sourceFromStacktrace( offset );
 	}
-});
+} );
 
 registerLoggingCallbacks( QUnit );
 
@@ -213,17 +213,17 @@ function begin() {
 
 		// Avoid unnecessary information by not logging modules' test environments
 		for ( i = 0, l = config.modules.length; i < l; i++ ) {
-			modulesLog.push({
+			modulesLog.push( {
 				name: config.modules[ i ].name,
 				tests: config.modules[ i ].tests
-			});
+			} );
 		}
 
 		// The test run is officially beginning now
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
-		});
+		} );
 	}
 
 	config.blocking = false;
@@ -262,7 +262,7 @@ function pauseProcessing() {
 
 	if ( config.testTimeout && defined.setTimeout ) {
 		clearTimeout( config.timeout );
-		config.timeout = setTimeout(function() {
+		config.timeout = setTimeout( function() {
 			if ( config.current ) {
 				config.current.semaphore = 0;
 				QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
@@ -279,7 +279,7 @@ function resumeProcessing() {
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
-		setTimeout(function() {
+		setTimeout( function() {
 			if ( config.current && config.current.semaphore > 0 ) {
 				return;
 			}
@@ -308,7 +308,7 @@ function done() {
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
 			runtime: now() - config.moduleStats.started
-		});
+		} );
 	}
 	delete config.previousModule;
 
@@ -320,7 +320,7 @@ function done() {
 		passed: passed,
 		total: config.stats.all,
 		runtime: runtime
-	});
+	} );
 }
 
 function setHook( module, hookName ) {

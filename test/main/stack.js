@@ -11,4 +11,4 @@
 		assert.ok( stack, "can use offset argument to return a different stacktrace line" );
 		assert.notOk( /\/test\/main\/stack\.js/.test( stack ), "stack with offset argument" );
 	} );
-} )();
+}() );

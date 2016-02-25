@@ -1,6 +1,6 @@
 // Based on jsDump by Ariel Flesler
 // http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
-QUnit.dump = (function() {
+QUnit.dump = ( function() {
 	function quote( str ) {
 		return "\"" + str.toString().replace( /\\/g, "\\\\" ).replace( /"/g, "\\\"" ) + "\"";
 	}
@@ -38,7 +38,7 @@ QUnit.dump = (function() {
 	var reName = /^function (\w+)/,
 		dump = {
 
-			// objType is used mostly internally, you can fix a (custom) type in advance
+			// The objType is used mostly internally, you can fix a (custom) type in advance
 			parse: function( obj, objType, stack ) {
 				stack = stack || [];
 				var res, parser, parserType,
@@ -82,7 +82,7 @@ QUnit.dump = (function() {
 					type = "node";
 				} else if (
 
-					// native arrays
+					// Native arrays
 					toString.call( obj ) === "[object Array]" ||
 
 					// NodeList objects
@@ -98,10 +98,12 @@ QUnit.dump = (function() {
 				}
 				return type;
 			},
+
 			separator: function() {
 				return this.multiline ? this.HTML ? "<br />" : "\n" : this.HTML ? "&#160;" : " ";
 			},
-			// extra can be a number, shortcut for increasing-calling-decreasing
+
+			// Extra can be a number, shortcut for increasing-calling-decreasing
 			indent: function( extra ) {
 				if ( !this.multiline ) {
 					return "";
@@ -121,11 +123,11 @@ QUnit.dump = (function() {
 			setParser: function( name, parser ) {
 				this.parsers[ name ] = parser;
 			},
+
 			// The next 3 are exposed so you can use them
 			quote: quote,
 			literal: literal,
 			join: join,
-			//
 			depth: 1,
 			maxDepth: QUnit.config.maxDepth,
 
@@ -142,7 +144,7 @@ QUnit.dump = (function() {
 				"function": function( fn ) {
 					var ret = "function",
 
-						// functions never have name in IE
+						// Functions never have name in IE
 						name = "name" in fn ? fn.name : ( reName.exec( fn ) || [] )[ 1 ];
 
 					if ( name ) {
@@ -219,7 +221,7 @@ QUnit.dump = (function() {
 					return ret + open + "/" + tag + close;
 				},
 
-				// function calls it internally, it's the arguments part of the function
+				// Function calls it internally, it's the arguments part of the function
 				functionArgs: function( fn ) {
 					var args,
 						l = fn.length;
@@ -236,11 +238,14 @@ QUnit.dump = (function() {
 					}
 					return " " + args.join( ", " ) + " ";
 				},
-				// object calls it internally, the key part of an item in a map
+
+				// Object calls it internally, the key part of an item in a map
 				key: quote,
-				// function calls it internally, it's the content of the function
+
+				// Function calls it internally, it's the content of the function
 				functionCode: "[code]",
-				// node calls it internally, it's a html attribute value
+
+				// Node calls it internally, it's a html attribute value
 				attribute: quote,
 				string: quote,
 				date: quote,
@@ -248,16 +253,19 @@ QUnit.dump = (function() {
 				number: literal,
 				"boolean": literal
 			},
-			// if true, entities are escaped ( <, >, \t, space and \n )
+
+			// If true, entities are escaped ( <, >, \t, space and \n )
 			HTML: false,
-			// indentation unit
+
+			// Indentation unit
 			indentChar: "  ",
-			// if true, items in a collection, are separated by a \n, else just a space.
+
+			// If true, items in a collection, are separated by a \n, else just a space.
 			multiline: true
 		};
 
 	return dump;
-}());
+}() );
 
-// back compat
+// Back compat
 QUnit.jsDump = QUnit.dump;

@@ -1,7 +1,7 @@
 var toString = Object.prototype.toString,
 	hasOwn = Object.prototype.hasOwnProperty;
 
-// returns a new Array with the elements that are in a but not in b
+// Returns a new Array with the elements that are in a but not in b
 function diff( a, b ) {
 	var i, j,
 		result = a.slice();
@@ -18,7 +18,7 @@ function diff( a, b ) {
 	return result;
 }
 
-// from jquery.js
+// From jquery.js
 function inArray( elem, array ) {
 	if ( array.indexOf ) {
 		return array.indexOf( elem );
@@ -124,7 +124,7 @@ var getUrlParams = function() {
 			param = params[ i ].split( "=" );
 			name = decodeURIComponent( param[ 0 ] );
 
-			// allow just a key to turn on a flag, e.g., test.html?noglobals
+			// Allow just a key to turn on a flag, e.g., test.html?noglobals
 			value = param.length === 1 ||
 				decodeURIComponent( param.slice( 1 ).join( "=" ) ) ;
 			if ( urlParams[ name ] ) {

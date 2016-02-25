@@ -20,17 +20,17 @@
 			totalCount = details.failed;
 			delete sessionStorage[ "qunit-test-First fail module-2-should be fail" ];
 			delete sessionStorage[ "qunit-test-Second fail module-2-should be fail" ];
-		});
+		} );
 
 		QUnit.module( "First fail module-2" );
 		QUnit.test( "should be fail", function( assert ) {
 			assert.ok( false );
-		});
+		} );
 
 		QUnit.module( "Second fail module-2" );
 		QUnit.test( "should be fail", function( assert ) {
 			assert.ok( false );
-		});
+		} );
 	}
 	</script>
 
