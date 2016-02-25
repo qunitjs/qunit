@@ -19,11 +19,11 @@ QUnit.module( "Module with Promise-aware beforeEach", {
 		assert.ok( true );
 		return {};
 	}
-});
+} );
 
 QUnit.test( "non-Promise", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
 QUnit.module( "Module with Promise-aware beforeEach", {
 	beforeEach: function( assert ) {
@@ -31,22 +31,22 @@ QUnit.module( "Module with Promise-aware beforeEach", {
 		// Adds 1 assertion
 		return createMockPromise( assert );
 	}
-});
+} );
 
 QUnit.test( "fulfilled Promise", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
 QUnit.module( "Module with Promise-aware afterEach", {
 	afterEach: function( assert ) {
 		assert.ok( true );
 		return {};
 	}
-});
+} );
 
 QUnit.test( "non-Promise", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
 QUnit.module( "Module with Promise-aware afterEach", {
 	afterEach: function( assert ) {
@@ -54,25 +54,25 @@ QUnit.module( "Module with Promise-aware afterEach", {
 		// Adds 1 assertion
 		return createMockPromise( assert );
 	}
-});
+} );
 
 QUnit.test( "fulfilled Promise", function( assert ) {
 	assert.expect( 1 );
-});
+} );
 
 QUnit.module( "Promise-aware return values without beforeEach/afterEach" );
 
 QUnit.test( "non-Promise", function( assert ) {
 	assert.expect( 0 );
 	return {};
-});
+} );
 
 QUnit.test( "fulfilled Promise", function( assert ) {
 	assert.expect( 1 );
 
 	// Adds 1 assertion
 	return createMockPromise( assert );
-});
+} );
 
 QUnit.test( "fulfilled Promise with non-Promise async assertion", function( assert ) {
 	assert.expect( 2 );
@@ -85,4 +85,4 @@ QUnit.test( "fulfilled Promise with non-Promise async assertion", function( asse
 
 	// Adds 1 assertion
 	return createMockPromise( assert );
-});
+} );

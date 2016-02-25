@@ -19,7 +19,7 @@ function process( code, filepath ) {
 		.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
 }
 
-grunt.initConfig({
+grunt.initConfig( {
 	pkg: grunt.file.readJSON( "package.json" ),
 	concat: {
 		"src-js": {
@@ -173,7 +173,7 @@ grunt.initConfig({
 		],
 		tasks: "default"
 	}
-});
+} );
 
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "concat" ] );

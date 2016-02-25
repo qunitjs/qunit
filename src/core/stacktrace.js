@@ -27,12 +27,12 @@ function extractStacktrace( e, offset ) {
 	// Support: Safari <=6 only
 	} else if ( e.sourceURL ) {
 
-		// exclude useless self-reference for generated Error objects
+		// Exclude useless self-reference for generated Error objects
 		if ( /qunit.js$/.test( e.sourceURL ) ) {
 			return;
 		}
 
-		// for actual exceptions, this is useful
+		// For actual exceptions, this is useful
 		return e.sourceURL + ":" + e.line;
 	}
 }

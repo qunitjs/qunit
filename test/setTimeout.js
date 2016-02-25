@@ -1,4 +1,4 @@
-(function( window ) {
+( function( window ) {
 
 QUnit.module( "Module that mucks with time", {
 	beforeEach: function() {
@@ -9,16 +9,16 @@ QUnit.module( "Module that mucks with time", {
 	afterEach: function() {
 		window.setTimeout = this.setTimeout;
 	}
-});
+} );
 
 QUnit.test( "just a test", function( assert ) {
 	assert.ok( true );
-});
+} );
 
 QUnit.test( "just a test", function( assert ) {
 	assert.ok( true );
-});
+} );
 
-}( (function() {
+}( ( function() {
 	return this;
-})() ));
+}() ) ) );

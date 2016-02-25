@@ -1,4 +1,4 @@
 // Get a reference to the global object, like window in browsers
-}( (function() {
+}( ( function() {
 	return this;
-})() ));
+}() ) ) );

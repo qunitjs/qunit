@@ -7,7 +7,7 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( Infinity );
 	assert.ok( {} );
 	assert.ok( [] );
-});
+} );
 
 QUnit.test( "notOk", function( assert ) {
 	assert.notOk( false );
@@ -16,7 +16,7 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( null );
 	assert.notOk( undefined );
 	assert.notOk( NaN );
-});
+} );
 
 QUnit.test( "equal", function( assert ) {
 	assert.equal( 1, 1 );
@@ -24,19 +24,19 @@ QUnit.test( "equal", function( assert ) {
 	assert.equal( "foo", [ "foo" ] );
 	assert.equal( "foo", { toString: function() { return "foo"; } } );
 	assert.equal( 0, [ 0 ] );
-});
+} );
 
 QUnit.test( "notEqual", function( assert ) {
 	assert.notEqual( 1, 2 );
 	assert.notEqual( "foo", "bar" );
 	assert.notEqual( {}, {} );
 	assert.notEqual( [], [] );
-});
+} );
 
 QUnit.test( "strictEqual", function( assert ) {
 	assert.strictEqual( 1, 1 );
 	assert.strictEqual( "foo", "foo" );
-});
+} );
 
 QUnit.test( "notStrictEqual", function( assert ) {
 	assert.notStrictEqual( 1, 2 );
@@ -44,7 +44,7 @@ QUnit.test( "notStrictEqual", function( assert ) {
 	assert.notStrictEqual( "foo", [ "foo" ] );
 	assert.notStrictEqual( "1", 1 );
 	assert.notStrictEqual( "foo", { toString: function() { return "foo"; } } );
-});
+} );
 
 QUnit.test( "propEqual", function( assert ) {
 	assert.expect( 5 );
@@ -121,7 +121,7 @@ QUnit.test( "propEqual", function( assert ) {
 		},
 		"Complex nesting of different types, inheritance and constructors"
 	);
-});
+} );
 
 QUnit.test( "throws", function( assert ) {
 	assert.expect( 16 );
@@ -249,9 +249,10 @@ QUnit.test( "throws", function( assert ) {
 		function() {
 
 			/*jshint ignore:start */
-			( window.execScript || function( data ) {
+			var execScript = window.execScript || function( data ) {
 				window.eval.call( window, data );
-			})( "throw 'error';" );
+			};
+			execScript( "throw 'error';" );
 
 			/*jshint ignore:end */
 		},
@@ -275,25 +276,26 @@ QUnit.test( "throws", function( assert ) {
 		"some error description",
 		"handle string typed thrown errors"
 	);
-});
+} );
 
 QUnit.test( "raises, alias for throws", function( assert ) {
 	assert.expect( 1 );
-	assert.raises(function() {
+	assert.raises( function() {
 		throw "my error";
-	});
-});
+	} );
+} );
 
 QUnit.module( "failing assertions", {
 	beforeEach: function( assert ) {
 		var originalPushResult = assert.pushResult;
 		assert.pushResult = function( resultInfo ) {
-			// inverts the result so we can test failing assertions
+
+			// Inverts the result so we can test failing assertions
 			resultInfo.result = !resultInfo.result;
 			originalPushResult( resultInfo );
 		};
 	}
-});
+} );
 
 QUnit.test( "ok", function( assert ) {
 	assert.ok( false );
@@ -302,7 +304,7 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( null );
 	assert.ok( undefined );
 	assert.ok( NaN );
-});
+} );
 
 QUnit.test( "notOk", function( assert ) {
 	assert.notOk( true );
@@ -311,14 +313,14 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( Infinity );
 	assert.notOk( {} );
 	assert.notOk( [] );
-});
+} );
 
 QUnit.test( "equal", function( assert ) {
 	assert.equal( 1, 2 );
 	assert.equal( "foo", "bar" );
 	assert.equal( {}, {} );
 	assert.equal( [], [] );
-});
+} );
 
 QUnit.test( "notEqual", function( assert ) {
 	assert.notEqual( 1, 1 );
@@ -326,7 +328,7 @@ QUnit.test( "notEqual", function( assert ) {
 	assert.notEqual( "foo", [ "foo" ] );
 	assert.notEqual( "foo", { toString: function() { return "foo"; } } );
 	assert.notEqual( 0, [ 0 ] );
-});
+} );
 
 QUnit.test( "strictEqual", function( assert ) {
 	assert.strictEqual( 1, 2 );
@@ -334,20 +336,20 @@ QUnit.test( "strictEqual", function( assert ) {
 	assert.strictEqual( "foo", [ "foo" ] );
 	assert.strictEqual( "1", 1 );
 	assert.strictEqual( "foo", { toString: function() { return "foo"; } } );
-});
+} );
 
 QUnit.test( "notStrictEqual", function( assert ) {
 	assert.notStrictEqual( 1, 1 );
 	assert.notStrictEqual( "foo", "foo" );
-});
+} );
 
 QUnit.test( "deepEqual", function( assert ) {
 	assert.deepEqual( [ "foo", "bar" ], [ "foo" ] );
-});
+} );
 
 QUnit.test( "notDeepEqual", function( assert ) {
 	assert.notDeepEqual( [ "foo", "bar" ], [ "foo", "bar" ] );
-});
+} );
 
 QUnit.test( "propEqual", function( assert ) {
 	function Foo( x, y, z ) {
@@ -366,7 +368,7 @@ QUnit.test( "propEqual", function( assert ) {
 			z: 3
 		}
 	);
-});
+} );
 
 QUnit.test( "notPropEqual", function( assert ) {
 	function Foo( x, y, z ) {
@@ -385,7 +387,7 @@ QUnit.test( "notPropEqual", function( assert ) {
 			z: []
 		}
 	);
-});
+} );
 
 QUnit.test( "throws", function( assert ) {
 	assert.throws(
@@ -402,4 +404,4 @@ QUnit.test( "throws", function( assert ) {
 		/bar/,
 		"throws fail when regexp doesn't match the error message"
 	);
-});
+} );

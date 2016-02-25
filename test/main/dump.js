@@ -2,7 +2,7 @@ QUnit.module( "dump", {
 	teardown: function() {
 		QUnit.dump.maxDepth = null;
 	}
-});
+} );
 
 QUnit.test( "dump output", function( assert ) {
 	assert.equal( QUnit.dump.parse( [ 1, 2 ] ), "[\n  1,\n  2\n]" );
@@ -17,7 +17,7 @@ QUnit.test( "dump output", function( assert ) {
 			"[\n  <h1 id=\"qunit-header\"></h1>\n]"
 		);
 	}
-});
+} );
 
 QUnit.test( "dump output, shallow", function( assert ) {
 	var obj = {
@@ -49,7 +49,7 @@ QUnit.test( "dump output, shallow", function( assert ) {
 		QUnit.dump.parse( obj ),
 		"{\n  \"left\": 0,\n  \"top\": {\n    \"middle\": {\n      \"bottom\": 0\n    }\n  }\n}"
 	);
-});
+} );
 
 QUnit.test( "dump, TypeError properties", function( assert ) {
 	function CustomError( message ) {
@@ -76,30 +76,30 @@ QUnit.test( "dump, TypeError properties", function( assert ) {
 	dumpedTypeErrorWithEnumerable = QUnit.dump.parse( typeError );
 
 	assert.pushResult( {
-		result: dumpedCustomError.indexOf(expectedCustomMessage) >= 0,
+		result: dumpedCustomError.indexOf( expectedCustomMessage ) >= 0,
 		actual: dumpedCustomError,
 		expected: expectedCustomMessage,
 		message: "custom error contains message field"
 	} );
 	assert.pushResult( {
-		result: dumpedTypeError.indexOf(expectedTypeMessage) >= 0,
+		result: dumpedTypeError.indexOf( expectedTypeMessage ) >= 0,
 		actual: dumpedTypeError,
 		expected: expectedTypeMessage,
 		message: "type error contains message field"
 	} );
 	assert.pushResult( {
-		result: dumpedTypeError.indexOf(expectedTypeName) >= 0,
+		result: dumpedTypeError.indexOf( expectedTypeName ) >= 0,
 		actual: dumpedTypeError,
 		expected: expectedTypeName,
 		message: "type error contains name field"
 	} );
 	assert.pushResult( {
-		result: dumpedTypeErrorWithEnumerable.indexOf(expectedTypeMessage) >= 0,
+		result: dumpedTypeErrorWithEnumerable.indexOf( expectedTypeMessage ) >= 0,
 		actual: dumpedTypeErrorWithEnumerable,
 		expected: expectedTypeMessage,
 		message: "type error with enumerable field contains message field"
 	} );
-});
+} );
 
 QUnit.module( "dump, recursions", {
 	Wrap: function( x ) {
@@ -122,7 +122,7 @@ QUnit.module( "dump, recursions", {
 
 		return last;
 	}
-});
+} );
 
 QUnit.test( "Check dump recursion", function( assert ) {
 	assert.expect( 4 );
@@ -148,7 +148,7 @@ QUnit.test( "Check dump recursion", function( assert ) {
 	assert.ok( new RegExp( "recursion\\(-10\\)" ).test( circdump ),
 		"(" + circdump + ") should show -10 recursion level"
 	);
-});
+} );
 
 QUnit.test( "Check equal/deepEqual recursion", function( assert ) {
 	var noRecursion, selfref, circref;
@@ -164,12 +164,12 @@ QUnit.test( "Check equal/deepEqual recursion", function( assert ) {
 	circref = this.chainwrap( 10 );
 	assert.equal( circref, circref, "Or hide that through some levels of indirection." );
 	assert.deepEqual( circref, circref, "... and checked on all levels!" );
-});
+} );
 
 QUnit.test( "Circular reference with arrays", function( assert ) {
 	var arr, arrdump, obj, childarr, objdump, childarrdump;
 
-	// pure array self-ref
+	// Pure array self-ref
 	arr = [];
 	arr.push( arr );
 
@@ -178,7 +178,7 @@ QUnit.test( "Circular reference with arrays", function( assert ) {
 	assert.equal( arrdump, "[\n  recursion(-1)\n]" );
 	assert.equal( arr, arr[ 0 ], "no endless stack when trying to dump arrays with circular ref" );
 
-	// mix obj-arr circular ref
+	// Mix obj-arr circular ref
 	obj = {};
 	childarr = [ obj ];
 	obj.childarr = childarr;
@@ -196,7 +196,7 @@ QUnit.test( "Circular reference with arrays", function( assert ) {
 		"no endless stack when trying to dump array/object mix with circular ref"
 	);
 
-});
+} );
 
 QUnit.test( "Circular reference - test reported by soniciq in #105", function( assert ) {
 	var a, b, barr,
@@ -223,4 +223,4 @@ QUnit.test( "Circular reference - test reported by soniciq in #105", function( a
 
 	assert.equal( a.children(), barr );
 	assert.deepEqual( a.children(), [ b ] );
-});
+} );

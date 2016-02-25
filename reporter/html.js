@@ -1,4 +1,4 @@
-(function() {
+( function() {
 
 // Don't load the HTML Reporter on non-Browser environments
 if ( typeof window === "undefined" || !window.document ) {
@@ -67,7 +67,7 @@ var config = QUnit.config,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
 		document: window.document !== undefined,
-		sessionStorage: (function() {
+		sessionStorage: ( function() {
 			var x = "qunit-test-string";
 			try {
 				sessionStorage.setItem( x, x );
@@ -76,7 +76,7 @@ var config = QUnit.config,
 			} catch ( e ) {
 				return false;
 			}
-		}())
+		}() )
 	},
 	modulesList = [];
 
@@ -103,7 +103,7 @@ function escapeText( s ) {
 		case "&":
 			return "&amp;";
 		}
-	});
+	} );
 }
 
 /**
@@ -118,7 +118,7 @@ function addEvent( elem, type, fn ) {
 		elem.addEventListener( type, fn, false );
 	} else if ( elem.attachEvent ) {
 
-		// support: IE <9
+		// Support: IE <9
 		elem.attachEvent( "on" + type, function() {
 			var event = window.event;
 			if ( !event.target ) {
@@ -126,7 +126,7 @@ function addEvent( elem, type, fn ) {
 			}
 
 			fn.call( elem, event );
-		});
+		} );
 	}
 }
 
@@ -168,7 +168,7 @@ function removeClass( elem, name ) {
 		set = set.replace( " " + name + " ", " " );
 	}
 
-	// trim for prettiness
+	// Trim for prettiness
 	elem.className = typeof set.trim === "function" ? set.trim() : set.replace( /^\s+|\s+$/g, "" );
 }
 
@@ -305,13 +305,13 @@ function applyUrlParams() {
 		decodeURIComponent( modulesList.options[ modulesList.selectedIndex ].value ) :
 		undefined;
 
-	window.location = setUrl({
+	window.location = setUrl( {
 		module: ( selectedModule === "" ) ? undefined : selectedModule,
 		filter: ( filter === "" ) ? undefined : filter,
 
 		// Remove testId filter
 		testId: undefined
-	});
+	} );
 }
 
 function toolbarUrlConfigContainer() {
@@ -358,7 +358,7 @@ function toolbarLooseFilter() {
 		}
 
 		return false;
-	});
+	} );
 
 	return filter;
 }
@@ -371,9 +371,9 @@ function toolbarModuleFilterHtml() {
 		return false;
 	}
 
-	modulesList.sort(function( a, b ) {
+	modulesList.sort( function( a, b ) {
 		return a.localeCompare( b );
-	});
+	} );
 
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label>" +
 		"<select id='qunit-modulefilter' name='modulefilter'><option value='' " +
@@ -466,7 +466,7 @@ function appendFilteredTest() {
 		return "";
 	}
 	return "<div id='qunit-filteredTest'>Rerunning selected tests: " +
-		escapeText( testId.join(", ") ) +
+		escapeText( testId.join( ", " ) ) +
 		" <a id='qunit-clearFilter' href='" +
 		escapeText( setUrl( { filter: undefined, module: undefined, testId: undefined } ) ) +
 		"'>" + "Run all tests" + "</a></div>";
@@ -516,7 +516,7 @@ function appendTest( name, testId, moduleName ) {
 
 	rerunTrigger = document.createElement( "a" );
 	rerunTrigger.innerHTML = "Rerun";
-	rerunTrigger.href = setUrl({ testId: testId });
+	rerunTrigger.href = setUrl( { testId: testId } );
 
 	testBlock = document.createElement( "li" );
 	testBlock.appendChild( title );
@@ -532,7 +532,7 @@ function appendTest( name, testId, moduleName ) {
 }
 
 // HTML Reporter initialization and load
-QUnit.begin(function( details ) {
+QUnit.begin( function( details ) {
 	var qunit = id( "qunit" );
 
 	// Fixture is the only one necessary to run without the #qunit element
@@ -559,9 +559,9 @@ QUnit.begin(function( details ) {
 	if ( qunit && config.hidepassed ) {
 		addClass( qunit.lastChild, "hidepass" );
 	}
-});
+} );
 
-QUnit.done(function( details ) {
+QUnit.done( function( details ) {
 	var i, key,
 		banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
@@ -588,7 +588,7 @@ QUnit.done(function( details ) {
 
 	if ( config.altertitle && defined.document && document.title ) {
 
-		// show ✖ for good, ✔ for bad suite result in title
+		// Show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
 			( details.failed ? "\u2716" : "\u2714" ),
@@ -596,7 +596,7 @@ QUnit.done(function( details ) {
 		].join( " " );
 	}
 
-	// clear own sessionStorage items if all tests passed
+	// Clear own sessionStorage items if all tests passed
 	if ( config.reorder && defined.sessionStorage && details.failed === 0 ) {
 		for ( i = 0; i < sessionStorage.length; i++ ) {
 			key = sessionStorage.key( i++ );
@@ -606,11 +606,11 @@ QUnit.done(function( details ) {
 		}
 	}
 
-	// scroll back to top to show results
+	// Scroll back to top to show results
 	if ( config.scrolltop && window.scrollTo ) {
 		window.scrollTo( 0, 0 );
 	}
-});
+} );
 
 function getNameHtml( name, module ) {
 	var nameHtml = "";
@@ -624,7 +624,7 @@ function getNameHtml( name, module ) {
 	return nameHtml;
 }
 
-QUnit.testStart(function( details ) {
+QUnit.testStart( function( details ) {
 	var running, testBlock, bad;
 
 	testBlock = id( "qunit-test-output-" + details.testId );
@@ -647,14 +647,15 @@ QUnit.testStart(function( details ) {
 			getNameHtml( details.name, details.module );
 	}
 
-});
+} );
 
 function stripHtml( string ) {
-	// strip tags, html entity and whitespaces
-	return string.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&quot;/g, "").replace(/\s+/g, "");
+
+	// Strip tags, html entity and whitespaces
+	return string.replace( /<\/?[^>]+(>|$)/g, "" ).replace( /\&quot;/g, "" ).replace( /\s+/g, "" );
 }
 
-QUnit.log(function( details ) {
+QUnit.log( function( details ) {
 	var assertList, assertLi,
 		message, expected, actual, diff,
 		showDiff = false,
@@ -668,7 +669,7 @@ QUnit.log(function( details ) {
 	message = "<span class='test-message'>" + message + "</span>";
 	message += "<span class='runtime'>@ " + details.runtime + " ms</span>";
 
-	// pushFailure doesn't provide details.expected
+	// The pushFailure doesn't provide details.expected
 	// when it calls, it's implicit to also not show expected and diff stuff
 	// Also, we need to check details.expected existence, as it can exist and be undefined
 	if ( !details.result && hasOwn.call( details, "expected" ) ) {
@@ -719,7 +720,7 @@ QUnit.log(function( details ) {
 
 		message += "</table>";
 
-	// this occurs when pushFailure is set and we have an extracted stack trace
+	// This occurs when pushFailure is set and we have an extracted stack trace
 	} else if ( !details.result && details.source ) {
 		message += "<table>" +
 			"<tr class='test-source'><th>Source: </th><td><pre>" +
@@ -733,9 +734,9 @@ QUnit.log(function( details ) {
 	assertLi.className = details.result ? "pass" : "fail";
 	assertLi.innerHTML = message;
 	assertList.appendChild( assertLi );
-});
+} );
 
-QUnit.testDone(function( details ) {
+QUnit.testDone( function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad, testCounts, skipped, sourceName,
 		tests = id( "qunit-tests" );
@@ -751,7 +752,7 @@ QUnit.testDone(function( details ) {
 	good = details.passed;
 	bad = details.failed;
 
-	// store result when possible
+	// Store result when possible
 	if ( config.reorder && defined.sessionStorage ) {
 		if ( bad ) {
 			sessionStorage.setItem( "qunit-test-" + details.module + "-" + details.name, bad );
@@ -774,7 +775,7 @@ QUnit.testDone(function( details ) {
 		addClass( assertList, "qunit-collapsed" );
 	}
 
-	// testItem.firstChild is the test name
+	// The testItem.firstChild is the test name
 	testTitle = testItem.firstChild;
 
 	testCounts = bad ?
@@ -793,7 +794,7 @@ QUnit.testDone(function( details ) {
 	} else {
 		addEvent( testTitle, "click", function() {
 			toggleClass( assertList, "qunit-collapsed" );
-		});
+		} );
 
 		testItem.className = bad ? "fail" : "pass";
 
@@ -813,10 +814,10 @@ QUnit.testDone(function( details ) {
 		}
 		addEvent( testTitle, "click", function() {
 			toggleClass( sourceName, "qunit-collapsed" );
-		});
+		} );
 		testItem.appendChild( sourceName );
 	}
-});
+} );
 
 if ( defined.document ) {
 
@@ -836,4 +837,4 @@ if ( defined.document ) {
 	config.autorun = true;
 }
 
-})();
+}() );

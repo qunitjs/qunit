@@ -23,10 +23,10 @@ function Test( settings ) {
 
 	this.testId = generateHash( this.module.name, this.testName );
 
-	this.module.tests.push({
+	this.module.tests.push( {
 		name: this.testName,
 		testId: this.testId
-	});
+	} );
 
 	if ( settings.skip ) {
 
@@ -62,14 +62,14 @@ Test.prototype = {
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
 					runtime: now() - config.moduleStats.started
-				});
+				} );
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
 				name: this.module.name,
 				tests: this.module.tests
-			});
+			} );
 		}
 
 		config.current = this;
@@ -85,7 +85,7 @@ Test.prototype = {
 			name: this.testName,
 			module: this.module.name,
 			testId: this.testId
-		});
+		} );
 
 		if ( !config.pollution ) {
 			saveGlobal();
@@ -114,7 +114,7 @@ Test.prototype = {
 			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
 				this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
-			// else next test will carry the responsibility
+			// Else next test will carry the responsibility
 			saveGlobal();
 
 			// Restart the tests if they're blocking
@@ -223,7 +223,7 @@ Test.prototype = {
 
 			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
 			duration: this.runtime
-		});
+		} );
 
 		// QUnit.reset() is deprecated and will be replaced for a new
 		// fixture reset function on QUnit 2.0/2.1.
@@ -243,8 +243,8 @@ Test.prototype = {
 
 		function run() {
 
-			// each of these can by async
-			synchronize([
+			// Each of these can by async
+			synchronize( [
 				function() {
 					test.before();
 				},
@@ -262,7 +262,7 @@ Test.prototype = {
 				function() {
 					test.finish();
 				}
-			]);
+			] );
 		}
 
 		// Prioritize previously failed tests, detected from sessionStorage
@@ -274,7 +274,7 @@ Test.prototype = {
 
 	pushResult: function( resultInfo ) {
 
-		// resultInfo = { result, actual, expected, message, negative }
+		// Destructure of resultInfo = { result, actual, expected, message, negative }
 		var source,
 			details = {
 				module: this.module.name,
@@ -298,10 +298,10 @@ Test.prototype = {
 
 		runLoggingCallbacks( "log", details );
 
-		this.assertions.push({
+		this.assertions.push( {
 			result: !!resultInfo.result,
 			message: resultInfo.message
-		});
+		} );
 	},
 
 	pushFailure: function( message, source, actual ) {
@@ -326,10 +326,10 @@ Test.prototype = {
 
 		runLoggingCallbacks( "log", details );
 
-		this.assertions.push({
+		this.assertions.push( {
 			result: false,
 			message: message
-		});
+		} );
 	},
 
 	resolvePromise: function( promise, phase ) {
@@ -348,7 +348,7 @@ Test.prototype = {
 							" " + test.testName + ": " + ( error.message || error );
 						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
-						// else next test will carry the responsibility
+						// Else next test will carry the responsibility
 						saveGlobal();
 
 						// Unblock
@@ -394,7 +394,7 @@ Test.prototype = {
 		}
 
 		return regexFilter ?
-			this.regexFilter( !!regexFilter[1], regexFilter[2], regexFilter[3], fullName ) :
+			this.regexFilter( !!regexFilter[ 1 ], regexFilter[ 2 ], regexFilter[ 3 ], fullName ) :
 			this.stringFilter( filter, fullName );
 	},
 
@@ -538,7 +538,7 @@ function saveGlobal() {
 		for ( var key in global ) {
 			if ( hasOwn.call( global, key ) ) {
 
-				// in Opera sometimes DOM element ids show up here, ignore them
+				// In Opera sometimes DOM element ids show up here, ignore them
 				if ( /^qunit-test-output/.test( key ) ) {
 					continue;
 				}
@@ -587,12 +587,12 @@ function test( testName, expected, callback, async ) {
 		expected = null;
 	}
 
-	newTest = new Test({
+	newTest = new Test( {
 		testName: testName,
 		expected: expected,
 		async: async,
 		callback: callback
-	});
+	} );
 
 	newTest.queue();
 }
@@ -601,10 +601,10 @@ function test( testName, expected, callback, async ) {
 function skip( testName ) {
 	if ( focused )  { return; }
 
-	var test = new Test({
+	var test = new Test( {
 		testName: testName,
 		skip: true
-	});
+	} );
 
 	test.queue();
 }
@@ -623,12 +623,12 @@ function only( testName, expected, callback, async ) {
 		expected = null;
 	}
 
-	newTest = new Test({
+	newTest = new Test( {
 		testName: testName,
 		expected: expected,
 		async: async,
 		callback: callback
-	});
+	} );
 
 	newTest.queue();
 }

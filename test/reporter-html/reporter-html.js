@@ -22,12 +22,12 @@ QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 			assert.ok( false, "Unescaped test name" );
 		}
 	}
-});
+} );
 
 QUnit.test( "<script id='qunit-unescaped-test'>'test';</script>", function( assert ) {
 	assert.expect( 1 );
 	assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
-});
+} );
 
 QUnit.module( "display test info" );
 
@@ -42,7 +42,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 	assert.ok( /display test info/.test( displaying.innerHTML ),
 		"Expect module name to be found in displayed text"
 	);
-});
+} );
 
 QUnit.module( "timing", {
 	getPreviousTest: function( assert ) {
@@ -62,17 +62,17 @@ QUnit.module( "timing", {
 		if ( this.delayNextSetup ) {
 			this.delayNextSetup = false;
 			done = assert.async();
-			setTimeout(function() {
+			setTimeout( function() {
 				done();
 			}, 101 );
 		}
 	}
-});
+} );
 
 QUnit.test( "setup", function( assert ) {
 	assert.expect( 0 );
 	this.delayNextSetup = true;
-});
+} );
 
 QUnit.test( "basics", function( assert ) {
 	assert.expect( 1 );
@@ -80,7 +80,7 @@ QUnit.test( "basics", function( assert ) {
 		runtime = this.filterClass( previous.getElementsByTagName( "span" ) );
 
 	assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
-});
+} );
 
 QUnit.test( "values", function( assert ) {
 	assert.expect( 2 );
@@ -97,13 +97,13 @@ QUnit.test( "values", function( assert ) {
 	assert.ok( parseInt( setup.innerHTML, 10 ) > 100,
 		"Runtime includes beforeEach"
 	);
-});
+} );
 
 QUnit.module( "source" );
 
 QUnit.test( "setup", function( assert ) {
 	assert.expect( 0 );
-});
+} );
 
 QUnit.test( "logs location", function( assert ) {
 	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
@@ -124,8 +124,8 @@ QUnit.test( "logs location", function( assert ) {
 	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
 	assert.equal( source.firstChild.innerHTML, "Source: " );
 
-	// test/reporter-html/reporter-html.js is a direct reference to this test file
+	// The file test/reporter-html/reporter-html.js is a direct reference to this test file
 	assert.ok( /\/test\/reporter-html\/reporter-html\.js\:\d+/.test( source.innerHTML ),
 		"Source references to the current file and line number"
 	);
-});
+} );

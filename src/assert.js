@@ -63,7 +63,7 @@ QUnit.assert = Assert.prototype = {
 
 	pushResult: function( resultInfo ) {
 
-		// resultInfo = { result, actual, expected, message, negative }
+		// Destructure of resultInfo = { result, actual, expected, message, negative }
 		var assert = this,
 			currentTest = ( assert instanceof Assert && assert.test ) || QUnit.config.current;
 
@@ -209,7 +209,7 @@ QUnit.assert = Assert.prototype = {
 		currentTest.ignoreGlobalErrors = true;
 		try {
 			block.call( currentTest.testEnvironment );
-		} catch (e) {
+		} catch ( e ) {
 			actual = e;
 		}
 		currentTest.ignoreGlobalErrors = false;
@@ -217,30 +217,30 @@ QUnit.assert = Assert.prototype = {
 		if ( actual ) {
 			expectedType = QUnit.objectType( expected );
 
-			// we don't want to validate thrown error
+			// We don't want to validate thrown error
 			if ( !expected ) {
 				ok = true;
 				expectedOutput = null;
 
-			// expected is a regexp
+			// Expected is a regexp
 			} else if ( expectedType === "regexp" ) {
 				ok = expected.test( errorString( actual ) );
 
-			// expected is a string
+			// Expected is a string
 			} else if ( expectedType === "string" ) {
 				ok = expected === errorString( actual );
 
-			// expected is a constructor, maybe an Error constructor
+			// Expected is a constructor, maybe an Error constructor
 			} else if ( expectedType === "function" && actual instanceof expected ) {
 				ok = true;
 
-			// expected is an Error object
+			// Expected is an Error object
 			} else if ( expectedType === "object" ) {
 				ok = actual instanceof expected.constructor &&
 					actual.name === expected.name &&
 					actual.message === expected.message;
 
-			// expected is a validation function which returns true if validation passed
+			// Expected is a validation function which returns true if validation passed
 			} else if ( expectedType === "function" && expected.call( {}, actual ) === true ) {
 				expectedOutput = null;
 				ok = true;
@@ -258,10 +258,10 @@ QUnit.assert = Assert.prototype = {
 
 // Provide an alternative to assert.throws(), for environments that consider throws a reserved word
 // Known to us are: Closure Compiler, Narwhal
-(function() {
+( function() {
 	/*jshint sub:true */
-	Assert.prototype.raises = Assert.prototype[ "throws" ];
-}());
+	Assert.prototype.raises = Assert.prototype.throws;
+}() );
 
 function errorString( error ) {
 	var name, message,

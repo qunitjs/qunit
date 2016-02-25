@@ -1,6 +1,6 @@
 // Deprecated
 // Extend assert methods to QUnit for Backwards compatibility
-(function() {
+( function() {
 	var i,
 		assertions = Assert.prototype;
 
@@ -14,12 +14,12 @@
 	for ( i in assertions ) {
 		QUnit[ i ] = applyCurrent( assertions[ i ] );
 	}
-})();
+}() );
 
 // For browser, export only select globals
 if ( defined.document ) {
 
-	(function() {
+	( function() {
 		var i, l,
 			keys = [
 				"test",
@@ -45,7 +45,7 @@ if ( defined.document ) {
 		for ( i = 0, l = keys.length; i < l; i++ ) {
 			window[ keys[ i ] ] = QUnit[ keys[ i ] ];
 		}
-	})();
+	}() );
 
 	window.QUnit = QUnit;
 }
