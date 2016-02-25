@@ -1,3 +1,5 @@
+QUnit.config.filter = "/foo|bar/i";
+
 QUnit.module( "QUnit.config.filter with case-insensitive regular expression" );
 
 QUnit.test( "foo test should be run", function( assert ) {
