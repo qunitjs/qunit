@@ -1,3 +1,5 @@
+QUnit.config.filter = "!foo|bar";
+
 QUnit.module( "QUnit.config.filter" );
 
 QUnit.test( "foo test should be run", function( assert ) {

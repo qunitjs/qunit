@@ -1,3 +1,5 @@
+QUnit.config.seed = "7x9";
+
 var lastTest = "";
 
 QUnit.module( "QUnit.config.random" );

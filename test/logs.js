@@ -1,3 +1,5 @@
+QUnit.config.reorder = false;
+
 var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
 	testAutorun, beginModules,
 	module1Test1, module1Test2, module2Test1, module2Test2, module2Test3, module2Test4,
