@@ -533,6 +533,7 @@ function appendTest( name, testId, moduleName ) {
 
 // HTML Reporter initialization and load
 QUnit.begin( function( details ) {
+	var tests;
 	var qunit = id( "qunit" );
 
 	// Fixture is the only one necessary to run without the #qunit element
@@ -556,8 +557,9 @@ QUnit.begin( function( details ) {
 	appendTestsList( details.modules );
 	toolbarModuleFilter();
 
-	if ( qunit && config.hidepassed ) {
-		addClass( qunit.lastChild, "hidepass" );
+	tests = id( "qunit-tests" );
+	if ( tests && config.hidepassed ) {
+		addClass( tests, "hidepass" );
 	}
 } );
 
