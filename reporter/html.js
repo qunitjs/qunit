@@ -689,6 +689,10 @@ QUnit.log( function( details ) {
 				" run with a higher max depth or <a href='" +
 				escapeText( setUrl( { maxDepth: -1 } ) ) + "'>" +
 				"Rerun</a> without max depth.</p></td></tr>";
+		} else {
+			message += "<tr class='test-message'><th>Message: </th><td>" +
+				"Diff suppressed as the expected and actual results have an equivalent" +
+				" serialization</td></tr>";
 		}
 
 		if ( details.source ) {
