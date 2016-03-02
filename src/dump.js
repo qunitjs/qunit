@@ -150,7 +150,7 @@ QUnit.dump = ( function() {
 					if ( name ) {
 						ret += " " + name;
 					}
-					ret += "( ";
+					ret += "(";
 
 					ret = [ ret, dump.parse( fn, "functionArgs" ), "){" ].join( "" );
 					return join( ret, dump.parse( fn, "functionCode" ), "}" );
