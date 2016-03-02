@@ -19,11 +19,15 @@ function process( code, filepath ) {
 		.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
 }
 
+// Prevents CRLF EOL on Windows environments
+// grunt-contrib-concat defaults to CRLF on Windows if this is unset
+grunt.util.linefeed = "\u000A";
+
 grunt.initConfig( {
 	pkg: grunt.file.readJSON( "package.json" ),
 	concat: {
+		options: { process: process },
 		"src-js": {
-			options: { process: process },
 			src: [
 				"src/intro.js",
 				"src/core/initialize.js",
@@ -45,7 +49,6 @@ grunt.initConfig( {
 			dest: "dist/qunit.js"
 		},
 		"src-css": {
-			options: { process: process },
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
 		}
