@@ -1,5 +1,3 @@
-( function() {
-
 // Don't load the HTML Reporter on non-browser environments
 if ( typeof window === "undefined" || !window.document ) {
 	return;
@@ -652,20 +650,20 @@ QUnit.log( function( details ) {
 	// Also, we need to check details.expected existence, as it can exist and be undefined
 	if ( !details.result && hasOwn.call( details, "expected" ) ) {
 		if ( details.negative ) {
-			expected = escapeText( "NOT " + QUnit.dump.parse( details.expected ) );
+			expected = "NOT " + QUnit.dump.parse( details.expected );
 		} else {
-			expected = escapeText( QUnit.dump.parse( details.expected ) );
+			expected = QUnit.dump.parse( details.expected );
 		}
 
-		actual = escapeText( QUnit.dump.parse( details.actual ) );
+		actual = QUnit.dump.parse( details.actual );
 		message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +
-			expected +
+			escapeText( expected ) +
 			"</pre></td></tr>";
 
 		if ( actual !== expected ) {
 
 			message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
-				actual + "</pre></td></tr>";
+				escapeText( actual ) + "</pre></td></tr>";
 
 			// Don't show diff if actual or expected are booleans
 			if ( !( /^(true|false)$/.test( actual ) ) &&
@@ -812,5 +810,3 @@ if ( notPhantom && document.readyState === "complete" ) {
 } else {
 	addEvent( window, "load", QUnit.load );
 }
-
-}() );

@@ -42,6 +42,18 @@ QUnit.test( "different strings", function( assert ) {
 		"<del>tru</del><ins>fals</ins><span>e</span>",
 		"QUnit.diff( 'true', 'false' )"
 	);
+
+	assert.equal(
+		QUnit.diff( a, "a<b/>cd" ),
+		"<span>a</span><ins>&lt;</ins><span>b</span><ins>/&gt;</ins><span>cd</span>",
+		"QUnit.diff( 'abcd', 'a<b/>cd' )"
+	);
+
+	assert.equal(
+		QUnit.diff( a, "a&lt;b/&gt;cd" ),
+		"<span>a</span><ins>&amp;lt;</ins><span>b</span><ins>/&amp;gt;</ins><span>cd</span>",
+		"QUnit.diff( 'abcd', 'a&lt;b/&gt;cd' )"
+	);
 } );
 
 QUnit.test( "additions", function( assert ) {
@@ -93,7 +105,7 @@ QUnit.test( "test with line mode on long strings", function( assert ) {
 	assert.equal(
 		QUnit.diff( a, b ),
 		"<span>QUnit is a </span><ins>very </ins><span>powerful, easy-to-use " +
-		"JavaScript unit testing framework. It's used by the jQuery</span><ins> " +
+		"JavaScript unit testing framework. It&#039;s used by the jQuery</span><ins> " +
 		"Core</ins><span>, jQuery UI and jQuery Mobile projects and is capable of" +
 		" testing any </span><del>generic </del><span>JavaScript code, including " +
 		"itself!</span>" +

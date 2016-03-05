@@ -218,13 +218,13 @@ QUnit.diff = ( function() {
 			data = diffs[ x ][ 1 ]; // Text of change.
 			switch ( op ) {
 			case DIFF_INSERT:
-				html[ x ] = "<ins>" + data + "</ins>";
+				html[ x ] = "<ins>" + escapeText( data ) + "</ins>";
 				break;
 			case DIFF_DELETE:
-				html[ x ] = "<del>" + data + "</del>";
+				html[ x ] = "<del>" + escapeText( data ) + "</del>";
 				break;
 			case DIFF_EQUAL:
-				html[ x ] = "<span>" + data + "</span>";
+				html[ x ] = "<span>" + escapeText( data ) + "</span>";
 				break;
 			}
 		}
