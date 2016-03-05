@@ -42,9 +42,11 @@ grunt.initConfig( {
 				"src/equiv.js",
 				"src/dump.js",
 				"src/export.js",
-				"src/diff.js",
 				"src/outro.js",
-				"reporter/html.js"
+				"reporter/intro.js",
+				"reporter/html.js",
+				"reporter/diff.js",
+				"reporter/outro.js"
 			],
 			dest: "dist/qunit.js"
 		},
@@ -144,8 +146,7 @@ grunt.initConfig( {
 			"test/globals-node",
 			"test/only",
 			"test/setTimeout",
-			"test/main/dump",
-			"test/reporter-html/diff"
+			"test/main/dump"
 		]
 	},
 	concurrent: {
