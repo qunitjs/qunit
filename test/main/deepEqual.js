@@ -1691,7 +1691,7 @@ var hasES6Map = ( function() {
 	try {
 		// some platforms don't support array-like iterables in Map constructors
 		var m = new Map( [ [ 1, 2 ] ] );
-		if ( m.size !== 2 || !m.has( 1 ) ) {
+		if ( m.size !== 1 || !m.has( 1 ) ) {
 			return false;
 		}
 
@@ -1780,12 +1780,12 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 
 	// Tricky values
 	m1 =  new Map( [
-		[ undefined, undefined ],
-		[ null, null ],
 		[ false, false ],
+		[ null, null ],
 		[ 0, 0 ],
-		[ NaN, NaN ],
+		[ undefined, undefined ],
 		[ Infinity, Infinity ],
+		[ NaN, NaN ],
 		[ -Infinity, -Infinity ]
 	] );
 	m2 = new Map( [
@@ -1826,6 +1826,9 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m1 = new Map( [ [ 1, o1 ] ] );
 	m2 = new Map( [ [ 1, o2 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects" );
+	m1 = new Map( [ [ o1, 1 ] ] );
+	m2 = new Map( [ [ o2, 1 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects as keys" );
 
 	// Maps containing different objects
 	m1 = new Map( [ [ 1, o1 ] ] );
@@ -1858,6 +1861,17 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [	[ 1, s3 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
+
+	// Maps with different insertion orders
+	m1 = new Map( [
+		[ 1, 1 ],
+		[ 2, 2 ]
+	] );
+	m2 = new Map( [
+		[ 2, 2 ],
+		[ 1, 1 ]
+	] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps with different insertion orders" );
 } );
 
 QUnit.module( "equiv Symbols" );
