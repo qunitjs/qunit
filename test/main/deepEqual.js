@@ -1704,7 +1704,7 @@ var hasES6Map = ( function() {
 }() );
 
 QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
-	var s1, s2, s3, s4, o1, o2, o3, m1, m2, m3;
+	var s1, s2, s3, s4, o1, o2, o3, o4, m1, m2, m3;
 
 	// Empty sets
 	s1 = new Set();
@@ -1719,7 +1719,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	assert.equal( QUnit.equiv( s1, s3 ), false, "Single element sets [1] vs [3]" );
 
 	// Tricky values
-	s1 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
+	s1 = new Set( [ false, undefined, null,  0, Infinity, NaN, -Infinity ] );
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
@@ -1727,12 +1727,16 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	o1 = { foo: 0, bar: true };
 	o2 = { foo: 0, bar: true };
 	o3 = { foo: 1, bar: true };
+	o4 = { foo: 1, bar: true };
 	s1 = new Set( [ o1, o3 ] );
 	s2 = new Set( [ o1, o3 ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing same objects" );
 	s1 = new Set( [ o1 ] );
 	s2 = new Set( [ o2 ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing deeply-equal objects" );
+	s1 = new Set( [ o1, o3 ] );
+	s2 = new Set( [ o4, o2 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets containing deeply-equal objects in different insertion order" );
 	s1 = new Set( [ o1 ] );
 	s2 = new Set( [ o3 ] );
 	assert.equal( QUnit.equiv( s1, s2 ), false, "Sets containing different objects" );
@@ -1761,10 +1765,15 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	s3 = new Set( [ m1 ] );
 	s4 = new Set( [ m3 ] );
 	assert.equal( QUnit.equiv( s3, s4 ), false, "Sets containing different maps" );
+
+	// Sets with different insertion order
+	s1 = new Set( [ 1, 2, 3 ] );
+	s2 = new Set( [ 3, 2, 1 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets with different insertion orders" );
 } );
 
 QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
-	var m1, m2, m3, m4, o1, o2, o3, s1, s2, s3;
+	var m1, m2, m3, m4, o1, o2, o3, o4, s1, s2, s3;
 
 	// Empty maps
 	m1 = new Map();
@@ -1814,6 +1823,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	o1 = { foo: 0, bar: true };
 	o2 = { foo: 0, bar: true };
 	o3 = { foo: 1, bar: true };
+	o4 = { foo: 1, bar: true };
 	m1 = new Map( [
 		[ 1, o1 ],
 		[ 2, o3 ]
@@ -1826,9 +1836,15 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m1 = new Map( [ [ 1, o1 ] ] );
 	m2 = new Map( [ [ 1, o2 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects" );
+	m1 = new Map( [ [ 1, o1 ], [ 2, o3 ] ] );
+	m2 = new Map( [ [ 2, o4 ], [ 1, o2 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects in different insertion order" );
 	m1 = new Map( [ [ o1, 1 ] ] );
 	m2 = new Map( [ [ o2, 1 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects as keys" );
+	m1 = new Map( [ [ o1, 1 ], [ o3, 2 ] ] );
+	m2 = new Map( [ [ o4, 2 ], [ o2, 1 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps containing different but deeply-equal objects as keys in different insertion order" );
 
 	// Maps containing different objects
 	m1 = new Map( [ [ 1, o1 ] ] );
@@ -1861,17 +1877,6 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
 	m1 = new Map( [ [ 1, s1 ] ] );
 	m2 = new Map( [	[ 1, s3 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
-
-	// Maps with different insertion orders
-	m1 = new Map( [
-		[ 1, 1 ],
-		[ 2, 2 ]
-	] );
-	m2 = new Map( [
-		[ 2, 2 ],
-		[ 1, 1 ]
-	] );
-	assert.equal( QUnit.equiv( m1, m2 ), true, "Maps with different insertion orders" );
 } );
 
 QUnit.module( "equiv Symbols" );
