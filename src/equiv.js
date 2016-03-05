@@ -131,33 +131,53 @@ QUnit.equiv = ( function() {
 		},
 
 		"set": function( b, a ) {
-			var aArray, bArray;
+			var innerEq,
+				outerEq = true;
 
-			aArray = [];
-			a.forEach( function( v ) {
-				aArray.push( v );
-			} );
-			bArray = [];
-			b.forEach( function( v ) {
-				bArray.push( v );
+			if ( a.size !== b.size ) {
+				return false;
+			}
+
+			a.forEach( function( aVal ) {
+				innerEq = false;
+
+				b.forEach( function( bVal ) {
+					if ( innerEquiv( bVal, aVal ) ) {
+						innerEq = true;
+					}
+				} );
+
+				if ( !innerEq ) {
+					outerEq = false;
+				}
 			} );
 
-			return innerEquiv( bArray, aArray );
+			return outerEq;
 		},
 
 		"map": function( b, a ) {
-			var aArray, bArray;
+			var innerEq,
+				outerEq = true;
 
-			aArray = [];
-			a.forEach( function( v, k ) {
-				aArray.push( [ k, v ] );
-			} );
-			bArray = [];
-			b.forEach( function( v, k ) {
-				bArray.push( [ k, v ] );
+			if ( a.size !== b.size ) {
+				return false;
+			}
+
+			a.forEach( function( aVal, aKey ) {
+				innerEq = false;
+
+				b.forEach( function( bVal, bKey ) {
+					if ( innerEquiv( [ bVal, bKey ], [ aVal, aKey ] ) ) {
+						innerEq = true;
+					}
+				} );
+
+				if ( !innerEq ) {
+					outerEq = false;
+				}
 			} );
 
-			return innerEquiv( bArray, aArray );
+			return outerEq;
 		},
 
 		"object": function( b, a ) {
