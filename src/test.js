@@ -360,7 +360,8 @@ Test.prototype = {
 	},
 
 	valid: function() {
-		var filter = config.filter,
+		var moduleId,
+			filter = config.filter,
 			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName );
@@ -379,6 +380,13 @@ Test.prototype = {
 		// Internally-generated tests are always valid
 		if ( this.callback && this.callback.validTest ) {
 			return true;
+		}
+
+		if ( config.moduleId.length >  0 ) {
+			moduleId = generateHash( this.module.name );
+			if ( inArray( moduleId, config.moduleId ) < 0 ) {
+				return false;
+			}
 		}
 
 		if ( config.testId.length > 0 && inArray( this.testId, config.testId ) < 0 ) {

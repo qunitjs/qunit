@@ -310,7 +310,10 @@ function applyUrlParams() {
 		filter: ( filter === "" ) ? undefined : filter,
 
 		// Remove testId filter
-		testId: undefined
+		testId: undefined,
+
+		// Remove moduleId filter
+		moduleId: undefined
 	} );
 }
 
