@@ -90,12 +90,15 @@ if ( urlParams.seed ) {
 	}
 }
 
-config.testId = [];
-if ( urlParams.testId ) {
+function getIds ( params ) {
+	var paramArray = [];
+	if ( params ) {
 
-	// Ensure that urlParams.testId is an array
-	urlParams.testId = decodeURIComponent( urlParams.testId ).split( "," );
-	for ( var i = 0; i < urlParams.testId.length; i++ ) {
-		config.testId.push( urlParams.testId[ i ] );
+		// Ensure that params is an array
+		paramArray = decodeURIComponent( params ).split( "," );
 	}
+	return paramArray;
 }
+
+config.testId = getIds( urlParams.testId );
+config.moduleId = getIds( urlParams.moduleId );
