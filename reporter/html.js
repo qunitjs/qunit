@@ -275,21 +275,25 @@ function toolbarChanged() {
 }
 
 function setUrl( params ) {
-	var key,
+	var key, arrValue, i,
 		querystring = "?";
 
 	params = QUnit.extend( QUnit.extend( {}, QUnit.urlParams ), params );
 
 	for ( key in params ) {
-		if ( hasOwn.call( params, key ) ) {
-			if ( params[ key ] === undefined ) {
-				continue;
+
+		// Skip inherited or undefined properties
+		if ( hasOwn.call( params, key ) && params[ key ] !== undefined ) {
+
+			// Output a parameter for each value of this key (but usually just one)
+			arrValue = [].concat( params[ key ] );
+			for ( i = 0; i < arrValue.length; i++ ) {
+				querystring += encodeURIComponent( key );
+				if ( arrValue[ i ] !== true ) {
+					querystring += "=" + encodeURIComponent( arrValue[ i ] );
+				}
+				querystring += "&";
 			}
-			querystring += encodeURIComponent( key );
-			if ( params[ key ] !== true ) {
-				querystring += "=" + encodeURIComponent( params[ key ] );
-			}
-			querystring += "&";
 		}
 	}
 	return location.protocol + "//" + location.host +
