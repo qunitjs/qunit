@@ -90,15 +90,6 @@ if ( urlParams.seed ) {
 	}
 }
 
-function getIds ( params ) {
-	var paramArray = [];
-	if ( params ) {
-
-		// Ensure that params is an array
-		paramArray = decodeURIComponent( params ).split( "," );
-	}
-	return paramArray;
-}
-
-config.testId = getIds( urlParams.testId );
-config.moduleId = getIds( urlParams.moduleId );
+// Force array-valued testId and moduleId configuration values
+config.testId = [].concat( urlParams.testId || [] );
+config.moduleId = [].concat( urlParams.moduleId || [] );
