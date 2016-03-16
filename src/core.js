@@ -56,7 +56,8 @@ extend( QUnit, {
 			var module = {
 				name: moduleName,
 				parentModule: parentModule,
-				tests: []
+				tests: [],
+				moduleId: generateHash( moduleName )
 			};
 
 			var env = {};

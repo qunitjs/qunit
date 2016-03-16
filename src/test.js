@@ -360,21 +360,25 @@ Test.prototype = {
 	},
 
 	valid: function() {
-		var moduleId,
-			filter = config.filter,
+		var filter = config.filter,
 			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
 			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName );
 
-		function testInModuleChain( testModule ) {
+		function moduleChainNameMatch( testModule ) {
 			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
 			if ( testModuleName === module ) {
 				return true;
 			} else if ( testModule.parentModule ) {
-				return testInModuleChain( testModule.parentModule );
+				return moduleChainNameMatch( testModule.parentModule );
 			} else {
 				return false;
 			}
+		}
+
+		function moduleChainIdMatch( testModule ) {
+			return inArray( testModule.moduleId, config.moduleId ) > -1 ||
+				testModule.parentModule && moduleChainIdMatch( testModule.parentModule );
 		}
 
 		// Internally-generated tests are always valid
@@ -382,18 +386,15 @@ Test.prototype = {
 			return true;
 		}
 
-		if ( config.moduleId.length >  0 ) {
-			moduleId = generateHash( this.module.name );
-			if ( inArray( moduleId, config.moduleId ) < 0 ) {
-				return false;
-			}
+		if ( config.moduleId.length >  0 && !moduleChainIdMatch( this.module ) ) {
+			return false;
 		}
 
 		if ( config.testId.length > 0 && inArray( this.testId, config.testId ) < 0 ) {
 			return false;
 		}
 
-		if ( module && !testInModuleChain( this.module ) ) {
+		if ( module && !moduleChainNameMatch( this.module ) ) {
 			return false;
 		}
 
