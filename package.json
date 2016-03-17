@@ -47,7 +47,7 @@
   },
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
-    "ci": "grunt && grunt coveralls && npm run browserstack",
+    "ci": "grunt && grunt coveralls",
     "test": "grunt",
     "prepublish": "grunt build"
   },
