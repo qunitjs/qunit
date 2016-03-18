@@ -80,6 +80,9 @@ if ( urlParams.filter === true ) {
 // String search anywhere in moduleName+testName
 config.filter = urlParams.filter;
 
+// Exact match of the module name
+config.module = urlParams.module;
+
 // Randomize the order in which tests are run
 if ( urlParams.seed ) {
 	config.seed = urlParams.seed;
