@@ -1,6 +1,6 @@
 ( function() {
 
-// Don't load the HTML Reporter on non-Browser environments
+// Don't load the HTML Reporter on non-browser environments
 if ( typeof window === "undefined" || !window.document ) {
 	return;
 }
@@ -20,12 +20,6 @@ QUnit.init = function() {
 	config.autorun = false;
 	config.filter = "";
 	config.queue = [];
-
-	// Return on non-browser environments
-	// This is necessary to not break on node tests
-	if ( typeof window === "undefined" ) {
-		return;
-	}
 
 	qunit = id( "qunit" );
 	if ( qunit ) {
@@ -63,10 +57,10 @@ QUnit.init = function() {
 };
 
 var config = QUnit.config,
+	document = window.document,
 	collapseNext = false,
 	hasOwn = Object.prototype.hasOwnProperty,
 	defined = {
-		document: window.document !== undefined,
 		sessionStorage: ( function() {
 			var x = "qunit-test-string";
 			try {
@@ -173,7 +167,7 @@ function removeClass( elem, name ) {
 }
 
 function id( name ) {
-	return defined.document && document.getElementById && document.getElementById( name );
+	return document.getElementById && document.getElementById( name );
 }
 
 function getUrlConfigHtml() {
@@ -595,7 +589,7 @@ QUnit.done( function( details ) {
 		id( "qunit-testresult" ).innerHTML = html;
 	}
 
-	if ( config.altertitle && defined.document && document.title ) {
+	if ( config.altertitle && document.title ) {
 
 		// Show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
@@ -828,22 +822,16 @@ QUnit.testDone( function( details ) {
 	}
 } );
 
-if ( defined.document ) {
+// Avoid readyState issue with phantomjs
+// Ref: #818
+var notPhantom = ( function( p ) {
+	return !( p && p.version && p.version.major > 0 );
+} )( window.phantom );
 
-	// Avoid readyState issue with phantomjs
-	// Ref: #818
-	var notPhantom = ( function( p ) {
-		return !( p && p.version && p.version.major > 0 );
-	} )( window.phantom );
-
-	if ( notPhantom && document.readyState === "complete" ) {
-		QUnit.load();
-	} else {
-		addEvent( window, "load", QUnit.load );
-	}
+if ( notPhantom && document.readyState === "complete" ) {
+	QUnit.load();
 } else {
-	config.pageLoaded = true;
-	config.autorun = true;
+	addEvent( window, "load", QUnit.load );
 }
 
 }() );
