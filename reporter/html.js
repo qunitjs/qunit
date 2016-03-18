@@ -8,8 +8,7 @@ if ( typeof window === "undefined" || !window.document ) {
 // Deprecated QUnit.init - Ref #530
 // Re-initialize the configuration options
 QUnit.init = function() {
-	var tests, banner, result, qunit,
-		config = QUnit.config;
+	var config = QUnit.config;
 
 	config.stats = { all: 0, bad: 0 };
 	config.moduleStats = { all: 0, bad: 0 };
@@ -21,39 +20,7 @@ QUnit.init = function() {
 	config.filter = "";
 	config.queue = [];
 
-	qunit = id( "qunit" );
-	if ( qunit ) {
-		qunit.innerHTML =
-			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-			"<h2 id='qunit-banner'></h2>" +
-			"<div id='qunit-testrunner-toolbar'></div>" +
-			"<h2 id='qunit-userAgent'></h2>" +
-			"<ol id='qunit-tests'></ol>";
-	}
-
-	tests = id( "qunit-tests" );
-	banner = id( "qunit-banner" );
-	result = id( "qunit-testresult" );
-
-	if ( tests ) {
-		tests.innerHTML = "";
-	}
-
-	if ( banner ) {
-		banner.className = "";
-	}
-
-	if ( result ) {
-		result.parentNode.removeChild( result );
-	}
-
-	if ( tests ) {
-		result = document.createElement( "p" );
-		result.id = "qunit-testresult";
-		result.className = "result";
-		tests.parentNode.insertBefore( result, tests );
-		result.innerHTML = "Running...<br />&#160;";
-	}
+	appendInterface();
 };
 
 var config = QUnit.config,
@@ -483,6 +450,26 @@ function appendUserAgent() {
 	}
 }
 
+function appendInterface() {
+	var qunit = id( "qunit" );
+
+	if ( qunit ) {
+		qunit.innerHTML =
+			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
+			"<h2 id='qunit-banner'></h2>" +
+			"<div id='qunit-testrunner-toolbar'></div>" +
+			appendFilteredTest() +
+			"<h2 id='qunit-userAgent'></h2>" +
+			"<ol id='qunit-tests'></ol>";
+	}
+
+	appendHeader();
+	appendBanner();
+	appendTestResults();
+	appendUserAgent();
+	appendToolbar();
+}
+
 function appendTestsList( modules ) {
 	var i, l, x, z, test, moduleObj;
 
@@ -528,7 +515,6 @@ function appendTest( name, testId, moduleName ) {
 // HTML Reporter initialization and load
 QUnit.begin( function( details ) {
 	var i, moduleObj, tests;
-	var qunit = id( "qunit" );
 
 	// Sort modules by name for the picker
 	for ( i = 0; i < details.modules.length; i++ ) {
@@ -541,27 +527,12 @@ QUnit.begin( function( details ) {
 		return a.localeCompare( b );
 	} );
 
-	// Fixture is the only one necessary to run without the #qunit element
+	// Capture fixture HTML from the page
 	storeFixture();
 
-	if ( qunit ) {
-		qunit.innerHTML =
-			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-			"<h2 id='qunit-banner'></h2>" +
-			"<div id='qunit-testrunner-toolbar'></div>" +
-			appendFilteredTest() +
-			"<h2 id='qunit-userAgent'></h2>" +
-			"<ol id='qunit-tests'></ol>";
-	}
-
-	appendHeader();
-	appendBanner();
-	appendTestResults();
-	appendUserAgent();
-	appendToolbar();
-
+	// Initialize QUnit elements
+	appendInterface();
 	appendTestsList( details.modules );
-
 	tests = id( "qunit-tests" );
 	if ( tests && config.hidepassed ) {
 		addClass( tests, "hidepass" );
