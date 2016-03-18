@@ -372,10 +372,6 @@ function toolbarModuleFilterHtml() {
 		return false;
 	}
 
-	modulesList.sort( function( a, b ) {
-		return a.localeCompare( b );
-	} );
-
 	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label>" +
 		"<select id='qunit-modulefilter' name='modulefilter'><option value='' " +
 		( QUnit.urlParams.module === undefined ? "selected='selected'" : "" ) +
@@ -415,6 +411,7 @@ function appendToolbar() {
 	if ( toolbar ) {
 		toolbar.appendChild( toolbarUrlConfigContainer() );
 		toolbar.appendChild( toolbarLooseFilter() );
+		toolbarModuleFilter();
 	}
 }
 
@@ -492,10 +489,6 @@ function appendTestsList( modules ) {
 	for ( i = 0, l = modules.length; i < l; i++ ) {
 		moduleObj = modules[ i ];
 
-		if ( moduleObj.name ) {
-			modulesList.push( moduleObj.name );
-		}
-
 		for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
 			test = moduleObj.tests[ x ];
 
@@ -534,8 +527,19 @@ function appendTest( name, testId, moduleName ) {
 
 // HTML Reporter initialization and load
 QUnit.begin( function( details ) {
-	var tests;
+	var i, moduleObj, tests;
 	var qunit = id( "qunit" );
+
+	// Sort modules by name for the picker
+	for ( i = 0; i < details.modules.length; i++ ) {
+		moduleObj = details.modules[ i ];
+		if ( moduleObj.name ) {
+			modulesList.push( moduleObj.name );
+		}
+	}
+	modulesList.sort( function( a, b ) {
+		return a.localeCompare( b );
+	} );
 
 	// Fixture is the only one necessary to run without the #qunit element
 	storeFixture();
@@ -555,8 +559,8 @@ QUnit.begin( function( details ) {
 	appendTestResults();
 	appendUserAgent();
 	appendToolbar();
+
 	appendTestsList( details.modules );
-	toolbarModuleFilter();
 
 	tests = id( "qunit-tests" );
 	if ( tests && config.hidepassed ) {
