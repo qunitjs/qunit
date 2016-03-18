@@ -362,7 +362,7 @@ Test.prototype = {
 	valid: function() {
 		var filter = config.filter,
 			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
-			module = QUnit.urlParams.module && QUnit.urlParams.module.toLowerCase(),
+			module = config.module && config.module.toLowerCase(),
 			fullName = ( this.module.name + ": " + this.testName );
 
 		function moduleChainNameMatch( testModule ) {
