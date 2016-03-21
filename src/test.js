@@ -386,11 +386,15 @@ Test.prototype = {
 			return true;
 		}
 
-		if ( config.moduleId.length >  0 && !moduleChainIdMatch( this.module ) ) {
+		if ( config.moduleId && config.moduleId.length > 0 &&
+			!moduleChainIdMatch( this.module ) ) {
+
 			return false;
 		}
 
-		if ( config.testId.length > 0 && inArray( this.testId, config.testId ) < 0 ) {
+		if ( config.testId && config.testId.length > 0 &&
+			inArray( this.testId, config.testId ) < 0 ) {
+
 			return false;
 		}
 
