@@ -27,6 +27,8 @@ var config = QUnit.config,
 	document = window.document,
 	collapseNext = false,
 	hasOwn = Object.prototype.hasOwnProperty,
+	unfilteredUrl = setUrl( { filter: undefined, module: undefined,
+		moduleId: undefined, testId: undefined } ),
 	defined = {
 		sessionStorage: ( function() {
 			var x = "qunit-test-string";
@@ -113,8 +115,8 @@ function addClass( elem, name ) {
 	}
 }
 
-function toggleClass( elem, name ) {
-	if ( hasClass( elem, name ) ) {
+function toggleClass( elem, name, force ) {
+	if ( typeof force !== "undefined" ? !force : hasClass( elem, name ) ) {
 		removeClass( elem, name );
 	} else {
 		addClass( elem, name );
@@ -141,10 +143,12 @@ function getUrlConfigHtml() {
 	var i, j, val,
 		escaped, escapedTooltip,
 		selection = false,
-		len = config.urlConfig.length,
+		urlConfig = config.urlConfig,
 		urlConfigHtml = "";
 
-	for ( i = 0; i < len; i++ ) {
+	for ( i = 0; i < urlConfig.length; i++ ) {
+
+		// Options can be either strings or objects with nonempty "id" properties
 		val = config.urlConfig[ i ];
 		if ( typeof val === "string" ) {
 			val = {
@@ -155,10 +159,6 @@ function getUrlConfigHtml() {
 
 		escaped = escapeText( val.id );
 		escapedTooltip = escapeText( val.tooltip );
-
-		if ( config[ val.id ] === undefined ) {
-			config[ val.id ] = QUnit.urlParams[ val.id ];
-		}
 
 		if ( !val.value || typeof val.value === "string" ) {
 			urlConfigHtml += "<input id='qunit-urlconfig-" + escaped +
@@ -206,7 +206,7 @@ function getUrlConfigHtml() {
 // Handle "click" events on toolbar checkboxes and "change" for select menus.
 // Updates the URL with the new state of `config.urlConfig` values.
 function toolbarChanged() {
-	var updatedUrl, value,
+	var updatedUrl, value, tests,
 		field = this,
 		params = {};
 
@@ -220,15 +220,14 @@ function toolbarChanged() {
 	params[ field.name ] = value;
 	updatedUrl = setUrl( params );
 
+	// Check if we can apply the change without a page refresh
 	if ( "hidepassed" === field.name && "replaceState" in window.history ) {
+		QUnit.urlParams[ field.name ] = value;
 		config[ field.name ] = value || false;
-		if ( value ) {
-			addClass( id( "qunit-tests" ), "hidepass" );
-		} else {
-			removeClass( id( "qunit-tests" ), "hidepass" );
+		tests = id( "qunit-tests" );
+		if ( tests ) {
+			toggleClass( tests, "hidepass", value || false );
 		}
-
-		// It is not necessary to refresh the whole page
 		window.history.replaceState( null, "", updatedUrl );
 	} else {
 		window.location = updatedUrl;
@@ -237,7 +236,8 @@ function toolbarChanged() {
 
 function setUrl( params ) {
 	var key, arrValue, i,
-		querystring = "?";
+		querystring = "?",
+		location = window.location;
 
 	params = QUnit.extend( QUnit.extend( {}, QUnit.urlParams ), params );
 
@@ -274,11 +274,9 @@ function applyUrlParams() {
 		module: ( selectedModule === "" ) ? undefined : selectedModule,
 		filter: ( filter === "" ) ? undefined : filter,
 
-		// Remove testId filter
-		testId: undefined,
-
-		// Remove moduleId filter
-		moduleId: undefined
+		// Remove moduleId and testId filters
+		moduleId: undefined,
+		testId: undefined
 	} );
 }
 
@@ -386,9 +384,8 @@ function appendHeader() {
 	var header = id( "qunit-header" );
 
 	if ( header ) {
-		header.innerHTML = "<a href='" +
-			escapeText( setUrl( { filter: undefined, module: undefined, testId: undefined } ) ) +
-			"'>" + header.innerHTML + "</a> ";
+		header.innerHTML = "<a href='" + escapeText( unfilteredUrl ) + "'>" + header.innerHTML +
+			"</a> ";
 	}
 }
 
@@ -433,8 +430,8 @@ function appendFilteredTest() {
 	return "<div id='qunit-filteredTest'>Rerunning selected tests: " +
 		escapeText( testId.join( ", " ) ) +
 		" <a id='qunit-clearFilter' href='" +
-		escapeText( setUrl( { filter: undefined, module: undefined, testId: undefined } ) ) +
-		"'>" + "Run all tests" + "</a></div>";
+		escapeText( unfilteredUrl ) +
+		"'>Run all tests</a></div>";
 }
 
 function appendUserAgent() {

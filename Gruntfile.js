@@ -44,6 +44,7 @@ grunt.initConfig( {
 				"src/export.js",
 				"src/diff.js",
 				"src/outro.js",
+				"reporter/urlparams.js",
 				"reporter/html.js"
 			],
 			dest: "dist/qunit.js"
