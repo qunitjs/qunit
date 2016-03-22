@@ -116,10 +116,10 @@ function addClass( elem, name ) {
 }
 
 function toggleClass( elem, name, force ) {
-	if ( typeof force !== "undefined" ? !force : hasClass( elem, name ) ) {
-		removeClass( elem, name );
-	} else {
+	if ( force || typeof force === "undefined" && !hasClass( elem, name ) ) {
 		addClass( elem, name );
+	} else {
+		removeClass( elem, name );
 	}
 }
 
