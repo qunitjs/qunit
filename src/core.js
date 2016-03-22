@@ -1,5 +1,3 @@
-QUnit.urlParams = urlParams;
-
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 
