@@ -81,6 +81,30 @@ function addEvent( elem, type, fn ) {
 }
 
 /**
+ * @param {HTMLElement} elem
+ * @param {string} type
+ * @param {Function} fn
+ */
+function removeEvent( elem, type, fn ) {
+	if ( elem.removeEventListener ) {
+
+		// Standards-based browsers
+		elem.removeEventListener( type, fn, false );
+	} else if ( elem.detachEvent ) {
+
+		// Support: IE <9
+		elem.detachEvent( "on" + type, function() {
+			var event = window.event;
+			if ( !event.target ) {
+				event.target = event.srcElement || document;
+			}
+
+			fn.call( elem, event );
+		} );
+	}
+}
+
+/**
  * @param {Array|NodeList} elems
  * @param {string} type
  * @param {Function} fn
@@ -249,20 +273,23 @@ function setUrl( params ) {
 }
 
 function applyUrlParams() {
-	var selectedModule,
-		modulesList = id( "qunit-modulefilter" ),
+	var i,
+		selectedModules = [],
+		modulesList = id( "qunit-modulefilter-dropdown-list" ).getElementsByTagName( "input" ),
 		filter = id( "qunit-filter-input" ).value;
 
-	selectedModule = modulesList ?
-		decodeURIComponent( modulesList.options[ modulesList.selectedIndex ].value ) :
-		undefined;
+	for ( i = 0; i < modulesList.length; i++ )  {
+		if ( modulesList[ i ].checked ) {
+			selectedModules.push( modulesList[ i ].getAttribute( "module-id" ) );
+		}
+	}
 
 	window.location = setUrl( {
-		module: ( selectedModule === "" ) ? undefined : selectedModule,
 		filter: ( filter === "" ) ? undefined : filter,
+		moduleId: ( selectedModules.length === 0 ) ? undefined : selectedModules,
 
-		// Remove moduleId and testId filters
-		moduleId: undefined,
+		// Remove module and testId filter
+		module: undefined,
 		testId: undefined
 	} );
 }
@@ -316,44 +343,109 @@ function toolbarLooseFilter() {
 	return filter;
 }
 
-function toolbarModuleFilterHtml() {
+function moduleDropDownHtml () {
 	var i,
-		moduleFilterHtml = "";
+		dropDownHtml = "";
 
-	if ( !modulesList.length ) {
+	if ( !config.modules.length ) {
 		return false;
 	}
 
-	moduleFilterHtml += "<label for='qunit-modulefilter'>Module: </label>" +
-		"<select id='qunit-modulefilter' name='modulefilter'><option value='' " +
-		( QUnit.urlParams.module === undefined ? "selected='selected'" : "" ) +
-		">< All Modules ></option>";
-
-	for ( i = 0; i < modulesList.length; i++ ) {
-		moduleFilterHtml += "<option value='" +
-			escapeText( encodeURIComponent( modulesList[ i ] ) ) + "' " +
-			( QUnit.urlParams.module === modulesList[ i ] ? "selected='selected'" : "" ) +
-			">" + escapeText( modulesList[ i ] ) + "</option>";
+	for ( i = 0; i < config.modules.length; i++ ) {
+		if ( config.modules[ i ].name !== "" ) {
+			dropDownHtml += "<li><label><input type='checkbox' " +
+			"module-id='" + config.modules[ i ].moduleId + "'" +
+			( config.moduleId.indexOf( config.modules[ i ].moduleId ) > -1 ? " checked" : "" ) +
+			">" + escapeText( config.modules[ i ].name ) + "</label></li>";
+		}
 	}
-	moduleFilterHtml += "</select>";
-
-	return moduleFilterHtml;
+	return dropDownHtml;
 }
 
-function toolbarModuleFilter() {
-	var toolbar = id( "qunit-testrunner-toolbar" ),
+function toolbarModuleFilter () {
+	var dropDownHtml = moduleDropDownHtml(),
+		toolbar = id( "qunit-testrunner-toolbar" ),
+		label = document.createElement( "label" ),
 		moduleFilter = document.createElement( "span" ),
-		moduleFilterHtml = toolbarModuleFilterHtml();
+		moduleFilterComponent = document.createElement( "div" ),
+		moduleSearch = document.createElement( "input" ),
+		dropDownContainer = document.createElement( "div" ),
+		dropDownList = document.createElement( "ul" ),
+		clearFilter = document.createElement( "span" );
 
-	if ( !toolbar || !moduleFilterHtml ) {
+	if ( !toolbar || !dropDownHtml ) {
 		return false;
 	}
 
-	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
-	moduleFilter.innerHTML = moduleFilterHtml;
+	moduleSearch.placeholder = "Select modules";
 
-	addEvent( moduleFilter.lastChild, "change", applyUrlParams );
+	label.innerHTML = "Module: ";
 
+	clearFilter.id = "clear-module-filter";
+	clearFilter.innerHTML = "<span id='clear-module-filter-text'>All modules</span><hr/>";
+
+	clearFilter.onclick = function() {
+		var i,
+			modulesList = dropDownList.getElementsByTagName( "input" );
+		for ( i = 0; i < modulesList.length; i++ )  {
+			modulesList[ i ].checked = false;
+		}
+		applyUrlParams();
+	};
+
+	moduleFilter.id = "qunit-modulefilter-container";
+	moduleFilterComponent.id = "qunit-modulefilter-component";
+	dropDownList.id = "qunit-modulefilter-dropdown-list";
+	moduleSearch.id = "qunit-modulefilter-search";
+	dropDownContainer.id = "qunit-modulefilter-dropdown-container";
+
+	dropDownContainer.style.display = "none";
+
+	dropDownContainer.appendChild( clearFilter );
+	moduleFilter.appendChild( label );
+	moduleFilter.appendChild( moduleFilterComponent );
+	moduleFilterComponent.appendChild( moduleSearch );
+	moduleFilterComponent.appendChild( dropDownContainer ) ;
+
+	// Enables show/hide for the dropdown
+	addEvent( moduleSearch, "focus", function() {
+		var dropDownList = id( "qunit-modulefilter-dropdown-container" );
+		if ( dropDownList.style.display === "none" ) {
+			addEvent( document, "click", function hideHandler( e )  {
+				if ( !id( "qunit-modulefilter-container" ).contains( e.target ) ) {
+					id( "qunit-modulefilter-dropdown-container" ).style.display = "none";
+					removeEvent( document, "click", hideHandler );
+				}
+			} );
+			dropDownList.style.display = "block";
+		}
+	} );
+
+	// Enables search to the module filter
+	addEvent( moduleSearch, "input", function() {
+		var i,
+		moduleText,
+		searchText = this.value.toLowerCase(),
+		listItems = id( "qunit-modulefilter-dropdown-list" ).children;
+
+		if ( !searchText ) {
+			for ( i = 0; i < listItems.length; i++ ) {
+				listItems[ i ].style.display = "";
+			}
+		} else {
+			for ( i = 0; i < listItems.length; i++ ) {
+				moduleText = listItems[ i ].textContent.toLowerCase();
+				if ( moduleText.indexOf( searchText ) > -1 ) {
+					listItems[ i ].style.display = "";
+				} else {
+					listItems[ i ].style.display = "none";
+				}
+			}
+		}
+	} );
+
+	dropDownList.innerHTML = dropDownHtml;
+	dropDownContainer.appendChild( dropDownList );
 	toolbar.appendChild( moduleFilter );
 }
 
