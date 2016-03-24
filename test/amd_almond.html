@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>QUnit AMD with Almond Test Suite</title>
+	<link rel="stylesheet" href="../dist/qunit.css">
+	<script src="../node_modules/almond/almond.js"></script>
+	<script src="../dist/qunit.js"></script>
+	<script src="./amd.js"></script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<script>
+	var beginData;
+
+	require( [ "qunit", "amd" ], function( QUnit, tests ) {
+		QUnit.begin( function( data ) {
+			beginData = data;
+		} );
+		tests();
+		QUnit.start();
+	} );
+	</script>
+</body>
+</html>

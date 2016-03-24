@@ -1,5 +1,5 @@
 /* global beginData */
-define( [ "qunit" ], function( QUnit ) {
+define( "amd", [ "qunit" ], function( QUnit ) {
 
 return function() {
 	QUnit.module( "AMD autostart" );

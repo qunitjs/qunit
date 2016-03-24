@@ -64,7 +64,7 @@ if ( typeof exports !== "undefined" && exports ) {
 }
 
 if ( typeof define === "function" && define.amd ) {
-	define( function() {
+	define( "qunit", function() {
 		return QUnit;
 	} );
 	QUnit.config.autostart = false;
