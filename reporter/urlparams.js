@@ -30,7 +30,7 @@ if ( urlParams.seed === true ) {
 }
 
 // Add URL-parameter-mapped config values with UI form rendering data
-QUnit.config.urlConfig = [
+QUnit.config.urlConfig.push(
 	{
 		id: "hidepassed",
 		label: "Hide passed tests",
@@ -48,7 +48,7 @@ QUnit.config.urlConfig = [
 		tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
 			"exceptions in IE reasonable. Stored as query-strings."
 	}
-];
+);
 
 QUnit.begin( function() {
 	var i, option,

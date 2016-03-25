@@ -31,6 +31,9 @@ var config = {
 	// When enabled, all tests must call expect()
 	requireExpects: false,
 
+	// Placeholder for user-configurable form-exposed URL parameters
+	urlConfig: [],
+
 	// Set of all modules.
 	modules: [],
 
