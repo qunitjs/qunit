@@ -114,6 +114,7 @@ grunt.initConfig( {
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html",
 			"test/reporter-html/single-testid.html",
+			"test/reporter-urlparams.html",
 			"test/moduleId.html",
 			"test/only.html",
 			"test/random.html",
