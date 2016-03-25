@@ -121,3 +121,7 @@ Maksim Gudow <mmd1337@gmail.com>
 Trent Willis <twillis@linkedin.com>
 Frank Weigel <frank.weigel@sap.com>
 Jürg Lehni <juerg@scratchdisk.com>
+Frank Weigel <frank.weigel@sap.com>
+Maciej Lato <mlato@yahoo-inc.com>
+Shirish Kamath <shirishk.87@gmail.com>
+Parakleta <parakleta@darkreality.org>

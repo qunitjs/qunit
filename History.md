@@ -1,4 +1,27 @@
 
+1.23.0 / 2016-03-25
+==================
+
+  * Core: Confine URL parameter interactions to browser-specific code
+  * Core: Reintroduce QUnit.config.module
+  * Core: Implement moduleId support for nested modules
+  * Core: Stop splitting URL parameter values by commas
+  * Core: Introduce moduleId filtering
+  * Core: Add ability to run tests in pseudo-random order
+  * Dump: Fix asymmetrical function dump argument spacing.
+  * HTML Reporter: Fix escaping of diffs
+  * HTML Reporter: Add message explaining missing diff
+  * HTML Reporter: DRY out interface initialization
+  * HTML Reporter: Move module name sort into begin callback
+  * HTML Reporter: Remove redundant document guards
+  * HTML Reporter: Fix hidepassed element check
+  * Assert: Treat Set and Map as unordered in QUnit.equiv
+  * Build: Introduce AppVeyor for Windows CI
+  * Build: Update .gitattributes to fix LF on json files
+  * Build: Fix linefeed to LF on Grunt configuration
+  * Tests: Fix QUnit.stack test to account different path systems
+  * Tests: Define setup and tests near each other
+
 1.22.0 / 2016-02-23
 ==================
 
