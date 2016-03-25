@@ -145,7 +145,6 @@ grunt.initConfig( {
 			"test/main/modules",
 			"test/main/deepEqual",
 			"test/main/stack",
-			"test/globals-node",
 			"test/only",
 			"test/setTimeout",
 			"test/main/dump"

@@ -7,6 +7,7 @@ function Test( settings ) {
 
 	++Test.count;
 
+	this.expected = null;
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
@@ -98,7 +99,7 @@ Test.prototype = {
 		config.current = this;
 
 		if ( this.async ) {
-			QUnit.stop();
+			internalStop();
 		}
 
 		this.callbackStarted = now();
@@ -219,10 +220,7 @@ Test.prototype = {
 			testId: this.testId,
 
 			// Source of Test
-			source: this.stack,
-
-			// DEPRECATED: this property will be removed in 2.0.0, use runtime instead
-			duration: this.runtime
+			source: this.stack
 		} );
 
 		// QUnit.reset() is deprecated and will be replaced for a new
@@ -338,7 +336,7 @@ Test.prototype = {
 		if ( promise != null ) {
 			then = promise.then;
 			if ( QUnit.objectType( then ) === "function" ) {
-				QUnit.stop();
+				internalStop();
 				then.call(
 					promise,
 					function() { QUnit.start(); },
@@ -579,31 +577,14 @@ function checkPollution() {
 	}
 }
 
-// Will be exposed as QUnit.asyncTest
-function asyncTest( testName, expected, callback ) {
-	if ( arguments.length === 2 ) {
-		callback = expected;
-		expected = null;
-	}
-
-	QUnit.test( testName, expected, callback, true );
-}
-
 // Will be exposed as QUnit.test
-function test( testName, expected, callback, async ) {
+function test( testName, callback ) {
 	if ( focused )  { return; }
 
 	var newTest;
 
-	if ( arguments.length === 2 ) {
-		callback = expected;
-		expected = null;
-	}
-
 	newTest = new Test( {
 		testName: testName,
-		expected: expected,
-		async: async,
 		callback: callback
 	} );
 
@@ -623,7 +604,7 @@ function skip( testName ) {
 }
 
 // Will be exposed as QUnit.only
-function only( testName, expected, callback, async ) {
+function only( testName, callback ) {
 	var newTest;
 
 	if ( focused )  { return; }
@@ -631,17 +612,18 @@ function only( testName, expected, callback, async ) {
 	QUnit.config.queue.length = 0;
 	focused = true;
 
-	if ( arguments.length === 2 ) {
-		callback = expected;
-		expected = null;
-	}
-
 	newTest = new Test( {
 		testName: testName,
-		expected: expected,
-		async: async,
 		callback: callback
 	} );
 
 	newTest.queue();
+}
+
+function internalStop( count ) {
+
+	// If a test is running, adjust its semaphore
+	config.current.semaphore += count || 1;
+
+	pauseProcessing();
 }

@@ -18,17 +18,6 @@ extend( QUnit, {
 			}
 		}
 
-		// DEPRECATED: handles setup/teardown functions,
-		// beforeEach and afterEach should be used instead
-		if ( testEnvironment && testEnvironment.setup ) {
-			testEnvironment.beforeEach = testEnvironment.setup;
-			delete testEnvironment.setup;
-		}
-		if ( testEnvironment && testEnvironment.teardown ) {
-			testEnvironment.afterEach = testEnvironment.teardown;
-			delete testEnvironment.teardown;
-		}
-
 		module = createModule();
 
 		moduleFns = {
@@ -77,8 +66,19 @@ extend( QUnit, {
 
 	},
 
-	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
-	asyncTest: asyncTest,
+	asyncTest: function() {
+		throw new Error(
+			"asyntTest is now removed from QUnit 2.0, check out our upgrade guide at " +
+			"https://qunitjs.com/upgrade-guide-2.x/"
+		);
+	},
+
+	stop: function() {
+		throw new Error(
+			"QUnit.stop is now removed from QUnit 2.0, check out our upgrade guide at " +
+			"https://qunitjs.com/upgrade-guide-2.x/"
+		);
+	},
 
 	test: test,
 
@@ -86,8 +86,6 @@ extend( QUnit, {
 
 	only: only,
 
-	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
-	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
 
@@ -143,20 +141,6 @@ extend( QUnit, {
 		resumeProcessing();
 	},
 
-	// DEPRECATED: QUnit.stop() will be removed in QUnit 2.0.
-	stop: function( count ) {
-
-		// If there isn't a test running, don't allow QUnit.stop() to be called
-		if ( !config.current ) {
-			throw new Error( "Called stop() outside of a test context" );
-		}
-
-		// If a test is running, adjust its semaphore
-		config.current.semaphore += count || 1;
-
-		pauseProcessing();
-	},
-
 	config: config,
 
 	is: is,
@@ -202,8 +186,6 @@ function begin() {
 
 		// Record the time of the test run's beginning
 		config.started = now();
-
-		verifyLoggingCallbacks();
 
 		// Delete the loose unnamed module if unused.
 		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {

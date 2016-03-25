@@ -1,18 +1,19 @@
-// Deprecated
-// Extend assert methods to QUnit for Backwards compatibility
+function applyDeprecated( name ) {
+	return function() {
+		throw new Error(
+			"The global `" + name + "` is now removed from QUnit 2.0, you should " +
+			"now use the correct namespace. Check out our upgrade guide at " +
+			"https://qunitjs.com/upgrade-guide-2.x/"
+		);
+	};
+}
+
 ( function() {
 	var i,
 		assertions = Assert.prototype;
 
-	function applyCurrent( current ) {
-		return function() {
-			var assert = new Assert( QUnit.config.current );
-			current.apply( assert, arguments );
-		};
-	}
-
 	for ( i in assertions ) {
-		QUnit[ i ] = applyCurrent( assertions[ i ] );
+		QUnit[ i ] = applyDeprecated( assertions[ i ] );
 	}
 }() );
 
@@ -43,7 +44,7 @@ if ( defined.document ) {
 			];
 
 		for ( i = 0, l = keys.length; i < l; i++ ) {
-			window[ keys[ i ] ] = QUnit[ keys[ i ] ];
+			window[ keys[ i ] ] = applyDeprecated( keys[ i ] );
 		}
 	}() );
 
