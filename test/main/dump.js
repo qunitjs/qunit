@@ -1,5 +1,5 @@
 QUnit.module( "dump", {
-	teardown: function() {
+	afterEach: function() {
 		QUnit.dump.maxDepth = null;
 	}
 } );

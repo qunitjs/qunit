@@ -1,5 +1,3 @@
-var globalStartError, globalStopError;
-
 function _setupForFailingAssertionsAfterAsyncDone( assert ) {
 	var errorRegex = new RegExp( "Assertion after the final `assert\\.async` " +
 		"was resolved" );
@@ -21,101 +19,6 @@ function _setupForFailingAssertionsAfterAsyncDone( assert ) {
 		assert.test.semaphore--;
 	};
 }
-
-QUnit.begin( function() {
-	try {
-		QUnit.start();
-	}
-	catch ( thrownError ) {
-		globalStartError = thrownError.message;
-	}
-} );
-
-try {
-	QUnit.stop();
-}
-catch ( thrownError ) {
-	globalStopError = thrownError.message;
-}
-
-QUnit.module( "global start/stop errors" );
-
-QUnit.test( "Call start() when already started", function( assert ) {
-	assert.expect( 1 );
-	assert.equal( globalStartError, "Called start() outside of a test context while already " +
-		"started" );
-} );
-
-QUnit.test( "Call stop() outside of test context", function( assert ) {
-	assert.expect( 1 );
-	assert.equal( globalStopError, "Called stop() outside of a test context" );
-} );
-
-QUnit.module( "start/stop" );
-
-QUnit.test( "parallel calls", function( assert ) {
-	assert.expect( 2 );
-	QUnit.stop();
-	setTimeout( function() {
-		assert.ok( true );
-		QUnit.start();
-	} );
-	QUnit.stop();
-	setTimeout( function() {
-		assert.ok( true );
-		QUnit.start();
-	} );
-} );
-
-QUnit.test( "waterfall calls", function( assert ) {
-	assert.expect( 2 );
-	QUnit.stop();
-	setTimeout( function() {
-		assert.ok( true, "first" );
-		QUnit.start();
-		QUnit.stop();
-		setTimeout( function() {
-			assert.ok( true, "second" );
-			QUnit.start();
-		} );
-	} );
-} );
-
-QUnit.test( "fails if start is called more than stop", function( assert ) {
-	assert.expect( 1 );
-
-	// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-	assert.test.pushFailure = function( msg ) {
-		throw new Error( msg );
-	};
-	assert.throws( function() {
-		QUnit.start();
-	}, new RegExp( "Called start\\(\\) while already started \\(test's semaphore was 0 " +
-		"already\\)" ) );
-} );
-
-QUnit.test( "fails if start is called with a non-numeric argument", function( assert ) {
-	QUnit.stop();
-
-	// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-	assert.test.pushFailure = function( msg ) {
-		throw new Error( msg );
-	};
-
-	assert.throws( function() {
-		QUnit.start( "ok" );
-	}, /Called start\(\) with a non\-numeric decrement\./ );
-} );
-
-QUnit.module( "asyncTest" );
-
-QUnit.asyncTest( "asyncTest", function( assert ) {
-	assert.expect( 1 );
-	setTimeout( function() {
-		assert.ok( true );
-		QUnit.start();
-	} );
-} );
 
 QUnit.module( "assert.async" );
 

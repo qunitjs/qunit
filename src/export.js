@@ -1,51 +1,51 @@
-// Deprecated
-// Extend assert methods to QUnit for Backwards compatibility
-( function() {
-	var i,
-		assertions = Assert.prototype;
+function applyDeprecated( name ) {
+	return function() {
+		throw new Error(
+			name + " is removed in QUnit 2.0.\n" +
+			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+		);
+	};
+}
 
-	function applyCurrent( current ) {
-		return function() {
-			var assert = new Assert( QUnit.config.current );
-			current.apply( assert, arguments );
-		};
-	}
+Object.keys( Assert.prototype ).forEach( function( key ) {
+	QUnit[ key ] = applyDeprecated( "`QUnit." + key + "`" );
+} );
 
-	for ( i in assertions ) {
-		QUnit[ i ] = applyCurrent( assertions[ i ] );
-	}
-}() );
+QUnit.asyncTest = function() {
+	throw new Error(
+		"asyncTest is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+};
 
-// For browser, export only select globals
+QUnit.stop = function() {
+	throw new Error(
+		"QUnit.stop is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+};
+
 if ( defined.document ) {
-
-	( function() {
-		var i, l,
-			keys = [
-				"test",
-				"module",
-				"expect",
-				"asyncTest",
-				"start",
-				"stop",
-				"ok",
-				"notOk",
-				"equal",
-				"notEqual",
-				"propEqual",
-				"notPropEqual",
-				"deepEqual",
-				"notDeepEqual",
-				"strictEqual",
-				"notStrictEqual",
-				"throws",
-				"raises"
-			];
-
-		for ( i = 0, l = keys.length; i < l; i++ ) {
-			window[ keys[ i ] ] = QUnit[ keys[ i ] ];
-		}
-	}() );
+	[
+		"test",
+		"module",
+		"expect",
+		"start",
+		"ok",
+		"notOk",
+		"equal",
+		"notEqual",
+		"propEqual",
+		"notPropEqual",
+		"deepEqual",
+		"notDeepEqual",
+		"strictEqual",
+		"notStrictEqual",
+		"throws",
+		"raises"
+	].forEach( function( key ) {
+		window[ key ] = applyDeprecated( "The global `" + key + "`" );
+	} );
 
 	window.QUnit = QUnit;
 }

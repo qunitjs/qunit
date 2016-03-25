@@ -1,5 +1,3 @@
-var loggingCallbacks = {};
-
 // Register logging callbacks
 function registerLoggingCallbacks( obj ) {
 	var i, l, key,
@@ -16,11 +14,6 @@ function registerLoggingCallbacks( obj ) {
 
 			config.callbacks[ key ].push( callback );
 		};
-
-		// DEPRECATED: This will be removed on QUnit 2.0.0+
-		// Stores the registered functions allowing restoring
-		// at verifyLoggingCallbacks() if modified
-		loggingCallbacks[ key ] = loggingCallback;
 
 		return loggingCallback;
 	}
@@ -43,33 +36,5 @@ function runLoggingCallbacks( key, args ) {
 	callbacks = config.callbacks[ key ];
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
-	}
-}
-
-// DEPRECATED: This will be removed on 2.0.0+
-// This function verifies if the loggingCallbacks were modified by the user
-// If so, it will restore it, assign the given callback and print a console warning
-function verifyLoggingCallbacks() {
-	var loggingCallback, userCallback;
-
-	for ( loggingCallback in loggingCallbacks ) {
-		if ( QUnit[ loggingCallback ] !== loggingCallbacks[ loggingCallback ] ) {
-
-			userCallback = QUnit[ loggingCallback ];
-
-			// Restore the callback function
-			QUnit[ loggingCallback ] = loggingCallbacks[ loggingCallback ];
-
-			// Assign the deprecated given callback
-			QUnit[ loggingCallback ]( userCallback );
-
-			if ( global.console && global.console.warn ) {
-				global.console.warn(
-					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
-					"Please, check out the documentation on how to apply logging callbacks.\n" +
-					"Reference: https://api.qunitjs.com/category/callbacks/"
-				);
-			}
-		}
 	}
 }

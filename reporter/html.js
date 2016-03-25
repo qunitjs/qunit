@@ -3,22 +3,11 @@ if ( typeof window === "undefined" || !window.document ) {
 	return;
 }
 
-// Deprecated QUnit.init - Ref #530
-// Re-initialize the configuration options
 QUnit.init = function() {
-	var config = QUnit.config;
-
-	config.stats = { all: 0, bad: 0 };
-	config.moduleStats = { all: 0, bad: 0 };
-	config.started = 0;
-	config.updateRate = 1000;
-	config.blocking = false;
-	config.autostart = true;
-	config.autorun = false;
-	config.filter = "";
-	config.queue = [];
-
-	appendInterface();
+	throw new Error(
+		"QUnit.init is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
 };
 
 var config = QUnit.config,

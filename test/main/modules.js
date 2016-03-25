@@ -52,70 +52,42 @@ QUnit.module( "afterEach and QUnit.stop", {
 
 QUnit.test( "afterEach must be called after test ended", function( assert ) {
 	var testContext = this;
+	var done = assert.async();
 	assert.expect( 1 );
-	QUnit.stop();
 	setTimeout( function() {
 		testContext.state = true;
-		QUnit.start();
-	} );
-} );
-
-QUnit.test( "parameter passed to stop increments semaphore n times", function( assert ) {
-	var testContext = this;
-	assert.expect( 1 );
-	QUnit.stop( 3 );
-	setTimeout( function() {
-		QUnit.start();
-		QUnit.start();
-	} );
-	setTimeout( function() {
-		testContext.state = true;
-		QUnit.start();
-	}, 1 );
-} );
-
-QUnit.test( "parameter passed to start decrements semaphore n times", function( assert ) {
-	var testContext = this;
-	assert.expect( 1 );
-	QUnit.stop();
-	QUnit.stop();
-	QUnit.stop();
-	setTimeout( function() {
-		testContext.state = true;
-		QUnit.start( 3 );
+		done();
 	} );
 } );
 
 QUnit.module( "async beforeEach test", {
 	beforeEach: function( assert ) {
-		QUnit.stop();
+		var done = assert.async();
 		setTimeout( function() {
 			assert.ok( true );
-			QUnit.start();
+			done();
 		} );
 	}
 } );
 
-QUnit.asyncTest( "module with async beforeEach", function( assert ) {
+QUnit.test( "module with async beforeEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
-	QUnit.start();
 } );
 
 QUnit.module( "async afterEach test", {
 	afterEach: function( assert ) {
-		QUnit.stop();
+		var done = assert.async();
 		setTimeout( function() {
 			assert.ok( true );
-			QUnit.start();
+			done();
 		} );
 	}
 } );
 
-QUnit.asyncTest( "module with async afterEach", function( assert ) {
+QUnit.test( "module with async afterEach", function( assert ) {
 	assert.expect( 2 );
 	assert.ok( true );
-	QUnit.start();
 } );
 
 QUnit.module( "save scope", {
@@ -133,19 +105,6 @@ QUnit.test( "scope check", function( assert ) {
 	assert.expect( 3 );
 	assert.deepEqual( this.foo, "bar" );
 	this.foo = "foobar";
-} );
-
-QUnit.module( "Deprecated setup/teardown", {
-	setup: function() {
-		this.deprecatedSetup = true;
-	},
-	teardown: function( assert ) {
-		assert.ok( this.deprecatedSetup );
-	}
-} );
-
-QUnit.test( "before/after order", function( assert ) {
-	assert.expect( 1 );
 } );
 
 QUnit.module( "pre-nested modules" );

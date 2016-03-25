@@ -18,18 +18,15 @@ extend( QUnit, {
 			}
 		}
 
-		// DEPRECATED: handles setup/teardown functions,
-		// beforeEach and afterEach should be used instead
-		if ( testEnvironment && testEnvironment.setup ) {
-			testEnvironment.beforeEach = testEnvironment.setup;
-			delete testEnvironment.setup;
-		}
-		if ( testEnvironment && testEnvironment.teardown ) {
-			testEnvironment.afterEach = testEnvironment.teardown;
-			delete testEnvironment.teardown;
-		}
-
 		module = createModule();
+
+		if ( testEnvironment && ( testEnvironment.setup || testEnvironment.teardown ) ) {
+			console.warn(
+				"Module's `setup` and `teardown` are not hooks anymore on QUnit 2.0, use " +
+				"`beforeEach` and `afterEach` instead\n" +
+				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+			);
+		}
 
 		moduleFns = {
 			beforeEach: setHook( module, "beforeEach" ),
@@ -77,17 +74,12 @@ extend( QUnit, {
 
 	},
 
-	// DEPRECATED: QUnit.asyncTest() will be removed in QUnit 2.0.
-	asyncTest: asyncTest,
-
 	test: test,
 
 	skip: skip,
 
 	only: only,
 
-	// DEPRECATED: The functionality of QUnit.start() will be altered in QUnit 2.0.
-	// In QUnit 2.0, invoking it will ONLY affect the `QUnit.config.autostart` blocking behavior.
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
 
@@ -95,7 +87,7 @@ extend( QUnit, {
 			globalStartCalled = true;
 
 			if ( runStarted ) {
-				throw new Error( "Called start() outside of a test context while already started" );
+				throw new Error( "Called start() while test already started running" );
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
 				throw new Error( "Called start() outside of a test context too many times" );
 			} else if ( config.autostart ) {
@@ -108,53 +100,14 @@ extend( QUnit, {
 				return;
 			}
 		} else {
-
-			// If a test is running, adjust its semaphore
-			config.current.semaphore -= count || 1;
-
-			// If semaphore is non-numeric, throw error
-			if ( isNaN( config.current.semaphore ) ) {
-				config.current.semaphore = 0;
-
-				QUnit.pushFailure(
-					"Called start() with a non-numeric decrement.",
-					sourceFromStacktrace( 2 )
-				);
-				return;
-			}
-
-			// Don't start until equal number of stop-calls
-			if ( config.current.semaphore > 0 ) {
-				return;
-			}
-
-			// Throw an Error if start is called more often than stop
-			if ( config.current.semaphore < 0 ) {
-				config.current.semaphore = 0;
-
-				QUnit.pushFailure(
-					"Called start() while already started (test's semaphore was 0 already)",
-					sourceFromStacktrace( 2 )
-				);
-				return;
-			}
+			throw new Error(
+				"QUnit.start cannot be called inside a test context. This feature is removed in " +
+				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
+				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+			);
 		}
 
 		resumeProcessing();
-	},
-
-	// DEPRECATED: QUnit.stop() will be removed in QUnit 2.0.
-	stop: function( count ) {
-
-		// If there isn't a test running, don't allow QUnit.stop() to be called
-		if ( !config.current ) {
-			throw new Error( "Called stop() outside of a test context" );
-		}
-
-		// If a test is running, adjust its semaphore
-		config.current.semaphore += count || 1;
-
-		pauseProcessing();
 	},
 
 	config: config,
@@ -202,8 +155,6 @@ function begin() {
 
 		// Record the time of the test run's beginning
 		config.started = now();
-
-		verifyLoggingCallbacks();
 
 		// Delete the loose unnamed module if unused.
 		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
