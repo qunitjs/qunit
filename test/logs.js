@@ -9,42 +9,50 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 	log = 0,
 	module1Context = {
 		name: "logs1",
+		childSuites: [],
 		tests: [
-			(module1Test1 = {
-				"name": "test1",
+			( module1Test1 = {
+				"suiteName": "logs1",
+				"testName": "test1",
 				"testId": "646e9e25"
 			}),
-			(module1Test2 = {
-				"name": "test2",
+			( module1Test2 = {
+				"suiteName": "logs1",
+				"testName": "test2",
 				"testId": "646e9e26"
 			})
 		]
 	},
 	module2Context = {
 		name: "logs2",
+		childSuites: [],
 		tests: [
-			(module2Test1 = {
-				"name": "test1",
+			( module2Test1 = {
+				"suiteName": "logs2",
+				"testName": "test1",
 				"testId": "9954d966"
 			}),
-			(module2Test2 = {
-				"name": "test2",
+			( module2Test2 = {
+				"suiteName": "logs2",
+				"testName": "test2",
 				"testId": "9954d967"
 			}),
-			(module2Test3 = {
-				"name": "a skipped test",
+			( module2Test3 = {
+				"suiteName": "logs2",
+				"testName": "a skipped test",
 				"testId": "3e797d3a"
 			}),
-			(module2Test4 = {
-				"name": "test the log for the skipped test",
+			( module2Test4 = {
+				"suiteName": "logs2",
+				"testName": "test the log for the skipped test",
 				"testId": "d3266148"
 			})
 		]
 	};
 
 QUnit.begin(function( args ) {
-	totalTests = args.totalTests;
-	beginModules = args.modules;
+	totalTests = args.tests.length;
+	beginModules = args.childSuites;
 	begin++;
 });
 
@@ -75,7 +83,7 @@ QUnit.log(function( context ) {
 
 QUnit.module( module1Context.name );
 
-QUnit.test( module1Test1.name, function( assert ) {
+QUnit.test( module1Test1.testName, function( assert ) {
 	assert.expect( 18 );
 
 	assert.equal(
@@ -108,7 +116,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 
 	delete logContext.runtime;
 	assert.deepEqual( logContext, {
-		name: module1Test1.name,
+		name: module1Test1.testName,
 		module: module1Context.name,
 		result: true,
 		message: "log runtime was a reasonable number",
@@ -122,7 +130,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 
 	delete logContext.runtime;
 	assert.deepEqual( logContext, {
-		name: module1Test1.name,
+		name: module1Test1.testName,
 		module: module1Context.name,
 		result: true,
 		message: undefined,
@@ -137,7 +145,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	delete logContext.runtime;
 	assert.deepEqual( logContext, {
 		module: module1Context.name,
-		name: module1Test1.name,
+		name: module1Test1.testName,
 		result: true,
 		message: "ok(true, message)",
 		actual: true,
@@ -148,8 +156,8 @@ QUnit.test( module1Test1.name, function( assert ) {
 
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );
 	assert.deepEqual( testContext, {
-		module: module1Context.name,
-		name: module1Test1.name,
+		suiteName: module1Context.name,
+		testName: module1Test1.testName,
 		testId: module1Test1.testId
 	}, "test context" );
 
@@ -159,7 +167,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	assert.equal( log, 17, "QUnit.log calls" );
 });
 
-QUnit.test( module1Test2.name, function( assert ) {
+QUnit.test( module1Test2.testName, function( assert ) {
 	assert.expect( 12 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 1, "QUnit.moduleStart calls" );
@@ -189,17 +197,19 @@ QUnit.test( module1Test2.name, function( assert ) {
 	delete testDoneContext.source;
 
 	assert.deepEqual( testDoneContext, {
-		module: module1Context.name,
-		name: module1Test1.name,
+		suiteName: module1Context.name,
+		testName: module1Test1.testName,
+		status: "passed",
 		failed: 0,
 		passed: 18,
 		total: 18,
 		testId: module1Test1.testId,
-		skipped: false
+		skipped: false,
+		errors: []
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
-		module: module1Context.name,
-		name: module1Test2.name,
+		suiteName: module1Context.name,
+		testName: module1Test2.testName,
 		testId: module1Test2.testId
 	}, "test context" );
 
@@ -210,7 +220,7 @@ QUnit.test( module1Test2.name, function( assert ) {
 
 QUnit.module( module2Context.name );
 
-QUnit.test( module2Test1.name, function( assert ) {
+QUnit.test( module2Test1.testName, function( assert ) {
 	assert.expect( 10 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
@@ -219,8 +229,8 @@ QUnit.test( module2Test1.name, function( assert ) {
 	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
 	assert.deepEqual( testContext, {
-		module: module2Context.name,
-		name: module2Test1.name,
+		suiteName: module2Context.name,
+		testName: module2Test1.testName,
 		testId: module2Test1.testId
 	}, "test context" );
 
@@ -234,16 +244,19 @@ QUnit.test( module2Test1.name, function( assert ) {
 	assert.deepEqual( moduleDoneContext, {
 		name: module1Context.name,
 		tests: module1Context.tests,
-		failed: 0,
-		passed: 30,
-		total: 30
+		status: {
+			failed: 0,
+			passed: 30,
+			skipped: 0
+		},
+		childSuites: []
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, module2Context, "module context" );
 
 	assert.equal( log, 39, "QUnit.log calls" );
 });
 
-QUnit.test( module2Test2.name, function( assert ) {
+QUnit.test( module2Test2.testName, function( assert ) {
 	assert.expect( 8 );
 	assert.equal( begin, 1, "QUnit.begin calls" );
 	assert.equal( moduleStart, 2, "QUnit.moduleStart calls" );
@@ -252,8 +265,8 @@ QUnit.test( module2Test2.name, function( assert ) {
 	assert.equal( moduleDone, 1, "QUnit.moduleDone calls" );
 
 	assert.deepEqual( testContext, {
-		module: module2Context.name,
-		name: module2Test2.name,
+		suiteName: module2Context.name,
+		testName: module2Test2.testName,
 		testId: module2Test2.testId
 	}, "test context" );
 	assert.deepEqual( moduleContext, module2Context, "module context" );
@@ -261,9 +274,9 @@ QUnit.test( module2Test2.name, function( assert ) {
 	assert.equal( log, 47, "QUnit.log calls" );
 });
 
-QUnit.skip( module2Test3.name );
+QUnit.skip( module2Test3.testName );
 
-QUnit.test( module2Test4.name, function( assert ) {
+QUnit.test( module2Test4.testName, function( assert ) {
 	assert.expect( 1 );
 
 	delete testDoneContext.runtime;
@@ -272,12 +285,14 @@ QUnit.test( module2Test4.name, function( assert ) {
 
 	assert.deepEqual( testDoneContext, {
 		assertions: [],
-		module: module2Context.name,
-		name: module2Test3.name,
+		suiteName: module2Context.name,
+		testName: module2Test3.testName,
+		status: "skipped",
 		failed: 0,
 		passed: 0,
 		total: 0,
 		skipped: true,
+		errors: [],
 		testId: module2Test3.testId
 	}, "testDone context" );
 });

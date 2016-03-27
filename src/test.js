@@ -23,7 +23,8 @@ function Test( settings ) {
 	this.testId = generateHash( this.module.name, this.testName );
 
 	this.module.tests.push({
-		name: this.testName,
+		testName: this.testName,
+		suiteName: this.module.name,
 		testId: this.testId
 	});
 
@@ -53,21 +54,32 @@ Test.prototype = {
 				// Without this, reporters can get testStart before moduleStart  which is a problem.
 				!hasOwn.call( config, "previousModule" )
 		) {
-			if ( hasOwn.call( config, "previousModule" ) ) {
+			if (hasOwn.call( config, "previousModule")) {
+				var skipped = 0;
+				var i;
+				for (i = 0; i < config.previousModule.tests.length;i++) {
+					if (config.previousModule.tests[i].skipped) {
+						skipped++;
+					}
+			    }
 				emit( "suiteEnd", {
 					name: config.previousModule.name,
 					tests: config.previousModule.tests,
-					failed: config.moduleStats.bad,
-					passed: config.moduleStats.all - config.moduleStats.bad,
-					total: config.moduleStats.all,
-					runtime: now() - config.moduleStats.started
+		            childSuites: [],
+		            runtime: now() - config.moduleStats.started,
+		            status: {
+						failed: config.moduleStats.bad,
+						passed: config.moduleStats.all - config.moduleStats.bad - skipped,
+						skipped: skipped
+					}
 				});
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			emit( "suiteStart", {
 				name: this.module.name,
-				tests: this.module.tests
+				tests: this.module.tests,
+				childSuites: []
 			});
 		}
 
@@ -81,8 +93,8 @@ Test.prototype = {
 
 		this.started = now();
 		emit( "testStart", {
-			name: this.testName,
-			module: this.module.name,
+			testName: this.testName,
+			suiteName: this.module.name,
 			testId: this.testId
 		});
 
@@ -192,6 +204,8 @@ Test.prototype = {
 		var i,
 			bad = 0;
 
+		var errors = [];
+
 		this.runtime = now() - this.started;
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
@@ -201,17 +215,31 @@ Test.prototype = {
 				bad++;
 				config.stats.bad++;
 				config.moduleStats.bad++;
+
+				errors.push(this.assertions[i]);
+			}
+		}
+		var status;
+		if (this.skip === true) {
+				status = "skipped";
+			} else {
+		    if ( bad === 0) {
+		        status = "passed";
+			} else {
+		        status = "failed";
 			}
 		}
 
 		emit( "testEnd", {
-			name: this.testName,
-			module: this.module.name,
+			testName: this.testName,
+			suiteName: this.module.name,
+			status: status,
 			skipped: !!this.skip,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length,
 			runtime: this.runtime,
+			errors: errors,
 
 			// HTML Reporter use
 			assertions: this.assertions,

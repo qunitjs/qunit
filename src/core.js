@@ -200,6 +200,7 @@ function begin() {
 
 	// If the test run hasn't officially begun yet
 	if ( !config.started ) {
+		var globalTestsPresent = true;
 
 		// Record the time of the test run's beginning
 		config.started = now();
@@ -208,6 +209,7 @@ function begin() {
 
 		// Delete the loose unnamed module if unused.
 		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
+			globalTestsPresent = false;
 			config.modules.shift();
 		}
 
@@ -215,15 +217,19 @@ function begin() {
 		for ( i = 0, l = config.modules.length; i < l; i++ ) {
 			modulesLog.push({
 				name: config.modules[ i ].name,
+				childSuites: [],
 				tests: config.modules[ i ].tests
 			});
 		}
 
+	    var topSuite = {
+			name: "",
+			childSuites: globalTestsPresent ? modulesLog.slice(1) : modulesLog,
+			tests: globalTestsPresent ? modulesLog[ 0 ].tests : []
+	    };
+
 		// The test run is officially beginning now
-		emit( "runStart", {
-			totalTests: Test.count,
-			modules: modulesLog
-		});
+		emit( "runStart", topSuite);
 	}
 
 	config.blocking = false;
@@ -295,31 +301,70 @@ function resumeProcessing() {
 }
 
 function done() {
-	var runtime, passed;
+	var runtime;
+	var i;
+	var skipped = 0;
+	var passed = 0;
+	var failed = 0;
 
 	config.autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
+	    for (i = 0; i < config.previousModule.tests.length;i++) {
+			if (config.previousModule.tests[i].skipped) {
+				skipped++;
+			}
+	    }
 		emit( "suiteEnd", {
 			name: config.previousModule.name,
 			tests: config.previousModule.tests,
-			failed: config.moduleStats.bad,
-			passed: config.moduleStats.all - config.moduleStats.bad,
-			total: config.moduleStats.all,
-			runtime: now() - config.moduleStats.started
+			childSuites: 0,
+			runtime: now() - config.moduleStats.started,
+			status: {
+				failed: config.moduleStats.bad,
+				passed: config.moduleStats.all - config.moduleStats.bad - skipped,
+				skipped: skipped
+			}
 		});
 	}
 	delete config.previousModule;
 
 	runtime = now() - config.started;
-	passed = config.stats.all - config.stats.bad;
+
+	skipped = 0;
+
+	//computing statuses of test defined outside a module
+	if (config.modules[0].name === "")
+	{
+		for (i = 0; i < config.module[0].tests.length; i++)
+		{
+			var test = config.modules[0].tests[i];
+			if (test.status === "passed") {
+				passed++;
+			} else if (test.status === "failed") {
+				failed++;
+			} else if (test.status === "skipped") {
+				skipped++;
+			}
+		}
+
+	}
 
 	emit( "runEnd", {
-		failed: config.stats.bad,
-		passed: passed,
-		total: config.stats.all,
-		runtime: runtime
+			name: "",
+			childSuites: config.modules[ 0 ].name === "" ? config.modules.slice(1) : config.modules,
+			tests: config.modules[ 0 ].name === "" ? config.modules[ 0 ].tests : [],
+			runtime: runtime,
+			status: {
+				failed: failed,
+				skipped: skipped,
+				passed: passed
+			},
+			//  used by test-on-node.js only
+			failed: config.stats.bad,
+			passed: config.stats.all - config.stats.bad,
+			total: config.stats.all
 	});
 }
 
