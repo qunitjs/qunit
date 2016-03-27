@@ -12,7 +12,7 @@ extend( QUnit, {
 		var currentModule = config.currentModule;
 
 		if ( arguments.length === 2 ) {
-			if ( testEnvironment instanceof Function ) {
+			if ( objectType( testEnvironment ) === "function" ) {
 				executeNow = testEnvironment;
 				testEnvironment = undefined;
 			}
@@ -36,7 +36,7 @@ extend( QUnit, {
 			afterEach: setHook( module, "afterEach" )
 		};
 
-		if ( executeNow instanceof Function ) {
+		if ( objectType( executeNow ) === "function" ) {
 			config.moduleStack.push( module );
 			setCurrentModule( module );
 			executeNow.call( module.testEnvironment, moduleFns );
