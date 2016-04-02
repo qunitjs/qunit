@@ -206,6 +206,7 @@ QUnit.module( "contained suite arguments", function( hooks ) {
 	QUnit.test( "hook functions", function( assert ) {
 		assert.strictEqual( typeof hooks.beforeEach, "function" );
 		assert.strictEqual( typeof hooks.afterEach, "function" );
+		assert.strictEqual( hooks.test, QUnit.test );
 	} );
 
 	QUnit.module( "outer hooks", function( hooks ) {

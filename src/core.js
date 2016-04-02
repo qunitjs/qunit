@@ -33,7 +33,8 @@ extend( QUnit, {
 
 		moduleFns = {
 			beforeEach: setHook( module, "beforeEach" ),
-			afterEach: setHook( module, "afterEach" )
+			afterEach: setHook( module, "afterEach" ),
+			test: QUnit.test
 		};
 
 		if ( objectType( executeNow ) === "function" ) {
