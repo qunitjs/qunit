@@ -260,7 +260,7 @@ QUnit.assert = Assert.prototype = {
 // Known to us are: Closure Compiler, Narwhal
 ( function() {
 	/*jshint sub:true */
-	Assert.prototype.raises = Assert.prototype.throws;
+	Assert.prototype.raises = Assert.prototype [ "throws" ]; //jscs:ignore requireDotNotation
 }() );
 
 function errorString( error ) {
