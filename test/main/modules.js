@@ -1,25 +1,66 @@
-QUnit.module( "beforeEach/afterEach", {
-	beforeEach: function() {
+QUnit.module( "before/beforeEach/afterEach/after", {
+	before: function() {
+		this.lastHook = "module-before";
+	},
+	beforeEach: function( assert ) {
+		assert.strictEqual( this.lastHook, "module-before",
+			"Module's beforeEach runs after before" );
 		this.lastHook = "module-beforeEach";
 	},
 	afterEach: function( assert ) {
-		if ( this.hooksTest ) {
-			assert.strictEqual( this.lastHook, "test-block",
-				"Module's afterEach runs after current test block" );
-			this.lastHook = "module-afterEach";
-		}
+		assert.strictEqual( this.lastHook, "test-block",
+			"Module's afterEach runs after current test block" );
+		this.lastHook = "module-afterEach";
+	},
+	after: function( assert ) {
+		assert.strictEqual( this.lastHook, "module-afterEach",
+			"Module's afterEach runs before after" );
+		this.lastHook = "module-after";
 	}
 } );
 
 QUnit.test( "hooks order", function( assert ) {
-	assert.expect( 2 );
-
-	// This will trigger an assertion on the global and one on the module's afterEach
-	this.hooksTest = true;
+	assert.expect( 4 );
 
 	assert.strictEqual( this.lastHook, "module-beforeEach",
 		"Module's beforeEach runs before current test block" );
 	this.lastHook = "test-block";
+} );
+
+QUnit.module( "before", {
+	before: function( assert ) {
+		assert.ok( true, "before hook ran" );
+
+		if ( typeof this.beforeCount === "undefined" ) {
+			this.beforeCount = 0;
+		}
+
+		this.beforeCount++;
+	}
+} );
+
+QUnit.test( "runs before first test", function( assert ) {
+	assert.expect( 2 );
+	assert.equal( this.beforeCount, 1, "beforeCount should be one" );
+} );
+
+QUnit.test( "does not run before subsequent tests", function( assert ) {
+	assert.expect( 1 );
+	assert.equal( this.beforeCount, 1, "beforeCount did not increase from last test" );
+} );
+
+QUnit.module( "after", {
+	after: function( assert ) {
+		assert.ok( true, "after hook ran" );
+	}
+} );
+
+QUnit.test( "does not run after initial tests", function( assert ) {
+	assert.expect( 0 );
+} );
+
+QUnit.test( "runs after final test", function( assert ) {
+	assert.expect( 1 );
 } );
 
 QUnit.module( "Test context object", {
@@ -292,5 +333,56 @@ QUnit.module( "contained suite `this`", function( hooks ) {
 	QUnit.test( "tests can't see environments from nested modules", function( assert )  {
 		assert.strictEqual( this.inner, undefined );
 		this.outer = 42;
+	} );
+} );
+
+QUnit.module( "nested modules before/after", {
+	before: function( assert ) {
+		assert.ok( true, "before hook ran" );
+		this.lastHook = "before";
+	},
+	after: function( assert ) {
+		assert.strictEqual( this.lastHook, "outer-after" );
+	}
+}, function() {
+	QUnit.test( "should run before", function( assert ) {
+		assert.expect( 2 );
+		assert.strictEqual( this.lastHook, "before" );
+	} );
+
+	QUnit.module( "outer", {
+		before: function( assert ) {
+			assert.ok( true, "outer before hook ran" );
+			this.lastHook = "outer-before";
+		},
+		after: function( assert ) {
+			assert.strictEqual( this.lastHook, "outer-test" );
+			this.lastHook = "outer-after";
+		}
+	}, function() {
+		QUnit.module( "inner", {
+			before: function( assert ) {
+				assert.strictEqual( this.lastHook, "outer-before" );
+				this.lastHook = "inner-before";
+			},
+			after: function( assert ) {
+				assert.strictEqual( this.lastHook, "inner-test" );
+			}
+		}, function() {
+			QUnit.test( "should run outer-before and inner-before", function( assert ) {
+				assert.expect( 3 );
+				assert.strictEqual( this.lastHook, "inner-before" );
+			} );
+
+			QUnit.test( "should run inner-after", function( assert ) {
+				assert.expect( 1 );
+				this.lastHook = "inner-test";
+			} );
+		} );
+
+		QUnit.test( "should run outer-after and after", function( assert ) {
+			assert.expect( 2 );
+			this.lastHook = "outer-test";
+		} );
 	} );
 } );
