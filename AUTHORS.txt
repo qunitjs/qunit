@@ -125,3 +125,4 @@ Frank Weigel <frank.weigel@sap.com>
 Maciej Lato <mlato@yahoo-inc.com>
 Shirish Kamath <shirishk.87@gmail.com>
 Parakleta <parakleta@darkreality.org>
+Daniel De Jager <danielmiester@gmail.com>

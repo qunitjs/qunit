@@ -1,4 +1,10 @@
 
+1.23.1 / 2016-04-12
+===================
+
+ * Core: Prevents throws keyword from breaking Rhino environments
+ * Core: Be consistent in function type checks
+
 1.23.0 / 2016-03-25
 ==================
 
