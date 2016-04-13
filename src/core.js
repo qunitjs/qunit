@@ -207,30 +207,27 @@ function process( last ) {
 	}
 }
 
-function pauseProcessing() {
+function pauseProcessing( test ) {
 	config.blocking = true;
 
 	if ( config.testTimeout && defined.setTimeout ) {
 		clearTimeout( config.timeout );
 		config.timeout = setTimeout( function() {
-			if ( config.current ) {
-				config.current.semaphore = 0;
-				QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
-			} else {
-				throw new Error( "Test timed out" );
-			}
-			resumeProcessing();
+			test.semaphore = 0;
+			QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
+			resumeProcessing( test );
 		}, config.testTimeout );
 	}
 }
 
-function resumeProcessing() {
+function resumeProcessing( test ) {
 	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
 		setTimeout( function() {
-			if ( config.current && config.current.semaphore > 0 ) {
+			var current = test || config.current;
+			if ( current && current.semaphore > 0 ) {
 				return;
 			}
 			if ( config.timeout ) {
