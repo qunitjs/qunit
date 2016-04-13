@@ -1,14 +1,14 @@
 function applyDeprecated( name ) {
 	return function() {
 		throw new Error(
-			"`" + name + "` is removed in QUnit 2.0.\n" +
+			name + " is removed in QUnit 2.0.\n" +
 			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 		);
 	};
 }
 
 Object.keys( Assert.prototype ).forEach( function( key ) {
-	QUnit[ key ] = applyDeprecated( "QUnit." + key );
+	QUnit[ key ] = applyDeprecated( "`QUnit." + key + "`" );
 } );
 
 QUnit.asyncTest = function() {
