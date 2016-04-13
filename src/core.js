@@ -68,15 +68,15 @@ extend( QUnit, {
 
 	asyncTest: function() {
 		throw new Error(
-			"asyntTest is now removed from QUnit 2.0, check out our upgrade guide at " +
-			"https://qunitjs.com/upgrade-guide-2.x/"
+			"asyncTest is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 		);
 	},
 
 	stop: function() {
 		throw new Error(
-			"QUnit.stop is now removed from QUnit 2.0, check out our upgrade guide at " +
-			"https://qunitjs.com/upgrade-guide-2.x/"
+			"QUnit.stop is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 		);
 	},
 
