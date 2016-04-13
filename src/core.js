@@ -20,6 +20,14 @@ extend( QUnit, {
 
 		module = createModule();
 
+		if ( testEnvironment && ( testEnvironment.setup || testEnvironment.teardown ) ) {
+			console.warn(
+				"Module's `setup` and `teardown` are not hooks anymore on QUnit 2.0, use " +
+				"`beforeEach` and `afterEach` instead\n" +
+				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+			);
+		}
+
 		moduleFns = {
 			beforeEach: setHook( module, "beforeEach" ),
 			afterEach: setHook( module, "afterEach" )

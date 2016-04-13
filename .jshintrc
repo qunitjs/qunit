@@ -13,12 +13,12 @@
 	"unused": true,
 
 	"browser": true,
-	"es3": true,
 
 	"globals": {
 		"QUnit": false,
 		"define": false,
 		"exports": false,
-		"module": false
+		"module": false,
+		"console": false
 	}
 }
