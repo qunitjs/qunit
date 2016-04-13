@@ -5,8 +5,8 @@ if ( typeof window === "undefined" || !window.document ) {
 
 QUnit.init = function() {
 	throw new Error(
-		"QUnit.init is now removed from QUnit 2.0, check out our upgrade guide at " +
-		"https://qunitjs.com/upgrade-guide-2.x/"
+		"QUnit.init is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 	);
 };
 

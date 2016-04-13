@@ -1,9 +1,8 @@
 function applyDeprecated( name ) {
 	return function() {
 		throw new Error(
-			"`" + name + "` is removed in QUnit 2.0, you should now use the " +
-			"correct namespace.\n" +
-			"Details in our upgrade at https://qunitjs.com/upgrade-guide-2.x/"
+			"`" + name + "` is removed in QUnit 2.0.\n" +
+			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 		);
 	};
 }
@@ -12,16 +11,26 @@ Object.keys( Assert.prototype ).forEach( function( key ) {
 	QUnit[ key ] = applyDeprecated( "QUnit." + key );
 } );
 
-QUnit.stop = applyDeprecated( "QUnit.stop" );
+QUnit.asyncTest = function() {
+	throw new Error(
+		"asyncTest is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+};
+
+QUnit.stop = function() {
+	throw new Error(
+		"QUnit.stop is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+};
 
 if ( defined.document ) {
 	[
 		"test",
 		"module",
 		"expect",
-		"asyncTest",
 		"start",
-		"stop",
 		"ok",
 		"notOk",
 		"equal",
@@ -35,7 +44,7 @@ if ( defined.document ) {
 		"throws",
 		"raises"
 	].forEach( function( key ) {
-		window[ key ] = applyDeprecated( "The global " + key );
+		window[ key ] = applyDeprecated( "The global `" + key + "`" );
 	} );
 
 	window.QUnit = QUnit;

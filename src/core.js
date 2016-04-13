@@ -74,20 +74,6 @@ extend( QUnit, {
 
 	},
 
-	asyncTest: function() {
-		throw new Error(
-			"asyncTest is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
-			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-		);
-	},
-
-	stop: function() {
-		throw new Error(
-			"QUnit.stop is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
-			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-		);
-	},
-
 	test: test,
 
 	skip: skip,
@@ -114,11 +100,6 @@ extend( QUnit, {
 				return;
 			}
 		} else {
-			QUnit.pushFailure(
-				"Called start() inside a current test context.",
-				sourceFromStacktrace( 3 )
-			);
-
 			throw new Error(
 				"QUnit.start cannot be called inside a test context. This feature is removed in " +
 				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
