@@ -93,7 +93,7 @@ extend( QUnit, {
 			globalStartCalled = true;
 
 			if ( runStarted ) {
-				throw new Error( "Called start() outside of a test context while already started" );
+				throw new Error( "Called start() while test already started running" );
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
 				throw new Error( "Called start() outside of a test context too many times" );
 			} else if ( config.autostart ) {
@@ -106,36 +106,16 @@ extend( QUnit, {
 				return;
 			}
 		} else {
+			QUnit.pushFailure(
+				"Called start() inside a current test context.",
+				sourceFromStacktrace( 3 )
+			);
 
-			// If a test is running, adjust its semaphore
-			config.current.semaphore -= count || 1;
-
-			// If semaphore is non-numeric, throw error
-			if ( isNaN( config.current.semaphore ) ) {
-				config.current.semaphore = 0;
-
-				QUnit.pushFailure(
-					"Called start() with a non-numeric decrement.",
-					sourceFromStacktrace( 2 )
-				);
-				return;
-			}
-
-			// Don't start until equal number of stop-calls
-			if ( config.current.semaphore > 0 ) {
-				return;
-			}
-
-			// Throw an Error if start is called more often than stop
-			if ( config.current.semaphore < 0 ) {
-				config.current.semaphore = 0;
-
-				QUnit.pushFailure(
-					"Called start() while already started (test's semaphore was 0 already)",
-					sourceFromStacktrace( 2 )
-				);
-				return;
-			}
+			throw new Error(
+				"QUnit.start cannot be called inside a test context. This feature is removed in " +
+				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
+				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+			);
 		}
 
 		resumeProcessing();

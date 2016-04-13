@@ -120,7 +120,7 @@ Test.prototype = {
 
 			// Restart the tests if they're blocking
 			if ( config.blocking ) {
-				QUnit.start();
+				internalStart();
 			}
 		}
 
@@ -339,7 +339,7 @@ Test.prototype = {
 				internalStop();
 				then.call(
 					promise,
-					function() { QUnit.start(); },
+					internalStart,
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
@@ -350,7 +350,7 @@ Test.prototype = {
 						saveGlobal();
 
 						// Unblock
-						QUnit.start();
+						internalStart();
 					}
 				);
 			}
@@ -620,10 +620,45 @@ function only( testName, callback ) {
 	newTest.queue();
 }
 
-function internalStop( count ) {
+function internalStop() {
 
 	// If a test is running, adjust its semaphore
-	config.current.semaphore += count || 1;
+	config.current.semaphore += 1;
 
 	pauseProcessing();
+}
+
+function internalStart() {
+
+	// If a test is running, adjust its semaphore
+	config.current.semaphore -= 1;
+
+	// If semaphore is non-numeric, throw error
+	if ( isNaN( config.current.semaphore ) ) {
+		config.current.semaphore = 0;
+
+		QUnit.pushFailure(
+			"Called start() with a non-numeric decrement.",
+			sourceFromStacktrace( 2 )
+		);
+		return;
+	}
+
+	// Don't start until equal number of stop-calls
+	if ( config.current.semaphore > 0 ) {
+		return;
+	}
+
+	// Throw an Error if start is called more often than stop
+	if ( config.current.semaphore < 0 ) {
+		config.current.semaphore = 0;
+
+		QUnit.pushFailure(
+			"Called start() while already started (test's semaphore was 0 already)",
+			sourceFromStacktrace( 2 )
+		);
+		return;
+	}
+
+	resumeProcessing();
 }
