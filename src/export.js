@@ -1,52 +1,42 @@
 function applyDeprecated( name ) {
 	return function() {
 		throw new Error(
-			"The global `" + name + "` is now removed from QUnit 2.0, you should " +
-			"now use the correct namespace. Check out our upgrade guide at " +
-			"https://qunitjs.com/upgrade-guide-2.x/"
+			"`" + name + "` is removed in QUnit 2.0, you should now use the " +
+			"correct namespace.\n" +
+			"Details in our upgrade at https://qunitjs.com/upgrade-guide-2.x/"
 		);
 	};
 }
 
-( function() {
-	var i,
-		assertions = Assert.prototype;
+Object.keys( Assert.prototype ).forEach( function( key ) {
+	QUnit[ key ] = applyDeprecated( "QUnit." + key );
+} );
 
-	for ( i in assertions ) {
-		QUnit[ i ] = applyDeprecated( assertions[ i ] );
-	}
-}() );
+QUnit.stop = applyDeprecated( "QUnit.stop" );
 
-// For browser, export only select globals
 if ( defined.document ) {
-
-	( function() {
-		var i, l,
-			keys = [
-				"test",
-				"module",
-				"expect",
-				"asyncTest",
-				"start",
-				"stop",
-				"ok",
-				"notOk",
-				"equal",
-				"notEqual",
-				"propEqual",
-				"notPropEqual",
-				"deepEqual",
-				"notDeepEqual",
-				"strictEqual",
-				"notStrictEqual",
-				"throws",
-				"raises"
-			];
-
-		for ( i = 0, l = keys.length; i < l; i++ ) {
-			window[ keys[ i ] ] = applyDeprecated( keys[ i ] );
-		}
-	}() );
+	[
+		"test",
+		"module",
+		"expect",
+		"asyncTest",
+		"start",
+		"stop",
+		"ok",
+		"notOk",
+		"equal",
+		"notEqual",
+		"propEqual",
+		"notPropEqual",
+		"deepEqual",
+		"notDeepEqual",
+		"strictEqual",
+		"notStrictEqual",
+		"throws",
+		"raises"
+	].forEach( function( key ) {
+		window[ key ] = applyDeprecated( "The global " + key );
+	} );
 
 	window.QUnit = QUnit;
 }
