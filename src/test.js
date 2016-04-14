@@ -337,7 +337,8 @@ Test.prototype = {
 			then = promise.then;
 			if ( QUnit.objectType( then ) === "function" ) {
 				internalStop( test );
-				promise.then(
+				then.call(
+					promise,
 					function() { internalStart( test ); },
 					function( error ) {
 						message = "Promise rejected " +
