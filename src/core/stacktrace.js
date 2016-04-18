@@ -1,4 +1,4 @@
-// Doesn't support IE6 to IE9, it will return undefined on these browsers
+// Doesn't support IE9, it will return undefined on these browsers
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 4 : offset;
@@ -23,17 +23,6 @@ function extractStacktrace( e, offset ) {
 			}
 		}
 		return stack[ offset ];
-
-	// Support: Safari <=6 only
-	} else if ( e.sourceURL ) {
-
-		// Exclude useless self-reference for generated Error objects
-		if ( /qunit.js$/.test( e.sourceURL ) ) {
-			return;
-		}
-
-		// For actual exceptions, this is useful
-		return e.sourceURL + ":" + e.line;
 	}
 }
 

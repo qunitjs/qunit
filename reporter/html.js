@@ -30,9 +30,7 @@ var config = QUnit.config,
 	},
 	modulesList = [];
 
-/**
-* Escape text for attribute or text content.
-*/
+// Escape text for attribute or text content.
 function escapeText( s ) {
 	if ( !s ) {
 		return "";
@@ -56,59 +54,14 @@ function escapeText( s ) {
 	} );
 }
 
-/**
- * @param {HTMLElement} elem
- * @param {string} type
- * @param {Function} fn
- */
 function addEvent( elem, type, fn ) {
-	if ( elem.addEventListener ) {
-
-		// Standards-based browsers
-		elem.addEventListener( type, fn, false );
-	} else if ( elem.attachEvent ) {
-
-		// Support: IE <9
-		elem.attachEvent( "on" + type, function() {
-			var event = window.event;
-			if ( !event.target ) {
-				event.target = event.srcElement || document;
-			}
-
-			fn.call( elem, event );
-		} );
-	}
+	elem.addEventListener( type, fn, false );
 }
 
-/**
- * @param {HTMLElement} elem
- * @param {string} type
- * @param {Function} fn
- */
 function removeEvent( elem, type, fn ) {
-	if ( elem.removeEventListener ) {
-
-		// Standards-based browsers
-		elem.removeEventListener( type, fn, false );
-	} else if ( elem.detachEvent ) {
-
-		// Support: IE <9
-		elem.detachEvent( "on" + type, function() {
-			var event = window.event;
-			if ( !event.target ) {
-				event.target = event.srcElement || document;
-			}
-
-			fn.call( elem, event );
-		} );
-	}
+	elem.removeEventListener( type, fn, false );
 }
 
-/**
- * @param {Array|NodeList} elems
- * @param {string} type
- * @param {Function} fn
- */
 function addEvents( elems, type, fn ) {
 	var i = elems.length;
 	while ( i-- ) {
@@ -300,10 +253,7 @@ function toolbarUrlConfigContainer() {
 	urlConfigContainer.innerHTML = getUrlConfigHtml();
 	addClass( urlConfigContainer, "qunit-url-config" );
 
-	// For oldIE support:
-	// * Add handlers to the individual elements instead of the container
-	// * Use "click" instead of "change" for checkboxes
-	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "click", toolbarChanged );
+	addEvents( urlConfigContainer.getElementsByTagName( "input" ), "change", toolbarChanged );
 	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChanged );
 
 	return urlConfigContainer;
