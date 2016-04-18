@@ -271,10 +271,7 @@ QUnit.test( "throws", function( assert ) {
 } );
 
 QUnit.test( "raises, alias for throws", function( assert ) {
-	assert.expect( 1 );
-	assert.raises( function() {
-		throw "my error";
-	} );
+	assert.strictEqual( assert.raises, assert.throws );
 } );
 
 QUnit.module( "failing assertions", {
