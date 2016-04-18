@@ -124,7 +124,7 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 16 );
+	assert.expect( 15 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -267,14 +267,6 @@ QUnit.test( "throws", function( assert ) {
 		},
 		/description/,
 		"throw error from property of 'this' context"
-	);
-
-	assert.throws(
-		function() {
-			throw "some error description";
-		},
-		"some error description",
-		"handle string typed thrown errors"
 	);
 } );
 

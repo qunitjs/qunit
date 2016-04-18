@@ -43,6 +43,14 @@ QUnit.test( "QUnit.reset", function( assert ) {
 	}, upgradeGuide );
 } );
 
+QUnit.test( "throws with string expected value", function( assert ) {
+	assert.throws( function() {
+		assert.throws( function() {
+			throw "This is not called";
+		}, "foo", "bar" );
+	}, upgradeGuide );
+} );
+
 QUnit.test( "QUnit.asyncTest", function( assert ) {
 	assert.throws( function() {
 		QUnit.asyncTest();

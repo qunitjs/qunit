@@ -201,9 +201,17 @@ QUnit.assert = Assert.prototype = {
 			currentTest = ( this instanceof Assert && this.test ) || QUnit.config.current;
 
 		// 'expected' is optional unless doing string comparison
-		if ( message == null && typeof expected === "string" ) {
-			message = expected;
-			expected = null;
+		if ( QUnit.objectType( expected ) === "string" ) {
+			if ( message == null ) {
+				message = expected;
+				expected = null;
+			} else {
+				throw new Error(
+					"throws/raises does not accept a string value for the expected argument.\n" +
+					"Use a non-string object value (e.g. regExp) instead if it's necessary." +
+					"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+				);
+			}
 		}
 
 		currentTest.ignoreGlobalErrors = true;
@@ -225,10 +233,6 @@ QUnit.assert = Assert.prototype = {
 			// Expected is a regexp
 			} else if ( expectedType === "regexp" ) {
 				ok = expected.test( errorString( actual ) );
-
-			// Expected is a string
-			} else if ( expectedType === "string" ) {
-				ok = expected === errorString( actual );
 
 			// Expected is a constructor, maybe an Error constructor
 			} else if ( expectedType === "function" && actual instanceof expected ) {
