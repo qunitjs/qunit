@@ -313,22 +313,3 @@ QUnit.done( function() {
 		} );
 	}, 5000 );
 } );
-
-QUnit.module( "deprecated log methods" );
-
-QUnit.test( "QUnit.reset()", function( assert ) {
-
-	// Skip non-browsers
-	if ( typeof window === "undefined" || !window.document ) {
-		assert.expect( 0 );
-		return;
-	}
-
-	var myFixture = document.getElementById( "qunit-fixture" );
-
-	myFixture.innerHTML = "<em>something different from QUnit.config.fixture</em>";
-
-	QUnit.reset();
-
-	assert.strictEqual( myFixture.innerHTML, QUnit.config.fixture, "restores #qunit-fixture" );
-} );

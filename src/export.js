@@ -25,6 +25,13 @@ QUnit.stop = function() {
 	);
 };
 
+QUnit.reset = function() {
+	throw new Error(
+		"QUnit.reset is removed in QUnit 2.0 without replacement.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+};
+
 if ( defined.document ) {
 	[
 		"test",

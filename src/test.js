@@ -238,10 +238,7 @@ Test.prototype = {
 			source: this.stack
 		} );
 
-		// QUnit.reset() is deprecated and will be replaced for a new
-		// fixture reset function on QUnit 2.0/2.1.
-		// It's still called here for backwards compatibility handling
-		QUnit.reset();
+		internalReset();
 
 		config.current = undefined;
 	},
@@ -466,27 +463,15 @@ Test.prototype = {
 	}
 };
 
-// Resets the test setup. Useful for tests that modify the DOM.
-/*
-DEPRECATED: Use multiple tests instead of resetting inside a test.
-Use testStart or testDone for custom cleanup.
-This method will throw an error in 2.0, and will be removed in 2.1
-*/
-QUnit.reset = function() {
-
-	// Return on non-browser environments
-	// This is necessary to not break on node tests
-	if ( !defined.document ) {
-		return;
-	}
-
+// Resets the fixture DOM element if available.
+function internalReset() {
 	var fixture = defined.document && document.getElementById &&
 			document.getElementById( "qunit-fixture" );
 
 	if ( fixture ) {
 		fixture.innerHTML = config.fixture;
 	}
-};
+}
 
 QUnit.pushFailure = function() {
 	if ( !QUnit.config.current ) {

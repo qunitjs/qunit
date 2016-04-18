@@ -37,6 +37,12 @@ QUnit.module( "setup+teardown", {
 	}
 );
 
+QUnit.test( "QUnit.reset", function( assert ) {
+	assert.throws( function() {
+		QUnit.reset();
+	}, upgradeGuide );
+} );
+
 QUnit.test( "QUnit.asyncTest", function( assert ) {
 	assert.throws( function() {
 		QUnit.asyncTest();
