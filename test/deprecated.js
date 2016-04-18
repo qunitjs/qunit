@@ -5,6 +5,9 @@ var originalWarn = console.warn,
 	upgradeGuide =
 			/Details in our upgrade guide at https\:\/\/qunitjs\.com\/upgrade-guide-2\.x/;
 
+// Autorun should't prevent the tests to run
+QUnit.config.autorun = false;
+
 // Duck punch console.warn
 console.warn = function( arg ) {
 	warnings.push( arg );

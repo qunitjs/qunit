@@ -47,11 +47,12 @@ module.exports = function( grunt ) {
 
 		registerEvents( QUnit, file, runEnd );
 
-		QUnit.config.autorun = false;
+		QUnit.config.autostart = false;
 
 		require( "../../" + file );
 
 		QUnit.load();
+		QUnit.start();
 	}
 
 	function registerEvents( QUnit, file, runEnd ) {

@@ -29,3 +29,5 @@ var defined = {
 var fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" );
 var globalStartCalled = false;
 var runStarted = false;
+
+var autorun = false;

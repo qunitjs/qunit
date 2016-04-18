@@ -549,7 +549,7 @@ function synchronize( callback, priority, seed ) {
 		config.queue.push( callback );
 	}
 
-	if ( config.autorun && !config.blocking ) {
+	if ( autorun && !config.blocking ) {
 		process( last );
 	}
 }

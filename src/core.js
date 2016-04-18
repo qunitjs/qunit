@@ -248,7 +248,7 @@ function resumeProcessing( test ) {
 function done() {
 	var runtime, passed;
 
-	config.autorun = true;
+	autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
