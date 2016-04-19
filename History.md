@@ -1,4 +1,15 @@
 
+2.0.0-rc1 / 2016-04-19
+=====================
+
+  * Core: Introduce before/after hooks for modules
+  * HTML Reporter: Multi-select module dropdown
+  * Assert: Remove throws signature with string expected value
+  * All: Remove deprecated features
+  * All: Remove QUnit.config.autorun
+  * All: Code cleanup for non-supported browsers
+  * Test: Refactor test.semaphore usage
+
 1.23.1 / 2016-04-12
 ===================
 
