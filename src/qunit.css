@@ -162,19 +162,26 @@
 }
 
 #qunit-modulefilter-actions {
-	display: table;
-	width: 100%;
+	display: block;
+	overflow: auto;
 
 	/* align with #qunit-modulefilter-dropdown-list */
 	font: smaller/1.5em sans-serif;
 }
 
 #qunit-modulefilter-dropdown #qunit-modulefilter-actions > * {
-	display: table-cell;
-	padding: 0.4em 0;
+	box-sizing: border-box;
+	max-height: 2.8em;
+	display: block;
+	padding: 0.4em;
 }
 
-#qunit-modulefilter-dropdown #qunit-modulefilter-actions > :first-child {
+#qunit-modulefilter-dropdown #qunit-modulefilter-actions > button {
+	float: right;
+	font: inherit;
+}
+
+#qunit-modulefilter-dropdown #qunit-modulefilter-actions > :last-child {
 	/* insert padding to align with checkbox margins */
 	padding-left: 3px;
 }

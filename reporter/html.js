@@ -314,13 +314,14 @@ function moduleListHtml () {
 }
 
 function toolbarModuleFilter () {
-	var allCheckbox,
+	var allCheckbox, commit, reset,
 		moduleFilter = document.createElement( "form" ),
 		label = document.createElement( "label" ),
 		moduleSearch = document.createElement( "input" ),
 		dropDown = document.createElement( "div" ),
 		actions = document.createElement( "span" ),
-		dropDownList = document.createElement( "ul" );
+		dropDownList = document.createElement( "ul" ),
+		dirty = false;
 
 	moduleSearch.id = "qunit-modulefilter-search";
 	addEvent( moduleSearch, "input", searchInput );
@@ -333,11 +334,17 @@ function toolbarModuleFilter () {
 	label.appendChild( moduleSearch );
 
 	actions.id = "qunit-modulefilter-actions";
-	actions.innerHTML = "<label class='clickable" +
+	actions.innerHTML =
+		"<button style='display:none'>Apply</button>" +
+		"<button type='reset' style='display:none'>Reset</button>" +
+		"<label class='clickable" +
 		( config.moduleId.length ? "" : " checked" ) +
 		"'><input type='checkbox'" + ( config.moduleId.length ? "" : " checked='checked'" ) +
 		">All modules</label>";
-	allCheckbox = actions.firstChild.firstChild;
+	allCheckbox = actions.lastChild.firstChild;
+	commit = actions.firstChild;
+	reset = commit.nextSibling;
+	addEvent( commit, "click", applyUrlParams );
 
 	dropDownList.id = "qunit-modulefilter-dropdown-list";
 	dropDownList.innerHTML = moduleListHtml();
@@ -347,12 +354,17 @@ function toolbarModuleFilter () {
 	dropDown.appendChild( actions );
 	dropDown.appendChild( dropDownList );
 	addEvent( dropDown, "change", selectionChange );
-	selectionChange( { target: allCheckbox } );
+	selectionChange();
 
 	moduleFilter.id = "qunit-modulefilter";
 	moduleFilter.appendChild( label );
 	moduleFilter.appendChild( dropDown ) ;
 	addEvent( moduleFilter, "submit", interceptNavigation );
+	addEvent( moduleFilter, "reset", function() {
+
+		// Let the reset happen, then update styles
+		window.setTimeout( selectionChange );
+	} );
 
 	// Enables show/hide for the dropdown
 	function searchFocus() {
@@ -400,26 +412,31 @@ function toolbarModuleFilter () {
 	// Processes selection changes
 	function selectionChange( evt ) {
 		var i,
-			checkbox = evt.target,
+			checkbox = evt && evt.target || allCheckbox,
 			modulesList = dropDownList.getElementsByTagName( "input" ),
 			selectedNames = [];
 
 		toggleClass( checkbox.parentNode, "checked", checkbox.checked );
 
+		dirty = false;
 		if ( checkbox.checked && checkbox !== allCheckbox ) {
 		   allCheckbox.checked = false;
 		   removeClass( allCheckbox.parentNode, "checked" );
 		}
 		for ( i = 0; i < modulesList.length; i++ )  {
-			if ( checkbox === allCheckbox && checkbox.checked ) {
+			if ( !evt ) {
+				toggleClass( modulesList[ i ].parentNode, "checked", modulesList[ i ].checked );
+			} else if ( checkbox === allCheckbox && checkbox.checked ) {
 				modulesList[ i ].checked = false;
 				removeClass( modulesList[ i ].parentNode, "checked" );
 			}
+			dirty = dirty || ( checkbox.checked !== checkbox.defaultChecked );
 			if ( modulesList[ i ].checked ) {
 				selectedNames.push( modulesList[ i ].parentNode.textContent );
 			}
 		}
 
+		commit.style.display = reset.style.display = dirty ? "" : "none";
 		moduleSearch.placeholder = selectedNames.join( ", " ) || allCheckbox.parentNode.textContent;
 		moduleSearch.title = "Type to filter list. Current selection:\n" +
 			( selectedNames.join( "\n" ) || allCheckbox.parentNode.textContent );
