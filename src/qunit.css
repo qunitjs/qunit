@@ -27,7 +27,7 @@
 }
 
 
-/** Header */
+/** Header (excluding toolbar) */
 
 #qunit-header {
 	padding: 0.5em 0 0.5em 1em;
@@ -52,20 +52,8 @@
 	color: #FFF;
 }
 
-#qunit-testrunner-toolbar label {
-	display: inline-block;
-	padding: 0 0.5em 0 0.1em;
-}
-
 #qunit-banner {
 	height: 5px;
-}
-
-#qunit-testrunner-toolbar {
-	padding: 0.5em 1em 0.5em 1em;
-	color: #5E740B;
-	background-color: #EEE;
-	overflow: hidden;
 }
 
 #qunit-filteredTest {
@@ -81,39 +69,119 @@
 	text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
 }
 
-#qunit-modulefilter-container {
-	float: right;
-	padding: 0.2em;
+
+/** Toolbar */
+
+#qunit-testrunner-toolbar {
+	padding: 0.5em 1em 0.5em 1em;
+	color: #5E740B;
+	background-color: #EEE;
 }
 
-#qunit-modulefilter-component {
-	width: 400px;
+#qunit-testrunner-toolbar .clearfix {
+	height: 0;
+	clear: both;
+}
+
+#qunit-testrunner-toolbar label {
 	display: inline-block;
 }
 
-#qunit-modulefilter-search {
-	width: inherit;
-	box-sizing: border-box;
+#qunit-testrunner-toolbar input[type=checkbox],
+#qunit-testrunner-toolbar input[type=radio] {
+	margin: 3px;
+	vertical-align: -2px;
 }
 
-#qunit-modulefilter-dropdown-container {
-	color: #000000;
+#qunit-testrunner-toolbar input[type=text] {
+	box-sizing: border-box;
+	height: 1.6em;
+}
+
+.qunit-url-config,
+.qunit-filter,
+#qunit-modulefilter {
+	display: inline-block;
+	line-height: 2.1em;
+}
+
+.qunit-filter,
+#qunit-modulefilter {
+	float: right;
+	position: relative;
+	margin-left: 1em;
+}
+
+.qunit-url-config label {
+	margin-right: 0.5em;
+}
+
+#qunit-modulefilter-search {
+	box-sizing: border-box;
+	width: 400px;
+}
+
+#qunit-modulefilter-search-container:after {
 	position: absolute;
-	width: inherit;
+	right: 0.3em;
+	content: "\25bc";
+	color: black;
+}
+
+#qunit-modulefilter-dropdown {
+	/* align with #qunit-modulefilter-search */
+	box-sizing: border-box;
+	width: 400px;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	margin-top: 0.8em;
+
 	border: 1px solid #D3D3D3;
 	border-top: none;
-	box-sizing: border-box;
-	background-color: #F5F5F5;
 	border-radius: 0 0 .25em .25em;
-	font-family: sans-serif;
-	font-size: smaller;
+	color: #000;
+	background-color: #F5F5F5;
+	z-index: 99;
+}
+
+#qunit-modulefilter-dropdown a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#qunit-modulefilter-dropdown label.checked {
+	font-weight: bold;
+	color: #000;
+	background-color: #D2E0E6;
+}
+
+#qunit-modulefilter-dropdown label:hover {
+	color: #FFF;
+	background-color: #0D3349;
+}
+
+#qunit-modulefilter-clear {
+	display: block;
+
+	/* align with #qunit-modulefilter-dropdown-list */
+	padding: 0.4em 0 0.4em;
+	padding-left: 0.15em;
+	font: smaller/1.5em sans-serif;
+}
+
+#qunit-modulefilter-clear > :first-child {
+	/* insert padding to align with checkbox margins */
+	padding-left: 3px;
 }
 
 #qunit-modulefilter-dropdown-list {
 	max-height: 200px;
 	overflow-y: auto;
-	padding: 0;
-	margin: 0 .15em .15em .15em;
+	margin: 0;
+	border-top: 2px groove threedhighlight;
+	padding: 0.4em 0 0;
+	font: smaller/1.5em sans-serif;
 }
 
 #qunit-modulefilter-dropdown-list li {
@@ -122,38 +190,11 @@
 	text-overflow: ellipsis;
 }
 
-
 #qunit-modulefilter-dropdown-list label {
-	display: inline;
-}
-
-#qunit-modulefilter-dropdown-list input[type="checkbox"] {
-	position: relative;
-	top: 0;
-	margin-right: .5em;
-}
-
-#clear-module-filter {
-	cursor: pointer;
-	display: inline-block;
-	width: 100%;
-	margin-top: .5em;
-}
-
-#clear-module-filter-text {
-	margin-left: .8em;
-}
-
-.qunit-url-config {
-	display: inline-block;
-	padding: 0.1em;
-}
-
-.qunit-filter {
 	display: block;
-	float: right;
-	margin-left: 1em;
+	padding-left: 0.15em;
 }
+
 
 /** Tests: Pass/Fail */
 
