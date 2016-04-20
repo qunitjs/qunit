@@ -35,6 +35,21 @@ QUnit.dump = ( function() {
 		return join( "[", ret, "]" );
 	}
 
+	function isArray( obj ) {
+		return (
+
+			//Native Arrays
+			toString.call( obj ) === "[object Array]" ||
+
+			// NodeList objects
+			( typeof obj.length === "number" && obj.item !== undefined ) &&
+			( obj.length ?
+				obj.item( 0 ) === obj[ 0 ] :
+				( obj.item( 0 ) === null && obj[ 0 ] === undefined )
+			)
+		);
+	}
+
 	var reName = /^function (\w+)/,
 		dump = {
 
@@ -62,6 +77,7 @@ QUnit.dump = ( function() {
 			},
 			typeOf: function( obj ) {
 				var type;
+
 				if ( obj === null ) {
 					type = "null";
 				} else if ( typeof obj === "undefined" ) {
@@ -80,16 +96,7 @@ QUnit.dump = ( function() {
 					type = "document";
 				} else if ( obj.nodeType ) {
 					type = "node";
-				} else if (
-
-					// Native arrays
-					toString.call( obj ) === "[object Array]" ||
-
-					// NodeList objects
-					( typeof obj.length === "number" && obj.item !== undefined &&
-					( obj.length ? obj.item( 0 ) === obj[ 0 ] : ( obj.item( 0 ) === null &&
-					obj[ 0 ] === undefined ) ) )
-				) {
+				} else if ( isArray( obj ) ) {
 					type = "array";
 				} else if ( obj.constructor === Error.prototype.constructor ) {
 					type = "error";
