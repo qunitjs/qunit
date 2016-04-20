@@ -150,27 +150,31 @@
 	text-decoration: none;
 }
 
-#qunit-modulefilter-dropdown label.checked {
+#qunit-modulefilter-dropdown .clickable.checked {
 	font-weight: bold;
 	color: #000;
 	background-color: #D2E0E6;
 }
 
-#qunit-modulefilter-dropdown label:hover {
+#qunit-modulefilter-dropdown .clickable:hover {
 	color: #FFF;
 	background-color: #0D3349;
 }
 
-#qunit-modulefilter-clear {
-	display: block;
+#qunit-modulefilter-actions {
+	display: table;
+	width: 100%;
 
 	/* align with #qunit-modulefilter-dropdown-list */
-	padding: 0.4em 0 0.4em;
-	padding-left: 0.15em;
 	font: smaller/1.5em sans-serif;
 }
 
-#qunit-modulefilter-clear > :first-child {
+#qunit-modulefilter-actions > * {
+	display: table-cell;
+	padding: 0.4em 0;
+}
+
+#qunit-modulefilter-actions > :first-child {
 	/* insert padding to align with checkbox margins */
 	padding-left: 3px;
 }
@@ -190,7 +194,7 @@
 	text-overflow: ellipsis;
 }
 
-#qunit-modulefilter-dropdown-list label {
+#qunit-modulefilter-dropdown-list .clickable {
 	display: block;
 	padding-left: 0.15em;
 }
