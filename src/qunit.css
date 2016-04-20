@@ -58,14 +58,14 @@
 
 #qunit-filteredTest {
 	padding: 0.5em 1em 0.5em 1em;
-	background-color: #F4FF77;
 	color: #366097;
+	background-color: #F4FF77;
 }
 
 #qunit-userAgent {
 	padding: 0.5em 1em 0.5em 1em;
-	background-color: #2B81AF;
 	color: #FFF;
+	background-color: #2B81AF;
 	text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
 }
 
@@ -305,14 +305,14 @@
 }
 
 #qunit-tests del {
-	background-color: #E0F2BE;
 	color: #374E0C;
+	background-color: #E0F2BE;
 	text-decoration: none;
 }
 
 #qunit-tests ins {
-	background-color: #FFCACA;
 	color: #500;
+	background-color: #FFCACA;
 	text-decoration: none;
 }
 
