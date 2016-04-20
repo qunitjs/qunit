@@ -103,6 +103,16 @@ function id( name ) {
 	return document.getElementById && document.getElementById( name );
 }
 
+function interceptNavigation( ev ) {
+	applyUrlParams();
+
+	if ( ev && ev.preventDefault ) {
+		ev.preventDefault();
+	}
+
+	return false;
+}
+
 function getUrlConfigHtml() {
 	var i, j, val,
 		escaped, escapedTooltip,
@@ -233,7 +243,7 @@ function applyUrlParams() {
 
 	for ( i = 0; i < modulesList.length; i++ )  {
 		if ( modulesList[ i ].checked ) {
-			selectedModules.push( modulesList[ i ].getAttribute( "module-id" ) );
+			selectedModules.push( modulesList[ i ].value );
 		}
 	}
 
@@ -281,15 +291,7 @@ function toolbarLooseFilter() {
 	filter.appendChild( label );
 	filter.appendChild( document.createTextNode( " " ) );
 	filter.appendChild( button );
-	addEvent( filter, "submit", function( ev ) {
-		applyUrlParams();
-
-		if ( ev && ev.preventDefault ) {
-			ev.preventDefault();
-		}
-
-		return false;
-	} );
+	addEvent( filter, "submit", interceptNavigation );
 
 	return filter;
 }
@@ -302,9 +304,9 @@ function moduleListHtml () {
 		if ( config.modules[ i ].name !== "" ) {
 			checked = config.moduleId.indexOf( config.modules[ i ].moduleId ) > -1;
 			html += "<li><label class='clickable" + ( checked ? " checked" : "" ) +
-				"'><input type='checkbox' " + "module-id='" + config.modules[ i ].moduleId + "'" +
-				( checked ? " checked" : "" ) + ">" + escapeText( config.modules[ i ].name ) +
-				"</label></li>";
+				"'><input type='checkbox' " + "value='" + config.modules[ i ].moduleId + "'" +
+				( checked ? " checked='checked'" : "" ) + " />" +
+				escapeText( config.modules[ i ].name ) + "</label></li>";
 		}
 	}
 
@@ -312,85 +314,116 @@ function moduleListHtml () {
 }
 
 function toolbarModuleFilter () {
-	var moduleFilter = document.createElement( "form" ),
+	var allCheckbox,
+		moduleFilter = document.createElement( "form" ),
 		label = document.createElement( "label" ),
 		moduleSearch = document.createElement( "input" ),
 		dropDown = document.createElement( "div" ),
-		clearFilter = document.createElement( "span" ),
+		actions = document.createElement( "span" ),
 		dropDownList = document.createElement( "ul" );
 
 	moduleSearch.id = "qunit-modulefilter-search";
-	moduleSearch.placeholder = "Select modules";
+	addEvent( moduleSearch, "input", searchInput );
+	addEvent( moduleSearch, "input", searchFocus );
+	addEvent( moduleSearch, "focus", searchFocus );
+	addEvent( moduleSearch, "click", searchFocus );
 
 	label.id = "qunit-modulefilter-search-container";
 	label.innerHTML = "Module: ";
 	label.appendChild( moduleSearch );
 
-	clearFilter.id = "qunit-modulefilter-actions";
-	clearFilter.innerHTML = "<a class='clickable" + ( config.moduleId.length ? "" : " checked" ) +
-		"' href='" + escapeText( unfilteredUrl ) + "'>All modules</a>";
-	addEvent( clearFilter.firstChild, "click", function( evt ) {
-		var i,
-			modulesList = dropDownList.getElementsByTagName( "input" );
-		for ( i = 0; i < modulesList.length; i++ )  {
-			modulesList[ i ].checked = false;
-		}
-
-		applyUrlParams();
-		evt.preventDefault();
-	} );
+	actions.id = "qunit-modulefilter-actions";
+	actions.innerHTML = "<label class='clickable" +
+		( config.moduleId.length ? "" : " checked" ) +
+		"'><input type='checkbox'" + ( config.moduleId.length ? "" : " checked='checked'" ) +
+		">All modules</label>";
+	allCheckbox = actions.firstChild.firstChild;
 
 	dropDownList.id = "qunit-modulefilter-dropdown-list";
 	dropDownList.innerHTML = moduleListHtml();
-	addEvent( dropDownList, "change", function( evt ) {
-		toggleClass( evt.target.parentNode, "checked", evt.target.checked );
-	} );
 
 	dropDown.id = "qunit-modulefilter-dropdown";
 	dropDown.style.display = "none";
-	dropDown.appendChild( clearFilter );
+	dropDown.appendChild( actions );
 	dropDown.appendChild( dropDownList );
+	addEvent( dropDown, "change", selectionChange );
+	selectionChange( { target: allCheckbox } );
 
 	moduleFilter.id = "qunit-modulefilter";
 	moduleFilter.appendChild( label );
 	moduleFilter.appendChild( dropDown ) ;
+	addEvent( moduleFilter, "submit", interceptNavigation );
 
 	// Enables show/hide for the dropdown
-	addEvent( moduleSearch, "focus", function() {
-		var dropDownList = id( "qunit-modulefilter-dropdown" );
-		if ( dropDownList.style.display === "none" ) {
-			addEvent( document, "click", function hideHandler( e )  {
-				if ( !id( "qunit-modulefilter" ).contains( e.target ) ) {
-					id( "qunit-modulefilter-dropdown" ).style.display = "none";
-					removeEvent( document, "click", hideHandler );
-				}
-			} );
-			dropDownList.style.display = "block";
+	function searchFocus() {
+		if ( dropDown.style.display !== "none" ) {
+			return;
 		}
-	} );
 
-	// Enables search to the module filter
-	addEvent( moduleSearch, "input", function() {
+		dropDown.style.display = "block";
+		addEvent( document, "click", hideHandler );
+		addEvent( document, "keydown", hideHandler );
+
+		// Hide on Escape keydown or outside-container click
+		function hideHandler( e )  {
+			var inContainer = moduleFilter.contains( e.target );
+
+			if ( e.keyCode === 27 || !inContainer ) {
+				if ( e.keyCode === 27 && inContainer ) {
+					moduleSearch.focus();
+				}
+				dropDown.style.display = "none";
+				removeEvent( document, "click", hideHandler );
+				removeEvent( document, "keydown", hideHandler );
+				moduleSearch.value = "";
+				searchInput();
+			}
+		}
+	}
+
+	// Processes module search box input
+	function searchInput() {
+		var i, item,
+			searchText = moduleSearch.value.toLowerCase(),
+			listItems = dropDownList.children;
+
+		for ( i = 0; i < listItems.length; i++ ) {
+			item = listItems[ i ];
+			if ( !searchText || item.textContent.toLowerCase().indexOf( searchText ) > -1 ) {
+				item.style.display = "";
+			} else {
+				item.style.display = "none";
+			}
+		}
+	}
+
+	// Processes selection changes
+	function selectionChange( evt ) {
 		var i,
-		moduleText,
-		searchText = this.value.toLowerCase(),
-		listItems = id( "qunit-modulefilter-dropdown-list" ).children;
+			checkbox = evt.target,
+			modulesList = dropDownList.getElementsByTagName( "input" ),
+			selectedNames = [];
 
-		if ( !searchText ) {
-			for ( i = 0; i < listItems.length; i++ ) {
-				listItems[ i ].style.display = "";
+		toggleClass( checkbox.parentNode, "checked", checkbox.checked );
+
+		if ( checkbox.checked && checkbox !== allCheckbox ) {
+		   allCheckbox.checked = false;
+		   removeClass( allCheckbox.parentNode, "checked" );
+		}
+		for ( i = 0; i < modulesList.length; i++ )  {
+			if ( checkbox === allCheckbox && checkbox.checked ) {
+				modulesList[ i ].checked = false;
+				removeClass( modulesList[ i ].parentNode, "checked" );
 			}
-		} else {
-			for ( i = 0; i < listItems.length; i++ ) {
-				moduleText = listItems[ i ].textContent.toLowerCase();
-				if ( moduleText.indexOf( searchText ) > -1 ) {
-					listItems[ i ].style.display = "";
-				} else {
-					listItems[ i ].style.display = "none";
-				}
+			if ( modulesList[ i ].checked ) {
+				selectedNames.push( modulesList[ i ].parentNode.textContent );
 			}
 		}
-	} );
+
+		moduleSearch.placeholder = selectedNames.join( ", " ) || allCheckbox.parentNode.textContent;
+		moduleSearch.title = "Type to filter list. Current selection:\n" +
+			( selectedNames.join( "\n" ) || allCheckbox.parentNode.textContent );
+	}
 
 	return moduleFilter;
 }

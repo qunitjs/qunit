@@ -169,12 +169,12 @@
 	font: smaller/1.5em sans-serif;
 }
 
-#qunit-modulefilter-actions > * {
+#qunit-modulefilter-dropdown #qunit-modulefilter-actions > * {
 	display: table-cell;
 	padding: 0.4em 0;
 }
 
-#qunit-modulefilter-actions > :first-child {
+#qunit-modulefilter-dropdown #qunit-modulefilter-actions > :first-child {
 	/* insert padding to align with checkbox margins */
 	padding-left: 3px;
 }
