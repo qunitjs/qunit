@@ -8,8 +8,6 @@ if ( typeof window === "undefined" || !window.document ) {
 QUnit.init = function() {
 	var config = QUnit.config;
 
-	QUnit.warning( "init" );
-
 	config.stats = { all: 0, bad: 0 };
 	config.moduleStats = { all: 0, bad: 0 };
 	config.started = 0;

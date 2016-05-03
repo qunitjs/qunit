@@ -37,7 +37,6 @@ function Test( settings ) {
 	} else {
 		this.assert = new Assert( this );
 	}
-
 }
 
 Test.count = 0;

@@ -19,8 +19,6 @@ QUnit.test( "QUnit exported methods", function( assert ) {
 			"start", "stop"
 		];
 
-	assert.expect( globals.length );
-
 	checkExported( assert, globals );
 } );
 

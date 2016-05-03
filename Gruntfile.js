@@ -123,9 +123,7 @@ grunt.initConfig( {
 			"test/random.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
-			"test/string-filter.html",
-			"test/warning.html",
-			"test/warning-once.html"
+			"test/string-filter.html"
 		]
 	},
 	coveralls: {
