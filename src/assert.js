@@ -51,6 +51,7 @@ QUnit.assert = Assert.prototype = {
 	// Exports test.push() to the user API
 	// Alias of pushResult.
 	push: function( result, actual, expected, message, negative ) {
+		console.log("Warning: assert.push is deprecated, assert.pushResult should be used instead");
 		var currentAssert = this instanceof Assert ? this : QUnit.config.current.assert;
 		return currentAssert.pushResult( {
 			result: result,
