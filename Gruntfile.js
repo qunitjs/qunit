@@ -120,7 +120,7 @@ grunt.initConfig( {
 			"test/reporter-urlparams.html",
 			"test/moduleId.html",
 			"test/only.html",
-			"test/random.html",
+			"test/seed.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
 			"test/string-filter.html"

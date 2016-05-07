@@ -5,7 +5,7 @@
 	"test_path": [
 		"test/index.html",
 		"test/logs.html",
-		"test/random.html"
+		"test/seed.html"
 	],
 	"browsers": [
 		"chrome_current",
