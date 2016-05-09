@@ -608,7 +608,7 @@ function test( testName, callback ) {
 		callback: callback
 	} );
 
-	if(!Promise)
+	if(typeof Promise == "undefined")
 		return newTest.queue();
 		
 	return new Promise(function(resolve,reject){
