@@ -89,7 +89,7 @@ extend( QUnit, {
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
 
-		if (config.current) {
+		if ( config.current ) {
 			throw new Error(
 				"QUnit.start cannot be called inside a test context. This feature is removed in " +
 				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
