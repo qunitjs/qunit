@@ -46,8 +46,6 @@ extend( QUnit, {
 		
 		setCurrentModule( module );
 
-		return result;
-
 		function createModule() {
 			var parentModule = config.moduleStack.length ?
 				config.moduleStack.slice( -1 )[ 0 ] : null;
@@ -78,6 +76,8 @@ extend( QUnit, {
 		function setCurrentModule( module ) {
 			config.currentModule = module;
 		}
+		
+		return result;
 	},
 
 	test: test,
