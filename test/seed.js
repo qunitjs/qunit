@@ -2,7 +2,7 @@ QUnit.config.seed = "7x9";
 
 var lastTest = "";
 
-QUnit.module( "QUnit.config.random" );
+QUnit.module( "QUnit.config.seed" );
 
 QUnit.test( "1", function( assert ) {
   assert.equal( lastTest, "2", "runs third" );
