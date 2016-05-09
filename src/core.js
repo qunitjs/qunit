@@ -95,8 +95,6 @@ extend( QUnit, {
 				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
 				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 			);
-
-			return;
 		}
 
 		globalStartCalled = true;
