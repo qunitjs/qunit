@@ -124,15 +124,17 @@ Test.prototype = {
 				internalStart( this );
 			}
 			
-			if(test.reject)
+			if(test.reject) {
 				test.reject(e);
+			}
 		}
 
 		function runTest( test ) {
 			promise = test.callback.call( test.testEnvironment, test.assert );
 			test.resolvePromise( promise );
-			if(test.resolve)
+			if(test.resolve) {
 				test.resolve(promise);
+			}
 		}
 	},
 
@@ -608,14 +610,15 @@ function test( testName, callback ) {
 		callback: callback
 	} );
 
-	if(typeof Promise == "undefined")
-		return newTest.queue();
-		
-	return new Promise(function(resolve,reject){
-		newTest.resolve	= resolve;
-		newTest.reject	= reject;
-		newTest.queue();
-	});
+	if(typeof Promise !== "undefined") {
+		return new Promise(function(resolve,reject){
+			newTest.resolve	= resolve;
+			newTest.reject	= reject;
+			newTest.queue();
+		});
+	}
+	
+	newTest.queue();
 }
 
 // Will be exposed as QUnit.skip
