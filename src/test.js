@@ -108,7 +108,6 @@ Test.prototype = {
 
 		if ( config.notrycatch ) {
 			runTest( this );
-			return;
 		}
 
 		try {
@@ -124,11 +123,16 @@ Test.prototype = {
 			if ( config.blocking ) {
 				internalStart( this );
 			}
+			
+			if(test.reject)
+				test.reject(e);
 		}
 
 		function runTest( test ) {
 			promise = test.callback.call( test.testEnvironment, test.assert );
 			test.resolvePromise( promise );
+			if(test.resolve)
+				test.resolve(promise);
 		}
 	},
 
@@ -604,7 +608,14 @@ function test( testName, callback ) {
 		callback: callback
 	} );
 
-	newTest.queue();
+	if(!Promise)
+		return newTest.queue();
+		
+	return new Promise(function(resolve,reject){
+		newTest.resolve	= resolve;
+		newTest.reject	= reject;
+		newTest.queue();
+	});
 }
 
 // Will be exposed as QUnit.skip
