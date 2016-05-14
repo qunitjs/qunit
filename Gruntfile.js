@@ -43,6 +43,7 @@ grunt.initConfig( {
 				"src/dump.js",
 				"src/export.js",
 				"src/outro.js",
+				"runner/fixture.js",
 				"reporter/intro.js",
 				"reporter/urlparams.js",
 				"reporter/html.js",
