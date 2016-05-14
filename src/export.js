@@ -33,6 +33,10 @@ QUnit.reset = function() {
 };
 
 if ( defined.document ) {
+	if ( window.QUnit ) {
+		throw new Error( "QUnit has already been defined." );
+	}
+
 	[
 		"test",
 		"module",
