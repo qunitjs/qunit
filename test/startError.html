@@ -25,6 +25,9 @@
 		catch ( thrownError ) {
 			tooManyStartsError = thrownError;
 		}
+
+		// Delete QUnit global so we can reload it
+		delete window.QUnit;
 	</script>
 
 	<!-- INTENTIONALLY reload QUnit -->

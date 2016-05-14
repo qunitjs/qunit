@@ -32,6 +32,9 @@
 			assert.ok( false );
 		} );
 	}
+
+	// Delete QUnit global so we can reload it
+	delete window.QUnit;
 	</script>
 
 	<!--
