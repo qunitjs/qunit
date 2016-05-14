@@ -465,9 +465,11 @@ Test.prototype = {
 
 // Resets the fixture DOM element if available.
 function internalReset() {
-	var fixture = defined.document && document.getElementById &&
-			document.getElementById( "qunit-fixture" );
+	if ( config.fixture === null ) {
+		return;
+	}
 
+	var fixture = id( "qunit-fixture" );
 	if ( fixture ) {
 		fixture.innerHTML = config.fixture;
 	}

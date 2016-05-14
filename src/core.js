@@ -150,6 +150,19 @@ extend( QUnit, {
 
 registerLoggingCallbacks( QUnit );
 
+function storeFixture() {
+
+	// Avoid overwriting user-defined values
+	if ( hasOwn.call( config, "fixture" ) ) {
+		return;
+	}
+
+	var fixture = id( "qunit-fixture" );
+	if ( fixture ) {
+		config.fixture = fixture.innerHTML;
+	}
+}
+
 function begin() {
 	var i, l,
 		modulesLog = [];
@@ -172,6 +185,9 @@ function begin() {
 				tests: config.modules[ i ].tests
 			} );
 		}
+
+		// Store fixture HTML for resetting later
+		storeFixture();
 
 		// The test run is officially beginning now
 		runLoggingCallbacks( "begin", {

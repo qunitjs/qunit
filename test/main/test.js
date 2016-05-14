@@ -24,6 +24,21 @@ QUnit.test( "basics", function( assert ) {
 	);
 } );
 
+QUnit.test( "setup for null reset", function( assert ) {
+	assert.expect( 0 );
+	QUnit.config.fixture = null;
+	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";
+} );
+
+QUnit.test( "basics for null reset", function( assert ) {
+	assert.equal(
+		document.getElementById( "qunit-fixture" ).innerHTML,
+		"foobar",
+		"did not reset after last test"
+	);
+	QUnit.config.fixture = "test markup";
+} );
+
 }
 
 QUnit.module( "custom assertions" );

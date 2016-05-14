@@ -491,13 +491,6 @@ function appendTestResults() {
 	}
 }
 
-function storeFixture() {
-	var fixture = id( "qunit-fixture" );
-	if ( fixture ) {
-		config.fixture = fixture.innerHTML;
-	}
-}
-
 function appendFilteredTest() {
 	var testId = QUnit.config.testId;
 	if ( !testId || testId.length <= 0 ) {
@@ -599,9 +592,6 @@ QUnit.begin( function( details ) {
 	modulesList.sort( function( a, b ) {
 		return a.localeCompare( b );
 	} );
-
-	// Capture fixture HTML from the page
-	storeFixture();
 
 	// Initialize QUnit elements
 	appendInterface();

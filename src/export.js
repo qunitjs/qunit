@@ -25,12 +25,23 @@ QUnit.stop = function() {
 	);
 };
 
-QUnit.reset = function() {
-	throw new Error(
-		"QUnit.reset is removed in QUnit 2.0 without replacement.\n" +
-		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-	);
-};
+Object.defineProperty( QUnit, "reset", {
+	get: function() {
+		return function reset() {
+			throw new Error(
+				"QUnit.reset is removed in QUnit 2.0 without replacement.\n" +
+				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+			);
+		};
+	},
+	set: function() {
+		throw new Error(
+			"QUnit.reset is removed in QUnit 2.0 without replacement.\n" +
+			"Custom reset methods will no longer be invoked.\n" +
+			"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+		);
+	}
+} );
 
 if ( defined.document ) {
 	if ( window.QUnit ) {

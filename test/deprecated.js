@@ -43,6 +43,12 @@ QUnit.test( "QUnit.reset", function( assert ) {
 	}, upgradeGuide );
 } );
 
+QUnit.test( "setting QUnit.reset", function( assert ) {
+	assert.throws( function() {
+		QUnit.reset = function() {};
+	}, upgradeGuide );
+} );
+
 QUnit.test( "throws with string expected value", function( assert ) {
 	assert.throws( function() {
 		assert.throws( function() {
