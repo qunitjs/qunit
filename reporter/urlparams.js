@@ -75,11 +75,11 @@ function getUrlParams() {
 	for ( i = 0; i < length; i++ ) {
 		if ( params[ i ] ) {
 			param = params[ i ].split( "=" );
-			name = decodeURIComponent( param[ 0 ] );
+			name = decodeQueryParam( param[ 0 ] );
 
 			// Allow just a key to turn on a flag, e.g., test.html?noglobals
 			value = param.length === 1 ||
-				decodeURIComponent( param.slice( 1 ).join( "=" ) ) ;
+				decodeQueryParam( param.slice( 1 ).join( "=" ) ) ;
 			if ( urlParams[ name ] ) {
 				urlParams[ name ] = [].concat( urlParams[ name ], value );
 			} else {
@@ -89,4 +89,8 @@ function getUrlParams() {
 	}
 
 	return urlParams;
+}
+
+function decodeQueryParam( param ) {
+	return decodeURIComponent( param.replace( /\+/g, "%20" ) );
 }
