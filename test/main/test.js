@@ -9,34 +9,53 @@ QUnit.test( "expect query and multiple issue", function( assert ) {
 
 if ( typeof document !== "undefined" ) {
 
-QUnit.module( "fixture" );
+QUnit.module( "fixture", function( hooks ) {
+	var failure = false,
+		values = [ /* initial value (see unshift below), */ "<b>ar</b>", undefined ],
+		originalValue;
 
-QUnit.test( "setup", function( assert ) {
-	assert.expect( 0 );
-	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";
-} );
+	hooks.before( function() {
+		originalValue = QUnit.config.fixture;
+		values.unshift( originalValue );
+	} );
 
-QUnit.test( "basics", function( assert ) {
-	assert.equal(
-		document.getElementById( "qunit-fixture" ).innerHTML,
-		"test markup",
-		"automatically reset"
-	);
-} );
+	// Set QUnit.config.fixture for the next test, propagating failures to recover the sequence
+	hooks.afterEach( function( assert ) {
+		if ( failure ) {
+			assert.ok( false, "prior failure" );
+			QUnit.config.fixture = originalValue;
+		} else {
+			QUnit.config.fixture = values.shift();
+		}
+	} );
 
-QUnit.test( "setup for null reset", function( assert ) {
-	assert.expect( 0 );
-	QUnit.config.fixture = null;
-	document.getElementById( "qunit-fixture" ).innerHTML = "foobar";
-} );
+	QUnit.test( "setup", function( assert ) {
+		document.getElementById( "qunit-fixture" ).innerHTML = "foo";
+		assert.equal( values.length, 3, "proper sequence" );
+		failure = failure || values.length !== 3;
+	} );
 
-QUnit.test( "basics for null reset", function( assert ) {
-	assert.equal(
-		document.getElementById( "qunit-fixture" ).innerHTML,
-		"foobar",
-		"did not reset after last test"
-	);
-	QUnit.config.fixture = "test markup";
+	QUnit.test( "automatically reset", function( assert ) {
+		var contents = document.getElementById( "qunit-fixture" ).innerHTML;
+		assert.equal( contents, "test markup" );
+		assert.equal( values.length, 2, "proper sequence" );
+		failure = failure || values.length !== 2 || contents !== "test markup";
+	} );
+
+	QUnit.test( "user-specified", function( assert ) {
+		var contents = document.getElementById( "qunit-fixture" ).innerHTML;
+		document.getElementById( "qunit-fixture" ).innerHTML = "baz";
+		assert.equal( contents, "<b>ar</b>" );
+		assert.equal( values.length, 1, "proper sequence" );
+		failure = failure || values.length !== 1 || contents !== "<b>ar</b>";
+	} );
+
+	QUnit.test( "disabled", function( assert ) {
+		var contents = document.getElementById( "qunit-fixture" ).innerHTML;
+		assert.equal( contents, "baz" );
+		assert.equal( values.length, 0, "proper sequence" );
+		failure = failure || values.length !== 0 || contents !== "baz";
+	} );
 } );
 
 }
