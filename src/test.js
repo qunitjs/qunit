@@ -238,8 +238,6 @@ Test.prototype = {
 			source: this.stack
 		} );
 
-		internalReset();
-
 		config.current = undefined;
 	},
 
@@ -462,18 +460,6 @@ Test.prototype = {
 		return !include;
 	}
 };
-
-// Resets the fixture DOM element if available.
-function internalReset() {
-	if ( config.fixture === null ) {
-		return;
-	}
-
-	var fixture = id( "qunit-fixture" );
-	if ( fixture ) {
-		fixture.innerHTML = config.fixture;
-	}
-}
 
 QUnit.pushFailure = function() {
 	if ( !QUnit.config.current ) {

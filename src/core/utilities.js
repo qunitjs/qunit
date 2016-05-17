@@ -105,7 +105,3 @@ function objectType( obj ) {
 function is( type, obj ) {
 	return QUnit.objectType( obj ) === type;
 }
-
-function id( name ) {
-	return defined.document && document.getElementById && document.getElementById( name );
-}
