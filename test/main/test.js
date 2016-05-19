@@ -37,9 +37,9 @@ QUnit.module( "fixture", function( hooks ) {
 
 	QUnit.test( "automatically reset", function( assert ) {
 		var contents = document.getElementById( "qunit-fixture" ).innerHTML;
-		assert.equal( contents, "test markup" );
+		assert.equal( contents, originalValue );
 		assert.equal( values.length, 2, "proper sequence" );
-		failure = failure || values.length !== 2 || contents !== "test markup";
+		failure = failure || values.length !== 2 || contents !== originalValue;
 	} );
 
 	QUnit.test( "user-specified", function( assert ) {
