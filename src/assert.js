@@ -44,7 +44,7 @@ QUnit.assert = Assert.prototype = {
 
 			test.semaphore -= 1;
 			popped = true;
-			resumeProcessing();
+			resumeProcessing( test );
 		};
 	},
 

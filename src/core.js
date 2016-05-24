@@ -231,11 +231,16 @@ function resumeProcessing( test ) {
 	if ( defined.setTimeout ) {
 		setTimeout( function() {
 			var current = test || config.current;
-			if ( current && current.semaphore > 0 ) {
+			if ( current && ( current.semaphore > 0 || current.resumed ) ) {
 				return;
 			}
+
 			if ( config.timeout ) {
 				clearTimeout( config.timeout );
+			}
+
+			if ( current ) {
+				current.resumed = true;
 			}
 
 			begin();

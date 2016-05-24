@@ -70,6 +70,21 @@ QUnit.test( "parallel calls", function( assert ) {
 	} );
 } );
 
+QUnit.test( "parallel calls of differing speeds", function( assert ) {
+	var done1 = assert.async(),
+		done2 = assert.async();
+
+	assert.expect( 2 );
+	setTimeout( function() {
+		assert.ok( true );
+		done1();
+	} );
+	setTimeout( function() {
+		assert.ok( true );
+		done2();
+	}, 100 );
+} );
+
 QUnit.test( "waterfall calls", function( assert ) {
 	var done2,
 		done1 = assert.async();
