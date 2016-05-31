@@ -229,25 +229,22 @@ function resumeProcessing( test ) {
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
-		if ( test && test.resuming ) {
-			return;
-		}
-
-		var resume = setTimeout( function() {
+		setTimeout( function() {
 			var current = test || config.current;
-			if ( current && current.semaphore > 0 ) {
+			if ( current && ( current.semaphore > 0 || current.resumed ) ) {
 				return;
 			}
+
 			if ( config.timeout ) {
 				clearTimeout( config.timeout );
 			}
 
+			if ( current ) {
+				current.resumed = true;
+			}
+
 			begin();
 		}, 13 );
-
-		if ( test ) {
-			test.resuming = resume;
-		}
 	} else {
 		begin();
 	}
