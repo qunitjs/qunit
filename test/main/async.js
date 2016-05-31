@@ -82,7 +82,7 @@ QUnit.test( "parallel calls of differing speeds", function( assert ) {
 	setTimeout( function() {
 		assert.ok( true );
 		done2();
-	}, 100);
+	}, 100 );
 } );
 
 QUnit.test( "waterfall calls", function( assert ) {
