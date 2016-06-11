@@ -394,3 +394,7 @@ QUnit.test( "throws", function( assert ) {
 		"throws fail when regexp doesn't match the error message"
 	);
 } );
+
+QUnit.test("push", function( assert ) {
+	assert.push( null );
+} );
