@@ -35,14 +35,15 @@ extend( QUnit, {
 			after: setHook( module, "after" )
 		};
 
+		var result = null;
 		if ( objectType( executeNow ) === "function" ) {
 			config.moduleStack.push( module );
 			setCurrentModule( module );
-			executeNow.call( module.testEnvironment, moduleFns );
+			result	= executeNow.call( module.testEnvironment, moduleFns );
 			config.moduleStack.pop();
 			module = module.parentModule || currentModule;
 		}
-
+		
 		setCurrentModule( module );
 
 		function createModule() {
@@ -75,7 +76,8 @@ extend( QUnit, {
 		function setCurrentModule( module ) {
 			config.currentModule = module;
 		}
-
+		
+		return result;
 	},
 
 	test: test,
@@ -87,23 +89,7 @@ extend( QUnit, {
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
 
-		if ( !config.current ) {
-			globalStartCalled = true;
-
-			if ( runStarted ) {
-				throw new Error( "Called start() while test already started running" );
-			} else if ( globalStartAlreadyCalled || count > 1 ) {
-				throw new Error( "Called start() outside of a test context too many times" );
-			} else if ( config.autostart ) {
-				throw new Error( "Called start() outside of a test context when " +
-					"QUnit.config.autostart was true" );
-			} else if ( !config.pageLoaded ) {
-
-				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
-				config.autostart = true;
-				return;
-			}
-		} else {
+		if ( config.current ) {
 			throw new Error(
 				"QUnit.start cannot be called inside a test context. This feature is removed in " +
 				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
@@ -111,6 +97,21 @@ extend( QUnit, {
 			);
 		}
 
+		globalStartCalled = true;
+
+		if ( runStarted ) {
+			throw new Error( "Called start() while test already started running" );
+		} else if ( globalStartAlreadyCalled || count > 1 ) {
+			throw new Error( "Called start() outside of a test context too many times" );
+		} else if ( config.autostart ) {
+			throw new Error( "Called start() outside of a test context when " +
+				"QUnit.config.autostart was true" );
+		} else if ( !config.pageLoaded ) {
+			// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
+			config.autostart = true;
+			return;
+		}
+		
 		resumeProcessing();
 	},
 
