@@ -380,7 +380,8 @@
 	background-color: #EBECE9;
 }
 
-#qunit-tests .qunit-skipped-label {
+#qunit-tests .qunit-skipped-label,
+#qunit-tests .qunit-todo-label {
 	background-color: #F4FF77;
 	display: inline-block;
 	font-style: normal;

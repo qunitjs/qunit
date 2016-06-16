@@ -62,11 +62,19 @@ Test.prototype = {
 					failed: config.moduleStats.bad,
 					passed: config.moduleStats.all - config.moduleStats.bad,
 					total: config.moduleStats.all,
+					failedUnexpectedly: config.moduleStats.failedUnexpectedly,
+					passedUnexpectedly: config.moduleStats.passedUnexpectedly,
 					runtime: now() - config.moduleStats.started
 				} );
 			}
 			config.previousModule = this.module;
-			config.moduleStats = { all: 0, bad: 0, started: now() };
+			config.moduleStats = {
+				all: 0,
+				bad: 0,
+				started: now(),
+				failedUnexpectedly: 0,
+				passedUnexpectedly: 0
+			};
 			runLoggingCallbacks( "moduleStart", {
 				name: this.module.name,
 				tests: this.module.tests
@@ -205,29 +213,13 @@ Test.prototype = {
 				"expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var i,
-			bad = 0;
-
 		this.runtime = now() - this.started;
-		config.stats.all += this.assertions.length;
-		config.moduleStats.all += this.assertions.length;
 
-		for ( i = 0; i < this.assertions.length; i++ ) {
-			if ( !this.assertions[ i ].result ) {
-				bad++;
-				config.stats.bad++;
-				config.moduleStats.bad++;
-			}
-		}
-
-		notifyTestsRan( this.module );
-		runLoggingCallbacks( "testDone", {
+		var result = extend( recordTestResult( this.assertions, !!this.todo ), {
 			name: this.testName,
 			module: this.module.name,
 			skipped: !!this.skip,
-			failed: bad,
-			passed: this.assertions.length - bad,
-			total: this.assertions.length,
+			todo: !!this.todo,
 			runtime: this.runtime,
 
 			// HTML Reporter use
@@ -237,6 +229,10 @@ Test.prototype = {
 			// Source of Test
 			source: this.stack
 		} );
+
+		notifyTestsRan( this.module );
+
+		runLoggingCallbacks( "testDone", result );
 
 		config.current = undefined;
 	},
@@ -461,6 +457,43 @@ Test.prototype = {
 	}
 };
 
+function recordTestResult( assertions, todo ) {
+	var i,
+		bad = 0,
+		numAssertions = assertions.length,
+		result = {
+			total: numAssertions,
+			failedUnexpectedly: 0,
+			passedUnexpectedly: 0
+		};
+
+	config.stats.all += numAssertions;
+	config.moduleStats.all += numAssertions;
+
+	for ( i = 0; i < numAssertions; i++ ) {
+		if ( !assertions[ i ].result ) {
+			bad++;
+			config.stats.bad++;
+			config.moduleStats.bad++;
+
+			if ( !todo ) {
+				result.failedUnexpectedly++;
+				config.stats.failedUnexpectedly++;
+				config.moduleStats.failedUnexpectedly++;
+			}
+		} else if ( todo ) {
+			result.passedUnexpectedly++;
+			config.stats.passedUnexpectedly++;
+			config.moduleStats.passedUnexpectedly++;
+		}
+	}
+
+	result.failed = bad;
+	result.passed = numAssertions - bad;
+
+	return result;
+}
+
 QUnit.pushFailure = function() {
 	if ( !QUnit.config.current ) {
 		throw new Error( "pushFailure() assertion outside test context, in " +
@@ -602,6 +635,19 @@ function skip( testName ) {
 	var test = new Test( {
 		testName: testName,
 		skip: true
+	} );
+
+	test.queue();
+}
+
+// Will be exposed as QUnit.todo
+function todo( testName, callback ) {
+	if ( focused )  { return; }
+
+	var test = new Test( {
+		testName: testName,
+		callback: callback,
+		todo: true
 	} );
 
 	test.queue();
