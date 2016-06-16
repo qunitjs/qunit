@@ -82,6 +82,8 @@ extend( QUnit, {
 
 	skip: skip,
 
+	todo: todo,
+
 	only: only,
 
 	start: function( count ) {
@@ -127,8 +129,8 @@ extend( QUnit, {
 
 		// Initialize the configuration options
 		extend( config, {
-			stats: { all: 0, bad: 0 },
-			moduleStats: { all: 0, bad: 0 },
+			stats: { all: 0, bad: 0, failedUnexpectedly: 0, passedUnexpectedly: 0 },
+			moduleStats: { all: 0, bad: 0, failedUnexpectedly: 0, passedUnexpectedly: 0 },
 			started: 0,
 			updateRate: 1000,
 			autostart: true,
@@ -263,6 +265,8 @@ function done() {
 			failed: config.moduleStats.bad,
 			passed: config.moduleStats.all - config.moduleStats.bad,
 			total: config.moduleStats.all,
+			failedUnexpectedly: config.moduleStats.failedUnexpectedly,
+			passedUnexpectedly: config.moduleStats.passedUnexpectedly,
 			runtime: now() - config.moduleStats.started
 		} );
 	}
@@ -275,6 +279,8 @@ function done() {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
+		failedUnexpectedly: config.stats.failedUnexpectedly,
+		passedUnexpectedly: config.stats.passedUnexpectedly,
 		runtime: runtime
 	} );
 }
