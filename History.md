@@ -1,4 +1,26 @@
 
+2.0.0 / 2016-06-16
+==================
+
+  * All: Remove deprecated features
+  * All: Remove QUnit.config.autorun
+  * All: Code cleanup for non-supported browsers
+  * All: Prevent async tests from having multiple resume timeouts
+  * All: Decouple Core fixture reset from HTML reporter
+  * Assert: Remove throws signature with string expected value
+  * Dump: update typeOf to extract extra complex type definition
+  * Core: Introduce before/after hooks for modules
+  * Core: Decode "+" to " " (space) in url params
+  * Core: Throw error if QUnit is already defined globally
+  * HTML Reporter: Add reset/apply buttons in the module picker
+  * HTML Reporter: Improve module picker accessibility
+  * HTML Reporter: color/background order consistency
+  * HTML Reporter: Further improve module picker styling
+  * HTML Reporter: Improve toolbar styles
+  * HTML Reporter: Multi-select module dropdown
+  * Test: Refactor test.semaphore usage
+  * Tests: Test on all Node.js releases supported by upstream
+
 2.0.0-rc1 / 2016-04-19
 =====================
 
