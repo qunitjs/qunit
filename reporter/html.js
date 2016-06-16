@@ -13,6 +13,7 @@ QUnit.init = function() {
 var config = QUnit.config,
 	document = window.document,
 	collapseNext = false,
+	hasFailed = false,
 	hasOwn = Object.prototype.hasOwnProperty,
 	unfilteredUrl = setUrl( { filter: undefined, module: undefined,
 		moduleId: undefined, testId: undefined } ),
@@ -615,16 +616,36 @@ QUnit.done( function( details ) {
 			"</span> assertions of <span class='total'>",
 			details.total,
 			"</span> passed, <span class='failed'>",
-			details.failed,
-			"</span> failed."
-		].join( "" );
+			details.failedUnexpectedly,
+			"</span> failed"
+		];
+
+	var expectedFailures = details.failed - details.failedUnexpectedly;
+
+	if ( expectedFailures ) {
+		html = html.concat( [
+			", <span class='failed-as-expected'>",
+			expectedFailures,
+			"</span> failed as expected"
+		] );
+	}
+
+	if ( details.passedUnexpectedly ) {
+		html = html.concat( [
+			", <span class='passed-unexpectedly'>",
+			details.passedUnexpectedly,
+			"</span> passed unexpectedly"
+		] );
+	}
+
+	html.push( "." );
 
 	if ( banner ) {
-		banner.className = details.failed ? "qunit-fail" : "qunit-pass";
+		banner.className = hasFailed ? "qunit-fail" : "qunit-pass";
 	}
 
 	if ( tests ) {
-		id( "qunit-testresult" ).innerHTML = html;
+		id( "qunit-testresult" ).innerHTML = html.join( "" );
 	}
 
 	if ( config.altertitle && document.title ) {
@@ -632,13 +653,13 @@ QUnit.done( function( details ) {
 		// Show ✖ for good, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
-			( details.failed ? "\u2716" : "\u2714" ),
+			( details.failedUnexpectedly ? "\u2716" : "\u2714" ),
 			document.title.replace( /^[\u2714\u2716] /i, "" )
 		].join( " " );
 	}
 
 	// Clear own sessionStorage items if all tests passed
-	if ( config.reorder && defined.sessionStorage && details.failed === 0 ) {
+	if ( config.reorder && defined.sessionStorage && details.failedUnexpectedly === 0 ) {
 		for ( i = 0; i < sessionStorage.length; i++ ) {
 			key = sessionStorage.key( i++ );
 			if ( key.indexOf( "qunit-test-" ) === 0 ) {
@@ -782,7 +803,7 @@ QUnit.log( function( details ) {
 } );
 
 QUnit.testDone( function( details ) {
-	var testTitle, time, testItem, assertList,
+	var testTitle, time, testItem, assertList, todo,
 		good, bad, testCounts, skipped, sourceName,
 		tests = id( "qunit-tests" );
 
@@ -795,7 +816,7 @@ QUnit.testDone( function( details ) {
 	assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
 
 	good = details.passed;
-	bad = details.failed;
+	bad = details.failedUnexpectedly !== 0 || (details.todo && details.passedUnexpectedly === details.total);
 
 	// Store result when possible
 	if ( config.reorder && defined.sessionStorage ) {
@@ -806,7 +827,7 @@ QUnit.testDone( function( details ) {
 		}
 	}
 
-	if ( bad === 0 ) {
+	if ( !bad ) {
 
 		// Collapse the passing tests
 		addClass( assertList, "qunit-collapsed" );
@@ -823,8 +844,8 @@ QUnit.testDone( function( details ) {
 	// The testItem.firstChild is the test name
 	testTitle = testItem.firstChild;
 
-	testCounts = bad ?
-		"<b class='failed'>" + bad + "</b>, " + "<b class='passed'>" + good + "</b>, " :
+	testCounts = details.failed ?
+		"<b class='failed'>" + details.failed + "</b>, " + "<b class='passed'>" + good + "</b>, " :
 		"";
 
 	testTitle.innerHTML += " <b class='counts'>(" + testCounts +
@@ -841,7 +862,20 @@ QUnit.testDone( function( details ) {
 			toggleClass( assertList, "qunit-collapsed" );
 		} );
 
-		testItem.className = bad ? "fail" : "pass";
+		if ( bad ) {
+			testItem.className = "fail";
+			hasFailed = true;
+		} else {
+			testItem.className = "pass";
+		}
+
+		if ( details.todo ) {
+			testItem.className += " todo";
+			todo = document.createElement( "em" );
+			todo.className = "qunit-todo-label";
+			todo.innerHTML = "todo";
+			testItem.insertBefore( todo, testTitle );
+		}
 
 		time = document.createElement( "span" );
 		time.className = "runtime";
@@ -854,7 +888,7 @@ QUnit.testDone( function( details ) {
 		sourceName = document.createElement( "p" );
 		sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
 		addClass( sourceName, "qunit-source" );
-		if ( bad === 0 ) {
+		if ( !bad ) {
 			addClass( sourceName, "qunit-collapsed" );
 		}
 		addEvent( testTitle, "click", function() {
