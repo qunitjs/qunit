@@ -181,9 +181,6 @@ QUnit.test( module1Test2.name, function( assert ) {
 
 	delete testDoneContext.runtime;
 
-	// DEPRECATED: remove this delete when removing the duration property
-	delete testDoneContext.duration;
-
 	// Delete testDoneContext.assertions so we can easily jump to next assertion
 	delete testDoneContext.assertions;
 
@@ -268,8 +265,6 @@ QUnit.skip( module2Test3.name );
 QUnit.test( module2Test4.name, function( assert ) {
 	assert.expect( 1 );
 
-	delete testDoneContext.runtime;
-	delete testDoneContext.duration;
 	delete testDoneContext.source;
 
 	assert.deepEqual( testDoneContext, {
@@ -280,7 +275,8 @@ QUnit.test( module2Test4.name, function( assert ) {
 		passed: 0,
 		total: 0,
 		skipped: true,
-		testId: module2Test3.testId
+		testId: module2Test3.testId,
+		runtime: 0
 	}, "testDone context" );
 } );
 

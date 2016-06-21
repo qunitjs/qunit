@@ -206,9 +206,11 @@ Test.prototype = {
 		}
 
 		var i,
+			skipped = !!this.skip,
 			bad = 0;
 
 		this.runtime = now() - this.started;
+
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
 
@@ -224,11 +226,11 @@ Test.prototype = {
 		runLoggingCallbacks( "testDone", {
 			name: this.testName,
 			module: this.module.name,
-			skipped: !!this.skip,
+			skipped: skipped,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length,
-			runtime: this.runtime,
+			runtime: skipped ? 0 : this.runtime,
 
 			// HTML Reporter use
 			assertions: this.assertions,
