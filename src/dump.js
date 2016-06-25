@@ -258,7 +258,10 @@ QUnit.dump = ( function() {
 				date: quote,
 				regexp: literal,
 				number: literal,
-				"boolean": literal
+				"boolean": literal,
+				symbol: function( sym ) {
+					return sym.toString();
+				}
 			},
 
 			// If true, entities are escaped ( <, >, \t, space and \n )
