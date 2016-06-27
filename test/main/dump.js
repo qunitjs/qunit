@@ -1,3 +1,5 @@
+/* globals Symbol:false */
+
 QUnit.module( "dump", {
 	afterEach: function() {
 		QUnit.dump.maxDepth = null;
@@ -16,6 +18,11 @@ QUnit.test( "dump output", function( assert ) {
 			QUnit.dump.parse( document.getElementsByTagName( "h1" ) ),
 			"[\n  <h1 id=\"qunit-header\"></h1>\n]"
 		);
+	}
+
+	if ( typeof Symbol === "function" ) {
+		var sym = Symbol( "QUnit" );
+		assert.equal( QUnit.dump.parse( sym ), "Symbol(QUnit)", "parse is correct for symbols" );
 	}
 } );
 

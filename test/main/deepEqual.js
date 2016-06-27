@@ -1892,6 +1892,6 @@ QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function ( assert ) {
 	assert.equal( QUnit.equiv( a, a ), true, "Same symbol is equivalent" );
 	assert.equal(
 		QUnit.equiv( a, b ), false,
-		"Not equivalent to another similar symbol built build on the same token"
+		"Not equivalent to another similar symbol built on the same token"
 	);
 } );
