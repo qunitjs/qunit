@@ -411,7 +411,7 @@ function toolbarModuleFilter () {
 
 	// Processes selection changes
 	function selectionChange( evt ) {
-		var i,
+		var i, item,
 			checkbox = evt && evt.target || allCheckbox,
 			modulesList = dropDownList.getElementsByTagName( "input" ),
 			selectedNames = [];
@@ -424,15 +424,16 @@ function toolbarModuleFilter () {
 		   removeClass( allCheckbox.parentNode, "checked" );
 		}
 		for ( i = 0; i < modulesList.length; i++ )  {
+			item = modulesList[ i ];
 			if ( !evt ) {
-				toggleClass( modulesList[ i ].parentNode, "checked", modulesList[ i ].checked );
+				toggleClass( item.parentNode, "checked", item.checked );
 			} else if ( checkbox === allCheckbox && checkbox.checked ) {
-				modulesList[ i ].checked = false;
-				removeClass( modulesList[ i ].parentNode, "checked" );
+				item.checked = false;
+				removeClass( item.parentNode, "checked" );
 			}
-			dirty = dirty || ( checkbox.checked !== checkbox.defaultChecked );
-			if ( modulesList[ i ].checked ) {
-				selectedNames.push( modulesList[ i ].parentNode.textContent );
+			dirty = dirty || ( item.checked !== item.defaultChecked );
+			if ( item.checked ) {
+				selectedNames.push( item.parentNode.textContent );
 			}
 		}
 
