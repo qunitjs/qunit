@@ -26,6 +26,7 @@ QUnit.assert = Assert.prototype = {
 			acceptCallCount = 1;
 		}
 
+		test.asyncCallCount += acceptCallCount;
 		test.semaphore += 1;
 		test.usedAsync = true;
 		pauseProcessing( test );
@@ -37,13 +38,21 @@ QUnit.assert = Assert.prototype = {
 					sourceFromStacktrace( 2 ) );
 				return;
 			}
+
 			acceptCallCount -= 1;
+			test.asyncCallCount -= 1;
+
 			if ( acceptCallCount > 0 ) {
 				return;
 			}
 
 			test.semaphore -= 1;
 			popped = true;
+
+			if ( test.asyncCallCount > 0 ) {
+				return;
+			}
+
 			resumeProcessing( test );
 		};
 	},

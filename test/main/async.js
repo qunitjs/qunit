@@ -20,6 +20,14 @@ function _setupForFailingAssertionsAfterAsyncDone( assert ) {
 	};
 }
 
+function asyncCallback( assert ) {
+	var done = assert.async();
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
+}
+
 QUnit.module( "assert.async" );
 
 QUnit.test( "single call", function( assert ) {
@@ -101,6 +109,22 @@ QUnit.test( "waterfall calls", function( assert ) {
 	} );
 } );
 
+QUnit.test( "waterfall calls of differing speeds", function( assert ) {
+	var done2,
+		done1 = assert.async();
+
+	assert.expect( 2 );
+	setTimeout( function() {
+		assert.ok( true, "first" );
+		done1();
+		done2 = assert.async();
+		setTimeout( function() {
+			assert.ok( true, "second" );
+			done2();
+		}, 100 );
+	} );
+} );
+
 QUnit.test( "fails if callback is called more than once in test", function( assert ) {
 
 	// Having an outer async flow in this test avoids the need to manually modify QUnit internals
@@ -147,7 +171,18 @@ QUnit.test( "fails if callback is called more than callback call count", functio
 	}, new RegExp( "Too many calls to the `assert.async` callback" ) );
 
 	done();
+} );
 
+QUnit.module( "assert.async in module hooks", {
+	before: asyncCallback,
+	beforeEach: asyncCallback,
+	afterEach: asyncCallback,
+	after: asyncCallback
+} );
+
+QUnit.test( "calls in all hooks", function( assert ) {
+	assert.expect( 5 );
+	asyncCallback( assert );
 } );
 
 QUnit.module( "assert.async fails if callback is called more than once in", {

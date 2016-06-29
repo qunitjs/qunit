@@ -106,6 +106,26 @@ QUnit.test( "fulfilled Promise", function( assert ) {
 	assert.expect( 1 );
 } );
 
+QUnit.module( "Module with Promise-aware everything", {
+	before: function( assert ) {
+		return createMockPromise( assert );
+	},
+	beforeEach: function( assert ) {
+		return createMockPromise( assert );
+	},
+	afterEach: function( assert ) {
+		return createMockPromise( assert );
+	},
+	after: function( assert ) {
+		return createMockPromise( assert );
+	}
+} );
+
+QUnit.test( "fullfilled Promise", function( assert ) {
+	assert.expect( 5 );
+	return createMockPromise( assert );
+} );
+
 QUnit.module( "Promise-aware return values without beforeEach/afterEach" );
 
 QUnit.test( "non-Promise", function( assert ) {
