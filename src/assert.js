@@ -17,7 +17,8 @@ QUnit.assert = Assert.prototype = {
 
 	// Put a hold on processing and return a function that will release it a maximum of once.
 	async: function( count ) {
-		var test = this.test,
+		var resume,
+			test = this.test,
 			popped = false,
 			acceptCallCount = count;
 
@@ -26,7 +27,7 @@ QUnit.assert = Assert.prototype = {
 		}
 
 		test.usedAsync = true;
-		internalStop( test );
+		resume = internalStop( test );
 
 		return function done() {
 
@@ -41,7 +42,7 @@ QUnit.assert = Assert.prototype = {
 			}
 
 			popped = true;
-			internalStart( test );
+			resume();
 		};
 	},
 

@@ -225,40 +225,6 @@ function process( last ) {
 	}
 }
 
-function pauseProcessing( test ) {
-	config.blocking = true;
-
-	if ( config.testTimeout && defined.setTimeout ) {
-		clearTimeout( config.timeout );
-		config.timeout = setTimeout( function() {
-			test.semaphore = 0;
-			QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
-			resumeProcessing( test );
-		}, config.testTimeout );
-	}
-}
-
-function resumeProcessing( test ) {
-
-	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
-	if ( defined.setTimeout ) {
-		setTimeout( function() {
-			if ( test.semaphore > 0 || test.resumed ) {
-				return;
-			}
-			test.resumed = true;
-
-			if ( config.timeout ) {
-				clearTimeout( config.timeout );
-			}
-
-			begin();
-		}, 13 );
-	} else {
-		begin();
-	}
-}
-
 function done() {
 	var runtime, passed;
 

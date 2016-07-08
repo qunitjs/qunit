@@ -118,7 +118,7 @@ Test.prototype = {
 
 			// Restart the tests if they're blocking
 			if ( config.blocking ) {
-				internalStart( this );
+				internalRecover( this );
 			}
 		}
 
@@ -355,15 +355,15 @@ Test.prototype = {
 	},
 
 	resolvePromise: function( promise, phase ) {
-		var then, message,
+		var then, resume, message,
 			test = this;
 		if ( promise != null ) {
 			then = promise.then;
 			if ( QUnit.objectType( then ) === "function" ) {
-				internalStop( test );
+				resume = internalStop( test );
 				then.call(
 					promise,
-					function() { internalStart( test ); },
+					function() { resume(); },
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
@@ -374,7 +374,7 @@ Test.prototype = {
 						saveGlobal();
 
 						// Unblock
-						internalStart( test );
+						resume();
 					}
 				);
 			}
@@ -622,14 +622,41 @@ function only( testName, callback ) {
 	newTest.queue();
 }
 
+// Put a hold on processing and return a function that will release it.
 function internalStop( test ) {
-	test.semaphore += 1;
+	var released = false;
 
-	pauseProcessing( test );
+	test.semaphore += 1;
+	config.blocking = true;
+
+	// Set a recovery timeout, if so configured.
+	if ( config.testTimeout && defined.setTimeout ) {
+		clearTimeout( config.timeout );
+		config.timeout = setTimeout( function() {
+			QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
+			internalRecover( test );
+		}, config.testTimeout );
+	}
+
+	return function resume() {
+		if ( released ) {
+			return;
+		}
+
+		released = true;
+		test.semaphore -= 1;
+		internalStart( test );
+	};
 }
 
+// Forcefully release all processing holds.
+function internalRecover( test ) {
+	test.semaphore = 0;
+	internalStart( test );
+}
+
+// Release a processing hold, scheduling a resumption attempt if no holds remain.
 function internalStart( test ) {
-	test.semaphore -= 1;
 
 	// If semaphore is non-numeric, throw error
 	if ( isNaN( test.semaphore ) ) {
@@ -658,7 +685,23 @@ function internalStart( test ) {
 		return;
 	}
 
-	resumeProcessing( test );
+	// Add a slight delay to allow more assertions etc.
+	if ( defined.setTimeout ) {
+		setTimeout( function() {
+			if ( test.semaphore > 0 || test.resumed ) {
+				return;
+			}
+			test.resumed = true;
+
+			if ( config.timeout ) {
+				clearTimeout( config.timeout );
+			}
+
+			begin();
+		}, 13 );
+	} else {
+		begin();
+	}
 }
 
 function numberOfTests( module ) {
