@@ -15,8 +15,7 @@ QUnit.assert = Assert.prototype = {
 		}
 	},
 
-	// Increment this Test's semaphore counter, then return a function that
-	// decrements that counter a maximum of once.
+	// Put a hold on processing and return a function that will release it a maximum of once.
 	async: function( count ) {
 		var test = this.test,
 			popped = false,
@@ -26,9 +25,8 @@ QUnit.assert = Assert.prototype = {
 			acceptCallCount = 1;
 		}
 
-		test.semaphore += 1;
 		test.usedAsync = true;
-		pauseProcessing( test );
+		internalStop( test );
 
 		return function done() {
 
@@ -42,9 +40,8 @@ QUnit.assert = Assert.prototype = {
 				return;
 			}
 
-			test.semaphore -= 1;
 			popped = true;
-			resumeProcessing( test );
+			internalStart( test );
 		};
 	},
 

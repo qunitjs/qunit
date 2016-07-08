@@ -111,7 +111,7 @@ extend( QUnit, {
 			);
 		}
 
-		resumeProcessing();
+		scheduleBegin();
 	},
 
 	config: config,
@@ -138,7 +138,7 @@ extend( QUnit, {
 		config.blocking = false;
 
 		if ( config.autostart ) {
-			resumeProcessing();
+			scheduleBegin();
 		}
 	},
 
@@ -149,6 +149,20 @@ extend( QUnit, {
 } );
 
 registerLoggingCallbacks( QUnit );
+
+function scheduleBegin() {
+
+	runStarted = true;
+
+	// Add a slight delay to allow definition of more modules and tests.
+	if ( defined.setTimeout ) {
+		setTimeout( function() {
+			begin();
+		}, 13 );
+	} else {
+		begin();
+	}
+}
 
 function begin() {
 	var i, l,
@@ -225,22 +239,17 @@ function pauseProcessing( test ) {
 }
 
 function resumeProcessing( test ) {
-	runStarted = true;
 
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
 		setTimeout( function() {
-			var current = test || config.current;
-			if ( current && ( current.semaphore > 0 || current.resumed ) ) {
+			if ( test.semaphore > 0 || test.resumed ) {
 				return;
 			}
+			test.resumed = true;
 
 			if ( config.timeout ) {
 				clearTimeout( config.timeout );
-			}
-
-			if ( current ) {
-				current.resumed = true;
 			}
 
 			begin();

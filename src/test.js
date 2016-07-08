@@ -627,16 +627,12 @@ function only( testName, callback ) {
 }
 
 function internalStop( test ) {
-
-	// If a test is running, adjust its semaphore
 	test.semaphore += 1;
 
 	pauseProcessing( test );
 }
 
 function internalStart( test ) {
-
-	// If a test is running, adjust its semaphore
 	test.semaphore -= 1;
 
 	// If semaphore is non-numeric, throw error
