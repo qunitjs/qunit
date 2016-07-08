@@ -230,21 +230,17 @@ function resumeProcessing( test ) {
 	// A slight delay to allow this iteration of the event loop to finish (more assertions, etc.)
 	if ( defined.setTimeout ) {
 		setTimeout( function() {
-			var current;
-
-			// Ensure we are resuming the current test
-			if ( test && test === config.current ) {
-				current = test;
-			} else {
-				current = config.current;
-			}
-
-			if ( current && ( current.semaphore > 0 ) ) {
+			var current = test || config.current;
+			if ( current && ( current.semaphore > 0 || current.resumed ) ) {
 				return;
 			}
 
 			if ( config.timeout ) {
 				clearTimeout( config.timeout );
+			}
+
+			if ( current ) {
+				current.resumed = true;
 			}
 
 			begin();

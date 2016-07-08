@@ -12,7 +12,6 @@ function Test( settings ) {
 	this.assertions = [];
 	this.semaphore = 0;
 	this.usedAsync = false;
-	this.asyncCallCount = 0;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 
