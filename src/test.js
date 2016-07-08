@@ -687,11 +687,13 @@ function internalStart( test ) {
 
 	// Add a slight delay to allow more assertions etc.
 	if ( defined.setTimeout ) {
-		setTimeout( function() {
-			if ( test.semaphore > 0 || test.resumed ) {
+		if ( config.timeout ) {
+			clearTimeout( config.timeout );
+		}
+		config.timeout = setTimeout( function() {
+			if ( test.semaphore > 0 ) {
 				return;
 			}
-			test.resumed = true;
 
 			if ( config.timeout ) {
 				clearTimeout( config.timeout );
