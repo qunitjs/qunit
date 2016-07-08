@@ -100,10 +100,6 @@ Test.prototype = {
 
 		config.current = this;
 
-		if ( this.async ) {
-			internalStop( this );
-		}
-
 		this.callbackStarted = now();
 
 		if ( config.notrycatch ) {
