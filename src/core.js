@@ -135,10 +135,12 @@ extend( QUnit, {
 			filter: ""
 		}, true );
 
-		config.blocking = false;
+		if ( !runStarted ) {
+			config.blocking = false;
 
-		if ( config.autostart ) {
-			scheduleBegin();
+			if ( config.autostart ) {
+				scheduleBegin();
+			}
 		}
 	},
 
