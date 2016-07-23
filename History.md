@@ -1,4 +1,16 @@
 
+2.0.1 / 2016-07-23
+==================
+
+  * Core: Add extra guard against multiple begin()s
+  * Test: Use a single property for tracking all async deferred calls
+  * Core: Use callback-based pause/resume for better multi-pause isolation
+  * Core: Better isolate async abstractions
+  * Core: Improve internal async handling by removing resumed
+  * HTML Reporter: Fix apply/reset button visibilty
+  * Core: Ensure runtime for skipped tests is 0
+  * Dump: Add parser for Symbol
+
 2.0.0 / 2016-06-16
 ==================
 
