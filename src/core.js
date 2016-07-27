@@ -252,6 +252,7 @@ function done() {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,
+		warnings: config.stats.warnings,
 		runtime: runtime
 	} );
 }

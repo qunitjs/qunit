@@ -210,6 +210,8 @@ Test.prototype = {
 		config.stats.all += this.assertions.length;
 		config.moduleStats.all += this.assertions.length;
 
+		config.stats.warnings = QUnit.warning.log;
+
 		for ( i = 0; i < this.assertions.length; i++ ) {
 			if ( !this.assertions[ i ].result ) {
 				bad++;

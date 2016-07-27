@@ -42,6 +42,7 @@ grunt.initConfig( {
 				"src/equiv.js",
 				"src/dump.js",
 				"src/export.js",
+				"src/warning.js",
 				"src/outro.js",
 				"runner/fixture.js",
 				"reporter/intro.js",
