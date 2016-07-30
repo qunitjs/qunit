@@ -50,7 +50,7 @@
   },
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
-    "ci": "grunt && grunt coveralls",
+    "ci": "grunt test && grunt coveralls",
     "test": "grunt",
     "prepublish": "grunt build"
   },
