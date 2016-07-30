@@ -1,6 +1,9 @@
+import QUnit from "../src/core";
+import { window, document } from "../src/globals";
+
 ( function() {
 
-if ( typeof window === "undefined" || !window.document ) {
+if ( typeof window === "undefined" || typeof document === "undefined" ) {
 	return;
 }
 

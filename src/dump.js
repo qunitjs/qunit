@@ -1,6 +1,9 @@
+import config from "./core/config";
+import { inArray, toString, is } from "./core/utilities";
+
 // Based on jsDump by Ariel Flesler
 // http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
-QUnit.dump = ( function() {
+export default ( function() {
 	function quote( str ) {
 		return "\"" + str.toString().replace( /\\/g, "\\\\" ).replace( /"/g, "\\\"" ) + "\"";
 	}
@@ -82,11 +85,11 @@ QUnit.dump = ( function() {
 					type = "null";
 				} else if ( typeof obj === "undefined" ) {
 					type = "undefined";
-				} else if ( QUnit.is( "regexp", obj ) ) {
+				} else if ( is( "regexp", obj ) ) {
 					type = "regexp";
-				} else if ( QUnit.is( "date", obj ) ) {
+				} else if ( is( "date", obj ) ) {
 					type = "date";
-				} else if ( QUnit.is( "function", obj ) ) {
+				} else if ( is( "function", obj ) ) {
 					type = "function";
 				} else if ( obj.setInterval !== undefined &&
 						obj.document !== undefined &&
@@ -136,7 +139,7 @@ QUnit.dump = ( function() {
 			literal: literal,
 			join: join,
 			depth: 1,
-			maxDepth: QUnit.config.maxDepth,
+			maxDepth: config.maxDepth,
 
 			// This is the list of parsers, to modify them, use dump.setParser
 			parsers: {
@@ -276,6 +279,3 @@ QUnit.dump = ( function() {
 
 	return dump;
 }() );
-
-// Back compat
-QUnit.jsDump = QUnit.dump;

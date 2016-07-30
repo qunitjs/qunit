@@ -1,3 +1,9 @@
+import { window } from "../globals";
+import { pushFailure, test } from "../test";
+
+import config from "./config";
+import { defined, extend } from "./utilities";
+
 ( function() {
 	if ( !defined.document ) {
 		return;
@@ -19,14 +25,14 @@
 		// Treat return value as window.onerror itself does,
 		// Only do our handling if not suppressed.
 		if ( ret !== true ) {
-			if ( QUnit.config.current ) {
-				if ( QUnit.config.current.ignoreGlobalErrors ) {
+			if ( config.current ) {
+				if ( config.current.ignoreGlobalErrors ) {
 					return true;
 				}
-				QUnit.pushFailure( error, filePath + ":" + linerNr );
+				pushFailure( error, filePath + ":" + linerNr );
 			} else {
-				QUnit.test( "global failure", extend( function() {
-					QUnit.pushFailure( error, filePath + ":" + linerNr );
+				test( "global failure", extend( function() {
+					pushFailure( error, filePath + ":" + linerNr );
 				}, { validTest: true } ) );
 			}
 			return false;

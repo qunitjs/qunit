@@ -3,13 +3,7 @@ module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
 
-function process( code, filepath ) {
-
-	// Make coverage ignore external files
-	if ( filepath.match( /^external\// ) ) {
-		code = "/*istanbul ignore next */\n" + code;
-	}
-
+function process( code ) {
 	return code
 
 		// Embed version
@@ -28,33 +22,19 @@ grunt.initConfig( {
 	concat: {
 		options: { process: process },
 		"src-js": {
-			src: [
-				"src/intro.js",
-				"src/core/initialize.js",
-				"src/core/utilities.js",
-				"src/core/stacktrace.js",
-				"src/core/config.js",
-				"src/core/logging.js",
-				"src/core/onerror.js",
-				"src/core.js",
-				"src/test.js",
-				"src/assert.js",
-				"src/equiv.js",
-				"src/dump.js",
-				"src/export.js",
-				"src/outro.js",
-				"runner/fixture.js",
-				"reporter/intro.js",
-				"reporter/urlparams.js",
-				"reporter/html.js",
-				"reporter/diff.js",
-				"reporter/outro.js"
-			],
+			src: "dist/qunit.js",
 			dest: "dist/qunit.js"
 		},
 		"src-css": {
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
+		}
+	},
+	rollup: {
+		options: require( "./rollup.config" ),
+		src: {
+			src: "src/qunit.js",
+			dest: "dist/qunit.js"
 		}
 	},
 	jshint: {
@@ -63,7 +43,10 @@ grunt.initConfig( {
 		},
 		all: [
 			"*.js",
-			"{test,dist}/**/*.js",
+			"reporter/**/*.js",
+			"runner/**/*.js",
+			"src/**/*.js",
+			"test/**/*.js",
 			"build/*.js",
 			"build/tasks/**/*.js"
 		]
@@ -156,7 +139,7 @@ grunt.initConfig( {
 	},
 	concurrent: {
 		build: [
-			"concat:src-js",
+			"build:js",
 			"concat:src-css"
 		],
 		test: [
@@ -186,7 +169,8 @@ grunt.initConfig( {
 } );
 
 grunt.loadTasks( "build/tasks" );
-grunt.registerTask( "build", [ "concat" ] );
+grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
+grunt.registerTask( "build", [ "concurrent:build" ] );
 grunt.registerTask( "default", [ "concurrent:build", "concurrent:test" ] );
 
 };

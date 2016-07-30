@@ -1,6 +1,8 @@
+import { objectType } from "./core/utilities";
+
 // Test for equality any JavaScript type.
 // Author: Philippe Rathé <prathe@gmail.com>
-QUnit.equiv = ( function() {
+export default ( function() {
 
 	// Stack to decide between skip/abort functions
 	var callers = [];
@@ -239,8 +241,8 @@ QUnit.equiv = ( function() {
 	};
 
 	function typeEquiv( a, b ) {
-		var type = QUnit.objectType( a );
-		return QUnit.objectType( b ) === type && callbacks[ type ]( b, a );
+		var type = objectType( a );
+		return objectType( b ) === type && callbacks[ type ]( b, a );
 	}
 
 	// The real equiv function

@@ -12,13 +12,11 @@
 	"undef": true,
 	"unused": true,
 
-	"browser": true,
+	"esversion": 6,
 
 	"globals": {
-		"QUnit": false,
 		"define": false,
 		"exports": false,
-		"module": false,
-		"console": false
+		"module": false
 	}
 }
