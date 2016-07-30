@@ -1,3 +1,6 @@
+import QUnit from "../src/core";
+import { escapeText } from "./html";
+
 /*
  * This file is a modified version of google-diff-match-patch's JavaScript implementation
  * (https://code.google.com/p/google-diff-match-patch/source/browse/trunk/javascript/diff_match_patch_uncompressed.js),

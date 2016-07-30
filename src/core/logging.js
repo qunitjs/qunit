@@ -1,5 +1,8 @@
+import config from "./config";
+import { objectType } from "./utilities";
+
 // Register logging callbacks
-function registerLoggingCallbacks( obj ) {
+export function registerLoggingCallbacks( obj ) {
 	var i, l, key,
 		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
 			"moduleStart", "moduleDone" ];
@@ -30,7 +33,7 @@ function registerLoggingCallbacks( obj ) {
 	}
 }
 
-function runLoggingCallbacks( key, args ) {
+export function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
 	callbacks = config.callbacks[ key ];

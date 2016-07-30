@@ -1,3 +1,7 @@
+import Assert from "./assert";
+import { defined } from "./core/utilities";
+import { window } from "./globals";
+
 function applyDeprecated( name ) {
 	return function() {
 		throw new Error(
@@ -6,6 +10,8 @@ function applyDeprecated( name ) {
 		);
 	};
 }
+
+export default function exportQUnit( QUnit ) {
 
 Object.keys( Assert.prototype ).forEach( function( key ) {
 	QUnit[ key ] = applyDeprecated( "`QUnit." + key + "`" );
@@ -86,4 +92,6 @@ if ( typeof define === "function" && define.amd ) {
 		return QUnit;
 	} );
 	QUnit.config.autostart = false;
+}
+
 }

@@ -29,6 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "async": "1.5.2",
+    "babel-preset-es2015-rollup": "^1.1.1",
     "browserstack-runner": "0.4.3",
     "commitplease": "2.3.0",
     "grunt": "0.4.5",
@@ -41,9 +42,11 @@
     "grunt-git-authors": "3.1.1",
     "grunt-jscs": "2.8.0",
     "grunt-qunit-istanbul": "0.6.0",
+    "grunt-rollup": "^0.7.1",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.4.1",
-    "requirejs": "2.2.0"
+    "requirejs": "2.2.0",
+    "rollup-plugin-babel": "^2.6.1"
   },
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",

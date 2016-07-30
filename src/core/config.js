@@ -3,7 +3,7 @@
  * Later exposed as QUnit.config
  * `config` initialized at top of scope
  */
-var config = {
+const config = {
 
 	// The queue of tests to run
 	queue: [],
@@ -51,3 +51,5 @@ var config = {
 
 // Push a loose unnamed module to the modules collection
 config.modules.push( config.currentModule );
+
+export default config;

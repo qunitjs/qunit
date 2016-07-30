@@ -1,3 +1,8 @@
+import QUnit from "../src/core";
+import { window } from "../src/globals";
+
+( function() {
+
 // Only interact with URLs via window.location
 var location = typeof window !== "undefined" && window.location;
 if ( !location ) {
@@ -94,3 +99,5 @@ function getUrlParams() {
 function decodeQueryParam( param ) {
 	return decodeURIComponent( param.replace( /\+/g, "%20" ) );
 }
+
+}() );

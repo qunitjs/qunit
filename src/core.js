@@ -1,3 +1,25 @@
+import { window, setTimeout, console } from "./globals";
+
+import equiv from "./equiv";
+import dump from "./dump";
+import Assert from "./assert";
+import Test, { test, skip, only, pushFailure, generateHash } from "./test";
+import exportQUnit from "./export";
+
+import config from "./core/config";
+import { defined, extend, objectType, is, now } from "./core/utilities";
+import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
+import { sourceFromStacktrace } from "./core/stacktrace";
+
+const QUnit = {};
+
+var globalStartCalled = false;
+var runStarted = false;
+
+export const internalState = {
+	autorun: false
+};
+
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 
@@ -150,6 +172,14 @@ extend( QUnit, {
 	}
 } );
 
+QUnit.pushFailure = pushFailure;
+QUnit.assert = Assert.prototype;
+QUnit.equiv = equiv;
+QUnit.dump = dump;
+
+// 3.0 TODO: Remove
+QUnit.jsDump = dump;
+
 registerLoggingCallbacks( QUnit );
 
 function scheduleBegin() {
@@ -166,7 +196,7 @@ function scheduleBegin() {
 	}
 }
 
-function begin() {
+export function begin() {
 	var i, l,
 		modulesLog = [];
 
@@ -200,7 +230,7 @@ function begin() {
 	process( true );
 }
 
-function process( last ) {
+export function process( last ) {
 	function next() {
 		process( last );
 	}
@@ -230,7 +260,7 @@ function process( last ) {
 function done() {
 	var runtime, passed;
 
-	autorun = true;
+	internalState.autorun = true;
 
 	// Log the last module results
 	if ( config.previousModule ) {
@@ -265,3 +295,7 @@ function setHook( module, hookName ) {
 		module.testEnvironment[ hookName ] = callback;
 	};
 }
+
+exportQUnit( QUnit );
+
+export default QUnit;

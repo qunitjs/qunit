@@ -1,3 +1,32 @@
+import QUnit from "../src/core";
+import { window, sessionStorage, navigator } from "../src/globals";
+
+// Escape text for attribute or text content.
+export function escapeText( s ) {
+	if ( !s ) {
+		return "";
+	}
+	s = s + "";
+
+	// Both single quotes and double quotes (for attributes)
+	return s.replace( /['"<>&]/g, function( s ) {
+		switch ( s ) {
+		case "'":
+			return "&#039;";
+		case "\"":
+			return "&quot;";
+		case "<":
+			return "&lt;";
+		case ">":
+			return "&gt;";
+		case "&":
+			return "&amp;";
+		}
+	} );
+}
+
+( function() {
+
 // Don't load the HTML Reporter on non-browser environments
 if ( typeof window === "undefined" || !window.document ) {
 	return;
@@ -29,30 +58,6 @@ var config = QUnit.config,
 		}() )
 	},
 	modulesList = [];
-
-// Escape text for attribute or text content.
-function escapeText( s ) {
-	if ( !s ) {
-		return "";
-	}
-	s = s + "";
-
-	// Both single quotes and double quotes (for attributes)
-	return s.replace( /['"<>&]/g, function( s ) {
-		switch ( s ) {
-		case "'":
-			return "&#039;";
-		case "\"":
-			return "&quot;";
-		case "<":
-			return "&lt;";
-		case ">":
-			return "&gt;";
-		case "&":
-			return "&amp;";
-		}
-	} );
-}
 
 function addEvent( elem, type, fn ) {
 	elem.addEventListener( type, fn, false );
@@ -876,3 +881,5 @@ if ( notPhantom && document.readyState === "complete" ) {
 } else {
 	addEvent( window, "load", QUnit.load );
 }
+
+}() );

@@ -1,8 +1,19 @@
+import global from "global";
+
+import { internalState, process, begin } from "./core";
+import { setTimeout, clearTimeout, sessionStorage } from "./globals";
+import Assert from "./assert";
+
+import config from "./core/config";
+import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/utilities";
+import { runLoggingCallbacks } from "./core/logging";
+import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
+
 var unitSampler,
 	focused = false,
 	priorityCount = 0;
 
-function Test( settings ) {
+export default function Test( settings ) {
 	var i, l;
 
 	++Test.count;
@@ -176,7 +187,7 @@ Test.prototype = {
 				processHooks( test, module.parentModule );
 			}
 			if ( module.testEnvironment &&
-				QUnit.objectType( module.testEnvironment[ handler ] ) === "function" ) {
+				objectType( module.testEnvironment[ handler ] ) === "function" ) {
 				hooks.push( test.queueHook( module.testEnvironment[ handler ], handler, module ) );
 			}
 		}
@@ -288,7 +299,7 @@ Test.prototype = {
 		}
 
 		// Prioritize previously failed tests, detected from sessionStorage
-		priority = QUnit.config.reorder && defined.sessionStorage &&
+		priority = config.reorder && defined.sessionStorage &&
 				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		return synchronize( run, priority, config.seed );
@@ -359,7 +370,7 @@ Test.prototype = {
 			test = this;
 		if ( promise != null ) {
 			then = promise.then;
-			if ( QUnit.objectType( then ) === "function" ) {
+			if ( objectType( then ) === "function" ) {
 				resume = internalStop( test );
 				then.call(
 					promise,
@@ -459,21 +470,21 @@ Test.prototype = {
 	}
 };
 
-QUnit.pushFailure = function() {
-	if ( !QUnit.config.current ) {
+export function pushFailure() {
+	if ( !config.current ) {
 		throw new Error( "pushFailure() assertion outside test context, in " +
 			sourceFromStacktrace( 2 ) );
 	}
 
 	// Gets current test obj
-	var currentTest = QUnit.config.current;
+	var currentTest = config.current;
 
 	return currentTest.pushFailure.apply( currentTest, arguments );
-};
+}
 
 // Based on Java's String.hashCode, a simple but not
 // rigorously collision resistant hashing function
-function generateHash( module, testName ) {
+export function generateHash( module, testName ) {
 	var hex,
 		i = 0,
 		hash = 0,
@@ -499,7 +510,7 @@ function synchronize( callback, priority, seed ) {
 	var last = !priority,
 		index;
 
-	if ( QUnit.objectType( callback ) === "array" ) {
+	if ( objectType( callback ) === "array" ) {
 		while ( callback.length ) {
 			synchronize( callback.shift() );
 		}
@@ -520,7 +531,7 @@ function synchronize( callback, priority, seed ) {
 		config.queue.push( callback );
 	}
 
-	if ( autorun && !config.blocking ) {
+	if ( internalState.autorun && !config.blocking ) {
 		process( last );
 	}
 }
@@ -570,17 +581,17 @@ function checkPollution() {
 
 	newGlobals = diff( config.pollution, old );
 	if ( newGlobals.length > 0 ) {
-		QUnit.pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
+		pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
 	}
 
 	deletedGlobals = diff( old, config.pollution );
 	if ( deletedGlobals.length > 0 ) {
-		QUnit.pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
+		pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
 	}
 }
 
 // Will be exposed as QUnit.test
-function test( testName, callback ) {
+export function test( testName, callback ) {
 	if ( focused )  { return; }
 
 	var newTest;
@@ -594,7 +605,7 @@ function test( testName, callback ) {
 }
 
 // Will be exposed as QUnit.skip
-function skip( testName ) {
+export function skip( testName ) {
 	if ( focused )  { return; }
 
 	var test = new Test( {
@@ -606,12 +617,12 @@ function skip( testName ) {
 }
 
 // Will be exposed as QUnit.only
-function only( testName, callback ) {
+export function only( testName, callback ) {
 	var newTest;
 
 	if ( focused )  { return; }
 
-	QUnit.config.queue.length = 0;
+	config.queue.length = 0;
 	focused = true;
 
 	newTest = new Test( {
@@ -623,7 +634,7 @@ function only( testName, callback ) {
 }
 
 // Put a hold on processing and return a function that will release it.
-function internalStop( test ) {
+export function internalStop( test ) {
 	var released = false;
 
 	test.semaphore += 1;
@@ -633,7 +644,7 @@ function internalStop( test ) {
 	if ( config.testTimeout && defined.setTimeout ) {
 		clearTimeout( config.timeout );
 		config.timeout = setTimeout( function() {
-			QUnit.pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
+			pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
 			internalRecover( test );
 		}, config.testTimeout );
 	}
@@ -662,7 +673,7 @@ function internalStart( test ) {
 	if ( isNaN( test.semaphore ) ) {
 		test.semaphore = 0;
 
-		QUnit.pushFailure(
+		pushFailure(
 			"Invalid value on test.semaphore",
 			sourceFromStacktrace( 2 )
 		);
@@ -678,7 +689,7 @@ function internalStart( test ) {
 	if ( test.semaphore < 0 ) {
 		test.semaphore = 0;
 
-		QUnit.pushFailure(
+		pushFailure(
 			"Tried to restart test while already started (test's semaphore was 0 already)",
 			sourceFromStacktrace( 2 )
 		);
