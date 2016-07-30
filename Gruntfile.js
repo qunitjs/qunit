@@ -171,6 +171,7 @@ grunt.initConfig( {
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
 grunt.registerTask( "build", [ "concurrent:build" ] );
-grunt.registerTask( "default", [ "concurrent:build", "concurrent:test" ] );
+grunt.registerTask( "test", [ "concurrent:test" ] );
+grunt.registerTask( "default", [ "build", "test" ] );
 
 };
