@@ -229,6 +229,7 @@ Test.prototype = {
 			}
 		}
 
+    notifyTestsRan( this.module );
 		emit( "testEnd", {
 			name: this.testName,
 			module: this.module.name,
