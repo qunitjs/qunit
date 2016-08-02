@@ -586,31 +586,25 @@ function appendTest( name, testId, moduleName ) {
 
 // HTML Reporter initialization and load
 QUnit.on( "runStart", function( details ) {
-  var qunit = id( "qunit" );
+  var i, moduleObj, tests;
 
-  // Fixture is the only one necessary to run without the #qunit element
-  storeFixture();
-
-  if ( qunit ) {
-    qunit.innerHTML =
-      "<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-      "<h2 id='qunit-banner'></h2>" +
-      "<div id='qunit-testrunner-toolbar'></div>" +
-      appendFilteredTest() +
-      "<h2 id='qunit-userAgent'></h2>" +
-      "<ol id='qunit-tests'></ol>";
+  // Sort modules by name for the picker
+  for ( i = 0; i < details.modules.length; i++ ) {
+    moduleObj = details.modules[ i ];
+    if ( moduleObj.name ) {
+      modulesList.push( moduleObj.name );
+    }
   }
+  modulesList.sort( function( a, b ) {
+    return a.localeCompare( b );
+  } );
 
-  appendHeader();
-  appendBanner();
-  appendTestResults();
-  appendUserAgent();
-  appendToolbar();
+  // Initialize QUnit elements
+  appendInterface();
   appendTestsList( details.modules );
-  toolbarModuleFilter();
-
-  if ( qunit && config.hidepassed ) {
-    addClass( qunit.lastChild, "hidepass" );
+  tests = id( "qunit-tests" );
+  if ( tests && config.hidepassed ) {
+    addClass( tests, "hidepass" );
   }
 } );
 
