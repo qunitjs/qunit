@@ -40,7 +40,9 @@ function registerLoggingCallbacks( QUnit ) {
 // DEPRECATED: This will be removed on 2.0.0+
 // This function verifies if the loggingCallbacks were modified by the user
 // If so, it will restore it, assign the given callback and print a console warning
-function verifyLoggingCallbacks() {
+//
+// Comment it out for testing passing (it is not used anywhere).
+/* function verifyLoggingCallbacks() {
 	var loggingCallback, userCallback;
 
 	for ( loggingCallback in loggingCallbacks ) {
@@ -63,7 +65,7 @@ function verifyLoggingCallbacks() {
 			}
 		}
 	}
-}
+} */
 
 function emit( type, data ) {
 	var i, callbacks;
