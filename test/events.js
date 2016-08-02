@@ -15,35 +15,35 @@ var begin = 0,
 QUnit.on( "runStart", function( args ) {
 	totalTests = args.totalTests;
 	begin++;
-});
+} );
 
 QUnit.on( "runEnd", function() {
-});
+} );
 
 QUnit.on( "suiteStart", function( context ) {
 	moduleStart++;
 	moduleContext = context;
-});
+} );
 
 QUnit.on( "suiteEnd", function( context ) {
 	moduleDone++;
 	moduleDoneContext = context;
-});
+} );
 
 QUnit.on( "testStart", function( context ) {
 	testStart++;
 	testContext = context;
-});
+} );
 
 QUnit.on( "testEnd", function( context ) {
 	testDone++;
 	testDoneContext = context;
-});
+} );
 
 QUnit.on( "assert", function( context ) {
 	log++;
 	logContext = context;
-});
+} );
 
 QUnit.module( "events1" );
 
@@ -131,7 +131,7 @@ QUnit.test( "test1", function( assert ) {
 	}, "module context" );
 
 	assert.equal( log, 16, "QUnit.log calls" );
-});
+} );
 
 QUnit.test( "test2", function( assert ) {
 	assert.expect( 12 );
@@ -189,7 +189,7 @@ QUnit.test( "test2", function( assert ) {
 		]
 	}, "module context" );
 	assert.equal( log, 28, "QUnit.log calls" );
-});
+} );
 
 QUnit.module( "events2" );
 
@@ -253,7 +253,7 @@ QUnit.test( "test1", function( assert ) {
 	}, "module context" );
 
 	assert.equal( log, 38, "QUnit.log calls" );
-});
+} );
 
 QUnit.test( "test2", function( assert ) {
 	assert.expect( 8 );
@@ -291,7 +291,7 @@ QUnit.test( "test2", function( assert ) {
 	}, "module context" );
 
 	assert.equal( log, 46, "QUnit.log calls" );
-});
+} );
 
 QUnit.skip( "a skipped test" );
 
@@ -312,7 +312,7 @@ QUnit.test( "test the log for the skipped test", function( assert ) {
 		skipped: true,
 		testId: "f80e84a4"
 	}, "testDone context" );
-});
+} );
 
 QUnit.module( "duplicate listeners" );
 
@@ -321,7 +321,7 @@ QUnit.test( "are filtered out", function( assert ) {
 
 	var arr = [];
 	function assertPusher() {
-		arr.push("x");
+		arr.push( "x" );
 	}
 
 	QUnit.on( "assert", assertPusher );
@@ -330,7 +330,7 @@ QUnit.test( "are filtered out", function( assert ) {
 	QUnit.on( "assert", assertPusher );
 	assert.equal( arr.length, 2 );
 	assert.equal( arr.length, 3 );
-});
+} );
 
 QUnit.module( "custom events" );
 
@@ -338,7 +338,7 @@ QUnit.test( "are not possible", function( assert ) {
 	assert.expect( 2 );
 	assert.equal( QUnit.off, undefined, "QUnit.off should not be defined" );
 	assert.equal( QUnit.emit, undefined, "QUnit.emit should not be defined" );
-});
+} );
 
 testAutorun = true;
 
@@ -356,15 +356,15 @@ QUnit.on( "runEnd", function() {
 	// the module starts/ends after each test.
 	QUnit.module( "autorun" );
 
-	setTimeout(function() {
+	setTimeout( function() {
 		QUnit.test( "first", function( assert ) {
 			assert.equal( moduleStart, 1, "test started" );
 			assert.equal( moduleDone, 0, "test in progress" );
-		});
+		} );
 
 		QUnit.test( "second", function( assert ) {
 			assert.equal( moduleStart, 2, "test started" );
 			assert.equal( moduleDone, 1, "test in progress" );
-		});
+		} );
 	}, 5000 );
-});
+} );
