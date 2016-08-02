@@ -136,8 +136,7 @@ grunt.initConfig( {
 			"test/only",
 			"test/setTimeout",
 			"test/main/dump",
-			"test/deprecated",
-			"test/globals-node"
+			"test/deprecated"
 		]
 	},
 	concurrent: {
