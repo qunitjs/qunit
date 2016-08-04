@@ -12,8 +12,7 @@ module.exports = {
 	],
 
 	// jscs:disable disallowMultipleLineStrings
-	banner: "\
-/*!\n\
+	banner: "/*!\n\
  * QUnit @VERSION\n\
  * https://qunitjs.com/\n\
  *\n\
@@ -22,8 +21,7 @@ module.exports = {
  * https://jquery.org/license\n\
  *\n\
  * Date: @DATE\n\
- */\
-",
+ */",
 
 	// jscs:enable disallowMultipleLineStrings
 	globals: {
