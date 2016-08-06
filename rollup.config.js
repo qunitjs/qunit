@@ -7,7 +7,12 @@ module.exports = {
 	exports: "none",
 	plugins: [
 		babel( {
-			presets: [ "es2015-rollup" ]
+			presets: [
+
+				// Use ES2015 but don't transpile modules since Rollup does that
+				[ "es2015", { modules: false } ]
+			],
+			plugins: [ "external-helpers" ]
 		} )
 	],
 
