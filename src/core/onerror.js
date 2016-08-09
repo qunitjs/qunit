@@ -40,4 +40,4 @@ import { defined, extend } from "./utilities";
 
 		return ret;
 	};
-}() );
+} )();

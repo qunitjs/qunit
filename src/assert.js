@@ -119,9 +119,8 @@ Assert.prototype = {
 	},
 
 	equal: function( actual, expected, message ) {
-		/*jshint eqeqeq:false */
 		this.pushResult( {
-			result: expected == actual,
+			result: expected == actual,		// eslint-disable-line eqeqeq
 			actual: actual,
 			expected: expected,
 			message: message
@@ -129,9 +128,8 @@ Assert.prototype = {
 	},
 
 	notEqual: function( actual, expected, message ) {
-		/*jshint eqeqeq:false */
 		this.pushResult( {
-			result: expected != actual,
+			result: expected != actual,		// eslint-disable-line eqeqeq
 			actual: actual,
 			expected: expected,
 			message: message,
@@ -269,9 +267,8 @@ Assert.prototype = {
 // Provide an alternative to assert.throws(), for environments that consider throws a reserved word
 // Known to us are: Closure Compiler, Narwhal
 ( function() {
-	/*jshint sub:true */
-	Assert.prototype.raises = Assert.prototype [ "throws" ]; //jscs:ignore requireDotNotation
-}() );
+	Assert.prototype.raises = Assert.prototype [ "throws" ]; // eslint-disable-line dot-notation
+} )();
 
 function errorString( error ) {
 	var name, message,

@@ -1,3 +1,4 @@
+/* global module, exports, define */
 import Assert from "./assert";
 import { defined } from "./core/utilities";
 import { window } from "./globals";

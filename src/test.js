@@ -374,7 +374,9 @@ Test.prototype = {
 				resume = internalStop( test );
 				then.call(
 					promise,
-					function() { resume(); },
+					function() {
+						resume();
+					},
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
@@ -592,7 +594,9 @@ function checkPollution() {
 
 // Will be exposed as QUnit.test
 export function test( testName, callback ) {
-	if ( focused )  { return; }
+	if ( focused ) {
+		return;
+	}
 
 	var newTest;
 
@@ -606,7 +610,9 @@ export function test( testName, callback ) {
 
 // Will be exposed as QUnit.skip
 export function skip( testName ) {
-	if ( focused )  { return; }
+	if ( focused ) {
+		return;
+	}
 
 	var test = new Test( {
 		testName: testName,
@@ -620,7 +626,9 @@ export function skip( testName ) {
 export function only( testName, callback ) {
 	var newTest;
 
-	if ( focused )  { return; }
+	if ( focused ) {
+		return;
+	}
 
 	config.queue.length = 0;
 	focused = true;
@@ -719,7 +727,7 @@ function internalStart( test ) {
 
 function numberOfTests( module ) {
 	var count = module.tests.length;
-	while ( module = module.childModule ) {
+	while ( ( module = module.childModule ) ) {
 		count += module.tests.length;
 	}
 	return count;
@@ -727,7 +735,7 @@ function numberOfTests( module ) {
 
 function notifyTestsRan( module ) {
 	module.testsRun++;
-	while ( module = module.parentModule ) {
+	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
 	}
 }

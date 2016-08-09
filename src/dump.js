@@ -110,7 +110,11 @@ export default ( function() {
 			},
 
 			separator: function() {
-				return this.multiline ? this.HTML ? "<br />" : "\n" : this.HTML ? "&#160;" : " ";
+				if ( this.multiline ) {
+                    return this.HTML ? "<br />" : "\n";
+                } else {
+                    return this.HTML ? "&#160;" : " ";
+                }
 			},
 
 			// Extra can be a number, shortcut for increasing-calling-decreasing
@@ -278,4 +282,4 @@ export default ( function() {
 		};
 
 	return dump;
-}() );
+} )();

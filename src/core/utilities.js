@@ -18,7 +18,7 @@ export const defined = {
 		} catch ( e ) {
 			return false;
 		}
-	}() )
+	} )()
 };
 
 // Returns a new Array with the elements that are in a but not in b
@@ -60,7 +60,7 @@ export function inArray( elem, array ) {
  * @param {Object} obj
  * @return {Object} New object with only the own properties (recursively).
  */
-export function objectValues ( obj ) {
+export function objectValues( obj ) {
 	var key, val,
 		vals = is( "array", obj ) ? [] : {};
 	for ( key in obj ) {

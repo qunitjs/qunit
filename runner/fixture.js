@@ -40,4 +40,4 @@ function resetFixture() {
 
 QUnit.testStart( resetFixture );
 
-}() );
+} )();

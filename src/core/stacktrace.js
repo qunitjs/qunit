@@ -1,6 +1,8 @@
 // Doesn't support IE9, it will return undefined on these browsers
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-var fileName = ( sourceFromStacktrace( 0 ) || "" ).replace( /(:\d+)+\)?/, "" ).replace( /.+\//, "" );
+var fileName = ( sourceFromStacktrace( 0 ) || "" )
+	.replace( /(:\d+)+\)?/, "" )
+	.replace( /.+\//, "" );
 
 export function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 4 : offset;

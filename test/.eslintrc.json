@@ -1,6 +1,7 @@
 {
-	"extends": "../.jshintrc",
-	"browser": true,
+	"env": {
+		"browser": true
+	},
 	"globals": {
 		"QUnit": false,
 		"console": false
