@@ -1,4 +1,4 @@
-/*jshint node:true */
+/* eslint-env node */
 module.exports = function( grunt ) {
 
 require( "load-grunt-tasks" )( grunt );
@@ -37,36 +37,28 @@ grunt.initConfig( {
 			dest: "dist/qunit.js"
 		}
 	},
-	jshint: {
+	eslint: {
 		options: {
-			jshintrc: true
+			config: ".eslintrc.json"
 		},
 		all: [
 			"*.js",
-			"reporter/**/*.js",
+            "reporter/**/*.js",
 			"runner/**/*.js",
 			"src/**/*.js",
+
 			"test/**/*.js",
 			"build/*.js",
 			"build/tasks/**/*.js"
 		]
-	},
-	jscs: {
-		options: {
-			config: ".jscsrc"
-		},
-		all: [
-			"<%= jshint.all %>",
-			"!test/main/deepEqual.js"
-		]
-	},
+    },
 	search: {
 		options: {
 
 			// Ensure that the only HTML entities used are those with a special status in XHTML
 			// and that any common singleton/empty HTML elements end with the XHTML-compliant
 			// "/>"rather than ">"
-			searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g,
+			searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g,     // eslint-disable-line max-len
 			logFormat: "console",
 			failOnMatch: true
 		},
@@ -143,8 +135,6 @@ grunt.initConfig( {
 			"concat:src-css"
 		],
 		test: [
-			"jshint",
-			"jscs",
 			"search",
 			"qunit",
 			"test-on-node"
@@ -157,7 +147,7 @@ grunt.initConfig( {
 			interrupt: true
 		},
 		files: [
-			".jshintrc",
+			".eslintrc.json",
 			"*.js",
 			"build/*.js",
 			"{src,test,reporter}/**/*.js",
@@ -172,6 +162,6 @@ grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
 grunt.registerTask( "build", [ "concurrent:build" ] );
 grunt.registerTask( "test", [ "concurrent:test" ] );
-grunt.registerTask( "default", [ "build", "test" ] );
+grunt.registerTask( "default", [ "eslint", "build", "test" ] );
 
 };

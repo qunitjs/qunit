@@ -479,7 +479,6 @@ QUnit.diff = ( function() {
 		}
 
 		// A half-match was found, sort out the return data.
-		text1A, text1B, text2A, text2B;
 		if ( text1.length > text2.length ) {
 			text1A = hm[ 0 ];
 			text1B = hm[ 1 ];
@@ -1025,7 +1024,7 @@ QUnit.diff = ( function() {
 		countInsert = 0;
 		textDelete = "";
 		textInsert = "";
-		commonlength;
+
 		while ( pointer < diffs.length ) {
 			switch ( diffs[ pointer ][ 0 ] ) {
 			case DIFF_INSERT:

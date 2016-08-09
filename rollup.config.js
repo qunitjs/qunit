@@ -1,4 +1,4 @@
-/* jshint multistr:true, node:true */
+/* eslint-env node */
 
 var babel = require( "rollup-plugin-babel" );
 
@@ -16,7 +16,7 @@ module.exports = {
 		} )
 	],
 
-	// jscs:disable disallowMultipleLineStrings
+	// eslint-disable-next-line no-multi-str
 	banner: "/*!\n\
  * QUnit @VERSION\n\
  * https://qunitjs.com/\n\
@@ -28,7 +28,6 @@ module.exports = {
  * Date: @DATE\n\
  */",
 
-	// jscs:enable disallowMultipleLineStrings
 	globals: {
 		global: "(function() { return this; }())"
 	},

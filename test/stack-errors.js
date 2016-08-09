@@ -1,4 +1,5 @@
-/* globals polluteGlobal: true */
+/* global polluteGlobal:true */
+/* exported polluteGlobal */
 
 // No pollution
 QUnit.test( "globals", function( assert ) {

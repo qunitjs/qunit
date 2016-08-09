@@ -301,7 +301,7 @@ function toolbarLooseFilter() {
 	return filter;
 }
 
-function moduleListHtml () {
+function moduleListHtml() {
 	var i, checked,
 		html = "";
 
@@ -318,7 +318,7 @@ function moduleListHtml () {
 	return html;
 }
 
-function toolbarModuleFilter () {
+function toolbarModuleFilter() {
 	var allCheckbox, commit, reset,
 		moduleFilter = document.createElement( "form" ),
 		label = document.createElement( "label" ),
@@ -363,7 +363,7 @@ function toolbarModuleFilter () {
 
 	moduleFilter.id = "qunit-modulefilter";
 	moduleFilter.appendChild( label );
-	moduleFilter.appendChild( dropDown ) ;
+	moduleFilter.appendChild( dropDown );
 	addEvent( moduleFilter, "submit", interceptNavigation );
 	addEvent( moduleFilter, "reset", function() {
 
@@ -425,8 +425,8 @@ function toolbarModuleFilter () {
 
 		dirty = false;
 		if ( checkbox.checked && checkbox !== allCheckbox ) {
-		   allCheckbox.checked = false;
-		   removeClass( allCheckbox.parentNode, "checked" );
+			allCheckbox.checked = false;
+			removeClass( allCheckbox.parentNode, "checked" );
 		}
 		for ( i = 0; i < modulesList.length; i++ )  {
 			item = modulesList[ i ];
