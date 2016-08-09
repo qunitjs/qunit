@@ -4,7 +4,7 @@ var loggingCallbacks = {};
 // DEPRECATED: Register old logging callbacks
 // This will be removed on QUnit 2.0.0+
 // From now on use the QUnit.on( eventType, callback ) format
-function registerLoggingCallbacks( QUnit ) {
+export function registerLoggingCallbacks( QUnit ) {
 	var i, l, key;
 	var callbackNames = [ "begin", "done", "log", "testStart", "testDone",
 			"moduleStart", "moduleDone" ];
