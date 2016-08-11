@@ -1,5 +1,6 @@
 import QUnit from "../src/core";
 import { window } from "../src/globals";
+import { hasOwn } from "../src/core/utilities";
 
 ( function() {
 
@@ -85,7 +86,7 @@ function getUrlParams() {
 			// Allow just a key to turn on a flag, e.g., test.html?noglobals
 			value = param.length === 1 ||
 				decodeQueryParam( param.slice( 1 ).join( "=" ) ) ;
-			if ( urlParams[ name ] ) {
+			if ( hasOwn.call( urlParams, name ) ) {
 				urlParams[ name ] = [].concat( urlParams[ name ], value );
 			} else {
 				urlParams[ name ] = value;
