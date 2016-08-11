@@ -8,7 +8,7 @@ import exportQUnit from "./export";
 
 import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
-import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
+import { on, registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
 
 const QUnit = {};
@@ -105,6 +105,8 @@ extend( QUnit, {
 	skip: skip,
 
 	only: only,
+
+	on: on,
 
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
@@ -220,7 +222,7 @@ export function begin() {
 		}
 
 		// The test run is officially beginning now
-		emit( "runStart", {
+		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
 		} );
@@ -264,7 +266,7 @@ function done() {
 
 	// Log the last module results
 	if ( config.previousModule ) {
-		emit( "suiteEnd", {
+		runLoggingCallbacks( "moduleDone", {
 			name: config.previousModule.name,
 			tests: config.previousModule.tests,
 			failed: config.moduleStats.bad,
@@ -278,7 +280,7 @@ function done() {
 	runtime = now() - config.started;
 	passed = config.stats.all - config.stats.bad;
 
-	emit( "runEnd", {
+	runLoggingCallbacks( "done", {
 		failed: config.stats.bad,
 		passed: passed,
 		total: config.stats.all,

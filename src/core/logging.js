@@ -1,31 +1,34 @@
-var listeners = {};
-var loggingCallbacks = {};
+import config from "./config";
+import { objectType, inArray } from "./utilities";
 
-// DEPRECATED: Register old logging callbacks
-// This will be removed on QUnit 2.0.0+
-// From now on use the QUnit.on( eventType, callback ) format
-export function registerLoggingCallbacks( QUnit ) {
-	var i, l, key;
-	var callbackNames = [ "begin", "done", "log", "testStart", "testDone",
+const dictionary = {
+	"begin": "runStart",
+	"moduleStart": "suiteStart",
+	"testStart": "testStart",
+	"log": "assert",
+	"testDone": "testEnd",
+	"moduleDone": "suiteEnd",
+	"done": "runEnd"
+};
+
+var listeners = {};
+
+// Register logging callbacks
+export function registerLoggingCallbacks( obj ) {
+	var i, l, key,
+		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
 			"moduleStart", "moduleDone" ];
-	var dictionary = {
-			"begin": "runStart",
-			"done": "runEnd",
-			"log": "assert",
-			"testStart": "testStart",
-			"testDone": "testEnd",
-			"moduleStart": "suiteStart",
-			"moduleDone": "suiteEnd"
-		};
 
 	function registerLoggingCallback( key ) {
 		var loggingCallback = function( callback ) {
-			return QUnit.on( dictionary[ key ], callback );
-		};
+			if ( objectType( callback ) !== "function" ) {
+				throw new Error(
+					"QUnit logging methods require a callback function as their first parameters."
+				);
+			}
 
-		// Stores the registered functions allowing restoring
-		// at verifyLoggingCallbacks() if modified
-		loggingCallbacks[ key ] = loggingCallback;
+			config.callbacks[ key ].push( callback );
+		};
 
 		return loggingCallback;
 	}
@@ -33,45 +36,32 @@ export function registerLoggingCallbacks( QUnit ) {
 	for ( i = 0, l = callbackNames.length; i < l; i++ ) {
 		key = callbackNames[ i ];
 
-		QUnit[ key ] = registerLoggingCallback( key );
+		// Initialize key collection of logging callback
+		if ( objectType( config.callbacks[ key ] ) === "undefined" ) {
+			config.callbacks[ key ] = [];
+		}
+
+		obj[ key ] = registerLoggingCallback( key );
 	}
 }
 
-// DEPRECATED: This will be removed on 2.0.0+
-// This function verifies if the loggingCallbacks were modified by the user
-// If so, it will restore it, assign the given callback and print a console warning
-//
-// Comment it out for testing passing (it is not used anywhere).
-/* function verifyLoggingCallbacks() {
-	var loggingCallback, userCallback;
+export function runLoggingCallbacks( key, args ) {
+	var i, l, callbacks;
 
-	for ( loggingCallback in loggingCallbacks ) {
-		if ( QUnit[ loggingCallback ] !== loggingCallbacks[ loggingCallback ] ) {
+  // Emit the new events
+	emit( dictionary[ key ], args );
 
-			userCallback = QUnit[ loggingCallback ];
-
-			// Restore the callback function
-			QUnit[ loggingCallback ] = loggingCallbacks[ loggingCallback ];
-
-			// Assign the deprecated given callback
-			QUnit[ loggingCallback ]( userCallback );
-
-			if ( global.console && global.console.warn ) {
-				global.console.warn(
-					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
-					"Please, check out the documentation on how to apply logging callbacks.\n" +
-					"Reference: https://api.qunitjs.com/category/callbacks/"
-				);
-			}
-		}
+	callbacks = config.callbacks[ key ];
+	for ( i = 0, l = callbacks.length; i < l; i++ ) {
+		callbacks[ i ]( args );
 	}
-} */
+}
 
 function emit( type, data ) {
 	var i, callbacks;
 
 	// Validate
-	if ( QUnit.objectType( type ) !== "string" ) {
+	if ( objectType( type ) !== "string" ) {
 		throw new Error( "Emitting QUnit events requires an event type" );
 	}
 
@@ -82,14 +72,14 @@ function emit( type, data ) {
 	}
 }
 
-QUnit.on = function( type, listener ) {
+export function on( type, listener ) {
 
 	// Validate
-	if ( QUnit.objectType( type ) !== "string" ) {
+	if ( objectType( type ) !== "string" ) {
 		throw new Error( "Adding QUnit events requires an event type" );
 	}
 
-	if ( QUnit.objectType( listener ) !== "function" ) {
+	if ( objectType( listener ) !== "function" ) {
 		throw new Error( "Adding QUnit events requires a listener function" );
 	}
 
@@ -102,4 +92,4 @@ QUnit.on = function( type, listener ) {
 	if ( inArray( listener, listeners[ type ] ) < 0 ) {
 		listeners[ type ].push( listener );
 	}
-};
+}
