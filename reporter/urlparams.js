@@ -73,7 +73,7 @@ QUnit.begin( function() {
 
 function getUrlParams() {
 	var i, param, name, value;
-	var urlParams = {};
+	var urlParams = Object.create( null );
 	var params = location.search.slice( 1 ).split( "&" );
 	var length = params.length;
 
@@ -85,7 +85,7 @@ function getUrlParams() {
 			// Allow just a key to turn on a flag, e.g., test.html?noglobals
 			value = param.length === 1 ||
 				decodeQueryParam( param.slice( 1 ).join( "=" ) ) ;
-			if ( urlParams[ name ] ) {
+			if ( name in urlParams ) {
 				urlParams[ name ] = [].concat( urlParams[ name ], value );
 			} else {
 				urlParams[ name ] = value;

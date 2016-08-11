@@ -1,7 +1,7 @@
 if ( !location.search ) {
-	location.replace( "?implicit&explicit=yes&array=A&array=B&escaped%20name&" +
-		"module=urlParams+module&notrycatch&custom&customArray=a&customArray=b&" +
-		"filter=urlParams%20module" );
+	location.replace( "?implicit&explicit=yes&array=A&array=B&escaped%20name&toString=string&" +
+		"module=urlParams+module&filter=urlParams%20module&notrycatch&" +
+		"custom&customArray=a&customArray=b" );
 }
 
 QUnit.config.urlConfig.push( "custom", "customArray" );
@@ -14,6 +14,8 @@ QUnit.module( "urlParams module", function() {
 		assert.strictEqual( QUnit.urlParams.explicit, "yes", "explicit value" );
 		assert.deepEqual( QUnit.urlParams.array, [ "A", "B" ], "multiple values" );
 		assert.ok( QUnit.urlParams[ "escaped name" ], "escape sequences in name" );
+		assert.strictEqual( QUnit.urlParams.toString, "string", "Object.prototype property" );
+		assert.strictEqual( QUnit.urlParams.module, "urlParams module", "escaped space as +" );
 		assert.strictEqual( QUnit.urlParams.filter, "urlParams module", "escaped space as %20" );
 	} );
 
