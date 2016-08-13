@@ -59,13 +59,13 @@ module.exports = function( grunt ) {
 		var runDone = false;
 		var testActive = false;
 
-		QUnit.on( "runStart", function() {
+		QUnit.begin( function() {
 			grunt.log.ok( "Testing " + file + " ..." );
 		} );
-		QUnit.on( "testStart", function() {
+		QUnit.testStart( function() {
 			testActive = true;
 		} );
-		QUnit.on( "assert", function( details ) {
+		QUnit.log( function( details ) {
 			if ( !testActive || details.result ) {
 				return;
 			}
@@ -73,10 +73,10 @@ module.exports = function( grunt ) {
 				" message: " + details.message;
 			grunt.log.error( message );
 		} );
-		QUnit.on( "testEnd", function() {
+		QUnit.testDone( function() {
 			testActive = false;
 		} );
-		QUnit.on( "runEnd", function( details ) {
+		QUnit.done( function( details ) {
 			if ( runDone ) {
 				return;
 			}

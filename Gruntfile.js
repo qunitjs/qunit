@@ -94,7 +94,6 @@ grunt.initConfig( {
 			"test/startError.html",
 			"test/reorderError1.html",
 			"test/reorderError2.html",
-			"test/events.html",
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
@@ -124,7 +123,6 @@ grunt.initConfig( {
 	},
 	"test-on-node": {
 		files: [
-			"test/events",
 			"test/logs",
 			"test/main/test",
 			"test/main/assert",

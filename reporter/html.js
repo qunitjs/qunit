@@ -585,30 +585,30 @@ function appendTest( name, testId, moduleName ) {
 }
 
 // HTML Reporter initialization and load
-QUnit.on( "runStart", function( details ) {
-  var i, moduleObj, tests;
+QUnit.begin( function( details ) {
+	var i, moduleObj, tests;
 
-  // Sort modules by name for the picker
-  for ( i = 0; i < details.modules.length; i++ ) {
-    moduleObj = details.modules[ i ];
-    if ( moduleObj.name ) {
-      modulesList.push( moduleObj.name );
-    }
-  }
-  modulesList.sort( function( a, b ) {
-    return a.localeCompare( b );
-  } );
+	// Sort modules by name for the picker
+	for ( i = 0; i < details.modules.length; i++ ) {
+		moduleObj = details.modules[ i ];
+		if ( moduleObj.name ) {
+			modulesList.push( moduleObj.name );
+		}
+	}
+	modulesList.sort( function( a, b ) {
+		return a.localeCompare( b );
+	} );
 
-  // Initialize QUnit elements
-  appendInterface();
-  appendTestsList( details.modules );
-  tests = id( "qunit-tests" );
-  if ( tests && config.hidepassed ) {
-    addClass( tests, "hidepass" );
-  }
+	// Initialize QUnit elements
+	appendInterface();
+	appendTestsList( details.modules );
+	tests = id( "qunit-tests" );
+	if ( tests && config.hidepassed ) {
+		addClass( tests, "hidepass" );
+	}
 } );
 
-QUnit.on( "runEnd", function( details ) {
+QUnit.done( function( details ) {
 	var i, key,
 		banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
@@ -671,7 +671,7 @@ function getNameHtml( name, module ) {
 	return nameHtml;
 }
 
-QUnit.on( "testStart", function( details ) {
+QUnit.testStart( function( details ) {
 	var running, testBlock, bad;
 
 	testBlock = id( "qunit-test-output-" + details.testId );
@@ -702,7 +702,7 @@ function stripHtml( string ) {
 	return string.replace( /<\/?[^>]+(>|$)/g, "" ).replace( /\&quot;/g, "" ).replace( /\s+/g, "" );
 }
 
-QUnit.on( "assert", function( details ) {
+QUnit.log( function( details ) {
 	var assertList, assertLi,
 		message, expected, actual, diff,
 		showDiff = false,
@@ -787,7 +787,7 @@ QUnit.on( "assert", function( details ) {
 	assertList.appendChild( assertLi );
 } );
 
-QUnit.on( "testEnd", function( details ) {
+QUnit.testDone( function( details ) {
 	var testTitle, time, testItem, assertList,
 		good, bad, testCounts, skipped, sourceName,
 		tests = id( "qunit-tests" );
