@@ -8,8 +8,11 @@ import exportQUnit from "./export";
 
 import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
-import { on, registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
+import { on, emit, registerLoggingCallbacks,
+	runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
+
+import { Suite as jsRepSuite } from "js-reporters";
 
 const QUnit = {};
 
@@ -41,6 +44,7 @@ extend( QUnit, {
 		}
 
 		module = createModule();
+		createSuite( module );
 
 		if ( testEnvironment && ( testEnvironment.setup || testEnvironment.teardown ) ) {
 			console.warn(
@@ -92,6 +96,28 @@ extend( QUnit, {
 
 			config.modules.push( module );
 			return module;
+		}
+
+		function createSuite( module ) {
+			var parentSuite;
+			var fullName;
+			var suite;
+
+			if ( module.parentModule !== null ) {
+				parentSuite = config.moduleToSuite[ module.parentModule.moduleId ];
+			} else {
+				parentSuite = config.globalSuite;
+			}
+
+			fullName = parentSuite.fullName.slice();
+			fullName.push( module.name );
+
+			suite = new jsRepSuite( module.name, fullName, [], [] );
+
+			parentSuite.childSuites.push( suite );
+			config.moduleToSuite[ module.moduleId ] = suite;
+
+			return suite;
 		}
 
 		function setCurrentModule( module ) {
@@ -226,6 +252,8 @@ export function begin() {
 			totalTests: Test.count,
 			modules: modulesLog
 		} );
+
+		emit( "runStart", config.globalSuite );
 	}
 
 	config.blocking = false;

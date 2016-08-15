@@ -1,16 +1,6 @@
 import config from "./config";
 import { objectType, inArray } from "./utilities";
 
-const dictionary = {
-	"begin": "runStart",
-	"moduleStart": "suiteStart",
-	"testStart": "testStart",
-	"log": "assert",
-	"testDone": "testEnd",
-	"moduleDone": "suiteEnd",
-	"done": "runEnd"
-};
-
 var listeners = {};
 
 // Register logging callbacks
@@ -48,16 +38,13 @@ export function registerLoggingCallbacks( obj ) {
 export function runLoggingCallbacks( key, args ) {
 	var i, l, callbacks;
 
-  // Emit the new events
-	emit( dictionary[ key ], args );
-
 	callbacks = config.callbacks[ key ];
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
 	}
 }
 
-function emit( type, data ) {
+export function emit( type, data ) {
 	var i, callbacks;
 
 	// Validate

@@ -9,12 +9,15 @@ import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/
 import { runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
 
+import { Test as jsRepTest } from "js-reporters";
+
 var unitSampler,
 	focused = false,
 	priorityCount = 0;
 
 export default function Test( settings ) {
 	var i, l;
+	var suite, fullName;
 
 	++Test.count;
 
@@ -39,6 +42,16 @@ export default function Test( settings ) {
 		name: this.testName,
 		testId: this.testId
 	} );
+
+	if ( this.module.moduleId ) {
+		suite = config.moduleToSuite[ this.module.moduleId ];
+	} else {
+		suite = config.globalSuite;
+	}
+
+	fullName = suite.fullName.slice();
+	fullName.push( this.testName );
+	suite.tests.push( new jsRepTest( this.testName, suite.name, fullName ) );
 
 	if ( settings.skip ) {
 
