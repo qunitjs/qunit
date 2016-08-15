@@ -30,9 +30,11 @@ module.exports = {
 
 	// jscs:enable disallowMultipleLineStrings
 	globals: {
-		global: "(function() { return this; }())"
+		global: "(function() { return this; }())",
+		"js-reporters": "require('js-reporters')"
 	},
 	external: [
-		"global"
+		"global",
+		"js-reporters"
 	]
 };

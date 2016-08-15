@@ -22,7 +22,10 @@ grunt.initConfig( {
 	concat: {
 		options: { process: process },
 		"src-js": {
-			src: "dist/qunit.js",
+			src: [
+				"node_modules/js-reporters/dist/js-reporters.js",
+				"dist/qunit.js"
+			],
 			dest: "dist/qunit.js"
 		},
 		"src-css": {
