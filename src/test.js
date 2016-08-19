@@ -6,10 +6,10 @@ import Assert from "./assert";
 
 import config from "./core/config";
 import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/utilities";
-import { runLoggingCallbacks } from "./core/logging";
+import { emit, runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
 
-import {Test as jsRepTest} from "js-reporters/lib/Data";
+import {Assertion as jsRepAssertion, Test as jsRepTest} from "js-reporters/lib/Data";
 
 var unitSampler,
 	focused = false,
@@ -51,7 +51,11 @@ export default function Test( settings ) {
 
 	fullName = suite.fullName.slice();
 	fullName.push( this.testName );
-	suite.tests.push( new jsRepTest( this.testName, suite.name, fullName ) );
+
+	this.jsRepTest = new jsRepTest( this.testName, suite.name, fullName,
+		undefined, undefined, [], [] )
+
+	suite.tests.push( this.jsRepTest );
 
 	if ( settings.skip ) {
 
@@ -88,6 +92,8 @@ Test.prototype = {
 					total: config.moduleStats.all,
 					runtime: now() - config.moduleStats.started
 				} );
+
+				emit( "suiteEnd", config.moduleToSuite[ config.previousModule.moduleId ] );
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
@@ -95,6 +101,8 @@ Test.prototype = {
 				name: this.module.name,
 				tests: this.module.tests
 			} );
+
+			emit( "suiteStart", config.moduleToSuite[ this.module.moduleId ] );
 		}
 
 		config.current = this;
@@ -113,6 +121,8 @@ Test.prototype = {
 			module: this.module.name,
 			testId: this.testId
 		} );
+
+		emit( "testStart", this.jsRepTest );
 
 		if ( !config.pollution ) {
 			saveGlobal();
@@ -260,6 +270,18 @@ Test.prototype = {
 			source: this.stack
 		} );
 
+		if (bad > 0) {
+			this.jsRepTest.status = 'failed';
+		} else if (skipped) {
+			this.jsRepTest.status = 'skipped';
+		} else {
+			this.jsRepTest.status = 'passed';
+		}
+
+		this.jsRepTest.runtime = skipped ? undefined: this.runtime;
+
+		emit( "testEnd", this.jsRepTest );
+
 		config.current = undefined;
 	},
 
@@ -344,6 +366,15 @@ Test.prototype = {
 
 		runLoggingCallbacks( "log", details );
 
+		this.jsRepTest.assertions.push(new jsRepAssertion(
+				details.result,
+				details.actual,
+				details.expected,
+				details.message,
+				undefined
+			)
+		);
+
 		this.assertions.push( {
 			result: !!resultInfo.result,
 			message: resultInfo.message
@@ -371,6 +402,17 @@ Test.prototype = {
 		}
 
 		runLoggingCallbacks( "log", details );
+
+		var assertion = new jsRepAssertion(
+			details.result,
+			details.actual,
+			details.expected,
+			details.message,
+			details.source
+		);
+
+		this.jsRepTest.assertions.push(assertion);
+		this.jsRepTest.errors.push(assertion);
 
 		this.assertions.push( {
 			result: false,

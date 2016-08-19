@@ -302,6 +302,8 @@ function done() {
 			total: config.moduleStats.all,
 			runtime: now() - config.moduleStats.started
 		} );
+
+		emit ( "suiteEnd", config.moduleToSuite [ config.previousModule.moduleId ] );
 	}
 	delete config.previousModule;
 
@@ -314,6 +316,8 @@ function done() {
 		total: config.stats.all,
 		runtime: runtime
 	} );
+
+	emit ( "runEnd", config.globalSuite );
 }
 
 function setHook( module, hookName ) {
