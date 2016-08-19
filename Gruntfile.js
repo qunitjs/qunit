@@ -123,6 +123,7 @@ grunt.initConfig( {
 	},
 	"test-on-node": {
 		files: [
+			"test/events-logs.js",
 			"test/logs",
 			"test/main/test",
 			"test/main/assert",
