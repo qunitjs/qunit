@@ -53,7 +53,7 @@ export default function Test( settings ) {
 	fullName.push( this.testName );
 
 	this.jsRepTest = new jsRepTest( this.testName, suite.name, fullName,
-		undefined, undefined, [], [] )
+		undefined, undefined, [], [] );
 
 	suite.tests.push( this.jsRepTest );
 
@@ -270,15 +270,15 @@ Test.prototype = {
 			source: this.stack
 		} );
 
-		if (bad > 0) {
-			this.jsRepTest.status = 'failed';
-		} else if (skipped) {
-			this.jsRepTest.status = 'skipped';
+		if ( bad > 0 ) {
+			this.jsRepTest.status = "failed";
+		} else if ( skipped ) {
+			this.jsRepTest.status = "skipped";
 		} else {
-			this.jsRepTest.status = 'passed';
+			this.jsRepTest.status = "passed";
 		}
 
-		this.jsRepTest.runtime = skipped ? undefined: this.runtime;
+		this.jsRepTest.runtime = skipped ? undefined : this.runtime;
 
 		emit( "testEnd", this.jsRepTest );
 
@@ -366,7 +366,7 @@ Test.prototype = {
 
 		runLoggingCallbacks( "log", details );
 
-		this.jsRepTest.assertions.push(new jsRepAssertion(
+		this.jsRepTest.assertions.push( new jsRepAssertion(
 				details.result,
 				details.actual,
 				details.expected,
@@ -411,8 +411,8 @@ Test.prototype = {
 			details.source
 		);
 
-		this.jsRepTest.assertions.push(assertion);
-		this.jsRepTest.errors.push(assertion);
+		this.jsRepTest.assertions.push( assertion );
+		this.jsRepTest.errors.push( assertion );
 
 		this.assertions.push( {
 			result: false,
