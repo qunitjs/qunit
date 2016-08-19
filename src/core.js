@@ -115,6 +115,7 @@ extend( QUnit, {
 			suite = new Suite( module.name, fullName, [], [] );
 
 			parentSuite.childSuites.push( suite );
+			suite.parent = parentSuite;
 			config.moduleToSuite[ module.moduleId ] = suite;
 
 			return suite;
@@ -254,6 +255,7 @@ export function begin() {
 		} );
 
 		emit( "runStart", config.globalSuite );
+		config.globalSuite.emitStart = true;
 	}
 
 	config.blocking = false;
@@ -303,7 +305,11 @@ function done() {
 			runtime: now() - config.moduleStats.started
 		} );
 
-		emit( "suiteEnd", config.moduleToSuite [ config.previousModule.moduleId ] );
+		var suite = config.moduleToSuite [ config.previousModule.moduleId ]
+
+		if (suite) {
+			emit( "suiteEnd", suite);
+		}
 	}
 	delete config.previousModule;
 

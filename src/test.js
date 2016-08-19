@@ -102,7 +102,18 @@ Test.prototype = {
 				tests: this.module.tests
 			} );
 
-			emit( "suiteStart", config.moduleToSuite[ this.module.moduleId ] );
+			var suite = config.moduleToSuite[ this.module.moduleId ];
+
+			if (suite && !suite.emitStart) {
+
+				while (suite.parent !== null && !suite.parent.emitStart) {
+					emit( "suiteStart", suite.parent);
+					suite.parent.emitStart = true;
+				}
+
+				emit( "suiteStart", suite);
+				suite.emitStart = true;
+			}
 		}
 
 		config.current = this;
