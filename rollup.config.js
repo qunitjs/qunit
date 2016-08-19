@@ -1,11 +1,13 @@
 /* jshint multistr:true, node:true */
 
 var babel = require( "rollup-plugin-babel" );
+var nodeResolve = require( "rollup-plugin-node-resolve" );
 
 module.exports = {
 	format: "iife",
 	exports: "none",
 	plugins: [
+		nodeResolve(),
 		babel( {
 			presets: [
 
@@ -30,11 +32,9 @@ module.exports = {
 
 	// jscs:enable disallowMultipleLineStrings
 	globals: {
-		global: "(function() { return this; }())",
-		"js-reporters": "require('js-reporters')"
+		global: "(function() { return this; }())"
 	},
 	external: [
-		"global",
-		"js-reporters"
+		"global"
 	]
 };

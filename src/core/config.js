@@ -1,4 +1,4 @@
-import { Suite as jsRepSuite } from "js-reporters";
+import {Suite} from "js-reporters/lib/Data";
 
 /**
  * Config object: Maintain internal state
@@ -50,7 +50,7 @@ const config = {
 
 	callbacks: {},
 
-	globalSuite: new jsRepSuite( undefined, [], [], [] ),
+	globalSuite: new Suite( undefined, [], [], [] ),
 
 	moduleToSuite: {}
 };

@@ -9,7 +9,7 @@ import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/
 import { runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
 
-import { Test as jsRepTest } from "js-reporters";
+import {Test as jsRepTest} from "js-reporters/lib/Data";
 
 var unitSampler,
 	focused = false,

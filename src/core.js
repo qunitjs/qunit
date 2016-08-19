@@ -12,7 +12,7 @@ import { on, emit, registerLoggingCallbacks,
 	runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
 
-import { Suite as jsRepSuite } from "js-reporters";
+import {Suite} from "js-reporters/lib/Data";
 
 const QUnit = {};
 
@@ -112,7 +112,7 @@ extend( QUnit, {
 			fullName = parentSuite.fullName.slice();
 			fullName.push( module.name );
 
-			suite = new jsRepSuite( module.name, fullName, [], [] );
+			suite = new Suite( module.name, fullName, [], [] );
 
 			parentSuite.childSuites.push( suite );
 			config.moduleToSuite[ module.moduleId ] = suite;
