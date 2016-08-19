@@ -1,3 +1,4 @@
+/* eslint array-bracket-spacing:off, comma-spacing:off, max-len:off */
 /* globals Set:false, Map:false, Symbol:false */
 
 QUnit.module( "equiv" );
@@ -237,20 +238,20 @@ QUnit.test( "Arrays basics", function( assert ) {
 	assert.equal( QUnit.equiv( [ undefined ], [] ), false );
 	assert.equal( QUnit.equiv( [], [ null ] ), false );
 	assert.equal( QUnit.equiv( [], [ undefined ] ), false );
-	assert.equal( QUnit.equiv( [ null ], [ undefined ]), false );
+	assert.equal( QUnit.equiv( [ null ], [ undefined ] ), false );
 	assert.equal( QUnit.equiv( [ [] ], [ [] ] ), true );
 	assert.equal( QUnit.equiv( [ [], [], [] ], [ [], [], [] ] ), true );
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
-					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]),
+					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ),
 					true );
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
-					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // shorter
+					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ), // shorter
 					false );
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ {} ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
-					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]), // deepest element not an array
+					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ), // deepest element not an array
 					false );
 
 	// same multidimensional
@@ -296,7 +297,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 										]
 									]
 								]
-							]]]),
+							]]] ),
 							true, "Multidimensional" );
 
 	// different multidimensional
@@ -342,7 +343,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 										]
 									]
 								]
-							]]]),
+							]]] ),
 							false, "Multidimensional" );
 
 	// different multidimensional
@@ -388,7 +389,7 @@ QUnit.test( "Arrays basics", function( assert ) {
 										]
 									]
 								]
-							]]]),
+							]]] ),
 							false, "Multidimensional" );
 } );
 
@@ -400,14 +401,14 @@ QUnit.test( "Functions", function( assert ) {
 		f2 = function() { return 0; },
 		f3 = function() {
 
-			/* jshint asi:true */
+			// eslint-disable-next-line semi
 			return 0 // this comment and no semicoma as difference
 		};
 
 	assert.equal( QUnit.equiv( function() {}, function() {} ), false, "Anonymous functions" ); // exact source code
 	assert.equal( QUnit.equiv( function() {}, function() {
 		return true;
-	}), false, "Anonymous functions" );
+	} ), false, "Anonymous functions" );
 
 	assert.equal( QUnit.equiv( f0, f0 ), true, "Function references" ); // same references
 	assert.equal( QUnit.equiv( f0, f1 ), false, "Function references" ); // exact source code, different references
@@ -445,6 +446,7 @@ QUnit.test( "Date instances", function( assert ) {
 } );
 
 QUnit.test( "RegExp", function( assert ) {
+
 	// Must test cases that imply those traps:
 	// var a = /./;
 	// a instanceof Object;        // Oops
@@ -519,6 +521,7 @@ QUnit.test( "RegExp", function( assert ) {
 	// More complex regex
 	regex1 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
 	regex2 = "^[-_.a-z0-9]+@([-_a-z0-9]+\\.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
+
 	// regex 3 is different: '.' not escaped
 	regex3 = "^[-_.a-z0-9]+@([-_a-z0-9]+.)+([A-Za-z][A-Za-z]|[A-Za-z][A-Za-z][A-Za-z])|(([0-9][0-9]?|[0-1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))$";
 
@@ -643,7 +646,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			h: "h",
 			i: []
 		}
-	), true);
+	), true );
 
 	assert.equal( QUnit.equiv(
 		{
@@ -661,6 +664,7 @@ QUnit.test( "Complex objects", function( assert ) {
 						j: {
 							k: {
 								n: {
+
 									//r: "r",   // different: missing a property
 									s: [ 1, 2, 3 ],
 									t: undefined,
@@ -738,7 +742,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			h: "h",
 			i: []
 		}
-	), false);
+	), false );
 
 	assert.equal( QUnit.equiv(
 		{
@@ -804,6 +808,7 @@ QUnit.test( "Complex objects", function( assert ) {
 								n: {
 									r: "r",
 									s: [ 1, 2, 3 ],
+
 									//t: undefined,                 // different: missing a property with an undefined value
 									u: 0,
 									v: {
@@ -833,7 +838,7 @@ QUnit.test( "Complex objects", function( assert ) {
 			h: "h",
 			i: []
 		}
-	), false);
+	), false );
 
 	assert.equal( QUnit.equiv(
 		{
@@ -1131,7 +1136,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
-			}, {}]]]), true);
+			}, {}]]] ), true );
 
 	assert.equal( QUnit.equiv( a,
 			[ {
@@ -1156,7 +1161,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
-			}, {}]]]), false);
+			}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
 			[ {
@@ -1181,7 +1186,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
-			}, {}]]]), false);
+			}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
 			[ {
@@ -1206,7 +1211,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
-			}, {}]]]), false);
+			}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
 			[ {
@@ -1219,6 +1224,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 							3,4,6,9, null, [], []
 						]],
 						e: fn
+
 																				// different: missing property f: undefined
 					} ]
 				},
@@ -1231,7 +1237,7 @@ QUnit.test( "Complex Arrays", function( assert ) {
 					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
 					b: {}
 				}
-			}, {}]]]), false);
+			}, {}]]] ), false );
 } );
 
 QUnit.test( "Prototypal inheritance", function( assert ) {
@@ -1377,9 +1383,9 @@ QUnit.test(
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
 			this.b1 = new B( function() {} );
-			this.b2 = new B({
+			this.b2 = new B( {
 				x: {
-					b2: new B( function() {})
+					b2: new B( function() {} )
 				}
 			} );
 		}
@@ -1407,9 +1413,9 @@ QUnit.test(
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
 			this.b1 = new B( function() {} );
-			this.b2 = new B({
+			this.b2 = new B( {
 				x: {
-					b2: new B( function() {})
+					b2: new B( function() {} )
 				}
 			} );
 		}
@@ -1431,10 +1437,10 @@ QUnit.test(
 			// Even if it is not visible for all instances (e.g. locked in a closures),
 			// it is from a  property that makes part of an instance (e.g. from the C constructor)
 			this.b1 = new B( function() {} );
-			this.b2 = new B({
+			this.b2 = new B( {
 				x: {
 					b1: new B( { a: function() {} } ),
-					b2: new B( function() {})
+					b2: new B( function() {} )
 				}
 			} );
 		}
@@ -1588,7 +1594,7 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 		Function.prototype.ignoreCase = false;
 		Function.prototype.source = "my regex";
 		var re = /my regex/gm;
-		assert.equal( QUnit.equiv( re, function() {}), false,
+		assert.equal( QUnit.equiv( re, function() {} ), false,
 			"A function that looks that a regex isn't a regex"
 		);
 
@@ -1669,6 +1675,7 @@ var hasES6Set = ( function() {
 	}
 
 	try {
+
 		// some platforms don't support iterables in Set constructors
 		var s = new Set( [ 1, 2, 3 ] );
 		if ( s.size !== 3 || !s.has( 2 ) ) {
@@ -1677,8 +1684,7 @@ var hasES6Set = ( function() {
 
 		// in IE 11, QUnit.objectType( new Set() ) === "object"
 		return ( QUnit.objectType( s ) === "set" );
-	}
-	catch ( e ) {
+	} catch ( e ) {
 		return false;
 	}
 }() );
@@ -1689,6 +1695,7 @@ var hasES6Map = ( function() {
 	}
 
 	try {
+
 		// some platforms don't support array-like iterables in Map constructors
 		var m = new Map( [ [ 1, 2 ] ] );
 		if ( m.size !== 1 || !m.has( 1 ) ) {
@@ -1697,13 +1704,12 @@ var hasES6Map = ( function() {
 
 		// in IE 11, QUnit.objectType( new Map() ) === "object"
 		return ( QUnit.objectType( m ) === "map" );
-	}
-	catch ( e ) {
+	} catch ( e ) {
 		return false;
 	}
 }() );
 
-QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
+QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function( assert ) {
 	var s1, s2, s3, s4, o1, o2, o3, o4, m1, m2, m3;
 
 	// Empty sets
@@ -1772,7 +1778,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function ( assert ) {
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Sets with different insertion orders" );
 } );
 
-QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function ( assert ) {
+QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function( assert ) {
 	var m1, m2, m3, m4, o1, o2, o3, o4, s1, s2, s3;
 
 	// Empty maps
@@ -1885,7 +1891,7 @@ var hasES6Symbol = ( function() {
 	return typeof Symbol === "function";
 }() );
 
-QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function ( assert ) {
+QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function( assert ) {
 	var a = Symbol( 1 );
 	var b = Symbol( 1 );
 

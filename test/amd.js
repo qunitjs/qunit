@@ -1,3 +1,4 @@
+/* eslint-env amd */
 /* global beginData */
 define( [ "qunit" ], function( QUnit ) {
 

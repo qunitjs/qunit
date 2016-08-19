@@ -47,7 +47,7 @@ grunt.initConfig( {
 			"runner/**/*.js",
 			"src/**/*.js",
 
-			// "test/**/*.js",
+			"test/**/*.js",
 			"build/*.js",
 			"build/tasks/**/*.js"
 		]
