@@ -35,6 +35,7 @@ QUnit.on(  "runEnd", function() {
 
 	runEnd++;
 
+	setTimeout(function() {
 	QUnit.test(  "test5", function( assert  ) {
 		assert.equal( runStart, 1, "runStart should be emitted only once" );
 		assert.equal( suiteStart, 4, "emitted suiteStart events" );
@@ -43,6 +44,16 @@ QUnit.on(  "runEnd", function() {
 		assert.equal( suiteEnd, 4, "emitted suiteEnd events" );
 		assert.equal( runEnd, 1, "runEnd should have been emitted" );
 	}  );
+
+	QUnit.test(  "test6", function( assert  ) {
+		assert.equal( runStart, 1, "runStart should be emitted only once" );
+		assert.equal( suiteStart, 4, "emitted suiteStart events" );
+		assert.equal( testStart, 6, "emitted testStart events" );
+		assert.equal( testEnd, 5, "emitted testEnd events" );
+		assert.equal( suiteEnd, 4, "emitted suiteEnd events" );
+		assert.equal( runEnd, 1, "runEnd should have been emitted" );
+	}  );
+	}, 5000);
 }  );
 
 QUnit.module(  "module1", function() {
