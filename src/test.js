@@ -104,14 +104,14 @@ Test.prototype = {
 
 			var suite = config.moduleToSuite[ this.module.moduleId ];
 
-			if (suite && !suite.emitStart) {
+			if ( suite && !suite.emitStart ) {
 
-				while (suite.parent !== null && !suite.parent.emitStart) {
-					emit( "suiteStart", suite.parent);
+				while ( suite.parent !== null && !suite.parent.emitStart ) {
+					emit( "suiteStart", suite.parent );
 					suite.parent.emitStart = true;
 				}
 
-				emit( "suiteStart", suite);
+				emit( "suiteStart", suite );
 				suite.emitStart = true;
 			}
 		}

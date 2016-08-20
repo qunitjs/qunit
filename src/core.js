@@ -305,10 +305,10 @@ function done() {
 			runtime: now() - config.moduleStats.started
 		} );
 
-		var suite = config.moduleToSuite [ config.previousModule.moduleId ]
+		var suite = config.moduleToSuite[ config.previousModule.moduleId ];
 
-		if (suite) {
-			emit( "suiteEnd", suite);
+		if ( suite ) {
+			emit( "suiteEnd", suite );
 		}
 	}
 	delete config.previousModule;
