@@ -255,7 +255,6 @@ export function begin() {
 		} );
 
 		emit( "runStart", config.globalSuite );
-		config.globalSuite.emitStart = true;
 	}
 
 	config.blocking = false;
@@ -305,9 +304,10 @@ function done() {
 			runtime: now() - config.moduleStats.started
 		} );
 
-		var suite = config.moduleToSuite[ config.previousModule.moduleId ];
+		// Do not emit the "suiteEnd" event for the globalSuite.
+		if ( config.previousModule.moduleId ) {
+			var suite = config.moduleToSuite[ config.previousModule.moduleId ];
 
-		if ( suite ) {
 			emit( "suiteEnd", suite );
 		}
 	}

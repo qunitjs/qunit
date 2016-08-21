@@ -93,7 +93,10 @@ Test.prototype = {
 					runtime: now() - config.moduleStats.started
 				} );
 
-				emit( "suiteEnd", config.moduleToSuite[ config.previousModule.moduleId ] );
+				// Do not emit the "suiteEnd" event for "globalSuite".
+				if ( config.previousModule.moduleId ) {
+					emit( "suiteEnd", config.moduleToSuite[ config.previousModule.moduleId ] );
+				}
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
@@ -102,17 +105,24 @@ Test.prototype = {
 				tests: this.module.tests
 			} );
 
-			var suite = config.moduleToSuite[ this.module.moduleId ];
+			// Do not emit the "suiteStart" event for the "globalSuite".
+			if ( this.module.moduleId ) {
+				var suite = config.moduleToSuite[ this.module.moduleId ];
 
-			if ( suite && !suite.emitStart ) {
+				if ( !suite.emitStart ) {
+					let parentSuite = suite.parent;
 
-				while ( suite.parent !== null && !suite.parent.emitStart ) {
-					emit( "suiteStart", suite.parent );
-					suite.parent.emitStart = true;
+					// Emit the "suiteStart" event for all parent suites,
+					// this applies for nested suites.
+					while ( parentSuite !== config.globalSuite && !parentSuite.emitStart ) {
+						emit( "suiteStart", parentSuite );
+						parentSuite.emitStart = true;
+						parentSuite = parentSuite.parent;
+					}
+
+					emit( "suiteStart", suite );
+					suite.emitStart = true;
 				}
-
-				emit( "suiteStart", suite );
-				suite.emitStart = true;
 			}
 		}
 
