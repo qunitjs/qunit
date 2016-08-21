@@ -123,7 +123,9 @@ grunt.initConfig( {
 	},
 	"test-on-node": {
 		files: [
-			"test/events-logs.js",
+			"test/events/global-test.js",
+			"test/events/nested-suites.js",
+			"test/events/combined.js",
 			"test/logs",
 			"test/main/test",
 			"test/main/assert",
