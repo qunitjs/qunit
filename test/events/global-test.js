@@ -35,7 +35,7 @@ QUnit.on( "runEnd", function() {
 
 	testAutorun = false;
 
-	setTimeout(function() {
+	setTimeout( function() {
 		QUnit.test( "last test", function( assert ) {
 			assert.equal( runStart, 1, "runStart should be emitted only once" );
 			assert.equal( suiteStart, 0, "emitted suiteStart events" );
@@ -53,5 +53,5 @@ QUnit.test( "global test", function( assert ) {
 	assert.equal( testStart, 1, "testStart should be emitted" );
 	assert.equal( testEnd, 0, "testEnd should have been not emitted" );
 	assert.equal( suiteEnd, 0, "suiteEnd should not be emitted" );
-	assert.equal( runEnd, 0, "runEnd should have been not emitted");
+	assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 } );
