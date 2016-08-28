@@ -116,6 +116,7 @@ extend( QUnit, {
 
 			parentSuite.childSuites.push( suite );
 			suite.parent = parentSuite;
+			suite.finishedTests = 0;
 			config.moduleToSuite[ module.moduleId ] = suite;
 
 			return suite;

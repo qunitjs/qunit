@@ -95,7 +95,21 @@ Test.prototype = {
 
 				// Do not emit the "suiteEnd" event for "globalSuite".
 				if ( config.previousModule.moduleId ) {
-					emit( "suiteEnd", config.moduleToSuite[ config.previousModule.moduleId ] );
+					let suite = config.moduleToSuite[ config.previousModule.moduleId ];
+					let parentSuite = suite.parent;
+
+					if ( hasSuiteFinished( suite ) ) {
+						emit( "suiteEnd", suite );
+						suite.emitEnd = true;
+					}
+
+					// This is for suites that don't have a test in the end.
+					while ( parentSuite !== config.globalSuite &&
+						!parentSuite.emitEnd && hasSuiteFinished( parentSuite ) ) {
+						emit( "suiteEnd", parentSuite );
+						parentSuite.emitEnd = true;
+						parentSuite = parentSuite.parent;
+					}
 				}
 			}
 			config.previousModule = this.module;
@@ -107,7 +121,7 @@ Test.prototype = {
 
 			// Do not emit the "suiteStart" event for the "globalSuite".
 			if ( this.module.moduleId ) {
-				var suite = config.moduleToSuite[ this.module.moduleId ];
+				let suite = config.moduleToSuite[ this.module.moduleId ];
 
 				if ( !suite.emitStart ) {
 					let parentSuite = suite.parent;
@@ -147,6 +161,16 @@ Test.prototype = {
 
 		if ( !config.pollution ) {
 			saveGlobal();
+		}
+
+		function hasSuiteFinished( suite ) {
+			for ( let i = 0; i < suite.childSuites.length; i++ ) {
+				if ( !suite.childSuites[ i ].emitEnd ) {
+					return false;
+				}
+			}
+
+			return suite.tests.length === suite.finishedTests;
 		}
 	},
 
@@ -301,6 +325,15 @@ Test.prototype = {
 
 		this.jsRepTest.runtime = skipped ? undefined : this.runtime;
 
+		let suite;
+
+		if ( this.module.moduleId ) {
+			suite = config.moduleToSuite[ this.module.moduleId ];
+		} else {
+			suite = config.globalSuite;
+		}
+
+		suite.finishedTests++;
 		emit( "testEnd", this.jsRepTest );
 
 		config.current = undefined;
