@@ -4,7 +4,7 @@
     "qunit/qunit.js",
     "qunit/qunit.css"
   ],
-  "license": "https://github.com/jquery/qunit/blob/master/LICENSE.txt",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "!LICENSE.txt",
