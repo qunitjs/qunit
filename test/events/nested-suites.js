@@ -35,18 +35,18 @@ QUnit.on( "runEnd", function() {
 
 	testAutorun = false;
 
-	QUnit.module( "last module" );
-
-	setTimeout( function() {
-		QUnit.test( "last test", function( assert ) {
-			assert.equal( runStart, 1, "runStart should be emitted only once" );
-			assert.equal( suiteStart, 5, "emitted suiteStart events" );
-			assert.equal( testStart, 6, "emitted testStart events" );
-			assert.equal( testEnd, 5, "emitted testEnd events" );
-			assert.equal( suiteEnd, 4, "emitted suiteEnd events" );
-			assert.equal( runEnd, 1, "runEnd should have been emitted" );
-		} );
-	}, 5000 );
+	QUnit.module( "last module", function() {
+		setTimeout( function() {
+			QUnit.test( "last test", function( assert ) {
+				assert.equal( runStart, 1, "runStart should be emitted only once" );
+				assert.equal( suiteStart, 5, "emitted suiteStart events" );
+				assert.equal( testStart, 6, "emitted testStart events" );
+				assert.equal( testEnd, 5, "emitted testEnd events" );
+				assert.equal( suiteEnd, 4, "emitted suiteEnd events" );
+				assert.equal( runEnd, 1, "runEnd should have been emitted" );
+			} );
+		}, 5000 );
+	} );
 } );
 
 QUnit.module( "module1", function() {
@@ -58,7 +58,7 @@ QUnit.module( "module1", function() {
 			assert.equal( testStart, 1, "emitted testStart events" );
 			assert.equal( testEnd, 0, "emitted testEnd events" );
 			assert.equal( suiteEnd, 0, "emitted suiteEnd events" );
-			assert.equal( runEnd, 0, "runStart should have been not emitted" );
+			assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 		} );
 
 		QUnit.module( "module3", function() {
@@ -68,7 +68,7 @@ QUnit.module( "module1", function() {
 				assert.equal( testStart, 2, "emitted testStart events" );
 				assert.equal( testEnd, 1, "emitted testEnd events" );
 				assert.equal( suiteEnd, 0, "emitted suiteEnd events" );
-				assert.equal( runEnd, 0, "runStart should have been not emitted" );
+				assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 			} );
 
 			QUnit.module( "module4", function() {
@@ -78,7 +78,7 @@ QUnit.module( "module1", function() {
 					assert.equal( testStart, 3, "emitted testStart events" );
 					assert.equal( testEnd, 2, "emitted testEnd events" );
 					assert.equal( suiteEnd, 0, "emitted suiteEnd events" );
-					assert.equal( runEnd, 0, "runStart should have been not emitted" );
+					assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 				} );
 			} );
 		} );
@@ -89,7 +89,7 @@ QUnit.module( "module1", function() {
 			assert.equal( testStart, 4, "emitted testStart events" );
 			assert.equal( testEnd, 3, "emitted testEnd events" );
 			assert.equal( suiteEnd, 2, "emitted suiteEnd events" );
-			assert.equal( runEnd, 0, "runStart should have been not emitted" );
+			assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 		} );
 	} );
 
@@ -99,6 +99,6 @@ QUnit.module( "module1", function() {
 		assert.equal( testStart, 5, "emitted testStart events" );
 		assert.equal( testEnd, 4, "emitted testEnd events" );
 		assert.equal( suiteEnd, 3, "emitted suiteEnd events" );
-		assert.equal( runEnd, 0, "runStart should have been not emitted" );
+		assert.equal( runEnd, 0, "runEnd should have been not emitted" );
 	} );
 } );
