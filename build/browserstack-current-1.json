@@ -6,7 +6,7 @@
 		"test/index.html",
 		"test/logs.html",
 		"test/seed.html",
-		"test/events.html"
+		"test/events/combined.html"
 	],
 	"browsers": [
 		"chrome_current",
