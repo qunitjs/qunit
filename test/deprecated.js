@@ -77,6 +77,31 @@ QUnit.test( "QUnit.stop", function( assert ) {
 	}, /use QUnit\.test\(\) with assert\.async\(\) instead\./ );
 } );
 
+QUnit.test( "QUnit.jsDump", function( assert ) {
+
+	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
+		QUnit.jsDump;
+	}, upgradeGuide );
+
+	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
+		QUnit.jsDump;
+	}, /QUnit\.jsDump/ );
+
+	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
+		QUnit.jsDump;
+	}, /use QUnit\.dump instead\./ );
+
+	assert.throws( function() {
+		QUnit.jsDump = null;
+	}, upgradeGuide );
+} );
+
 QUnit.test( "QUnit.start inside text context", function( assert ) {
 	assert.throws( function() {
 		QUnit.start();
