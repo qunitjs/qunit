@@ -178,7 +178,9 @@ QUnit.equiv = equiv;
 QUnit.dump = dump;
 
 // 3.0 TODO: Remove
-QUnit.jsDump = dump;
+Object.defineProperty(QUnit, "jsDump", {
+    get: function () { throw new Error("Use Dump instead of jsDump"); }
+});
 
 registerLoggingCallbacks( QUnit );
 
