@@ -52,6 +52,7 @@
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
     "ci": "grunt test && grunt coveralls",
+    "ci-include-lint": "grunt eslint && grunt test && grunt coveralls",
     "test": "grunt",
     "prepublish": "grunt build"
   },

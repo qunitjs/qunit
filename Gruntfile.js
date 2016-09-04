@@ -135,7 +135,6 @@ grunt.initConfig( {
 			"concat:src-css"
 		],
 		test: [
-			"eslint",
 			"search",
 			"qunit",
 			"test-on-node"
@@ -163,6 +162,6 @@ grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
 grunt.registerTask( "build", [ "concurrent:build" ] );
 grunt.registerTask( "test", [ "concurrent:test" ] );
-grunt.registerTask( "default", [ "build", "test" ] );
+grunt.registerTask( "default", [ "eslint", "build", "test" ] );
 
 };
