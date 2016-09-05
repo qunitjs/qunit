@@ -11,6 +11,9 @@ matrix:
   fast_finish: true
   allow_failures:
     - env: NPM_SCRIPT=browserstack
+  exclude:
+    - node_js: "6"
+      env: NPM_SCRIPT=ci
   include:
     - node_js: "6"
       env: NPM_SCRIPT=ci-include-lint
