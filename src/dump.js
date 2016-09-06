@@ -111,10 +111,10 @@ export default ( function() {
 
 			separator: function() {
 				if ( this.multiline ) {
-                    return this.HTML ? "<br />" : "\n";
-                } else {
-                    return this.HTML ? "&#160;" : " ";
-                }
+					return this.HTML ? "<br />" : "\n";
+				} else {
+					return this.HTML ? "&#160;" : " ";
+				}
 			},
 
 			// Extra can be a number, shortcut for increasing-calling-decreasing

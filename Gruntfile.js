@@ -37,10 +37,10 @@ grunt.initConfig( {
 			dest: "dist/qunit.js"
 		}
 	},
-    eslint: {
-        options: {
-            config: ".eslintrc.json"
-        },
+	eslint: {
+		options: {
+			config: ".eslintrc.json"
+		},
 		all: [
 			"*.js",
             "reporter/**/*.js",
