@@ -179,7 +179,7 @@ QUnit.dump = dump;
 
 // 3.0 TODO: Remove
 Object.defineProperty( QUnit, "jsDump", {
-    get: function() { throw new Error( "Use Dump instead of jsDump" ); }
+    get: function() { throw new Error( "Use QUnit.dump instead of QUnit.jsDump" ); }
 } );
 
 registerLoggingCallbacks( QUnit );
