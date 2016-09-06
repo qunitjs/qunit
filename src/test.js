@@ -374,9 +374,7 @@ Test.prototype = {
 				resume = internalStop( test );
 				then.call(
 					promise,
-					function() {
-						resume();
-					},
+					function() { resume(); },
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
