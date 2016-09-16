@@ -96,6 +96,15 @@ function id( name ) {
 	return document.getElementById && document.getElementById( name );
 }
 
+function stopTests() {
+  var stopButton = id( "qunit-stop-tests-button" );
+  if ( stopButton ) {
+    stopButton.innerHTML = "Stopping";
+  }
+  QUnit.config.queue.length = 0;
+  return false;
+}
+
 function interceptNavigation( ev ) {
 	applyUrlParams();
 
@@ -260,6 +269,14 @@ function toolbarUrlConfigContainer() {
 	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChanged );
 
 	return urlConfigContainer;
+}
+
+function stopTestsButton() {
+  var button = document.createElement( "button" );
+  button.id = "qunit-stop-tests-button";
+  button.innerHTML = "Stop";
+  addEvent( button, "click", stopTests );
+  return button;
 }
 
 function toolbarLooseFilter() {
@@ -446,6 +463,7 @@ function appendToolbar() {
 		toolbar.appendChild( toolbarUrlConfigContainer() );
 		toolbar.appendChild( toolbarModuleFilter() );
 		toolbar.appendChild( toolbarLooseFilter() );
+    toolbar.appendChild( stopTestsButton() );
 		toolbar.appendChild( document.createElement( "div" ) ).className = "clearfix";
 	}
 }
@@ -599,6 +617,7 @@ QUnit.begin( function( details ) {
 QUnit.done( function( details ) {
 	var banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
+    stopButton = id( "qunit-stop-tests-button" ),
 		html = [
 			"Tests completed in ",
 			details.runtime,
@@ -611,6 +630,10 @@ QUnit.done( function( details ) {
 			details.failed,
 			"</span> failed."
 		].join( "" );
+
+  if ( stopButton ) {
+    stopButton.innerHTML = "Stop";
+  }
 
 	if ( banner ) {
 		banner.className = details.failed ? "qunit-fail" : "qunit-pass";
