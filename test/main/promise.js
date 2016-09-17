@@ -165,6 +165,8 @@ QUnit.module( "Promise-aware return values with rejections", {
 } );
 
 QUnit.test( "rejected Promise with undefined value", function( assert ) {
+	assert.expect( 2 );
+
 	this.pushFailure = assert.test.pushFailure;
 	assert.test.pushFailure = function( message ) {
 		assert.strictEqual(
@@ -172,10 +174,13 @@ QUnit.test( "rejected Promise with undefined value", function( assert ) {
 			"Promise rejected during \"rejected Promise with undefined value\": undefined"
 		);
 	};
+
 	return createMockPromise( assert, true, undefined );
 } );
 
 QUnit.test( "rejected Promise with error value", function( assert ) {
+	assert.expect( 2 );
+
 	this.pushFailure = assert.test.pushFailure;
 	assert.test.pushFailure = function( message ) {
 		assert.strictEqual(
@@ -183,10 +188,13 @@ QUnit.test( "rejected Promise with error value", function( assert ) {
 			"Promise rejected during \"rejected Promise with error value\": this is an error"
 		);
 	};
+
 	return createMockPromise( assert, true, new Error( "this is an error" ) );
 } );
 
 QUnit.test( "rejected Promise with string value", function( assert ) {
+	assert.expect( 2 );
+
 	this.pushFailure = assert.test.pushFailure;
 	assert.test.pushFailure = function( message ) {
 		assert.strictEqual(
@@ -194,5 +202,6 @@ QUnit.test( "rejected Promise with string value", function( assert ) {
 			"Promise rejected during \"rejected Promise with string value\": this is an error"
 		);
 	};
+
 	return createMockPromise( assert, true, "this is an error" );
 } );
