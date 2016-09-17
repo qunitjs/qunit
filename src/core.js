@@ -178,8 +178,15 @@ QUnit.equiv = equiv;
 QUnit.dump = dump;
 
 // 3.0 TODO: Remove
+function jsDumpThrower() {
+	throw new Error(
+		"QUnit.jsDump is removed in QUnit 2.0, use QUnit.dump instead.\n" +
+		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+	);
+}
 Object.defineProperty( QUnit, "jsDump", {
-    get: function() { throw new Error( "Use QUnit.dump instead of QUnit.jsDump" ); }
+    get: function() { return jsDumpThrower; },
+    set: jsDumpThrower
 } );
 
 registerLoggingCallbacks( QUnit );
