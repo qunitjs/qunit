@@ -43,7 +43,7 @@ grunt.initConfig( {
 		},
 		all: [
 			"*.js",
-            "reporter/**/*.js",
+			"reporter/**/*.js",
 			"runner/**/*.js",
 			"src/**/*.js",
 
@@ -51,7 +51,7 @@ grunt.initConfig( {
 			"build/*.js",
 			"build/tasks/**/*.js"
 		]
-    },
+	},
 	search: {
 		options: {
 
@@ -86,6 +86,7 @@ grunt.initConfig( {
 			"test/startError.html",
 			"test/reorderError1.html",
 			"test/reorderError2.html",
+			"test/callbacks.html",
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
