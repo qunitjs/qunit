@@ -1,13 +1,18 @@
 // NOTE: Adds 1 assertion
-function createMockPromise( assert ) {
+function createMockPromise( assert, reject, value ) {
+	if ( arguments.length < 3 ) {
+		value = {};
+	}
 
 	// Return a mock self-fulfilling Promise ("thenable")
 	var thenable = {
-		then: function( fulfilledCallback /*, rejectedCallback */ ) {
+		then: function( fulfilledCallback, rejectedCallback ) {
 			assert.strictEqual( this, thenable, "`then` was invoked with the Promise as the " +
 				"context" );
 			setTimeout( function() {
-				return fulfilledCallback.call( thenable, {} );
+				return reject ?
+					rejectedCallback.call( thenable, value ) :
+					fulfilledCallback.call( thenable, value );
 			}, 13 );
 		}
 	};
@@ -151,4 +156,43 @@ QUnit.test( "fulfilled Promise with non-Promise async assertion", function( asse
 
 	// Adds 1 assertion
 	return createMockPromise( assert );
+} );
+
+QUnit.module( "Promise-aware return values with rejections", {
+	afterEach: function( assert ) {
+		assert.test.pushFailure = this.pushFailure;
+	}
+} );
+
+QUnit.test( "rejected Promise with undefined value", function( assert ) {
+	this.pushFailure = assert.test.pushFailure;
+	assert.test.pushFailure = function( message ) {
+		assert.strictEqual(
+			message,
+			"Promise rejected during \"rejected Promise with undefined value\": undefined"
+		);
+	};
+	return createMockPromise( assert, true, undefined );
+} );
+
+QUnit.test( "rejected Promise with error value", function( assert ) {
+	this.pushFailure = assert.test.pushFailure;
+	assert.test.pushFailure = function( message ) {
+		assert.strictEqual(
+			message,
+			"Promise rejected during \"rejected Promise with error value\": this is an error"
+		);
+	};
+	return createMockPromise( assert, true, new Error( "this is an error" ) );
+} );
+
+QUnit.test( "rejected Promise with string value", function( assert ) {
+	this.pushFailure = assert.test.pushFailure;
+	assert.test.pushFailure = function( message ) {
+		assert.strictEqual(
+			message,
+			"Promise rejected during \"rejected Promise with string value\": this is an error"
+		);
+	};
+	return createMockPromise( assert, true, "this is an error" );
 } );

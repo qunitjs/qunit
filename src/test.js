@@ -378,7 +378,8 @@ Test.prototype = {
 					function( error ) {
 						message = "Promise rejected " +
 							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
-							" " + test.testName + ": " + ( error.message || error );
+							" \"" + test.testName + "\": " +
+							( ( error && error.message ) || error );
 						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
 						// Else next test will carry the responsibility
