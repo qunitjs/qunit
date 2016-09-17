@@ -9,7 +9,7 @@ export function extractStacktrace( e, offset ) {
 
 	var stack, include, i;
 
-	if ( e.stack ) {
+	if ( e && e.stack ) {
 		stack = e.stack.split( "\n" );
 		if ( /^error$/i.test( stack[ 0 ] ) ) {
 			stack.shift();
