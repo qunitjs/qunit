@@ -1,4 +1,4 @@
-import { window, setTimeout, console } from "./globals";
+import { window, setTimeout, console, sessionStorage } from "./globals";
 
 import equiv from "./equiv";
 import dump from "./dump";
@@ -257,7 +257,7 @@ export function process( last ) {
 }
 
 function done() {
-	var runtime, passed;
+	var runtime, passed, i, key;
 
 	internalState.autorun = true;
 
@@ -270,6 +270,16 @@ function done() {
 		total: config.stats.all,
 		runtime: runtime
 	} );
+
+	// Clear own sessionStorage items if all tests passed
+	if ( config.reorder && defined.sessionStorage && config.stats.bad === 0 ) {
+		for ( i = 0; i < sessionStorage.length; i++ ) {
+			key = sessionStorage.key( i++ );
+			if ( key.indexOf( "qunit-test-" ) === 0 ) {
+				sessionStorage.removeItem( key );
+			}
+		}
+	}
 }
 
 function setHook( module, hookName ) {

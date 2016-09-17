@@ -94,7 +94,8 @@ Test.prototype = {
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
 			module: module.name,
-			testId: this.testId
+			testId: this.testId,
+			previousFailure: this.previousFailure
 		} );
 
 		if ( !config.pollution ) {
@@ -210,6 +211,8 @@ Test.prototype = {
 
 		var i,
 			module = this.module,
+			moduleName = module.name,
+			testName = this.testName,
 			skipped = !!this.skip,
 			bad = 0;
 
@@ -227,9 +230,19 @@ Test.prototype = {
 		}
 
 		notifyTestsRan( module );
+
+		// Store result when possible
+		if ( config.reorder && defined.sessionStorage ) {
+			if ( bad ) {
+				sessionStorage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );
+			} else {
+				sessionStorage.removeItem( "qunit-test-" + moduleName + "-" + testName );
+			}
+		}
+
 		runLoggingCallbacks( "testDone", {
-			name: this.testName,
-			module: module.name,
+			name: testName,
+			module: moduleName,
 			skipped: skipped,
 			failed: bad,
 			passed: this.assertions.length - bad,
@@ -309,6 +322,8 @@ Test.prototype = {
 		// Prioritize previously failed tests, detected from sessionStorage
 		priority = config.reorder && defined.sessionStorage &&
 				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
+
+		this.previousFailure = !!priority;
 
 		return synchronize( run, priority, config.seed );
 	},
