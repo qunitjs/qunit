@@ -31,35 +31,35 @@ function asyncCallback( assert ) {
 QUnit.module( "assert.async" );
 
 QUnit.test( "single call", function( assert ) {
-  var done = assert.async();
+	var done = assert.async();
 
-  assert.expect( 1 );
-  setTimeout( function() {
-    assert.ok( true );
-    done();
-  } );
+	assert.expect( 1 );
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
 } );
 
 QUnit.test( "multiple call", function( assert ) {
-  var done = assert.async( 4 );
+	var done = assert.async( 4 );
 
-  assert.expect( 4 );
-  setTimeout( function() {
-    assert.ok( true );
-    done();
-  } );
-  setTimeout( function() {
-    assert.ok( true );
-    done();
-  } );
-  setTimeout( function() {
-    assert.ok( true );
-    done();
-  } );
-  setTimeout( function() {
-    assert.ok( true );
-    done();
-  } );
+	assert.expect( 4 );
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
+	setTimeout( function() {
+		assert.ok( true );
+		done();
+	} );
 
 } );
 
@@ -402,30 +402,30 @@ QUnit.test( "`done` can be called synchronously", function( assert ) {
 } );
 
 QUnit.test( "sole `done` is called last", function( assert ) {
-  var done;
+	var done;
 
-  assert.expect( 1 );
-  done = assert.async();
-  setTimeout( function() {
-    assert.ok( true, "should pass if called before `done`" );
-    done();
-  } );
+	assert.expect( 1 );
+	done = assert.async();
+	setTimeout( function() {
+		assert.ok( true, "should pass if called before `done`" );
+		done();
+	} );
 } );
 
 QUnit.test( "multiple `done` calls, no assertions after final `done`", function( assert ) {
-  var done1, done2;
+	var done1, done2;
 
-  assert.expect( 2 );
-  done1 = assert.async();
-  done2 = assert.async();
-  setTimeout( function() {
-    done1();
-    assert.ok( true, "should pass if called after this `done` but before final `done`" );
-  } );
-  setTimeout( function() {
-    assert.ok( true, "should pass if called before final `done`" );
-    done2();
-  } );
+	assert.expect( 2 );
+	done1 = assert.async();
+	done2 = assert.async();
+	setTimeout( function() {
+		done1();
+		assert.ok( true, "should pass if called after this `done` but before final `done`" );
+	} );
+	setTimeout( function() {
+		assert.ok( true, "should pass if called before final `done`" );
+		done2();
+	} );
 } );
 
 QUnit.module( "assertions after final assert.async callback in test callback fail", {

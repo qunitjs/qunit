@@ -344,14 +344,14 @@ Test.prototype = {
 		}
 
 		var details = {
-				module: this.module.name,
-				name: this.testName,
-				result: false,
-				message: message || "error",
-				actual: actual || null,
-				testId: this.testId,
-				runtime: now() - this.started
-			};
+			module: this.module.name,
+			name: this.testName,
+			result: false,
+			message: message || "error",
+			actual: actual || null,
+			testId: this.testId,
+			runtime: now() - this.started
+		};
 
 		if ( source ) {
 			details.source = source;
