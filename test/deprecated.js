@@ -81,6 +81,14 @@ QUnit.test( "QUnit.jsDump", function( assert ) {
 	assert.throws( function() {
 		QUnit.jsDump();
 	}, upgradeGuide );
+
+	assert.throws( function() {
+		QUnit.jsDump();
+	}, /QUnit\.jsDump/ );
+
+	assert.throws( function() {
+		QUnit.jsDump();
+	}, /use QUnit\.dump instead\./ );
 } );
 
 QUnit.test( "QUnit.start inside text context", function( assert ) {
