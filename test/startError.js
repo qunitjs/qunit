@@ -8,6 +8,7 @@ QUnit.test( "start() throws when QUnit.config.autostart === true", function( ass
 		"Called start() outside of a test context when QUnit.config.autostart was true" );
 } );
 
+// eslint-disable-next-line max-len
 QUnit.test( "Throws after calling start() too many times outside of a test context", function( assert ) {
 	assert.expect( 1 );
 	assert.equal( tooManyStartsError.message,
