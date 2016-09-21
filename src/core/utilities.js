@@ -100,22 +100,23 @@ export function objectType( obj ) {
 		type = match && match[ 1 ];
 
 	switch ( type ) {
-		case "Number":
-			if ( isNaN( obj ) ) {
-				return "nan";
-			}
-			return "number";
-		case "String":
-		case "Boolean":
-		case "Array":
-		case "Set":
-		case "Map":
-		case "Date":
-		case "RegExp":
-		case "Function":
-		case "Symbol":
-			return type.toLowerCase();
+	case "Number":
+		if ( isNaN( obj ) ) {
+			return "nan";
+		}
+		return "number";
+	case "String":
+	case "Boolean":
+	case "Array":
+	case "Set":
+	case "Map":
+	case "Date":
+	case "RegExp":
+	case "Function":
+	case "Symbol":
+		return type.toLowerCase();
 	}
+
 	if ( typeof obj === "object" ) {
 		return "object";
 	}
