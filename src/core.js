@@ -184,8 +184,9 @@ function jsDumpThrower() {
 		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
 	);
 }
+
 Object.defineProperty( QUnit, "jsDump", {
-    get: function() { return jsDumpThrower; },
+    get: jsDumpThrower,
     set: jsDumpThrower
 } );
 
