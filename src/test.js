@@ -66,16 +66,6 @@ Test.prototype = {
 				// Without this, reporters can get testStart before moduleStart  which is a problem.
 				!hasOwn.call( config, "previousModule" )
 		) {
-			if ( hasOwn.call( config, "previousModule" ) ) {
-				runLoggingCallbacks( "moduleDone", {
-					name: config.previousModule.name,
-					tests: config.previousModule.tests,
-					failed: config.moduleStats.bad,
-					passed: config.moduleStats.all - config.moduleStats.bad,
-					total: config.moduleStats.all,
-					runtime: now() - config.moduleStats.started
-				} );
-			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
@@ -213,6 +203,7 @@ Test.prototype = {
 		}
 
 		var i,
+			module = this.module,
 			skipped = !!this.skip,
 			bad = 0;
 
@@ -229,10 +220,10 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( this.module );
+		notifyTestsRan( module );
 		runLoggingCallbacks( "testDone", {
 			name: this.testName,
-			module: this.module.name,
+			module: module.name,
 			skipped: skipped,
 			failed: bad,
 			passed: this.assertions.length - bad,
@@ -246,6 +237,17 @@ Test.prototype = {
 			// Source of Test
 			source: this.stack
 		} );
+
+		if ( module.testsRun === numberOfTests( module ) ) {
+			runLoggingCallbacks( "moduleDone", {
+				name: module.name,
+				tests: module.tests,
+				failed: config.moduleStats.bad,
+				passed: config.moduleStats.all - config.moduleStats.bad,
+				total: config.moduleStats.all,
+				runtime: now() - config.moduleStats.started
+			} );
+		}
 
 		config.current = undefined;
 	},

@@ -51,8 +51,6 @@ QUnit.done( function() {
 			"module1 > afterEach",
 			"testDone1",
 			"testDone2",
-			"moduleDone1",
-			"moduleDone2",
 			"moduleStart1",
 			"moduleStart2",
 			"testStart1",
