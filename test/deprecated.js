@@ -78,15 +78,22 @@ QUnit.test( "QUnit.stop", function( assert ) {
 } );
 
 QUnit.test( "QUnit.jsDump", function( assert ) {
+
 	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
 		QUnit.jsDump;
 	}, upgradeGuide );
 
 	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
 		QUnit.jsDump;
 	}, /QUnit\.jsDump/ );
 
 	assert.throws( function() {
+
+		// eslint-disable-next-line no-unused-expressions
 		QUnit.jsDump;
 	}, /use QUnit\.dump instead\./ );
 
