@@ -150,7 +150,6 @@ extend( QUnit, {
 		// Initialize the configuration options
 		extend( config, {
 			stats: { all: 0, bad: 0 },
-			moduleStats: { all: 0, bad: 0 },
 			started: 0,
 			updateRate: 1000,
 			autostart: true,
@@ -261,9 +260,6 @@ function done() {
 	var runtime, passed;
 
 	internalState.autorun = true;
-
-	// Log the last module results
-	delete config.previousModule;
 
 	runtime = now() - config.started;
 	passed = config.stats.all - config.stats.bad;

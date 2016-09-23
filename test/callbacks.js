@@ -68,8 +68,6 @@ QUnit.done( function() {
 			"testDone2",
 			"moduleDone1",
 			"moduleDone2",
-			"moduleStart1",
-			"moduleStart2",
 			"testStart1",
 			"testStart2",
 			"module1 > beforeEach",

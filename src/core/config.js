@@ -43,7 +43,8 @@ const config = {
 	// The first unnamed module
 	currentModule: {
 		name: "",
-		tests: []
+		tests: [],
+		testsRun: 0
 	},
 
 	callbacks: {}

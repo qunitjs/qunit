@@ -53,41 +53,47 @@ export default function Test( settings ) {
 
 Test.count = 0;
 
+function getNotStartedModules( startModule ) {
+	var module = startModule,
+		modules = [];
+
+	while ( module && module.testsRun === 0 ) {
+		modules.push( module );
+		module = module.parentModule;
+	}
+
+	return modules;
+}
+
 Test.prototype = {
 	before: function() {
-		if (
+		var i, startModule,
+			module = this.module,
+			notStartedModules = getNotStartedModules( module );
 
-			// Emit moduleStart when we're switching from one module to another
-			this.module !== config.previousModule ||
-
-				// They could be equal (both undefined) but if the previousModule property doesn't
-				// yet exist it means this is the first test in a suite that isn't wrapped in a
-				// module, in which case we'll just emit a moduleStart event for 'undefined'.
-				// Without this, reporters can get testStart before moduleStart  which is a problem.
-				!hasOwn.call( config, "previousModule" )
-		) {
-			config.previousModule = this.module;
-			config.moduleStats = { all: 0, bad: 0, started: now() };
+		for ( i = notStartedModules.length - 1; i >= 0; i-- ) {
+			startModule = notStartedModules[ i ];
+			startModule.stats = { all: 0, bad: 0, started: now() };
 			runLoggingCallbacks( "moduleStart", {
-				name: this.module.name,
-				tests: this.module.tests
+				name: startModule.name,
+				tests: startModule.tests
 			} );
 		}
 
 		config.current = this;
 
-		if ( this.module.testEnvironment ) {
-			delete this.module.testEnvironment.before;
-			delete this.module.testEnvironment.beforeEach;
-			delete this.module.testEnvironment.afterEach;
-			delete this.module.testEnvironment.after;
+		if ( module.testEnvironment ) {
+			delete module.testEnvironment.before;
+			delete module.testEnvironment.beforeEach;
+			delete module.testEnvironment.afterEach;
+			delete module.testEnvironment.after;
 		}
-		this.testEnvironment = extend( {}, this.module.testEnvironment );
+		this.testEnvironment = extend( {}, module.testEnvironment );
 
 		this.started = now();
 		runLoggingCallbacks( "testStart", {
 			name: this.testName,
-			module: this.module.name,
+			module: module.name,
 			testId: this.testId
 		} );
 
@@ -210,13 +216,13 @@ Test.prototype = {
 		this.runtime = now() - this.started;
 
 		config.stats.all += this.assertions.length;
-		config.moduleStats.all += this.assertions.length;
+		module.stats.all += this.assertions.length;
 
 		for ( i = 0; i < this.assertions.length; i++ ) {
 			if ( !this.assertions[ i ].result ) {
 				bad++;
 				config.stats.bad++;
-				config.moduleStats.bad++;
+				module.stats.bad++;
 			}
 		}
 
@@ -242,10 +248,10 @@ Test.prototype = {
 			runLoggingCallbacks( "moduleDone", {
 				name: module.name,
 				tests: module.tests,
-				failed: config.moduleStats.bad,
-				passed: config.moduleStats.all - config.moduleStats.bad,
-				total: config.moduleStats.all,
-				runtime: now() - config.moduleStats.started
+				failed: module.stats.bad,
+				passed: module.stats.all - module.stats.bad,
+				total: module.stats.all,
+				runtime: now() - module.stats.started
 			} );
 		}
 
