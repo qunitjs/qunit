@@ -79,15 +79,15 @@ QUnit.test( "QUnit.stop", function( assert ) {
 
 QUnit.test( "QUnit.jsDump", function( assert ) {
 	assert.throws( function() {
-		QUnit.jsDump();
+		QUnit.jsDump;
 	}, upgradeGuide );
 
 	assert.throws( function() {
-		QUnit.jsDump();
+		QUnit.jsDump;
 	}, /QUnit\.jsDump/ );
 
 	assert.throws( function() {
-		QUnit.jsDump();
+		QUnit.jsDump;
 	}, /use QUnit\.dump instead\./ );
 
 	assert.throws( function() {
