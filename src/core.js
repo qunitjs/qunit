@@ -8,8 +8,11 @@ import exportQUnit from "./export";
 
 import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
-import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
+import { on, emit, registerLoggingCallbacks,
+	runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
+
+import {Suite} from "js-reporters/lib/Data";
 
 const QUnit = {};
 
@@ -41,6 +44,7 @@ extend( QUnit, {
 		}
 
 		module = createModule();
+		createSuite( module );
 
 		if ( testEnvironment && ( testEnvironment.setup || testEnvironment.teardown ) ) {
 			console.warn(
@@ -94,6 +98,30 @@ extend( QUnit, {
 			return module;
 		}
 
+		function createSuite( module ) {
+			var parentSuite;
+			var fullName;
+			var suite;
+
+			if ( module.parentModule !== null ) {
+				parentSuite = config.moduleToSuite[ module.parentModule.moduleId ];
+			} else {
+				parentSuite = config.globalSuite;
+			}
+
+			fullName = parentSuite.fullName.slice();
+			fullName.push( module.name );
+
+			suite = new Suite( module.name, fullName, [], [] );
+
+			parentSuite.childSuites.push( suite );
+			suite.parent = parentSuite;
+			suite.finishedTests = 0;
+			config.moduleToSuite[ module.moduleId ] = suite;
+
+			return suite;
+		}
+
 		function setCurrentModule( module ) {
 			config.currentModule = module;
 		}
@@ -105,6 +133,8 @@ extend( QUnit, {
 	skip: skip,
 
 	only: only,
+
+	on: on,
 
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;
@@ -224,6 +254,8 @@ export function begin() {
 			totalTests: Test.count,
 			modules: modulesLog
 		} );
+
+		emit( "runStart", config.globalSuite );
 	}
 
 	config.blocking = false;
@@ -272,6 +304,13 @@ function done() {
 			total: config.moduleStats.all,
 			runtime: now() - config.moduleStats.started
 		} );
+
+		// Do not emit the "suiteEnd" event for the globalSuite.
+		if ( config.previousModule.moduleId ) {
+			var suite = config.moduleToSuite[ config.previousModule.moduleId ];
+
+			emit( "suiteEnd", suite );
+		}
 	}
 	delete config.previousModule;
 
@@ -284,6 +323,8 @@ function done() {
 		total: config.stats.all,
 		runtime: runtime
 	} );
+
+	emit( "runEnd", config.globalSuite );
 }
 
 function setHook( module, hookName ) {

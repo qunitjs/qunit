@@ -6,8 +6,10 @@ import Assert from "./assert";
 
 import config from "./core/config";
 import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/utilities";
-import { runLoggingCallbacks } from "./core/logging";
+import { emit, runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
+
+import {Assertion as jsRepAssertion, Test as jsRepTest} from "js-reporters/lib/Data";
 
 var unitSampler,
 	focused = false,
@@ -15,6 +17,7 @@ var unitSampler,
 
 export default function Test( settings ) {
 	var i, l;
+	var suite, fullName;
 
 	++Test.count;
 
@@ -39,6 +42,20 @@ export default function Test( settings ) {
 		name: this.testName,
 		testId: this.testId
 	} );
+
+	if ( this.module.moduleId ) {
+		suite = config.moduleToSuite[ this.module.moduleId ];
+	} else {
+		suite = config.globalSuite;
+	}
+
+	fullName = suite.fullName.slice();
+	fullName.push( this.testName );
+
+	this.jsRepTest = new jsRepTest( this.testName, suite.name, fullName,
+		undefined, undefined, [], [] );
+
+	suite.tests.push( this.jsRepTest );
 
 	if ( settings.skip ) {
 
@@ -75,6 +92,25 @@ Test.prototype = {
 					total: config.moduleStats.all,
 					runtime: now() - config.moduleStats.started
 				} );
+
+				// Do not emit the "suiteEnd" event for "globalSuite".
+				if ( config.previousModule.moduleId ) {
+					let suite = config.moduleToSuite[ config.previousModule.moduleId ];
+					let parentSuite = suite.parent;
+
+					if ( hasSuiteFinished( suite ) ) {
+						emit( "suiteEnd", suite );
+						suite.emitEnd = true;
+					}
+
+					// This is for suites that don't have a test in the end.
+					while ( parentSuite !== config.globalSuite &&
+						!parentSuite.emitEnd && hasSuiteFinished( parentSuite ) ) {
+						emit( "suiteEnd", parentSuite );
+						parentSuite.emitEnd = true;
+						parentSuite = parentSuite.parent;
+					}
+				}
 			}
 			config.previousModule = this.module;
 			config.moduleStats = { all: 0, bad: 0, started: now() };
@@ -82,6 +118,26 @@ Test.prototype = {
 				name: this.module.name,
 				tests: this.module.tests
 			} );
+
+			// Do not emit the "suiteStart" event for the "globalSuite".
+			if ( this.module.moduleId ) {
+				let suite = config.moduleToSuite[ this.module.moduleId ];
+
+				if ( !suite.emitStart ) {
+					let parentSuite = suite.parent;
+
+					// Emit the "suiteStart" event for all parent suites,
+					// this applies for nested suites.
+					while ( parentSuite !== config.globalSuite && !parentSuite.emitStart ) {
+						emit( "suiteStart", parentSuite );
+						parentSuite.emitStart = true;
+						parentSuite = parentSuite.parent;
+					}
+
+					emit( "suiteStart", suite );
+					suite.emitStart = true;
+				}
+			}
 		}
 
 		config.current = this;
@@ -101,8 +157,20 @@ Test.prototype = {
 			testId: this.testId
 		} );
 
+		emit( "testStart", this.jsRepTest );
+
 		if ( !config.pollution ) {
 			saveGlobal();
+		}
+
+		function hasSuiteFinished( suite ) {
+			for ( let i = 0; i < suite.childSuites.length; i++ ) {
+				if ( !suite.childSuites[ i ].emitEnd ) {
+					return false;
+				}
+			}
+
+			return suite.tests.length === suite.finishedTests;
 		}
 	},
 
@@ -247,6 +315,27 @@ Test.prototype = {
 			source: this.stack
 		} );
 
+		if ( bad > 0 ) {
+			this.jsRepTest.status = "failed";
+		} else if ( skipped ) {
+			this.jsRepTest.status = "skipped";
+		} else {
+			this.jsRepTest.status = "passed";
+		}
+
+		this.jsRepTest.runtime = skipped ? undefined : this.runtime;
+
+		let suite;
+
+		if ( this.module.moduleId ) {
+			suite = config.moduleToSuite[ this.module.moduleId ];
+		} else {
+			suite = config.globalSuite;
+		}
+
+		suite.finishedTests++;
+		emit( "testEnd", this.jsRepTest );
+
 		config.current = undefined;
 	},
 
@@ -331,6 +420,15 @@ Test.prototype = {
 
 		runLoggingCallbacks( "log", details );
 
+		this.jsRepTest.assertions.push( new jsRepAssertion(
+				details.result,
+				details.actual,
+				details.expected,
+				details.message,
+				undefined
+			)
+		);
+
 		this.assertions.push( {
 			result: !!resultInfo.result,
 			message: resultInfo.message
@@ -358,6 +456,17 @@ Test.prototype = {
 		}
 
 		runLoggingCallbacks( "log", details );
+
+		var assertion = new jsRepAssertion(
+			details.result,
+			details.actual,
+			details.expected,
+			details.message,
+			details.source
+		);
+
+		this.jsRepTest.assertions.push( assertion );
+		this.jsRepTest.errors.push( assertion );
 
 		this.assertions.push( {
 			result: false,

@@ -1,3 +1,5 @@
+import {Suite} from "js-reporters/lib/Data";
+
 /**
  * Config object: Maintain internal state
  * Later exposed as QUnit.config
@@ -46,7 +48,11 @@ const config = {
 		tests: []
 	},
 
-	callbacks: {}
+	callbacks: {},
+
+	globalSuite: new Suite( undefined, [], [], [] ),
+
+	moduleToSuite: {}
 };
 
 // Push a loose unnamed module to the modules collection

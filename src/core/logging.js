@@ -1,5 +1,7 @@
 import config from "./config";
-import { objectType } from "./utilities";
+import { objectType, inArray } from "./utilities";
+
+var listeners = {};
 
 // Register logging callbacks
 export function registerLoggingCallbacks( obj ) {
@@ -39,5 +41,42 @@ export function runLoggingCallbacks( key, args ) {
 	callbacks = config.callbacks[ key ];
 	for ( i = 0, l = callbacks.length; i < l; i++ ) {
 		callbacks[ i ]( args );
+	}
+}
+
+export function emit( type, data ) {
+	var i, callbacks;
+
+	// Validate
+	if ( objectType( type ) !== "string" ) {
+		throw new Error( "Emitting QUnit events requires an event type" );
+	}
+
+	// Ensure a consistent event run
+	callbacks = [].slice.call( listeners[ type ] || [] );
+	for ( i = 0; i < callbacks.length; i++ ) {
+		callbacks[ i ]( data );
+	}
+}
+
+export function on( type, listener ) {
+
+	// Validate
+	if ( objectType( type ) !== "string" ) {
+		throw new Error( "Adding QUnit events requires an event type" );
+	}
+
+	if ( objectType( listener ) !== "function" ) {
+		throw new Error( "Adding QUnit events requires a listener function" );
+	}
+
+	// Initialize collection of this logging callback
+	if ( !listeners[ type ] ) {
+		listeners[ type ] = [];
+	}
+
+	// Filter out duplicate listeners
+	if ( inArray( listener, listeners[ type ] ) < 0 ) {
+		listeners[ type ].push( listener );
 	}
 }

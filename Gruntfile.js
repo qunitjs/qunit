@@ -101,7 +101,10 @@ grunt.initConfig( {
 			"test/overload.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
-			"test/string-filter.html"
+			"test/string-filter.html",
+			"test/events/global-test.html",
+			"test/events/nested-suites.html",
+			"test/events/combined.html"
 		]
 	},
 	coveralls: {
@@ -116,6 +119,9 @@ grunt.initConfig( {
 	},
 	"test-on-node": {
 		files: [
+			"test/events/global-test",
+			"test/events/nested-suites",
+			"test/events/combined",
 			"test/logs",
 			"test/main/test",
 			"test/main/assert",
