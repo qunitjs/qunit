@@ -118,16 +118,22 @@ Test.prototype = {
 		try {
 			runTest( this );
 		} catch ( e ) {
-			this.pushFailure( "Died on test #" + ( this.assertions.length + 1 ) + " " +
-				this.stack + ": " + ( e.message || e ), extractStacktrace( e, 0 ) );
 
 			// Else next test will carry the responsibility
 			saveGlobal();
 
-			// Restart the tests if they're blocking
-			if ( config.blocking ) {
-				internalRecover( this );
-			}
+			// Push assertion failure and restart the tests if they're blocking
+			this.pushFailureAndResume(
+				[
+					"Died on test #",
+					this.assertions.length + 1,
+					" ",
+					this.stack,
+					": ",
+					e.message || e
+				].join( "" ),
+				extractStacktrace( e, 0 )
+			);
 		}
 
 		function runTest( test ) {
@@ -495,15 +501,34 @@ Test.prototype = {
 };
 
 export function pushFailure() {
+	return internalPushFailure( Array.prototype.slice.call( arguments ), false );
+}
+
+export function failTest() {
+	return internalPushFailure( Array.prototype.slice.call( arguments ), true );
+}
+
+function internalPushFailure( args, abandonThisTest ) {
 	if ( !config.current ) {
-		throw new Error( "pushFailure() assertion outside test context, in " +
-			sourceFromStacktrace( 2 ) );
+		throw new Error(
+			[
+				abandonThisTest ? "failTest()" : "pushFailure()",
+				"assertion outside test context, in",
+				sourceFromStacktrace( 2 )
+			].join( " " )
+		);
 	}
 
 	// Gets current test obj
 	var currentTest = config.current;
 
-	return currentTest.pushFailure.apply( currentTest, arguments );
+	var result = currentTest.pushFailure.apply( currentTest, args );
+
+	if ( abandonThisTest ) {
+		internalRecover( currentTest );
+	}
+
+	return result;
 }
 
 // Based on Java's String.hashCode, a simple but not
@@ -674,8 +699,7 @@ export function internalStop( test ) {
 	if ( config.testTimeout && defined.setTimeout ) {
 		clearTimeout( config.timeout );
 		config.timeout = setTimeout( function() {
-			pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
-			internalRecover( test );
+			failTest( "Test timed out", sourceFromStacktrace( 2 ) );
 		}, config.testTimeout );
 	}
 
@@ -692,8 +716,10 @@ export function internalStop( test ) {
 
 // Forcefully release all processing holds.
 function internalRecover( test ) {
-	test.semaphore = 0;
-	internalStart( test );
+	if ( config.blocking ) {
+		test.semaphore = 0;
+		internalStart( test );
+	}
 }
 
 // Release a processing hold, scheduling a resumption attempt if no holds remain.
