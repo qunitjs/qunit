@@ -1,5 +1,6 @@
 /* global polluteGlobal:true */
 /* exported polluteGlobal */
+/* eslint qunit/no-reassign-log-callbacks:off */
 
 // No pollution
 QUnit.test( "globals", function( assert ) {

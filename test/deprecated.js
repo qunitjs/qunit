@@ -1,4 +1,5 @@
 /*globals global: false */
+/* eslint qunit/no-setup-teardown:off, qunit/no-reset:off, qunit/no-throws-string:off, qunit/no-async-test:off, qunit/no-qunit-stop:off, qunit/no-init:off */
 
 var originalWarn = console.warn,
 	warnings = [],
