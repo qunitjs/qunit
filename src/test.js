@@ -732,12 +732,13 @@ function internalStart( test ) {
 	}
 }
 
-function numberOfTests( module ) {
+function numberOfTests( module, offset = 0 ) {
 
 	// Do a breadth-first traversal of the child modules
-	return module.childModules.reduce( function( p, childModule ) {
-	    return p + numberOfTests( childModule );
-	}, module.tests.length );
+	return module.childModules.reduce(
+		( p, childModule ) => numberOfTests( childModule, p ),
+		module.tests.length + offset
+	);
 }
 
 function notifyTestsRan( module ) {
