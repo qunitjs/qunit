@@ -733,17 +733,11 @@ function internalStart( test ) {
 }
 
 function numberOfTests( module ) {
-	let count = module.tests.length,
-		modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
-	while ( modules.length ) {
-		let nextModule =  modules.shift();
-		count += nextModule.tests.length;
-		modules.push( ...nextModule.childModules );
-	}
-
-	return count;
+	return module.childModules.reduce( function( p, childModule ) {
+	    return p + numberOfTests( childModule );
+	}, module.tests.length );
 }
 
 function notifyTestsRan( module ) {
