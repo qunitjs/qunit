@@ -733,10 +733,16 @@ function internalStart( test ) {
 }
 
 function numberOfTests( module ) {
-	var count = module.tests.length;
-	while ( ( module = module.childModule ) ) {
-		count += module.tests.length;
+	let count = module.tests.length,
+		modules = [ ...module.childModules ];
+
+	// Do a breadth-first traversal of the child modules
+	while ( modules.length ) {
+		let nextModule =  modules.shift();
+		count += nextModule.tests.length;
+		modules.push( ...nextModule.childModules );
 	}
+
 	return count;
 }
 

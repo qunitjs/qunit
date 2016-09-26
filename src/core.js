@@ -77,12 +77,13 @@ extend( QUnit, {
 				parentModule: parentModule,
 				tests: [],
 				moduleId: generateHash( moduleName ),
-				testsRun: 0
+				testsRun: 0,
+				childModules: []
 			};
 
 			var env = {};
 			if ( parentModule ) {
-				parentModule.childModule = module;
+				parentModule.childModules.push( module );
 				extend( env, parentModule.testEnvironment );
 				delete env.beforeEach;
 				delete env.afterEach;
