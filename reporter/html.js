@@ -816,14 +816,16 @@ QUnit.testDone( function( details ) {
 
 		// Collapse the passing tests
 		addClass( assertList, "qunit-collapsed" );
-	} else if ( bad && config.collapse && !collapseNext ) {
+	} else if ( config.collapse ) {
+		if ( !collapseNext ) {
 
-		// Skip collapsing the first failing test
-		collapseNext = true;
-	} else {
+			// Skip collapsing the first failing test
+			collapseNext = true;
+		} else {
 
-		// Collapse remaining tests
-		addClass( assertList, "qunit-collapsed" );
+			// Collapse remaining tests
+			addClass( assertList, "qunit-collapsed" );
+		}
 	}
 
 	// The testItem.firstChild is the test name
