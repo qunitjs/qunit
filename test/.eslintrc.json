@@ -1,7 +1,11 @@
 {
+	"extends": [ "plugin:qunit/two" ],
 	"env": {
 		"browser": true
 	},
+	"plugins": [
+		"qunit"
+	],
 	"globals": {
 		"QUnit": false,
 		"console": false
