@@ -1,4 +1,4 @@
-import { window, setTimeout, sessionStorage } from "../globals";
+import { window, setTimeout } from "../globals";
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;
@@ -8,17 +8,7 @@ export const now = Date.now || function() {
 
 export const defined = {
 	document: window && window.document !== undefined,
-	setTimeout: setTimeout !== undefined,
-	sessionStorage: ( function() {
-		var x = "qunit-test-string";
-		try {
-			sessionStorage.setItem( x, x );
-			sessionStorage.removeItem( x );
-			return true;
-		} catch ( e ) {
-			return false;
-		}
-	} )()
+	setTimeout: setTimeout !== undefined
 };
 
 // Returns a new Array with the elements that are in a but not in b

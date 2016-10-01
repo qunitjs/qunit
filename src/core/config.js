@@ -1,3 +1,5 @@
+import { sessionStorage } from "../globals";
+
 /**
  * Config object: Maintain internal state
  * Later exposed as QUnit.config
@@ -48,7 +50,10 @@ const config = {
 		testsRun: 0
 	},
 
-	callbacks: {}
+	callbacks: {},
+
+	// The storage module to use for reordering tests
+	storage: sessionStorage
 };
 
 // Push a loose unnamed module to the modules collection

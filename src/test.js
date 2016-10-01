@@ -1,7 +1,7 @@
 import global from "global";
 
 import { internalState, process, begin } from "./core";
-import { setTimeout, clearTimeout, sessionStorage } from "./globals";
+import { setTimeout, clearTimeout } from "./globals";
 import Assert from "./assert";
 
 import config from "./core/config";
@@ -214,7 +214,8 @@ Test.prototype = {
 			moduleName = module.name,
 			testName = this.testName,
 			skipped = !!this.skip,
-			bad = 0;
+			bad = 0,
+			storage = config.storage;
 
 		this.runtime = now() - this.started;
 
@@ -232,11 +233,11 @@ Test.prototype = {
 		notifyTestsRan( module );
 
 		// Store result when possible
-		if ( config.reorder && defined.sessionStorage ) {
+		if ( config.reorder && storage ) {
 			if ( bad ) {
-				sessionStorage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );
+				storage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );
 			} else {
-				sessionStorage.removeItem( "qunit-test-" + moduleName + "-" + testName );
+				storage.removeItem( "qunit-test-" + moduleName + "-" + testName );
 			}
 		}
 
@@ -319,9 +320,9 @@ Test.prototype = {
 			] );
 		}
 
-		// Prioritize previously failed tests, detected from sessionStorage
-		priority = config.reorder && defined.sessionStorage &&
-				+sessionStorage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
+		// Prioritize previously failed tests, detected from storage
+		priority = config.reorder && config.storage &&
+				+config.storage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		this.previousFailure = !!priority;
 
