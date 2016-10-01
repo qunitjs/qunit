@@ -127,7 +127,9 @@ grunt.initConfig( {
 			"test/only",
 			"test/setTimeout",
 			"test/main/dump",
-			"test/deprecated"
+			"test/deprecated",
+			"test/node/storage-1",
+			"test/node/storage-2"
 		]
 	},
 	concurrent: {
