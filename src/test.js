@@ -233,7 +233,7 @@ Test.prototype = {
 		notifyTestsRan( module );
 
 		// Store result when possible
-		if ( config.reorder && storage ) {
+		if ( storage ) {
 			if ( bad ) {
 				storage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );
 			} else {
@@ -280,7 +280,7 @@ Test.prototype = {
 	},
 
 	queue: function() {
-		var priority,
+		var priority, previousFailCount,
 			test = this;
 
 		if ( !this.valid() ) {
@@ -320,11 +320,13 @@ Test.prototype = {
 			] );
 		}
 
-		// Prioritize previously failed tests, detected from storage
-		priority = config.reorder && config.storage &&
+		previousFailCount = config.storage &&
 				+config.storage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
-		this.previousFailure = !!priority;
+		// Prioritize previously failed tests, detected from storage
+		priority = config.reorder && previousFailCount;
+
+		this.previousFailure = !!previousFailCount;
 
 		return synchronize( run, priority, config.seed );
 	},
