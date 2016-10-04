@@ -1316,8 +1316,8 @@ QUnit.test( "Instances", function( assert ) {
 	assert.equal( QUnit.equiv( b1, b2 ), true, "Same property, same constructor" );
 
 	// Added as bugfix for same property, different reference functions.
-	assert.equal( QUnit.equiv( c1, c2 ), false, "Same property differnent reference, but different functions" );
-	assert.equal( QUnit.equiv( c1, c3 ), true, "Same property different reference, same functions" );
+	assert.equal( QUnit.equiv( c1, c2 ), false, "Same property with different reference and different function" );
+	assert.equal( QUnit.equiv( c1, c3 ), true, "Same property with different reference but same function" );
 
 	// failed
 	assert.equal( QUnit.equiv( a1, b1 ), false, "Same properties but different constructor" );
