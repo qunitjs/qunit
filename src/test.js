@@ -119,11 +119,7 @@ Test.prototype = {
 			runTest( this );
 		} catch ( e ) {
 
-			// Else next test will carry the responsibility
-			saveGlobal();
-
-			// Push assertion failure and restart the tests if they're blocking
-			this.pushFailureAndResume(
+			this.pushFailure(
 				[
 					"Died on test #",
 					this.assertions.length + 1,
@@ -134,6 +130,13 @@ Test.prototype = {
 				].join( "" ),
 				extractStacktrace( e, 0 )
 			);
+
+			// Else next test will carry the responsibility
+			saveGlobal();
+
+			if ( config.blocking ) {
+				internalRecover();
+			}
 		}
 
 		function runTest( test ) {
@@ -716,10 +719,8 @@ export function internalStop( test ) {
 
 // Forcefully release all processing holds.
 function internalRecover( test ) {
-	if ( config.blocking ) {
-		test.semaphore = 0;
-		internalStart( test );
-	}
+	test.semaphore = 0;
+	internalStart( test );
 }
 
 // Release a processing hold, scheduling a resumption attempt if no holds remain.
