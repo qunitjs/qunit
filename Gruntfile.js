@@ -83,6 +83,7 @@ grunt.initConfig( {
 			"test/index.html",
 			"test/deprecated.html",
 			"test/autostart.html",
+			"test/errorRecovery.html",
 			"test/startError.html",
 			"test/reorderError1.html",
 			"test/reorderError2.html",
