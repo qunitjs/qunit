@@ -1,0 +1,212 @@
+<!doctype html> 
+ 
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" ><!--<![endif]-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>QUnit test timer addon tests</title>
+
+<link rel="stylesheet" href="../../qunit/qunit.css" type="text/css" media="screen">
+	<script type="text/javascript" src="../../qunit/qunit.js"></script>
+	
+<script type="text/javascript" src="qunit.testtimer.js"></script>
+</head>
+<body>
+<h1 id="qunit-header">asyncTest timeout plugin tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+        <div id="qunit-fixture">test markup</div>
+        <div id="cssTests"></div>
+</body>
+
+<script type="text/javascript">
+	asyncTest.defaultTimeout=2000;
+
+	asyncTest("simple timed test", function(){
+		
+		var test = asyncTest.start();
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(true, "didn't time out before callback");
+			test.continue();
+			ok(true, "callback continues to run after continue");
+		}, 1000);
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "test runner should restart before second callback");
+			start();
+		}, 1020);
+	
+	});
+
+	asyncTest("test timing out, expect 'test timed out' failure", 2, function(){
+		var test = asyncTest.start();
+		
+		ok(true, "next assert should be failure, expect to see 'test timed out'");
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "FAILURE!! test should have timed out instead of hitting this assert");
+			test.continue();
+		
+		}, 3000);
+	});
+	
+	asyncTest("test two callbacks", 2, function(){
+		var test = asyncTest.start(2000,2);
+		
+		setTimeout(function(){
+			if(test.done) return;
+		
+			ok(true, "first callback happens before done");
+			test.continue();
+		}, 1000);
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(true, "second callback happens before done");
+			test.continue();
+		}, 1100);
+		
+		setTimeout(function(){
+			if(test.done) return;
+			test.continue();
+			ok(false, "should not happen before done");
+		}, 1500);
+	});
+	
+	asyncTest("test two callbacks with timeout, expect 'test timed out' failure", 2, function(){
+		var test = asyncTest.start(2000, 2);
+		
+		setTimeout(function(){
+			if(test.done) return;
+		
+			ok(true, "first callback happens, next assert should fail with 'test timed out'");
+			test.continue();
+		}, 500);
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "FAILURE!!! expect 'test timed out' instead of this assert");
+			test.continue();
+		}, 2500);
+		
+	});
+	
+	asyncTest("test set timeout value, expect 'test timed out' failure", 2, function(){
+		var test = asyncTest.start(1000);
+		
+		ok(true, "next assert should be a failure, expect 'test timed out'");
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "FAILURE!!!! should have timed out instead of hitting this assert");
+		}, 1200);
+	});
+	
+	asyncTest("test abort, expect 'test aborted' failure", 2, function(){
+		var test = asyncTest.start();
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(true, "callback happens before done, expect next assert to fail with 'test aborted'");
+			test.abort();
+		}, 1000);
+	
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "FAILURE!!!! should have aborted instead of hitting this assert");
+		}, 1200);
+	});
+	
+	asyncTest("test abort, expect 'custom test abort message' failure", 2, function(){
+		var test = asyncTest.start();
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(true, "callback happens before done, expect next assert to fail with 'custom test abort message'");
+			test.abort("custom test abort message");
+		}, 1000);
+	
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "FAILURE!!!! should have aborted instead of hitting this assert");
+		}, 1200);
+	});
+	
+	
+	asyncTest("test abort after timeout, expect 'test timed out' failure and abort does nothing", 2, function(){
+		var test = asyncTest.start();
+		
+		ok(true, "the next assert should be a 'test timed out' failure");
+		
+		setTimeout(function(){
+			test.abort();
+		}, 2500);
+	});
+	
+	asyncTest("test finish, before timeout, immediately finishes", 1, function(){
+		var test = asyncTest.start();
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(true, "callback was hit");
+			test.finish();
+		}, 1000);
+		
+		setTimeout(function(){
+			if(test.done) return;
+		
+			ok(false, "should have finished before hitting this callback");
+		}, 1100);
+	});
+	
+	asyncTest("new test started before old test finished", 2, function(){
+		var test = asyncTest.start();
+		
+		setTimeout(function(){
+			if(test.done) return;
+			
+			ok(false, "first test should have been killed by new test");
+			test.finish();
+		}, 1200);
+		
+		setTimeout(function(){
+			ok(true, "Expect to kill old test quietly");
+			var test2 = asyncTest.start();
+			
+			setTimeout(function(){
+				if(test2.done) return;
+				
+				ok(true, "New test should run just fine");
+				test2.finish();
+			});
+		}, 1000);
+	});
+	
+	asyncTest("test catch all", 1, function(){
+		setTimeout(function(){
+			ok(true, "catch all finished");
+			start();
+		}, 10000);
+	});
+	
+</script>
+</html>
+
