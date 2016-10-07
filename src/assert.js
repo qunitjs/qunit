@@ -206,6 +206,16 @@ Assert.prototype = {
 		} );
 	},
 
+	/**
+	 * @name inRange
+	 * @function
+	 */
+	inRange: function( actual, expected, message ) {
+		QUnit.push( actual >= Math.min.apply( Math, expected ) &&
+		            actual <= Math.max.apply( Math, expected ),
+		            actual, expected, message );
+	},
+
 	"throws": function( block, expected, message ) {
 		var actual, expectedType,
 			expectedOutput = expected,
