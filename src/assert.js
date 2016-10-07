@@ -118,6 +118,12 @@ Assert.prototype = {
 		} );
 	},
 
+	notOk: function( result, message ) {
+		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
+			QUnit.dump.parse( result ) );
+		this.push( !result, result, false, message );
+	},
+
 	equal: function( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
