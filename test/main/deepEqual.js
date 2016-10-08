@@ -1289,7 +1289,7 @@ QUnit.test( "Prototypal inheritance", function( assert ) {
 } );
 
 QUnit.test( "Instances", function( assert ) {
-	var a1, a2, b1, b2, car, carSame, carDiff, human;
+	var a1, a2, b1, b2, c1, c2, c3, car, carSame, carDiff, human;
 
 	function A() {}
 	a1 = new A();
@@ -1301,11 +1301,22 @@ QUnit.test( "Instances", function( assert ) {
 	b1 = new B();
 	b2 = new B();
 
+	function C( fn ) {
+		this.fn = fn;
+	}
+
+	c1 = new C( function() { return true; } );
+	c2 = new C( function() { return false; } );
+	c3 = new C( function() { return true; } );
+
 	assert.equal( QUnit.equiv( a1, a2 ), true, "Same property, same constructor" );
 
 	// b1.fn and b2.fn are functions but they are different references
 	// But we decided to skip function for instances.
 	assert.equal( QUnit.equiv( b1, b2 ), true, "Same property, same constructor" );
+
+	assert.equal( QUnit.equiv( c1, c2 ), false, "Same property with different reference and different function" );
+	assert.equal( QUnit.equiv( c1, c3 ), true, "Same property with different reference but same function" );
 
 	// failed
 	assert.equal( QUnit.equiv( a1, b1 ), false, "Same properties but different constructor" );
