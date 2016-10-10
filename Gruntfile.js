@@ -99,6 +99,7 @@ grunt.initConfig( {
 			"test/only.html",
 			"test/seed.html",
 			"test/overload.html",
+			"test/preconfigured.html",
 			"test/regex-filter.html",
 			"test/regex-exclude-filter.html",
 			"test/string-filter.html"

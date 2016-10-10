@@ -47,7 +47,9 @@ Object.defineProperty( QUnit, "reset", {
 } );
 
 if ( defined.document ) {
-	if ( window.QUnit ) {
+
+	// QUnit may be defined when it is preconfigured but then only QUnit and QUnit.config may be defined.
+	if ( window.QUnit && window.QUnit.version ) {
 		throw new Error( "QUnit has already been defined." );
 	}
 
