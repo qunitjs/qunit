@@ -12,8 +12,6 @@ export default ( function() {
 	var parentsB = [];
 
 	var getProto = Object.getPrototypeOf || function( obj ) {
-
-		/*jshint proto: true */
 		return obj.__proto__;
 	};
 
