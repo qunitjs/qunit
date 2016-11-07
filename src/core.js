@@ -10,6 +10,7 @@ import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
 import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
+import {} from "./core/onerror";
 
 const QUnit = {};
 
