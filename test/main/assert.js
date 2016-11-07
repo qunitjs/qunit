@@ -247,14 +247,10 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
-
-			/*jshint ignore:start */
 			var execScript = window.execScript || function( data ) {
 				window.eval.call( window, data );
 			};
 			execScript( "throw 'error';" );
-
-			/*jshint ignore:end */
 		},
 		"globally-executed errors caught"
 	);
