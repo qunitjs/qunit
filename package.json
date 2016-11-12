@@ -71,5 +71,8 @@
       "Tests"
     ]
   },
-  "main": "qunit/qunit.js"
+  "main": "qunit/qunit.js",
+  "engines": {
+    "node" : "0.12.* || 4.* || 6.* || 7.*"
+  }
 }

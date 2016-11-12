@@ -1,10 +1,10 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
   - "0.12"
   - "4"
   - "6"
+  - "7"
 env:
   - NPM_SCRIPT=ci
 matrix:
@@ -22,11 +22,7 @@ matrix:
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
-  # Use a recent version of Node to build
-  - nvm install 6
 script:
-  # Switch back to the version of Node we want to test against
-  - nvm use $TRAVIS_NODE_VERSION
   - npm run-script $NPM_SCRIPT
 cache:
   directories:
