@@ -1,5 +1,4 @@
 /* eslint-env amd */
-/* global beginData */
 define( [ "qunit" ], function( QUnit ) {
 
 return function() {
@@ -11,7 +10,7 @@ return function() {
 
 	QUnit.test( "Prove the test run started as expected", function( assert ) {
 		assert.expect( 2 );
-		assert.strictEqual( beginData.totalTests, 1, "Should have expected 1 test" );
+		assert.strictEqual( window.beginData.totalTests, 1, "Should have expected 1 test" );
 	} );
 
 	setTimeout( function() {

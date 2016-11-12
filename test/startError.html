@@ -9,20 +9,20 @@
 	<div id="qunit"></div>
 	<script src="../dist/qunit.js"></script>
 	<script>
+
+		/* exported autostartStartError, tooManyStartsError */
 		var autostartStartError, tooManyStartsError;
 
 		try {
 			QUnit.config.autostart = true;
 			QUnit.start();
-		}
-		catch ( thrownError ) {
+		} catch ( thrownError ) {
 			autostartStartError = thrownError;
 		}
 
 		try {
 			QUnit.start();
-		}
-		catch ( thrownError ) {
+		} catch ( thrownError ) {
 			tooManyStartsError = thrownError;
 		}
 

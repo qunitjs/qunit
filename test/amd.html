@@ -9,9 +9,9 @@
 <body>
 	<div id="qunit"></div>
 	<script>
-	var beginData;
+	/* eslint-env amd */
 
-	require.config({
+	require.config( {
 		paths: {
 			qunit: "../dist/qunit"
 		}
@@ -19,7 +19,7 @@
 
 	require( [ "qunit", "./amd" ], function( QUnit, tests ) {
 		QUnit.begin( function( data ) {
-			beginData = data;
+			window.beginData = data;
 		} );
 		tests();
 		QUnit.start();

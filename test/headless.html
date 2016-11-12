@@ -8,18 +8,18 @@
 	<script src="main/test.js"></script>
 	<script src="main/deepEqual.js"></script>
 	<script>
-		( function () {
-			function createCallback(logType) {
-				QUnit[logType]( function () {
-					console.log(logType, arguments);
+		( function() {
+			function createCallback( logType ) {
+				QUnit[ logType ]( function() {
+					console.log( logType, arguments );
 				} );
 			}
 
-			var logs = ["begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done"];
-			for (var i = 0; i < logs.length; i++) {
-				createCallback(logs[i]);
+			var logs = [ "begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done" ];
+			for ( var i = 0; i < logs.length; i++ ) {
+				createCallback( logs[ i ] );
 			}
-		}());
+		}() );
 	</script>
 </head>
 <body>
