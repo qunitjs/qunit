@@ -13,11 +13,11 @@
 	// 2. First test failed in second module.
 	// 3. Test count should be 2.
 	if ( window.sessionStorage ) {
-		var totalCount = 0;
+		window.totalCount = 0;
 		sessionStorage[ "qunit-test-First fail module-2-should be fail" ] = 1;
 		sessionStorage[ "qunit-test-Second fail module-2-should be fail" ] = 1;
 		QUnit.done( function( details ) {
-			totalCount = details.failed;
+			window.totalCount = details.failed;
 			delete sessionStorage[ "qunit-test-First fail module-2-should be fail" ];
 			delete sessionStorage[ "qunit-test-Second fail module-2-should be fail" ];
 		} );

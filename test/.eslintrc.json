@@ -7,6 +7,9 @@
 		"html",
 		"qunit"
 	],
+	"parserOptions": {
+		"sourceType": "script"
+	},
 	"globals": {
 		"QUnit": false,
 		"console": false

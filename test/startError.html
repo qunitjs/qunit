@@ -9,21 +9,18 @@
 	<div id="qunit"></div>
 	<script src="../dist/qunit.js"></script>
 	<script>
-		var autostartStartError, tooManyStartsError;
 
 		try {
 			QUnit.config.autostart = true;
 			QUnit.start();
-		}
-		catch ( thrownError ) {
-			autostartStartError = thrownError;
+		} catch ( thrownError ) {
+			window.autostartStartError = thrownError;
 		}
 
 		try {
 			QUnit.start();
-		}
-		catch ( thrownError ) {
-			tooManyStartsError = thrownError;
+		} catch ( thrownError ) {
+			window.tooManyStartsError = thrownError;
 		}
 
 		// Delete QUnit global so we can reload it
