@@ -49,7 +49,10 @@ grunt.initConfig( {
 
 			"test/**/*.js",
 			"build/*.js",
-			"build/tasks/**/*.js"
+			"build/tasks/**/*.js",
+
+			// Linting HTML files via eslint-plugin-html
+			"test/**/*.html"
 		]
 	},
 	search: {
