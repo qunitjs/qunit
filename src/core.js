@@ -286,8 +286,8 @@ function done() {
 
 	// Clear own storage items if all tests passed
 	if ( storage && config.stats.bad === 0 ) {
-		for ( i = 0; i < storage.length; i++ ) {
-			key = storage.key( i++ );
+		for ( i = storage.length - 1; i >= 0; i-- ) {
+			key = storage.key( i );
 			if ( key.indexOf( "qunit-test-" ) === 0 ) {
 				storage.removeItem( key );
 			}
