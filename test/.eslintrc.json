@@ -4,6 +4,7 @@
 		"browser": true
 	},
 	"plugins": [
+		"html",
 		"qunit"
 	],
 	"globals": {
