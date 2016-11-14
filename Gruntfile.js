@@ -136,17 +136,6 @@ grunt.initConfig( {
 			"test/node/storage-2"
 		]
 	},
-	concurrent: {
-		build: [
-			"build:js",
-			"concat:src-css"
-		],
-		test: [
-			"search",
-			"qunit",
-			"test-on-node"
-		]
-	},
 	watch: {
 		options: {
 			atBegin: true,
@@ -166,9 +155,8 @@ grunt.initConfig( {
 } );
 
 grunt.loadTasks( "build/tasks" );
-grunt.registerTask( "build:js", [ "rollup:src", "concat:src-js" ] );
-grunt.registerTask( "build", [ "concurrent:build" ] );
-grunt.registerTask( "test", [ "concurrent:test" ] );
+grunt.registerTask( "build", [ "rollup:src", "concat" ] );
+grunt.registerTask( "test", [ "search", "test-on-node", "qunit" ] );
 grunt.registerTask( "default", [ "eslint", "build", "test" ] );
 
 };
