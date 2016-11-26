@@ -402,16 +402,16 @@ QUnit.test( "Functions", function( assert ) {
 		f3 = function() {
 
 			// eslint-disable-next-line semi
-			return 0 // this comment and no semicoma as difference
+			return 0 // comments and semicolon as difference
 		};
 
-	assert.equal( QUnit.equiv( function() {}, function() {} ), false, "Anonymous functions" ); // exact source code
+	assert.equal( QUnit.equiv( function() {}, function() {} ), true, "Anonymous functions" ); // exact source code
 	assert.equal( QUnit.equiv( function() {}, function() {
 		return true;
 	} ), false, "Anonymous functions" );
 
 	assert.equal( QUnit.equiv( f0, f0 ), true, "Function references" ); // same references
-	assert.equal( QUnit.equiv( f0, f1 ), false, "Function references" ); // exact source code, different references
+	assert.equal( QUnit.equiv( f0, f1 ), true, "Function references" ); // exact source code, different references
 	assert.equal( QUnit.equiv( f2, f3 ), false, "Function references" ); // equivalent source code, different references
 	assert.equal( QUnit.equiv( f1, f2 ), false, "Function references" ); // different source code, different references
 	assert.equal( QUnit.equiv( function() {}, true ), false );
