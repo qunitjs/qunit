@@ -90,6 +90,7 @@ grunt.initConfig( {
 			"test/logs.html",
 			"test/setTimeout.html",
 			"test/amd.html",
+			"test/amd_almond.html",
 			"test/reporter-html/index.html",
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html",

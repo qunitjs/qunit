@@ -28,6 +28,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "almond": "^0.3.1",
     "async": "1.5.2",
     "babel-plugin-external-helpers": "6.8.0",
     "babel-preset-es2015": "6.13.2",
