@@ -10,20 +10,17 @@
 	<script src="../dist/qunit.js"></script>
 	<script>
 
-		/* exported autostartStartError, tooManyStartsError */
-		var autostartStartError, tooManyStartsError;
-
 		try {
 			QUnit.config.autostart = true;
 			QUnit.start();
 		} catch ( thrownError ) {
-			autostartStartError = thrownError;
+			window.autostartStartError = thrownError;
 		}
 
 		try {
 			QUnit.start();
 		} catch ( thrownError ) {
-			tooManyStartsError = thrownError;
+			window.tooManyStartsError = thrownError;
 		}
 
 		// Delete QUnit global so we can reload it
