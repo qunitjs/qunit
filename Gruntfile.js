@@ -73,14 +73,7 @@ grunt.initConfig( {
 	qunit: {
 		options: {
 			timeout: 30000,
-			"--web-security": "no",
-			coverage: {
-				src: "dist/qunit.js",
-				instrumentedFiles: "temp/",
-				htmlReport: "build/report/coverage",
-				lcovReport: "build/report/lcov",
-				linesThresholdPct: 70
-			}
+			"--web-security": "no"
 		},
 		qunit: [
 			"test/index.html",
@@ -107,16 +100,6 @@ grunt.initConfig( {
 			"test/regex-exclude-filter.html",
 			"test/string-filter.html"
 		]
-	},
-	coveralls: {
-		options: {
-			force: true
-		},
-		all: {
-
-			// LCOV coverage file relevant to every target
-			src: "build/report/lcov/lcov.info"
-		}
 	},
 	"test-on-node": {
 		files: [

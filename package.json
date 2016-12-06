@@ -41,10 +41,9 @@
     "grunt-concurrent": "2.3.1",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-coveralls": "1.0.1",
     "grunt-eslint": "19.0.0",
     "grunt-git-authors": "3.2.0",
-    "grunt-qunit-istanbul": "1.0.0",
+    "grunt-contrib-qunit": "1.2.0",
     "grunt-rollup": "1.0.1",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
@@ -53,8 +52,8 @@
   },
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
-    "ci": "grunt test && grunt coveralls",
-    "ci-include-lint": "grunt eslint && grunt test && grunt coveralls",
+    "ci": "grunt test",
+    "ci-include-lint": "grunt eslint && grunt test",
     "test": "grunt",
     "prepublish": "grunt build"
   },
