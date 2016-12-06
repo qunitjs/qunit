@@ -12,11 +12,10 @@
 		"firefox_current",
 		"opera_current",
 		"safari_current",
-		"ie_11",
 		"edge_latest",
 		{
 			"os": "iOS",
-			"os_version": "8.3",
+			"os_version": "10.0",
 			"real_mobile": false
 		}
 	]
