@@ -6,11 +6,11 @@
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "jQuery Foundation and other contributors",
-    "url": "https://github.com/jquery/qunit/blob/master/AUTHORS.txt"
+    "url": "https://github.com/qunitjs/qunit/blob/master/AUTHORS.txt"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jquery/qunit.git"
+    "url": "git://github.com/qunitjs/qunit.git"
   },
   "keywords": [
     "testing",
@@ -18,7 +18,7 @@
     "jquery"
   ],
   "bugs": {
-    "url": "https://github.com/jquery/qunit/issues"
+    "url": "https://github.com/qunitjs/qunit/issues"
   },
   "license": "MIT",
   "files": [

@@ -1,4 +1,4 @@
-[![Travis Build Status](https://travis-ci.org/jquery/qunit.svg?branch=master)](https://travis-ci.org/jquery/qunit) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jquery/qunit?svg=true&branch=master)](https://ci.appveyor.com/project/leobalter/qunit) [![Coverage Status](https://coveralls.io/repos/jquery/qunit/badge.svg)](https://coveralls.io/github/jquery/qunit)
+[![Travis Build Status](https://travis-ci.org/qunitjs/qunit.svg?branch=master)](https://travis-ci.org/qunitjs/qunit) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/qunitjs/qunit?svg=true&branch=master)](https://ci.appveyor.com/project/leobalter/qunit) [![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
 
 # [QUnit](https://qunitjs.com) - A JavaScript Unit Testing Framework.
 
@@ -48,15 +48,15 @@ Commit these:
 
 Then run the script:
 
-	node release.js --remote=jquery/qunit
+	node release.js --remote=qunitjs/qunit
 
-Update `jquery/qunitjs.com`, replacing previous versions with new ones:
+Update `qunitjs/qunitjs.com`, replacing previous versions with new ones:
 
 * pages/index.html
 * resources/*.html
 
-Update [GitHub releases](https://github.com/jquery/qunit/releases), use the changelog from `History.md`.
+Update [GitHub releases](https://github.com/qunitjs/qunit/releases), use the changelog from `History.md`.
 
 Finally announce on Twitter @qunitjs (add highlights if possible, otherwise a 2nd tweet might do):
 
-	Released @VERSION: https://github.com/jquery/qunit/releases/tag/1.17.0
+	Released @VERSION: https://github.com/qunitjs/qunit/releases/tag/1.17.0
