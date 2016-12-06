@@ -1,4 +1,38 @@
 
+2.1.0 / 2016-12-05
+==================
+
+ * All: Using eslint-plugin-html to lint HTML files
+ * All: Removed JSHint/JSCS config & comment leftovers
+ * All: Update License to JSFoundation
+ * All: Fix some outstanding indentation issues in files
+ * All: Use Rollup and Babel to build
+ * Core: Support a predefined QUnit.config
+ * Core: Fix clearing of storage on done
+ * Core: Always report if test previously failed
+ * Core: Introduce config.storage option
+ * Core: Load the onerror module
+ * Core: Fix QUnit.equiv object methods comparison
+ * Core: Support multiple nested modules hooks properly
+ * Core: Blacklist jsDump-1034
+ * Core: Fire moduleStart only when starting module for the first time
+ * Core: Fire moduleDone when actually finished with module
+ * HTML Reporter: Decouple from sessionStorage reordering logic
+ * HTML Reporter: Fix expanding failed tests when collapse is false.
+ * HTML Reporter: Handle URL params named like Object.prototype properties
+ * Test: Properly handle Promises rejected without an error
+ * Tests: Fixing lint errors caught by eslint-plugin-html
+ * Tests: HTML files should end with LF
+ * Tests: Add tests for Storage interface
+ * Tests: Add tests for logging callback/module hooks order
+ * Tests: Add expects to latest Promise tests
+ * Build: Update Node support versions
+ * Build: Consume eslint-plugin-qunit, use "two" configuration (#1052)
+ * Build: Use ESLint
+ * Build: Use SPDX format in bower.json's license
+ * Build: Remove dependency on es2015-rollup preset
+ * Build: Build with recent Node version but test against support matrix
+
 2.0.1 / 2016-07-23
 ==================
 
