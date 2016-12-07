@@ -1,7 +1,24 @@
 /* eslint-env node */
 module.exports = function( grunt ) {
 
-require( "load-grunt-tasks" )( grunt );
+// Support: Node.js <4
+var oldNode = /^v0\./.test( process.version );
+
+// Load grunt tasks from NPM packages
+// Don't load the eslint task in old Node.js, it won't parse
+require( "load-grunt-tasks" )( grunt, {
+	pattern: oldNode ? [ "grunt-*", "!grunt-eslint" ] : [ "grunt-*" ]
+} );
+
+// Skip running tasks that dropped support for Node.js 0.12 in this Node version
+function runIfNewNode( task ) {
+	return oldNode ? "print_old_node_message:" + task : task;
+}
+
+grunt.registerTask( "print_old_node_message", function() {
+	var task = [].slice.call( arguments ).join( ":" );
+	grunt.log.writeln( "Old Node.js detected, running the task \"" + task + "\" skipped..." );
+} );
 
 function process( code ) {
 	return code
@@ -61,7 +78,7 @@ grunt.initConfig( {
 			// Ensure that the only HTML entities used are those with a special status in XHTML
 			// and that any common singleton/empty HTML elements end with the XHTML-compliant
 			// "/>"rather than ">"
-			searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g,     // eslint-disable-line max-len
+			searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g, // eslint-disable-line max-len
 			logFormat: "console",
 			failOnMatch: true
 		},
@@ -140,6 +157,6 @@ grunt.initConfig( {
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "rollup:src", "concat" ] );
 grunt.registerTask( "test", [ "search", "test-on-node", "qunit" ] );
-grunt.registerTask( "default", [ "eslint", "build", "test" ] );
+grunt.registerTask( "default", [ runIfNewNode( "eslint" ), "build", "test" ] );
 
 };
