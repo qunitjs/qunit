@@ -52,9 +52,8 @@
   },
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
-    "ci": "grunt test",
-    "ci-include-lint": "grunt eslint && grunt test",
-    "test": "grunt",
+    "build": "grunt build",
+    "test": "grunt test",
     "prepublish": "grunt build"
   },
   "commitplease": {
