@@ -53,8 +53,7 @@
   "scripts": {
     "browserstack": "sh build/run-browserstack.sh",
     "build": "grunt build",
-    "test": "grunt test",
-    "prepublish": "grunt build"
+    "test": "grunt"
   },
   "commitplease": {
     "components": [
