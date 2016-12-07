@@ -1,8 +1,9 @@
 /* eslint-env node */
-module.exports = function( grunt ) {
 
 // Support: Node.js <4
 var oldNode = /^v0\./.test( process.version );
+
+module.exports = function( grunt ) {
 
 // Load grunt tasks from NPM packages
 // Don't load the eslint task in old Node.js, it won't parse
