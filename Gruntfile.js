@@ -156,7 +156,7 @@ grunt.initConfig( {
 
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "rollup:src", "concat" ] );
-grunt.registerTask( "test", [ "search", "test-on-node", "qunit" ] );
-grunt.registerTask( "default", [ runIfNewNode( "eslint" ), "build", "test" ] );
+grunt.registerTask( "test", [ runIfNewNode( "eslint" ), "search", "test-on-node", "qunit" ] );
+grunt.registerTask( "default", [ "build", "test" ] );
 
 };
