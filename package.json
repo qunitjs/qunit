@@ -51,7 +51,7 @@
     "rollup-plugin-babel": "2.6.1"
   },
   "scripts": {
-    "browserstack": "sh build/run-browserstack.sh",
+    "browserstack": "grunt build && sh build/run-browserstack.sh",
     "build": "grunt build",
     "test": "grunt"
   },
