@@ -17,9 +17,11 @@ export default ( function() {
 
 	function useStrictEquality( b, a ) {
 
-		// To catch short annotation VS 'new' annotation of a declaration. e.g.:
+		// This only gets called if a and b are not strict equal, and is used to compare on
+		// the primitive values inside object wrappers. For example:
 		// `var i = 1;`
 		// `var j = new Number(1);`
+		// Neither a nor b can be null, as a !== b and they have the same type.
 		if ( typeof a === "object" ) {
 			a = a.valueOf();
 		}
