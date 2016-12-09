@@ -192,9 +192,20 @@ grunt.initConfig( {
 	makeReport: {
 		src: reportDir + "/**/*.json",
 		options: {
-			type: [ "lcov", "html" ],
+			type: [ "lcov" ],
 			dir: reportDir,
 			print: "detail"
+		}
+	},
+
+	coveralls: {
+		options: {
+			force: true
+		},
+		all: {
+
+			// LCOV coverage file relevant to every target
+			src: "build/report/lcov.info"
 		}
 	}
 } );
@@ -218,7 +229,8 @@ grunt.registerTask( "coverage", [
 	"test",
 	"copy:tmp-to-dist",
 	"storeCoverage",
-	"makeReport"
+	"makeReport",
+	"coveralls"
 ] );
 grunt.registerTask( "default", [ "build", "test" ] );
 

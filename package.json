@@ -43,6 +43,7 @@
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-qunit": "1.2.0",
     "grunt-contrib-watch": "1.0.0",
+    "grunt-coveralls": "1.0.1",
     "grunt-eslint": "19.0.0",
     "grunt-git-authors": "3.2.0",
     "grunt-istanbul": "0.7.2",
@@ -55,7 +56,8 @@
   "scripts": {
     "browserstack": "grunt build && sh build/run-browserstack.sh",
     "build": "grunt build",
-    "test": "grunt"
+    "test": "grunt",
+    "coverage": "grunt coverage"
   },
   "commitplease": {
     "components": [

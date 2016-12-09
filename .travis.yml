@@ -14,6 +14,9 @@ matrix:
   include:
     - node_js: "6"
       env: NPM_SCRIPT=browserstack
+  include:
+    - node_js: "6"
+      env: NPM_SCRIPT=coverage
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
