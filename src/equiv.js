@@ -15,7 +15,7 @@ export default ( function() {
 		return obj.__proto__;
 	};
 
-	function useStrictEquality( b, a ) {
+	function useStrictEquality( a, b ) {
 
 		// This only gets called if a and b are not strict equal, and is used to compare on
 		// the primitive values inside object wrappers. For example:
@@ -78,7 +78,7 @@ export default ( function() {
 			return true;
 		},
 
-		"regexp": function( b, a ) {
+		"regexp": function( a, b ) {
 			return a.source === b.source &&
 
 				// Include flags in the comparison
@@ -88,14 +88,14 @@ export default ( function() {
 		// - skip when the property is a method of an instance (OOP)
 		// - abort otherwise,
 		// initial === would have catch identical references anyway
-		"function": function( b, a ) {
+		"function": function( a, b ) {
 
 			var caller = callers[ callers.length - 1 ];
 			return caller !== Object && typeof caller !== "undefined" &&
 			a.toString() === b.toString();
 		},
 
-		"array": function( b, a ) {
+		"array": function( a, b ) {
 			var i, j, len, loop, aCircular, bCircular;
 
 			len = a.length;
@@ -134,7 +134,7 @@ export default ( function() {
 			return true;
 		},
 
-		"set": function( b, a ) {
+		"set": function( a, b ) {
 			var innerEq,
 				outerEq = true;
 
@@ -159,7 +159,7 @@ export default ( function() {
 			return outerEq;
 		},
 
-		"map": function( b, a ) {
+		"map": function( a, b ) {
 			var innerEq,
 				outerEq = true;
 
@@ -184,7 +184,7 @@ export default ( function() {
 			return outerEq;
 		},
 
-		"object": function( b, a ) {
+		"object": function( a, b ) {
 			var i, j, loop, aCircular, bCircular;
 
 			// Default to true
@@ -244,7 +244,7 @@ export default ( function() {
 
 	function typeEquiv( a, b ) {
 		var type = objectType( a );
-		return objectType( b ) === type && callbacks[ type ]( b, a );
+		return objectType( b ) === type && callbacks[ type ]( a, b );
 	}
 
 	// The real equiv function
