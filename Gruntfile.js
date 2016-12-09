@@ -1,5 +1,8 @@
 /* eslint-env node */
 
+var path = require( "path" );
+var fs = require( "fs-extra" );
+
 var instrumentedDir = "build/instrumented";
 var reportDir = "build/report";
 
@@ -105,7 +108,11 @@ grunt.initConfig( {
 	qunit: {
 		options: {
 			timeout: 30000,
-			"--web-security": "no"
+			"--web-security": "no",
+			inject: [
+				path.resolve( "./build/coverage-bridge.js" ),
+				require.resolve( "grunt-contrib-qunit/phantomjs/bridge" )
+			]
 		},
 		qunit: [
 			"test/index.html",
@@ -190,6 +197,14 @@ grunt.initConfig( {
 			print: "detail"
 		}
 	}
+} );
+
+grunt.event.on( "qunit.coverage", function( file, coverage ) {
+	var testName = file.split( "/test/" ).pop().replace( ".html", "" );
+	var reportPath = path.join( "build/report/phantom", testName + ".json" );
+
+	fs.createFileSync( reportPath );
+	fs.writeJsonSync( reportPath, coverage, { spaces: 0 } );
 } );
 
 grunt.loadTasks( "build/tasks" );
