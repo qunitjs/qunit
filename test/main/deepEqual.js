@@ -1595,6 +1595,48 @@ QUnit.test( "Compare self-referent to tree", function( assert ) {
 	);
 } );
 
+QUnit.test( "Compare differently self-referential structures", function( assert ) {
+	var x = [],
+		y = [];
+
+	x[ 0 ] = x;
+	y[ 0 ] = [ y ];
+
+	// x is [ x ], y is [ [ y ] ]
+	// So both x and y look like [ [ [ [ ... ] ] ] ]
+	assert.equal( QUnit.equiv( x, y ), true, "Equivalent arrays" );
+	y = [];
+	y[ 0 ] = [ y, 1 ];
+
+	// x looks like [ [ [ [ ...  ] ] ] ]
+	// y looks like [ [ [ [ ... , 1 ] ], 1 ] ]
+	assert.equal( QUnit.equiv( x, y ), false, "Nonequivalent arrays" );
+	x = {};
+	y = {};
+	x.val = x;
+	y.val = { val: y };
+
+	// Both x and y look like { val: { val: { ... } } }
+	assert.equal( QUnit.equiv( x, y ), true, "Equivalent objects" );
+
+	// x looks like { val: { val: { val: { val: { ... } } } } }
+	// y looks like { val: { val: { val: { val: { ... }, foo: 1 } }, foo: 1 } }
+	y.val = { val: y, foo: 1 };
+	assert.equal( QUnit.equiv( x, y ), false, "Nonequivalent objects" );
+} );
+
+QUnit.test( "Compare structures with multiple references to the same containers", function( assert ) {
+	var i,
+		x = {},
+		y = {};
+	for ( i = 0; i < 20; i++ ) {
+		x = { foo: x, bar: x, baz: x };
+		y = { foo: y, bar: y, baz: y };
+	}
+	assert.equal( QUnit.equiv( { big: x, z: [ true ] }, { big: y, z: [ true ] } ), true, "Equivalent structures" );
+	assert.equal( QUnit.equiv( { big: x, z: [ true ] }, { big: y, z: [ false ] } ), false, "Nonequivalent structures" );
+} );
+
 QUnit.test( "Test that must be done at the end because they extend some primitive's prototype",
 	function( assert ) {
 

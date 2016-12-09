@@ -1,15 +1,13 @@
 import { objectType } from "./core/utilities";
 
 // Test for equality any JavaScript type.
-// Author: Philippe Rathé <prathe@gmail.com>
+// Authors: Philippe Rathé <prathe@gmail.com>, David Chan <david@troi.org>
 export default ( function() {
 
-	// Stack to decide between skip/abort functions
-	var callers = [];
-
-	// Stack to avoiding loops from circular referencing
-	var parents = [];
-	var parentsB = [];
+	// Value pairs queued for comparison. Used for breadth-first processing order, recursion
+	// detection and avoiding repeated comparison (see below for details).
+	// Elements are { a: val, b: val }.
+	var pairs = [];
 
 	var getProto = Object.getPrototypeOf || function( obj ) {
 		return obj.__proto__;
@@ -65,6 +63,31 @@ export default ( function() {
 		return "flags" in regexp ? regexp.flags : regexp.toString().match( /[gimuy]*$/ )[ 0 ];
 	}
 
+	function isContainer( val ) {
+		return [ "object", "array", "map", "set" ].indexOf( objectType( val ) ) !== -1;
+	}
+
+	function breadthFirstCompareChild( a, b ) {
+
+		// If a is a container not reference-equal to b, postpone the comparison to the
+		// end of the pairs queue -- unless (a, b) has been seen before, in which case skip
+		// over the pair.
+		if ( a === b ) {
+			return true;
+		}
+		if ( !isContainer( a ) ) {
+			return typeEquiv( a, b );
+		}
+		if ( pairs.every( function( pair ) {
+			return pair.a !== a || pair.b !== b;
+		} ) ) {
+
+			// Not yet started comparing this pair
+			pairs.push( { a: a, b: b } );
+		}
+		return true;
+	}
+
 	var callbacks = {
 		"string": useStrictEquality,
 		"boolean": useStrictEquality,
@@ -85,18 +108,13 @@ export default ( function() {
 				getRegExpFlags( a ) === getRegExpFlags( b );
 		},
 
-		// - skip when the property is a method of an instance (OOP)
-		// - abort otherwise,
-		// initial === would have catch identical references anyway
-		"function": function( a, b ) {
-
-			var caller = callers[ callers.length - 1 ];
-			return caller !== Object && typeof caller !== "undefined" &&
-			a.toString() === b.toString();
+		// abort (identical references / instance methods were skipped earlier)
+		"function": function() {
+			return false;
 		},
 
 		"array": function( a, b ) {
-			var i, j, len, loop, aCircular, bCircular;
+			var i, len;
 
 			len = a.length;
 			if ( len !== b.length ) {
@@ -105,32 +123,14 @@ export default ( function() {
 				return false;
 			}
 
-			// Track reference to avoid circular references
-			parents.push( a );
-			parentsB.push( b );
+
 			for ( i = 0; i < len; i++ ) {
-				loop = false;
-				for ( j = 0; j < parents.length; j++ ) {
-					aCircular = parents[ j ] === a[ i ];
-					bCircular = parentsB[ j ] === b[ i ];
-					if ( aCircular || bCircular ) {
-						if ( a[ i ] === b[ i ] || aCircular && bCircular ) {
-							loop = true;
-						} else {
-							parents.pop();
-							parentsB.pop();
-							return false;
-						}
-					}
-				}
-				if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
-					parents.pop();
-					parentsB.pop();
+
+				// Compare non-containers; queue non-reference-equal containers
+				if ( !breadthFirstCompareChild( a[ i ], b[ i ] ) ) {
 					return false;
 				}
 			}
-			parents.pop();
-			parentsB.pop();
 			return true;
 		},
 
@@ -165,14 +165,22 @@ export default ( function() {
 				innerEq = false;
 
 				b.forEach( function( bVal ) {
+					var parentPairs;
 
 					// Likewise, short-circuit if the result is already known
 					if ( innerEq ) {
 						return;
 					}
+
+					// Swap out the global pairs list, as the nested call to
+					// innerEquiv will clobber its contents
+					parentPairs = pairs;
 					if ( innerEquiv( bVal, aVal ) ) {
 						innerEq = true;
 					}
+
+					// Replace the global pairs list
+					pairs = parentPairs;
 				} );
 
 				if ( !innerEq ) {
@@ -215,15 +223,22 @@ export default ( function() {
 				innerEq = false;
 
 				b.forEach( function( bVal, bKey ) {
+					var parentPairs;
 
 					// Likewise, short-circuit if the result is already known
 					if ( innerEq ) {
 						return;
 					}
 
+					// Swap out the global pairs list, as the nested call to
+					// innerEquiv will clobber its contents
+					parentPairs = pairs;
 					if ( innerEquiv( [ bVal, bKey ], [ aVal, aKey ] ) ) {
 						innerEq = true;
 					}
+
+					// Replace the global pairs list
+					pairs = parentPairs;
 				} );
 
 				if ( !innerEq ) {
@@ -235,51 +250,36 @@ export default ( function() {
 		},
 
 		"object": function( a, b ) {
-			var i, j, loop, aCircular, bCircular;
-
-			// Default to true
-			var eq = true;
-			var aProperties = [];
-			var bProperties = [];
+			var i,
+				aProperties = [],
+				bProperties = [];
 
 			if ( compareConstructors( a, b ) === false ) {
 				return false;
 			}
 
-			// Stack constructor before traversing properties
-			callers.push( a.constructor );
-
-			// Track reference to avoid circular references
-			parents.push( a );
-			parentsB.push( b );
-
 			// Be strict: don't ensure hasOwnProperty and go deep
 			for ( i in a ) {
-				loop = false;
-				for ( j = 0; j < parents.length; j++ ) {
-					aCircular = parents[ j ] === a[ i ];
-					bCircular = parentsB[ j ] === b[ i ];
-					if ( aCircular || bCircular ) {
-						if ( a[ i ] === b[ i ] || aCircular && bCircular ) {
-							loop = true;
-						} else {
-							eq = false;
-							break;
-						}
-					}
-				}
+
+				// Collect a's properties
 				aProperties.push( i );
-				if ( !loop && !innerEquiv( a[ i ], b[ i ] ) ) {
-					eq = false;
-					break;
+
+				// Skip OOP methods that look the same
+				if (
+					a.constructor !== Object &&
+					typeof a.constructor !== "undefined" &&
+					typeof a[ i ] === "function" &&
+					typeof b[ i ] === "function" &&
+					a[ i ].toString() === b[ i ].toString()
+				) {
+					continue;
+				}
+
+				// Compare non-containers; queue non-reference-equal containers
+				if ( !breadthFirstCompareChild( a[ i ], b[ i ] ) ) {
+					return false;
 				}
 			}
-
-			parents.pop();
-			parentsB.pop();
-
-			// Unstack, we are done
-			callers.pop();
 
 			for ( i in b ) {
 
@@ -288,28 +288,52 @@ export default ( function() {
 			}
 
 			// Ensures identical properties name
-			return eq && innerEquiv( aProperties.sort(), bProperties.sort() );
+			return typeEquiv( aProperties.sort(), bProperties.sort() );
 		}
 	};
 
 	function typeEquiv( a, b ) {
 		var type = objectType( a );
+
+		// Callbacks for containers will append to the pairs queue to achieve breadth-first
+		// search order. The pairs queue is also used to avoid reprocessing any pair of
+		// containers that are reference-equal to a previously visited pair (a special case
+		// this being recursion detection).
+		//
+		// Because of this approach, once typeEquiv returns a false value, it should not be
+		// called again without clearing the pair queue else it may wrongly report a visited
+		// pair as being equivalent.
 		return objectType( b ) === type && callbacks[ type ]( a, b );
 	}
 
-	// The real equiv function
 	function innerEquiv( a, b ) {
+		var i, pair;
 
 		// We're done when there's nothing more to compare
 		if ( arguments.length < 2 ) {
 			return true;
 		}
 
-		// Require type-specific equality
-		return ( a === b || typeEquiv( a, b ) ) &&
+		// Clear the global pair queue and add the top-level values being compared
+		pairs = [ { a: a, b: b } ];
 
-			// ...across all consecutive argument pairs
-			( arguments.length === 2 || innerEquiv.apply( this, [].slice.call( arguments, 1 ) ) );
+		for ( i = 0; i < pairs.length; i++ ) {
+			pair = pairs[ i ];
+
+			// Perform type-specific comparison on any pairs that are not strictly
+			// equal. For container types, that comparison will postpone comparison
+			// of any sub-container pair to the end of the pair queue. This gives
+			// breadth-first search order. It also avoids the reprocessing of
+			// reference-equal siblings, cousins etc, which can have a significant speed
+			// impact when comparing a container of small objects each of which has a
+			// reference to the same (singleton) large object.
+			if ( pair.a !== pair.b && !typeEquiv( pair.a, pair.b ) ) {
+				return false;
+			}
+		}
+
+		// ...across all consecutive argument pairs
+		return arguments.length === 2 || innerEquiv.apply( this, [].slice.call( arguments, 1 ) );
 	}
 
 	return innerEquiv;
