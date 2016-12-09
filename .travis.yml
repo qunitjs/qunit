@@ -14,7 +14,6 @@ matrix:
   include:
     - node_js: "6"
       env: NPM_SCRIPT=browserstack
-  include:
     - node_js: "6"
       env: NPM_SCRIPT=coverage
 before_install:
