@@ -1,5 +1,8 @@
 /* eslint-env node */
 
+var instrumentedDir = "build/instrumented";
+var reportDir = "build/report";
+
 // Support: Node.js <4
 var oldNode = /^v0\./.test( process.version );
 
@@ -35,6 +38,7 @@ grunt.initConfig( {
 	pkg: grunt.file.readJSON( "package.json" ),
 	copy: {
 		options: { process: process },
+
 		"src-js": {
 			src: "dist/qunit.js",
 			dest: "dist/qunit.js"
@@ -42,6 +46,20 @@ grunt.initConfig( {
 		"src-css": {
 			src: "src/qunit.css",
 			dest: "dist/qunit.css"
+		},
+
+		// Moves files around during coverage runs
+		"dist-to-tmp": {
+			src: "dist/qunit.js",
+			dest: "dist/qunit.tmp.js"
+		},
+		"instrumented-to-dist": {
+			src: "build/instrumented/dist/qunit.js",
+			dest: "dist/qunit.js"
+		},
+		"tmp-to-dist": {
+			src: "dist/qunit.tmp.js",
+			dest: "dist/qunit.js"
 		}
 	},
 	rollup: {
@@ -148,12 +166,45 @@ grunt.initConfig( {
 			"test/**/*.html"
 		],
 		tasks: "default"
+	},
+
+	instrument: {
+		files: "dist/qunit.js",
+		options: {
+			lazy: false,
+			basePath: instrumentedDir
+		}
+	},
+
+	storeCoverage: {
+		options: {
+			dir: reportDir
+		}
+	},
+
+	makeReport: {
+		src: reportDir + "/**/*.json",
+		options: {
+			type: [ "lcov", "html" ],
+			dir: reportDir,
+			print: "detail"
+		}
 	}
 } );
 
 grunt.loadTasks( "build/tasks" );
-grunt.registerTask( "build", [ "rollup:src", "copy" ] );
+grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
 grunt.registerTask( "test", [ runIfNewNode( "eslint" ), "search", "test-on-node", "qunit" ] );
+grunt.registerTask( "coverage", [
+	"build",
+	"instrument",
+	"copy:dist-to-tmp",
+	"copy:instrumented-to-dist",
+	"test",
+	"copy:tmp-to-dist",
+	"storeCoverage",
+	"makeReport"
+] );
 grunt.registerTask( "default", [ "build", "test" ] );
 
 };

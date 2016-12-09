@@ -44,6 +44,7 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-eslint": "19.0.0",
     "grunt-git-authors": "3.2.0",
+    "grunt-istanbul": "0.7.2",
     "grunt-rollup": "1.0.1",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
