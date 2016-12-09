@@ -96,6 +96,16 @@ function id( name ) {
 	return document.getElementById && document.getElementById( name );
 }
 
+function abortTests() {
+	var abortButton = id( "qunit-abort-tests-button" );
+	if ( abortButton ) {
+		abortButton.disabled = true;
+		abortButton.innerHTML = "Aborting...";
+	}
+	QUnit.config.queue.length = 0;
+	return false;
+}
+
 function interceptNavigation( ev ) {
 	applyUrlParams();
 
@@ -260,6 +270,14 @@ function toolbarUrlConfigContainer() {
 	addEvents( urlConfigContainer.getElementsByTagName( "select" ), "change", toolbarChanged );
 
 	return urlConfigContainer;
+}
+
+function abortTestsButton() {
+	var button = document.createElement( "button" );
+	button.id = "qunit-abort-tests-button";
+	button.innerHTML = "Abort";
+	addEvent( button, "click", abortTests );
+	return button;
 }
 
 function toolbarLooseFilter() {
@@ -469,7 +487,8 @@ function appendBanner() {
 
 function appendTestResults() {
 	var tests = id( "qunit-tests" ),
-		result = id( "qunit-testresult" );
+		result = id( "qunit-testresult" ),
+		controls;
 
 	if ( result ) {
 		result.parentNode.removeChild( result );
@@ -481,7 +500,14 @@ function appendTestResults() {
 		result.id = "qunit-testresult";
 		result.className = "result";
 		tests.parentNode.insertBefore( result, tests );
-		result.innerHTML = "Running...<br />&#160;";
+		result.innerHTML = "<div id=\"qunit-testresult-display\">Running...<br />&#160;</div>" +
+			"<div id=\"qunit-testresult-controls\"></div>" +
+			"<div class=\"clearfix\"></div>";
+		controls = id( "qunit-testresult-controls" );
+	}
+
+	if ( controls ) {
+		controls.appendChild( abortTestsButton() );
 	}
 }
 
@@ -599,6 +625,7 @@ QUnit.begin( function( details ) {
 QUnit.done( function( details ) {
 	var banner = id( "qunit-banner" ),
 		tests = id( "qunit-tests" ),
+		abortButton = id( "qunit-abort-tests-button" ),
 		html = [
 			"Tests completed in ",
 			details.runtime,
@@ -610,14 +637,38 @@ QUnit.done( function( details ) {
 			"</span> passed, <span class='failed'>",
 			details.failed,
 			"</span> failed."
-		].join( "" );
+		].join( "" ),
+		test,
+		assertLi,
+		assertList;
 
-	if ( banner ) {
+	// Update remaing tests to aborted
+	if ( abortButton && abortButton.disabled ) {
+		html = "Tests aborted after " + details.runtime + " milliseconds.";
+
+		for ( var i = 0; i < tests.children.length; i++ ) {
+			test = tests.children[ i ];
+			if ( test.className === "" || test.className === "running" ) {
+				test.className = "aborted";
+				assertList = test.getElementsByTagName( "ol" )[ 0 ];
+				assertLi = document.createElement( "li" );
+				assertLi.className = "fail";
+				assertLi.innerHTML = "Test aborted.";
+				assertList.appendChild( assertLi );
+			}
+		}
+	}
+
+	if ( banner && ( !abortButton || abortButton.disabled === false ) ) {
 		banner.className = details.failed ? "qunit-fail" : "qunit-pass";
 	}
 
+	if ( abortButton ) {
+		abortButton.parentNode.removeChild( abortButton );
+	}
+
 	if ( tests ) {
-		id( "qunit-testresult" ).innerHTML = html;
+		id( "qunit-testresult-display" ).innerHTML = html;
 	}
 
 	if ( config.altertitle && document.title ) {
@@ -660,7 +711,7 @@ QUnit.testStart( function( details ) {
 		appendTest( details.name, details.testId, details.module );
 	}
 
-	running = id( "qunit-testresult" );
+	running = id( "qunit-testresult-display" );
 	if ( running ) {
 		bad = QUnit.config.reorder && details.previousFailure;
 
