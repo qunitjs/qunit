@@ -31,13 +31,9 @@ function process( code ) {
 		.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
 }
 
-// Prevents CRLF EOL on Windows environments
-// grunt-contrib-concat defaults to CRLF on Windows if this is unset
-grunt.util.linefeed = "\u000A";
-
 grunt.initConfig( {
 	pkg: grunt.file.readJSON( "package.json" ),
-	concat: {
+	copy: {
 		options: { process: process },
 		"src-js": {
 			src: "dist/qunit.js",
@@ -156,7 +152,7 @@ grunt.initConfig( {
 } );
 
 grunt.loadTasks( "build/tasks" );
-grunt.registerTask( "build", [ "rollup:src", "concat" ] );
+grunt.registerTask( "build", [ "rollup:src", "copy" ] );
 grunt.registerTask( "test", [ runIfNewNode( "eslint" ), "search", "test-on-node", "qunit" ] );
 grunt.registerTask( "default", [ "build", "test" ] );
 
