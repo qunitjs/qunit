@@ -216,6 +216,7 @@ Test.prototype = {
 			moduleName = module.name,
 			testName = this.testName,
 			skipped = !!this.skip,
+			todo = !!this.todo,
 			bad = 0,
 			storage = config.storage;
 
@@ -247,6 +248,7 @@ Test.prototype = {
 			name: testName,
 			module: moduleName,
 			skipped: skipped,
+			todo: todo,
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length,
@@ -346,7 +348,8 @@ Test.prototype = {
 				expected: resultInfo.expected,
 				testId: this.testId,
 				negative: resultInfo.negative || false,
-				runtime: now() - this.started
+				runtime: now() - this.started,
+				todo: !!this.todo
 			};
 
 		if ( !resultInfo.result ) {
@@ -378,7 +381,8 @@ Test.prototype = {
 			message: message || "error",
 			actual: actual || null,
 			testId: this.testId,
-			runtime: now() - this.started
+			runtime: now() - this.started,
+			todo: !!this.todo
 		};
 
 		if ( source ) {
@@ -647,6 +651,20 @@ export function test( testName, callback ) {
 	newTest = new Test( {
 		testName: testName,
 		callback: callback
+	} );
+
+	newTest.queue();
+}
+
+export function todo( testName, callback ) {
+	if ( focused ) {
+		return;
+	}
+
+	let newTest = new Test( {
+		testName,
+		callback,
+		todo: true
 	} );
 
 	newTest.queue();

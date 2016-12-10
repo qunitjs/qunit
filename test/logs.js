@@ -2,7 +2,8 @@ QUnit.config.reorder = false;
 
 var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
 	testAutorun, beginModules,
-	module1Test1, module1Test2, module2Test1, module2Test2, module2Test3, module2Test4,
+	module1Test1, module1Test2, module2Test1, module2Test2,
+	module2Test3, module2Test4, module2Test5, module2Test6,
 	begin = 0,
 	moduleStart = 0,
 	moduleDone = 0,
@@ -40,6 +41,14 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 			( module2Test4 = {
 				"name": "test the log for the skipped test",
 				"testId": "d3266148"
+			} ),
+			( module2Test5 = {
+				"name": "a todo test",
+				"testId": "77a47174"
+			} ),
+			( module2Test6 = {
+				"name": "test the log for the todo test",
+				"testId": "5f5ab826"
 			} )
 		]
 	};
@@ -117,7 +126,8 @@ QUnit.test( module1Test1.name, function( assert ) {
 		actual: true,
 		expected: true,
 		negative: false,
-		testId: module1Test1.testId
+		testId: module1Test1.testId,
+		todo: false
 	}, "log context after equal(actual, expected, message)" );
 
 	assert.equal( "foo", "foo" );
@@ -131,7 +141,8 @@ QUnit.test( module1Test1.name, function( assert ) {
 		actual: "foo",
 		expected: "foo",
 		negative: false,
-		testId: module1Test1.testId
+		testId: module1Test1.testId,
+		todo: false
 	}, "log context after equal(actual, expected)" );
 
 	assert.ok( true, "ok(true, message)" );
@@ -145,7 +156,8 @@ QUnit.test( module1Test1.name, function( assert ) {
 		actual: true,
 		expected: true,
 		negative: false,
-		testId: module1Test1.testId
+		testId: module1Test1.testId,
+		todo: false
 	}, "log context after ok(true, message)" );
 
 	assert.strictEqual( testDoneContext, undefined, "testDone context" );
@@ -195,7 +207,8 @@ QUnit.test( module1Test2.name, function( assert ) {
 		passed: 18,
 		total: 18,
 		testId: module1Test1.testId,
-		skipped: false
+		skipped: false,
+		todo: false
 	}, "testDone context" );
 	assert.deepEqual( testContext, {
 		module: module1Context.name,
@@ -279,8 +292,34 @@ QUnit.test( module2Test4.name, function( assert ) {
 		passed: 0,
 		total: 0,
 		skipped: true,
+		todo: false,
 		testId: module2Test3.testId,
 		runtime: 0
+	}, "testDone context" );
+} );
+
+QUnit.todo( module2Test5.name, function( assert ) {
+	assert.ok( false );
+	assert.ok( true );
+} );
+
+QUnit.test( module2Test6.name, function( assert ) {
+	assert.expect( 1 );
+
+	delete testDoneContext.runtime;
+	delete testDoneContext.duration;
+	delete testDoneContext.source;
+	delete testDoneContext.assertions;
+
+	assert.deepEqual( testDoneContext, {
+		module: module2Context.name,
+		name: module2Test5.name,
+		failed: 1,
+		passed: 1,
+		total: 2,
+		skipped: false,
+		todo: true,
+		testId: module2Test5.testId
 	}, "testDone context" );
 } );
 

@@ -3,7 +3,7 @@ import { window, setTimeout } from "./globals";
 import equiv from "./equiv";
 import dump from "./dump";
 import Assert from "./assert";
-import Test, { test, skip, only, pushFailure, generateHash } from "./test";
+import Test, { test, skip, only, todo, pushFailure, generateHash } from "./test";
 import exportQUnit from "./export";
 
 import config from "./core/config";
@@ -97,6 +97,8 @@ extend( QUnit, {
 	},
 
 	test: test,
+
+	todo: todo,
 
 	skip: skip,
 
