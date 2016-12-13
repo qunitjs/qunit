@@ -134,18 +134,42 @@ export default ( function() {
 			return true;
 		},
 
+		// Define sets a and b to be equivalent if for each element aVal in a, there
+		// is some element bVal in b such that aVal and bVal are equivalent. Element
+		// repetitions are not counted, so these are equivalent:
+		// a = new Set( [ {}, [], [] ] );
+		// b = new Set( [ {}, {}, [] ] );
 		"set": function( a, b ) {
 			var innerEq,
 				outerEq = true;
 
 			if ( a.size !== b.size ) {
+
+				// This optimization has certain quirks because of the lack of
+				// repetition counting. For instance, adding the same
+				// (reference-identical) element to two equivalent sets can
+				// make them non-equivalent.
 				return false;
 			}
 
 			a.forEach( function( aVal ) {
+
+				// Short-circuit if the result is already known. (Using for...of
+				// with a break clause would be cleaner here, but it would cause
+				// a syntax error on older Javascript implementations even if
+				// Set is unused)
+				if ( !outerEq ) {
+					return;
+				}
+
 				innerEq = false;
 
 				b.forEach( function( bVal ) {
+
+					// Likewise, short-circuit if the result is already known
+					if ( innerEq ) {
+						return;
+					}
 					if ( innerEquiv( bVal, aVal ) ) {
 						innerEq = true;
 					}
@@ -159,18 +183,44 @@ export default ( function() {
 			return outerEq;
 		},
 
+		// Define maps a and b to be equivalent if for each key-value pair (aKey, aVal)
+		// in a, there is some key-value pair (bKey, bVal) in b such that
+		// [ aKey, aVal ] and [ bKey, bVal ] are equivalent. Key repetitions are not
+		// counted, so these are equivalent:
+		// a = new Map( [ [ {}, 1 ], [ {}, 1 ], [ [], 1 ] ] );
+		// b = new Map( [ [ {}, 1 ], [ [], 1 ], [ [], 1 ] ] );
 		"map": function( a, b ) {
 			var innerEq,
 				outerEq = true;
 
 			if ( a.size !== b.size ) {
+
+				// This optimization has certain quirks because of the lack of
+				// repetition counting. For instance, adding the same
+				// (reference-identical) key-value pair to two equivalent maps
+				// can make them non-equivalent.
 				return false;
 			}
 
 			a.forEach( function( aVal, aKey ) {
+
+				// Short-circuit if the result is already known. (Using for...of
+				// with a break clause would be cleaner here, but it would cause
+				// a syntax error on older Javascript implementations even if
+				// Map is unused)
+				if ( !outerEq ) {
+					return;
+				}
+
 				innerEq = false;
 
 				b.forEach( function( bVal, bKey ) {
+
+					// Likewise, short-circuit if the result is already known
+					if ( innerEq ) {
+						return;
+					}
+
 					if ( innerEquiv( [ bVal, bKey ], [ aVal, aKey ] ) ) {
 						innerEq = true;
 					}
