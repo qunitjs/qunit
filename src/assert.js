@@ -1,6 +1,7 @@
 import dump from "./dump";
 import equiv from "./equiv";
 import { internalStop } from "./test";
+import { console } from "./globals";
 
 import config from "./core/config";
 import { objectType, objectValues } from "./core/utilities";
@@ -57,6 +58,9 @@ Assert.prototype = {
 	// Exports test.push() to the user API
 	// Alias of pushResult.
 	push: function( result, actual, expected, message, negative ) {
+		console.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
+			" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
+
 		var currentAssert = this instanceof Assert ? this : config.current.assert;
 		return currentAssert.pushResult( {
 			result: result,
