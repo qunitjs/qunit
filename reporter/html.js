@@ -1,5 +1,6 @@
 import QUnit from "../src/core";
 import { window, navigator } from "../src/globals";
+import "./urlparams";
 
 // Escape text for attribute or text content.
 export function escapeText( s ) {
