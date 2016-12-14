@@ -51,7 +51,6 @@ module.exports = function( grunt ) {
 
 		require( "../../" + file );
 
-		QUnit.load();
 		QUnit.start();
 	}
 
