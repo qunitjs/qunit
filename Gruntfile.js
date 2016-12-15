@@ -116,7 +116,6 @@ grunt.initConfig( {
 		},
 		qunit: [
 			"test/index.html",
-			"test/deprecated.html",
 			"test/autostart.html",
 			"test/startError.html",
 			"test/reorderError1.html",
@@ -153,7 +152,6 @@ grunt.initConfig( {
 			"test/only",
 			"test/setTimeout",
 			"test/main/dump",
-			"test/deprecated",
 			"test/node/storage-1",
 			"test/node/storage-2"
 		]

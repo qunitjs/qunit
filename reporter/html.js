@@ -33,13 +33,6 @@ if ( typeof window === "undefined" || !window.document ) {
 	return;
 }
 
-QUnit.init = function() {
-	throw new Error(
-		"QUnit.init is removed in QUnit 2.0, use QUnit.test() with assert.async() instead.\n" +
-		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-	);
-};
-
 var config = QUnit.config,
 	document = window.document,
 	collapseNext = false,

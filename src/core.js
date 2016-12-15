@@ -1,4 +1,4 @@
-import { window, setTimeout, console } from "./globals";
+import { window, setTimeout } from "./globals";
 
 import equiv from "./equiv";
 import dump from "./dump";
@@ -42,14 +42,6 @@ extend( QUnit, {
 		}
 
 		module = createModule();
-
-		if ( testEnvironment && ( testEnvironment.setup || testEnvironment.teardown ) ) {
-			console.warn(
-				"Module's `setup` and `teardown` are not hooks anymore on QUnit 2.0, use " +
-				"`beforeEach` and `afterEach` instead\n" +
-				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-			);
-		}
 
 		moduleFns = {
 			before: setHook( module, "before" ),
@@ -132,11 +124,7 @@ extend( QUnit, {
 				return;
 			}
 		} else {
-			throw new Error(
-				"QUnit.start cannot be called inside a test context. This feature is removed in " +
-				"QUnit 2.0. For async tests, use QUnit.test() with assert.async() instead.\n" +
-				"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-			);
+			throw new Error( "QUnit.start cannot be called inside a test context." );
 		}
 
 		scheduleBegin();
@@ -181,19 +169,6 @@ QUnit.pushFailure = pushFailure;
 QUnit.assert = Assert.prototype;
 QUnit.equiv = equiv;
 QUnit.dump = dump;
-
-// 3.0 TODO: Remove
-function jsDumpThrower() {
-	throw new Error(
-		"QUnit.jsDump is removed in QUnit 2.0, use QUnit.dump instead.\n" +
-		"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
-	);
-}
-
-Object.defineProperty( QUnit, "jsDump", {
-	get: jsDumpThrower,
-	set: jsDumpThrower
-} );
 
 registerLoggingCallbacks( QUnit );
 
