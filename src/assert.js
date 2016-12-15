@@ -224,8 +224,7 @@ Assert.prototype = {
 			} else {
 				throw new Error(
 					"throws/raises does not accept a string value for the expected argument.\n" +
-					"Use a non-string object value (e.g. regExp) instead if it's necessary." +
-					"Details in our upgrade guide at https://qunitjs.com/upgrade-guide-2.x/"
+					"Use a non-string object value (e.g. regExp) instead if it's necessary."
 				);
 			}
 		}
