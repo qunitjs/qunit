@@ -28,19 +28,16 @@ export function diff( a, b ) {
 	return result;
 }
 
-// From jquery.js
+/**
+ * Determines whether an element exists in a given array or not.
+ *
+ * @method inArray
+ * @param {Any} elem
+ * @param {Array} array
+ * @return {Boolean}
+ */
 export function inArray( elem, array ) {
-	if ( array.indexOf ) {
-		return array.indexOf( elem );
-	}
-
-	for ( var i = 0, length = array.length; i < length; i++ ) {
-		if ( array[ i ] === elem ) {
-			return i;
-		}
-	}
-
-	return -1;
+	return array.indexOf( elem ) !== -1;
 }
 
 /**
