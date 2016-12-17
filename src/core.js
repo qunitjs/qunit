@@ -10,6 +10,7 @@ import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
 import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
+import { on } from "./events";
 import "./core/onerror";
 
 const QUnit = {};
@@ -28,6 +29,7 @@ QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 QUnit.version = "@VERSION";
 
 extend( QUnit, {
+	on,
 
 	// Call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment, executeNow ) {
