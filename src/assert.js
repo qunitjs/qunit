@@ -7,25 +7,25 @@ import config from "./core/config";
 import { objectType, objectValues } from "./core/utilities";
 import { sourceFromStacktrace } from "./core/stacktrace";
 
-export default function Assert( testContext ) {
-	this.test = testContext;
-}
+class Assert {
+	constructor( testContext ) {
+		this.test = testContext;
+	}
 
-// Assert helpers
-Assert.prototype = {
+	// Assert helpers
 
 	// Specify the number of expected assertions to guarantee that failed test
 	// (no assertions are run at all) don't slip through.
-	expect: function( asserts ) {
+	expect( asserts ) {
 		if ( arguments.length === 1 ) {
 			this.test.expected = asserts;
 		} else {
 			return this.test.expected;
 		}
-	},
+	}
 
 	// Put a hold on processing and return a function that will release it a maximum of once.
-	async: function( count ) {
+	async( count ) {
 		var resume,
 			test = this.test,
 			popped = false,
@@ -53,11 +53,11 @@ Assert.prototype = {
 			popped = true;
 			resume();
 		};
-	},
+	}
 
 	// Exports test.push() to the user API
 	// Alias of pushResult.
-	push: function( result, actual, expected, message, negative ) {
+	push( result, actual, expected, message, negative ) {
 		console.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
 			" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
 
@@ -69,9 +69,9 @@ Assert.prototype = {
 			message: message,
 			negative: negative
 		} );
-	},
+	}
 
-	pushResult: function( resultInfo ) {
+	pushResult( resultInfo ) {
 
 		// Destructure of resultInfo = { result, actual, expected, message, negative }
 		var assert = this,
@@ -98,9 +98,9 @@ Assert.prototype = {
 		}
 
 		return assert.test.pushResult( resultInfo );
-	},
+	}
 
-	ok: function( result, message ) {
+	ok( result, message ) {
 		message = message || ( result ? "okay" : "failed, expected argument to be truthy, was: " +
 			dump.parse( result ) );
 		this.pushResult( {
@@ -109,9 +109,9 @@ Assert.prototype = {
 			expected: true,
 			message: message
 		} );
-	},
+	}
 
-	notOk: function( result, message ) {
+	notOk( result, message ) {
 		message = message || ( !result ? "okay" : "failed, expected argument to be falsy, was: " +
 			dump.parse( result ) );
 		this.pushResult( {
@@ -120,9 +120,9 @@ Assert.prototype = {
 			expected: false,
 			message: message
 		} );
-	},
+	}
 
-	equal: function( actual, expected, message ) {
+	equal( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
 		var result = expected == actual;
@@ -133,9 +133,9 @@ Assert.prototype = {
 			expected: expected,
 			message: message
 		} );
-	},
+	}
 
-	notEqual: function( actual, expected, message ) {
+	notEqual( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
 		var result = expected != actual;
@@ -147,9 +147,9 @@ Assert.prototype = {
 			message: message,
 			negative: true
 		} );
-	},
+	}
 
-	propEqual: function( actual, expected, message ) {
+	propEqual( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
 		this.pushResult( {
@@ -158,9 +158,9 @@ Assert.prototype = {
 			expected: expected,
 			message: message
 		} );
-	},
+	}
 
-	notPropEqual: function( actual, expected, message ) {
+	notPropEqual( actual, expected, message ) {
 		actual = objectValues( actual );
 		expected = objectValues( expected );
 		this.pushResult( {
@@ -170,18 +170,18 @@ Assert.prototype = {
 			message: message,
 			negative: true
 		} );
-	},
+	}
 
-	deepEqual: function( actual, expected, message ) {
+	deepEqual( actual, expected, message ) {
 		this.pushResult( {
 			result: equiv( actual, expected ),
 			actual: actual,
 			expected: expected,
 			message: message
 		} );
-	},
+	}
 
-	notDeepEqual: function( actual, expected, message ) {
+	notDeepEqual( actual, expected, message ) {
 		this.pushResult( {
 			result: !equiv( actual, expected ),
 			actual: actual,
@@ -189,18 +189,18 @@ Assert.prototype = {
 			message: message,
 			negative: true
 		} );
-	},
+	}
 
-	strictEqual: function( actual, expected, message ) {
+	strictEqual( actual, expected, message ) {
 		this.pushResult( {
 			result: expected === actual,
 			actual: actual,
 			expected: expected,
 			message: message
 		} );
-	},
+	}
 
-	notStrictEqual: function( actual, expected, message ) {
+	notStrictEqual( actual, expected, message ) {
 		this.pushResult( {
 			result: expected !== actual,
 			actual: actual,
@@ -208,9 +208,9 @@ Assert.prototype = {
 			message: message,
 			negative: true
 		} );
-	},
+	}
 
-	"throws": function( block, expected, message ) {
+	[ "throws" ]( block, expected, message ) {
 		var actual, expectedType,
 			expectedOutput = expected,
 			ok = false,
@@ -273,15 +273,12 @@ Assert.prototype = {
 			message: message
 		} );
 	}
-};
+}
 
 // Provide an alternative to assert.throws(), for environments that consider throws a reserved word
 // Known to us are: Closure Compiler, Narwhal
-( function() {
-
-	// eslint-disable-next-line dot-notation
-	Assert.prototype.raises = Assert.prototype [ "throws" ];
-} )();
+// eslint-disable-next-line dot-notation
+Assert.prototype.raises = Assert.prototype[ "throws" ];
 
 function errorString( error ) {
 	var name, message,
@@ -302,3 +299,5 @@ function errorString( error ) {
 		return resultErrorString;
 	}
 }
+
+export default Assert;
