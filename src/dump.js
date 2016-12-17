@@ -60,10 +60,10 @@ export default ( function() {
 			parse: function( obj, objType, stack ) {
 				stack = stack || [];
 				var res, parser, parserType,
-					inStack = stack.indexOf( obj );
+					objIndex = stack.indexOf( obj );
 
-				if ( inStack !== -1 ) {
-					return "recursion(" + ( inStack - stack.length ) + ")";
+				if ( objIndex !== -1 ) {
+					return "recursion(" + ( objIndex - stack.length ) + ")";
 				}
 
 				objType = objType || this.typeOf( obj  );
