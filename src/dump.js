@@ -63,7 +63,7 @@ export default ( function() {
 					objIndex = stack.indexOf( obj );
 
 				if ( objIndex !== -1 ) {
-					return "recursion(" + ( objIndex - stack.length ) + ")";
+					return `recursion(${objIndex - stack.length})`;
 				}
 
 				objType = objType || this.typeOf( obj  );
