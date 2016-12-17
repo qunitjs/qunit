@@ -1,6 +1,15 @@
 import { objectType, inArray } from "./core/utilities";
 
 const LISTENERS = Object.create( null );
+const SUPPORTED_EVENTS = [
+	"runStart",
+	"suiteStart",
+	"testStart",
+	"assertion",
+	"testEnd",
+	"suiteEnd",
+	"runEnd"
+];
 
 /**
  * Emits an event with the specified data to all currently registered listeners.
@@ -40,6 +49,9 @@ export function emit( eventName, data ) {
 export function on( eventName, callback ) {
 	if ( objectType( eventName ) !== "string" ) {
 		throw new TypeError( "eventName must be a string when registering a listener" );
+	} else if ( !inArray( eventName, SUPPORTED_EVENTS ) ) {
+		let events = SUPPORTED_EVENTS.join( ", " );
+		throw new Error( `"${eventName}" is not a valid event; must be one of: ${events}.` );
 	} else if ( objectType( callback ) !== "function" ) {
 		throw new TypeError( "callback must be a function when registering a listener" );
 	}
