@@ -1,3 +1,11 @@
+2.1.1 / 2017-01-05
+==================
+
+ * All: Remove deprecated 1.x features
+ * Assert: Deprecate assert.push
+ * Build: Remove unnecessary QUnit.load call
+ * Core: QUnit.start does not require calling QUnit.load
+ * HTML Reporter: Add an abort button
 
 2.1.0 / 2016-12-05
 ==================
