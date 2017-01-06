@@ -437,7 +437,7 @@ Test.prototype = {
 		}
 
 		function moduleChainIdMatch( testModule ) {
-			return inArray( testModule.moduleId, config.moduleId ) > -1 ||
+			return inArray( testModule.moduleId, config.moduleId ) ||
 				testModule.parentModule && moduleChainIdMatch( testModule.parentModule );
 		}
 
@@ -453,7 +453,7 @@ Test.prototype = {
 		}
 
 		if ( config.testId && config.testId.length > 0 &&
-			inArray( this.testId, config.testId ) < 0 ) {
+			!inArray( this.testId, config.testId ) ) {
 
 			return false;
 		}

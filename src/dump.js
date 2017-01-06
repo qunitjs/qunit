@@ -60,10 +60,10 @@ export default ( function() {
 			parse: function( obj, objType, stack ) {
 				stack = stack || [];
 				var res, parser, parserType,
-					inStack = inArray( obj, stack );
+					objIndex = stack.indexOf( obj );
 
-				if ( inStack !== -1 ) {
-					return "recursion(" + ( inStack - stack.length ) + ")";
+				if ( objIndex !== -1 ) {
+					return `recursion(${objIndex - stack.length})`;
 				}
 
 				objType = objType || this.typeOf( obj  );
@@ -190,7 +190,7 @@ export default ( function() {
 					nonEnumerableProperties = [ "message", "name" ];
 					for ( i in nonEnumerableProperties ) {
 						key = nonEnumerableProperties[ i ];
-						if ( key in map && inArray( key, keys ) < 0 ) {
+						if ( key in map && !inArray( key, keys ) ) {
 							keys.push( key );
 						}
 					}
