@@ -6,26 +6,10 @@ var fs = require( "fs-extra" );
 var instrumentedDir = "build/instrumented";
 var reportDir = "build/report";
 
-// Support: Node.js <4
-var oldNode = /^v0\./.test( process.version );
-
 module.exports = function( grunt ) {
 
 // Load grunt tasks from NPM packages
-// Don't load the eslint task in old Node.js, it won't parse
-require( "load-grunt-tasks" )( grunt, {
-	pattern: oldNode ? [ "grunt-*", "!grunt-eslint" ] : [ "grunt-*" ]
-} );
-
-// Skip running tasks that dropped support for Node.js 0.12 in this Node version
-function runIfNewNode( task ) {
-	return oldNode ? "print_old_node_message:" + task : task;
-}
-
-grunt.registerTask( "print_old_node_message", function() {
-	var task = [].slice.call( arguments ).join( ":" );
-	grunt.log.writeln( "Old Node.js detected, running the task \"" + task + "\" skipped..." );
-} );
+require( "load-grunt-tasks" )( grunt );
 
 function process( code ) {
 	return code
@@ -218,7 +202,7 @@ grunt.event.on( "qunit.coverage", function( file, coverage ) {
 
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
-grunt.registerTask( "test", [ runIfNewNode( "eslint" ), "search", "test-on-node", "qunit" ] );
+grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "qunit" ] );
 grunt.registerTask( "coverage", [
 	"build",
 	"instrument",
