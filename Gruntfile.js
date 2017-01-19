@@ -23,6 +23,14 @@ function process( code ) {
 
 grunt.initConfig( {
 	pkg: grunt.file.readJSON( "package.json" ),
+	connect: {
+		server: {
+			options: {
+				port: 8000,
+				base: "."
+			}
+		}
+	},
 	copy: {
 		options: { process: process },
 
@@ -96,6 +104,9 @@ grunt.initConfig( {
 			inject: [
 				path.resolve( "./build/coverage-bridge.js" ),
 				require.resolve( "grunt-contrib-qunit/phantomjs/bridge" )
+			],
+			urls: [
+				"http://localhost:8000/test/sandboxed-iframe.html"
 			]
 		},
 		qunit: [
@@ -202,7 +213,8 @@ grunt.event.on( "qunit.coverage", function( file, coverage ) {
 
 grunt.loadTasks( "build/tasks" );
 grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
-grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "qunit" ] );
+grunt.registerTask( "qunit-test", [ "connect", "qunit" ] );
+grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "qunit-test" ] );
 grunt.registerTask( "coverage", [
 	"build",
 	"instrument",

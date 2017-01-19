@@ -7,4 +7,14 @@ export const clearTimeout = global.clearTimeout;
 
 export const document = window && window.document;
 export const navigator = window && window.navigator;
-export const sessionStorage = window && window.sessionStorage;
+
+export const sessionStorage = ( function() {
+	var x = "qunit-test-string";
+	try {
+		sessionStorage.setItem( x, x );
+		sessionStorage.removeItem( x );
+		return sessionStorage;
+	} catch ( e ) {
+		return undefined;
+	}
+}() );
