@@ -57,8 +57,13 @@ class Assert {
 	// Exports test.push() to the user API
 	// Alias of pushResult.
 	push( result, actual, expected, message, negative ) {
-		console.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
-			" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
+
+		// Supports IE9, not throwing if console is not active.
+		// Ref #1092
+		if ( console ) {
+			console.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
+				" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
+		}
 
 		let currentAssert = this instanceof Assert ? this : config.current.assert;
 		return currentAssert.pushResult( {
