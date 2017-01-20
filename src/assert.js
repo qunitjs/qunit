@@ -1,7 +1,7 @@
 import dump from "./dump";
 import equiv from "./equiv";
 import { internalStop } from "./test";
-import { console } from "./globals";
+import Logger from "./logger";
 
 import config from "./core/config";
 import { objectType, objectValues } from "./core/utilities";
@@ -57,13 +57,8 @@ class Assert {
 	// Exports test.push() to the user API
 	// Alias of pushResult.
 	push( result, actual, expected, message, negative ) {
-
-		// Supports IE9, not throwing if console is not active.
-		// Ref #1092
-		if ( console ) {
-			console.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
-				" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
-		}
+		Logger.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
+			" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
 
 		let currentAssert = this instanceof Assert ? this : config.current.assert;
 		return currentAssert.pushResult( {
