@@ -28,6 +28,11 @@ class Assert {
 		} );
 	}
 
+	// Verifies the steps in a test match a given array of string values
+	verifySteps( steps, message ) {
+		this.deepEqual( this.test.steps, steps, message );
+	}
+
 	// Specify the number of expected assertions to guarantee that failed test
 	// (no assertions are run at all) don't slip through.
 	expect( asserts ) {
