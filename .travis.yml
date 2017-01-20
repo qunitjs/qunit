@@ -20,8 +20,10 @@ before_install:
 script:
   - npm run-script $NPM_SCRIPT
 cache:
+  yarn: true
   directories:
-    - node_modules
+    - $HOME/.npm
+    - $HOME/.cache
 notifications:
   irc:
     channels:
