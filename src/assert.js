@@ -57,7 +57,7 @@ class Assert {
 	// Exports test.push() to the user API
 	// Alias of pushResult.
 	push( result, actual, expected, message, negative ) {
-		
+
 		// Supports IE9, not throwing if console is not active.
 		// Ref #1092
 		if ( console ) {
