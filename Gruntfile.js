@@ -139,6 +139,7 @@ grunt.initConfig( {
 			"test/logs",
 			"test/main/test",
 			"test/main/assert",
+			"test/main/assert/step",
 			"test/main/async",
 			"test/main/promise",
 			"test/main/modules",

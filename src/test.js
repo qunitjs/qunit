@@ -25,6 +25,7 @@ export default function Test( settings ) {
 	this.usedAsync = false;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
+	this.steps = [];
 
 	// Register unique strings
 	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {

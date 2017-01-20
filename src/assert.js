@@ -14,6 +14,20 @@ class Assert {
 
 	// Assert helpers
 
+	// Documents a "step", which is a string value, in a test as a passing assertion
+	step( message ) {
+		let result = !!message;
+
+		message = message || "You must provide a message to assert.step";
+
+		this.test.steps.push( message );
+
+		return this.pushResult( {
+			result,
+			message
+		} );
+	}
+
 	// Specify the number of expected assertions to guarantee that failed test
 	// (no assertions are run at all) don't slip through.
 	expect( asserts ) {
