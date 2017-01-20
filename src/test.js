@@ -2,6 +2,7 @@ import global from "global";
 
 import { internalState, process, begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
+import { emit } from "./events";
 import Assert from "./assert";
 
 import config from "./core/config";
@@ -355,7 +356,7 @@ Test.prototype = {
 			}
 		}
 
-		runLoggingCallbacks( "log", details );
+		this.logAssertion( details );
 
 		this.assertions.push( {
 			result: !!resultInfo.result,
@@ -383,11 +384,28 @@ Test.prototype = {
 			details.source = source;
 		}
 
-		runLoggingCallbacks( "log", details );
+		this.logAssertion( details );
 
 		this.assertions.push( {
 			result: false,
 			message: message
+		} );
+	},
+
+	/**
+	 * Log assertion details using both the old QUnit.log interface and
+	 * QUnit.on( "assertion" ) interface.
+	 *
+	 * @private
+	 */
+	logAssertion( details ) {
+		runLoggingCallbacks( "log", details );
+		emit( "assertion", {
+			passed: details.result,
+			actual: details.actual,
+			expected: details.expected,
+			message: details.message,
+			stack: details.source
 		} );
 	},
 
