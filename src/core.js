@@ -14,7 +14,7 @@ import { sourceFromStacktrace } from "./core/stacktrace";
 import SuiteReport from "./reports/suite";
 
 import { on, emit } from "./events";
-import "./core/onerror";
+import onError from "./core/onerror";
 
 const QUnit = {};
 const globalSuite = new SuiteReport();
@@ -182,7 +182,9 @@ extend( QUnit, {
 	stack: function( offset ) {
 		offset = ( offset || 0 ) + 2;
 		return sourceFromStacktrace( offset );
-	}
+	},
+
+	onError
 } );
 
 QUnit.pushFailure = pushFailure;
