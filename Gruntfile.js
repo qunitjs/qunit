@@ -126,7 +126,7 @@ grunt.initConfig( {
 			"test/reporter-html/single-testid.html",
 			"test/reporter-urlparams.html",
 			"test/moduleId.html",
-            "test/onerror/onerror.html",
+			"test/onerror/onerror.html",
 			"test/only.html",
 			"test/seed.html",
 			"test/overload.html",

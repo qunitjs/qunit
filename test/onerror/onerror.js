@@ -23,6 +23,6 @@ QUnit.module( "QUnit.onError", function() {
 
 		var result = QUnit.onError( "Error message", "filePath.js", 1 );
 
-		assert.strictEqual( result, true, "onError should allow other error handlers to run" );
+		assert.strictEqual( result, true, "onError should not allow other error handlers to run" );
 	} );
 } );

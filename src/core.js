@@ -182,7 +182,7 @@ extend( QUnit, {
 		return sourceFromStacktrace( offset );
 	},
 
-    onError
+	onError
 } );
 
 QUnit.pushFailure = pushFailure;
