@@ -1,4 +1,5 @@
 import QUnit from "../src/core";
+import onError from "../src/core/onerror";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
 
@@ -245,7 +246,7 @@ function applyUrlParams() {
 		modulesList = id( "qunit-modulefilter-dropdown-list" ).getElementsByTagName( "input" ),
 		filter = id( "qunit-filter-input" ).value;
 
-	for ( i = 0; i < modulesList.length; i++ )  {
+	for ( i = 0; i < modulesList.length; i++ ) {
 		if ( modulesList[ i ].checked ) {
 			selectedModules.push( modulesList[ i ].value );
 		}
@@ -435,7 +436,7 @@ function toolbarModuleFilter() {
 			allCheckbox.checked = false;
 			removeClass( allCheckbox.parentNode, "checked" );
 		}
-		for ( i = 0; i < modulesList.length; i++ )  {
+		for ( i = 0; i < modulesList.length; i++ ) {
 			item = modulesList[ i ];
 			if ( !evt ) {
 				toggleClass( item.parentNode, "checked", item.checked );
@@ -930,5 +931,28 @@ if ( notPhantom && document.readyState === "complete" ) {
 } else {
 	addEvent( window, "load", QUnit.load );
 }
+
+// Wrap window.onerror. We will call the original window.onerror to see if
+// the existing handler fully handles the error; if not, we will call the
+// QUnit.onError function.
+var originalWindowOnError = window.onerror;
+
+// Cover uncaught exceptions
+// Returning true will suppress the default browser handler,
+// returning false will let it run.
+window.onerror = function( error, filePath, lineNumber ) {
+	var ret = false;
+	if ( originalWindowOnError ) {
+		ret = originalWindowOnError( error, filePath, lineNumber );
+	}
+
+	// Treat return value as window.onerror itself does,
+	// Only do our handling if not suppressed.
+	if ( ret !== true ) {
+		onError( error, filePath, lineNumber );
+	}
+
+	return ret;
+};
 
 }() );
