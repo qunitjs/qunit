@@ -940,16 +940,16 @@ var originalWindowOnError = window.onerror;
 // Cover uncaught exceptions
 // Returning true will suppress the default browser handler,
 // returning false will let it run.
-window.onerror = function( error, filePath, lineNumber ) {
+window.onerror = function( ...args ) {
 	var ret = false;
 	if ( originalWindowOnError ) {
-		ret = originalWindowOnError( error, filePath, lineNumber );
+		ret = originalWindowOnError( ...args );
 	}
 
 	// Treat return value as window.onerror itself does,
 	// Only do our handling if not suppressed.
 	if ( ret !== true ) {
-		onError( error, filePath, lineNumber );
+		onError( ...args );
 	}
 
 	return ret;
