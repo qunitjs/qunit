@@ -364,7 +364,7 @@ Test.prototype = {
 			};
 
 		if ( !resultInfo.result ) {
-			source = sourceFromStacktrace();
+			source = resultInfo.source || sourceFromStacktrace();
 
 			if ( source ) {
 				details.source = source;
@@ -385,27 +385,16 @@ Test.prototype = {
 				sourceFromStacktrace( 2 ) );
 		}
 
-		var details = {
-			module: this.module.name,
-			name: this.testName,
+		this.assert.pushResult( {
 			result: false,
 			message: message || "error",
 			actual: actual || null,
 			testId: this.testId,
 			runtime: now() - this.started,
+			expected: null,
+			source,
 			todo: !!this.todo
 		};
-
-		if ( source ) {
-			details.source = source;
-		}
-
-		this.logAssertion( details );
-
-		this.assertions.push( {
-			result: false,
-			message: message
-		} );
 	},
 
 	/**
