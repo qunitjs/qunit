@@ -18,13 +18,11 @@ class Assert {
 	step( message ) {
 		let result = !!message;
 
-		message = message || "You must provide a message to assert.step";
-
 		this.test.steps.push( message );
 
 		return this.pushResult( {
 			result,
-			message
+			message: message || "You must provide a message to assert.step"
 		} );
 	}
 

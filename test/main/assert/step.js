@@ -56,3 +56,20 @@ QUnit.test( "verifies the order and value of steps", function( assert ) {
 
 	assert.verifySteps( [ "One step", "Red step", "Two step", "Blue step" ] );
 } );
+
+QUnit.test( "verifies the order and value of failed steps", function( assert ) {
+	assert.expect( 3 );
+
+	var originalPushResult = assert.pushResult;
+
+	assert.step( "One step" );
+
+	assert.pushResult = function noop() {};
+	assert.step();
+	assert.step( "" );
+	assert.pushResult = originalPushResult;
+
+	assert.step( "Two step" );
+
+	assert.verifySteps( [ "One step", undefined, "", "Two step" ] );
+} );
