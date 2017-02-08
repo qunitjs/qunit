@@ -85,7 +85,7 @@ extend( QUnit, {
 				moduleId: generateHash( moduleName ),
 				testsRun: 0,
 				childModules: [],
-				suiteReport: new SuiteReport( moduleName, parentSuite )
+				suiteReport: new SuiteReport( name, parentSuite )
 			};
 
 			var env = {};
