@@ -10,10 +10,19 @@ import config from "./core/config";
 import { defined, extend, objectType, is, now } from "./core/utilities";
 import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
-import { on } from "./events";
+
+import SuiteReport from "./reports/suite";
+
+import { on, emit } from "./events";
 import "./core/onerror";
 
 const QUnit = {};
+const globalSuite = new SuiteReport();
+
+// The initial "currentModule" represents the global (or top-level) module that
+// is not explicitly defined by the user, therefore we add the "globalSuite" to
+// it since each module has a suiteReport associated with it.
+config.currentModule.suiteReport = globalSuite;
 
 var globalStartCalled = false;
 var runStarted = false;
@@ -67,13 +76,16 @@ extend( QUnit, {
 				config.moduleStack.slice( -1 )[ 0 ] : null;
 			var moduleName = parentModule !== null ?
 				[ parentModule.name, name ].join( " > " ) : name;
+			var parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
+
 			var module = {
 				name: moduleName,
 				parentModule: parentModule,
 				tests: [],
 				moduleId: generateHash( moduleName ),
 				testsRun: 0,
-				childModules: []
+				childModules: [],
+				suiteReport: new SuiteReport( moduleName, parentSuite )
 			};
 
 			var env = {};
@@ -216,6 +228,7 @@ export function begin() {
 		}
 
 		// The test run is officially beginning now
+		emit( "runStart", globalSuite.start( true ) );
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
@@ -262,6 +275,7 @@ function done() {
 	runtime = now() - config.started;
 	passed = config.stats.all - config.stats.bad;
 
+	emit( "runEnd", globalSuite.end( true ) );
 	runLoggingCallbacks( "done", {
 		failed: config.stats.bad,
 		passed: passed,
