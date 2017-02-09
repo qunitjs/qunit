@@ -487,8 +487,8 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE assertion", fu
 	} );
 } );
 
-QUnit.test( "cannot allow assertions between first `done` call and second `assert.async` call",
-		function( assert ) {
+// eslint-disable-next-line max-len
+QUnit.test( "cannot allow assertions between first `done` call and second `assert.async` call", function( assert ) {
 	var done2,
 		testContext = this,
 		done1 = assert.async();
