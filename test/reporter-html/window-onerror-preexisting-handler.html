@@ -5,11 +5,12 @@
 	<title>QUnit HTML Reporter - No Markup</title>
 	<link rel="stylesheet" href="../../dist/qunit.css">
 	<script>
-		/* exported onerrorReturnValue */
-		var onerrorReturnValue;
+		/* exported onerrorReturnValue, onerrorCallingContext */
+		var onerrorReturnValue, onerrorCallingContext;
 
 		// Create pre-existing window.onerror handler
 		window.onerror = function() {
+			onerrorCallingContext = this;
 			return onerrorReturnValue;
 		};
 
