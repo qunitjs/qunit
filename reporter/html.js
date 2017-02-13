@@ -943,13 +943,13 @@ var originalWindowOnError = window.onerror;
 window.onerror = function( ...args ) {
 	var ret = false;
 	if ( originalWindowOnError ) {
-		ret = originalWindowOnError( ...args );
+		ret = originalWindowOnError.apply( this, args );
 	}
 
 	// Treat return value as window.onerror itself does,
 	// Only do our handling if not suppressed.
 	if ( ret !== true ) {
-		onError( ...args );
+		ret = onError( ...args );
 	}
 
 	return ret;

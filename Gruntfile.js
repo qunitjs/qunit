@@ -124,6 +124,8 @@ grunt.initConfig( {
 			"test/reporter-html/legacy-markup.html",
 			"test/reporter-html/no-qunit-element.html",
 			"test/reporter-html/single-testid.html",
+			"test/reporter-html/window-onerror.html",
+			"test/reporter-html/window-onerror-preexisting-handler.html",
 			"test/reporter-urlparams.html",
 			"test/moduleId.html",
 			"test/onerror/inside-test.html",
