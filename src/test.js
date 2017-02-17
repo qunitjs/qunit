@@ -389,12 +389,9 @@ Test.prototype = {
 			result: false,
 			message: message || "error",
 			actual: actual || null,
-			testId: this.testId,
-			runtime: now() - this.started,
 			expected: null,
-			source,
-			todo: !!this.todo
-		};
+			source
+		} );
 	},
 
 	/**
