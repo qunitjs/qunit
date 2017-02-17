@@ -1,5 +1,4 @@
 import QUnit from "../src/core";
-import onError from "../src/core/onerror";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
 
@@ -949,7 +948,7 @@ window.onerror = function( ...args ) {
 	// Treat return value as window.onerror itself does,
 	// Only do our handling if not suppressed.
 	if ( ret !== true ) {
-		ret = onError( ...args );
+		ret = QUnit.onError( ...args );
 	}
 
 	return ret;
