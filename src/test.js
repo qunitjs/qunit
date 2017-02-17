@@ -394,7 +394,7 @@ Test.prototype = {
 			expected: null,
 			source,
 			todo: !!this.todo
-		};
+		} );
 	},
 
 	/**
