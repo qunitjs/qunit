@@ -1,45 +1,35 @@
-QUnit.module( "window.onerror (no preexisting handler)", function( ) {
-	QUnit.test( "Should call QUnit.onError and emit assertion failure", function( assert ) {
-		assert.expect( 3 );
+QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
+	var originalQUnitOnError;
 
-		var originalPushResult = assert.pushResult;
-
-		// Duck-punch assert.pushResult so we can do some custom assertions
-		assert.pushResult = function( resultInfo ) {
-
-			// Restore assert.pushResult so the next assertions work
-			assert.pushResult = originalPushResult;
-
-			assert.strictEqual( resultInfo.message, "An error message" );
-			assert.strictEqual( resultInfo.source, "filename.js:1" );
-		};
-
-		var result = window.onerror( "An error message", "filename.js", 1 );
-
-		assert.strictEqual( result, false, "QUnit.onError should return false" );
+	hooks.beforeEach( function() {
+		originalQUnitOnError = QUnit.onError;
 	} );
 
-	QUnit.test( "Should not assert if ignoreGlobalErrors is configured", function( assert ) {
+    hooks.afterEach( function() {
+        QUnit.onError = originalQUnitOnError;
+    } );
+
+	QUnit.test( "Should call QUnit.onError", function( assert ) {
 		assert.expect( 1 );
 
-		var originalPushResult = assert.pushResult;
+		QUnit.onError = function() {
+			assert.ok( true, "QUnit.onError was called" );
+		};
 
-		QUnit.config.current.ignoreGlobalErrors = true;
+		window.onerror( "An error message", "filename.js", 1 );
+	} );
 
-		// Duck-punch assert.pushResult so we can do some custom assertions
-		assert.pushResult = function( ) {
+	QUnit.test( "Should return QUnit.error return value if it is called", function( assert ) {
+		assert.expect( 1 );
 
-			// Restore assert.pushResult so the next assertions work
-			assert.pushResult = originalPushResult;
+		var expected = {};
 
-			assert.ok( false, "Should not call pushResult if ignoreGlobalErrors is true" );
+		QUnit.onError = function() {
+			return expected;
 		};
 
 		var result = window.onerror( "An error message", "filename.js", 1 );
 
-		// Restore assert.pushResult so the next assertions work
-		assert.pushResult = originalPushResult;
-
-		assert.strictEqual( result, true, "QUnit.onError should return true" );
+		assert.strictEqual( result, expected, "QUnit.onError return value was returned" );
 	} );
 } );
