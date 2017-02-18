@@ -14,24 +14,55 @@ module.exports = function( grunt ) {
 
 		var done = this.async();
 
-		async.series( runs, function( error, result ) {
-			var total = result.reduce( function( previous, details ) {
-					return previous + details.total;
-				}, 0 );
-			var failed = result.reduce( function( previous, details ) {
-					return previous + details.failed;
-				}, 0 );
-			var runtime = result.reduce( function( previous, details ) {
-					return previous + details.runtime;
-				}, 0 );
+		async.series( runs, function( error, stats ) {
+			var totals = stats.reduce( function( totals, stats ) {
+				totals.passed += stats.passed;
+				totals.failed += stats.failed;
+				totals.skipped += stats.skipped;
+				totals.todo += stats.todo;
+				totals.passedAssertions += stats.passedAssertions;
+				totals.failedAssertions += stats.failedAssertions;
+				totals.runtime += stats.runtime;
+				return totals;
+			}, {
+				passed: 0,
+				failed: 0,
+				skipped: 0,
+				todo: 0,
+				runtime: 0,
+				passedAssertions: 0,
+				failedAssertions: 0
+			} );
 
 			grunt.log.writeln( "-----" );
-			grunt.log.ok( total + " total assertions (in " + runtime + "ms) , " +
-				"with "  + failed + " failed assertions" );
+			grunt.log.ok( constructMessage( totals ) );
 
 			done( !error );
 		} );
 	} );
+
+	function constructMessage( stats ) {
+		var totalTests = stats.passed + stats.failed + stats.skipped + stats.todo,
+			totalAssertions = stats.passedAssertions + stats.failedAssertions;
+
+		return [
+			totalTests,
+			" tests completed with ",
+			stats.failed,
+			" failed, " +
+			stats.skipped,
+			" skipped, and ",
+			stats.todo,
+			" todo. \n" +
+			totalAssertions,
+			" assertions (in ",
+			stats.runtime,
+			"ms), passed: " +
+			stats.passedAssertions,
+			", failed: ",
+			stats.failedAssertions
+		].join( "" );
+	}
 
 	function runQUnit( file, runEnd ) {
 
@@ -57,39 +88,65 @@ module.exports = function( grunt ) {
 	function registerEvents( QUnit, file, runEnd ) {
 		var runDone = false;
 		var testActive = false;
+		var stats = {
+			passed: 0,
+			failed: 0,
+			skipped: 0,
+			todo: 0
+		};
 
 		QUnit.begin( function() {
 			grunt.log.ok( "Testing " + file + " ..." );
 		} );
+
 		QUnit.testStart( function() {
 			testActive = true;
 		} );
+
 		QUnit.log( function( details ) {
-			if ( !testActive || details.result ) {
+			if ( !testActive || details.result || details.todo ) {
 				return;
 			}
 			var message = "name: " + details.name + " module: " + details.module +
 				" message: " + details.message;
 			grunt.log.error( message );
 		} );
-		QUnit.testDone( function() {
+
+		QUnit.testDone( function( details ) {
 			testActive = false;
+
+			var testPassed = details.failed > 0 ? details.todo : !details.todo;
+
+			if ( details.skipped ) {
+				stats.skipped++;
+			} else if ( !testPassed ) {
+				stats.failed++;
+			} else if ( details.todo ) {
+				stats.todo++;
+			} else {
+				stats.passed++;
+			}
 		} );
+
 		QUnit.done( function( details ) {
 			if ( runDone ) {
 				return;
 			}
-			var message = details.total + " assertions (in " + details.runtime + "ms), passed: " +
-					details.passed + ", failed: " + details.failed;
 
-			if ( details.failed ) {
+			stats.runtime = details.runtime;
+			stats.passedAssertions = details.passed;
+			stats.failedAssertions = details.failed;
+
+			var message = constructMessage( stats );
+
+			if ( stats.failed ) {
 				grunt.log.error( message );
 			} else {
 				grunt.log.ok( message );
 			}
 
 			runDone = true;
-			runEnd( details.failed, details );
+			runEnd( stats.failed, stats );
 		} );
 	}
 };

@@ -384,6 +384,7 @@
 	background-color: #EBECE9;
 }
 
+#qunit-tests .qunit-todo-label,
 #qunit-tests .qunit-skipped-label {
 	background-color: #F4FF77;
 	display: inline-block;
@@ -392,6 +393,10 @@
 	line-height: 1.8em;
 	padding: 0 0.5em;
 	margin: -0.4em 0.4em -0.4em 0;
+}
+
+#qunit-tests .qunit-todo-label {
+	background-color: #EEE;
 }
 
 /** Result */
