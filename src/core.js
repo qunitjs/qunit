@@ -119,8 +119,10 @@ extend( QUnit, {
 					"QUnit.config.autostart was true" );
 			} else if ( !defined.document && !config.pageLoaded ) {
 
-				// Starts from Node even if .load was not previously called
+				// Starts from Node even if .load was not previously called. We return
+				// early otherwise we'll wind up "beginning" twice.
 				QUnit.load();
+				return;
 			} else if ( !config.pageLoaded ) {
 
 				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
