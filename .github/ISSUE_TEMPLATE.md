@@ -2,9 +2,9 @@
 
 ## Tell us about your runtime:
 
-* **OS**:
 * **QUnit version**:
-* **How are you running QUnit? (e.g., browser, Grunt)**:
+* **What environment are you running QUnit in? (e.g., browser, Node)**:
+* **How are you running QUnit? (e.g., script, testem, Grunt)**:
 
 <!--
 Please be specific about your runtime.
@@ -18,6 +18,8 @@ Please include anything else that you believe may be helpful for us to know.
 ## What are you trying to do?
 
 Code that reproduces the problem:
+
+<!-- Please provide an exact reproduction of your issue if possible. If not, then please provide detailed information about your setup and what you are trying to do. -->
 
 ```js
 
