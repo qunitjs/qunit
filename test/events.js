@@ -78,14 +78,16 @@ var assertion1 = {
 	passed: false,
 	actual: false,
 	expected: true,
-	message: "failing assertion"
+	message: "failing assertion",
+	todo: true
 };
 
 var assertion2 = {
 	passed: true,
 	actual: true,
 	expected: true,
-	message: "passing assertion"
+	message: "passing assertion",
+	todo: false
 };
 
 var test1End = {
