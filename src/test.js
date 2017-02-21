@@ -422,7 +422,8 @@ Test.prototype = {
 			actual: details.actual,
 			expected: details.expected,
 			message: details.message,
-			stack: details.source
+			stack: details.source,
+			todo: details.todo
 		};
 		this.testReport.pushAssertion( assertion );
 		emit( "assertion", assertion );
