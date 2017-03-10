@@ -787,18 +787,13 @@ function internalStart( test ) {
 	}
 }
 
-function numberOfTests( module ) {
-	let count = module.tests.length,
-		modules = [ ...module.childModules ];
+function numberOfTests( module, offset = 0 ) {
 
 	// Do a breadth-first traversal of the child modules
-	while ( modules.length ) {
-		let nextModule =  modules.shift();
-		count += nextModule.tests.length;
-		modules.push( ...nextModule.childModules );
-	}
-
-	return count;
+	return module.childModules.reduce(
+		( p, childModule ) => numberOfTests( childModule, p ),
+		module.tests.length + offset
+	);
 }
 
 function notifyTestsRan( module ) {
