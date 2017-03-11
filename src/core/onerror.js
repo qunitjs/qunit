@@ -1,4 +1,4 @@
-import { pushFailure, test } from "../test";
+import { internalRecover, pushFailure, test } from "../test";
 
 import config from "./config";
 import { extend } from "./utilities";
@@ -12,7 +12,10 @@ export default function onError( error, ...args ) {
 		if ( config.current.ignoreGlobalErrors ) {
 			return true;
 		}
+
 		pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
+
+		internalRecover( config.current );
 	} else {
 		test( "global failure", extend( function() {
 			pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
