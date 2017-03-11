@@ -7,15 +7,15 @@ import { extend } from "./utilities";
 // error handling should be suppressed and false otherwise.
 // In this case, we will only suppress further error handling if the
 // "ignoreGlobalErrors" configuration option is enabled.
-export default function onError( errorMessage, filePath, lineNumber, ...args ) {
+export default function onError( error, ...args ) {
 	if ( config.current ) {
 		if ( config.current.ignoreGlobalErrors ) {
 			return true;
 		}
-		pushFailure( errorMessage, filePath + ":" + lineNumber, ...args );
+		pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
 	} else {
 		test( "global failure", extend( function() {
-			pushFailure( errorMessage, filePath + ":" + lineNumber, ...args );
+			pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
 		}, { validTest: true } ) );
 	}
 

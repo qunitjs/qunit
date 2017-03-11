@@ -939,16 +939,22 @@ var originalWindowOnError = window.onerror;
 // Cover uncaught exceptions
 // Returning true will suppress the default browser handler,
 // returning false will let it run.
-window.onerror = function( ...args ) {
+window.onerror = function( message, fileName, lineNumber, ...args ) {
 	var ret = false;
 	if ( originalWindowOnError ) {
-		ret = originalWindowOnError.apply( this, args );
+		ret = originalWindowOnError.call( this, message, fileName, lineNumber, ...args );
 	}
 
 	// Treat return value as window.onerror itself does,
 	// Only do our handling if not suppressed.
 	if ( ret !== true ) {
-		ret = QUnit.onError( ...args );
+		let error = {
+			message,
+			fileName,
+			lineNumber
+		};
+
+		ret = QUnit.onError( error );
 	}
 
 	return ret;

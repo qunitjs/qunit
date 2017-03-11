@@ -7,7 +7,11 @@ QUnit.module( "QUnit.onError", function() {
 			assert.strictEqual( source, "filePath.js:1", "Source is correct" );
 		};
 
-		var result = QUnit.onError( "Error message", "filePath.js", 1 );
+		var result = QUnit.onError( {
+			message: "Error message",
+			fileName: "filePath.js",
+			lineNumber: 1
+		} );
 
 		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
 	} );
@@ -21,7 +25,11 @@ QUnit.module( "QUnit.onError", function() {
 
 		QUnit.config.current.ignoreGlobalErrors = true;
 
-		var result = QUnit.onError( "Error message", "filePath.js", 1 );
+		var result = QUnit.onError( {
+			message: "Error message",
+			fileName: "filePath.js",
+			lineNumber: 1
+		} );
 
 		assert.strictEqual( result, true, "onError should not allow other error handlers to run" );
 	} );
