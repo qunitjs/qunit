@@ -7,7 +7,16 @@
         "sourceType": "module"
     },
     "rules": {
+        "arrow-spacing": ["error", { "before": true, "after": true }],
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+        "constructor-super": "error",
+        "no-const-assign": "error",
+        "no-dupe-class-members": "error",
+        "no-duplicate-imports": "error",
+        "no-this-before-super": "error",
+        "no-useless-constructor": "error",
+        "no-useless-rename": "error",
+        "rest-spread-spacing": ["error", "never"],
         "wrap-iife": ["error", "any"]
     }
 }
