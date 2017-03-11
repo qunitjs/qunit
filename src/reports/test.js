@@ -55,7 +55,7 @@ export default class TestReport {
 			return "skipped";
 		}
 
-		let testPassed = this.getFailedAssertions().length > 0 ? this.todo : !this.todo;
+		const testPassed = this.getFailedAssertions().length > 0 ? this.todo : !this.todo;
 
 		if ( !testPassed ) {
 			return "failed";

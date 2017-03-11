@@ -68,7 +68,7 @@ export default class SuiteReport {
 	}
 
 	getStatus() {
-		let {
+		const {
 			total,
 			failed,
 			skipped,

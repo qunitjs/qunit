@@ -403,7 +403,7 @@ Test.prototype = {
 	logAssertion( details ) {
 		runLoggingCallbacks( "log", details );
 
-		let assertion = {
+		const assertion = {
 			passed: details.result,
 			actual: details.actual,
 			expected: details.expected,
@@ -647,7 +647,7 @@ export function test( testName, callback ) {
 		return;
 	}
 
-	let newTest = new Test( {
+	const newTest = new Test( {
 		testName: testName,
 		callback: callback
 	} );
@@ -660,7 +660,7 @@ export function todo( testName, callback ) {
 		return;
 	}
 
-	let newTest = new Test( {
+	const newTest = new Test( {
 		testName,
 		callback,
 		todo: true
@@ -675,7 +675,7 @@ export function skip( testName ) {
 		return;
 	}
 
-	let test = new Test( {
+	const test = new Test( {
 		testName: testName,
 		skip: true
 	} );
@@ -692,7 +692,7 @@ export function only( testName, callback ) {
 	config.queue.length = 0;
 	focused = true;
 
-	let newTest = new Test( {
+	const newTest = new Test( {
 		testName: testName,
 		callback: callback
 	} );
@@ -785,12 +785,12 @@ function internalStart( test ) {
 }
 
 function numberOfTests( module ) {
-	let count = module.tests.length,
-		modules = [ ...module.childModules ];
+	let count = module.tests.length;
+	const modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
-		let nextModule =  modules.shift();
+		const nextModule =  modules.shift();
 		count += nextModule.tests.length;
 		modules.push( ...nextModule.childModules );
 	}

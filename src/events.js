@@ -29,8 +29,8 @@ export function emit( eventName, data ) {
 	}
 
 	// Clone the callbacks in case one of them registers a new callback
-	let originalCallbacks = LISTENERS[ eventName ];
-	let callbacks = originalCallbacks ? [ ...originalCallbacks ] : [];
+	const originalCallbacks = LISTENERS[ eventName ];
+	const callbacks = originalCallbacks ? [ ...originalCallbacks ] : [];
 
 	for ( let i = 0; i < callbacks.length; i++ ) {
 		callbacks[ i ]( data );
@@ -50,7 +50,7 @@ export function on( eventName, callback ) {
 	if ( objectType( eventName ) !== "string" ) {
 		throw new TypeError( "eventName must be a string when registering a listener" );
 	} else if ( !inArray( eventName, SUPPORTED_EVENTS ) ) {
-		let events = SUPPORTED_EVENTS.join( ", " );
+		const events = SUPPORTED_EVENTS.join( ", " );
 		throw new Error( `"${eventName}" is not a valid event; must be one of: ${events}.` );
 	} else if ( objectType( callback ) !== "function" ) {
 		throw new TypeError( "callback must be a function when registering a listener" );

@@ -16,6 +16,7 @@
         "no-this-before-super": "error",
         "no-useless-constructor": "error",
         "no-useless-rename": "error",
+        "prefer-const": "error",
         "rest-spread-spacing": ["error", "never"],
         "wrap-iife": ["error", "any"]
     }
