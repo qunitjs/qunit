@@ -1,3 +1,26 @@
+2.2.0 / 2017-03-11
+==================
+
+  * Core: QUnit.onError now expects error or error-like object
+  * HTML Reporter: Use QUnit.onError
+  * HTML Reporter: Ensure window.onerror return values are correct
+  * HTML Reporter: Moving window.onerror to HTML Reporter
+  * Core: Extract main onError logic into exported function and add tests
+  * Core: Fix start on Node when autostart is not set to true (#1105)
+  * Core: Add todo to assertion event data
+  * Core: Add remaining js-reporter events
+  * Core: Fix double begin when calling start in Node
+  * Core: Rewrite QUnit.equiv to be breadth-first
+  * Core: Optimize and document the "set" and "map" callbacks
+  * Core: Implement QUnit.todo
+  * Core: Add assertion event
+  * Assert: Use actual values for verifySteps on failed steps
+  * Assert: Add assert.verifySteps
+  * Assert: Add assert.step
+  * Core: Fix console error in IE9 (#1093)
+  * Core: Ability to run in sandboxed iframe
+  * Core: Implement event emitter (#1087)
+
 2.1.1 / 2017-01-05
 ==================
 

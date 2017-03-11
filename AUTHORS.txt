@@ -134,3 +134,6 @@ Manoj Kumar <manoj@kumarmj.me>
 Tobias Oetzel <tobias.oetzel@sap.com>
 Ray Tiley <raytiley@gmail.com>
 Dustin Specker <dustinspecker@dustinspecker.com>
+Gaurav Munjal <gaurav9576@yahoo.com>
+Invis1ble <Invis1ble@users.noreply.github.com>
+David Chan <david@troi.org>
