@@ -129,16 +129,18 @@ extend( QUnit, {
 			} else if ( config.autostart ) {
 				throw new Error( "Called start() outside of a test context when " +
 					"QUnit.config.autostart was true" );
-			} else if ( !defined.document && !config.pageLoaded ) {
-
-				// Starts from Node even if .load was not previously called. We return
-				// early otherwise we'll wind up "beginning" twice.
-				QUnit.load();
-				return;
 			} else if ( !config.pageLoaded ) {
 
-				// The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
+				// The page isn't completely loaded yet, so we set autostart and then
+				// load if we're in Node or wait for the browser's load event.
 				config.autostart = true;
+
+				// Starts from Node even if .load was not previously called. We still return
+				// early otherwise we'll wind up "beginning" twice.
+				if ( !defined.document ) {
+					QUnit.load();
+				}
+
 				return;
 			}
 		} else {
