@@ -29,5 +29,9 @@ QUnit.module( "Should create a test and call pushFailure when outside a test", f
 	} );
 
 	// Actual test (outside QUnit.test context).
-	QUnit.onError( "Error message", "filePath.js", 1, "actual" );
+	QUnit.onError( {
+		message: "Error message",
+		fileName: "filePath.js",
+		lineNumber: 1
+	}, "actual" );
 } );
