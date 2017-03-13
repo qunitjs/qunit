@@ -1,4 +1,4 @@
-import { window, sessionStorage } from "../globals";
+import { window, localSessionStorage } from "../globals";
 import { extend } from "./utilities";
 
 /**
@@ -54,7 +54,7 @@ const config = {
 	callbacks: {},
 
 	// The storage module to use for reordering tests
-	storage: sessionStorage
+	storage: localSessionStorage
 };
 
 // take a predefined QUnit.config and extend the defaults
