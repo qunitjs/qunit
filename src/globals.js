@@ -8,7 +8,7 @@ export const clearTimeout = global.clearTimeout;
 export const document = window && window.document;
 export const navigator = window && window.navigator;
 
-export const sessionStorage = ( function() {
+export const localSessionStorage = ( function() {
 	var x = "qunit-test-string";
 	try {
 		sessionStorage.setItem( x, x );
