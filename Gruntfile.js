@@ -113,6 +113,7 @@ grunt.initConfig( {
 			"test/index.html",
 			"test/autostart.html",
 			"test/startError.html",
+			"test/reorder.html",
 			"test/reorderError1.html",
 			"test/reorderError2.html",
 			"test/callbacks.html",
