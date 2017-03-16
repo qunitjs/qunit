@@ -1,0 +1,19 @@
+#! /usr/bin/env node
+
+"use strict";
+
+const program = require( "commander" );
+const run = require( "./run" );
+const utils = require( "./utils" );
+const pkg = require( "../package.json" );
+
+program._name = "qunit";
+program
+	.version( pkg.version )
+	.usage( "[options] [files]" )
+	.parse( process.argv );
+
+const args = program.args;
+const files = utils.getFilesFromArgs( args );
+
+run( files );
