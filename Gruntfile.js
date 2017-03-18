@@ -70,6 +70,7 @@ grunt.initConfig( {
 		},
 		all: [
 			"*.js",
+			"bin/**/*.js",
 			"reporter/**/*.js",
 			"runner/**/*.js",
 			"src/**/*.js",
