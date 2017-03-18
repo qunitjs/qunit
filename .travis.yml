@@ -5,6 +5,7 @@ node_js:
   - "7"
 env:
   - NPM_SCRIPT=test
+  - NPM_SCRIPT=test:cli
 matrix:
   fast_finish: true
   allow_failures:
