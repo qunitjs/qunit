@@ -840,7 +840,7 @@ QUnit.testDone( function( details ) {
 	bad = details.failed;
 
 	// This test passed if it has no unexpected failed assertions
-	let testPassed = details.failed > 0 ? details.todo : !details.todo;
+	const testPassed = details.failed > 0 ? details.todo : !details.todo;
 
 	if ( testPassed ) {
 
@@ -884,7 +884,7 @@ QUnit.testDone( function( details ) {
 		testItem.className = testPassed ? "pass" : "fail";
 
 		if ( details.todo ) {
-			let todoLabel = document.createElement( "em" );
+			const todoLabel = document.createElement( "em" );
 			todoLabel.className = "qunit-todo-label";
 			todoLabel.innerHTML = "todo";
 			testItem.insertBefore( todoLabel, testTitle );
@@ -948,7 +948,7 @@ window.onerror = function( message, fileName, lineNumber, ...args ) {
 	// Treat return value as window.onerror itself does,
 	// Only do our handling if not suppressed.
 	if ( ret !== true ) {
-		let error = {
+		const error = {
 			message,
 			fileName,
 			lineNumber

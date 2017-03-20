@@ -16,7 +16,7 @@ class Assert {
 
 	// Documents a "step", which is a string value, in a test as a passing assertion
 	step( message ) {
-		let result = !!message;
+		const result = !!message;
 
 		this.test.steps.push( message );
 
@@ -43,8 +43,9 @@ class Assert {
 
 	// Put a hold on processing and return a function that will release it a maximum of once.
 	async( count ) {
-		let test = this.test,
-			popped = false,
+		const test = this.test;
+
+		let popped = false,
 			acceptCallCount = count;
 
 		if ( typeof acceptCallCount === "undefined" ) {
@@ -52,7 +53,7 @@ class Assert {
 		}
 
 		test.usedAsync = true;
-		let resume = internalStop( test );
+		const resume = internalStop( test );
 
 		return function done() {
 			if ( popped ) {
@@ -77,7 +78,7 @@ class Assert {
 		Logger.warn( "assert.push is deprecated and will be removed in QUnit 3.0." +
 			" Please use assert.pushResult instead (http://api.qunitjs.com/pushResult/)." );
 
-		let currentAssert = this instanceof Assert ? this : config.current.assert;
+		const currentAssert = this instanceof Assert ? this : config.current.assert;
 		return currentAssert.pushResult( {
 			result,
 			actual,
@@ -90,8 +91,8 @@ class Assert {
 	pushResult( resultInfo ) {
 
 		// Destructure of resultInfo = { result, actual, expected, message, negative }
-		let assert = this,
-			currentTest = ( assert instanceof Assert && assert.test ) || config.current;
+		let assert = this;
+		const currentTest = ( assert instanceof Assert && assert.test ) || config.current;
 
 		// Backwards compatibility fix.
 		// Allows the direct use of global exported assertions and QUnit.assert.*
@@ -149,7 +150,7 @@ class Assert {
 	equal( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
-		let result = expected == actual;
+		const result = expected == actual;
 
 		this.pushResult( {
 			result,
@@ -162,7 +163,7 @@ class Assert {
 	notEqual( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
-		let result = expected != actual;
+		const result = expected != actual;
 
 		this.pushResult( {
 			result,
@@ -238,8 +239,9 @@ class Assert {
 
 	[ "throws" ]( block, expected, message ) {
 		let actual,
-			result = false,
-			currentTest = ( this instanceof Assert && this.test ) || config.current;
+			result = false;
+
+		const currentTest = ( this instanceof Assert && this.test ) || config.current;
 
 		// 'expected' is optional unless doing string comparison
 		if ( objectType( expected ) === "string" ) {
@@ -263,7 +265,7 @@ class Assert {
 		currentTest.ignoreGlobalErrors = false;
 
 		if ( actual ) {
-			let expectedType = objectType( expected );
+			const expectedType = objectType( expected );
 
 			// We don't want to validate thrown error
 			if ( !expected ) {
@@ -312,11 +314,11 @@ Assert.prototype.raises = Assert.prototype[ "throws" ];
  * @return {String}
  */
 function errorString( error ) {
-	let resultErrorString = error.toString();
+	const resultErrorString = error.toString();
 
 	if ( resultErrorString.substring( 0, 7 ) === "[object" ) {
-		let name = error.name ? error.name.toString() : "Error";
-		let message = error.message ? error.message.toString() : "";
+		const name = error.name ? error.name.toString() : "Error";
+		const message = error.message ? error.message.toString() : "";
 
 		if ( name && message ) {
 			return `${name}: ${message}`;
