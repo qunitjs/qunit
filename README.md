@@ -33,30 +33,3 @@ Include some background for the change in the commit message and `Fixes #nnn`, r
 to the issue number you're addressing.
 
 To run `npm test`, you need [Node.js](https://nodejs.org/download/), which includes `npm`.
-
-## Releases
-
-Use [jquery-release](https://github.com/jquery/jquery-release). The following aren't handled there, do that first:
-
-* Install [git-extras](https://github.com/visionmedia/git-extras) and run `git changelog` to update `History.md`. Clean up the changelog, removing merge commits, whitespace cleanups or other irrelevant commits.
-* Run `grunt authors` and add any new authors to AUTHORS.txt
-* Update the version property in `package.json` to have the right -pre version. Not necessary for patch releases.
-
-Commit these:
-
-	Build: Prepare @VERSION release, including authors and history update
-
-Then run the script:
-
-	node release.js --remote=qunitjs/qunit
-
-Update `qunitjs/qunitjs.com`, replacing previous versions with new ones:
-
-* pages/index.html
-* resources/*.html
-
-Update [GitHub releases](https://github.com/qunitjs/qunit/releases), use the changelog from `History.md`.
-
-Finally announce on Twitter @qunitjs (add highlights if possible, otherwise a 2nd tweet might do):
-
-	Released @VERSION: https://github.com/qunitjs/qunit/releases/tag/1.17.0
