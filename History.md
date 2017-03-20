@@ -1,3 +1,10 @@
+2.2.1 / 2017-03-19
+==================
+
+  * Test: Add basic reorder test
+  * Core: Fix sessionStorage feature detection
+  * Tests: Ensure onError tests are included in test/index.html (#1111)
+
 2.2.0 / 2017-03-11
 ==================
 
