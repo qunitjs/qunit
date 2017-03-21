@@ -88,4 +88,16 @@ QUnit.module( "CLI Main", function() {
 			assert.equal( e.code, 1 );
 		}
 	} ) );
+
+	QUnit.module( "filter", function() {
+		QUnit.test( "can properly filter tests", co.wrap( function* ( assert ) {
+			const command = "qunit --filter 'single' test single.js 'glob/**/*-test.js'";
+			const equivalentCommand = "qunit single.js";
+			const execution = yield execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ equivalentCommand ] );
+		} ) );
+	} );
 } );
