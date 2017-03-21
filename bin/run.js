@@ -17,7 +17,10 @@ const QUnit = ( function requireQUnit() {
 	}
 }() );
 
-module.exports = function run( files ) {
+module.exports = function run( files, options ) {
+	if ( options.filter ) {
+		QUnit.config.filter = options.filter;
+	}
 
 	// TODO: Enable mode where QUnit is not auto-injected, but other setup is
 	// still done automatically.

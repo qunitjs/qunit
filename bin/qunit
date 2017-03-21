@@ -11,9 +11,12 @@ program._name = "qunit";
 program
 	.version( pkg.version )
 	.usage( "[options] [files]" )
+	.option( "-f, --filter <filter>", "filter which tests run" )
 	.parse( process.argv );
 
 const args = program.args;
 const files = utils.getFilesFromArgs( args );
 
-run( files );
+run( files, {
+	filter: program.filter
+} );
