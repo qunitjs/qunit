@@ -31,6 +31,7 @@
     "LICENSE.txt"
   ],
   "dependencies": {
+    "chokidar": "1.6.1",
     "commander": "2.9.0",
     "exists-stat": "1.0.0",
     "js-reporters": "1.2.0",
@@ -47,6 +48,7 @@
     "eslint-plugin-html": "1.7.0",
     "eslint-plugin-qunit": "2.3.0",
     "execa": "0.6.1",
+    "fixturify": "0.3.3",
     "fs-extra": "1.0.0",
     "grunt": "1.0.1",
     "grunt-cli": "1.2.0",

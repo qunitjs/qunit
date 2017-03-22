@@ -4,7 +4,6 @@
 
 const program = require( "commander" );
 const run = require( "./run" );
-const utils = require( "./utils" );
 const pkg = require( "../package.json" );
 
 const description = `Runs tests using the QUnit framework.
@@ -22,12 +21,17 @@ program
 	.option( "-f, --filter <filter>", "filter which tests run" )
 	.option( "--seed [value]", "specify a seed to order your tests; " +
 		"if option is specified without a value, one will be generated" )
+	.option( "-w, --watch", "Watch files for changes and re-run the test suite" )
 	.parse( process.argv );
 
 const args = program.args;
-const files = utils.getFilesFromArgs( args );
-
-run( files, {
+const options = {
 	filter: program.filter,
 	seed: program.seed
-} );
+};
+
+if ( program.watch ) {
+	run.watch( args, options );
+} else {
+	run( args, options );
+}
