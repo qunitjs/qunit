@@ -1,0 +1,216 @@
+"use strict";
+
+const fs = require( "fs-extra" );
+const path = require( "path" );
+const exec = require( "execa" ).shell;
+const co = require( "co" );
+const fixturify = require( "fixturify" );
+
+const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
+
+// Executes the provided command from within the fixtures directory
+function execute( command ) {
+	const cwd = process.cwd();
+	process.chdir( path.join( __dirname, "fixtures" ) );
+
+	const execution = exec( command, { stdio: [ null, null, null, "ipc" ] } );
+
+	process.chdir( cwd );
+
+	return execution;
+}
+
+const fixturePath = path.join( __dirname, "fixtures", "watching" );
+
+QUnit.module( "CLI Watch", function( hooks ) {
+	hooks.beforeEach( function() {
+		fs.mkdirpSync( fixturePath );
+		fixturify.writeSync( fixturePath, {
+			"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });"
+		} );
+	} );
+
+	hooks.afterEach( function() {
+		fs.removeSync( fixturePath );
+	} );
+
+	QUnit.test( "runs tests and waits until SIGINT", co.wrap( function* ( assert ) {
+		fixturify.writeSync( fixturePath, {
+			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+
+		execution.on( "message", function( data ) {
+			assert.step( data );
+			execution.kill( "SIGINT" );
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [ "runEnd" ] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
+	} ) );
+
+	QUnit.test( "re-runs tests on file changed", co.wrap( function* ( assert ) {
+		fixturify.writeSync( fixturePath, {
+			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+
+		execution.once( "message", function( data ) {
+			assert.step( data );
+			fixturify.writeSync( fixturePath, {
+				"foo.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+			} );
+
+			execution.once( "message", function( data ) {
+				assert.step( data );
+				execution.kill( "SIGINT" );
+			} );
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [ "runEnd", "runEnd" ] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "change-file" ] );
+	} ) );
+
+	QUnit.test( "re-runs tests on file added", co.wrap( function* ( assert ) {
+		fixturify.writeSync( fixturePath, {
+			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+
+		execution.once( "message", function( data ) {
+			assert.step( data );
+			fixturify.writeSync( fixturePath, {
+				"bar.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+			} );
+
+			execution.once( "message", function( data ) {
+				assert.step( data );
+				execution.kill( "SIGINT" );
+			} );
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [ "runEnd", "runEnd" ] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "add-file" ] );
+	} ) );
+
+	QUnit.test( "re-runs tests on file removed", co.wrap( function* ( assert ) {
+		fixturify.writeSync( fixturePath, {
+			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });",
+			"bar.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+
+		execution.once( "message", function( data ) {
+			assert.step( data );
+			fixturify.writeSync( fixturePath, {
+				"bar.js": null
+			} );
+
+			execution.once( "message", function( data ) {
+				assert.step( data );
+				execution.kill( "SIGINT" );
+			} );
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [ "runEnd", "runEnd" ] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "remove-file" ] );
+	} ) );
+
+	QUnit.todo( "aborts and restarts when in middle of run", co.wrap( function* ( assert ) {
+
+		// A proper abort finishes the currently running test and runs any remaining
+		// afterEach/after hooks to ensure cleanup happens.
+
+		fixturify.writeSync( fixturePath, {
+			"foo.js": `
+				QUnit.module('Foo', {
+					before() { process.send('before'); },
+					beforeEach() { process.send('beforeEach'); },
+					afterEach() { process.send('afterEach'); },
+					after() { process.send('after'); }
+				});
+				QUnit.test('one', function(assert) {
+					var done = assert.async();
+					setTimeout(function() {
+						assert.ok(true);
+						done();
+					}, 1000);
+				});
+				QUnit.test('two', function(assert) { assert.ok(true); });`
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+		let hasUpdated = false;
+
+		function one( data ) {
+			assert.step( data );
+
+			if ( !hasUpdated ) {
+				fixturify.writeSync( fixturePath, {
+					"bar.js": "// bar"
+				} );
+				hasUpdated = true;
+			}
+
+			if ( data === "runEnd" ) {
+
+				// execution.kill( "SIGINT" );
+				execution.removeListener( "message", one );
+				execution.addListener( "message", function( data ) {
+					assert.step( data );
+
+					if ( data === "runEnd" ) {
+						execution.kill( "SIGINT" );
+					}
+				} );
+			}
+		}
+
+		execution.addListener( "message", one );
+
+		const result = yield execution;
+
+		assert.verifySteps( [
+			"before",
+			"beforeEach",
+			"afterEach",
+			"after",
+			"runEnd",
+			"before",
+			"beforeEach",
+			"afterEach",
+			"beforeEach",
+			"afterEach",
+			"after",
+			"runEnd"
+		] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "change-file" ] );
+	} ) );
+} );
