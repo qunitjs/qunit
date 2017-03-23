@@ -27,11 +27,7 @@ let unitSampler;
  * Advances the ProcessingQueue to the next item if it is ready.
  * @param {Boolean} last
  */
-function advance( last ) {
-	function next() {
-		advance( last );
-	}
-
+function advance() {
 	const start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
@@ -47,14 +43,14 @@ function advance( last ) {
 
 			config.queue.shift()();
 		} else {
-			setTimeout( next, 13 );
+			setTimeout( advance, 13 );
 			break;
 		}
 	}
 
 	config.depth--;
 
-	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
+	if ( !config.blocking && !config.queue.length && config.depth === 0 ) {
 		done();
 	}
 }
@@ -66,8 +62,6 @@ function advance( last ) {
  * @param {String} seed
  */
 function addToQueue( callback, priority, seed ) {
-	const last = !priority;
-
 	if ( objectType( callback ) === "array" ) {
 		while ( callback.length ) {
 			addToQueue( callback.shift() );
@@ -91,7 +85,7 @@ function addToQueue( callback, priority, seed ) {
 	}
 
 	if ( internalState.autorun && !config.blocking ) {
-		advance( last );
+		advance();
 	}
 }
 
