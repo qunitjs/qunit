@@ -3,13 +3,14 @@ import { window, setTimeout } from "./globals";
 import equiv from "./equiv";
 import dump from "./dump";
 import Assert from "./assert";
-import Test, { test, skip, only, todo, pushFailure, generateHash } from "./test";
+import Test, { test, skip, only, todo, pushFailure } from "./test";
 import exportQUnit from "./export";
 
 import config from "./core/config";
-import { defined, extend, objectType, is, now } from "./core/utilities";
+import { defined, extend, objectType, is, now, generateHash } from "./core/utilities";
 import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
+import ProcessingQueue from "./core/processing-queue";
 
 import SuiteReport from "./reports/suite";
 
@@ -17,7 +18,7 @@ import { on, emit } from "./events";
 import onError from "./core/onerror";
 
 const QUnit = {};
-const globalSuite = new SuiteReport();
+export const globalSuite = new SuiteReport();
 
 // The initial "currentModule" represents the global (or top-level) module that
 // is not explicitly defined by the user, therefore we add the "globalSuite" to
@@ -240,62 +241,7 @@ export function begin() {
 	}
 
 	config.blocking = false;
-	process( true );
-}
-
-export function process( last ) {
-	function next() {
-		process( last );
-	}
-	var start = now();
-	config.depth = ( config.depth || 0 ) + 1;
-
-	while ( config.queue.length && !config.blocking ) {
-		if ( !defined.setTimeout || config.updateRate <= 0 ||
-				( ( now() - start ) < config.updateRate ) ) {
-			if ( config.current ) {
-
-				// Reset async tracking for each phase of the Test lifecycle
-				config.current.usedAsync = false;
-			}
-			config.queue.shift()();
-		} else {
-			setTimeout( next, 13 );
-			break;
-		}
-	}
-	config.depth--;
-	if ( last && !config.blocking && !config.queue.length && config.depth === 0 ) {
-		done();
-	}
-}
-
-function done() {
-	var runtime, passed, i, key,
-		storage = config.storage;
-
-	internalState.autorun = true;
-
-	runtime = now() - config.started;
-	passed = config.stats.all - config.stats.bad;
-
-	emit( "runEnd", globalSuite.end( true ) );
-	runLoggingCallbacks( "done", {
-		failed: config.stats.bad,
-		passed: passed,
-		total: config.stats.all,
-		runtime: runtime
-	} );
-
-	// Clear own storage items if all tests passed
-	if ( storage && config.stats.bad === 0 ) {
-		for ( i = storage.length - 1; i >= 0; i-- ) {
-			key = storage.key( i );
-			if ( key.indexOf( "qunit-test-" ) === 0 ) {
-				storage.removeItem( key );
-			}
-		}
-	}
+	ProcessingQueue.advance( true );
 }
 
 function setHook( module, hookName ) {

@@ -1,20 +1,28 @@
 import global from "global";
 
-import { internalState, process, begin } from "./core";
+import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
 import { emit } from "./events";
 import Assert from "./assert";
 
 import config from "./core/config";
-import { diff, extend, hasOwn, now, defined, inArray, objectType } from "./core/utilities";
+import {
+	defined,
+	diff,
+	extend,
+	generateHash,
+	hasOwn,
+	inArray,
+	now,
+	objectType
+} from "./core/utilities";
 import { runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
+import ProcessingQueue from "./core/processing-queue";
 
 import TestReport from "./reports/test";
 
-var unitSampler,
-	focused = false,
-	priorityCount = 0;
+let focused = false;
 
 export default function Test( settings ) {
 	var i, l;
@@ -305,7 +313,7 @@ Test.prototype = {
 		function run() {
 
 			// Each of these can by async
-			synchronize( [
+			ProcessingQueue.add( [
 				function() {
 					test.before();
 				},
@@ -343,7 +351,7 @@ Test.prototype = {
 
 		this.previousFailure = !!previousFailCount;
 
-		return synchronize( run, priority, config.seed );
+		return ProcessingQueue.add( run, priority, config.seed );
 	},
 
 	pushResult: function( resultInfo ) {
@@ -531,79 +539,6 @@ export function pushFailure() {
 	var currentTest = config.current;
 
 	return currentTest.pushFailure.apply( currentTest, arguments );
-}
-
-// Based on Java's String.hashCode, a simple but not
-// rigorously collision resistant hashing function
-export function generateHash( module, testName ) {
-	var hex,
-		i = 0,
-		hash = 0,
-		str = module + "\x1C" + testName,
-		len = str.length;
-
-	for ( ; i < len; i++ ) {
-		hash  = ( ( hash << 5 ) - hash ) + str.charCodeAt( i );
-		hash |= 0;
-	}
-
-	// Convert the possibly negative integer hash code into an 8 character hex string, which isn't
-	// strictly necessary but increases user understanding that the id is a SHA-like hash
-	hex = ( 0x100000000 + hash ).toString( 16 );
-	if ( hex.length < 8 ) {
-		hex = "0000000" + hex;
-	}
-
-	return hex.slice( -8 );
-}
-
-function synchronize( callback, priority, seed ) {
-	var last = !priority,
-		index;
-
-	if ( objectType( callback ) === "array" ) {
-		while ( callback.length ) {
-			synchronize( callback.shift() );
-		}
-		return;
-	}
-
-	if ( priority ) {
-		config.queue.splice( priorityCount++, 0, callback );
-	} else if ( seed ) {
-		if ( !unitSampler ) {
-			unitSampler = unitSamplerGenerator( seed );
-		}
-
-		// Insert into a random position after all priority items
-		index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
-		config.queue.splice( priorityCount + index, 0, callback );
-	} else {
-		config.queue.push( callback );
-	}
-
-	if ( internalState.autorun && !config.blocking ) {
-		process( last );
-	}
-}
-
-function unitSamplerGenerator( seed ) {
-
-	// 32-bit xorshift, requires only a nonzero seed
-	// http://excamera.com/sphinx/article-xorshift.html
-	var sample = parseInt( generateHash( seed ), 16 ) || -1;
-	return function() {
-		sample ^= sample << 13;
-		sample ^= sample >>> 17;
-		sample ^= sample << 5;
-
-		// ECMAScript has no unsigned number type
-		if ( sample < 0 ) {
-			sample += 0x100000000;
-		}
-
-		return sample / 0x100000000;
-	};
 }
 
 function saveGlobal() {
