@@ -385,7 +385,7 @@ Test.prototype = {
 				sourceFromStacktrace( 2 ) );
 		}
 
-		this.assert.pushResult( {
+		this.pushResult( {
 			result: false,
 			message: message || "error",
 			actual: actual || null,
