@@ -241,7 +241,7 @@ export function begin() {
 	}
 
 	config.blocking = false;
-	ProcessingQueue.advance( true );
+	ProcessingQueue.advance();
 }
 
 function setHook( module, hookName ) {
