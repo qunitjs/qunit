@@ -4,6 +4,8 @@
 
 const program = require( "commander" );
 const run = require( "./run" );
+const utils = require( "./utils" );
+const findReporter = require( "./find-reporter" );
 const pkg = require( "../package.json" );
 
 const description = `Runs tests using the QUnit framework.
@@ -19,6 +21,8 @@ program
 	.usage( "[options] [files]" )
 	.description( description )
 	.option( "-f, --filter <filter>", "filter which tests run" )
+	.option( "-r, --reporter <name>", "specify the reporter to use; " +
+		"if no match is found a list of available reporters will be displayed" )
 	.option( "--seed [value]", "specify a seed to order your tests; " +
 		"if option is specified without a value, one will be generated" )
 	.option( "-w, --watch", "Watch files for changes and re-run the test suite" )
@@ -27,6 +31,7 @@ program
 const args = program.args;
 const options = {
 	filter: program.filter,
+	reporter: findReporter( program.reporter ),
 	seed: program.seed
 };
 

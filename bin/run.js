@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require( "path" );
-const TapReporter = require( "js-reporters" ).TapReporter;
 
 const utils = require( "./utils" );
 
@@ -48,8 +47,7 @@ function run( args, options ) {
 	// still done automatically.
 	global.QUnit = QUnit;
 
-	// TODO: Reporter should be customizable
-	TapReporter.init( QUnit );
+	options.reporter.init( QUnit );
 
 	for ( let i = 0; i < files.length; i++ ) {
 		const filePath = path.resolve( process.cwd(), files[ i ] );
