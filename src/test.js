@@ -101,12 +101,6 @@ Test.prototype = {
 
 		config.current = this;
 
-		if ( module.testEnvironment ) {
-			delete module.testEnvironment.before;
-			delete module.testEnvironment.beforeEach;
-			delete module.testEnvironment.afterEach;
-			delete module.testEnvironment.after;
-		}
 		this.testEnvironment = extend( {}, module.testEnvironment );
 
 		this.started = now();
@@ -203,9 +197,8 @@ Test.prototype = {
 			if ( module.parentModule ) {
 				processHooks( test, module.parentModule );
 			}
-			if ( module.testEnvironment &&
-				objectType( module.testEnvironment[ handler ] ) === "function" ) {
-				hooks.push( test.queueHook( module.testEnvironment[ handler ], handler, module ) );
+			if ( module.hooks && objectType( module.hooks[ handler ] ) === "function" ) {
+				hooks.push( test.queueHook( module.hooks[ handler ], handler, module ) );
 			}
 		}
 
@@ -303,9 +296,8 @@ Test.prototype = {
 		}
 	},
 
-	queue: function() {
-		var priority, previousFailCount,
-			test = this;
+	queue() {
+		const test = this;
 
 		if ( !this.valid() ) {
 			return;
@@ -314,7 +306,7 @@ Test.prototype = {
 		function run() {
 
 			// Each of these can by async
-			ProcessingQueue.add( [
+			ProcessingQueue.addImmediate( [
 				function() {
 					test.before();
 				},
@@ -344,15 +336,20 @@ Test.prototype = {
 			] );
 		}
 
-		previousFailCount = config.storage &&
+		const previousFailCount = config.storage &&
 				+config.storage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
 
 		// Prioritize previously failed tests, detected from storage
-		priority = config.reorder && previousFailCount;
+		const prioritize = config.reorder && !!previousFailCount;
 
 		this.previousFailure = !!previousFailCount;
 
-		return ProcessingQueue.add( run, priority, config.seed );
+		ProcessingQueue.add( run, prioritize, config.seed );
+
+		// If the queue has already finished, we manually process the new test
+		if ( ProcessingQueue.finished ) {
+			ProcessingQueue.advance();
+		}
 	},
 
 	pushResult: function( resultInfo ) {

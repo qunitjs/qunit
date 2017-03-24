@@ -25,12 +25,9 @@ export const globalSuite = new SuiteReport();
 // it since each module has a suiteReport associated with it.
 config.currentModule.suiteReport = globalSuite;
 
+const moduleStack = [];
 var globalStartCalled = false;
 var runStarted = false;
-
-export const internalState = {
-	autorun: false
-};
 
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
@@ -38,14 +35,38 @@ QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
 
+function createModule( name, testEnvironment ) {
+	const parentModule = moduleStack.length ? moduleStack.slice( -1 )[ 0 ] : null;
+	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
+	const parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
+
+	const module = {
+		name: moduleName,
+		parentModule: parentModule,
+		tests: [],
+		moduleId: generateHash( moduleName ),
+		testsRun: 0,
+		childModules: [],
+		suiteReport: new SuiteReport( name, parentSuite )
+	};
+
+	const env = {};
+	if ( parentModule ) {
+		parentModule.childModules.push( module );
+		extend( env, parentModule.testEnvironment );
+	}
+	extend( env, testEnvironment );
+	module.testEnvironment = env;
+
+	config.modules.push( module );
+	return module;
+}
+
 extend( QUnit, {
 	on,
 
 	// Call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment, executeNow ) {
-		var module, moduleFns;
-		var currentModule = config.currentModule;
-
 		if ( arguments.length === 2 ) {
 			if ( objectType( testEnvironment ) === "function" ) {
 				executeNow = testEnvironment;
@@ -53,60 +74,40 @@ extend( QUnit, {
 			}
 		}
 
-		module = createModule();
+		let module = createModule( name, testEnvironment );
 
-		moduleFns = {
+		// Move any hooks to a 'hooks' object
+		if ( module.testEnvironment ) {
+			module.hooks = {
+				before: module.testEnvironment.before,
+				beforeEach: module.testEnvironment.beforeEach,
+				afterEach: module.testEnvironment.afterEach,
+				after: module.testEnvironment.after
+			};
+
+			delete module.testEnvironment.before;
+			delete module.testEnvironment.beforeEach;
+			delete module.testEnvironment.afterEach;
+			delete module.testEnvironment.after;
+		}
+
+		const moduleFns = {
 			before: setHook( module, "before" ),
 			beforeEach: setHook( module, "beforeEach" ),
 			afterEach: setHook( module, "afterEach" ),
 			after: setHook( module, "after" )
 		};
 
+		const currentModule = config.currentModule;
 		if ( objectType( executeNow ) === "function" ) {
-			config.moduleStack.push( module );
-			setCurrentModule( module );
+			moduleStack.push( module );
+			config.currentModule = module;
 			executeNow.call( module.testEnvironment, moduleFns );
-			config.moduleStack.pop();
+			moduleStack.pop();
 			module = module.parentModule || currentModule;
 		}
 
-		setCurrentModule( module );
-
-		function createModule() {
-			var parentModule = config.moduleStack.length ?
-				config.moduleStack.slice( -1 )[ 0 ] : null;
-			var moduleName = parentModule !== null ?
-				[ parentModule.name, name ].join( " > " ) : name;
-			var parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
-
-			var module = {
-				name: moduleName,
-				parentModule: parentModule,
-				tests: [],
-				moduleId: generateHash( moduleName ),
-				testsRun: 0,
-				childModules: [],
-				suiteReport: new SuiteReport( name, parentSuite )
-			};
-
-			var env = {};
-			if ( parentModule ) {
-				parentModule.childModules.push( module );
-				extend( env, parentModule.testEnvironment );
-				delete env.beforeEach;
-				delete env.afterEach;
-			}
-			extend( env, testEnvironment );
-			module.testEnvironment = env;
-
-			config.modules.push( module );
-			return module;
-		}
-
-		function setCurrentModule( module ) {
-			config.currentModule = module;
-		}
-
+		config.currentModule = module;
 	},
 
 	test: test,
@@ -245,12 +246,12 @@ export function begin() {
 }
 
 function setHook( module, hookName ) {
-	if ( module.testEnvironment === undefined ) {
-		module.testEnvironment = {};
+	if ( !module.hooks ) {
+		module.hooks = {};
 	}
 
 	return function( callback ) {
-		module.testEnvironment[ hookName ] = callback;
+		module.hooks[ hookName ] = callback;
 	};
 }
 

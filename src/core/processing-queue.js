@@ -10,7 +10,6 @@ import {
 } from "./logging";
 
 import {
-	internalState,
 	globalSuite
 } from "../core";
 import {
@@ -41,6 +40,10 @@ function advance() {
 				config.current.usedAsync = false;
 			}
 
+			if ( priorityCount > 0 ) {
+				priorityCount--;
+			}
+
 			config.queue.shift()();
 		} else {
 			setTimeout( advance, 13 );
@@ -55,37 +58,38 @@ function advance() {
 	}
 }
 
+function addToQueueImmediate( callback ) {
+	if ( objectType( callback ) === "array" ) {
+		while ( callback.length ) {
+			addToQueueImmediate( callback.pop() );
+		}
+
+		return;
+	}
+
+	config.queue.unshift( callback );
+	priorityCount++;
+}
+
 /**
  * Adds a function to the ProcessingQueue for execution.
  * @param {Function|Array} callback
  * @param {Boolean} priority
  * @param {String} seed
  */
-function addToQueue( callback, priority, seed ) {
-	if ( objectType( callback ) === "array" ) {
-		while ( callback.length ) {
-			addToQueue( callback.shift() );
-		}
-
-		return;
-	}
-
-	if ( priority ) {
+function addToQueue( callback, prioritize, seed ) {
+	if ( prioritize ) {
 		config.queue.splice( priorityCount++, 0, callback );
 	} else if ( seed ) {
 		if ( !unitSampler ) {
 			unitSampler = unitSamplerGenerator( seed );
 		}
 
-		// Insert into a random position after all priority items
+		// Insert into a random position after all prioritized items
 		const index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
 		config.queue.splice( priorityCount + index, 0, callback );
 	} else {
 		config.queue.push( callback );
-	}
-
-	if ( internalState.autorun && !config.blocking ) {
-		advance();
 	}
 }
 
@@ -118,7 +122,7 @@ function unitSamplerGenerator( seed ) {
 function done() {
 	const storage = config.storage;
 
-	internalState.autorun = true;
+	ProcessingQueue.finished = true;
 
 	const runtime = now() - config.started;
 	const passed = config.stats.all - config.stats.bad;
@@ -143,7 +147,11 @@ function done() {
 	}
 }
 
-export default {
+const ProcessingQueue = {
+	finished: false,
 	add: addToQueue,
+	addImmediate: addToQueueImmediate,
 	advance
 };
+
+export default ProcessingQueue;
