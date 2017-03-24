@@ -1,22 +1,9 @@
 "use strict";
 
-const path = require( "path" );
-const exec = require( "execa" ).shell;
 const co = require( "co" );
 
 const expectedOutput = require( "./fixtures/expected/tap-outputs" );
-
-// Executes the provided command from within the fixtures directory
-function execute( command ) {
-	const cwd = process.cwd();
-	process.chdir( path.join( __dirname, "fixtures" ) );
-
-	const execution = exec( command );
-
-	process.chdir( cwd );
-
-	return execution;
-}
+const execute = require( "./helpers/execute" );
 
 QUnit.module( "CLI Main", function() {
 	QUnit.test( "defaults to running tests in 'test' directory", co.wrap( function* ( assert ) {

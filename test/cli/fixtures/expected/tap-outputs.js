@@ -74,5 +74,11 @@ ok 5 A-Test > derp
 # pass 5
 # skip 0
 # todo 0
-# fail 0`
+# fail 0`,
+
+	"qunit --reporter npm-reporter": "Run ended!",
+	"qunit --reporter does-not-exist": `No reporter found matching "does-not-exist".
+Available reporters from JS Reporters are: console, tap
+Available custom reporters from dependencies are: npm-reporter
+`
 };

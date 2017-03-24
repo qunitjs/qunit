@@ -34,6 +34,7 @@
     "chokidar": "1.6.1",
     "commander": "2.9.0",
     "exists-stat": "1.0.0",
+    "findup-sync": "^0.4.3",
     "js-reporters": "1.2.0",
     "walk-sync": "0.3.1"
   },
@@ -64,6 +65,7 @@
     "grunt-rollup": "1.0.1",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
+    "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
     "requirejs": "2.3.2",
     "rollup-plugin-babel": "2.6.1"
   },
