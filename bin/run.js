@@ -22,6 +22,17 @@ module.exports = function run( files, options ) {
 		QUnit.config.filter = options.filter;
 	}
 
+	const seed = options.seed;
+	if ( seed ) {
+		if ( seed === true ) {
+			QUnit.config.seed = Math.random().toString( 36 ).slice( 2 );
+		} else {
+			QUnit.config.seed = seed;
+		}
+
+		console.log( `Running tests with seed: ${QUnit.config.seed}` );
+	}
+
 	// TODO: Enable mode where QUnit is not auto-injected, but other setup is
 	// still done automatically.
 	global.QUnit = QUnit;
