@@ -61,5 +61,18 @@ ok 5 Second > 1
 # pass 5
 # skip 0
 # todo 0
+# fail 0`,
+
+	"qunit --seed 's33d' test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
+TAP version 13
+ok 1 Second > 1
+ok 2 Single > has a test
+ok 3 First > 1
+ok 4 Nested-Test > herp
+ok 5 A-Test > derp
+1..5
+# pass 5
+# skip 0
+# todo 0
 # fail 0`
 };

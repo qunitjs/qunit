@@ -12,11 +12,14 @@ program
 	.version( pkg.version )
 	.usage( "[options] [files]" )
 	.option( "-f, --filter <filter>", "filter which tests run" )
+	.option( "--seed [value]", "specify a seed to order your tests; " +
+		"if option is specified without a value, one will be generated" )
 	.parse( process.argv );
 
 const args = program.args;
 const files = utils.getFilesFromArgs( args );
 
 run( files, {
-	filter: program.filter
+	filter: program.filter,
+	seed: program.seed
 } );

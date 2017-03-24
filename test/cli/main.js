@@ -100,4 +100,15 @@ QUnit.module( "CLI Main", function() {
 			assert.equal( execution.stdout, expectedOutput[ equivalentCommand ] );
 		} ) );
 	} );
+
+	QUnit.module( "seed", function() {
+		QUnit.test( "can properly seed tests", co.wrap( function* ( assert ) {
+			const command = "qunit --seed 's33d' test single.js 'glob/**/*-test.js'";
+			const execution = yield execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
+		} ) );
+	} );
 } );
