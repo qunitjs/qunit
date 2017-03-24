@@ -13,6 +13,7 @@ import { sourceFromStacktrace } from "./core/stacktrace";
 import ProcessingQueue from "./core/processing-queue";
 
 import SuiteReport from "./reports/suite";
+import { addReporter, setDefaultReporter, initializeReporters } from "./reporter";
 
 import { on, emit } from "./events";
 import onError from "./core/onerror";
@@ -26,10 +27,10 @@ export const globalSuite = new SuiteReport();
 config.currentModule.suiteReport = globalSuite;
 
 var globalStartCalled = false;
-var runStarted = false;
 
 export const internalState = {
-	autorun: false
+	autorun: false,
+	runStarted: false
 };
 
 // Figure out if we're running the tests from a server or not
@@ -40,6 +41,10 @@ QUnit.version = "@VERSION";
 
 extend( QUnit, {
 	on,
+
+	addReporter,
+
+	setDefaultReporter,
 
 	// Call on start of module test to prepend name to all tests
 	module: function( name, testEnvironment, executeNow ) {
@@ -123,7 +128,7 @@ extend( QUnit, {
 		if ( !config.current ) {
 			globalStartCalled = true;
 
-			if ( runStarted ) {
+			if ( internalState.runStarted ) {
 				throw new Error( "Called start() while test already started running" );
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
 				throw new Error( "Called start() outside of a test context too many times" );
@@ -171,7 +176,7 @@ extend( QUnit, {
 			filter: ""
 		}, true );
 
-		if ( !runStarted ) {
+		if ( !internalState.runStarted ) {
 			config.blocking = false;
 
 			if ( config.autostart ) {
@@ -197,7 +202,7 @@ registerLoggingCallbacks( QUnit );
 
 function scheduleBegin() {
 
-	runStarted = true;
+	internalState.runStarted = true;
 
 	// Add a slight delay to allow definition of more modules and tests.
 	if ( defined.setTimeout ) {
@@ -233,6 +238,7 @@ export function begin() {
 		}
 
 		// The test run is officially beginning now
+		initializeReporters();
 		emit( "runStart", globalSuite.start( true ) );
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
