@@ -166,7 +166,9 @@ Test.prototype = {
 				test.preserveEnvironment = true;
 			}
 
-			if ( hookName === "after" && hookOwner.testsRun !== numberOfTests( hookOwner ) - 1 ) {
+			if ( hookName === "after" &&
+				hookOwner.testsRun !== numberOfTests( hookOwner ) - 1 &&
+				config.queue.length > 2 ) {
 				return;
 			}
 
@@ -303,7 +305,7 @@ Test.prototype = {
 			return;
 		}
 
-		function run() {
+		function runTest() {
 
 			// Each of these can by async
 			ProcessingQueue.addImmediate( [
@@ -344,7 +346,7 @@ Test.prototype = {
 
 		this.previousFailure = !!previousFailCount;
 
-		ProcessingQueue.add( run, prioritize, config.seed );
+		ProcessingQueue.add( runTest, prioritize, config.seed );
 
 		// If the queue has already finished, we manually process the new test
 		if ( ProcessingQueue.finished ) {

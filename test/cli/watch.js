@@ -22,6 +22,18 @@ function execute( command ) {
 
 const fixturePath = path.join( __dirname, "fixtures", "watching" );
 
+// Kills the provided executing process, handling differences in platforms
+function kill( execution, signal ) {
+	const sig = signal || "SIGINT";
+
+	// Linux increments the pid by 1 due to creating a new shell instance
+	if ( process.platform === "linux" ) {
+		process.kill( execution.pid + 1, sig );
+	} else {
+		process.kill( execution.pid, sig );
+	}
+}
+
 QUnit.module( "CLI Watch", function( hooks ) {
 	hooks.beforeEach( function() {
 		fs.mkdirpSync( fixturePath );
@@ -34,6 +46,27 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		fs.removeSync( fixturePath );
 	} );
 
+	QUnit.test( "runs tests and waits until SIGTERM", co.wrap( function* ( assert ) {
+		fixturify.writeSync( fixturePath, {
+			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+		} );
+
+		const command = "qunit watching";
+		const execution = execute( `${command} --watch` );
+
+		execution.on( "message", function( data ) {
+			assert.step( data );
+			kill( execution, "SIGTERM" );
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [ "runEnd" ] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
+	} ) );
+
 	QUnit.test( "runs tests and waits until SIGINT", co.wrap( function* ( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
@@ -44,7 +77,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 		execution.on( "message", function( data ) {
 			assert.step( data );
-			execution.kill( "SIGINT" );
+			kill( execution );
 		} );
 
 		const result = yield execution;
@@ -71,7 +104,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 			execution.once( "message", function( data ) {
 				assert.step( data );
-				execution.kill( "SIGINT" );
+				kill( execution );
 			} );
 		} );
 
@@ -99,7 +132,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 			execution.once( "message", function( data ) {
 				assert.step( data );
-				execution.kill( "SIGINT" );
+				kill( execution );
 			} );
 		} );
 
@@ -128,7 +161,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 			execution.once( "message", function( data ) {
 				assert.step( data );
-				execution.kill( "SIGINT" );
+				kill( execution );
 			} );
 		} );
 
@@ -140,7 +173,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "remove-file" ] );
 	} ) );
 
-	QUnit.todo( "aborts and restarts when in middle of run", co.wrap( function* ( assert ) {
+	QUnit.test( "aborts and restarts when in middle of run", co.wrap( function* ( assert ) {
 
 		// A proper abort finishes the currently running test and runs any remaining
 		// afterEach/after hooks to ensure cleanup happens.
@@ -154,38 +187,35 @@ QUnit.module( "CLI Watch", function( hooks ) {
 					after() { process.send('after'); }
 				});
 				QUnit.test('one', function(assert) {
+					process.send('testRunning');
 					var done = assert.async();
 					setTimeout(function() {
 						assert.ok(true);
 						done();
-					}, 1000);
+					}, 500);
 				});
 				QUnit.test('two', function(assert) { assert.ok(true); });`
 		} );
 
 		const command = "qunit watching";
 		const execution = execute( `${command} --watch` );
-		let hasUpdated = false;
 
 		function one( data ) {
-			assert.step( data );
-
-			if ( !hasUpdated ) {
+			if ( data === "testRunning" ) {
 				fixturify.writeSync( fixturePath, {
 					"bar.js": "// bar"
 				} );
-				hasUpdated = true;
 			}
 
-			if ( data === "runEnd" ) {
+			assert.step( data );
 
-				// execution.kill( "SIGINT" );
+			if ( data === "runEnd" ) {
 				execution.removeListener( "message", one );
 				execution.addListener( "message", function( data ) {
 					assert.step( data );
 
 					if ( data === "runEnd" ) {
-						execution.kill( "SIGINT" );
+						kill( execution );
 					}
 				} );
 			}
@@ -198,11 +228,13 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.verifySteps( [
 			"before",
 			"beforeEach",
+			"testRunning",
 			"afterEach",
 			"after",
 			"runEnd",
 			"before",
 			"beforeEach",
+			"testRunning",
 			"afterEach",
 			"beforeEach",
 			"afterEach",
@@ -211,6 +243,6 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
-		assert.equal( result.stdout, expectedWatchOutput[ "change-file" ] );
+		assert.equal( result.stdout, expectedWatchOutput[ "change-file-mid-run" ] );
 	} ) );
 } );

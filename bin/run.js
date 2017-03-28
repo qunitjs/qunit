@@ -69,14 +69,31 @@ function run( args, options ) {
 };
 
 run.restart = function( args ) {
-	run.abort();
-	run.apply( null, args );
+	if ( QUnit.config.queue.length ) {
+		console.log( "Finishing current test and restarting..." );
+	} else {
+		console.log( "Restarting..." );
+	}
+
+	run.abort( () => run.apply( null, args ) );
 };
 
-run.abort = function() {
-	QUnit.config.queue.length = 0;
-	delete global.QUnit;
-	QUnit = null;
+run.abort = function( callback ) {
+	function clearQUnit() {
+		delete global.QUnit;
+		QUnit = null;
+		if ( callback ) {
+			callback();
+		}
+	}
+
+	if ( QUnit.config.queue.length ) {
+		const nextTestIndex = QUnit.config.queue.findIndex( fn => fn.name === "runTest" );
+		QUnit.config.queue.splice( nextTestIndex );
+		QUnit.on( "runEnd", clearQUnit );
+	} else {
+		clearQUnit();
+	}
 };
 
 function watcherEvent( event, args ) {
@@ -102,9 +119,11 @@ run.watch = function watch() {
 
 	function stop() {
 		console.log( "Stopping QUnit..." );
-		run.abort();
+
 		watcher.close();
-		process.exit();
+		run.abort( () => {
+			process.exit();
+		} );
 	}
 
 	process.on( "SIGTERM", stop );
