@@ -1,3 +1,23 @@
+2.3.0 / 2017-03-29
+==================
+
+  * Core: Test#pushFailure now calls Test#pushResult
+  * HTML Reporter: Display todo tests on hidepassed
+  * CLI: Add support for custom reporters
+  * CLI: Properly support aborting and restarting tests
+  * CLI: Add file watching option
+  * Core: Revamp processing order to one test at a time
+  * Core: Remove parameter from ProcessingQueue#advance
+  * CLI: Add description to help command
+  * CLI: Add seed option
+  * Core: Account for validity of test in test counts
+  * CLI: Support filtering tests
+  * Core: Extract processing logic into ProcessingQueue
+  * Tests: Add CLI tests
+  * CLI: Introduce QUnit CLI
+  * Readme: Add detailed release instructions
+  * All: Enable ESLint prefer-const rule (#1109)
+
 2.2.1 / 2017-03-19
 ==================
 
