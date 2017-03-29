@@ -236,7 +236,7 @@
 }
 
 #qunit-tests.hidepass li.running,
-#qunit-tests.hidepass li.pass {
+#qunit-tests.hidepass li.pass:not(.todo) {
 	visibility: hidden;
 	position: absolute;
 	width:   0;

@@ -887,6 +887,7 @@ QUnit.testDone( function( details ) {
 			const todoLabel = document.createElement( "em" );
 			todoLabel.className = "qunit-todo-label";
 			todoLabel.innerHTML = "todo";
+			testItem.className += " todo";
 			testItem.insertBefore( todoLabel, testTitle );
 		}
 
