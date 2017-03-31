@@ -11,16 +11,12 @@ export default class TestReport {
 		this.skipped = !!options.skip;
 		this.todo = !!options.todo;
 
-		this.testInstance = options.testInstance;
+		this.valid = options.valid;
 
 		this._startTime = 0;
 		this._endTime = 0;
 
 		suite.pushTest( this );
-	}
-
-	isValid() {
-		return this.testInstance.valid();
 	}
 
 	start( recordTime ) {
