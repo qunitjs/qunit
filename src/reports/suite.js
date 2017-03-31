@@ -57,7 +57,7 @@ export default class SuiteReport {
 
 	getTestCounts( counts = { passed: 0, failed: 0, skipped: 0, todo: 0, total: 0 } ) {
 		counts = this.tests.reduce( ( counts, test ) => {
-			if ( test.isValid() ) {
+			if ( test.valid ) {
 				counts[ test.getStatus() ]++;
 				counts.total++;
 			}

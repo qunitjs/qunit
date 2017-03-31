@@ -41,7 +41,7 @@ export default function Test( settings ) {
 	this.testReport = new TestReport( settings.testName, this.module.suiteReport, {
 		todo: settings.todo,
 		skip: settings.skip,
-		testInstance: this
+		valid: this.valid()
 	} );
 
 	// Register unique strings
