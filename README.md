@@ -1,4 +1,7 @@
-[![Travis Build Status](https://travis-ci.org/qunitjs/qunit.svg?branch=master)](https://travis-ci.org/qunitjs/qunit) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/qunitjs/qunit?svg=true&branch=master)](https://ci.appveyor.com/project/leobalter/qunit) [![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
+[![Travis Build Status](https://travis-ci.org/qunitjs/qunit.svg?branch=master)](https://travis-ci.org/qunitjs/qunit)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/qunitjs/qunit?svg=true&branch=master)](https://ci.appveyor.com/project/leobalter/qunit)
+[![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
+[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # [QUnit](https://qunitjs.com) - A JavaScript Unit Testing Framework.
 
@@ -23,6 +26,8 @@ with its stop/start facilities for testing asynchronous code.
 If you are interested in helping developing QUnit, you are in the right place.
 For related discussions, visit the
 [QUnit and Testing forum](https://forum.jquery.com/qunit-and-testing).
+You can also chat with us on [Gitter](https://gitter.im/qunitjs/qunit) if you
+need help using or developing QUnit.
 
 ## Development
 
