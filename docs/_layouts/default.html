@@ -1,0 +1,61 @@
+---
+layout: wrapper
+---
+
+<section class="sidebar">
+    <h2>Main methods:</h2>
+    <ul class="sidebar-list">
+    {% assign methods = site.pages | where:'categories', 'main' %}
+    {% for page in methods %}
+    <li class="sidebar-item">
+        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Assertions:</h2>
+    <ul class="sidebar-list">
+    {% assign assertions = site.pages | where:'categories', 'assert' %}
+    {% for page in assertions %}
+    <li class="sidebar-item">
+        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Config:</h2>
+
+    <ul class="sidebar-list">
+    {% assign config = site.pages | where:'categories', 'config' %}
+    {% for page in config %}
+    <li class="sidebar-item">
+        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Callbacks:</h2>
+
+    <ul class="sidebar-list">
+    {% assign callbacks = site.pages | where:'categories', 'callbacks' %}
+    {% for page in callbacks %}
+    <li class="sidebar-item">
+        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Async control:</h2>
+
+    <ul class="sidebar-list">
+    {% assign async = site.pages | where:'categories', 'async' %}
+    {% for page in async %}
+    <li class="sidebar-item">
+        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+</section>
+<div id="main" class="main" role="main">
+    {{ content }}
+</div>
