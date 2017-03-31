@@ -8,7 +8,7 @@ layout: wrapper
     {% assign methods = site.pages | where:'categories', 'main' %}
     {% for page in methods %}
     <li class="sidebar-item">
-        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+        <a href="{{ page.url }}">{{page.title}}</a>
     </li>
     {% endfor %}
     </ul>
@@ -18,7 +18,7 @@ layout: wrapper
     {% assign assertions = site.pages | where:'categories', 'assert' %}
     {% for page in assertions %}
     <li class="sidebar-item">
-        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+        <a href="{{ page.url }}">{{page.title}}</a>
     </li>
     {% endfor %}
     </ul>
@@ -29,7 +29,7 @@ layout: wrapper
     {% assign config = site.pages | where:'categories', 'config' %}
     {% for page in config %}
     <li class="sidebar-item">
-        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+        <a href="{{ page.url }}">{{page.title}}</a>
     </li>
     {% endfor %}
     </ul>
@@ -40,7 +40,7 @@ layout: wrapper
     {% assign callbacks = site.pages | where:'categories', 'callbacks' %}
     {% for page in callbacks %}
     <li class="sidebar-item">
-        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+        <a href="{{ page.url }}">{{page.title}}</a>
     </li>
     {% endfor %}
     </ul>
@@ -51,7 +51,7 @@ layout: wrapper
     {% assign async = site.pages | where:'categories', 'async' %}
     {% for page in async %}
     <li class="sidebar-item">
-        <a href="{{ page.url | prepend:site.baseurl }}">{{page.title}}</a>
+        <a href="{{ page.url }}">{{page.title}}</a>
     </li>
     {% endfor %}
     </ul>
