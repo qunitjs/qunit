@@ -75,4 +75,14 @@ export default class TestReport {
 	getAssertions() {
 		return this.assertions.slice();
 	}
+
+	// Remove actual and expected values from assertions. This is to prevent
+	// leaking memory throughout a test suite.
+	slimAssertions() {
+		this.assertions = this.assertions.map( assertion => {
+			delete assertion.actual;
+			delete assertion.expected;
+			return assertion;
+		} );
+	}
 }
