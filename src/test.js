@@ -257,7 +257,11 @@ Test.prototype = {
 			}
 		}
 
+		// After emitting the js-reporters event we cleanup the assertion data to
+		// avoid leaking it. It is not used by the legacy testDone callbacks.
 		emit( "testEnd", this.testReport.end( true ) );
+		this.testReport.slimAssertions();
+
 		runLoggingCallbacks( "testDone", {
 			name: testName,
 			module: moduleName,
