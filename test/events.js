@@ -76,16 +76,12 @@ var suite1Start = {
 
 var assertion1 = {
 	passed: false,
-	actual: false,
-	expected: true,
 	message: "failing assertion",
 	todo: true
 };
 
 var assertion2 = {
 	passed: true,
-	actual: true,
-	expected: true,
 	message: "passing assertion",
 	todo: false
 };
@@ -189,7 +185,7 @@ QUnit.done( function() {
 	done = true;
 
 	QUnit.module( "Events" );
-	QUnit.test( "verify callback order and data", function( assert ) {
+	QUnit.test( "verify callback order and data at end of test", function( assert ) {
 		assert.deepEqual( invokedHooks, [
 			"runStart",
 			"suiteStart",
@@ -220,18 +216,6 @@ QUnit.done( function() {
 			"start of child suite with tests data is correct"
 		);
 
-		// These are pushed in reverse order of the testStarts
-		assert.deepEqual(
-			removeUnstableProperties( invokedHookDetails.suiteEnd[ 0 ] ),
-			suite2End,
-			"end of child suite with tests data is correct"
-		);
-		assert.deepEqual(
-			removeUnstableProperties( invokedHookDetails.suiteEnd[ 1 ] ),
-			suite1End,
-			"end of suite with tests and child suites data is correct"
-		);
-
 		assert.deepEqual(
 			invokedHookDetails.testStart[ 0 ],
 			test1Start,
@@ -249,6 +233,18 @@ QUnit.done( function() {
 		);
 
 		assert.deepEqual(
+			removeUnstableProperties( invokedHookDetails.assertion1[ 0 ] ),
+			assertion1,
+			"failing assertion data is correct"
+		);
+		assert.deepEqual(
+			removeUnstableProperties( invokedHookDetails.assertion1[ 1 ] ),
+			assertion2,
+			"passing assertion data is correct"
+		);
+
+		// These are pushed in reverse order of the starts
+		assert.deepEqual(
 			removeUnstableProperties( invokedHookDetails.testEnd[ 0 ] ),
 			test1End,
 			"todo testEnd data is correct"
@@ -265,14 +261,14 @@ QUnit.done( function() {
 		);
 
 		assert.deepEqual(
-			invokedHookDetails.assertion1[ 0 ],
-			assertion1,
-			"failing assertion data is correct"
+			removeUnstableProperties( invokedHookDetails.suiteEnd[ 0 ] ),
+			suite2End,
+			"end of child suite with tests data is correct"
 		);
 		assert.deepEqual(
-			invokedHookDetails.assertion1[ 1 ],
-			assertion2,
-			"passing assertion data is correct"
+			removeUnstableProperties( invokedHookDetails.suiteEnd[ 1 ] ),
+			suite1End,
+			"end of suite with tests and child suites data is correct"
 		);
 	} );
 } );
