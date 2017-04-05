@@ -5,11 +5,11 @@ var lastTest = "";
 QUnit.module( "Reorder" );
 
 QUnit.test( "First", function( assert ) {
-  assert.strictEqual( lastTest, "Second" );
-  lastTest = "First";
+	assert.strictEqual( lastTest, "Second" );
+	lastTest = "First";
 } );
 
 QUnit.test( "Second", function( assert ) {
-  assert.strictEqual( lastTest, "" );
-  lastTest = "Second";
+	assert.strictEqual( lastTest, "" );
+	lastTest = "Second";
 } );
