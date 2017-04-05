@@ -152,22 +152,22 @@ QUnit.module( "pre-nested modules" );
 
 QUnit.module( "nested modules", function() {
 	QUnit.module( "first outer", {
-			afterEach: function( assert ) {
-				assert.ok( true, "first outer module afterEach called" );
-			},
-			beforeEach: function( assert ) {
-				assert.ok( true, "first outer beforeEach called" );
-			}
+		afterEach: function( assert ) {
+			assert.ok( true, "first outer module afterEach called" );
 		},
+		beforeEach: function( assert ) {
+			assert.ok( true, "first outer beforeEach called" );
+		}
+	},
 		function() {
 			QUnit.module( "first inner", {
-					afterEach: function( assert ) {
-						assert.ok( true, "first inner module afterEach called" );
-					},
-					beforeEach: function( assert ) {
-						assert.ok( true, "first inner module beforeEach called" );
-					}
+				afterEach: function( assert ) {
+					assert.ok( true, "first inner module afterEach called" );
 				},
+				beforeEach: function( assert ) {
+					assert.ok( true, "first inner module beforeEach called" );
+				}
+			},
 				function() {
 					QUnit.test( "in module, before- and afterEach called in out-in-out " +
 						"order",
