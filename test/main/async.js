@@ -488,29 +488,29 @@ QUnit.test( "multiple `done` calls, final `done` is called BEFORE assertion", fu
 } );
 
 QUnit.test( "cannot allow assertions between first `done` call and second `assert.async` call",
-		function( assert ) {
-	var done2,
-		testContext = this,
-		done1 = assert.async();
+	function( assert ) {
+		var done2,
+			testContext = this,
+			done1 = assert.async();
 
-	assert.expect( 1 );
-	setTimeout( function() {
-		done1();
+		assert.expect( 1 );
+		setTimeout( function() {
+			done1();
 
-		testContext._assertCatch( function() {
+			testContext._assertCatch( function() {
 
 			// FAIL!!! (with duck-punch to force an Error to be thrown instead of `pushFailure`)
-			assert.ok( true, "should fail with a special `done`-related error message if called " +
-				"after final `done` even if result is passing" );
+				assert.ok( true, "should fail with a special `done`-related error message if " +
+				"called after final `done` even if result is passing" );
 
-			done2 = assert.async();
-			setTimeout( function() {
-				assert.ok( false, "Should never reach this point anyway" );
-				done2();
+				done2 = assert.async();
+				setTimeout( function() {
+					assert.ok( false, "Should never reach this point anyway" );
+					done2();
+				} );
 			} );
 		} );
 	} );
-} );
 
 QUnit.module( "assert after last done in before fail, but allow other phases to run", {
 	before: function( assert ) {

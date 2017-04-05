@@ -159,38 +159,38 @@ QUnit.test( "Objects basics", function( assert ) {
 QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 	"Objects with null prototypes", function( assert ) {
 
-	var nonEmptyWithNoProto;
+		var nonEmptyWithNoProto;
 
 	// Objects with no prototype, created via Object.create(null), are used
 	// e.g. as dictionaries.
 	// Being able to test equivalence against object literals is quite useful.
-	assert.equal(
-		QUnit.equiv( Object.create( null ), {} ),
-		true,
-		"empty object without prototype VS empty object"
+		assert.equal(
+			QUnit.equiv( Object.create( null ), {} ),
+			true,
+			"empty object without prototype VS empty object"
 	);
 
-	assert.equal(
-		QUnit.equiv( {}, Object.create( null ) ),
-		true,
-		"empty object VS empty object without prototype"
+		assert.equal(
+			QUnit.equiv( {}, Object.create( null ) ),
+			true,
+			"empty object VS empty object without prototype"
 	);
 
-	nonEmptyWithNoProto = Object.create( null );
-	nonEmptyWithNoProto.foo = "bar";
+		nonEmptyWithNoProto = Object.create( null );
+		nonEmptyWithNoProto.foo = "bar";
 
-	assert.equal(
-		QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
-		true,
-		"object without prototype VS object"
+		assert.equal(
+			QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
+			true,
+			"object without prototype VS object"
 	);
 
-	assert.equal(
-		QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
-		true,
-		"object VS object without prototype"
+		assert.equal(
+			QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
+			true,
+			"object VS object without prototype"
 	);
-} );
+	} );
 
 // Ref #851
 QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
@@ -201,20 +201,20 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 	// To mitigate this cost a specialized NullObject can be used. This
 	// Object has similar safe characteristics, but with dramatically
 	// reduced allocation costs.
-	function NullObject() {}
-	NullObject.prototype = Object.create( null, {
-		constructor: {
-			value: null
-		}
+		function NullObject() {}
+		NullObject.prototype = Object.create( null, {
+			constructor: {
+				value: null
+			}
+		} );
+
+		var a = new NullObject();
+		a.foo = 1;
+		var b = { foo: 1 };
+
+		assert.ok( QUnit.equiv( a, b ) );
+		assert.ok( QUnit.equiv( b, a ) );
 	} );
-
-	var a = new NullObject();
-	a.foo = 1;
-	var b = { foo: 1 };
-
-	assert.ok( QUnit.equiv( a, b ) );
-	assert.ok( QUnit.equiv( b, a ) );
-} );
 
 QUnit.test( "Arrays basics", function( assert ) {
 
@@ -244,153 +244,153 @@ QUnit.test( "Arrays basics", function( assert ) {
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ),
-					true );
+		true );
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ), // shorter
-					false );
+		false );
 	assert.equal( QUnit.equiv(
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ {} ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]],
 					[[],[],[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] ), // deepest element not an array
-					false );
+		false );
 
 	// same multidimensional
 	assert.equal( QUnit.equiv(
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,4,[
-														1,2,[
-															1,2,3,4,[
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]],
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,4,[
-														1,2,[
-															1,2,3,4,[
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]] ),
-							true, "Multidimensional" );
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,4,[
+									1,2,[
+										1,2,3,4,[
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]],
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,4,[
+									1,2,[
+										1,2,3,4,[
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]] ),
+		true, "Multidimensional" );
 
 	// different multidimensional
 	assert.equal( QUnit.equiv(
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,4,[
-														1,2,[
-															1,2,3,4,[
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]],
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,4,[
-														1,2,[
-															"1",2,3,4,[                 // string instead of number
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]] ),
-							false, "Multidimensional" );
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,4,[
+									1,2,[
+										1,2,3,4,[
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]],
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,4,[
+									1,2,[
+										"1",2,3,4,[                 // string instead of number
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]] ),
+		false, "Multidimensional" );
 
 	// different multidimensional
 	assert.equal( QUnit.equiv(
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,4,[
-														1,2,[
-															1,2,3,4,[
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]],
-							[ 1,2,3,4,5,6,7,8,9, [
-								1,2,3,4,5,6,7,8,9, [
-									1,2,3,4,5,[
-										[ 6,7,8,9, [
-											[
-												1,2,3,4,[
-													2,3,[                   // missing an element (4)
-														1,2,[
-															1,2,3,4,[
-																1,2,3,4,5,6,7,8,9,[
-																	0
-																],1,2,3,4,5,6,7,8,9
-															],5,6,7,8,9
-														],4,5,6,7,8,9
-													],5,6,7,8,9
-												],5,6,7
-											]
-										]
-									]
-								]
-							]]] ),
-							false, "Multidimensional" );
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,4,[
+									1,2,[
+										1,2,3,4,[
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]],
+		[ 1,2,3,4,5,6,7,8,9, [
+			1,2,3,4,5,6,7,8,9, [
+				1,2,3,4,5,[
+					[ 6,7,8,9, [
+						[
+							1,2,3,4,[
+								2,3,[                   // missing an element (4)
+									1,2,[
+										1,2,3,4,[
+											1,2,3,4,5,6,7,8,9,[
+												0
+											],1,2,3,4,5,6,7,8,9
+										],5,6,7,8,9
+									],4,5,6,7,8,9
+								],5,6,7,8,9
+							],5,6,7
+						]
+					]
+					]
+				]
+			]]] ),
+		false, "Multidimensional" );
 } );
 
 QUnit.test( "Functions", function( assert ) {
@@ -1060,34 +1060,34 @@ QUnit.test( "Complex Arrays", function( assert ) {
 	function fn() {}
 
 	assert.equal( QUnit.equiv(
-				[ 1, 2, 3, true, {}, null, [
-					{
-						a: [ "", "1", 0 ]
-					},
-					5, 6, 7
-				], "foo" ],
-				[ 1, 2, 3, true, {}, null, [
-					{
-						a: [ "", "1", 0 ]
-					},
-					5, 6, 7
-				], "foo" ] ),
-			true );
+		[ 1, 2, 3, true, {}, null, [
+			{
+				a: [ "", "1", 0 ]
+			},
+			5, 6, 7
+		], "foo" ],
+		[ 1, 2, 3, true, {}, null, [
+			{
+				a: [ "", "1", 0 ]
+			},
+			5, 6, 7
+		], "foo" ] ),
+		true );
 
 	assert.equal( QUnit.equiv(
-				[ 1, 2, 3, true, {}, null, [
-					{
-						a: [ "", "1", 0 ]
-					},
-					5, 6, 7
-				], "foo" ],
-				[ 1, 2, 3, true, {}, null, [
-					{
-						b: [ "", "1", 0 ]         // not same property name
-					},
-					5, 6, 7
-				], "foo" ] ),
-			false );
+		[ 1, 2, 3, true, {}, null, [
+			{
+				a: [ "", "1", 0 ]
+			},
+			5, 6, 7
+		], "foo" ],
+		[ 1, 2, 3, true, {}, null, [
+			{
+				b: [ "", "1", 0 ]         // not same property name
+			},
+			5, 6, 7
+		], "foo" ] ),
+		false );
 
 	var a = [ {
 		b: fn,
@@ -1114,130 +1114,130 @@ QUnit.test( "Complex Arrays", function( assert ) {
 	}, {} ] ] ];
 
 	assert.equal( QUnit.equiv( a,
-			[ {
-				b: fn,
-				c: false,
-				"do": "reserved word",
-				"for": {
-					ar: [ 3, 5, 9, "hey!", [], {
-						ar: [ 1, [
-							3,4,6,9, null, [], []
-						]],
-						e: fn,
-						f: undefined
-					} ]
-				},
-				e: 0.43445
-			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
-			], [], [[[], "foo", null, {
-				n: 1 / 0,
-				z: {
-					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
-					b: {}
-				}
-			}, {}]]] ), true );
+		[ {
+			b: fn,
+			c: false,
+			"do": "reserved word",
+			"for": {
+				ar: [ 3, 5, 9, "hey!", [], {
+					ar: [ 1, [
+						3,4,6,9, null, [], []
+					]],
+					e: fn,
+					f: undefined
+				} ]
+			},
+			e: 0.43445
+		}, 5, "string", 0, fn, false, null, undefined, 0, [
+			4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
+		], [], [[[], "foo", null, {
+			n: 1 / 0,
+			z: {
+				a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
+				b: {}
+			}
+		}, {}]]] ), true );
 
 	assert.equal( QUnit.equiv( a,
-			[ {
-				b: fn,
-				c: false,
-				"do": "reserved word",
-				"for": {
-					ar: [ 3, 5, 9, "hey!", [], {
-						ar: [ 1, [
-							3,4,6,9, null, [], []
-						]],
-						e: fn,
-						f: undefined
-					} ]
-				},
-				e: 0.43445
-			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 2 ]]]], "3"], {}, 1 / 0    // different: [[[[[2]]]]] instead of [[[[[3]]]]]
-			], [], [[[], "foo", null, {
-				n: 1 / 0,
-				z: {
-					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
-					b: {}
-				}
-			}, {}]]] ), false );
+		[ {
+			b: fn,
+			c: false,
+			"do": "reserved word",
+			"for": {
+				ar: [ 3, 5, 9, "hey!", [], {
+					ar: [ 1, [
+						3,4,6,9, null, [], []
+					]],
+					e: fn,
+					f: undefined
+				} ]
+			},
+			e: 0.43445
+		}, 5, "string", 0, fn, false, null, undefined, 0, [
+			4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 2 ]]]], "3"], {}, 1 / 0    // different: [[[[[2]]]]] instead of [[[[[3]]]]]
+		], [], [[[], "foo", null, {
+			n: 1 / 0,
+			z: {
+				a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
+				b: {}
+			}
+		}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
-			[ {
-				b: fn,
-				c: false,
-				"do": "reserved word",
-				"for": {
-					ar: [ 3, 5, 9, "hey!", [], {
-						ar: [ 1, [
-							3,4,6,9, null, [], []
-						]],
-						e: fn,
-						f: undefined
-					} ]
-				},
-				e: 0.43445
-			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
-			], [], [[[], "foo", null, {
-				n: -1 / 0,                                                                // different, -Infinity instead of Infinity
-				z: {
-					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
-					b: {}
-				}
-			}, {}]]] ), false );
+		[ {
+			b: fn,
+			c: false,
+			"do": "reserved word",
+			"for": {
+				ar: [ 3, 5, 9, "hey!", [], {
+					ar: [ 1, [
+						3,4,6,9, null, [], []
+					]],
+					e: fn,
+					f: undefined
+				} ]
+			},
+			e: 0.43445
+		}, 5, "string", 0, fn, false, null, undefined, 0, [
+			4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
+		], [], [[[], "foo", null, {
+			n: -1 / 0,                                                                // different, -Infinity instead of Infinity
+			z: {
+				a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
+				b: {}
+			}
+		}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
-			[ {
-				b: fn,
-				c: false,
-				"do": "reserved word",
-				"for": {
-					ar: [ 3, 5, 9, "hey!", [], {
-						ar: [ 1, [
-							3,4,6,9, null, [], []
-						]],
-						e: fn,
-						f: undefined
-					} ]
-				},
-				e: 0.43445
-			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
-			], [], [[[], "foo", {                                                       // different: null is missing
-				n: 1 / 0,
-				z: {
-					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
-					b: {}
-				}
-			}, {}]]] ), false );
+		[ {
+			b: fn,
+			c: false,
+			"do": "reserved word",
+			"for": {
+				ar: [ 3, 5, 9, "hey!", [], {
+					ar: [ 1, [
+						3,4,6,9, null, [], []
+					]],
+					e: fn,
+					f: undefined
+				} ]
+			},
+			e: 0.43445
+		}, 5, "string", 0, fn, false, null, undefined, 0, [
+			4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
+		], [], [[[], "foo", {                                                       // different: null is missing
+			n: 1 / 0,
+			z: {
+				a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
+				b: {}
+			}
+		}, {}]]] ), false );
 
 	assert.equal( QUnit.equiv( a,
-			[ {
-				b: fn,
-				c: false,
-				"do": "reserved word",
-				"for": {
-					ar: [ 3, 5, 9, "hey!", [], {
-						ar: [ 1, [
-							3,4,6,9, null, [], []
-						]],
-						e: fn
+		[ {
+			b: fn,
+			c: false,
+			"do": "reserved word",
+			"for": {
+				ar: [ 3, 5, 9, "hey!", [], {
+					ar: [ 1, [
+						3,4,6,9, null, [], []
+					]],
+					e: fn
 
 																				// different: missing property f: undefined
-					} ]
-				},
-				e: 0.43445
-			}, 5, "string", 0, fn, false, null, undefined, 0, [
-				4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
-			], [], [[[], "foo", null, {
-				n: 1 / 0,
-				z: {
-					a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
-					b: {}
-				}
-			}, {}]]] ), false );
+				} ]
+			},
+			e: 0.43445
+		}, 5, "string", 0, fn, false, null, undefined, 0, [
+			4,5,6,7,8,9,11,22,33,44,55,"66", null, [], [[[[[ 3 ]]]], "3" ], {}, 1 / 0
+		], [], [[[], "foo", null, {
+			n: 1 / 0,
+			z: {
+				a: [ 3, 4, 5, 6, "yep!", undefined, undefined ],
+				b: {}
+			}
+		}, {}]]] ), false );
 } );
 
 QUnit.test( "Prototypal inheritance", function( assert ) {
@@ -1723,43 +1723,43 @@ QUnit.test( "Boolean", function( assert ) {
 QUnit.module( "equiv Maps and Sets" );
 
 var hasES6Set = ( function() {
-	if ( typeof Set !== "function" ) {
-		return false;
-	}
+if ( typeof Set !== "function" ) {
+	return false;
+}
 
-	try {
+try {
 
 		// some platforms don't support iterables in Set constructors
-		var s = new Set( [ 1, 2, 3 ] );
-		if ( s.size !== 3 || !s.has( 2 ) ) {
-			return false;
-		}
-
-		// in IE 11, QUnit.objectType( new Set() ) === "object"
-		return ( QUnit.objectType( s ) === "set" );
-	} catch ( e ) {
+	var s = new Set( [ 1, 2, 3 ] );
+	if ( s.size !== 3 || !s.has( 2 ) ) {
 		return false;
 	}
+
+		// in IE 11, QUnit.objectType( new Set() ) === "object"
+	return ( QUnit.objectType( s ) === "set" );
+} catch ( e ) {
+	return false;
+}
 }() );
 
 var hasES6Map = ( function() {
-	if ( typeof Map !== "function" ) {
-		return false;
-	}
+if ( typeof Map !== "function" ) {
+	return false;
+}
 
-	try {
+try {
 
 		// some platforms don't support array-like iterables in Map constructors
-		var m = new Map( [ [ 1, 2 ] ] );
-		if ( m.size !== 1 || !m.has( 1 ) ) {
-			return false;
-		}
-
-		// in IE 11, QUnit.objectType( new Map() ) === "object"
-		return ( QUnit.objectType( m ) === "map" );
-	} catch ( e ) {
+	var m = new Map( [ [ 1, 2 ] ] );
+	if ( m.size !== 1 || !m.has( 1 ) ) {
 		return false;
 	}
+
+		// in IE 11, QUnit.objectType( new Map() ) === "object"
+	return ( QUnit.objectType( m ) === "map" );
+} catch ( e ) {
+	return false;
+}
 }() );
 
 QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function( assert ) {
@@ -1941,7 +1941,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function( assert ) {
 QUnit.module( "equiv Symbols" );
 
 var hasES6Symbol = ( function() {
-	return typeof Symbol === "function";
+return typeof Symbol === "function";
 }() );
 
 QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function( assert ) {
