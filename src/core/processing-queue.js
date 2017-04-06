@@ -34,12 +34,6 @@ function advance() {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
-			if ( config.current ) {
-
-				// Reset async tracking for each phase of the Test lifecycle
-				config.current.usedAsync = false;
-			}
-
 			if ( priorityCount > 0 ) {
 				priorityCount--;
 			}

@@ -33,7 +33,6 @@ export default function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
-	this.usedAsync = false;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
