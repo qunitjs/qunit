@@ -56,6 +56,10 @@ class Assert {
 		const resume = internalStop( test );
 
 		return function done() {
+			if ( config.current !== test ) {
+				throw Error( "assert.async callback called after test finished." );
+			}
+
 			if ( popped ) {
 				test.pushFailure( "Too many calls to the `assert.async` callback",
 					sourceFromStacktrace( 2 ) );

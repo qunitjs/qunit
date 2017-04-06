@@ -173,6 +173,20 @@ QUnit.test( "fails if callback is called more than callback call count", functio
 	done();
 } );
 
+( function() {
+	var previousTestDone;
+
+	QUnit.test( "errors if callback is called after test - part 1", function( assert ) {
+		assert.expect( 0 );
+		previousTestDone = assert.async();
+		previousTestDone();
+	} );
+
+	QUnit.test( "errors if callback is called after test - part 2", function( assert ) {
+		assert.throws( previousTestDone, /assert.async callback called after test finished./ );
+	} );
+}() );
+
 QUnit.module( "assert.async in module hooks", {
 	before: asyncCallback,
 	beforeEach: asyncCallback,
