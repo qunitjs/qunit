@@ -17,7 +17,7 @@ Instruct QUnit to wait for an asynchronous operation.
 
 ### Description
 
-The callback returned from `assert.async()` will throw an Error if it is invoked more than once (or more often than the accepted call count, if provided).
+`assert.async()` returns a callback function and pauses test processing until the callback function is invoked the specified number of times. The callback will throw an `Error` if it is invoked more often than the accepted call count.
 
 This replaces functionality previously provided by [`QUnit.stop()`](/QUnit/stop) and [`QUnit.start()`](/QUnit/start).
 
