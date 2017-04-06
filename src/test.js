@@ -667,7 +667,7 @@ export function internalStop( test ) {
 }
 
 // Forcefully release all processing holds.
-function internalRecover( test ) {
+export function internalRecover( test ) {
 	test.semaphore = 0;
 	internalStart( test );
 }

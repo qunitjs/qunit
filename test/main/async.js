@@ -173,6 +173,19 @@ QUnit.test( "fails if callback is called more than callback call count", functio
 	done();
 } );
 
+QUnit.test( "Current test should not advance while waiting for async", function( assert ) {
+	var done = assert.async();
+
+	assert.expect( 2 );
+
+	assert.strictEqual( QUnit.config.current, assert.test, "Current test is this test" );
+
+	setTimeout( function() {
+		assert.strictEqual( QUnit.config.current, assert.test, "Current test is still this test" );
+		done();
+	}, 100 );
+} );
+
 QUnit.module( "assert.async in module hooks", {
 	before: asyncCallback,
 	beforeEach: asyncCallback,
