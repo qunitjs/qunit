@@ -390,3 +390,21 @@ QUnit.test( "throws", function( assert ) {
 		"throws fail when regexp doesn't match the error message"
 	);
 } );
+
+( function() {
+	var previousTestAssert;
+
+	QUnit.module( "delayed assertions" );
+
+	QUnit.test( "assertions after test finishes throws an error - part 1", function( assert ) {
+		assert.expect( 0 );
+		previousTestAssert = assert;
+	} );
+
+	QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
+		assert.expect( 1 );
+		assert.throws( function() {
+			previousTestAssert.ok( true );
+		}, /Assertion occured after test had finished/ );
+	} );
+}() );
