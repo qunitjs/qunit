@@ -437,23 +437,27 @@ Test.prototype = {
 			then = promise.then;
 			if ( objectType( then ) === "function" ) {
 				resume = internalStop( test );
-				then.call(
-					promise,
-					function() { resume(); },
-					function( error ) {
-						message = "Promise rejected " +
-							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
-							" \"" + test.testName + "\": " +
-							( ( error && error.message ) || error );
-						test.pushFailure( message, extractStacktrace( error, 0 ) );
+				if ( config.notrycatch ) {
+					then.call( promise, function() { resume(); } );
+				} else {
+					then.call(
+						promise,
+						function() { resume(); },
+						function( error ) {
+							message = "Promise rejected " +
+								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+								" \"" + test.testName + "\": " +
+								( ( error && error.message ) || error );
+							test.pushFailure( message, extractStacktrace( error, 0 ) );
 
-						// Else next test will carry the responsibility
-						saveGlobal();
+							// Else next test will carry the responsibility
+							saveGlobal();
 
-						// Unblock
-						resume();
-					}
-				);
+							// Unblock
+							resume();
+						}
+					);
+				}
 			}
 		}
 	},
