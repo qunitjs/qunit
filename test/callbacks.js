@@ -92,9 +92,26 @@ QUnit.done( function() {
 			"log1",
 			"log2",
 			"module1 > afterEach",
+			"testDone1",
+			"testDone2",
+			"moduleStart1",
+			"moduleStart2",
+			"testStart1",
+			"testStart2",
+			"module4 > before",
+			"module1 > beforeEach",
+			"module4 > beforeEach",
+			"module4 > test1",
+			"log1",
+			"log2",
+			"module4 > afterEach",
+			"module1 > afterEach",
+			"module4 > after",
 			"module1 > after",
 			"testDone1",
 			"testDone2",
+			"moduleDone1",
+			"moduleDone2",
 			"moduleDone1",
 			"moduleDone2",
 			"done1",
@@ -141,5 +158,17 @@ QUnit.module( "module1", {
 	QUnit.test( "test2", function( assert ) {
 		invokedHooks.push( "module1 > test2" );
 		assert.ok( true );
+	} );
+
+	QUnit.module( "module4", {
+		before: callback( "module4 > before" ),
+		beforeEach: callback( "module4 > beforeEach" ),
+		afterEach: callback( "module4 > afterEach" ),
+		after: callback( "module4 > after" )
+	}, function() {
+		QUnit.test( "test1", function( assert ) {
+			invokedHooks.push( "module4 > test1" );
+			assert.ok( true );
+		} );
 	} );
 } );
