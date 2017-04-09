@@ -33,7 +33,6 @@ export default function Test( settings ) {
 	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
-	this.usedAsync = false;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
@@ -281,6 +280,20 @@ Test.prototype = {
 		} );
 
 		if ( module.testsRun === numberOfTests( module ) ) {
+			logSuiteEnd( module );
+
+			// Check if the parent modules, iteratively, are done. If that the case,
+			// we emit the `suiteEnd` event and trigger `moduleDone` callback.
+			let parent = module.parentModule;
+			while ( parent && parent.testsRun === numberOfTests( parent ) ) {
+				logSuiteEnd( parent );
+				parent = parent.parentModule;
+			}
+		}
+
+		config.current = undefined;
+
+		function logSuiteEnd( module ) {
 			emit( "suiteEnd", module.suiteReport.end( true ) );
 			runLoggingCallbacks( "moduleDone", {
 				name: module.name,
@@ -291,8 +304,6 @@ Test.prototype = {
 				runtime: now() - module.stats.started
 			} );
 		}
-
-		config.current = undefined;
 	},
 
 	preserveTestEnvironment: function() {

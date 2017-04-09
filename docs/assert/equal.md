@@ -20,9 +20,9 @@ A non-strict comparison, roughly equivalent to JUnit's `assertEquals`.
 
 The `equal` assertion uses the simple comparison operator (`==`) to compare the actual and expected arguments. When they are equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
-[`notEqual()`](/assert/notEqual/) can be used to explicitly test inequality.
+[`notEqual()`](/assert/notEqual) can be used to explicitly test inequality.
 
-[`strictEqual()`](/assert/strictEqual/) can be used to test strict equality.
+[`strictEqual()`](/assert/strictEqual) can be used to test strict equality.
 
 ### Examples
 

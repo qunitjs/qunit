@@ -197,6 +197,21 @@ p {
     text-align: center;
 }
 
+.warning, .note {
+	padding: 0.5em 1em;
+	margin: 1em;
+	border-radius: 5px;
+}
+
+.warning {
+	background: #fff3a5;
+}
+
+.note {
+	background: #428bca;
+	color: #fff;
+}
+
 /*-------------------------------*/
 /*---------Site wide header -----*/
 /*-------------------------------*/
