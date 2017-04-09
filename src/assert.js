@@ -52,7 +52,6 @@ class Assert {
 			acceptCallCount = 1;
 		}
 
-		test.usedAsync = true;
 		const resume = internalStop( test );
 
 		return function done() {
@@ -105,13 +104,6 @@ class Assert {
 		// not exactly the test where assertion were intended to be called.
 		if ( !currentTest ) {
 			throw new Error( "assertion outside test context, in " + sourceFromStacktrace( 2 ) );
-		}
-
-		if ( currentTest.usedAsync === true && currentTest.semaphore === 0 ) {
-			currentTest.pushFailure( "Assertion after the final `assert.async` was resolved",
-				sourceFromStacktrace( 2 ) );
-
-			// Allow this assertion to continue running anyway...
 		}
 
 		if ( !( assert instanceof Assert ) ) {
