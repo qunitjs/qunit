@@ -5,9 +5,9 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 		originalQUnitOnError = QUnit.onError;
 	} );
 
-    hooks.afterEach( function() {
-        QUnit.onError = originalQUnitOnError;
-    } );
+	hooks.afterEach( function() {
+		QUnit.onError = originalQUnitOnError;
+	} );
 
 	QUnit.test( "Should call QUnit.onError", function( assert ) {
 		assert.expect( 1 );
