@@ -20,9 +20,9 @@ A strict type and value comparison.
 
 The `strictEqual()` assertion provides the most rigid comparison of type and value with the strict equality operator (`===`).
 
-[`equal()`](/assert/equal/) can be used to test non-strict equality.
+[`equal()`](/assert/equal) can be used to test non-strict equality.
 
-[`notStrictEqual()`](/assert/notStrictEqual/) can be used to explicitly test strict inequality.
+[`notStrictEqual()`](/assert/notStrictEqual) can be used to explicitly test strict inequality.
 
 ### Example
 

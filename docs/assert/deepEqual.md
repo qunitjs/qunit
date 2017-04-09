@@ -20,7 +20,7 @@ A deep recursive comparison, working on primitive types, arrays, objects, regula
 
 The `deepEqual()` assertion can be used just like `equal()` when comparing the value of objects, such that `{ key: value }` is equal to `{ key: value }`. For non-scalar values, identity will be disregarded by `deepEqual`.
 
-[`notDeepEqual()`](/assert/notDeepEqual/) can be used to explicitly test deep, strict inequality.
+[`notDeepEqual()`](/assert/notDeepEqual) can be used to explicitly test deep, strict inequality.
 
 ### Examples
 
