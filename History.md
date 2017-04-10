@@ -1,3 +1,23 @@
+2.3.1 / 2017-04-10
+==================
+
+  * Tests: Emit `suiteEnd` and trigger `moduleDone` for parent modules
+  * Docs: Remove trailing slash from some urls
+  * All: Enable ESLint indent rule (#1143)
+  * Docs: Update assert.async documentation
+  * Assert: Allow assertions after async
+  * Docs: Copy styles from jquery-wp-content
+  * Docs: Render markdown inside HTML blocks
+  * Core: Ensure assertions occur while test is running
+  * Assert: Throw if async callback invoked after test finishes
+  * Tests: Add additional events test
+  * Tests: Re-order events test
+  * Core: Slim assertions after reporting them
+  * Core: Fix test instance memory leak (#1138)
+  * Docs: Remove baseurl as github is inserting an automatic value (#1136)
+  * Docs: Migrate api docs (#1135)
+  * Readme: Added Gitter badge (#1134)
+
 2.3.0 / 2017-03-29
 ==================
 

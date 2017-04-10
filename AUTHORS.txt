@@ -25,7 +25,6 @@ Benjamin Lee <leebenjp@gmail.com>
 Paul Irish <paul.irish@gmail.com>
 Oleg Slobodskoi <oleg008@gmail.com>
 Anton Matzneller <obhvsbypqghgc@gmail.com>
-Aurélien Bombo <hellosexyprout@gmail.com>
 Mathias Bynens <mathias@qiwi.be>
 Erik Vold <erikvvold@gmail.com>
 Wesley Walser <waw325@gmail.com>
