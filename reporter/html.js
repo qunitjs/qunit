@@ -781,12 +781,12 @@ export function escapeText( s ) {
 				message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
 					escapeText( actual ) + "</pre></td></tr>";
 
-				if ( "number" === typeof details.actual && "number" === typeof details.expected ) {
+				if ( typeof details.actual === "number" && typeof details.expected === "number" ) {
 					showDiff = true;
 					diff = ( details.actual - details.expected );
 					diff = ( diff > 0 ? "+" : "" ) + diff;
-				} else if ( "boolean" !== typeof details.actual &&
-							"boolean" !== typeof details.expected ) {
+				} else if ( typeof details.actual !== "boolean" &&
+							typeof details.expected !== "boolean" ) {
 					diff = QUnit.diff( expected, actual );
 
 					// don't show diff if there is zero overlap
