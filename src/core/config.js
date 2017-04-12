@@ -51,7 +51,11 @@ const config = {
 	callbacks: {},
 
 	// The storage module to use for reordering tests
-	storage: localSessionStorage
+	storage: localSessionStorage,
+
+	// Project path. If set, the first occurrence on each line of the stack trace
+	// will be removed. Serves to clean up the output. This is it's only use.
+	projectPath: undefined
 };
 
 // take a predefined QUnit.config and extend the defaults

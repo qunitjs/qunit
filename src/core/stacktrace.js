@@ -1,3 +1,5 @@
+import config from "./config";
+
 // Doesn't support IE9, it will return undefined on these browsers
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 var fileName = ( sourceFromStacktrace( 0 ) || "" )
@@ -7,7 +9,7 @@ var fileName = ( sourceFromStacktrace( 0 ) || "" )
 export function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 4 : offset;
 
-	var stack, include, i;
+	var stack, include, includeLine, i;
 
 	if ( e && e.stack ) {
 		stack = e.stack.split( "\n" );
@@ -20,7 +22,13 @@ export function extractStacktrace( e, offset ) {
 				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
 					break;
 				}
-				include.push( stack[ i ] );
+				includeLine = stack[ i ];
+				if ( config.projectPath ) {
+
+					// replace on each line separately so only one occurence per line is replaced
+					includeLine = includeLine.replace( config.projectPath, "" );
+				}
+				include.push( includeLine );
 			}
 			if ( include.length ) {
 				return include.join( "\n" );
