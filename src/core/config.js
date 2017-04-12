@@ -44,8 +44,10 @@ const config = {
 	currentModule: {
 		name: "",
 		tests: [],
+		unskippedTests: [],
 		childModules: [],
-		testsRun: 0
+		testsRun: 0,
+		unskippedTestsRun: 0
 	},
 
 	callbacks: {},

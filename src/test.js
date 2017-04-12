@@ -64,6 +64,10 @@ export default function Test( settings ) {
 		this.async = false;
 		this.expected = 0;
 	} else {
+		this.module.unskippedTests.push( {
+			name: this.testName,
+			testId: this.testId
+		} );
 		this.assert = new Assert( this );
 	}
 }
@@ -158,7 +162,7 @@ Test.prototype = {
 			test = this;
 		return function runHook() {
 			if ( hookName === "before" ) {
-				if ( hookOwner.testsRun !== 0 ) {
+				if ( hookOwner.unskippedTestsRun !== 0 ) {
 					return;
 				}
 
@@ -166,7 +170,7 @@ Test.prototype = {
 			}
 
 			if ( hookName === "after" &&
-				hookOwner.testsRun !== numberOfTests( hookOwner ) - 1 &&
+				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
 				config.queue.length > 2 ) {
 				return;
 			}
@@ -245,7 +249,7 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( module );
+		notifyTestsRan( module, skipped );
 
 		// Store result when possible
 		if ( storage ) {
@@ -737,23 +741,41 @@ function internalStart( test ) {
 	}
 }
 
-function numberOfTests( module ) {
-	let count = module.tests.length;
+function collectTests( module, key ) {
+	let tests = [].concat( module[ key ] );
 	const modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
 		const nextModule =  modules.shift();
-		count += nextModule.tests.length;
+		tests = tests.concat( nextModule[ key ] );
 		modules.push( ...nextModule.childModules );
 	}
 
-	return count;
+	return tests;
 }
 
-function notifyTestsRan( module ) {
+function numberOfTests( module ) {
+	return collectTests( module, "tests" ).length;
+}
+
+function numberOfUnskippedTests( module ) {
+	return collectTests( module, "unskippedTests" ).length;
+}
+
+function notifyTestsRan( module, skipped ) {
+	const thisModule = module;
+
 	module.testsRun++;
 	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
+	}
+
+	if ( !skipped ) {
+		module = thisModule;
+		module.unskippedTestsRun++;
+		while ( ( module = module.parentModule ) ) {
+			module.unskippedTestsRun++;
+		}
 	}
 }
