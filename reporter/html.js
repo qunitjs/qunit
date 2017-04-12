@@ -785,19 +785,16 @@ export function escapeText( s ) {
 					showDiff = true;
 					diff = ( details.actual - details.expected );
 					diff = ( diff > 0 ? "+" : "" ) + diff;
-				} else {
+				} else if ( "boolean" !== typeof details.actual &&
+							"boolean" !== typeof details.expected ) {
+					diff = QUnit.diff( expected, actual );
 
-					// Don't show diff if actual or expected are booleans
-					if ( !( /^(true|false)$/.test( actual ) ) &&
-						!( /^(true|false)$/.test( expected ) ) ) {
-						diff = QUnit.diff( expected, actual );
-						showDiff = stripHtml( diff ).length !==
-							stripHtml( expected ).length +
-							stripHtml( actual ).length;
-					}
+					// don't show diff if there is zero overlap
+					showDiff = stripHtml( diff ).length !==
+						stripHtml( expected ).length +
+						stripHtml( actual ).length;
 				}
 
-				// Don't show diff if expected and actual are totally different
 				if ( showDiff ) {
 					message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
 					diff + "</pre></td></tr>";
