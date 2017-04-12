@@ -120,7 +120,6 @@ QUnit.module( "before/after with all tests skipped (wrapper)", function() {
 
 	QUnit.module( "verifier", function() {
 		QUnit.test( "hooks did not run", function( assert ) {
-			assert.expect( 2 );
 			assert.equal( ranBeforeHook, 0, "before hook did not run" );
 			assert.equal( ranAfterHook, 0, "after hook did not run" );
 		} );

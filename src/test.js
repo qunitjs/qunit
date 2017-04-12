@@ -742,13 +742,13 @@ function internalStart( test ) {
 }
 
 function collectTests( module, key ) {
-	let tests = [].concat( module[ key ] );
+	const tests = [].concat( module[ key ] );
 	const modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
 		const nextModule =  modules.shift();
-		tests = tests.concat( nextModule[ key ] );
+		tests.push.apply( tests, nextModule[ key ] );
 		modules.push( ...nextModule.childModules );
 	}
 
