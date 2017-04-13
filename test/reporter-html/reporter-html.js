@@ -29,7 +29,12 @@ QUnit.test( "<script id='qunit-unescaped-test'>'test';</script>", function( asse
 	assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 } );
 
-QUnit.module( "display test info" );
+QUnit.module( "display test info", {
+	getPreviousTest: function( assert ) {
+		return document.getElementById( "qunit-test-output-" + assert.test.testId  )
+			.previousSibling;
+	}
+} );
 
 QUnit.test( "running test name displayed", function( assert ) {
 	assert.expect( 2 );
@@ -41,6 +46,20 @@ QUnit.test( "running test name displayed", function( assert ) {
 	);
 	assert.ok( /display test info/.test( displaying.innerHTML ),
 		"Expect module name to be found in displayed text"
+	);
+} );
+
+QUnit.test( "previous test displays filtering run options", function( assert ) {
+	assert.expect( 2 );
+
+	var previous = this.getPreviousTest( assert ),
+		filteringLinks = previous.getElementsByTagName( "a" );
+
+	assert.ok( /^Rerun$/.test( filteringLinks[ 0 ].innerHTML ),
+		"'Rerun' link displayed"
+	);
+	assert.ok( /^Run module$/.test( filteringLinks[ 1 ].innerHTML ),
+		"'Run module' link displayed"
 	);
 } );
 
