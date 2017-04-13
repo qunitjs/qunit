@@ -63,6 +63,8 @@ By default, QUnit will run tests within a `try-catch` block to prevent uncaught 
 
 Enabling this flag will run tests without the `try-catch` to allow exceptions to remain uncaught for easier debugging in certain environments.
 
+If set, no rejection handler will be attached to promises returned by tests. This has a similar effect and allows debuggers to pause at the right location if an error occurs.
+
 ### `QUnit.config.noglobals` (boolean) | default: `false`
 
 Enabling this flag will cause QUnit to check if any new properties have been added to the global context after each test. New global properties being found will result in test failures to help ensure your tests are not leaking state.
