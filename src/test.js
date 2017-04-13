@@ -54,7 +54,8 @@ export default function Test( settings ) {
 
 	this.module.tests.push( {
 		name: this.testName,
-		testId: this.testId
+		testId: this.testId,
+		skip: !!settings.skip
 	} );
 
 	if ( settings.skip ) {
@@ -64,10 +65,6 @@ export default function Test( settings ) {
 		this.async = false;
 		this.expected = 0;
 	} else {
-		this.module.unskippedTests.push( {
-			name: this.testName,
-			testId: this.testId
-		} );
 		this.assert = new Assert( this );
 	}
 }
@@ -741,14 +738,14 @@ function internalStart( test ) {
 	}
 }
 
-function collectTests( module, key ) {
-	const tests = [].concat( module[ key ] );
+function collectTests( module ) {
+	const tests = [].concat( module.tests );
 	const modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
 		const nextModule =  modules.shift();
-		tests.push.apply( tests, nextModule[ key ] );
+		tests.push.apply( tests, nextModule.tests );
 		modules.push( ...nextModule.childModules );
 	}
 
@@ -756,11 +753,11 @@ function collectTests( module, key ) {
 }
 
 function numberOfTests( module ) {
-	return collectTests( module, "tests" ).length;
+	return collectTests( module ).length;
 }
 
 function numberOfUnskippedTests( module ) {
-	return collectTests( module, "unskippedTests" ).length;
+	return collectTests( module ).filter( test => !test.skip ).length;
 }
 
 function notifyTestsRan( module, skipped ) {

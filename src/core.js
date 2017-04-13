@@ -44,7 +44,6 @@ function createModule( name, testEnvironment ) {
 		name: moduleName,
 		parentModule: parentModule,
 		tests: [],
-		unskippedTests: [],
 		moduleId: generateHash( moduleName ),
 		testsRun: 0,
 		unskippedTestsRun: 0,

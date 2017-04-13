@@ -44,7 +44,6 @@ const config = {
 	currentModule: {
 		name: "",
 		tests: [],
-		unskippedTests: [],
 		childModules: [],
 		testsRun: 0,
 		unskippedTestsRun: 0
