@@ -779,18 +779,24 @@ export function escapeText( s ) {
 			if ( actual !== expected ) {
 
 				message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
-				escapeText( actual ) + "</pre></td></tr>";
+					escapeText( actual ) + "</pre></td></tr>";
 
-			// Don't show diff if actual or expected are booleans
-				if ( !( /^(true|false)$/.test( actual ) ) &&
-					!( /^(true|false)$/.test( expected ) ) ) {
+				if ( typeof details.actual === "number" && typeof details.expected === "number" ) {
+					if ( !isNaN( details.actual ) && !isNaN( details.expected ) ) {
+						showDiff = true;
+						diff = ( details.actual - details.expected );
+						diff = ( diff > 0 ? "+" : "" ) + diff;
+					}
+				} else if ( typeof details.actual !== "boolean" &&
+							typeof details.expected !== "boolean" ) {
 					diff = QUnit.diff( expected, actual );
+
+					// don't show diff if there is zero overlap
 					showDiff = stripHtml( diff ).length !==
-					stripHtml( expected ).length +
-					stripHtml( actual ).length;
+						stripHtml( expected ).length +
+						stripHtml( actual ).length;
 				}
 
-			// Don't show diff if expected and actual are totally different
 				if ( showDiff ) {
 					message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
 					diff + "</pre></td></tr>";
