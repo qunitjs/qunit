@@ -15,11 +15,13 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 		tests: [
 			( module1Test1 = {
 				"name": "test1",
-				"testId": "646e9e25"
+				"testId": "646e9e25",
+				"skip": false
 			} ),
 			( module1Test2 = {
 				"name": "test2",
-				"testId": "646e9e26"
+				"testId": "646e9e26",
+				"skip": false
 			} )
 		]
 	},
@@ -28,27 +30,33 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 		tests: [
 			( module2Test1 = {
 				"name": "test1",
-				"testId": "9954d966"
+				"testId": "9954d966",
+				"skip": false
 			} ),
 			( module2Test2 = {
 				"name": "test2",
-				"testId": "9954d967"
+				"testId": "9954d967",
+				"skip": false
 			} ),
 			( module2Test3 = {
 				"name": "a skipped test",
-				"testId": "3e797d3a"
+				"testId": "3e797d3a",
+				"skip": true
 			} ),
 			( module2Test4 = {
 				"name": "test the log for the skipped test",
-				"testId": "d3266148"
+				"testId": "d3266148",
+				"skip": false
 			} ),
 			( module2Test5 = {
 				"name": "a todo test",
-				"testId": "77a47174"
+				"testId": "77a47174",
+				"skip": false
 			} ),
 			( module2Test6 = {
 				"name": "test the log for the todo test",
-				"testId": "5f5ab826"
+				"testId": "5f5ab826",
+				"skip": false
 			} )
 		]
 	};

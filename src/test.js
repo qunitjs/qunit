@@ -54,7 +54,8 @@ export default function Test( settings ) {
 
 	this.module.tests.push( {
 		name: this.testName,
-		testId: this.testId
+		testId: this.testId,
+		skip: !!settings.skip
 	} );
 
 	if ( settings.skip ) {
@@ -158,7 +159,7 @@ Test.prototype = {
 			test = this;
 		return function runHook() {
 			if ( hookName === "before" ) {
-				if ( hookOwner.testsRun !== 0 ) {
+				if ( hookOwner.unskippedTestsRun !== 0 ) {
 					return;
 				}
 
@@ -166,7 +167,7 @@ Test.prototype = {
 			}
 
 			if ( hookName === "after" &&
-				hookOwner.testsRun !== numberOfTests( hookOwner ) - 1 &&
+				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
 				config.queue.length > 2 ) {
 				return;
 			}
@@ -245,7 +246,7 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( module );
+		notifyTestsRan( module, skipped );
 
 		// Store result when possible
 		if ( storage ) {
@@ -737,23 +738,37 @@ function internalStart( test ) {
 	}
 }
 
-function numberOfTests( module ) {
-	let count = module.tests.length;
+function collectTests( module ) {
+	const tests = [].concat( module.tests );
 	const modules = [ ...module.childModules ];
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
 		const nextModule =  modules.shift();
-		count += nextModule.tests.length;
+		tests.push.apply( tests, nextModule.tests );
 		modules.push( ...nextModule.childModules );
 	}
 
-	return count;
+	return tests;
 }
 
-function notifyTestsRan( module ) {
+function numberOfTests( module ) {
+	return collectTests( module ).length;
+}
+
+function numberOfUnskippedTests( module ) {
+	return collectTests( module ).filter( test => !test.skip ).length;
+}
+
+function notifyTestsRan( module, skipped ) {
 	module.testsRun++;
+	if ( !skipped ) {
+		module.unskippedTestsRun++;
+	}
 	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
+		if ( !skipped ) {
+			module.unskippedTestsRun++;
+		}
 	}
 }

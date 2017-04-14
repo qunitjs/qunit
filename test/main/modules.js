@@ -49,6 +49,18 @@ QUnit.test( "does not run before subsequent tests", function( assert ) {
 	assert.equal( this.beforeCount, 1, "beforeCount did not increase from last test" );
 } );
 
+QUnit.module( "before (skip)", {
+	before: function( assert ) {
+		assert.ok( true, "before hook ran" );
+	}
+} );
+
+QUnit.skip( "first test in module is skipped" );
+
+QUnit.test( "runs before first unskipped test", function( assert ) {
+	assert.expect( 1 );
+} );
+
 QUnit.module( "after", {
 	after: function( assert ) {
 		assert.ok( true, "after hook ran" );
@@ -62,6 +74,33 @@ QUnit.test( "does not run after initial tests", function( assert ) {
 QUnit.test( "runs after final test", function( assert ) {
 	assert.expect( 1 );
 } );
+
+QUnit.module( "after (skip)", {
+	after: function( assert ) {
+		assert.ok( true, "after hook ran" );
+	}
+} );
+
+QUnit.test( "does not run after initial tests", function( assert ) {
+	assert.expect( 0 );
+} );
+
+QUnit.test( "runs after final unskipped test", function( assert ) {
+	assert.expect( 1 );
+} );
+
+QUnit.skip( "last test in module is skipped" );
+
+QUnit.module( "before/after with all tests skipped", {
+	before: function( assert ) {
+		assert.ok( false, "should not occur" );
+	},
+	after: function( assert ) {
+		assert.ok( false, "should not occur" );
+	}
+} );
+
+QUnit.skip( "verifier" );
 
 QUnit.module( "Test context object", {
 	beforeEach: function( assert ) {

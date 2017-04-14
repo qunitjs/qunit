@@ -45,7 +45,8 @@ const config = {
 		name: "",
 		tests: [],
 		childModules: [],
-		testsRun: 0
+		testsRun: 0,
+		unskippedTestsRun: 0
 	},
 
 	callbacks: {},
