@@ -761,17 +761,13 @@ function numberOfUnskippedTests( module ) {
 }
 
 function notifyTestsRan( module, skipped ) {
-	const thisModule = module;
-
 	module.testsRun++;
+	if ( !skipped ) {
+		module.unskippedTestsRun++;
+	}
 	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
-	}
-
-	if ( !skipped ) {
-		module = thisModule;
-		module.unskippedTestsRun++;
-		while ( ( module = module.parentModule ) ) {
+		if ( !skipped ) {
 			module.unskippedTestsRun++;
 		}
 	}
