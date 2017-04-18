@@ -1,3 +1,10 @@
+2.3.2 / 2017-04-17
+==================
+
+  * HTML Reporter: Add specific diff for number types instead of str-diff. (#1155)
+  * Core: Fix bug calling hooks with skipped tests (#1156)
+  * Docs: Fix title and index link
+
 2.3.1 / 2017-04-10
 ==================
 
