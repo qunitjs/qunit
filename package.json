@@ -34,8 +34,9 @@
     "chokidar": "1.6.1",
     "commander": "2.9.0",
     "exists-stat": "1.0.0",
-    "findup-sync": "^0.4.3",
+    "findup-sync": "0.4.3",
     "js-reporters": "1.2.0",
+    "resolve": "1.3.2",
     "walk-sync": "0.3.1"
   },
   "devDependencies": {

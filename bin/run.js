@@ -2,6 +2,7 @@
 
 const path = require( "path" );
 
+const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
 
 const IGNORED_GLOBS = [
@@ -13,20 +14,7 @@ let QUnit;
 function run( args, options ) {
 	const files = utils.getFilesFromArgs( args );
 
-	// During development, QUnit is built into "dist/", but when published to npm
-	// we move it to "qunit/". This IIFE handles both cases.
-	QUnit = ( function requireQUnit() {
-		try {
-			delete require.cache[ require.resolve( "../qunit/qunit" ) ];
-			return require( "../qunit/qunit" );
-		} catch ( e ) {
-			if ( e.code === "MODULE_NOT_FOUND" ) {
-				delete require.cache[ require.resolve( "../dist/qunit" ) ];
-				return require( "../dist/qunit" );
-			}
-			throw e;
-		}
-	}() );
+	QUnit = requireQUnit();
 
 	if ( options.filter ) {
 		QUnit.config.filter = options.filter;
