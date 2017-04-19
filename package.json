@@ -67,6 +67,7 @@
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
+    "proxyquire": "1.7.11",
     "requirejs": "2.3.2",
     "rollup-plugin-babel": "2.6.1"
   },
