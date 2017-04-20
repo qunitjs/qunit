@@ -165,6 +165,7 @@ module.exports = function( grunt ) {
 				"test/main/test",
 				"test/main/assert",
 				"test/main/assert/step",
+				"test/main/assert/timeout",
 				"test/main/async",
 				"test/main/promise",
 				"test/main/modules",
