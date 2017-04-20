@@ -35,6 +35,7 @@ export default function Test( settings ) {
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
+	this.timeout = undefined;
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
@@ -164,6 +165,15 @@ Test.prototype = {
 		function runTest( test ) {
 			promise = test.callback.call( test.testEnvironment, test.assert );
 			test.resolvePromise( promise );
+
+			// If the test has a "lock" on it, but the timeout is 0, then we push a
+			// failure as the test should be synchronous.
+			if ( test.timeout === 0 && test.semaphore !== 0 ) {
+				pushFailure(
+					"Test did not finish synchronously even though assert.timeout( 0 ) was used.",
+					sourceFromStacktrace( 2 )
+				);
+			}
 		}
 	},
 
@@ -677,20 +687,33 @@ export function only( testName, callback ) {
 
 // Put a hold on processing and return a function that will release it.
 export function internalStop( test ) {
-	var released = false;
-
 	test.semaphore += 1;
 	config.blocking = true;
 
 	// Set a recovery timeout, if so configured.
-	if ( config.testTimeout && defined.setTimeout ) {
-		clearTimeout( config.timeout );
-		config.timeout = setTimeout( function() {
-			pushFailure( "Test timed out", sourceFromStacktrace( 2 ) );
-			internalRecover( test );
-		}, config.testTimeout );
+	if ( defined.setTimeout ) {
+		let timeoutDuration;
+
+		if ( typeof test.timeout === "number" ) {
+			timeoutDuration = test.timeout;
+		} else if ( typeof config.testTimeout === "number" ) {
+			timeoutDuration = config.testTimeout;
+		}
+
+		if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
+			clearTimeout( config.timeout );
+			config.timeout = setTimeout( function() {
+				pushFailure(
+					`Test took longer than ${timeoutDuration}ms; test timed out.`,
+					sourceFromStacktrace( 2 )
+				);
+				internalRecover( test );
+			}, timeoutDuration );
+		}
+
 	}
 
+	let released = false;
 	return function resume() {
 		if ( released ) {
 			return;

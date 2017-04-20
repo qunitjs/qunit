@@ -14,6 +14,14 @@ class Assert {
 
 	// Assert helpers
 
+	timeout( duration ) {
+		if ( typeof duration !== "number" ) {
+			throw new Error( "You must pass a number as the duration to assert.timeout" );
+		}
+
+		this.test.timeout = duration;
+	}
+
 	// Documents a "step", which is a string value, in a test as a passing assertion
 	step( message ) {
 		const result = !!message;
