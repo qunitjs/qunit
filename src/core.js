@@ -17,6 +17,7 @@ import SuiteReport from "./reports/suite";
 import { on, emit } from "./events";
 import onError from "./core/onerror";
 
+let focused = false;
 const QUnit = {};
 export const globalSuite = new SuiteReport();
 
@@ -35,7 +36,7 @@ QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
 
-function createModule( name, testEnvironment ) {
+function createModule( { name, testEnvironment, todo, skip } ) {
 	const parentModule = moduleStack.length ? moduleStack.slice( -1 )[ 0 ] : null;
 	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
 	const parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
@@ -48,7 +49,14 @@ function createModule( name, testEnvironment ) {
 		testsRun: 0,
 		unskippedTestsRun: 0,
 		childModules: [],
-		suiteReport: new SuiteReport( name, parentSuite )
+		suiteReport: new SuiteReport( name, parentSuite ),
+
+		// Pass along `skip` and `todo` properties from patent module, in case there
+		// is one, to childs. And use own otherwise.
+		// These properties will be used to mark own tests and tests of child suites
+		// as either `skipped` or `todo`.
+		skip: parentModule !== null && parentModule.skip || skip,
+		todo: parentModule !== null && parentModule.todo || todo
 	};
 
 	const env = {};
@@ -63,53 +71,106 @@ function createModule( name, testEnvironment ) {
 	return module;
 }
 
+function processModule( { name, testEnvironment, executeNow, skip = false, todo = false } ) {
+	let module = createModule( { name, testEnvironment, skip, todo } );
+
+	// Move any hooks to a 'hooks' object
+	if ( module.testEnvironment ) {
+		module.hooks = {
+			before: module.testEnvironment.before,
+			beforeEach: module.testEnvironment.beforeEach,
+			afterEach: module.testEnvironment.afterEach,
+			after: module.testEnvironment.after
+		};
+
+		delete module.testEnvironment.before;
+		delete module.testEnvironment.beforeEach;
+		delete module.testEnvironment.afterEach;
+		delete module.testEnvironment.after;
+	}
+
+	const moduleFns = {
+		before: setHook( module, "before" ),
+		beforeEach: setHook( module, "beforeEach" ),
+		afterEach: setHook( module, "afterEach" ),
+		after: setHook( module, "after" )
+	};
+
+	const currentModule = config.currentModule;
+	if ( objectType( executeNow ) === "function" ) {
+		moduleStack.push( module );
+		config.currentModule = module;
+		executeNow.call( module.testEnvironment, moduleFns );
+		moduleStack.pop();
+		module = module.parentModule || currentModule;
+	}
+
+	config.currentModule = module;
+}
+
+function module( name, testEnvironment, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( testEnvironment ) === "function" ) {
+			executeNow = testEnvironment;
+			testEnvironment = undefined;
+		}
+	}
+
+	processModule( { name, testEnvironment, executeNow } );
+}
+
+module.only = function() {
+	if ( focused ) {
+		return;
+	}
+
+	moduleStack.length = 0;
+	config.modules.length = 0;
+	config.queue.length = 0;
+
+	module.apply( null, arguments );
+
+	focused = true;
+};
+
+module.skip = function( name, testEnvironment, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( testEnvironment ) === "function" ) {
+			executeNow = testEnvironment;
+			testEnvironment = undefined;
+		}
+	}
+
+	processModule( { name, testEnvironment, executeNow, skip: true } );
+};
+
+module.todo = function( name, testEnvironment, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( testEnvironment ) === "function" ) {
+			executeNow = testEnvironment;
+			testEnvironment = undefined;
+		}
+	}
+
+	processModule( { name, testEnvironment, executeNow, todo: true } );
+};
+
 extend( QUnit, {
 	on,
 
-	// Call on start of module test to prepend name to all tests
-	module: function( name, testEnvironment, executeNow ) {
-		if ( arguments.length === 2 ) {
-			if ( objectType( testEnvironment ) === "function" ) {
-				executeNow = testEnvironment;
-				testEnvironment = undefined;
-			}
-		}
-
-		let module = createModule( name, testEnvironment );
-
-		// Move any hooks to a 'hooks' object
-		if ( module.testEnvironment ) {
-			module.hooks = {
-				before: module.testEnvironment.before,
-				beforeEach: module.testEnvironment.beforeEach,
-				afterEach: module.testEnvironment.afterEach,
-				after: module.testEnvironment.after
-			};
-
-			delete module.testEnvironment.before;
-			delete module.testEnvironment.beforeEach;
-			delete module.testEnvironment.afterEach;
-			delete module.testEnvironment.after;
-		}
-
-		const moduleFns = {
-			before: setHook( module, "before" ),
-			beforeEach: setHook( module, "beforeEach" ),
-			afterEach: setHook( module, "afterEach" ),
-			after: setHook( module, "after" )
-		};
-
-		const currentModule = config.currentModule;
-		if ( objectType( executeNow ) === "function" ) {
-			moduleStack.push( module );
-			config.currentModule = module;
-			executeNow.call( module.testEnvironment, moduleFns );
-			moduleStack.pop();
-			module = module.parentModule || currentModule;
-		}
-
-		config.currentModule = module;
-	},
+	module: module,
 
 	test: test,
 

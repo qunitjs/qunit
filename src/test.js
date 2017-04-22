@@ -30,16 +30,37 @@ export default function Test( settings ) {
 	++Test.count;
 
 	this.expected = null;
-	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
 
+	// If a module is skipped, all its tests and the tests of the child suites
+	// should be treated as skipped even if they are defined as `only` or `todo`.
+	//
+	// The same goes for a `todo` module.
+	//
+	// So, if a test is defined as `skip` and is inside a `todo` module, we should
+	// then define our own callback that will be executed as if the test was
+	// defined as a `todo`.
+	if ( this.module.skip ) {
+		settings.skip = true;
+		settings.todo = false;
+	} else if ( this.module.todo ) {
+		if ( settings.skip ) {
+			settings.callback = function( assert ) { assert.ok( false ); };
+		}
+
+		settings.skip = false;
+		settings.todo = true;
+	}
+
+	extend( this, settings );
+
 	this.testReport = new TestReport( settings.testName, this.module.suiteReport, {
-		todo: settings.todo,
-		skip: settings.skip,
+		todo: !!this.todo,
+		skip: !!this.skip,
 		valid: this.valid()
 	} );
 
@@ -55,10 +76,10 @@ export default function Test( settings ) {
 	this.module.tests.push( {
 		name: this.testName,
 		testId: this.testId,
-		skip: !!settings.skip
+		skip: !!this.skip
 	} );
 
-	if ( settings.skip ) {
+	if ( !!this.skip ) {
 
 		// Skipped tests will fully ignore any sent callback
 		this.callback = function() {};
@@ -643,8 +664,12 @@ export function only( testName, callback ) {
 		return;
 	}
 
-	config.queue.length = 0;
-	focused = true;
+	// Only empty the queue in case this test is not part of a skipped module
+	// or todo one
+	if ( !config.currentModule.skip && !config.currentModule.todo ) {
+		config.queue.length = 0;
+		focused = true;
+	}
 
 	const newTest = new Test( {
 		testName: testName,
