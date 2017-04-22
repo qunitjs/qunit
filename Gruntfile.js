@@ -173,7 +173,7 @@ module.exports = function( grunt ) {
 				"test/node/storage-2"
 			]
 		},
-		watch: {
+		"watch-repeatable": {
 			options: {
 				atBegin: true,
 				spawn: false,
@@ -187,7 +187,7 @@ module.exports = function( grunt ) {
 				"src/qunit.css",
 				"test/**/*.html"
 			],
-			tasks: "default"
+			tasks: [ "build", "test-in-watch" ]
 		},
 
 		instrument: {
@@ -235,8 +235,9 @@ module.exports = function( grunt ) {
 
 	grunt.loadTasks( "build/tasks" );
 	grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
-	grunt.registerTask( "qunit-test", [ "connect", "qunit" ] );
-	grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "qunit-test" ] );
+	grunt.registerTask( "test-base", [ "eslint", "search", "test-on-node" ] );
+	grunt.registerTask( "test", [ "test-base", "connect", "qunit" ] );
+	grunt.registerTask( "test-in-watch", [ "test-base", "qunit" ] );
 	grunt.registerTask( "coverage", [
 		"build",
 		"instrument",
@@ -248,6 +249,12 @@ module.exports = function( grunt ) {
 		"makeReport",
 		"coveralls"
 	] );
+
+	// Start the web server in a watch pre-task
+	// https://github.com/gruntjs/grunt-contrib-watch/issues/50
+	grunt.renameTask( "watch", "watch-repeatable" );
+	grunt.registerTask( "watch", [ "connect", "watch-repeatable" ] );
+
 	grunt.registerTask( "default", [ "build", "test" ] );
 
 };
