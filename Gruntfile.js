@@ -27,7 +27,8 @@ module.exports = function( grunt ) {
 			server: {
 				options: {
 					port: 8000,
-					base: "."
+					base: ".",
+					livereload: true
 				}
 			}
 		},
@@ -177,7 +178,8 @@ module.exports = function( grunt ) {
 			options: {
 				atBegin: true,
 				spawn: false,
-				interrupt: true
+				interrupt: true,
+				livereload: true
 			},
 			files: [
 				".eslintrc.json",
@@ -185,8 +187,12 @@ module.exports = function( grunt ) {
 				"build/*.js",
 				"{src,test,reporter}/**/*.js",
 				"src/qunit.css",
+				"test/*.{html,js}",
 				"test/**/*.html"
 			],
+
+			// TODO insert a new task to prompt reloads between "build" and "test-in-watch"
+			// https://github.com/gruntjs/grunt-contrib-watch/issues/186#issuecomment-72180420
 			tasks: [ "build", "test-in-watch" ]
 		},
 
