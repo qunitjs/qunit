@@ -14,7 +14,7 @@ Register a callback to fire whenever a test ends.
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback details object |
 
-#### Callback details: `callback( details: { name, module, failed, passed, total, runtime, skipped } )`
+#### Callback details: `callback( details: { name, module, failed, passed, total, runtime, skipped, todo } )`
 
 | parameter | description |
 |-----------|-------------|
@@ -25,6 +25,7 @@ Register a callback to fire whenever a test ends.
 | `total` (number) | The total number of assertions |
 | `runtime` (number) | The execution time in millseconds of the test, including beforeEach and afterEach calls |
 | `skipped` (boolean) | Indicates whether or not the current test was skipped |
+| `todo` (boolean) | Indicates whether or not the current test was a todo |
 
 ### Example
 
@@ -41,6 +42,7 @@ QUnit.testDone( function( details ) {
       "Failed": details.failed
     },
     "Skipped": details.skipped,
+    "Todo": details.todo,
     "Runtime": details.runtime
   };
 
@@ -51,7 +53,7 @@ QUnit.testDone( function( details ) {
 Using modern syntax:
 
 ```js
-QUnit.testDone( ( { module, name, total, passed, failed, skipped, runtime } ) => {
+QUnit.testDone( ( { module, name, total, passed, failed, skipped, todo, runtime } ) => {
   var result = {
     "Module name": module,
     "Test name": name,
@@ -61,6 +63,7 @@ QUnit.testDone( ( { module, name, total, passed, failed, skipped, runtime } ) =>
       "Failed": failed
     },
     "Skipped": skipped,
+    "Todo": todo,
     "Runtime": runtime
   };
 
