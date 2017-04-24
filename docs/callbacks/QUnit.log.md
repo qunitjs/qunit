@@ -17,7 +17,7 @@ The properties of the details argument are listed below as options.
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback details object |
 
-#### Callback details: `callback( details: { result, actual, expected, message, source, module, name, runtime } )`
+#### Callback details: `callback( details: { result, actual, expected, message, source, module, name, runtime, todo } )`
 
 | parameter | description |
 |-----------|-------------|
@@ -29,6 +29,7 @@ The properties of the details argument are listed below as options.
 | `module` (string) | The test module name of the assertion. If the assertion is not connected to any module, the property's value will be _undefined_. |
 | `name` (string) | The test block name of the assertion. |
 | `runtime` (number) | The time elapsed in milliseconds since the start of the containing [`QUnit.test()`](/QUnit/test), including setup. |
+| `todo` (boolean) | Indicates whether or not this assertion was part of a todo test. |
 
 ### Examples
 
