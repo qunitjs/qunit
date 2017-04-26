@@ -1,6 +1,7 @@
 import global from "global";
 
 export const window = global.window;
+export const self = global.self;
 export const console = global.console;
 export const setTimeout = global.setTimeout;
 export const clearTimeout = global.clearTimeout;

@@ -1,6 +1,6 @@
 /* global module, exports, define */
 import { defined } from "./core/utilities";
-import { window } from "./globals";
+import { window, self } from "./globals";
 
 export default function exportQUnit( QUnit ) {
 
@@ -34,4 +34,8 @@ export default function exportQUnit( QUnit ) {
 		QUnit.config.autostart = false;
 	}
 
+	// For Web/Service Workers
+	if ( self && self.WorkerGlobalScope && self instanceof self.WorkerGlobalScope ) {
+		self.QUnit = QUnit;
+	}
 }
