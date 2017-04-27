@@ -17,8 +17,6 @@ This method does string serialization by parsing data structures and objects. It
 
 If you need more or less output, change the value of `QUnit.dump.maxDepth`, representing how deep the elements should be parsed.
 
-> NOTE: This method used to be in `QUnit.jsDump`, which was changed to `QUnit.dump`. The old property will be removed in QUnit 3.0.
-
 ### Examples
 
 The following example is used on [grunt-contrib-qunit][] to send messages from QUnit to PhantomJS.
