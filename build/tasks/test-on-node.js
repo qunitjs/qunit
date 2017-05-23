@@ -2,7 +2,6 @@
 "use strict";
 
 var async = require( "async" );
-var path = require( "path" );
 
 module.exports = function( grunt ) {
 	grunt.registerMultiTask( "test-on-node", function() {
@@ -64,21 +63,24 @@ module.exports = function( grunt ) {
 		].join( "" );
 	}
 
+	function requireFresh( path ) {
+		var resolvedPath = require.resolve( path );
+		delete require.cache[ resolvedPath ];
+		return require( path );
+	}
+
 	function runQUnit( file, runEnd ) {
 
 		// Resolve current QUnit path and remove it from the require cache
 		// to avoid stacking the QUnit logs.
-		var QUnitFile = path.resolve( __dirname, "../../dist/qunit.js" );
-		delete require.cache[ QUnitFile ];
-
-		var QUnit = require( QUnitFile );
+		var QUnit = requireFresh( "../../dist/qunit" );
 
 		// Expose QUnit to the global scope to be seen on the other tests.
 		global.QUnit = QUnit;
 
 		QUnit.config.autostart = false;
 
-		require( "../../" + file );
+		requireFresh( "../../" + file );
 
 		registerEvents( QUnit, file, runEnd );
 
