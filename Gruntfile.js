@@ -149,7 +149,8 @@ module.exports = function( grunt ) {
 				"test/preconfigured.html",
 				"test/regex-filter.html",
 				"test/regex-exclude-filter.html",
-				"test/string-filter.html"
+				"test/string-filter.html",
+				"test/module.html"
 			]
 		},
 		"test-on-node": {
@@ -171,7 +172,8 @@ module.exports = function( grunt ) {
 				"test/setTimeout",
 				"test/main/dump",
 				"test/node/storage-1",
-				"test/node/storage-2"
+				"test/node/storage-2",
+				"test/module"
 			]
 		},
 		"watch-repeatable": {
