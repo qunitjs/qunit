@@ -17,6 +17,7 @@ import SuiteReport from "./reports/suite";
 import { on, emit } from "./events";
 import onError from "./core/onerror";
 
+let focused = false;
 const QUnit = {};
 export const globalSuite = new SuiteReport();
 
@@ -63,53 +64,76 @@ function createModule( name, testEnvironment ) {
 	return module;
 }
 
+function processModule( name, testEnvironment, executeNow ) {
+	let module = createModule( name, testEnvironment );
+
+	// Move any hooks to a 'hooks' object
+	if ( module.testEnvironment ) {
+		module.hooks = {
+			before: module.testEnvironment.before,
+			beforeEach: module.testEnvironment.beforeEach,
+			afterEach: module.testEnvironment.afterEach,
+			after: module.testEnvironment.after
+		};
+
+		delete module.testEnvironment.before;
+		delete module.testEnvironment.beforeEach;
+		delete module.testEnvironment.afterEach;
+		delete module.testEnvironment.after;
+	}
+
+	const moduleFns = {
+		before: setHook( module, "before" ),
+		beforeEach: setHook( module, "beforeEach" ),
+		afterEach: setHook( module, "afterEach" ),
+		after: setHook( module, "after" )
+	};
+
+	const currentModule = config.currentModule;
+	if ( objectType( executeNow ) === "function" ) {
+		moduleStack.push( module );
+		config.currentModule = module;
+		executeNow.call( module.testEnvironment, moduleFns );
+		moduleStack.pop();
+		module = module.parentModule || currentModule;
+	}
+
+	config.currentModule = module;
+}
+
+// TODO: extract this to a new file alongside its related functions
+function module( name, testEnvironment, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( testEnvironment ) === "function" ) {
+			executeNow = testEnvironment;
+			testEnvironment = undefined;
+		}
+	}
+
+	processModule( name, testEnvironment, executeNow );
+}
+
+module.only = function() {
+	if ( focused ) {
+		return;
+	}
+
+	config.modules.length = 0;
+	config.queue.length = 0;
+
+	module( ...arguments );
+
+	focused = true;
+};
+
 extend( QUnit, {
 	on,
 
-	// Call on start of module test to prepend name to all tests
-	module: function( name, testEnvironment, executeNow ) {
-		if ( arguments.length === 2 ) {
-			if ( objectType( testEnvironment ) === "function" ) {
-				executeNow = testEnvironment;
-				testEnvironment = undefined;
-			}
-		}
-
-		let module = createModule( name, testEnvironment );
-
-		// Move any hooks to a 'hooks' object
-		if ( module.testEnvironment ) {
-			module.hooks = {
-				before: module.testEnvironment.before,
-				beforeEach: module.testEnvironment.beforeEach,
-				afterEach: module.testEnvironment.afterEach,
-				after: module.testEnvironment.after
-			};
-
-			delete module.testEnvironment.before;
-			delete module.testEnvironment.beforeEach;
-			delete module.testEnvironment.afterEach;
-			delete module.testEnvironment.after;
-		}
-
-		const moduleFns = {
-			before: setHook( module, "before" ),
-			beforeEach: setHook( module, "beforeEach" ),
-			afterEach: setHook( module, "afterEach" ),
-			after: setHook( module, "after" )
-		};
-
-		const currentModule = config.currentModule;
-		if ( objectType( executeNow ) === "function" ) {
-			moduleStack.push( module );
-			config.currentModule = module;
-			executeNow.call( module.testEnvironment, moduleFns );
-			moduleStack.pop();
-			module = module.parentModule || currentModule;
-		}
-
-		config.currentModule = module;
-	},
+	module,
 
 	test: test,
 
