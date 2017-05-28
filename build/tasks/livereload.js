@@ -5,12 +5,13 @@ var server;
 module.exports = function( grunt ) {
 	grunt.registerTask( "livereload", function() {
 		if ( !server ) {
+			var port = this.options().port;
 			server = livereload();
-			server.listen( 35729, function() {
-				console.log( "Livereload server listening on port 35729" );
+			server.listen( port, function() {
+				console.log( "Livereload server listening on port " + port );
 			} );
 		}
 
-		server.changed( { body: { files: [ "qunit.js" ] } } );
+		server.changed( { body: { files: [ "file-path-does-not-matter.js" ] } } );
 	} );
 };

@@ -10,8 +10,9 @@ var reportDir = "build/report";
 var HAS_ASYNC_FUNCTIONS = semver.satisfies( process.version, ">= 7.10" );
 
 module.exports = function( grunt ) {
+	var livereloadPort = grunt.option( "livereload-port" ) || 35729;
 
-// Load grunt tasks from NPM packages
+	// Load grunt tasks from NPM packages
 	require( "load-grunt-tasks" )( grunt );
 
 	function preprocess( code ) {
@@ -31,7 +32,7 @@ module.exports = function( grunt ) {
 				options: {
 					port: 8000,
 					base: ".",
-					livereload: true
+					livereload: livereloadPort
 				}
 			}
 		},
@@ -203,6 +204,12 @@ module.exports = function( grunt ) {
 				"test/**/*.html"
 			],
 			tasks: [ "build", "livereload", "test-in-watch" ]
+		},
+
+		livereload: {
+			options: {
+				port: livereloadPort
+			}
 		},
 
 		instrument: {
