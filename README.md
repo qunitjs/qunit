@@ -21,21 +21,14 @@ run the tests after each small refactoring step and always know what change
 broke something.
 
 QUnit is similar to other unit testing frameworks like JUnit, but makes use of
-the features JavaScript provides and helps with testing code in the browser, e.g.
-with its stop/start facilities for testing asynchronous code.
+the features JavaScript provides and helps with testing code in the browser, such as built in support for asynchronicity and exception handling.
 
-If you are interested in helping developing QUnit, you are in the right place.
-For related discussions, visit the
-[QUnit and Testing forum](https://forum.jquery.com/qunit-and-testing).
-You can also chat with us on [Gitter](https://gitter.im/qunitjs/qunit) if you
-need help using or developing QUnit.
+## Support
 
-## Development
+If you need help using QUnit, visit the [QUnit and Testing forum](https://forum.jquery.com/qunit-and-testing) or chat with us on [Gitter](https://gitter.im/qunitjs/qunit).
 
-To submit patches, fork the repository, create a branch for the change. Then implement
-the change, run `npm test` to lint and test it, then commit, push and create a pull request.
+If you believe there is a bug with QUnit or would like to request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
 
-Include some background for the change in the commit message and `Fixes #nnn`, referring
-to the issue number you're addressing.
+## Development / Contributions
 
-To run `npm test`, you need [Node.js](https://nodejs.org/download/), which includes `npm`.
+If you are interested in helping develop QUnit, check out our [contributing guide](./CONTRIBUTING.md).
