@@ -74,6 +74,7 @@
   "scripts": {
     "browserstack": "grunt build && sh build/run-browserstack.sh",
     "build": "grunt build",
+    "dev": "grunt watch",
     "test": "grunt",
     "coverage": "grunt coverage",
     "test:cli": "grunt build && npm link && qunit test/cli/*.js"
