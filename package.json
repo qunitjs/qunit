@@ -97,6 +97,6 @@
   },
   "main": "qunit/qunit.js",
   "engines": {
-    "node": "4.* || 6.* || 7.*"
+    "node": ">=4"
   }
 }
