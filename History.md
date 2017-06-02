@@ -1,3 +1,19 @@
+2.3.3 / 2017-06-02
+==================
+
+  * Core: Updates for Node.js version 8 compatibility and testing
+  * Docs: Update README/CONTRIBUTING with more recent/relevant information
+  * Docs: Move CONTRIBUTING.md from docs to root
+  * Build: Let grunt watch live-reload the test suite
+  * Build: Only start one web server for grunt watch
+  * Core: Support running in WorkerGlobalScope
+  * Docs: Add license status (#1175)
+  * Docs: delete note about QUnit.jsDump's removal
+  * Docs: Document 'todo' in log details object
+  * Docs: Document 'todo' in testDone details object
+  * Tests: Add requireQUnit tests
+  * CLI: Prefer local version of QUnit
+
 2.3.2 / 2017-04-17
 ==================
 

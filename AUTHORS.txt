@@ -139,3 +139,6 @@ David Chan <david@troi.org>
 Ryan T <ryanto@gmail.com>
 Ben Demboski <ben@turbopatent.com>
 NaridaL <adrianleonhard@gmail.com>
+Kevin Wang <kevin@fossa.io>
+Marten Schilstra <marten.schilstra@dockyard.com>
+Barrett K. Harber <barrett.harber@gmail.com>
