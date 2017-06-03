@@ -65,7 +65,7 @@ ok 1 foo
 Stopping QUnit...`,
 
 	"change-file-mid-run": `TAP version 13
-File added: watching/bar.js
+File changed: watching/bar.js
 Finishing current test and restarting...
 ok 1 Foo > one
 1..2

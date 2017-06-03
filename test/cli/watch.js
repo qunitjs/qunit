@@ -179,31 +179,36 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		// afterEach/after hooks to ensure cleanup happens.
 
 		fixturify.writeSync( fixturePath, {
-			"foo.js": `
-				QUnit.module('Foo', {
-					before() { process.send('before'); },
-					beforeEach() { process.send('beforeEach'); },
-					afterEach() { process.send('afterEach'); },
-					after() { process.send('after'); }
-				});
-				QUnit.test('one', function(assert) {
-					process.send('testRunning');
-					var done = assert.async();
-					setTimeout(function() {
-						assert.ok(true);
-						done();
-					}, 500);
-				});
-				QUnit.test('two', function(assert) { assert.ok(true); });`
+			"tests": {
+				"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });",
+				"foo.js": `
+					process.send(require('../bar'));
+					QUnit.module('Foo', {
+						before() { process.send('before'); },
+						beforeEach() { process.send('beforeEach'); },
+						afterEach() { process.send('afterEach'); },
+						after() { process.send('after'); }
+					});
+					QUnit.test('one', function(assert) {
+						process.send('testRunning');
+						var done = assert.async();
+						setTimeout(function() {
+							assert.ok(true);
+							done();
+						}, 500);
+					});
+					QUnit.test('two', function(assert) { assert.ok(true); });`
+			},
+			"bar.js": "module.exports = 'bar export first';"
 		} );
 
-		const command = "qunit watching";
+		const command = "qunit watching/tests";
 		const execution = execute( `${command} --watch` );
 
 		function one( data ) {
 			if ( data === "testRunning" ) {
 				fixturify.writeSync( fixturePath, {
-					"bar.js": "// bar"
+					"bar.js": "module.exports = 'bar export second';"
 				} );
 			}
 
@@ -226,12 +231,14 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		const result = yield execution;
 
 		assert.verifySteps( [
+			"bar export first",
 			"before",
 			"beforeEach",
 			"testRunning",
 			"afterEach",
 			"after",
 			"runEnd",
+			"bar export second",
 			"before",
 			"beforeEach",
 			"testRunning",
