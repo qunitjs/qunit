@@ -4,7 +4,6 @@
 
 const program = require( "commander" );
 const run = require( "./run" );
-const utils = require( "./utils" );
 const findReporter = require( "./find-reporter" );
 const pkg = require( "../package.json" );
 
