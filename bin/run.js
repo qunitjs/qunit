@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require( "path" );
+const walkSync = require( "walk-sync" );
 
 const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
@@ -91,6 +92,8 @@ function run( args, options ) {
 };
 
 run.restart = function( args ) {
+	this.watchedFiles.forEach( file => delete require.cache[ file ] );
+
 	if ( QUnit.config.queue.length ) {
 		console.log( "Finishing current test and restarting..." );
 	} else {
@@ -133,6 +136,12 @@ run.watch = function watch() {
 		ignored: IGNORED_GLOBS,
 		ignoreInitial: true
 	} );
+
+	this.watchedFiles = walkSync( process.cwd(), {
+		globs: [ "**/*.js" ],
+		directories: false,
+		ignore: IGNORED_GLOBS
+	} ).map( file => path.resolve( file ) );
 
 	watcher.on( "ready", () => run.apply( null, args ) );
 	watcher.on( "change", watcherEvent( "changed", args ) );
