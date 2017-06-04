@@ -64,29 +64,29 @@ function createModule( name, testEnvironment ) {
 	return module;
 }
 
-function processModule( name, testEnvironment, executeNow ) {
-	let module = createModule( name, testEnvironment );
+function processModule( name, options, executeNow ) {
+	let module = createModule( name, options );
 
 	// Move any hooks to a 'hooks' object
-	if ( module.testEnvironment ) {
-		module.hooks = {
-			before: module.testEnvironment.before,
-			beforeEach: module.testEnvironment.beforeEach,
-			afterEach: module.testEnvironment.afterEach,
-			after: module.testEnvironment.after
-		};
+	const testEnvironment = module.testEnvironment;
+	const hooks = module.hooks = {};
 
-		delete module.testEnvironment.before;
-		delete module.testEnvironment.beforeEach;
-		delete module.testEnvironment.afterEach;
-		delete module.testEnvironment.after;
+	setHookFromEnvironment( hooks, testEnvironment, "before" );
+	setHookFromEnvironment( hooks, testEnvironment, "beforeEach" );
+	setHookFromEnvironment( hooks, testEnvironment, "afterEach" );
+	setHookFromEnvironment( hooks, testEnvironment, "after" );
+
+	function setHookFromEnvironment( hooks, environment, name ) {
+		const potentialHook = environment[ name ];
+		hooks[ name ] = typeof potentialHook === "function" ? [ potentialHook ] : [];
+		delete environment[ name ];
 	}
 
 	const moduleFns = {
-		before: setHook( module, "before" ),
-		beforeEach: setHook( module, "beforeEach" ),
-		afterEach: setHook( module, "afterEach" ),
-		after: setHook( module, "after" )
+		before: setHookFunction( module, "before" ),
+		beforeEach: setHookFunction( module, "beforeEach" ),
+		afterEach: setHookFunction( module, "afterEach" ),
+		after: setHookFunction( module, "after" )
 	};
 
 	const currentModule = config.currentModule;
@@ -102,19 +102,19 @@ function processModule( name, testEnvironment, executeNow ) {
 }
 
 // TODO: extract this to a new file alongside its related functions
-function module( name, testEnvironment, executeNow ) {
+function module( name, options, executeNow ) {
 	if ( focused ) {
 		return;
 	}
 
 	if ( arguments.length === 2 ) {
-		if ( objectType( testEnvironment ) === "function" ) {
-			executeNow = testEnvironment;
-			testEnvironment = undefined;
+		if ( objectType( options ) === "function" ) {
+			executeNow = options;
+			options = undefined;
 		}
 	}
 
-	processModule( name, testEnvironment, executeNow );
+	processModule( name, options, executeNow );
 }
 
 module.only = function() {
@@ -270,13 +270,9 @@ export function begin() {
 	ProcessingQueue.advance();
 }
 
-function setHook( module, hookName ) {
-	if ( !module.hooks ) {
-		module.hooks = {};
-	}
-
-	return function( callback ) {
-		module.hooks[ hookName ] = callback;
+function setHookFunction( module, hookName ) {
+	return function setHook( callback ) {
+		module.hooks[ hookName ].push( callback );
 	};
 }
 

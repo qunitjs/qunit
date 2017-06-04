@@ -46,7 +46,13 @@ const config = {
 		tests: [],
 		childModules: [],
 		testsRun: 0,
-		unskippedTestsRun: 0
+		unskippedTestsRun: 0,
+		hooks: {
+			before: [],
+			beforeEach: [],
+			afterEach: [],
+			after: []
+		}
 	},
 
 	callbacks: {},
