@@ -384,3 +384,38 @@ QUnit.module( "nested modules before/after", {
 		} );
 	} );
 } );
+
+QUnit.module( "modules with multiple hooks", function( hooks ) {
+	hooks.before( function( assert ) { assert.step( "before1" ); } );
+	hooks.before( function( assert ) { assert.step( "before2" ); } );
+
+	hooks.beforeEach( function( assert ) { assert.step( "beforeEach1" ); } );
+	hooks.beforeEach( function( assert ) { assert.step( "beforeEach2" ); } );
+
+	hooks.afterEach( function( assert ) { assert.step( "afterEach1" ); } );
+	hooks.afterEach( function( assert ) { assert.step( "afterEach2" ); } );
+
+	hooks.after( function( assert ) {
+		assert.verifySteps( [
+
+			// before/beforeEach execute in FIFO order
+			"before1",
+			"before2",
+			"beforeEach1",
+			"beforeEach2",
+
+			// after/afterEach execute in LIFO order
+			"afterEach2",
+			"afterEach1",
+			"after2",
+			"after1"
+		] );
+	} );
+
+	hooks.after( function( assert ) { assert.step( "after1" ); } );
+	hooks.after( function( assert ) { assert.step( "after2" ); } );
+
+	QUnit.test( "all hooks", function( assert ) {
+		assert.expect( 9 );
+	} );
+} );
