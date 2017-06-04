@@ -150,7 +150,7 @@ module.exports = function( grunt ) {
 				"test/regex-filter.html",
 				"test/regex-exclude-filter.html",
 				"test/string-filter.html",
-				"test/module.html"
+				"test/module-only.html"
 			]
 		},
 		"test-on-node": {
@@ -173,7 +173,7 @@ module.exports = function( grunt ) {
 				"test/main/dump",
 				"test/node/storage-1",
 				"test/node/storage-2",
-				"test/module"
+				"test/module-only"
 			]
 		},
 		"watch-repeatable": {
