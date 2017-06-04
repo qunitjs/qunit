@@ -29,11 +29,11 @@ Group related tests under a single label.
 
 #### Nested module: `nested( hooks )`
 
-A callback with grouped tests and nested modules to run under the current module label.
+A callback which groups tests and nested modules to run under the current module label.
 
 | name | description |
 |-----------|-------------|
-| `hooks` (object) | Runs before the first test. |
+| `hooks` (object) | An object with functions to define `before`/`beforeEach`/`afterEach`/`after` hooks. |
 
 ### Description
 
@@ -199,10 +199,12 @@ QUnit.test( "makes a car", function( assert ) {
 
 ---
 
-Hooks stack on nested modules
+`before`/`beforeEach` hooks queue on nested modules. `after`/`afterEach` hooks stack on nested modules.
 
 ```js
 QUnit.module( "grouped tests argument hooks", function( hooks ) {
+
+  // You can invoke the hooks methods more than once.
   hooks.beforeEach( function( assert ) {
     assert.ok( true, "beforeEach called" );
   } );
