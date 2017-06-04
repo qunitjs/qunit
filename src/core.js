@@ -125,7 +125,7 @@ module.only = function() {
 	config.modules.length = 0;
 	config.queue.length = 0;
 
-	module.apply( null, arguments );
+	module( ...arguments );
 
 	focused = true;
 };
@@ -133,7 +133,7 @@ module.only = function() {
 extend( QUnit, {
 	on,
 
-	module: module,
+	module,
 
 	test: test,
 
