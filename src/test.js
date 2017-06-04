@@ -154,16 +154,19 @@ Test.prototype = {
 		checkPollution();
 	},
 
-	queueHook: function( hook, hookName, hookOwner ) {
-		var promise,
-			test = this;
-		return function runHook() {
+	queueHook( hook, hookName, hookOwner ) {
+		const callHook = () => {
+			const promise = hook.call( this.testEnvironment, this.assert );
+			this.resolvePromise( promise, hookName );
+		};
+
+		const runHook = () => {
 			if ( hookName === "before" ) {
 				if ( hookOwner.unskippedTestsRun !== 0 ) {
 					return;
 				}
 
-				test.preserveEnvironment = true;
+				this.preserveEnvironment = true;
 			}
 
 			if ( hookName === "after" &&
@@ -172,7 +175,7 @@ Test.prototype = {
 				return;
 			}
 
-			config.current = test;
+			config.current = this;
 			if ( config.notrycatch ) {
 				callHook();
 				return;
@@ -180,27 +183,27 @@ Test.prototype = {
 			try {
 				callHook();
 			} catch ( error ) {
-				test.pushFailure( hookName + " failed on " + test.testName + ": " +
+				this.pushFailure( hookName + " failed on " + this.testName + ": " +
 				( error.message || error ), extractStacktrace( error, 0 ) );
 			}
-
-			function callHook() {
-				promise = hook.call( test.testEnvironment, test.assert );
-				test.resolvePromise( promise, hookName );
-			}
 		};
+
+		return runHook;
 	},
 
 	// Currently only used for module level hooks, can be used to add global level ones
-	hooks: function( handler ) {
-		var hooks = [];
+	hooks( handler ) {
+		const hooks = [];
 
 		function processHooks( test, module ) {
 			if ( module.parentModule ) {
 				processHooks( test, module.parentModule );
 			}
-			if ( module.hooks && objectType( module.hooks[ handler ] ) === "function" ) {
-				hooks.push( test.queueHook( module.hooks[ handler ], handler, module ) );
+
+			if ( module.hooks[ handler ].length ) {
+				for ( let i = 0; i < module.hooks[ handler ].length; i++ ) {
+					hooks.push( test.queueHook( module.hooks[ handler ][ i ], handler, module ) );
+				}
 			}
 		}
 
@@ -208,6 +211,7 @@ Test.prototype = {
 		if ( !this.skip ) {
 			processHooks( this, this.module );
 		}
+
 		return hooks;
 	},
 
