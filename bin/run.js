@@ -12,6 +12,10 @@ const IGNORED_GLOBS = [
 let QUnit;
 
 function run( args, options ) {
+
+	// Default to non-zero exit code to avoid false positives
+	process.exitCode = 1;
+
 	const files = utils.getFilesFromArgs( args );
 
 	QUnit = requireQUnit();
