@@ -85,6 +85,16 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "exit code is 1 when no tests exit before done", co.wrap( function* ( assert ) {
+		const command = "qunit hanging-test";
+		try {
+			yield execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, expectedOutput[ command ] );
+		}
+	} ) );
+
 	QUnit.module( "filter", function() {
 		QUnit.test( "can properly filter tests", co.wrap( function* ( assert ) {
 			const command = "qunit --filter 'single' test single.js 'glob/**/*-test.js'";

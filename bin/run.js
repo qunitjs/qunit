@@ -12,9 +12,24 @@ const IGNORED_GLOBS = [
 let QUnit;
 
 function run( args, options ) {
+	let running = true;
 
 	// Default to non-zero exit code to avoid false positives
 	process.exitCode = 1;
+
+	process.on( "exit", function() {
+		if ( running ) {
+			console.error( "Error: Process exited before tests finished running" );
+
+			const currentTest = QUnit.config.current;
+			if ( currentTest && currentTest.semaphore ) {
+				const name = currentTest.testName;
+				console.error( "Last test to run (" + name + ") has an async hold. " +
+					"Ensure all assert.async() callbacks are invoked and Promises resolve. " +
+					"You should also set a standard timeout via QUnit.config.testTimeout." );
+			}
+		}
+	} );
 
 	const files = utils.getFilesFromArgs( args );
 
@@ -50,6 +65,8 @@ function run( args, options ) {
 	QUnit.start();
 
 	QUnit.on( "runEnd", function setExitCode( data ) {
+		running = false;
+
 		if ( data.testCounts.failed ) {
 			process.exitCode = 1;
 		} else if ( data.testCounts.total === 0 ) {
