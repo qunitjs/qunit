@@ -76,6 +76,15 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "exit code is 1 when no tests are run", co.wrap( function* ( assert ) {
+		try {
+			yield execute( "qunit no-tests" );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "Error: No tests were run\n" );
+		}
+	} ) );
+
 	QUnit.module( "filter", function() {
 		QUnit.test( "can properly filter tests", co.wrap( function* ( assert ) {
 			const command = "qunit --filter 'single' test single.js 'glob/**/*-test.js'";
