@@ -76,11 +76,11 @@ module.exports = function( grunt ) {
 		// Expose QUnit to the global scope to be seen on the other tests.
 		global.QUnit = QUnit;
 
-		registerEvents( QUnit, file, runEnd );
-
 		QUnit.config.autostart = false;
 
 		require( "../../" + file );
+
+		registerEvents( QUnit, file, runEnd );
 
 		QUnit.start();
 	}
