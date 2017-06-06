@@ -48,6 +48,9 @@ function run( args, options ) {
 	QUnit.on( "runEnd", function setExitCode( data ) {
 		if ( data.testCounts.failed ) {
 			process.exitCode = 1;
+		} else if ( data.testCounts.total === 0 ) {
+			console.error( "Error: No tests were run" );
+			process.exitCode = 1;
 		} else {
 			process.exitCode = 0;
 		}
