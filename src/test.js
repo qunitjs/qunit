@@ -30,12 +30,23 @@ export default function Test( settings ) {
 	++Test.count;
 
 	this.expected = null;
-	extend( this, settings );
 	this.assertions = [];
 	this.semaphore = 0;
 	this.module = config.currentModule;
 	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
+
+	// If a module is skipped, all its tests and the tests of the child suites
+	// should be treated as skipped even if they are defined as `only` or `todo`.
+	//
+	// So, if a test is defined as `todo` and is inside a skipped module, we should
+	// then treat that test as if was defined as `skip`.
+	if ( this.module.skip ) {
+		settings.skip = true;
+		settings.todo = false;
+	}
+
+	extend( this, settings );
 
 	this.testReport = new TestReport( settings.testName, this.module.suiteReport, {
 		todo: settings.todo,

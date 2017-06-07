@@ -36,7 +36,7 @@ QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
 
-function createModule( name, testEnvironment ) {
+function createModule( name, testEnvironment, modifiers ) {
 	const parentModule = moduleStack.length ? moduleStack.slice( -1 )[ 0 ] : null;
 	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
 	const parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
@@ -49,7 +49,13 @@ function createModule( name, testEnvironment ) {
 		testsRun: 0,
 		unskippedTestsRun: 0,
 		childModules: [],
-		suiteReport: new SuiteReport( name, parentSuite )
+		suiteReport: new SuiteReport( name, parentSuite ),
+
+		// Pass along `skip` property from parent module, in case there is one,
+		// to childs. And use own otherwise.
+		// This property will be used to mark own tests and tests of child suites
+		// as `skipped`.
+		skip: parentModule !== null && parentModule.skip || modifiers.skip
 	};
 
 	const env = {};
@@ -64,8 +70,8 @@ function createModule( name, testEnvironment ) {
 	return module;
 }
 
-function processModule( name, options, executeNow ) {
-	let module = createModule( name, options );
+function processModule( name, options, executeNow, modifiers = {} ) {
+	let module = createModule( name, options, modifiers );
 
 	// Move any hooks to a 'hooks' object
 	const testEnvironment = module.testEnvironment;
@@ -128,6 +134,21 @@ module.only = function() {
 	module( ...arguments );
 
 	focused = true;
+};
+
+module.skip = function( name, options, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( options ) === "function" ) {
+			executeNow = options;
+			options = undefined;
+		}
+	}
+
+	processModule( name, options, executeNow, { skip: true } );
 };
 
 extend( QUnit, {
