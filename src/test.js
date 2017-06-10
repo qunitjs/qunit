@@ -38,12 +38,18 @@ export default function Test( settings ) {
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
+	// As for `todo` module, all its tests will be treated as `todo` except for
+	// tests defined as `skip` which will be left intact.
 	//
 	// So, if a test is defined as `todo` and is inside a skipped module, we should
 	// then treat that test as if was defined as `skip`.
 	if ( this.module.skip ) {
 		settings.skip = true;
 		settings.todo = false;
+
+	// Skipped tests should be left intact
+	} else	if ( this.module.todo  && !settings.skip ) {
+		settings.todo = true;
 	}
 
 	extend( this, settings );

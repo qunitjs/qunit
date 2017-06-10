@@ -41,6 +41,9 @@ function createModule( name, testEnvironment, modifiers ) {
 	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
 	const parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
 
+	const skip = parentModule !== null && parentModule.skip || modifiers.skip;
+	const todo = parentModule !== null && parentModule.todo || modifiers.todo;
+
 	const module = {
 		name: moduleName,
 		parentModule: parentModule,
@@ -51,11 +54,12 @@ function createModule( name, testEnvironment, modifiers ) {
 		childModules: [],
 		suiteReport: new SuiteReport( name, parentSuite ),
 
-		// Pass along `skip` property from parent module, in case there is one,
-		// to childs. And use own otherwise.
+		// Pass along `skip` and `todo` properties from parent module, in case
+		// there is one, to childs. And use own otherwise.
 		// This property will be used to mark own tests and tests of child suites
-		// as `skipped`.
-		skip: parentModule !== null && parentModule.skip || modifiers.skip
+		// as either `skipped` or `todo`.
+		skip: skip,
+		todo: skip ? false : todo
 	};
 
 	const env = {};
@@ -149,6 +153,21 @@ module.skip = function( name, options, executeNow ) {
 	}
 
 	processModule( name, options, executeNow, { skip: true } );
+};
+
+module.todo = function( name, options, executeNow ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( arguments.length === 2 ) {
+		if ( objectType( options ) === "function" ) {
+			executeNow = options;
+			options = undefined;
+		}
+	}
+
+	processModule( name, options, executeNow, { todo: true } );
 };
 
 extend( QUnit, {
