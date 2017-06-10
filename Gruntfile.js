@@ -155,7 +155,8 @@ module.exports = function( grunt ) {
 				"test/regex-exclude-filter.html",
 				"test/string-filter.html",
 				"test/module-only.html",
-				"test/module-skip.html"
+				"test/module-skip.html",
+				"test/module-todo.html"
 			]
 		},
 		"test-on-node": {
@@ -181,6 +182,7 @@ module.exports = function( grunt ) {
 				"test/node/storage-2",
 				"test/module-only",
 				"test/module-skip",
+				"test/module-todo",
 				HAS_ASYNC_FUNCTIONS ? "test/es2017/async-functions" : null
 			].filter( Boolean )
 		},
