@@ -2,16 +2,19 @@
 
 var path = require( "path" );
 var fs = require( "fs-extra" );
+var semver = require( "semver" );
 
 var instrumentedDir = "build/instrumented";
 var reportDir = "build/report";
+
+var HAS_ASYNC_FUNCTIONS = semver.satisfies( process.version, ">= 7.10" );
 
 module.exports = function( grunt ) {
 
 // Load grunt tasks from NPM packages
 	require( "load-grunt-tasks" )( grunt );
 
-	function process( code ) {
+	function preprocess( code ) {
 		return code
 
 		// Embed version
@@ -33,7 +36,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		copy: {
-			options: { process: process },
+			options: { process: preprocess },
 
 			"src-js": {
 				src: "dist/qunit.js",
@@ -174,8 +177,9 @@ module.exports = function( grunt ) {
 				"test/main/dump",
 				"test/node/storage-1",
 				"test/node/storage-2",
-				"test/module-only"
-			]
+				"test/module-only",
+				HAS_ASYNC_FUNCTIONS ? "test/es2017/async-functions" : null
+			].filter( Boolean )
 		},
 		"watch-repeatable": {
 			options: {
