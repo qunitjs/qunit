@@ -69,7 +69,8 @@
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
     "proxyquire": "1.7.11",
     "requirejs": "2.3.2",
-    "rollup-plugin-babel": "2.6.1"
+    "rollup-plugin-babel": "2.6.1",
+    "semver": "5.3.0"
   },
   "scripts": {
     "browserstack": "grunt build && sh build/run-browserstack.sh",
