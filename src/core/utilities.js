@@ -102,10 +102,8 @@ export function objectType( obj ) {
 	case "Function":
 	case "Symbol":
 		return type.toLowerCase();
-	}
-
-	if ( typeof obj === "object" ) {
-		return "object";
+	default:
+		return typeof obj;
 	}
 }
 
