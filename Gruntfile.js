@@ -168,6 +168,7 @@ module.exports = function( grunt ) {
 				"test/main/modules",
 				"test/main/deepEqual",
 				"test/main/stack",
+				"test/main/utilities",
 				"test/events",
 				"test/events-in-test",
 				"test/onerror/inside-test",
