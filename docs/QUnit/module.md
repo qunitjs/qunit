@@ -54,6 +54,28 @@ The module's callback is invoked with the test environment as its `this` context
 
 `QUnit.module()`'s hooks can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`able Promise as the result of your callback function.
 
+## Exclusive tests
+
+When you are debugging your code, you will often need to _only_ run a subset of tests. You can append `only` to `QUnit.module` to specify which module you want to run.
+
+Note that if more than one module was defined using `QUnit.module.only()`, only the first one will run.
+
+It works the same way `QUnit.only()` does for tests.
+
+## Inclusive tests
+
+As the codebase becomes bigger and bigger, you may sometimes find some tests, related to a feature, are temporarily broken for some reasons. Instead of commenting that chunk of tests until you found the culprit, you can easily append `skip` to the broken module to skip all its child suites and tests.
+
+If the child suites and tests contain some `todo` or `only` tests, `QUnit` will mark those as skipped as if they were defined using `QUnit.skip()`.
+
+### Under developpement tests
+
+When a module is still under development (in a "todo" state), you can use `QUnit.module.todo` to easily mark it as `todo`.
+
+Using this method will mark all underlying tests as `todo` as if they were defined using `QUnit.todo` except for tests defined using `QUnit.skip()` which will be left intact. Those tests will pass as long as one failing assertion is present.
+
+If all assertions pass, then the tests will fail signaling that `QUnit.module.todo` should be replaced by `QUnit.module`.
+
 ### Examples
 
 Use the `QUnit.module()` function to group tests together:
@@ -266,5 +288,130 @@ QUnit.module( "Database connection", {
       } );
     } );
   }
+} );
+```
+
+---
+
+Only run a subset of tests:
+
+```js
+QUnit.module( "Robot", function() {
+  // ...
+} );
+
+// Currenly working on implementing features related to androids
+QUnit.module.only( "Android", function( hooks ) {
+  hooks.beforeEach( function() {
+    this.adnroid = new Android();
+  } );
+
+  QUnit.test( "Say hello", function( assert ) {
+    assert.strictEqual( this.android.hello(), "Hello, my name is AN-2178!" );
+  } );
+
+  QUnit.test( "Basic conversation", function( assert ) {
+    this.android.loadConversationData( {
+      "Hi": "Hello",
+      "What's your name?": "My name is AN-2178.",
+      "Nice to meet you!": "Nice to meet you too!",
+      "...": "..."
+    } );
+
+    assert.strictEqual(
+      this.android.answer( "What's your name?" ), "My name is AN-2178."
+    );
+  } );
+
+  // ...
+} );
+```
+
+Skipping temporarily broken module:
+
+```js
+QUnit.module( "Robot", function() {
+  // ...
+} );
+
+// Tests related to androids are failling due to unkown cause.
+// Skipping them for now.
+QUnit.module.skip( "Android", function( hooks ) {
+  hooks.beforeEach( function() {
+    this.android = new Android();
+  } );
+
+  QUnit.test( "Say hello", function( assert ) {
+    assert.strictEqual( this.android.hello(), "Hello, my name is AN-2178!" );
+  } );
+
+  QUnit.test( "Basic conversation", function( assert ) {
+    // ...
+    assert.strictEqual(
+      this.android.answer( "Nice to meet you!" ), "Nice to meet you too!"
+    );
+  } );
+
+  QUnit.test( "Move left arm", function ( assert ) {
+    // Move the left arm of the android to point (10, 50)
+    this.android.moveLeftArmTo( 10, 50 );
+
+    assert.deepEqual( this.android.getLeftArmPosition(), { x: 10, y: 50 } );
+  } );
+
+  QUnit.test( "Move right arm", function ( assert ) {
+    // Move the right arm of the android to point (15, 45)
+    this.android.moveRightArmTo( 15, 45 );
+
+    assert.deepEqual( this.android.getRightArmPosition(), { x: 15, y: 45 } );
+  } );
+
+  QUnit.test( "Grab things", function ( assert ) {
+    // Move the arm of the android to point (10, 50)
+    this.android.grabThingAt( 25, 5 );
+
+    assert.deepEqual( this.android.getPosition(), { x: 25, y: 5 } );
+    assert.ok( this.android.isGrabbing() );
+  } );
+
+  QUnit.test( "Can walk", function ( assert ) {
+    assert.ok( this.android.canWalk() );
+  } );
+
+  QUnit.test( "Can speak", function ( assert ) {
+    assert.ok( this.android.canSpeak() );
+  } );
+
+  // ...
+} );
+```
+
+---
+
+Using `QUnit.module.todo()` to denote code that is still under development.
+
+```js
+QUnit.module.todo( "Robot", function( hooks ) {
+  hooks.beforeEach( function() {
+    this.robot = new Robot();
+  } );
+
+  QUnit.test( "Say", function( assert ) {
+    // Currently, it returns undefined
+    assert.strictEqual( this.robot.say(), "I'm Robot FN-2187" );
+  } );
+
+  QUnit.test( "Move arm", function ( assert ) {
+    // Move the arm to point (75, 80). Currently, it throws a NotImplementedError
+    assert.throws( function() {
+      this.robot.moveArmTo(75, 80);
+    }, /Not yet implemented/ );
+
+    assert.throws( function() {
+      assert.deepEqual( this.robot.getPosition(), { x: 75, y: 80 } );
+    }, /Not yet implemented/ );
+  } );
+
+  // ...
 } );
 ```
