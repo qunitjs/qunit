@@ -310,18 +310,18 @@ QUnit.module.only( "Android", function( hooks ) {
     assert.strictEqual( this.android.hello(), "Hello, my name is AN-2178!" );
   } );
 
-	QUnit.test( "Basic conversation", function( assert ) {
-		this.android.loadConversationData( {
-			"Hi": "Hello",
-			"What's your name?": "My name is AN-2178.",
-			"Nice to meet you!": "Nice to meet you too!",
-			"...": "..."
-		} );
+  QUnit.test( "Basic conversation", function( assert ) {
+    this.android.loadConversationData( {
+      "Hi": "Hello",
+      "What's your name?": "My name is AN-2178.",
+      "Nice to meet you!": "Nice to meet you too!",
+      "...": "..."
+    } );
 
-		assert.strictEqual(
-			this.android.answer( "What's your name?" ), "My name is AN-2178."
-		);
-	} );
+    assert.strictEqual(
+      this.android.answer( "What's your name?" ), "My name is AN-2178."
+    );
+  } );
 
   // ...
 } );
@@ -347,9 +347,9 @@ QUnit.module.skip( "Android", function( hooks ) {
 
   QUnit.test( "Basic conversation", function( assert ) {
     // ...
-		assert.strictEqual(
-			this.android.answer( "Nice to meet you!" ), "Nice to meet you too!"
-		);
+    assert.strictEqual(
+      this.android.answer( "Nice to meet you!" ), "Nice to meet you too!"
+    );
   } );
 
   QUnit.test( "Move left arm", function ( assert ) {
@@ -382,7 +382,7 @@ QUnit.module.skip( "Android", function( hooks ) {
     assert.ok( this.android.canSpeak() );
   } );
 
-	// ...
+  // ...
 } );
 ```
 
@@ -412,6 +412,6 @@ QUnit.module.todo( "Robot", function( hooks ) {
     }, /Not yet implemented/ );
   } );
 
-	// ...
+  // ...
 } );
 ```
