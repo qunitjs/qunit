@@ -68,7 +68,7 @@ As the codebase becomes bigger and bigger, you may sometimes find some tests, re
 
 If the child suites and tests contain some `todo` or `only` tests, `QUnit` will mark those as skipped as if they were defined using `QUnit.skip()`.
 
-### Under developpement tests
+### Under development tests
 
 When a module is still under development (in a "todo" state), you can use `QUnit.module.todo` to easily mark it as `todo`.
 
