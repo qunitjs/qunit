@@ -336,5 +336,11 @@ export default ( function() {
 		return arguments.length === 2 || innerEquiv.apply( this, [].slice.call( arguments, 1 ) );
 	}
 
-	return innerEquiv;
+	return ( ...args ) => {
+		const result = innerEquiv( ...args );
+
+		// Release any retained objects
+		pairs.length = 0;
+		return result;
+	};
 }() );
