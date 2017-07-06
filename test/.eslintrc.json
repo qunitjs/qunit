@@ -13,5 +13,8 @@
 	"globals": {
 		"QUnit": false,
 		"console": false
+	},
+	"rules": {
+		"max-len": "off"
 	}
 }
