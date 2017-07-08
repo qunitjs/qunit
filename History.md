@@ -1,3 +1,31 @@
+2.4.0 / 2017-07-08
+==================
+
+  * Build: Disable max-len ESLint rule for tests
+  * Docs: Document assert.timeout
+  * Tests: Add tests for assert.timeout
+  * Assert: Introduce timeout to set per-test timeout durations
+  * Core: Release objects from memory in equiv
+  * Assert: Fix assert.push deprecation link
+  * Docs: Fix typo in docs for QUnit.module
+  * Docs: Document QUnit.module.{only,skip,todo} (#1194)
+  * Test: Add tests for QUnit.module.todo()
+  * Core: Implement QUnit.module.todo()
+  * Test: Add tests for QUnit.module.skip()
+  * Core: Implement QUnit.module.skip()
+  * Core: Fallback to `typeof obj` in `QUnit.objectType`.
+  * Tests: Add tests using native async functions.
+  * CLI: Better messaging on early exits
+  * CLI: Default to non-zero exit code
+  * CLI: Exit with non-zero status when no tests are run
+  * Build: Register events after requiring test file in test-on-node task
+  * Docs: Add note about defining multiple hooks for modules
+  * Tests: Add tests for multiple module hooks
+  * Core: Add support for multiple hooks
+  * Test: Add tests for QUnit.module.only()
+  * Core: Implement QUnit.module.only()
+  * Build: Include bin file in eslint
+
 2.3.3 / 2017-06-02
 ==================
 

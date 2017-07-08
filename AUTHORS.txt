@@ -142,3 +142,5 @@ NaridaL <adrianleonhard@gmail.com>
 Kevin Wang <kevin@fossa.io>
 Marten Schilstra <marten.schilstra@dockyard.com>
 Barrett K. Harber <barrett.harber@gmail.com>
+Robert Jackson <rjackson@linkedin.com>
+Cory <cory.forsyth@gmail.com>
