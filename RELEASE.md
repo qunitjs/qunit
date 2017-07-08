@@ -18,7 +18,7 @@ Commit all of the above with the following message:
 
 Replace `@VERSION` with the version number you are releasing.
 
-For the final preparatory step, push your new commit to `master` on GitHub. In order to do this, you'll need to disable branch protections for administrators. This can be done [here](https://github.com/qunitjs/qunit/settings/branches/master).
+For the final preparatory step, push your new commit to `master` on GitHub. In order to do this, you'll need to disable branch protections for administrators. This can be done [here](https://github.com/qunitjs/qunit/settings/branches/master). Once you're done with the release process, be sure to reenable any protections you disabled.
 
 ## Performing the Release
 
@@ -31,6 +31,7 @@ Always start this process from a fresh clone of the release repo:
 
 	git clone https://github.com/qunitjs/jquery-release.git
 	cd jquery-release
+	npm install
 
 Then simply run the script:
 
@@ -43,6 +44,8 @@ You can verify all of the above were correctly published by using the following:
 - Bower: `bower info qunit`
 - NPM: `npm view qunitjs`
 - CDN: visit `https://code.jquery.com/qunit/qunit-x.x.x.js`
+
+Additionally, we publish a new `git` version of QUnit after every change, so we should verify that is still working. You can do so by visiting `https://code.jquery.com/qunit/qunit-git.js` and ensuring the version number matches the latest `-pre` version. Note that it may take a couple minutes for this version to update as the build happens.
 
 ## Updating the Website
 
@@ -70,9 +73,7 @@ If the website does not appear to be updating, you should check the Webhook to e
 
 ## Updating the API Documentation
 
-After updating the website, ensure you update the API documentation site as well. The process is the same as for the actual website _except_ you do _not_ need to do a find and replace of the previous version. Just ensure that all necessary updates are included that relate to the new release.
-
-Some QUnit releases, usually patch releases, will not require any API documentation changes, in which case you can skip this section. Don't worry about the versions not matching exactly.
+The QUnit API documentation is published automatically via [GitHub Pages](https://pages.github.com/) in the `docs` directory of the main repository. Since it is published automatically after every change you do not need to do anything special during a release.
 
 ## Final Steps
 
@@ -83,3 +84,5 @@ Finally, make an announcement on the [@qunitjs](https://twitter.com/qunitjs) Twi
 	Released @VERSION: https://github.com/qunitjs/qunit/releases/tag/x.x.x
 
 That's it! If you made it this far, congratulations you have successfully released a new version fo QUnit!
+
+_Note: Remember to reset any branch protections or other settings changed during the release process._
