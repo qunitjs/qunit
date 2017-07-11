@@ -103,7 +103,9 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	if ( objectType( executeNow ) === "function" ) {
 		moduleStack.push( module );
 		config.currentModule = module;
-		executeNow.call( module.testEnvironment, moduleFns );
+		testEnvironment.hooks = moduleFns;
+		executeNow.call( testEnvironment, moduleFns );
+		delete testEnvironment.hooks;
 		moduleStack.pop();
 		module = module.parentModule || currentModule;
 	}

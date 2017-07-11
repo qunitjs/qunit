@@ -419,3 +419,29 @@ QUnit.module( "modules with multiple hooks", function( hooks ) {
 		assert.expect( 9 );
 	} );
 } );
+
+QUnit.module( "modules with hooks added via `this.hooks.*`", function( hooks ) {
+	var hooksMatchesThisHooks = hooks === this.hooks;
+
+	this.hooks.before( function( assert ) { assert.step( "before1" ); } );
+	this.hooks.beforeEach( function( assert ) { assert.step( "beforeEach1" ); } );
+	this.hooks.afterEach( function( assert ) { assert.step( "afterEach1" ); } );
+
+	this.hooks.after( function( assert ) {
+		assert.ok( hooksMatchesThisHooks, "`this.hooks` matches `hooks` argument" );
+		assert.step( "after1" );
+
+		assert.verifySteps( [
+			"before1",
+			"beforeEach1",
+			"afterEach1",
+			"after1"
+		] );
+
+	} );
+
+	QUnit.test( "all hooks", function( assert ) {
+		assert.expect( 7 );
+		assert.equal( this.hooks, undefined );
+	} );
+} );
