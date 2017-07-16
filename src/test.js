@@ -179,6 +179,7 @@ Test.prototype = {
 
 	after: function() {
 		checkPollution();
+		this.testEnvironment = null;
 	},
 
 	queueHook( hook, hookName, hookOwner ) {
