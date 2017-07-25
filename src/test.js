@@ -49,7 +49,7 @@ export default function Test( settings ) {
 		settings.todo = false;
 
 	// Skipped tests should be left intact
-	} else	if ( this.module.todo  && !settings.skip ) {
+	} else	if ( this.module.todo && !settings.skip ) {
 		settings.todo = true;
 	}
 
@@ -83,6 +83,13 @@ export default function Test( settings ) {
 		this.async = false;
 		this.expected = 0;
 	} else {
+		if ( typeof this.callback !== "function" ) {
+			const method = this.todo ? "todo" : "test";
+
+			// eslint-disable-next-line max-len
+			throw new TypeError( `You must provide a function as a test callback to QUnit.${method}("${settings.testName}")` );
+		}
+
 		this.assert = new Assert( this );
 	}
 }
