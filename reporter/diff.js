@@ -970,8 +970,11 @@ QUnit.diff = ( function() {
 				line = text.substring( lineStart, lineEnd + 1 );
 				lineStart = lineEnd + 1;
 
-				if ( lineHash.hasOwnProperty ? lineHash.hasOwnProperty( line ) :
-							( lineHash[ line ] !== undefined ) ) {
+				const lineHashExists = lineHash.hasOwnProperty ?
+					lineHash.hasOwnProperty( line ) :
+					lineHash[ line ] !== undefined;
+
+				if ( lineHashExists ) {
 					chars += String.fromCharCode( lineHash[ line ] );
 				} else {
 					chars += String.fromCharCode( lineArrayLength );
