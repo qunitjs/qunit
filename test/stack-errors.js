@@ -19,7 +19,7 @@ QUnit.test( "no assertions", function() { } );
 
 // Start error inside of a test context
 QUnit.test( "QUnit.start()", function() {
-	QUnit.start();
+	QUnit.start();  // eslint-disable-line qunit/no-qunit-start-in-tests
 } );
 
 // Died on test

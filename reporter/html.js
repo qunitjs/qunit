@@ -84,12 +84,12 @@ export function escapeText( s ) {
 	function removeClass( elem, name ) {
 		var set = " " + elem.className + " ";
 
-	// Class name may appear multiple times
+		// Class name may appear multiple times
 		while ( set.indexOf( " " + name + " " ) >= 0 ) {
 			set = set.replace( " " + name + " ", " " );
 		}
 
-	// Trim for prettiness
+		// Trim for prettiness
 		elem.className = typeof set.trim === "function" ?
 			set.trim() :
 			set.replace( /^\s+|\s+$/g, "" );
@@ -183,14 +183,14 @@ export function escapeText( s ) {
 		return urlConfigHtml;
 	}
 
-// Handle "click" events on toolbar checkboxes and "change" for select menus.
-// Updates the URL with the new state of `config.urlConfig` values.
+	// Handle "click" events on toolbar checkboxes and "change" for select menus.
+	// Updates the URL with the new state of `config.urlConfig` values.
 	function toolbarChanged() {
 		var updatedUrl, value, tests,
 			field = this,
 			params = {};
 
-	// Detect if field is a select menu or a checkbox
+		// Detect if field is a select menu or a checkbox
 		if ( "selectedIndex" in field ) {
 			value = field.options[ field.selectedIndex ].value || undefined;
 		} else {
@@ -200,7 +200,7 @@ export function escapeText( s ) {
 		params[ field.name ] = value;
 		updatedUrl = setUrl( params );
 
-	// Check if we can apply the change without a page refresh
+		// Check if we can apply the change without a page refresh
 		if ( "hidepassed" === field.name && "replaceState" in window.history ) {
 			QUnit.urlParams[ field.name ] = value;
 			config[ field.name ] = value || false;
@@ -223,10 +223,11 @@ export function escapeText( s ) {
 
 		for ( key in params ) {
 
-		// Skip inherited or undefined properties
+			// Skip inherited or undefined properties
 			if ( hasOwn.call( params, key ) && params[ key ] !== undefined ) {
 
-			// Output a parameter for each value of this key (but usually just one)
+				// Output a parameter for each value of this key
+				// (but usually just one)
 				arrValue = [].concat( params[ key ] );
 				for ( i = 0; i < arrValue.length; i++ ) {
 					querystring += encodeURIComponent( key );
@@ -257,7 +258,7 @@ export function escapeText( s ) {
 			filter: ( filter === "" ) ? undefined : filter,
 			moduleId: ( selectedModules.length === 0 ) ? undefined : selectedModules,
 
-		// Remove module and testId filter
+			// Remove module and testId filter
 			module: undefined,
 			testId: undefined
 		} );
@@ -376,11 +377,11 @@ export function escapeText( s ) {
 		addEvent( moduleFilter, "submit", interceptNavigation );
 		addEvent( moduleFilter, "reset", function() {
 
-		// Let the reset happen, then update styles
+			// Let the reset happen, then update styles
 			window.setTimeout( selectionChange );
 		} );
 
-	// Enables show/hide for the dropdown
+		// Enables show/hide for the dropdown
 		function searchFocus() {
 			if ( dropDown.style.display !== "none" ) {
 				return;
@@ -390,7 +391,7 @@ export function escapeText( s ) {
 			addEvent( document, "click", hideHandler );
 			addEvent( document, "keydown", hideHandler );
 
-		// Hide on Escape keydown or outside-container click
+			// Hide on Escape keydown or outside-container click
 			function hideHandler( e )  {
 				var inContainer = moduleFilter.contains( e.target );
 
@@ -407,7 +408,7 @@ export function escapeText( s ) {
 			}
 		}
 
-	// Processes module search box input
+		// Processes module search box input
 		function searchInput() {
 			var i, item,
 				searchText = moduleSearch.value.toLowerCase(),
@@ -423,7 +424,7 @@ export function escapeText( s ) {
 			}
 		}
 
-	// Processes selection changes
+		// Processes selection changes
 		function selectionChange( evt ) {
 			var i, item,
 				checkbox = evt && evt.target || allCheckbox,
@@ -521,10 +522,10 @@ export function escapeText( s ) {
 			return "";
 		}
 		return "<div id='qunit-filteredTest'>Rerunning selected tests: " +
-		escapeText( testId.join( ", " ) ) +
-		" <a id='qunit-clearFilter' href='" +
-		escapeText( unfilteredUrl ) +
-		"'>Run all tests</a></div>";
+			escapeText( testId.join( ", " ) ) +
+			" <a id='qunit-clearFilter' href='" +
+			escapeText( unfilteredUrl ) +
+			"'>Run all tests</a></div>";
 	}
 
 	function appendUserAgent() {
@@ -535,8 +536,8 @@ export function escapeText( s ) {
 			userAgent.appendChild(
 				document.createTextNode(
 					"QUnit " + QUnit.version + "; " + navigator.userAgent
-			)
-		);
+				)
+			);
 		}
 	}
 
@@ -602,11 +603,11 @@ export function escapeText( s ) {
 		tests.appendChild( testBlock );
 	}
 
-// HTML Reporter initialization and load
+	// HTML Reporter initialization and load
 	QUnit.begin( function( details ) {
 		var i, moduleObj, tests;
 
-	// Sort modules by name for the picker
+		// Sort modules by name for the picker
 		for ( i = 0; i < details.modules.length; i++ ) {
 			moduleObj = details.modules[ i ];
 			if ( moduleObj.name ) {
@@ -617,7 +618,7 @@ export function escapeText( s ) {
 			return a.localeCompare( b );
 		} );
 
-	// Initialize QUnit elements
+		// Initialize QUnit elements
 		appendInterface();
 		appendTestsList( details.modules );
 		tests = id( "qunit-tests" );
@@ -657,7 +658,7 @@ export function escapeText( s ) {
 			assertLi,
 			assertList;
 
-	// Update remaing tests to aborted
+		// Update remaing tests to aborted
 		if ( abortButton && abortButton.disabled ) {
 			html = "Tests aborted after " + details.runtime + " milliseconds.";
 
@@ -688,15 +689,16 @@ export function escapeText( s ) {
 
 		if ( config.altertitle && document.title ) {
 
-		// Show ✖ for good, ✔ for bad suite result in title
-		// use escape sequences in case file gets loaded with non-utf-8-charset
+			// Show ✖ for good, ✔ for bad suite result in title
+			// use escape sequences in case file gets loaded with non-utf-8
+			// charset
 			document.title = [
-			( stats.failedTests ? "\u2716" : "\u2714" ),
+				( stats.failedTests ? "\u2716" : "\u2714" ),
 				document.title.replace( /^[\u2714\u2716] /i, "" )
 			].join( " " );
 		}
 
-	// Scroll back to top to show results
+		// Scroll back to top to show results
 		if ( config.scrolltop && window.scrollTo ) {
 			window.scrollTo( 0, 0 );
 		}
@@ -722,7 +724,7 @@ export function escapeText( s ) {
 			testBlock.className = "running";
 		} else {
 
-		// Report later registered tests
+			// Report later registered tests
 			appendTest( details.name, details.testId, details.module );
 		}
 
@@ -730,10 +732,12 @@ export function escapeText( s ) {
 		if ( running ) {
 			bad = QUnit.config.reorder && details.previousFailure;
 
-			running.innerHTML = ( bad ?
-			"Rerunning previously failed test: <br />" :
-			"Running: <br />" ) +
-			getNameHtml( details.name, details.module );
+			running.innerHTML = [
+				bad ?
+					"Rerunning previously failed test: <br />" :
+					"Running: <br />",
+				getNameHtml( details.name, details.module )
+			].join( "" );
 		}
 
 	} );
@@ -761,9 +765,9 @@ export function escapeText( s ) {
 		message = "<span class='test-message'>" + message + "</span>";
 		message += "<span class='runtime'>@ " + details.runtime + " ms</span>";
 
-	// The pushFailure doesn't provide details.expected
-	// when it calls, it's implicit to also not show expected and diff stuff
-	// Also, we need to check details.expected existence, as it can exist and be undefined
+		// The pushFailure doesn't provide details.expected
+		// when it calls, it's implicit to also not show expected and diff stuff
+		// Also, we need to check details.expected existence, as it can exist and be undefined
 		if ( !details.result && hasOwn.call( details, "expected" ) ) {
 			if ( details.negative ) {
 				expected = "NOT " + QUnit.dump.parse( details.expected );
@@ -822,7 +826,7 @@ export function escapeText( s ) {
 
 			message += "</table>";
 
-	// This occurs when pushFailure is set and we have an extracted stack trace
+		// This occurs when pushFailure is set and we have an extracted stack trace
 		} else if ( !details.result && details.source ) {
 			message += "<table>" +
 			"<tr class='test-source'><th>Source: </th><td><pre>" +
@@ -854,31 +858,31 @@ export function escapeText( s ) {
 		good = details.passed;
 		bad = details.failed;
 
-	// This test passed if it has no unexpected failed assertions
+		// This test passed if it has no unexpected failed assertions
 		const testPassed = details.failed > 0 ? details.todo : !details.todo;
 
 		if ( testPassed ) {
 
-		// Collapse the passing tests
+			// Collapse the passing tests
 			addClass( assertList, "qunit-collapsed" );
 		} else if ( config.collapse ) {
 			if ( !collapseNext ) {
 
-			// Skip collapsing the first failing test
+				// Skip collapsing the first failing test
 				collapseNext = true;
 			} else {
 
-			// Collapse remaining tests
+				// Collapse remaining tests
 				addClass( assertList, "qunit-collapsed" );
 			}
 		}
 
-	// The testItem.firstChild is the test name
+		// The testItem.firstChild is the test name
 		testTitle = testItem.firstChild;
 
 		testCounts = bad ?
-		"<b class='failed'>" + bad + "</b>, " + "<b class='passed'>" + good + "</b>, " :
-		"";
+			"<b class='failed'>" + bad + "</b>, " + "<b class='passed'>" + good + "</b>, " :
+			"";
 
 		testTitle.innerHTML += " <b class='counts'>(" + testCounts +
 		details.assertions.length + ")</b>";
@@ -920,7 +924,7 @@ export function escapeText( s ) {
 			}
 		}
 
-	// Show the source of the test when showing assertions
+		// Show the source of the test when showing assertions
 		if ( details.source ) {
 			sourceName = document.createElement( "p" );
 			sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
@@ -935,8 +939,8 @@ export function escapeText( s ) {
 		}
 	} );
 
-// Avoid readyState issue with phantomjs
-// Ref: #818
+	// Avoid readyState issue with phantomjs
+	// Ref: #818
 	var notPhantom = ( function( p ) {
 		return !( p && p.version && p.version.major > 0 );
 	} )( window.phantom );
@@ -947,22 +951,22 @@ export function escapeText( s ) {
 		addEvent( window, "load", QUnit.load );
 	}
 
-// Wrap window.onerror. We will call the original window.onerror to see if
-// the existing handler fully handles the error; if not, we will call the
-// QUnit.onError function.
+	// Wrap window.onerror. We will call the original window.onerror to see if
+	// the existing handler fully handles the error; if not, we will call the
+	// QUnit.onError function.
 	var originalWindowOnError = window.onerror;
 
-// Cover uncaught exceptions
-// Returning true will suppress the default browser handler,
-// returning false will let it run.
+	// Cover uncaught exceptions
+	// Returning true will suppress the default browser handler,
+	// returning false will let it run.
 	window.onerror = function( message, fileName, lineNumber, ...args ) {
 		var ret = false;
 		if ( originalWindowOnError ) {
 			ret = originalWindowOnError.call( this, message, fileName, lineNumber, ...args );
 		}
 
-	// Treat return value as window.onerror itself does,
-	// Only do our handling if not suppressed.
+		// Treat return value as window.onerror itself does,
+		// Only do our handling if not suppressed.
 		if ( ret !== true ) {
 			const error = {
 				message,
