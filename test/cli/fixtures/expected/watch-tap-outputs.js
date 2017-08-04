@@ -81,5 +81,31 @@ ok 2 Foo > two
 # skip 0
 # todo 0
 # fail 0
+Stopping QUnit...`,
+
+	"add-file-after-run": `TAP version 13
+ok 1 Module > Test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File changed: watching/tests/foo.js
+Restarting...
+File added: watching/bar.js
+Finishing current test and restarting...
+TAP version 13
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+TAP version 13
+ok 1 Module > Test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
 Stopping QUnit...`
 };
