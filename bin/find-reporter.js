@@ -6,7 +6,7 @@ const findup = require( "findup-sync" );
 const utils = require( "./utils" );
 const pkg = require( "../package.json" );
 
-module.exports = function findReporter( reporterName ) {
+function findReporter( reporterName ) {
 	if ( !reporterName ) {
 		return JSReporters.TapReporter;
 	}
@@ -33,13 +33,16 @@ module.exports = function findReporter( reporterName ) {
 	displayAvailableReporters( reporterName );
 };
 
-function displayAvailableReporters( input ) {
+function displayAvailableReporters( inputReporterName ) {
+	const message = [];
+
+	if ( inputReporterName ) {
+		message.push( `No reporter found matching "${inputReporterName}".` );
+	}
+
 	const jsReporters = getReportersFromJSReporters();
 
-	const message = [
-		`No reporter found matching "${input}".`,
-		`Available reporters from JS Reporters are: ${jsReporters.join( ", " )}`
-	];
+	message.push( `Available reporters from JS Reporters are: ${jsReporters.join( ", " )}` );
 
 	const npmReporters = getReportersFromDependencies();
 	if ( npmReporters.length ) {
@@ -80,3 +83,8 @@ function getReportersFromDependencies() {
 		return false;
 	} );
 }
+
+module.exports = {
+	findReporter,
+	displayAvailableReporters
+};
