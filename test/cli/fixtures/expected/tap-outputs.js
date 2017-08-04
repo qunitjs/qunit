@@ -82,6 +82,10 @@ Available reporters from JS Reporters are: console, tap
 Available custom reporters from dependencies are: npm-reporter
 `,
 
+	"qunit --reporter": `Available reporters from JS Reporters are: console, tap
+Available custom reporters from dependencies are: npm-reporter
+`,
+
 	/* eslint-disable max-len */
 	"qunit hanging-test": `Error: Process exited before tests finished running
 Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.
