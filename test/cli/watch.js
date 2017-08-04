@@ -252,4 +252,67 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file-mid-run" ] );
 	} ) );
+
+	QUnit.todo( "properly watches files after initial run", co.wrap( function* ( assert ) {
+
+		fixturify.writeSync( fixturePath, {
+			"tests": {
+				"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });",
+				"foo.js": `
+					QUnit.module('Module');
+					QUnit.test('Test', function(assert) {
+						assert.ok(true);
+					});`
+			}
+		} );
+
+		const command = "qunit watching/tests";
+		const execution = execute( `${command} --watch` );
+		let count = 0;
+
+		execution.addListener( "message", function( data ) {
+			assert.step( data );
+
+			if ( data === "runEnd" ) {
+				count++;
+
+				if ( count === 1 ) {
+					fixturify.writeSync( fixturePath, {
+						"tests": {
+							"foo.js": `
+								process.send(require('../bar.js'));
+								QUnit.module('Module');
+								QUnit.test('Test', function(assert) {
+									assert.ok(true);
+								});`
+						},
+						"bar.js": "module.exports = 'bar export first';"
+					} );
+				}
+
+				if ( count === 2 ) {
+					fixturify.writeSync( fixturePath, {
+						"bar.js": "module.exports = 'bar export second';"
+					} );
+				}
+
+				if ( count === 3 ) {
+					kill( execution );
+				}
+			}
+		} );
+
+		const result = yield execution;
+
+		assert.verifySteps( [
+			"runEnd",
+			"bar export first",
+			"runEnd",
+			"bar export second",
+			"runEnd"
+		] );
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "add-file-after-run" ] );
+	} ) );
 } );
