@@ -92,7 +92,13 @@ function run( args, options ) {
 };
 
 run.restart = function( args ) {
-	this.watchedFiles.forEach( file => delete require.cache[ file ] );
+	const watchedFiles = walkSync( process.cwd(), {
+		globs: [ "**/*.js" ],
+		directories: false,
+		ignore: IGNORED_GLOBS
+	} );
+
+	watchedFiles.forEach( file => delete require.cache[ path.resolve( file ) ] );
 
 	if ( QUnit.config.queue.length ) {
 		console.log( "Finishing current test and restarting..." );
@@ -136,12 +142,6 @@ run.watch = function watch() {
 		ignored: IGNORED_GLOBS,
 		ignoreInitial: true
 	} );
-
-	this.watchedFiles = walkSync( process.cwd(), {
-		globs: [ "**/*.js" ],
-		directories: false,
-		ignore: IGNORED_GLOBS
-	} ).map( file => path.resolve( file ) );
 
 	watcher.on( "ready", () => run.apply( null, args ) );
 	watcher.on( "change", watcherEvent( "changed", args ) );

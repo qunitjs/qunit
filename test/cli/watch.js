@@ -253,7 +253,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file-mid-run" ] );
 	} ) );
 
-	QUnit.todo( "properly watches files after initial run", co.wrap( function* ( assert ) {
+	QUnit.test( "properly watches files after initial run", co.wrap( function* ( assert ) {
 
 		fixturify.writeSync( fixturePath, {
 			"tests": {
