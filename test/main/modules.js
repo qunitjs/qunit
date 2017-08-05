@@ -328,7 +328,7 @@ QUnit.module( "contained suite `this`", function( hooks ) {
 		} );
 	} );
 
-	QUnit.test( "tests can't see environments from nested modules", function( assert )	{
+	QUnit.test( "tests can't see environments from nested modules", function( assert ) {
 		assert.strictEqual( this.inner, undefined );
 		this.outer = 42;
 	} );
