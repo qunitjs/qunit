@@ -9,6 +9,7 @@ const utils = require( "./utils" );
 const IGNORED_GLOBS = [
 	"**/node_modules/**"
 ];
+const RESTART_DEBOUNCE_LENGTH = 200;
 
 let QUnit;
 
@@ -80,21 +81,26 @@ function run( args, options ) {
 };
 
 run.restart = function( args ) {
-	const watchedFiles = walkSync( process.cwd(), {
-		globs: [ "**/*.js" ],
-		directories: false,
-		ignore: IGNORED_GLOBS
-	} );
+	clearTimeout( this._restartDebounceTimer );
 
-	watchedFiles.forEach( file => delete require.cache[ path.resolve( file ) ] );
+	this._restartDebounceTimer = setTimeout( () => {
 
-	if ( QUnit.config.queue.length ) {
-		console.log( "Finishing current test and restarting..." );
-	} else {
-		console.log( "Restarting..." );
-	}
+		const watchedFiles = walkSync( process.cwd(), {
+			globs: [ "**/*.js" ],
+			directories: false,
+			ignore: IGNORED_GLOBS
+		} );
 
-	run.abort( () => run.apply( null, args ) );
+		watchedFiles.forEach( file => delete require.cache[ path.resolve( file ) ] );
+
+		if ( QUnit.config.queue.length ) {
+			console.log( "Finishing current test and restarting..." );
+		} else {
+			console.log( "Restarting..." );
+		}
+
+		run.abort( () => run.apply( null, args ) );
+	}, RESTART_DEBOUNCE_LENGTH );
 };
 
 run.abort = function( callback ) {

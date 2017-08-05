@@ -91,15 +91,17 @@ ok 1 Module > Test
 # todo 0
 # fail 0
 File changed: watching/tests/foo.js
-Restarting...
 File added: watching/bar.js
-Finishing current test and restarting...
+Restarting...
 TAP version 13
+ok 1 Module > Test
 1..1
 # pass 1
 # skip 0
 # todo 0
 # fail 0
+File changed: watching/bar.js
+Restarting...
 TAP version 13
 ok 1 Module > Test
 1..1
