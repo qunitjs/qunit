@@ -68,6 +68,16 @@ QUnit.module( "CLI Main", function() {
 		assert.equal( execution.stdout, expectedOutput[ command ] );
 	} ) );
 
+	QUnit.test( "logs test files that fail to load properly", co.wrap( function* ( assert ) {
+		try {
+			yield execute( "qunit syntax-error/test.js" );
+		} catch ( e ) {
+			assert.notEqual( e.stdout.indexOf( "not ok 1 syntax-error/test.js > Failed to load the test file with error:" ), -1 );
+			assert.notEqual( e.stdout.indexOf( "ReferenceError: varIsNotDefined is not defined" ), -1 );
+			assert.equal( e.code, 1 );
+		}
+	} ) );
+
 	QUnit.test( "exit code is 1 when failing tests are present", co.wrap( function* ( assert ) {
 		try {
 			yield execute( "qunit fail/*.js" );
