@@ -20,8 +20,7 @@ QUnit.module( "Should create a test and call pushFailure when outside a test", f
 				message: "Error message",
 				source: "filePath.js:1",
 				result: false,
-				actual: "actual",
-				expected: null
+				actual: "actual"
 			}, "Expected assert.pushResult to be called with correct args" );
 		};
 
