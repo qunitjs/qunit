@@ -421,12 +421,15 @@ Test.prototype = {
 				result: resultInfo.result,
 				message: resultInfo.message,
 				actual: resultInfo.actual,
-				expected: resultInfo.expected,
 				testId: this.testId,
 				negative: resultInfo.negative || false,
 				runtime: now() - this.started,
 				todo: !!this.todo
 			};
+
+		if ( hasOwn.call( resultInfo, "expected" ) ) {
+			details.expected = resultInfo.expected;
+		}
 
 		if ( !resultInfo.result ) {
 			source = resultInfo.source || sourceFromStacktrace();
@@ -454,7 +457,6 @@ Test.prototype = {
 			result: false,
 			message: message || "error",
 			actual: actual || null,
-			expected: null,
 			source
 		} );
 	},
