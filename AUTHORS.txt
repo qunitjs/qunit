@@ -80,7 +80,7 @@ Leonardo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
 Corey Frang <gnarf37@gmail.com>
 Nathan Dauber <nathan@radialogica.com>
-Michał Gołębiowski <m.goleb@gmail.com>
+Michał Gołębiowski-Owczarek <m.goleb@gmail.com>
 XhmikosR <xhmikosr@yahoo.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
