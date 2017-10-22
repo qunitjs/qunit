@@ -1,3 +1,24 @@
+2.4.1 / 2017-10-21
+==================
+
+  * HTML Reporter: Fix regression in error reporting
+  * Docs: Add further clarification and examples for Step API
+  * Build: Add my new name to .mailmap, update it in AUTHORS.txt
+  * CLI: Add slight debounce to restarting tests on file watching
+  * CLI: Properly support watching files added after first run
+  * Tests: Add watch test for adding file after a run
+  * CLI: Clear require cache of watched files between runs
+  * Tests: Modify watch test to cover require cache scenario
+  * Build: Allow custom livereload port via livereload-port option
+  * Build: Add better livereloading to watch task
+  * Build: Fix test-on-node task during watch
+  * CLI: Catch file load failures and report as failing tests
+  * Test: Fixing double-space that was expanded to tab
+  * All: Updated yarn.lock
+  * All: Upgraded to eslint@4.x via grunt-eslint@20.x and related plugins
+  * CLI: List available reporters when option is specified with no value
+  * Test: Provide descriptive feedback when missing test callback
+
 2.4.0 / 2017-07-08
 ==================
 
