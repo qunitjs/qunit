@@ -6,7 +6,7 @@ module.exports = function requireQUnit() {
 	try {
 
 		// First we attempt to find QUnit relative to the current working directory.
-		const localQUnitPath = resolve.sync( "qunitjs", { basedir: process.cwd() } );
+		const localQUnitPath = resolve.sync( "qunit", { basedir: process.cwd() } );
 		delete require.cache[ localQUnitPath ];
 		return require( localQUnitPath );
 	} catch ( e ) {

@@ -1,5 +1,5 @@
 {
-  "name": "qunitjs",
+  "name": "qunit",
   "title": "QUnit",
   "description": "An easy-to-use JavaScript Unit Testing framework.",
   "version": "2.4.2-pre",

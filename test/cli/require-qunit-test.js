@@ -12,7 +12,7 @@ QUnit.module( "requireQUnit", function() {
 		};
 		const requireQUnit = proxyquire( "../../bin/require-qunit", {
 			"resolve": resolveStub,
-			"qunitjs": localQUnit
+			"qunit": localQUnit
 		} );
 
 		assert.strictEqual( requireQUnit(), localQUnit );
@@ -24,7 +24,7 @@ QUnit.module( "requireQUnit", function() {
 		};
 		const requireQUnit = proxyquire( "../../bin/require-qunit", {
 			"resolve": resolveStub,
-			"qunitjs": null,
+			"qunit": null,
 			"../qunit/qunit": globalQUnit
 		} );
 
@@ -37,7 +37,7 @@ QUnit.module( "requireQUnit", function() {
 		};
 		const requireQUnit = proxyquire( "../../bin/require-qunit", {
 			"resolve": resolveStub,
-			"qunitjs": null,
+			"qunit": null,
 			"../qunit/qunit": null,
 			"../dist/qunit": devQUnit
 		} );
@@ -48,7 +48,7 @@ QUnit.module( "requireQUnit", function() {
 	QUnit.test( "throws error if none of the modules are found", function( assert ) {
 		const requireQUnit = proxyquire( "../../bin/require-qunit", {
 			"resolve": resolveStub,
-			"qunitjs": null,
+			"qunit": null,
 			"../qunit/qunit": null,
 			"../dist/qunit": null
 		} );
