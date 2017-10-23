@@ -42,7 +42,7 @@ Follow the prompts along the way and you should be all good. This process will c
 You can verify all of the above were correctly published by using the following:
 
 - Bower: `bower info qunit`
-- NPM: `npm view qunitjs`
+- NPM: `npm view qunit`
 - CDN: visit `https://code.jquery.com/qunit/qunit-x.x.x.js`
 
 Additionally, we publish a new `git` version of QUnit after every change, so we should verify that is still working. You can do so by visiting `https://code.jquery.com/qunit/qunit-git.js` and ensuring the version number matches the latest `-pre` version. Note that it may take a couple minutes for this version to update as the build happens.
