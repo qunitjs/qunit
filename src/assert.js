@@ -37,6 +37,7 @@ class Assert {
 	// Verifies the steps in a test match a given array of string values
 	verifySteps( steps, message ) {
 		this.deepEqual( this.test.steps, steps, message );
+		this.test.steps.length = 0;
 	}
 
 	// Specify the number of expected assertions to guarantee that failed test
