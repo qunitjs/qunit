@@ -38,7 +38,7 @@ QUnit.test( "pushes a passing assertion if a message is given", function( assert
 QUnit.module( "assert.verifySteps" );
 
 QUnit.test( "verifies the order and value of steps", function( assert ) {
-	assert.expect( 6 );
+	assert.expect( 10 );
 
 	assert.step( "One step" );
 	assert.step( "Two step" );
@@ -46,6 +46,11 @@ QUnit.test( "verifies the order and value of steps", function( assert ) {
 	assert.step( "Blue step" );
 
 	assert.verifySteps( [ "One step", "Two step", "Red step", "Blue step" ] );
+
+	assert.step( "One step" );
+	assert.step( "Two step" );
+	assert.step( "Red step" );
+	assert.step( "Blue step" );
 
 	var originalPushResult = assert.pushResult;
 	assert.pushResult = function pushResultStub( resultInfo ) {
@@ -72,4 +77,14 @@ QUnit.test( "verifies the order and value of failed steps", function( assert ) {
 	assert.step( "Two step" );
 
 	assert.verifySteps( [ "One step", undefined, "", "Two step" ] );
+} );
+
+QUnit.test( "resets the step list after verification", function( assert ) {
+	assert.expect( 4 );
+
+	assert.step( "one" );
+	assert.verifySteps( [ "one" ] );
+
+	assert.step( "two" );
+	assert.verifySteps( [ "two" ] );
 } );
