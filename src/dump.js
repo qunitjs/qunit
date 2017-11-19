@@ -66,7 +66,7 @@ export default ( function() {
 					return `recursion(${objIndex - stack.length})`;
 				}
 
-				objType = objType || this.typeOf( obj  );
+				objType = objType || this.typeOf( obj );
 				parser = this.parsers[ objType ];
 				parserType = typeof parser;
 

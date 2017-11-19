@@ -797,7 +797,7 @@ function collectTests( module ) {
 
 	// Do a breadth-first traversal of the child modules
 	while ( modules.length ) {
-		const nextModule =  modules.shift();
+		const nextModule = modules.shift();
 		tests.push.apply( tests, nextModule.tests );
 		modules.push( ...nextModule.childModules );
 	}

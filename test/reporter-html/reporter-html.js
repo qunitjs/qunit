@@ -46,7 +46,7 @@ QUnit.test( "running test name displayed", function( assert ) {
 
 QUnit.module( "timing", {
 	getPreviousTest: function( assert ) {
-		return document.getElementById( "qunit-test-output-" + assert.test.testId  )
+		return document.getElementById( "qunit-test-output-" + assert.test.testId )
 			.previousSibling;
 	},
 	filterClass: function( elements ) {
@@ -106,7 +106,7 @@ QUnit.test( "setup", function( assert ) {
 } );
 
 QUnit.test( "logs location", function( assert ) {
-	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId  )
+	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId )
 		.previousSibling;
 	var source = previous.lastChild;
 	var stack = QUnit.stack();
