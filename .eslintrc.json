@@ -21,6 +21,7 @@
         "no-const-assign": "error",
         "no-dupe-class-members": "error",
         "no-duplicate-imports": "error",
+        "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
         "no-this-before-super": "error",
         "no-useless-constructor": "error",
         "no-useless-rename": "error",
