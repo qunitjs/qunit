@@ -36,7 +36,7 @@ function kill( execution, signal ) {
 
 QUnit.module( "CLI Watch", function( hooks ) {
 	hooks.beforeEach( function() {
-		fs.mkdirpSync( fixturePath );
+		fs.ensureDirSync( fixturePath );
 		fixturify.writeSync( fixturePath, {
 			"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });"
 		} );
