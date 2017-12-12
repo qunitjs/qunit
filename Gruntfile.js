@@ -251,7 +251,7 @@ module.exports = function( grunt ) {
 		var testName = file.split( "/test/" ).pop().replace( ".html", "" );
 		var reportPath = path.join( "build/report/phantom", testName + ".json" );
 
-		fs.createFileSync( reportPath );
+		fs.ensureFileSync( reportPath );
 		fs.writeJsonSync( reportPath, coverage, { spaces: 0 } );
 	} );
 
