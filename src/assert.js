@@ -305,6 +305,113 @@ class Assert {
 			message
 		} );
 	}
+
+	rejects( promise, expected, message ) {
+		let result = false;
+
+		const currentTest = ( this instanceof Assert && this.test ) || config.current;
+
+		// 'expected' is optional unless doing string comparison
+		if ( objectType( expected ) === "string" ) {
+			if ( message === undefined ) {
+				message = expected;
+				expected = undefined;
+			} else {
+				message = "assert.rejects does not accept a string value for the expected " +
+					"argument.\nUse a non-string object value (e.g. validator function) instead " +
+					"if necessary.";
+
+				currentTest.assert.pushResult( {
+					result: false,
+					message: message
+				} );
+
+				return;
+			}
+		}
+
+		const then = promise && promise.then;
+		if ( objectType( then ) !== "function" ) {
+			const message = "The value provided to `assert.rejects` in " +
+				"\"" + currentTest.testName + "\" was not a promise.";
+
+			currentTest.assert.pushResult( {
+				result: false,
+				message: message,
+				actual: promise
+			} );
+
+			return;
+		}
+
+		const done = this.async();
+
+		return then.call(
+			promise,
+			function handleFulfillment() {
+				const message = "The promise returned by the `assert.rejects` callback in " +
+				"\"" + currentTest.testName + "\" did not reject.";
+
+				currentTest.assert.pushResult( {
+					result: false,
+					message: message,
+					actual: promise
+				} );
+
+				done();
+			},
+
+			function handleRejection( actual ) {
+				if ( actual ) {
+					const expectedType = objectType( expected );
+
+					// We don't want to validate
+					if ( expected === undefined ) {
+						result = true;
+						expected = null;
+
+						// Expected is a regexp
+					} else if ( expectedType === "regexp" ) {
+						result = expected.test( errorString( actual ) );
+
+						// Expected is a constructor, maybe an Error constructor
+					} else if ( expectedType === "function" && actual instanceof expected ) {
+						result = true;
+
+						// Expected is an Error object
+					} else if ( expectedType === "object" ) {
+						result = actual instanceof expected.constructor &&
+							actual.name === expected.name &&
+							actual.message === expected.message;
+
+						// Expected is a validation function which returns true if validation passed
+					} else {
+						if ( expectedType === "function" ) {
+							result = expected.call( {}, actual ) === true;
+							expected = null;
+
+							// Expected is some other invalid type
+						} else {
+							result = false;
+							message = "invalid expected value provided to `assert.rejects` " +
+								"callback in \"" + currentTest.testName + "\": " +
+								expectedType + ".";
+						}
+					}
+				}
+
+
+				currentTest.assert.pushResult( {
+					result,
+					actual,
+					expected,
+					message
+				} );
+
+				done();
+			}
+		);
+	}
 }
 
 // Provide an alternative to assert.throws(), for environments that consider throws a reserved word
