@@ -1,3 +1,23 @@
+function buildMockPromise( settledValue, shouldFulfill ) {
+
+	// Return a mock self-fulfilling Promise ("thenable")
+	var thenable = {
+		then: function( fulfilledCallback, rejectedCallback ) {
+			setTimeout( function() {
+				return shouldFulfill ?
+					fulfilledCallback.call( thenable, settledValue ) :
+					rejectedCallback.call( thenable, settledValue );
+			}, 13 );
+
+			// returning another thennable for easy confirmation
+			// of return value
+			return buildMockPromise( "final promise", true );
+		}
+	};
+
+	return thenable;
+}
+
 QUnit.module( "assert" );
 
 QUnit.test( "ok", function( assert ) {
@@ -266,6 +286,118 @@ QUnit.test( "throws", function( assert ) {
 	);
 } );
 
+QUnit.test( "rejects", function( assert ) {
+	assert.expect( 15 );
+
+	function CustomError( message ) {
+		this.message = message;
+	}
+
+	CustomError.prototype.toString = function() {
+		return this.message;
+	};
+
+	const rejectsReturnValue = assert.rejects(
+		buildMockPromise( "my error" )
+	);
+
+	assert.equal(
+		typeof rejectsReturnValue.then,
+		"function",
+		"rejects returns a thennable"
+	);
+
+	assert.rejects(
+		buildMockPromise( "my error" ),
+		"simple string rejection, no 'expected' value given"
+	);
+
+	// This test is for IE 7 and prior which does not properly
+	// implement Error.prototype.toString
+	assert.rejects(
+		buildMockPromise( new Error( "error message" ) ),
+		/error message/,
+		"use regexp against instance of Error"
+	);
+
+	assert.rejects(
+		buildMockPromise( new TypeError() ),
+		Error,
+		"thrown TypeError without a message is an instance of Error"
+	);
+
+	assert.rejects(
+		buildMockPromise( new TypeError() ),
+		TypeError,
+		"thrown TypeError without a message is an instance of TypeError"
+	);
+
+	assert.rejects(
+		buildMockPromise( new TypeError( "error message" ) ),
+		Error,
+		"thrown TypeError with a message is an instance of Error"
+	);
+
+	// This test is for IE 8 and prior which goes against the standards
+	// by considering that the native Error constructors, such TypeError,
+	// are also instances of the Error constructor. As such, the assertion
+	// sometimes went down the wrong path.
+	assert.rejects(
+		buildMockPromise( new TypeError( "error message" ) ),
+		TypeError,
+		"thrown TypeError with a message is an instance of TypeError"
+	);
+
+	assert.rejects(
+		buildMockPromise( new CustomError( "some error description" ) ),
+		CustomError,
+		"thrown error is an instance of CustomError"
+	);
+
+	assert.rejects(
+		buildMockPromise( new Error( "some error description" ) ),
+		/description/,
+		"use a regex to match against the stringified error"
+	);
+
+	assert.rejects(
+		buildMockPromise( new Error( "foo" ) ),
+		new Error( "foo" ),
+		"thrown error object is similar to the expected Error object"
+	);
+
+	assert.rejects(
+		buildMockPromise( new CustomError( "some error description" ) ),
+		new CustomError( "some error description" ),
+		"thrown error object is similar to the expected CustomError object"
+	);
+
+	assert.rejects(
+		buildMockPromise( {
+			name: "SomeName",
+			message: "some message"
+		} ),
+		{ name: "SomeName", message: "some message" },
+		"thrown error object is similar to the expected plain object"
+	);
+
+	assert.rejects(
+		buildMockPromise( new CustomError( "some error description" ) ),
+		function( err ) {
+			return err instanceof CustomError && /description/.test( err );
+		},
+		"custom validation function"
+	);
+
+	this.CustomError = CustomError;
+
+	assert.rejects(
+		buildMockPromise( new this.CustomError( "some error description" ) ),
+		/description/,
+		"throw error from property of 'this' context"
+	);
+} );
+
 QUnit.test( "raises, alias for throws", function( assert ) {
 	assert.strictEqual( assert.raises, assert.throws );
 } );
@@ -388,6 +520,65 @@ QUnit.test( "throws", function( assert ) {
 		},
 		/bar/,
 		"throws fail when regexp doesn't match the error message"
+	);
+} );
+
+QUnit.test( "rejects", function( assert ) {
+	assert.rejects(
+		buildMockPromise( "some random value", /* shouldResolve */ true ),
+		"fails when the provided promise fulfills"
+	);
+
+	assert.rejects(
+		buildMockPromise( "foo" ),
+		/bar/,
+		"rejects fails when regexp does not match"
+	);
+
+	assert.rejects(
+		buildMockPromise( new Error( "foo" ) ),
+		function RandomConstructor() { },
+		"rejects fails when rejected value is not an instance of the provided constructor"
+	);
+
+	function SomeConstructor() { }
+
+	assert.rejects(
+		buildMockPromise( new SomeConstructor() ),
+		function OtherRandomConstructor() { },
+		"rejects fails when rejected value is not an instance of the provided constructor"
+	);
+
+	assert.rejects(
+		buildMockPromise( "some value" ),
+		function() { return false; },
+		"rejects fails when the expected function returns false"
+	);
+
+	assert.rejects( null );
+
+	assert.rejects(
+		buildMockPromise( "foo" ),
+		2,
+		"rejects fails when provided a number"
+	);
+
+	assert.rejects(
+		buildMockPromise( "foo" ),
+		"string matcher",
+		"rejects fails when provided a number"
+	);
+
+	assert.rejects(
+		buildMockPromise( "foo" ),
+		false,
+		"rejects fails when provided a boolean"
+	);
+
+	assert.rejects(
+		buildMockPromise( "foo" ),
+		[],
+		"rejects fails when provided an array"
 	);
 } );
 
