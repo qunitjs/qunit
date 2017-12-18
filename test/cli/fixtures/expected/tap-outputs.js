@@ -89,6 +89,22 @@ Available custom reporters from dependencies are: npm-reporter
 	/* eslint-disable max-len */
 	"qunit hanging-test": `Error: Process exited before tests finished running
 Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.
-`
+`,
 	/* eslint-enable max-len */
+	"qunit unhandled-rejection.js":
+`TAP version 13
+not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promise
+  ---
+  message: "Error thrown in non-returned promise!"
+  severity: failed
+  actual: null
+  expected: undefined
+  stack: undefined:undefined
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+`
 };

@@ -33,6 +33,11 @@ function run( args, options ) {
 		}
 	} );
 
+	// Listen for unhandled rejections, and call QUnit.onError.
+	process.on( "unhandledRejection", function( reason ) {
+		QUnit.onError( reason );
+	} );
+
 	const files = utils.getFilesFromArgs( args );
 
 	QUnit = requireQUnit();

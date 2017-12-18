@@ -105,6 +105,22 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "unhandled rejections fail tests", co.wrap( function* ( assert ) {
+		const command = "qunit unhandled-rejection.js";
+
+		try {
+			const result = yield execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
+		}
+	} ) );
+
 	QUnit.module( "filter", function() {
 		QUnit.test( "can properly filter tests", co.wrap( function* ( assert ) {
 			const command = "qunit --filter 'single' test single.js 'glob/**/*-test.js'";

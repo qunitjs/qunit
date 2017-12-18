@@ -979,5 +979,4 @@ export function escapeText( s ) {
 
 		return ret;
 	};
-
 }() );
