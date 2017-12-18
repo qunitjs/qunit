@@ -16,4 +16,6 @@ QUnit.module( "Unhandled Rejections", function() {
 		// prevent test from exiting before unhandled rejection fires
 		setTimeout( done, 10 );
 	} );
+
+	Promise.reject( { message: "outside of a test context" } );
 } );
