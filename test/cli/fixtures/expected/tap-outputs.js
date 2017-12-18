@@ -97,14 +97,26 @@ not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promis
   ---
   message: "Error thrown in non-returned promise!"
   severity: failed
-  actual: null
+  actual: {}
   expected: undefined
-  stack: undefined:undefined
+  stack: Error: Error thrown in non-returned promise!
+    at /Users/rjackson/src/open-source/qunit/test/cli/fixtures/unhandled-rejection.js:13:11
+    at <anonymous>
   ...
-1..1
+not ok 2 global failure
+  ---
+  message: "outside of a test context"
+  severity: failed
+  actual: {
+  "message": "outside of a test context"
+}
+  expected: undefined
+  stack:     at runTest (/Users/rjackson/src/open-source/qunit/dist/qunit.js:1478:30)
+  ...
+1..2
 # pass 0
 # skip 0
 # todo 0
-# fail 1
+# fail 2
 `
 };
