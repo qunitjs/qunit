@@ -33,9 +33,9 @@ function run( args, options ) {
 		}
 	} );
 
-	// Listen for unhandled rejections, and call QUnit.onError.
+	// Listen for unhandled rejections, and call QUnit.onUnhandledRejection
 	process.on( "unhandledRejection", function( reason ) {
-		QUnit.onError( reason );
+		QUnit.onUnhandledRejection( reason );
 	} );
 
 	const files = utils.getFilesFromArgs( args );

@@ -980,8 +980,8 @@ export function escapeText( s ) {
 		return ret;
 	};
 
-	// Listen for unhandled rejections, and call QUnit.onError.
+	// Listen for unhandled rejections, and call QUnit.onUnhandledRejection
 	window.addEventListener( "unhandledrejection", function( event ) {
-		QUnit.onError( event.reason );
+		QUnit.onUnhandledRejection( event.reason );
 	} );
 }() );

@@ -16,6 +16,7 @@ import SuiteReport from "./reports/suite";
 
 import { on, emit } from "./events";
 import onError from "./core/onerror";
+import onUnhandledRejection from "./core/on-unhandled-rejection";
 
 let focused = false;
 const QUnit = {};
@@ -251,7 +252,9 @@ extend( QUnit, {
 		return sourceFromStacktrace( offset );
 	},
 
-	onError
+	onError,
+
+	onUnhandledRejection
 } );
 
 QUnit.pushFailure = pushFailure;
