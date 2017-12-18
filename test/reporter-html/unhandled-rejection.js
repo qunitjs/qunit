@@ -8,7 +8,7 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 			var originalPushResult = assert.pushResult;
 			assert.pushResult = function( resultInfo ) {
 
-			// Inverts the result so we can test failing assertions
+				// Inverts the result so we can test failing assertions
 				resultInfo.result = !resultInfo.result;
 				originalPushResult( resultInfo );
 			};
