@@ -1,3 +1,5 @@
+"use strict";
+
 // Expected outputs from the TapReporter for the commands run in CLI tests
 module.exports = {
 	"qunit":
@@ -97,21 +99,25 @@ not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promis
   ---
   message: "Error thrown in non-returned promise!"
   severity: failed
-  actual: {}
+  actual: {
+  "message": "Error thrown in non-returned promise!",
+  "stack": "Error: Error thrown in non-returned promise!\\n    at /some/path/wherever/unhandled-rejection.js:13:11"
+}
   expected: undefined
   stack: Error: Error thrown in non-returned promise!
-    at /Users/rjackson/src/open-source/qunit/test/cli/fixtures/unhandled-rejection.js:13:11
-    at <anonymous>
+    at /some/path/wherever/unhandled-rejection.js:13:11
   ...
 not ok 2 global failure
   ---
   message: "outside of a test context"
   severity: failed
   actual: {
-  "message": "outside of a test context"
+  "message": "outside of a test context",
+  "stack": "Error: outside of a test context\\n    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)"
 }
   expected: undefined
-  stack:     at runTest (/Users/rjackson/src/open-source/qunit/dist/qunit.js:1478:30)
+  stack: Error: outside of a test context
+    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)
   ...
 1..2
 # pass 0
