@@ -2,6 +2,7 @@ import { test } from "../test";
 
 import config from "./config";
 import { extend } from "./utilities";
+import { sourceFromStacktrace } from "./stacktrace";
 
 // Handle an unhandled rejection
 export default function onUnhandledRejection( reason ) {
@@ -9,7 +10,7 @@ export default function onUnhandledRejection( reason ) {
 		result: false,
 		message: reason.message || "error",
 		actual: reason,
-		source: reason.stack
+		source: reason.stack || sourceFromStacktrace( 3 )
 	};
 
 	const currentTest = config.current;
