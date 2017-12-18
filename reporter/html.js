@@ -979,4 +979,9 @@ export function escapeText( s ) {
 
 		return ret;
 	};
+
+	// Listen for unhandled rejections, and call QUnit.onError.
+	window.addEventListener( "unhandledrejection", function( event ) {
+		QUnit.onError( event.reason );
+	} );
 }() );
