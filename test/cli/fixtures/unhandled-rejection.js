@@ -6,19 +6,16 @@ QUnit.module( "Unhandled Rejections", function() {
 
 		const done = assert.async();
 
-		new Promise( function( resolve ) {
-			setTimeout( resolve );
-		} )
-			.then( function() {
+		Promise.resolve().then( function() {
 
-				// throwing a non-Error here because stack trace representation
-				// across Node versions is not stable (they continue to get better)
-				throw {
-					message: "Error thrown in non-returned promise!",
-					stack: `Error: Error thrown in non-returned promise!
+			// throwing a non-Error here because stack trace representation
+			// across Node versions is not stable (they continue to get better)
+			throw {
+				message: "Error thrown in non-returned promise!",
+				stack: `Error: Error thrown in non-returned promise!
     at /some/path/wherever/unhandled-rejection.js:13:11`
-				};
-			} );
+			};
+		} );
 
 		// prevent test from exiting before unhandled rejection fires
 		setTimeout( done, 10 );
