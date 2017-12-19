@@ -17,12 +17,9 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 		QUnit.test( "test passes just fine, but has a rejected promise", function( assert ) {
 			const done = assert.async();
 
-			new Promise( function( resolve ) {
-				setTimeout( resolve );
-			} )
-				.then( function() {
-					throw new Error( "Error thrown in non-returned promise!" );
-				} );
+			Promise.resolve().then( function() {
+				throw new Error( "Error thrown in non-returned promise!" );
+			} );
 
 			// prevent test from exiting before unhandled rejection fires
 			setTimeout( done, 10 );
