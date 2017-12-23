@@ -405,6 +405,6 @@ QUnit.test( "throws", function( assert ) {
 		assert.expect( 1 );
 		assert.throws( function() {
 			previousTestAssert.ok( true );
-		}, /Assertion occured after test had finished/ );
+		}, /Assertion occurred after test had finished/ );
 	} );
 }() );
