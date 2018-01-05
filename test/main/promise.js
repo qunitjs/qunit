@@ -13,7 +13,7 @@ function createMockPromise( assert, reject, value ) {
 				return reject ?
 					rejectedCallback.call( thenable, value ) :
 					fulfilledCallback.call( thenable, value );
-			}, 13 );
+			} );
 		}
 	};
 	return thenable;
