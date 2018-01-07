@@ -40,7 +40,7 @@ function advance() {
 
 			config.queue.shift()();
 		} else {
-			setTimeout( advance, 13 );
+			setTimeout( advance );
 			break;
 		}
 	}

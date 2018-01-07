@@ -272,7 +272,7 @@ function scheduleBegin() {
 	if ( defined.setTimeout ) {
 		setTimeout( function() {
 			begin();
-		}, 13 );
+		} );
 	} else {
 		begin();
 	}

@@ -789,7 +789,7 @@ function internalStart( test ) {
 			}
 
 			begin();
-		}, 13 );
+		} );
 	} else {
 		begin();
 	}
