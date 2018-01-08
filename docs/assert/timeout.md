@@ -44,3 +44,12 @@ QUnit.test( "Waiting for async function", function( assert ) {
   } );
 });
 ```
+
+```js
+QUnit.test( "Waiting in an async test", async assert => {
+  assert.timeout( 500 ); // Timeout of .5 seconds
+
+  let result = await asyncFunction();
+  assert.ok( result );
+});
+```
