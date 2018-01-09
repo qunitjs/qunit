@@ -1805,7 +1805,7 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function( assert ) {
 	assert.equal( QUnit.equiv( s1, s3 ), false, "Single element sets [1] vs [3]" );
 
 	// Tricky values
-	s1 = new Set( [ false, undefined, null,  0, Infinity, NaN, -Infinity ] );
+	s1 = new Set( [ false, undefined, null, 0, Infinity, NaN, -Infinity ] );
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
@@ -1874,7 +1874,7 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function( assert ) {
 	assert.equal( QUnit.equiv( m1, m3 ), false, "Single element maps [1,1] vs [1,3]" );
 
 	// Tricky values
-	m1 =  new Map( [
+	m1 = new Map( [
 		[ false, false ],
 		[ null, null ],
 		[ 0, 0 ],
