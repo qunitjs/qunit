@@ -1,3 +1,31 @@
+2.5.0 / 2018-01-09
+==================
+
+  * Tests: Fix no-multi-spaces violation found by latest ESLint
+  * Build: Update yarn.lock
+  * Docs: Add example for async test with assert.timeout
+  * Docs: Add assert.rejects API documentation.
+  * Assert: Add `assert.rejects`.
+  * Core: Remove delay parameters from setTimeouts in processing code (#1246)
+  * Fixes spelling of 'occurred'
+  * Tests: Address feedback, use more idiomatic promise chaining.
+  * Tests: Fixup comment indentation.
+  * Tests: Update CLI test and test fixture to remove stacktrace ambiguity.
+  * Core: Capture the proper stack trace in onUnhandledRejection.
+  * Tests: Update tests for unhandled rejection scenarios.
+  * Core: Add QUnit.onUnhandledRejection.
+  * HTML Reporter: Ensure unhandled rejection fails.
+  * CLI: Ensure an unhandled rejection results in a failed test.
+  * Tests: Add test for notrycatch doesn't catch.
+  * Tests: Reject async test promise when config.notrycatch is set.
+  * Docs: assert.verifySteps() called multiple times.
+  * Tests: Add Node 9 to test matrix.
+  * Tests: Drop Node 7 from CI.
+  * Build: Use babel-preset-env and .babelrc
+  * Build: Upgrade all dependencies
+  * All: Enable ESLint no-multi-spaces rule (#1234)
+  * Assert: Reset internal steps list after verifySteps
+
 2.4.1 / 2017-10-21
 ==================
 
