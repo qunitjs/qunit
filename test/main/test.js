@@ -16,6 +16,7 @@ if ( typeof document !== "undefined" ) {
 				/* initial value (see unshift below), */
 				/* initial value (see unshift below), */
 				"<b>ar</b>",
+				"<p>bc</p>",
 				undefined
 			],
 			originalValue;
@@ -24,6 +25,11 @@ if ( typeof document !== "undefined" ) {
 			originalValue = QUnit.config.fixture;
 			values.unshift( originalValue );
 			values.unshift( originalValue );
+
+			var customFixtureNode = document.createElement( "span" );
+			customFixtureNode.setAttribute( "id", "qunit-fixture" );
+			customFixtureNode.setAttribute( "data-baz", "huzzah!" );
+			values.push( customFixtureNode );
 		} );
 
 		hooks.beforeEach( function( assert ) {
@@ -74,7 +80,7 @@ if ( typeof document !== "undefined" ) {
 		} );
 
 		QUnit.test( "setup", function( assert ) {
-			assert.equal( values.length, 4, "proper sequence" );
+			assert.equal( values.length, 6, "proper sequence" );
 
 			// setup for next test
 			document.getElementById( "qunit-fixture" ).innerHTML = "foo";
@@ -84,9 +90,9 @@ if ( typeof document !== "undefined" ) {
 			assert.fixtureEquals( {
 				tagName: "div",
 				attributes: { id: "qunit-fixture" },
-				content: originalValue
+				content: originalValue.innerHTML
 			} );
-			assert.equal( values.length, 3, "proper sequence" );
+			assert.equal( values.length, 5, "proper sequence" );
 
 			// setup for next test
 			document.getElementById( "qunit-fixture" ).setAttribute( "data-foo", "blah" );
@@ -96,18 +102,30 @@ if ( typeof document !== "undefined" ) {
 			assert.fixtureEquals( {
 				tagName: "div",
 				attributes: { id: "qunit-fixture" },
-				content: originalValue
+				content: originalValue.innerHTML
 			} );
-			assert.equal( values.length, 2, "proper sequence" );
+			assert.equal( values.length, 4, "proper sequence" );
 		} );
 
-		QUnit.test( "user-specified", function( assert ) {
+		QUnit.test( "user-specified string", function( assert ) {
 			assert.fixtureEquals( {
 				tagName: "div",
 				attributes: { id: "qunit-fixture" },
 				content: "<b>ar</b>"
 			} );
-			assert.equal( values.length, 1, "proper sequence" );
+			assert.equal( values.length, 3, "proper sequence" );
+
+			// setup for next test
+			document.getElementById( "qunit-fixture" ).setAttribute( "data-foo", "blah" );
+		} );
+
+		QUnit.test( "user-specified string automatically resets attribute value mutation", function( assert ) {
+			assert.fixtureEquals( {
+				tagName: "div",
+				attributes: { id: "qunit-fixture" },
+				content: "<p>bc</p>"
+			} );
+			assert.equal( values.length, 2, "proper sequence" );
 
 			// setup for next test
 			document.getElementById( "qunit-fixture" ).innerHTML = "baz";
@@ -118,6 +136,18 @@ if ( typeof document !== "undefined" ) {
 				tagName: "div",
 				attributes: { id: "qunit-fixture" },
 				content: "baz"
+			} );
+			assert.equal( values.length, 1, "proper sequence" );
+		} );
+
+		QUnit.test( "user-specified DOM node", function( assert ) {
+			assert.fixtureEquals( {
+				tagName: "span",
+				attributes: {
+					id: "qunit-fixture",
+					"data-baz": "huzzah!"
+				},
+				content: ""
 			} );
 			assert.equal( values.length, 0, "proper sequence" );
 		} );

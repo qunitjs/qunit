@@ -20,7 +20,7 @@ import { window, document } from "../src/globals";
 
 		var fixture = document.getElementById( "qunit-fixture" );
 		if ( fixture ) {
-			config.fixture = fixture.innerHTML;
+			config.fixture = fixture.cloneNode( true );
 		}
 	}
 
@@ -33,8 +33,17 @@ import { window, document } from "../src/globals";
 		}
 
 		var fixture = document.getElementById( "qunit-fixture" );
-		if ( fixture ) {
-			fixture.innerHTML = config.fixture;
+		var resetFixtureType = typeof config.fixture;
+		if ( resetFixtureType === "string" ) {
+
+			// support user defined values for `config.fixture`
+			var newFixture = document.createElement( "div" );
+			newFixture.setAttribute( "id", "qunit-fixture" );
+			newFixture.innerHTML = config.fixture;
+			fixture.parentNode.replaceChild( newFixture, fixture );
+		} else {
+			const clonedFixture = config.fixture.cloneNode( true );
+			fixture.parentNode.replaceChild( clonedFixture, fixture );
 		}
 	}
 
