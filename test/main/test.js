@@ -11,11 +11,18 @@ if ( typeof document !== "undefined" ) {
 
 	QUnit.module( "fixture", function( hooks ) {
 		var failure = false,
-			values = [ /* initial value (see unshift below), */ "<b>ar</b>", undefined ],
+			values = [
+
+				/* initial value (see unshift below), */
+				/* initial value (see unshift below), */
+				"<b>ar</b>",
+				undefined
+			],
 			originalValue;
 
 		hooks.before( function() {
 			originalValue = QUnit.config.fixture;
+			values.unshift( originalValue );
 			values.unshift( originalValue );
 		} );
 
@@ -67,13 +74,25 @@ if ( typeof document !== "undefined" ) {
 		} );
 
 		QUnit.test( "setup", function( assert ) {
-			assert.equal( values.length, 3, "proper sequence" );
+			assert.equal( values.length, 4, "proper sequence" );
 
 			// setup for next test
 			document.getElementById( "qunit-fixture" ).innerHTML = "foo";
 		} );
 
 		QUnit.test( "automatically reset", function( assert ) {
+			assert.fixtureEquals( {
+				tagName: "div",
+				attributes: { id: "qunit-fixture" },
+				content: originalValue
+			} );
+			assert.equal( values.length, 3, "proper sequence" );
+
+			// setup for next test
+			document.getElementById( "qunit-fixture" ).setAttribute( "data-foo", "blah" );
+		} );
+
+		QUnit.test( "automatically reset after attribute value mutation", function( assert ) {
 			assert.fixtureEquals( {
 				tagName: "div",
 				attributes: { id: "qunit-fixture" },
