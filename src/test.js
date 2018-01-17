@@ -251,6 +251,13 @@ Test.prototype = {
 
 	finish: function() {
 		config.current = this;
+
+		if ( this.steps.length ) {
+			const stepsList = this.steps.join( ", " );
+			this.pushFailure( "Expected assert.verifySteps() to be called before end of test " +
+				`after using assert.step(). Unverified steps: ${stepsList}`, this.stack );
+		}
+
 		if ( config.requireExpects && this.expected === null ) {
 			this.pushFailure( "Expected number of assertions to be defined, but expect() was " +
 				"not called.", this.stack );

@@ -1,7 +1,7 @@
 QUnit.module( "assert.step" );
 
 QUnit.test( "pushes a failing assertion if no message is given", function( assert ) {
-	assert.expect( 2 );
+	assert.expect( 3 );
 
 	var originalPushResult = assert.pushResult;
 	assert.pushResult = function pushResultStub( resultInfo ) {
@@ -12,10 +12,12 @@ QUnit.test( "pushes a failing assertion if no message is given", function( asser
 	};
 
 	assert.step();
+
+	assert.verifySteps( [ undefined ] );
 } );
 
 QUnit.test( "pushes a failing assertion if empty message is given", function( assert ) {
-	assert.expect( 2 );
+	assert.expect( 3 );
 
 	var originalPushResult = assert.pushResult;
 	assert.pushResult = function pushResultStub( resultInfo ) {
@@ -26,13 +28,17 @@ QUnit.test( "pushes a failing assertion if empty message is given", function( as
 	};
 
 	assert.step( "" );
+
+	assert.verifySteps( [ "" ] );
 } );
 
 QUnit.test( "pushes a passing assertion if a message is given", function( assert ) {
-	assert.expect( 2 );
+	assert.expect( 3 );
 
 	assert.step( "One step" );
 	assert.step( "Two step" );
+
+	assert.verifySteps( [ "One step", "Two step" ] );
 } );
 
 QUnit.module( "assert.verifySteps" );
@@ -87,4 +93,16 @@ QUnit.test( "resets the step list after verification", function( assert ) {
 
 	assert.step( "two" );
 	assert.verifySteps( [ "two" ] );
+} );
+
+QUnit.test( "errors if not called when `assert.step` is used", function( assert ) {
+	assert.expect( 2 );
+	assert.step( "one" );
+
+	var originalPushFailure = QUnit.config.current.pushFailure;
+	QUnit.config.current.pushFailure = function pushFailureStub( message ) {
+		QUnit.config.current.pushFailure = originalPushFailure;
+
+		assert.equal( message, "Expected assert.verifySteps() to be called before end of test after using assert.step(). Unverified steps: one" );
+	};
 } );
