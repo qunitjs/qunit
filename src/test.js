@@ -513,7 +513,7 @@ Test.prototype = {
 							saveGlobal();
 
 							// Unblock
-							resume();
+							internalRecover( test );
 						}
 					);
 				}
