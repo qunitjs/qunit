@@ -38,6 +38,10 @@ function run( args, options ) {
 		QUnit.onUnhandledRejection( reason );
 	} );
 
+	process.on( "uncaughtException", function( error ) {
+		QUnit.onError( error );
+	} );
+
 	const files = utils.getFilesFromArgs( args );
 
 	QUnit = requireQUnit();
@@ -87,9 +91,6 @@ function run( args, options ) {
 		running = false;
 
 		if ( data.testCounts.failed ) {
-			process.exitCode = 1;
-		} else if ( data.testCounts.total === 0 ) {
-			console.error( "Error: No tests were run" );
 			process.exitCode = 1;
 		} else {
 			process.exitCode = 0;

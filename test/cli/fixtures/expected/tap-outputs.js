@@ -124,5 +124,39 @@ not ok 2 global failure
 # skip 0
 # todo 0
 # fail 2
+`,
+
+	"qunit no-tests":
+`TAP version 13
+not ok 1 global failure
+  ---
+  message: "No tests were run."
+  severity: failed
+  actual: null
+  expected: undefined
+  stack: undefined:undefined
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+`,
+
+	"qunit qunit --filter 'no matches' test":
+`TAP version 13
+not ok 1 global failure
+  ---
+  message: "No tests matched the filter "no matches"."
+  severity: failed
+  actual: null
+  expected: undefined
+  stack: undefined:undefined
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
 `
 };
