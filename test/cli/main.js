@@ -87,11 +87,13 @@ QUnit.module( "CLI Main", function() {
 	} ) );
 
 	QUnit.test( "exit code is 1 when no tests are run", co.wrap( function* ( assert ) {
+		const command = "qunit no-tests";
 		try {
-			yield execute( "qunit no-tests" );
+			yield execute( command );
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
-			assert.equal( e.stderr, "Error: No tests were run\n" );
+			assert.equal( e.stderr, "" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} ) );
 
@@ -130,6 +132,17 @@ QUnit.module( "CLI Main", function() {
 			assert.equal( execution.code, 0 );
 			assert.equal( execution.stderr, "" );
 			assert.equal( execution.stdout, expectedOutput[ equivalentCommand ] );
+		} ) );
+
+		QUnit.test( "exit code is 1 when no tests match filter", co.wrap( function* ( assert ) {
+			const command = "qunit qunit --filter 'no matches' test";
+			try {
+				yield execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.equal( e.stdout, expectedOutput[ command ] );
+			}
 		} ) );
 	} );
 
