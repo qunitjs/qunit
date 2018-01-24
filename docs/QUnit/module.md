@@ -303,7 +303,7 @@ QUnit.module( "Robot", function() {
 // Currenly working on implementing features related to androids
 QUnit.module.only( "Android", function( hooks ) {
   hooks.beforeEach( function() {
-    this.adnroid = new Android();
+    this.android = new Android();
   } );
 
   QUnit.test( "Say hello", function( assert ) {
