@@ -1,7 +1,7 @@
 QUnit.config.reorder = false;
 
-var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
-	testAutorun, beginModules,
+var totalTests, totalTestsToRun, moduleContext, moduleDoneContext, testContext,
+	testDoneContext, logContext, testAutorun, beginModules,
 	module1Test1, module1Test2, module2Test1, module2Test2,
 	module2Test3, module2Test4, module2Test5, module2Test6,
 	begin = 0,
@@ -63,6 +63,7 @@ var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, 
 
 QUnit.begin( function( args ) {
 	totalTests = args.totalTests;
+	totalTestsToRun = args.totalTestsToRun;
 	beginModules = args.modules;
 	begin++;
 } );
@@ -95,10 +96,16 @@ QUnit.log( function( context ) {
 QUnit.module( module1Context.name );
 
 QUnit.test( module1Test1.name, function( assert ) {
-	assert.expect( 18 );
+	assert.expect( 19 );
 
 	assert.equal(
 		typeof totalTests,
+		"number",
+		"QUnit.begin should pass total amount of tests to callback"
+	);
+
+	assert.equal(
+		typeof totalTestsToRun,
 		"number",
 		"QUnit.begin should pass total amount of tests to callback"
 	);
@@ -179,7 +186,7 @@ QUnit.test( module1Test1.name, function( assert ) {
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
 	assert.deepEqual( moduleContext, module1Context, "module context" );
 
-	assert.equal( log, 17, "QUnit.log calls" );
+	assert.equal( log, 18, "QUnit.log calls" );
 } );
 
 QUnit.test( module1Test2.name, function( assert ) {
@@ -212,8 +219,8 @@ QUnit.test( module1Test2.name, function( assert ) {
 		module: module1Context.name,
 		name: module1Test1.name,
 		failed: 0,
-		passed: 18,
-		total: 18,
+		passed: 19,
+		total: 19,
 		testId: module1Test1.testId,
 		skipped: false,
 		todo: false
@@ -227,7 +234,7 @@ QUnit.test( module1Test2.name, function( assert ) {
 
 	assert.strictEqual( moduleDoneContext, undefined, "moduleDone context" );
 	assert.deepEqual( moduleContext, module1Context, "module context" );
-	assert.equal( log, 29, "QUnit.log calls" );
+	assert.equal( log, 30, "QUnit.log calls" );
 } );
 
 QUnit.module( module2Context.name );
@@ -258,12 +265,12 @@ QUnit.test( module2Test1.name, function( assert ) {
 		name: module1Context.name,
 		tests: module1Context.tests,
 		failed: 0,
-		passed: 30,
-		total: 30
+		passed: 31,
+		total: 31
 	}, "moduleDone context" );
 	assert.deepEqual( moduleContext, module2Context, "module context" );
 
-	assert.equal( log, 39, "QUnit.log calls" );
+	assert.equal( log, 40, "QUnit.log calls" );
 } );
 
 QUnit.test( module2Test2.name, function( assert ) {
@@ -282,7 +289,7 @@ QUnit.test( module2Test2.name, function( assert ) {
 	}, "test context" );
 	assert.deepEqual( moduleContext, module2Context, "module context" );
 
-	assert.equal( log, 47, "QUnit.log calls" );
+	assert.equal( log, 48, "QUnit.log calls" );
 } );
 
 QUnit.skip( module2Test3.name );

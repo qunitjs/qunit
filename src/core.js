@@ -305,6 +305,7 @@ export function begin() {
 		emit( "runStart", globalSuite.start( true ) );
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
+			totalTestsToRun: config.queue.length,
 			modules: modulesLog
 		} );
 	}
