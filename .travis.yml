@@ -13,20 +13,21 @@ matrix:
   allow_failures:
     - env: NPM_SCRIPT=browserstack
   include:
-    - node_js: "6"
+    - node_js: "9"
       env: NPM_SCRIPT=browserstack
-    - node_js: "6"
+    - node_js: "9"
       env: NPM_SCRIPT=coverage
 before_install:
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1icm93c2Vyc3RhY2txdW5pMQo=`
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9SllzeHJrVWk5aGJGVndkdW44ZUsK=`
 script:
-  - npm run-script $NPM_SCRIPT
+  - npm run $NPM_SCRIPT
 cache:
   yarn: true
   directories:
     - $HOME/.npm
     - $HOME/.cache
+    - node_modules
 notifications:
   irc:
     channels:
