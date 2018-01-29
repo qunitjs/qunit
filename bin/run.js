@@ -100,7 +100,7 @@ function run( args, options ) {
 			process.exitCode = 0;
 		}
 	} );
-};
+}
 
 run.restart = function( args ) {
 	clearTimeout( this._restartDebounceTimer );

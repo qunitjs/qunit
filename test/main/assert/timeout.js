@@ -34,7 +34,7 @@ QUnit.module( "assert.timeout", function() {
 		assert.timeout( 1 );
 
 		var wait = Date.now() + 10;
-		while ( Date.now() < wait ) {}
+		while ( Date.now() < wait ) {} // eslint-disable-line no-empty
 
 		assert.ok( true );
 	} );

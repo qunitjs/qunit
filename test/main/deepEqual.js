@@ -509,17 +509,17 @@ QUnit.test( "RegExp", function( assert ) {
 
 	// Compare unicode modifier
 	try {
-		r2 = new RegExp( "foo", "umig" );
-		r3 = new RegExp( "foo", "mgiu" );
+		r2 = /foo/umig;
+		r3 = /foo/mgiu;
 		assert.equal( QUnit.equiv( r2, r3 ), true, "Modifier order" );
 		assert.equal( QUnit.equiv( r1, r2 ), false, "Modifier" );
 
-		ru1 = new RegExp( "/u{1D306}", "u" );
-		ru2 = new RegExp( "/u{1D306}", "u" );
+		ru1 = /\u{1D306}/u;
+		ru2 = /\u{1D306}/u;
 		assert.equal( QUnit.equiv( ru1, rg1 ), false, "Modifier" );
 		assert.equal( QUnit.equiv( rg1, ru1 ), false, "Modifier" );
 		assert.equal( QUnit.equiv( ru1, ru2 ), true, "Modifier" );
-	} catch ( e ) {}
+	} catch ( e ) {} // eslint-disable-line no-empty
 
 	// Different regex, same modifiers
 	r1 = /[a-z]/gi;

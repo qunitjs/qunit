@@ -125,7 +125,7 @@ QUnit.test( "logs location", function( assert ) {
 	assert.equal( source.firstChild.innerHTML, "Source: " );
 
 	// The file test/reporter-html/reporter-html.js is a direct reference to this test file
-	assert.ok( /\/test\/reporter-html\/reporter-html\.js\:\d+/.test( source.innerHTML ),
+	assert.ok( /\/test\/reporter-html\/reporter-html\.js:\d+/.test( source.innerHTML ),
 		"Source references to the current file and line number"
 	);
 } );
