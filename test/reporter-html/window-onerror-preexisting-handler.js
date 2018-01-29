@@ -1,4 +1,4 @@
-/* global onerrorReturnValue, onerrorCallingContext */
+/* global onerrorReturnValue: true, onerrorCallingContext: true */
 /* exported onerrorReturnValue */
 
 QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {

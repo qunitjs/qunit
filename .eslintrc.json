@@ -2,7 +2,7 @@
     "env": {
         "es6": true
     },
-    "extends": "jquery",
+    "extends": ["eslint:recommended", "jquery"],
     "parserOptions": {
         "sourceType": "module"
     },
@@ -18,7 +18,9 @@
 		"SwitchCase": 0,
 		"outerIIFEBody": 1
         }],
+        "no-console": "off",
         "no-const-assign": "error",
+        "no-constant-condition": ["error", { "checkLoops": false }],
         "no-dupe-class-members": "error",
         "no-duplicate-imports": "error",
         "no-multi-spaces": ["error", { "ignoreEOLComments": true }],

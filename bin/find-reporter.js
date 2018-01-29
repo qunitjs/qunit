@@ -31,7 +31,7 @@ function findReporter( reporterName ) {
 
 	// If we didn't find a reporter, display the available reporters and exit
 	displayAvailableReporters( reporterName );
-};
+}
 
 function displayAvailableReporters( inputReporterName ) {
 	const message = [];
