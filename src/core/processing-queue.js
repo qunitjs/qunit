@@ -38,7 +38,7 @@ function advance() {
  */
 function advanceTaskQueue() {
 	const start = now();
-	config.depth = ( config.depth || 0 ) + 1; //[TODO] Do not know if we still need this
+	config.depth = ( config.depth || 0 ) + 1;
 
 	while ( config.queue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
