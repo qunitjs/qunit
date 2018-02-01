@@ -9,6 +9,9 @@ import { extend } from "./utilities";
 const config = {
 
 	// The queue of tests to run
+	testQueue: [],
+
+	// The queue of tasks to run
 	queue: [],
 
 	// Block until document ready

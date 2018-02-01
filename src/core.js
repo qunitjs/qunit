@@ -134,7 +134,7 @@ module.only = function() {
 	}
 
 	config.modules.length = 0;
-	config.queue.length = 0;
+	config.testQueue.length = 0;
 
 	module( ...arguments );
 

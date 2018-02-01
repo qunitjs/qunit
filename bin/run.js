@@ -110,7 +110,7 @@ run.restart = function( args ) {
 
 		watchedFiles.forEach( file => delete require.cache[ path.resolve( file ) ] );
 
-		if ( QUnit.config.queue.length ) {
+		if ( QUnit.config.testQueue.length ) {
 			console.log( "Finishing current test and restarting..." );
 		} else {
 			console.log( "Restarting..." );
@@ -129,9 +129,9 @@ run.abort = function( callback ) {
 		}
 	}
 
-	if ( QUnit.config.queue.length ) {
-		const nextTestIndex = QUnit.config.queue.findIndex( fn => fn.name === "runTest" );
-		QUnit.config.queue.splice( nextTestIndex );
+	if ( QUnit.config.testQueue.length ) {
+		const nextTestIndex = QUnit.config.testQueue.findIndex( fn => fn.name === "runTest" );
+		QUnit.config.testQueue.splice( nextTestIndex );
 		QUnit.on( "runEnd", clearQUnit );
 	} else {
 		clearQUnit();

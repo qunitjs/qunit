@@ -105,7 +105,7 @@ export function escapeText( s ) {
 			abortButton.disabled = true;
 			abortButton.innerHTML = "Aborting...";
 		}
-		QUnit.config.queue.length = 0;
+		QUnit.config.testQueue.length = 0;
 		return false;
 	}
 
