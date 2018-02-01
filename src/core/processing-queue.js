@@ -74,10 +74,7 @@ function advanceTestQueue() {
  * @param {Array} tasksArray
  */
 function addToTaskQueue( tasksArray ) {
-	for ( let i = 0; i < tasksArray.length; i++ ) {
-		const taskItem = tasksArray[ i ];
-		config.queue.push( taskItem );
-	}
+	config.queue.push( ...tasksArray );
 }
 
 /**
