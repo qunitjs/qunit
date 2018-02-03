@@ -74,7 +74,7 @@ QUnit.test( "rejects", function( assert ) {
   );
 
   assert.rejects(
-    Promise.reject(throw new CustomError("some error description")),
+    Promise.reject(new CustomError("some error description")),
     function( err ) {
       return err.toString() === "some error description";
     },
