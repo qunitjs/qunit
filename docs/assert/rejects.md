@@ -6,7 +6,7 @@ categories:
   - assert
 ---
 
-## `rejects( promise, expectedMatcher [, message ] )`
+## `rejects( promise[, expectedMatcher][, message ] )`
 
 Test if the provided promise rejects, and optionally compare the rejection value.
 
