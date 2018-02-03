@@ -17,7 +17,7 @@ A helper assertion to verify the order and number of steps in a test.
 
 ### Description
 
-The `assert.verifySteps()` assertion compares a given array of string values (representing steps) and compares them with the order and values of previous `step()` calls. This assertion is helpful for verifying the order and count of portions of code paths, especially asynchronous ones.
+The `assert.verifySteps()` assertion compares a given array of string values (representing steps) with the order and values of previous `step()` calls. This assertion is helpful for verifying the order and count of portions of code paths, especially asynchronous ones.
 
 The list of steps to validate is reset when `assert.verifySteps([/* ...snip ... */])` is called. This allows multiple combinations of `assert.step` and `assert.verifySteps` within the same test.
 
