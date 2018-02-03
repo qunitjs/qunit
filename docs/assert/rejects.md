@@ -26,6 +26,7 @@ comparison.
 The `expectedMatcher` argument can be:
 
 * A function that returns `true` when the assertion should be considered passing.
+* An Error object
 * A base constructor to use ala `rejectionValue instanceof expectedMatcher`
 * A RegExp that matches (or partially matches) `rejectionValue.toString()`
 
