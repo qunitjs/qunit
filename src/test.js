@@ -205,7 +205,7 @@ Test.prototype = {
 
 			if ( hookName === "after" &&
 				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
-				( config.queue.length + config.testQueue.length ) > 2 ) {
+				( config.testQueue.length > 0 || config.queue.length > 2 ) ) {
 				return;
 			}
 
