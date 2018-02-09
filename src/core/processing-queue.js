@@ -20,6 +20,7 @@ import {
 
 let priorityCount = 0;
 let unitSampler;
+const taskQueue = [];
 
 /**
  * Advances the taskQueue to the next task. If the taskQueue is empty,
@@ -28,7 +29,7 @@ let unitSampler;
 function advance() {
 	advanceTaskQueue();
 
-	if ( !config.queue.length ) {
+	if ( !taskQueue.length ) {
 		advanceTestQueue();
 	}
 }
@@ -40,11 +41,11 @@ function advanceTaskQueue() {
 	const start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
-	while ( config.queue.length && !config.blocking ) {
+	while ( taskQueue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
-			const task = config.queue.shift();
+			const task = taskQueue.shift();
 			task();
 		} else {
 			setTimeout( advance );
@@ -59,12 +60,12 @@ function advanceTaskQueue() {
  * Advance the testQueue to the next test to process. Call done() if testQueue completes.
  */
 function advanceTestQueue() {
-	if ( !config.blocking && !config.testQueue.length && config.depth === 0 ) {
+	if ( !config.blocking && !config.queue.length && config.depth === 0 ) {
 		done();
 		return;
 	}
 
-	const testTasks = config.testQueue.shift();
+	const testTasks = config.queue.shift();
 	addToTaskQueue( testTasks() );
 	advance();
 }
@@ -74,7 +75,15 @@ function advanceTestQueue() {
  * @param {Array} tasksArray
  */
 function addToTaskQueue( tasksArray ) {
-	config.queue.push( ...tasksArray );
+	taskQueue.push( ...tasksArray );
+}
+
+/**
+ * Return the number of tasks remaining in the task queue to be processed.
+ * @return {Number}
+ */
+function taskQueueLength() {
+	return taskQueue.length;
 }
 
 /**
@@ -85,17 +94,17 @@ function addToTaskQueue( tasksArray ) {
  */
 function addToTestQueue( testTasksArray, prioritize, seed ) {
 	if ( prioritize ) {
-		config.testQueue.splice( priorityCount++, 0, testTasksArray );
+		config.queue.splice( priorityCount++, 0, testTasksArray );
 	} else if ( seed ) {
 		if ( !unitSampler ) {
 			unitSampler = unitSamplerGenerator( seed );
 		}
 
 		// Insert into a random position after all prioritized items
-		const index = Math.floor( unitSampler() * ( config.testQueue.length - priorityCount + 1 ) );
-		config.testQueue.splice( priorityCount + index, 0, testTasksArray );
+		const index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
+		config.queue.splice( priorityCount + index, 0, testTasksArray );
 	} else {
-		config.testQueue.push( testTasksArray );
+		config.queue.push( testTasksArray );
 	}
 }
 
@@ -156,7 +165,8 @@ function done() {
 const ProcessingQueue = {
 	finished: false,
 	add: addToTestQueue,
-	advance
+	advance,
+	taskCount: taskQueueLength
 };
 
 export default ProcessingQueue;

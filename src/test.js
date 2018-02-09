@@ -205,7 +205,7 @@ Test.prototype = {
 
 			if ( hookName === "after" &&
 				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
-				( config.testQueue.length > 0 || config.queue.length > 2 ) ) {
+				( config.queue.length > 0 || ProcessingQueue.taskCount() > 2 ) ) {
 				return;
 			}
 
@@ -692,7 +692,7 @@ export function only( testName, callback ) {
 		return;
 	}
 
-	config.testQueue.length = 0;
+	config.queue.length = 0;
 	focused = true;
 
 	const newTest = new Test( {
