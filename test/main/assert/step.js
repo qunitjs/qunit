@@ -32,6 +32,32 @@ QUnit.test( "pushes a failing assertion if empty message is given", function( as
 	assert.verifySteps( [ "" ] );
 } );
 
+QUnit.test( "pushes a failing assertion if a non string message is given", function( assert ) {
+	assert.expect( 7 );
+
+	var count = 0;
+	var originalPushResult = assert.pushResult;
+
+	assert.pushResult = function pushResultStub( resultInfo ) {
+		assert.pushResult = originalPushResult;
+
+		count += 1;
+
+		assert.notOk( resultInfo.result );
+		assert.equal( resultInfo.message, "You must provide a string value to assert.step" );
+
+		if ( count < 3 ) {
+			assert.pushResult = pushResultStub;
+		}
+	};
+
+	assert.step( 1 );
+	assert.step( null );
+	assert.step( false );
+
+	assert.verifySteps( [ 1, null, false ] );
+} );
+
 QUnit.test( "pushes a passing assertion if a message is given", function( assert ) {
 	assert.expect( 3 );
 

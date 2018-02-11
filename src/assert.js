@@ -24,13 +24,21 @@ class Assert {
 
 	// Documents a "step", which is a string value, in a test as a passing assertion
 	step( message ) {
-		const result = !!message;
+		let assertionMessage = message;
+		let result = !!message;
 
 		this.test.steps.push( message );
 
+		if ( objectType( message ) === "undefined" || message === "" ) {
+			assertionMessage = "You must provide a message to assert.step";
+		} else if ( objectType( message ) !== "string" ) {
+			assertionMessage = "You must provide a string value to assert.step";
+			result = false;
+		}
+
 		return this.pushResult( {
 			result,
-			message: message || "You must provide a message to assert.step"
+			message: assertionMessage
 		} );
 	}
 
