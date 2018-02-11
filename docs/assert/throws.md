@@ -6,14 +6,14 @@ categories:
   - assert
 ---
 
-## `throws( blockFn, expected [, message ] )`
+## `throws( blockFn[, expectedMatcher][, message ] )`
 
 Test if a callback throws an exception, and optionally compare the thrown error.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
 | `blockFn` (function) | Function to execute                |
-| `expected`         | Expected Error                       |
+| `expectedMatcher`  | Expected error matcher               |
 | `message` (string) | A short description of the assertion |
 
 
@@ -21,7 +21,12 @@ Test if a callback throws an exception, and optionally compare the thrown error.
 
 When testing code that is expected to throw an exception based on a specific set of circumstances, use `assert.throws()` to catch the error object for testing and comparison.
 
-The `expected` argument can be an Error Object (instance), an Error Function (constructor), a RegExp that matches (or partially matches) the String representation, or a callback Function that must return `true` to pass the assertion check.
+The `expectedMatcher` argument can be:
+
+* An Error object
+* An Error constructor to use ala `errorValue instanceof expectedMatcher`
+* A RegExp that matches (or partially matches) the String representation
+* A callback Function that must return `true` to pass the assertion check.
 
 > In very few environments, like Closure Compiler, `throws` is considered a reserved word and will cause an error. For that case, an alias is bundled called `raises`. It has the same signature and behaviour, just a different name.
 
