@@ -49,6 +49,7 @@ function advanceTaskQueue() {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
+
 			// TODO: reintroduce priorityCount decrement to start higher priority test
 			const task = taskQueue.shift();
 			task();
