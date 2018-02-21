@@ -203,6 +203,8 @@ Test.prototype = {
 				this.preserveEnvironment = true;
 			}
 
+			// Only want the 'after' hook to execute when there are not tests left and
+			// when the 'after' and 'finish' tasks are the only tasks left to process
 			if ( hookName === "after" &&
 				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
 				( config.queue.length > 0 || ProcessingQueue.taskCount() > 2 ) ) {

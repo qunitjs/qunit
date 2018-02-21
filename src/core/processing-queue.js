@@ -20,6 +20,10 @@ import {
 
 let priorityCount = 0;
 let unitSampler;
+
+// This is a queue of functions that are tasks within a single test.
+// After tests are dequeued from config.queue they are expanded into
+// a set of tasks in this queue.
 const taskQueue = [];
 
 /**
@@ -45,6 +49,7 @@ function advanceTaskQueue() {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
+			// TODO: reintroduce priorityCount decrement to start higher priority test
 			const task = taskQueue.shift();
 			task();
 		} else {
@@ -87,14 +92,14 @@ function taskQueueLength() {
 }
 
 /**
- * Adds a tests to the TestQueue for execution.
- * @param {Array} testTasksArray
+ * Adds a test to the TestQueue for execution.
+ * @param {Function} testTasksFunc
  * @param {Boolean} prioritize
  * @param {String} seed
  */
-function addToTestQueue( testTasksArray, prioritize, seed ) {
+function addToTestQueue( testTasksFunc, prioritize, seed ) {
 	if ( prioritize ) {
-		config.queue.splice( priorityCount++, 0, testTasksArray );
+		config.queue.splice( priorityCount++, 0, testTasksFunc );
 	} else if ( seed ) {
 		if ( !unitSampler ) {
 			unitSampler = unitSamplerGenerator( seed );
@@ -102,9 +107,9 @@ function addToTestQueue( testTasksArray, prioritize, seed ) {
 
 		// Insert into a random position after all prioritized items
 		const index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
-		config.queue.splice( priorityCount + index, 0, testTasksArray );
+		config.queue.splice( priorityCount + index, 0, testTasksFunc );
 	} else {
-		config.queue.push( testTasksArray );
+		config.queue.push( testTasksFunc );
 	}
 }
 
