@@ -1,3 +1,19 @@
+2.5.1 / 2018-02-27
+==================
+
+  * Docs: Align assert.throws() and assert.rejects() docs (#1265)
+  * Build: Use Node 9.x for matrix, cache node_modules
+  * Docs: Remove unexpected throw statement in examples
+  * Docs: Note that assert.rejects() also accepts an error object as matcher
+  * Docs: Mark the second parameter of assert.rejects() as optional
+  * Docs: Remove redundant expression from verifySteps' description (#1262)
+  * Docs: Fix typo in docs for QUnit.module (#1257)
+  * Core: Release all processing locks when Promise rejects from a test
+  * Assert: Fail test when using step inside a test without verifySteps
+  * HTML Reporter: Ensure attributes on qunit-fixture are reset.
+  * Test: Add failing test for fixture attribute leakage.
+  * Tests: refactor fixture reset tests to be more strict
+
 2.5.0 / 2018-01-09
 ==================
 
