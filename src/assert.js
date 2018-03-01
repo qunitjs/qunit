@@ -44,7 +44,10 @@ class Assert {
 
 	// Verifies the steps in a test match a given array of string values
 	verifySteps( steps, message ) {
-		this.deepEqual( this.test.steps, steps, message );
+
+		// Since the steps array is just string values, we can clone with slice
+		const actualStepsClone = this.test.steps.slice();
+		this.deepEqual( actualStepsClone, steps, message );
 		this.test.steps.length = 0;
 	}
 
