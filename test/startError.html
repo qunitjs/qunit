@@ -8,28 +8,6 @@
 <body>
 	<div id="qunit"></div>
 	<script src="../dist/qunit.js"></script>
-	<script>
-
-		try {
-			QUnit.config.autostart = true;
-			QUnit.start();
-		} catch ( thrownError ) {
-			window.autostartStartError = thrownError;
-		}
-
-		try {
-			QUnit.start();
-		} catch ( thrownError ) {
-			window.tooManyStartsError = thrownError;
-		}
-
-		// Delete QUnit global so we can reload it
-		delete window.QUnit;
-	</script>
-
-	<!-- INTENTIONALLY reload QUnit -->
-	<script src="../dist/qunit.js"></script>
-
 	<script src="startError.js"></script>
 </body>
 </html>
