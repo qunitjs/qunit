@@ -132,3 +132,30 @@ QUnit.test( "errors if not called when `assert.step` is used", function( assert 
 		assert.equal( message, "Expected assert.verifySteps() to be called before end of test after using assert.step(). Unverified steps: one" );
 	};
 } );
+
+// Testing to ensure steps array is not passed by reference: https://github.com/qunitjs/qunit/issues/1266
+QUnit.module( "assert.verifySteps value reference", function() {
+
+	var loggedAssertions = {};
+
+	QUnit.log( function( details ) {
+
+		if ( details.message === "verification-assertion" ) {
+			loggedAssertions[ details.message ] = details;
+		}
+
+	} );
+
+	QUnit.test( "passing test to see if steps array is passed by reference to logging function", function( assert ) {
+		assert.step( "step one" );
+		assert.step( "step two" );
+
+		assert.verifySteps( [ "step one", "step two" ], "verification-assertion" );
+	} );
+
+	QUnit.todo( "steps array should not be reset in logging function", function( assert ) {
+		const result = loggedAssertions[ "verification-assertion" ].actual;
+		assert.deepEqual( result, [ "step one", "step two" ] );
+	} );
+
+} );
