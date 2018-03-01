@@ -287,7 +287,7 @@ QUnit.test( "throws", function( assert ) {
 } );
 
 QUnit.test( "rejects", function( assert ) {
-	assert.expect( 15 );
+	assert.expect( 16 );
 
 	function CustomError( message ) {
 		this.message = message;
@@ -395,6 +395,11 @@ QUnit.test( "rejects", function( assert ) {
 		buildMockPromise( new this.CustomError( "some error description" ) ),
 		/description/,
 		"throw error from property of 'this' context"
+	);
+
+	assert.rejects(
+		buildMockPromise( undefined ),
+		"reject with undefined against no matcher"
 	);
 } );
 

@@ -373,41 +373,39 @@ class Assert {
 			},
 
 			function handleRejection( actual ) {
-				if ( actual ) {
-					const expectedType = objectType( expected );
+				const expectedType = objectType( expected );
 
-					// We don't want to validate
-					if ( expected === undefined ) {
-						result = true;
+				// We don't want to validate
+				if ( expected === undefined ) {
+					result = true;
+					expected = actual;
+
+					// Expected is a regexp
+				} else if ( expectedType === "regexp" ) {
+					result = expected.test( errorString( actual ) );
+
+					// Expected is a constructor, maybe an Error constructor
+				} else if ( expectedType === "function" && actual instanceof expected ) {
+					result = true;
+
+					// Expected is an Error object
+				} else if ( expectedType === "object" ) {
+					result = actual instanceof expected.constructor &&
+						actual.name === expected.name &&
+						actual.message === expected.message;
+
+					// Expected is a validation function which returns true if validation passed
+				} else {
+					if ( expectedType === "function" ) {
+						result = expected.call( {}, actual ) === true;
 						expected = null;
 
-						// Expected is a regexp
-					} else if ( expectedType === "regexp" ) {
-						result = expected.test( errorString( actual ) );
-
-						// Expected is a constructor, maybe an Error constructor
-					} else if ( expectedType === "function" && actual instanceof expected ) {
-						result = true;
-
-						// Expected is an Error object
-					} else if ( expectedType === "object" ) {
-						result = actual instanceof expected.constructor &&
-							actual.name === expected.name &&
-							actual.message === expected.message;
-
-						// Expected is a validation function which returns true if validation passed
+						// Expected is some other invalid type
 					} else {
-						if ( expectedType === "function" ) {
-							result = expected.call( {}, actual ) === true;
-							expected = null;
-
-							// Expected is some other invalid type
-						} else {
-							result = false;
-							message = "invalid expected value provided to `assert.rejects` " +
-								"callback in \"" + currentTest.testName + "\": " +
-								expectedType + ".";
-						}
+						result = false;
+						message = "invalid expected value provided to `assert.rejects` " +
+							"callback in \"" + currentTest.testName + "\": " +
+							expectedType + ".";
 					}
 				}
 
