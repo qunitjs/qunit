@@ -2,8 +2,7 @@ import config from "./config";
 import {
 	defined,
 	generateHash,
-	now,
-	objectType
+	now
 } from "./utilities";
 import {
 	runLoggingCallbacks
@@ -22,23 +21,38 @@ import {
 let priorityCount = 0;
 let unitSampler;
 
+// This is a queue of functions that are tasks within a single test.
+// After tests are dequeued from config.queue they are expanded into
+// a set of tasks in this queue.
+const taskQueue = [];
+
 /**
- * Advances the ProcessingQueue to the next item if it is ready.
- * @param {Boolean} last
+ * Advances the taskQueue to the next task. If the taskQueue is empty,
+ * process the testQueue
  */
 function advance() {
+	advanceTaskQueue();
+
+	if ( !taskQueue.length ) {
+		advanceTestQueue();
+	}
+}
+
+/**
+ * Advances the taskQueue to the next task if it is ready and not empty.
+ */
+function advanceTaskQueue() {
 	const start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
-	while ( config.queue.length && !config.blocking ) {
+	while ( taskQueue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
-			if ( priorityCount > 0 ) {
-				priorityCount--;
-			}
 
-			config.queue.shift()();
+			// TODO: reintroduce priorityCount decrement to start higher priority test
+			const task = taskQueue.shift();
+			task();
 		} else {
 			setTimeout( advance );
 			break;
@@ -46,34 +60,47 @@ function advance() {
 	}
 
 	config.depth--;
-
-	if ( !config.blocking && !config.queue.length && config.depth === 0 ) {
-		done();
-	}
-}
-
-function addToQueueImmediate( callback ) {
-	if ( objectType( callback ) === "array" ) {
-		while ( callback.length ) {
-			addToQueueImmediate( callback.pop() );
-		}
-
-		return;
-	}
-
-	config.queue.unshift( callback );
-	priorityCount++;
 }
 
 /**
- * Adds a function to the ProcessingQueue for execution.
- * @param {Function|Array} callback
- * @param {Boolean} priority
+ * Advance the testQueue to the next test to process. Call done() if testQueue completes.
+ */
+function advanceTestQueue() {
+	if ( !config.blocking && !config.queue.length && config.depth === 0 ) {
+		done();
+		return;
+	}
+
+	const testTasks = config.queue.shift();
+	addToTaskQueue( testTasks() );
+	advance();
+}
+
+/**
+ * Enqueue the tasks for a test into the task queue.
+ * @param {Array} tasksArray
+ */
+function addToTaskQueue( tasksArray ) {
+	taskQueue.push( ...tasksArray );
+}
+
+/**
+ * Return the number of tasks remaining in the task queue to be processed.
+ * @return {Number}
+ */
+function taskQueueLength() {
+	return taskQueue.length;
+}
+
+/**
+ * Adds a test to the TestQueue for execution.
+ * @param {Function} testTasksFunc
+ * @param {Boolean} prioritize
  * @param {String} seed
  */
-function addToQueue( callback, prioritize, seed ) {
+function addToTestQueue( testTasksFunc, prioritize, seed ) {
 	if ( prioritize ) {
-		config.queue.splice( priorityCount++, 0, callback );
+		config.queue.splice( priorityCount++, 0, testTasksFunc );
 	} else if ( seed ) {
 		if ( !unitSampler ) {
 			unitSampler = unitSamplerGenerator( seed );
@@ -81,9 +108,9 @@ function addToQueue( callback, prioritize, seed ) {
 
 		// Insert into a random position after all prioritized items
 		const index = Math.floor( unitSampler() * ( config.queue.length - priorityCount + 1 ) );
-		config.queue.splice( priorityCount + index, 0, callback );
+		config.queue.splice( priorityCount + index, 0, testTasksFunc );
 	} else {
-		config.queue.push( callback );
+		config.queue.push( testTasksFunc );
 	}
 }
 
@@ -143,9 +170,9 @@ function done() {
 
 const ProcessingQueue = {
 	finished: false,
-	add: addToQueue,
-	addImmediate: addToQueueImmediate,
-	advance
+	add: addToTestQueue,
+	advance,
+	taskCount: taskQueueLength
 };
 
 export default ProcessingQueue;

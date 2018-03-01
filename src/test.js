@@ -203,9 +203,11 @@ Test.prototype = {
 				this.preserveEnvironment = true;
 			}
 
+			// The 'after' hook should only execute when there are not tests left and
+			// when the 'after' and 'finish' tasks are the only tasks left to process
 			if ( hookName === "after" &&
 				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
-				config.queue.length > 2 ) {
+				( config.queue.length > 0 || ProcessingQueue.taskCount() > 2 ) ) {
 				return;
 			}
 
@@ -367,27 +369,25 @@ Test.prototype = {
 		}
 
 		function runTest() {
-
-			// Each of these can by async
-			ProcessingQueue.addImmediate( [
+			return [
 				function() {
 					test.before();
 				},
 
-				test.hooks( "before" ),
+				...test.hooks( "before" ),
 
 				function() {
 					test.preserveTestEnvironment();
 				},
 
-				test.hooks( "beforeEach" ),
+				...test.hooks( "beforeEach" ),
 
 				function() {
 					test.run();
 				},
 
-				test.hooks( "afterEach" ).reverse(),
-				test.hooks( "after" ).reverse(),
+				...test.hooks( "afterEach" ).reverse(),
+				...test.hooks( "after" ).reverse(),
 
 				function() {
 					test.after();
@@ -396,7 +396,7 @@ Test.prototype = {
 				function() {
 					test.finish();
 				}
-			] );
+			];
 		}
 
 		const previousFailCount = config.storage &&
