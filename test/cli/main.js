@@ -146,6 +146,28 @@ QUnit.module( "CLI Main", function() {
 		} ) );
 	} );
 
+	QUnit.module( "require", function() {
+		QUnit.test( "can properly require dependencies and modules", co.wrap( function* ( assert ) {
+			const command = "qunit single.js --require require-dep --require './node_modules/require-dep/module.js'";
+			const execution = yield execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
+		} ) );
+
+		QUnit.test( "displays helpful error when failing to require a file", co.wrap( function* ( assert ) {
+			const command = "qunit single.js --require 'does-not-exist-at-all'";
+			try {
+				yield execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.ok( e.stderr.includes( "Error: Cannot find module 'does-not-exist-at-all'" ) );
+				assert.equal( e.stdout, "" );
+			}
+		} ) );
+	} );
+
 	QUnit.module( "seed", function() {
 		QUnit.test( "can properly seed tests", co.wrap( function* ( assert ) {
 			const command = "qunit --seed 's33d' test single.js 'glob/**/*-test.js'";
