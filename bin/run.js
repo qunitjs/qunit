@@ -3,6 +3,7 @@
 const path = require( "path" );
 const walkSync = require( "walk-sync" );
 
+const requireFromCWD = require( "./require-from-cwd" );
 const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
 
@@ -14,33 +15,9 @@ const RESTART_DEBOUNCE_LENGTH = 200;
 let QUnit;
 
 function run( args, options ) {
-	let running = true;
 
 	// Default to non-zero exit code to avoid false positives
 	process.exitCode = 1;
-
-	process.on( "exit", function() {
-		if ( running ) {
-			console.error( "Error: Process exited before tests finished running" );
-
-			const currentTest = QUnit.config.current;
-			if ( currentTest && currentTest.semaphore ) {
-				const name = currentTest.testName;
-				console.error( "Last test to run (" + name + ") has an async hold. " +
-					"Ensure all assert.async() callbacks are invoked and Promises resolve. " +
-					"You should also set a standard timeout via QUnit.config.testTimeout." );
-			}
-		}
-	} );
-
-	// Listen for unhandled rejections, and call QUnit.onUnhandledRejection
-	process.on( "unhandledRejection", function( reason ) {
-		QUnit.onUnhandledRejection( reason );
-	} );
-
-	process.on( "uncaughtException", function( error ) {
-		QUnit.onError( error );
-	} );
 
 	const files = utils.getFilesFromArgs( args );
 
@@ -65,6 +42,8 @@ function run( args, options ) {
 	// still done automatically.
 	global.QUnit = QUnit;
 
+	options.requires.forEach( requireFromCWD );
+
 	options.reporter.init( QUnit );
 
 	for ( let i = 0; i < files.length; i++ ) {
@@ -84,6 +63,31 @@ function run( args, options ) {
 			} );
 		}
 	}
+
+	let running = true;
+
+	// Listen for unhandled rejections, and call QUnit.onUnhandledRejection
+	process.on( "unhandledRejection", function( reason ) {
+		QUnit.onUnhandledRejection( reason );
+	} );
+
+	process.on( "uncaughtException", function( error ) {
+		QUnit.onError( error );
+	} );
+
+	process.on( "exit", function() {
+		if ( running ) {
+			console.error( "Error: Process exited before tests finished running" );
+
+			const currentTest = QUnit.config.current;
+			if ( currentTest && currentTest.semaphore ) {
+				const name = currentTest.testName;
+				console.error( "Last test to run (" + name + ") has an async hold. " +
+					"Ensure all assert.async() callbacks are invoked and Promises resolve. " +
+					"You should also set a standard timeout via QUnit.config.testTimeout." );
+			}
+		}
+	} );
 
 	QUnit.start();
 

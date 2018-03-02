@@ -158,5 +158,16 @@ not ok 1 global failure
 # skip 0
 # todo 0
 # fail 1
-`
+`,
+
+	"qunit single.js --require require-dep --require './node_modules/require-dep/module.js'":
+`required require-dep/index.js
+required require-dep/module.js
+TAP version 13
+ok 1 Single > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`
 };
