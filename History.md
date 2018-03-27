@@ -1,3 +1,17 @@
+2.6.0 / 2018-03-26
+==================
+
+  * Core: Ensure late-add high-priority tests are inserted in proper order
+  * CLI: Implement --require option
+  * Test: Refactor startError test to not reload QUnit
+  * Core: Throw error if no tests are run
+  * Assert: Support rejecting falsy values against no matcher in rejects
+  * Assert: Clone actual steps array to avoid passing internal reference
+  * Test: Add failing test for verifySteps passing reference to log
+  * Docs: Note that non-string values fail assert.step()
+  * Assert: Fail test when passing a non string value to assert.step
+  * Core: Extract currently running test out of config.queue into internal testQueue (#1260)
+
 2.5.1 / 2018-02-27
 ==================
 
