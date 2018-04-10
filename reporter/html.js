@@ -576,7 +576,7 @@ export function escapeText( s ) {
 	}
 
 	function appendTest( name, testId, moduleName ) {
-		var title, rerunTrigger, testBlock, assertList,
+		var title, rerunTrigger, runModuleTrigger, testBlock, assertList,
 			tests = id( "qunit-tests" );
 
 		if ( !tests ) {
@@ -590,9 +590,14 @@ export function escapeText( s ) {
 		rerunTrigger.innerHTML = "Rerun";
 		rerunTrigger.href = setUrl( { testId: testId } );
 
+		runModuleTrigger = document.createElement( "a" );
+		runModuleTrigger.innerHTML = "Run module";
+		runModuleTrigger.href = setUrl( { module: moduleName } );
+
 		testBlock = document.createElement( "li" );
 		testBlock.appendChild( title );
 		testBlock.appendChild( rerunTrigger );
+		testBlock.appendChild( runModuleTrigger );
 		testBlock.id = "qunit-test-output-" + testId;
 
 		assertList = document.createElement( "ol" );
