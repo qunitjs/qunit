@@ -38,6 +38,36 @@ export function emit( eventName, data ) {
 }
 
 /**
+ * Same as `emit` above. If any callbacks return promises, `emitWithPromise` will
+ * return a promise that waits on all of them.
+ *
+ * @private
+ * @method emitWithPromise
+ * @param {String} eventName
+ * @param {Object} data
+ * @return {Void}
+ */
+export function emitWithPromise( eventName, data ) {
+	if ( objectType( eventName ) !== "string" ) {
+		throw new TypeError( "eventName must be a string when emitting an event" );
+	}
+
+	// Clone the callbacks in case one of them registers a new callback
+	const originalCallbacks = LISTENERS[ eventName ];
+	const callbacks = originalCallbacks ? [ ...originalCallbacks ] : [];
+
+	let promises = undefined;
+	for ( let i = 0; i < callbacks.length; i++ ) {
+		const maybePromise = callbacks[ i ]( data );
+		if ( maybePromise && typeof maybePromise.then === "function" ) {
+			promises = promises || [];
+			promises.push( maybePromise );
+		}
+	}
+	return promises && Promise.all( promises );
+}
+
+/**
  * Registers a callback as a listener to the specified event.
  *
  * @public

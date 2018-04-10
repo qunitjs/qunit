@@ -2,7 +2,7 @@ import global from "global";
 
 import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
-import { emit } from "./events";
+import { emit, emitWithPromise } from "./events";
 import Assert from "./assert";
 
 import config from "./core/config";
@@ -306,7 +306,10 @@ Test.prototype = {
 
 		// After emitting the js-reporters event we cleanup the assertion data to
 		// avoid leaking it. It is not used by the legacy testDone callbacks.
-		emit( "testEnd", this.testReport.end( true ) );
+		const promise = emitWithPromise( "testEnd", this.testReport.end( true ) );
+		if ( promise ) {
+			this.resolvePromise( promise );
+		}
 		this.testReport.slimAssertions();
 
 		runLoggingCallbacks( "testDone", {
