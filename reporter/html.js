@@ -339,6 +339,7 @@ export function escapeText( s ) {
 			dirty = false;
 
 		moduleSearch.id = "qunit-modulefilter-search";
+		moduleSearch.autocomplete = "off";
 		addEvent( moduleSearch, "input", searchInput );
 		addEvent( moduleSearch, "input", searchFocus );
 		addEvent( moduleSearch, "focus", searchFocus );
