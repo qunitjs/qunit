@@ -36,6 +36,9 @@ module.exports = function( grunt ) {
 			grunt.log.writeln( "-----" );
 			grunt.log.ok( constructMessage( totals ) );
 
+			// Refresh the QUnit global to be used in other tests
+			global.QUnit = requireFresh( "../../dist/qunit" );
+
 			done( !error );
 		} );
 	} );
