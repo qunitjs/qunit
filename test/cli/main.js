@@ -4,6 +4,7 @@ const co = require( "co" );
 
 const expectedOutput = require( "./fixtures/expected/tap-outputs" );
 const execute = require( "./helpers/execute" );
+const semver = require( "semver" );
 
 QUnit.module( "CLI Main", function() {
 	QUnit.test( "defaults to running tests in 'test' directory", co.wrap( function* ( assert ) {
@@ -122,6 +123,17 @@ QUnit.module( "CLI Main", function() {
 			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} ) );
+
+	if ( semver.gte( process.versions.node, "9.0.0" ) ) {
+		QUnit.test( "callbacks and hooks from modules are properly released for garbage collection", co.wrap( function* ( assert ) {
+			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit memory-leak/*.js";
+			const execution = yield execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
+		} ) );
+	}
 
 	QUnit.module( "filter", function() {
 		QUnit.test( "can properly filter tests", co.wrap( function* ( assert ) {

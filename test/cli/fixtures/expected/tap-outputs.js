@@ -169,5 +169,15 @@ ok 1 Single > has a test
 # pass 1
 # skip 0
 # todo 0
+# fail 0`,
+
+	"node --expose-gc --allow-natives-syntax ../../../bin/qunit memory-leak/*.js":
+`TAP version 13
+ok 1 some nested module > can call method on foo
+ok 2 later thing > has released all foos
+1..2
+# pass 2
+# skip 0
+# todo 0
 # fail 0`
 };
