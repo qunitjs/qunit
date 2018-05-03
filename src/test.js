@@ -254,6 +254,10 @@ Test.prototype = {
 	finish: function() {
 		config.current = this;
 
+		// Release the test callback to ensure that anything referenced has been
+		// released to be garbage collected.
+		this.callback = undefined;
+
 		if ( this.steps.length ) {
 			const stepsList = this.steps.join( ", " );
 			this.pushFailure( "Expected assert.verifySteps() to be called before end of test " +
@@ -342,6 +346,11 @@ Test.prototype = {
 		config.current = undefined;
 
 		function logSuiteEnd( module ) {
+
+			// Reset `module.hooks` to ensure that anything referenced in these hooks
+			// has been released to be garbage collected.
+			module.hooks = {};
+
 			emit( "suiteEnd", module.suiteReport.end( true ) );
 			runLoggingCallbacks( "moduleDone", {
 				name: module.name,
@@ -351,6 +360,7 @@ Test.prototype = {
 				total: module.stats.all,
 				runtime: now() - module.stats.started
 			} );
+
 		}
 	},
 
