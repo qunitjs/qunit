@@ -129,3 +129,10 @@ QUnit.test( "logs location", function( assert ) {
 		"Source references to the current file and line number"
 	);
 } );
+
+
+QUnit.test( "disables autocomplete on module filter", function( assert ) {
+	var moduleFilterSearch = document.getElementById( "qunit-modulefilter-search" );
+
+	assert.equal( moduleFilterSearch.autocomplete, "off" );
+} );
