@@ -1,3 +1,13 @@
+2.6.1 / 2018-05-15
+==================
+
+  * Test: Prevent global.QUnit leakage between node and browser tests.
+  * Core: Ensure test callbacks and module hooks are released.
+  * Test: Failing test with memory leak via retained hooks/callbacks.
+  * Test: Add Node 10 testing to CI.
+  * HTML Reporter: Disable autocomplete on module search input (#1277)
+  * All: Enable ESLint recommended rules
+
 2.6.0 / 2018-03-26
 ==================
 
