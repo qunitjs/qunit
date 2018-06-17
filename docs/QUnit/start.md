@@ -5,6 +5,9 @@ description: QUnit.start() is used to start an async test set
 categories:
   - main
   - async
+redirect_from:
+  - "/start"
+  - "/start/"
 ---
 
 ## `QUnit.start()`

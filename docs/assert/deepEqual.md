@@ -4,6 +4,9 @@ title: deepEqual
 description: A deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.
 categories:
   - assert
+redirect_from:
+  - "/deepEqual"
+  - "/deepEqual/"
 ---
 
 ## `deepEqual( actual, expected [, message ] )`
