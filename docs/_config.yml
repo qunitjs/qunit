@@ -7,6 +7,11 @@
 ## Site settings
 ## https://jekyllrb.com/docs/configuration/
 
+# Plugins
+plugins:
+  # https://help.github.com/articles/redirects-on-github-pages/
+  - jekyll-redirect-from
+
 # Conversion
 highlighter: rouge
 markdown: kramdown
