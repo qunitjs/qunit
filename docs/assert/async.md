@@ -6,7 +6,11 @@ categories:
   - assert
   - async
 redirect_from:
+  - "/QUnit.stop"
+  - "/QUnit.stop/"
   - "/QUnit/stop"
+  - "/stop"
+  - "/stop/"
 ---
 
 ## `async( [ acceptCallCount = 1 ] )`

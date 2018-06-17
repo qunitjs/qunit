@@ -4,6 +4,9 @@ title: notDeepEqual
 description: An inverted deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.
 categories:
   - assert
+redirect_from:
+  - "/notDeepEqual"
+  - "/notDeepEqual/"
 ---
 
 ## `notDeepEqual( actual, expected [, message ] )`

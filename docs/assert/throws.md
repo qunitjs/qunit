@@ -4,6 +4,9 @@ title: throws
 description: Test if a callback throws an exception, and optionally compare the thrown error.
 categories:
   - assert
+redirect_from:
+  - "/throws"
+  - "/throws/"
 ---
 
 ## `throws( blockFn[, expectedMatcher][, message ] )`
