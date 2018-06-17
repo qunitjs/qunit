@@ -121,7 +121,7 @@ QUnit.test( "keys", function( assert ) {
 	this.contextTest = true;
 } );
 
-QUnit.module( "afterEach and QUnit.stop", {
+QUnit.module( "afterEach and assert.async", {
 	beforeEach: function() {
 		this.state = false;
 	},
