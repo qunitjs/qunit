@@ -5,7 +5,6 @@ description: A non-strict comparison, checking for inequality.
 categories:
   - assert
 redirect_from:
-  - "/notEqual"
   - "/notEqual/"
 ---
 

@@ -5,7 +5,6 @@ description: Test if a callback throws an exception, and optionally compare the 
 categories:
   - assert
 redirect_from:
-  - "/throws"
   - "/throws/"
 ---
 

@@ -6,13 +6,9 @@ categories:
   - main
   - async
 redirect_from:
-  - "/QUnit.asyncTest"
   - "/QUnit.asyncTest/"
-  - "/QUnit.test"
   - "/QUnit.test/"
-  - "/asyncTest"
   - "/asyncTest/"
-  - "/test"
   - "/test/"
 ---
 

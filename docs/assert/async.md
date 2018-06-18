@@ -6,10 +6,8 @@ categories:
   - assert
   - async
 redirect_from:
-  - "/QUnit.stop"
   - "/QUnit.stop/"
-  - "/QUnit/stop"
-  - "/stop"
+  - "/QUnit/stop/"
   - "/stop/"
 ---
 
