@@ -5,7 +5,6 @@ description: A boolean check, equivalent to CommonJS's assert.ok() and JUnit's a
 categories:
   - assert
 redirect_from:
-  - "/ok"
   - "/ok/"
 ---
 

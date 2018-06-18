@@ -5,7 +5,6 @@ description: Specify how many assertions are expected to run within a test.
 categories:
   - assert
 redirect_from:
-  - "/expect"
   - "/expect/"
 ---
 

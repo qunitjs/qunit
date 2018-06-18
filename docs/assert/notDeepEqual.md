@@ -5,7 +5,6 @@ description: An inverted deep recursive comparison, working on primitive types, 
 categories:
   - assert
 redirect_from:
-  - "/notDeepEqual"
   - "/notDeepEqual/"
 ---
 

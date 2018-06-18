@@ -5,7 +5,6 @@ description: A deep recursive comparison, working on primitive types, arrays, ob
 categories:
   - assert
 redirect_from:
-  - "/deepEqual"
   - "/deepEqual/"
 ---
 

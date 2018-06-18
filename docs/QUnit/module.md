@@ -5,9 +5,7 @@ description: Group related tests under a single label.
 categories:
   - main
 redirect_from:
-  - "/QUnit.module"
   - "/QUnit.module/"
-  - "/module"
   - "/module/"
 ---
 

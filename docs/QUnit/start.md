@@ -6,7 +6,6 @@ categories:
   - main
   - async
 redirect_from:
-  - "/start"
   - "/start/"
 ---
 
