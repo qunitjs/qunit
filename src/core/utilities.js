@@ -6,6 +6,15 @@ export const now = Date.now || function() {
 	return new Date().getTime();
 };
 
+export const hasPerformanceApi = detectPerformanceApi();
+
+function detectPerformanceApi() {
+	return window &&
+		typeof window.performance !== "undefined" &&
+		typeof window.performance.mark === "function" &&
+		typeof window.performance.measure === "function";
+}
+
 export const defined = {
 	document: window && window.document !== undefined,
 	setTimeout: setTimeout !== undefined
