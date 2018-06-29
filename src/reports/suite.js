@@ -1,4 +1,4 @@
-import { performanceNow } from "../core/utilities";
+import { performance, performanceNow } from "../core/utilities";
 
 export default class SuiteReport {
 	constructor( name, parentSuite ) {
@@ -16,6 +16,11 @@ export default class SuiteReport {
 	start( recordTime ) {
 		if ( recordTime ) {
 			this._startTime = performanceNow();
+
+			if ( performance ) {
+				const suiteLevel = this.fullName.length;
+				performance.mark( `qunit_suite_${suiteLevel}_start` );
+			}
 		}
 
 		return {
@@ -32,6 +37,18 @@ export default class SuiteReport {
 	end( recordTime ) {
 		if ( recordTime ) {
 			this._endTime = performanceNow();
+
+			if ( performance ) {
+				const suiteLevel = this.fullName.length;
+				performance.mark( `qunit_suite_${suiteLevel}_end` );
+
+				const suiteName = this.fullName.join( " – " );
+				performance.measure(
+					suiteLevel === 0 ? "QUnit Test Run" : `QUnit Test Suite: ${suiteName}`,
+					`qunit_suite_${suiteLevel}_start`,
+					`qunit_suite_${suiteLevel}_end`
+				);
+			}
 		}
 
 		return {
