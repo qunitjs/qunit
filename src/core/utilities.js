@@ -7,6 +7,9 @@ export const now = Date.now || function() {
 };
 
 export const hasPerformanceApi = detectPerformanceApi();
+export const performanceNow = hasPerformanceApi ?
+	window.performance.now.bind( window.performance ) :
+	now;
 
 function detectPerformanceApi() {
 	return window &&
