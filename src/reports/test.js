@@ -1,4 +1,4 @@
-import { extend } from "../core/utilities";
+import { extend, performanceNow } from "../core/utilities";
 
 export default class TestReport {
 	constructor( name, suite, options ) {
@@ -21,7 +21,7 @@ export default class TestReport {
 
 	start( recordTime ) {
 		if ( recordTime ) {
-			this._startTime = Date.now();
+			this._startTime = performanceNow();
 		}
 
 		return {
@@ -33,7 +33,7 @@ export default class TestReport {
 
 	end( recordTime ) {
 		if ( recordTime ) {
-			this._endTime = Date.now();
+			this._endTime = performanceNow();
 		}
 
 		return extend( this.start(), {
