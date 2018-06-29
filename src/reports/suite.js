@@ -1,3 +1,5 @@
+import { performanceNow } from "../core/utilities";
+
 export default class SuiteReport {
 	constructor( name, parentSuite ) {
 		this.name = name;
@@ -13,7 +15,7 @@ export default class SuiteReport {
 
 	start( recordTime ) {
 		if ( recordTime ) {
-			this._startTime = Date.now();
+			this._startTime = performanceNow();
 		}
 
 		return {
@@ -29,7 +31,7 @@ export default class SuiteReport {
 
 	end( recordTime ) {
 		if ( recordTime ) {
-			this._endTime = Date.now();
+			this._endTime = performanceNow();
 		}
 
 		return {
