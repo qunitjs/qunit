@@ -36,7 +36,7 @@ class Assert {
 			result = false;
 		}
 
-		return this.pushResult( {
+		this.pushResult( {
 			result,
 			message: assertionMessage
 		} );
