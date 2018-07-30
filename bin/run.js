@@ -151,18 +151,18 @@ function watcherEvent( event, args ) {
 }
 
 run.watch = function watch() {
-	const chokidar = require( "chokidar" );
+	const sane = require( "sane" );
 	const args = Array.prototype.slice.call( arguments );
 
-	const watcher = chokidar.watch( "**/*.js", {
-		ignored: IGNORED_GLOBS,
-		ignoreInitial: true
+	const watcher = sane( process.cwd(), {
+		globs: [ "**/*.js" ],
+		ignored: IGNORED_GLOBS
 	} );
 
 	watcher.on( "ready", () => run.apply( null, args ) );
 	watcher.on( "change", watcherEvent( "changed", args ) );
 	watcher.on( "add", watcherEvent( "added", args ) );
-	watcher.on( "unlink", watcherEvent( "removed", args ) );
+	watcher.on( "delete", watcherEvent( "removed", args ) );
 
 	function stop() {
 		console.log( "Stopping QUnit..." );

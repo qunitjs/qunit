@@ -31,12 +31,12 @@
     "LICENSE.txt"
   ],
   "dependencies": {
-    "chokidar": "1.7.0",
     "commander": "2.12.2",
     "exists-stat": "1.0.0",
     "findup-sync": "2.0.0",
     "js-reporters": "1.2.1",
     "resolve": "1.5.0",
+    "sane": "^2.5.2",
     "walk-sync": "0.3.2"
   },
   "devDependencies": {
