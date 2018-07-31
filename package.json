@@ -36,7 +36,7 @@
     "findup-sync": "2.0.0",
     "js-reporters": "1.2.1",
     "resolve": "1.5.0",
-    "sane": "^2.5.2",
+    "sane": "^3.0.0",
     "walk-sync": "0.3.2"
   },
   "devDependencies": {

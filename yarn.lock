@@ -3543,9 +3543,9 @@ safe-regex@^1.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
 
-sane@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/sane/-/sane-2.5.2.tgz#b4dc1861c21b427e929507a3e751e2a2cb8ab3fa"
+sane@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/sane/-/sane-3.0.0.tgz#32e88d110b32dcd0ae3b88bdc58d8e4762cdf49a"
   dependencies:
     anymatch "^2.0.0"
     capture-exit "^1.2.0"
