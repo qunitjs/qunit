@@ -1,11 +1,16 @@
-/* global QUnit, window */
+/* global QUnit, window, define, require */
 
-( function( QUnit ) {
+( function( factory ) {
 
-	// Send messages to the parent PhantomJS process via alert! Good times!!
+	// For the amd tests we need to delay setup
+	if ( typeof define === "function" && define.amd ) {
+		require( [ "qunit" ], factory );
+	} else {
+		factory( QUnit );
+	}
+}( function( QUnit ) {
 	function sendMessage() {
-		var args = [].slice.call( arguments );
-		window.alert( JSON.stringify( args ) );
+		window.__grunt_contrib_qunit__.apply( window, arguments );
 	}
 
 	QUnit.done( function() {
@@ -15,4 +20,4 @@
 			sendMessage( "qunit.coverage", window.location.pathname, window.__coverage__ );
 		}
 	} );
-}( QUnit ) );
+} ) );

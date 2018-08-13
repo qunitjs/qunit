@@ -28,7 +28,13 @@ module.exports = function( grunt ) {
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
 		connect: {
-			server: {
+			nolivereload: {
+				options: {
+					port: 8000,
+					base: "."
+				}
+			},
+			livereload: {
 				options: {
 					port: 8000,
 					base: ".",
@@ -114,51 +120,56 @@ module.exports = function( grunt ) {
 			]
 		},
 		qunit: {
-			options: {
-				timeout: 30000,
-				"--web-security": "no",
-				inject: [
-					path.resolve( "./build/coverage-bridge.js" ),
-					require.resolve( "grunt-contrib-qunit/phantomjs/bridge" )
-				],
-				urls: [
-					"http://localhost:8000/test/sandboxed-iframe.html"
-				]
-			},
-			qunit: [
-				"test/index.html",
-				"test/autostart.html",
-				"test/startError.html",
-				"test/reorder.html",
-				"test/reorderError1.html",
-				"test/reorderError2.html",
-				"test/callbacks.html",
-				"test/events.html",
-				"test/events-in-test.html",
-				"test/logs.html",
-				"test/setTimeout.html",
-				"test/amd.html",
-				"test/reporter-html/index.html",
-				"test/reporter-html/legacy-markup.html",
-				"test/reporter-html/no-qunit-element.html",
-				"test/reporter-html/single-testid.html",
-				"test/reporter-html/window-onerror.html",
-				"test/reporter-html/window-onerror-preexisting-handler.html",
-				"test/reporter-urlparams.html",
-				"test/moduleId.html",
-				"test/onerror/inside-test.html",
-				"test/onerror/outside-test.html",
-				"test/only.html",
-				"test/seed.html",
-				"test/overload.html",
-				"test/preconfigured.html",
-				"test/regex-filter.html",
-				"test/regex-exclude-filter.html",
-				"test/string-filter.html",
-				"test/module-only.html",
-				"test/module-skip.html",
-				"test/module-todo.html"
-			]
+			all: {
+				options: {
+					timeout: 30000,
+					puppeteer: !process.env.CI ? {} : {
+						args: [
+
+							// https://docs.travis-ci.com/user/chrome#sandboxing
+							"--no-sandbox"
+						]
+					},
+					inject: [
+						path.resolve( "./build/coverage-bridge.js" ),
+						require.resolve( "grunt-contrib-qunit/chrome/bridge" )
+					],
+					urls: [
+						"test/sandboxed-iframe.html",
+						"test/index.html",
+						"test/autostart.html",
+						"test/startError.html",
+						"test/reorder.html",
+						"test/reorderError1.html",
+						"test/reorderError2.html",
+						"test/callbacks.html",
+						"test/events.html",
+						"test/events-in-test.html",
+						"test/logs.html",
+						"test/setTimeout.html",
+						"test/amd.html",
+						"test/reporter-html/legacy-markup.html",
+						"test/reporter-html/no-qunit-element.html",
+						"test/reporter-html/single-testid.html",
+						"test/reporter-html/window-onerror.html",
+						"test/reporter-html/window-onerror-preexisting-handler.html",
+						"test/reporter-urlparams.html",
+						"test/moduleId.html",
+						"test/onerror/inside-test.html",
+						"test/onerror/outside-test.html",
+						"test/only.html",
+						"test/seed.html",
+						"test/overload.html",
+						"test/preconfigured.html",
+						"test/regex-filter.html",
+						"test/regex-exclude-filter.html",
+						"test/string-filter.html",
+						"test/module-only.html",
+						"test/module-skip.html",
+						"test/module-todo.html"
+					].map( file => `http://localhost:8000/${file}` )
+				}
+			}
 		},
 		"test-on-node": {
 			files: [
@@ -258,7 +269,7 @@ module.exports = function( grunt ) {
 	grunt.loadTasks( "build/tasks" );
 	grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
 	grunt.registerTask( "test-base", [ "eslint", "search", "test-on-node" ] );
-	grunt.registerTask( "test", [ "test-base", "connect", "qunit" ] );
+	grunt.registerTask( "test", [ "test-base", "connect:nolivereload", "qunit" ] );
 	grunt.registerTask( "test-in-watch", [ "test-base", "qunit" ] );
 	grunt.registerTask( "coverage", [
 		"build",
@@ -275,7 +286,7 @@ module.exports = function( grunt ) {
 	// Start the web server in a watch pre-task
 	// https://github.com/gruntjs/grunt-contrib-watch/issues/50
 	grunt.renameTask( "watch", "watch-repeatable" );
-	grunt.registerTask( "watch", [ "connect", "watch-repeatable" ] );
+	grunt.registerTask( "watch", [ "connect:livereload", "watch-repeatable" ] );
 
 	grunt.registerTask( "default", [ "build", "test" ] );
 
