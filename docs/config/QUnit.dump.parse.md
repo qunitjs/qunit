@@ -22,9 +22,9 @@ If you need more or less output, change the value of `QUnit.dump.maxDepth`, repr
 
 ### Examples
 
-The following example is used on [grunt-contrib-qunit][] to send messages from QUnit to PhantomJS.
+The following example is used on [grunt-contrib-qunit][] to send messages from QUnit to headless Chrome.
 
-[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/7568f3ba04a5790b2c92f44da3ce5c7bdc1c7491/phantomjs/bridge.js#L24-L33
+[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/2dbb2fe25ca1a6b1d2cba768768b64e665ca7939/chrome/bridge.js#L23
 
 ```js
 QUnit.log(function( obj ) {

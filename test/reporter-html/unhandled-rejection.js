@@ -15,6 +15,7 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 		} );
 
 		QUnit.test( "test passes just fine, but has a rejected promise", function( assert ) {
+			assert.expect( 0 );
 			const done = assert.async();
 
 			Promise.resolve().then( function() {
