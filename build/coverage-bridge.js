@@ -2,10 +2,10 @@
 
 ( function( QUnit ) {
 
-	// Send messages to the parent PhantomJS process via alert! Good times!!
+	// Send messages to the Node process
+	// Using sendMessage similar to 'grunt-contrib-qunit/chrome/bridge.js'
 	function sendMessage() {
-		var args = [].slice.call( arguments );
-		window.alert( JSON.stringify( args ) );
+		window.__grunt_contrib_qunit__.apply( window, [].slice.call( arguments ) );
 	}
 
 	QUnit.done( function() {

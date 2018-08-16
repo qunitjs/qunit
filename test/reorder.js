@@ -16,7 +16,7 @@ QUnit.test( "Second", function( assert ) {
 
 	// This test is "high priority" so it should execute before test "First"
 	// even though it is added to the queue late
-	QUnit.config.reorder = true; // For some reason PhantomJS mutates config.reorder
+	QUnit.config.reorder = true; // For some reason headless Chrome mutates config.reorder. (This was also the case for PhantomJS)
 	QUnit.test( "Third", function( assert ) {
 		assert.strictEqual( lastTest, "Second" );
 		lastTest = "Third";
