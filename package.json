@@ -60,7 +60,7 @@
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-qunit": "2.0.0",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-coveralls": "1.0.1",
+    "grunt-coveralls": "2.0.0",
     "grunt-eslint": "20.1.0",
     "grunt-git-authors": "3.2.0",
     "grunt-istanbul": "0.8.0",
