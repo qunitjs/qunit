@@ -44,7 +44,6 @@
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
-    "browserstack-runner": "0.7.0",
     "co": "4.6.0",
     "commitplease": "3.1.0",
     "eslint-config-jquery": "1.0.1",
@@ -74,7 +73,6 @@
     "semver": "5.4.1"
   },
   "scripts": {
-    "browserstack": "grunt build && sh build/run-browserstack.sh",
     "build": "grunt build",
     "dev": "grunt watch",
     "test": "grunt",
