@@ -1,3 +1,20 @@
+2.6.2 / 2018-08-19
+==================
+
+  * Build: Bump packages identified by npm audit
+  * Build: Remove Browserstack
+  * Build: Upgrade grunt-coveralls to 2.0.0 (#1305)
+  * CLI: [fixes #121] chokidar -> sane (#1283)
+  * Tests: fix HTTP 404 error for the Qunit CSS in one of the test files (#1297)
+  * pushResult() doesn't ever return a value: it's always undefined/void.
+  * Update `fsevents` subdependency for Node 10 compat
+  * Core: Extract QUnit.module to its own file
+  * Docs: Fix Jekyll build (remove conflicting file/dir names)
+  * Docs: Set up redirects for old urls
+  * Docs: Fix broken QUnit.stop link from assert/async and add redirect (#1291)
+  * Build: Stop testing on Node 4 & 9
+  * Docs: Remove unused config and group settings
+
 2.6.1 / 2018-05-15
 ==================
 
