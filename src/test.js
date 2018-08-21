@@ -112,34 +112,37 @@ Test.prototype = {
 	before: function() {
 		var i, startModule,
 			module = this.module,
+			promises = [],
 			notStartedModules = getNotStartedModules( module );
 
 		for ( i = notStartedModules.length - 1; i >= 0; i-- ) {
 			startModule = notStartedModules[ i ];
 			startModule.stats = { all: 0, bad: 0, started: now() };
 			emit( "suiteStart", startModule.suiteReport.start( true ) );
-			runLoggingCallbacks( "moduleStart", {
+			promises.push( runLoggingCallbacks( "moduleStart", {
 				name: startModule.name,
 				tests: startModule.tests
+			} ) );
+		}
+
+		return Promise.all( promises ).then( () => {
+			config.current = this;
+
+			this.testEnvironment = extend( {}, module.testEnvironment );
+
+			this.started = now();
+			emit( "testStart", this.testReport.start( true ) );
+			return runLoggingCallbacks( "testStart", {
+				name: this.testName,
+				module: module.name,
+				testId: this.testId,
+				previousFailure: this.previousFailure
 			} );
-		}
-
-		config.current = this;
-
-		this.testEnvironment = extend( {}, module.testEnvironment );
-
-		this.started = now();
-		emit( "testStart", this.testReport.start( true ) );
-		runLoggingCallbacks( "testStart", {
-			name: this.testName,
-			module: module.name,
-			testId: this.testId,
-			previousFailure: this.previousFailure
+		} ).then( () => {
+			if ( !config.pollution ) {
+				saveGlobal();
+			}
 		} );
-
-		if ( !config.pollution ) {
-			saveGlobal();
-		}
 	},
 
 	run: function() {
@@ -313,7 +316,7 @@ Test.prototype = {
 		emit( "testEnd", this.testReport.end( true ) );
 		this.testReport.slimAssertions();
 
-		runLoggingCallbacks( "testDone", {
+		return runLoggingCallbacks( "testDone", {
 			name: testName,
 			module: moduleName,
 			skipped: skipped,
@@ -329,21 +332,26 @@ Test.prototype = {
 
 			// Source of Test
 			source: this.stack
-		} );
-
-		if ( module.testsRun === numberOfTests( module ) ) {
-			logSuiteEnd( module );
-
-			// Check if the parent modules, iteratively, are done. If that the case,
-			// we emit the `suiteEnd` event and trigger `moduleDone` callback.
-			let parent = module.parentModule;
-			while ( parent && parent.testsRun === numberOfTests( parent ) ) {
-				logSuiteEnd( parent );
-				parent = parent.parentModule;
+		} ).then( function() {
+			if ( module.testsRun === numberOfTests( module ) ) {
+				return logSuiteEnd( module );
 			}
-		}
+		} ).then( function() {
+			if ( module.testsRun === numberOfTests( module ) ) {
+				const promises = [];
 
-		config.current = undefined;
+				// Check if the parent modules, iteratively, are done. If that the case,
+				// we emit the `suiteEnd` event and trigger `moduleDone` callback.
+				let parent = module.parentModule;
+				while ( parent && parent.testsRun === numberOfTests( parent ) ) {
+					promises.push( logSuiteEnd( parent ) );
+					parent = parent.parentModule;
+				}
+				return Promise.all( promises );
+			}
+		} ).then( function() {
+			config.current = undefined;
+		} );
 
 		function logSuiteEnd( module ) {
 
@@ -352,7 +360,7 @@ Test.prototype = {
 			module.hooks = {};
 
 			emit( "suiteEnd", module.suiteReport.end( true ) );
-			runLoggingCallbacks( "moduleDone", {
+			return runLoggingCallbacks( "moduleDone", {
 				name: module.name,
 				tests: module.tests,
 				failed: module.stats.bad,
@@ -381,7 +389,7 @@ Test.prototype = {
 		function runTest() {
 			return [
 				function() {
-					test.before();
+					return test.before();
 				},
 
 				...test.hooks( "before" ),
@@ -404,7 +412,7 @@ Test.prototype = {
 				},
 
 				function() {
-					test.finish();
+					return test.finish();
 				}
 			];
 		}

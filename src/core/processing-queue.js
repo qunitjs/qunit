@@ -39,25 +39,38 @@ function advance() {
 }
 
 /**
- * Advances the taskQueue to the next task if it is ready and not empty.
+ * Advances the taskQueue with an increased depth
  */
 function advanceTaskQueue() {
 	const start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
-	while ( taskQueue.length && !config.blocking ) {
+	processTaskQueue( start );
+
+	config.depth--;
+}
+
+/**
+ * Process the first task on the taskQueue as a promise.
+ * Each task is a function returned by https://github.com/qunitjs/qunit/blob/master/src/test.js#L381
+ */
+function processTaskQueue( start ) {
+	if ( taskQueue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
 			const task = taskQueue.shift();
-			task();
+			Promise.resolve( task() ).then( function() {
+				if ( !taskQueue.length ) {
+					advance();
+				} else {
+					processTaskQueue( start );
+				}
+			} );
 		} else {
 			setTimeout( advance );
-			break;
 		}
 	}
-
-	config.depth--;
 }
 
 /**

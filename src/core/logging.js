@@ -34,10 +34,7 @@ export function registerLoggingCallbacks( obj ) {
 }
 
 export function runLoggingCallbacks( key, args ) {
-	var i, l, callbacks;
-
-	callbacks = config.callbacks[ key ];
-	for ( i = 0, l = callbacks.length; i < l; i++ ) {
-		callbacks[ i ]( args );
-	}
+	var callbacks = config.callbacks[ key ];
+	var promises = callbacks.map( callback => Promise.resolve( callback( args ) ) );
+	return Promise.all( promises );
 }
