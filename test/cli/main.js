@@ -94,7 +94,8 @@ QUnit.module( "CLI Main", function() {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			assert.equal( e.stdout, expectedOutput[ command ] );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.equal( re.test( e.stdout ), true );
 		}
 	} ) );
 
@@ -153,7 +154,8 @@ QUnit.module( "CLI Main", function() {
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
-				assert.equal( e.stdout, expectedOutput[ command ] );
+				const re = new RegExp( expectedOutput[ command ] );
+				assert.equal( re.test( e.stdout ), true );
 			}
 		} ) );
 	} );
