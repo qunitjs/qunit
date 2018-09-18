@@ -23,6 +23,8 @@ import { window } from "../src/globals";
 	// Regular expression or case-insenstive substring match against "moduleName: testName"
 	QUnit.config.filter = urlParams.filter;
 
+	QUnit.config.norender = urlParams.norender;
+
 	// Test order randomization
 	if ( urlParams.seed === true ) {
 

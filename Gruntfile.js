@@ -154,6 +154,7 @@ module.exports = function( grunt ) {
 						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/window-onerror-preexisting-handler.html",
 						"test/reporter-urlparams.html",
+						"test/reporter-urlparams-norender.html",
 						"test/moduleId.html",
 						"test/onerror/inside-test.html",
 						"test/onerror/outside-test.html",
