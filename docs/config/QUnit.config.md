@@ -43,6 +43,10 @@ By default QUnit will use whatever the starting content of `#qunit-fixture` is a
 
 By default, the HTML Reporter will show all the tests results. Enabling this option will make it show only the failing tests, hiding all that pass. This can also be managed by the HTML interface.
 
+### `QUnit.config.norender` (string) | default: `undefined`
+
+Don't render the selected status filters that match the results. When running multiple tests the dom starts to get cluttered and slow down browser responsiveness. Enabling this flag will only render test results that don't match the given filter. For example `?norender=pass,fail,skip` will only show todo tests in the dom after they have run. _This will still show content as the test is running, but will not keep the test results in the dom._
+
 ### `QUnit.config.maxDepth` (number) | default: `5`
 
 Specifies the depth up-to which an object will be dumped during a diff. To run without a max depth, use a value of `-1`.

@@ -754,7 +754,7 @@ export function escapeText( s ) {
 
 	QUnit.log( function( details ) {
 		var assertList, assertLi,
-			message, expected, actual, diff,
+			status, message, expected, actual, diff,
 			showDiff = false,
 			testItem = id( "qunit-test-output-" + details.testId );
 
@@ -762,8 +762,8 @@ export function escapeText( s ) {
 			return;
 		}
 
-		message = escapeText( details.message ) || ( details.result ? "okay" : "failed" );
-		message = "<span class='test-message'>" + message + "</span>";
+		status = escapeText( details.message ) || ( details.result ? "okay" : "failed" );
+		message = "<span class='test-message'>" + status + "</span>";
 		message += "<span class='runtime'>@ " + details.runtime + " ms</span>";
 
 		// The pushFailure doesn't provide details.expected
@@ -844,7 +844,7 @@ export function escapeText( s ) {
 	} );
 
 	QUnit.testDone( function( details ) {
-		var testTitle, time, testItem, assertList,
+		var testTitle, time, testItem, assertList, status,
 			good, bad, testCounts, skipped, sourceName,
 			tests = id( "qunit-tests" );
 
@@ -852,7 +852,21 @@ export function escapeText( s ) {
 			return;
 		}
 
+
 		testItem = id( "qunit-test-output-" + details.testId );
+
+		if ( details.failed > 0 ) {
+			status = "failed";
+		} else if ( details.todo ) {
+			status = "todo";
+		} else {
+			status = details.skipped ? "skipped" : "passed";
+		}
+
+		// can accept 'passed' or 'passed,skipped,todo'
+		if ( config.norender && config.norender.split( "," ).indexOf( status ) > -1 ) {
+			testItem.remove();
+		}
 
 		assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
 
