@@ -33,7 +33,7 @@ const taskQueue = [];
 function advance() {
 	advanceTaskQueue();
 
-	if ( !taskQueue.length ) {
+	if ( !taskQueue.length && !config.blocking ) {
 		advanceTestQueue();
 	}
 }
@@ -192,18 +192,19 @@ function done() {
 		failed: config.stats.bad,
 		total: config.stats.all,
 		runtime
-	} );
+	} ).then( () => {
 
-	// Clear own storage items if all tests passed
-	if ( storage && config.stats.bad === 0 ) {
-		for ( let i = storage.length - 1; i >= 0; i-- ) {
-			const key = storage.key( i );
+		// Clear own storage items if all tests passed
+		if ( storage && config.stats.bad === 0 ) {
+			for ( let i = storage.length - 1; i >= 0; i-- ) {
+				const key = storage.key( i );
 
-			if ( key.indexOf( "qunit-test-" ) === 0 ) {
-				storage.removeItem( key );
+				if ( key.indexOf( "qunit-test-" ) === 0 ) {
+					storage.removeItem( key );
+				}
 			}
 		}
-	}
+	} );
 }
 
 const ProcessingQueue = {

@@ -35,6 +35,20 @@ export function registerLoggingCallbacks( obj ) {
 
 export function runLoggingCallbacks( key, args ) {
 	var callbacks = config.callbacks[ key ];
-	var promises = callbacks.map( callback => Promise.resolve( callback( args ) ) );
-	return Promise.all( promises );
+
+	// Handling 'log' callbacks separately. Unlike the other callbacks,
+	// the log callback is not controlled by the processing queue,
+	// but rather used by asserts. Hence to promisfy the 'log' callback
+	// would mean promisfying each step of a test
+	if ( key === "log" ) {
+		callbacks.map( callback => callback( args ) );
+		return;
+	}
+
+	// ensure that each callback is executed serially
+	return callbacks.reduce( ( promiseChain, callback ) => {
+		return promiseChain.then( () => {
+			return Promise.resolve( callback( args ) );
+		} );
+	}, Promise.resolve( [] ) );
 }
