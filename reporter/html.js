@@ -212,6 +212,19 @@ export function escapeText( s ) {
 		} else {
 			window.location = updatedUrl;
 		}
+
+		// Check if we can apply the change without a page refresh
+		if ( "showskipped" === field.name && "replaceState" in window.history ) {
+			QUnit.urlParams[ field.name ] = value;
+			config[ field.name ] = value || false;
+			tests = id( "qunit-tests" );
+			if ( tests ) {
+				toggleClass( tests, "showskipped", value || false );
+			}
+			window.history.replaceState( null, "", updatedUrl );
+		} else {
+			window.location = updatedUrl;
+		}
 	}
 
 	function setUrl( params ) {
@@ -625,6 +638,9 @@ export function escapeText( s ) {
 		tests = id( "qunit-tests" );
 		if ( tests && config.hidepassed ) {
 			addClass( tests, "hidepass" );
+		}
+		if ( tests && config.showskipped ) {
+			addClass( tests, "showskipped" );
 		}
 	} );
 

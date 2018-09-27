@@ -43,6 +43,10 @@ By default QUnit will use whatever the starting content of `#qunit-fixture` is a
 
 By default, the HTML Reporter will show all the tests results. Enabling this option will make it show only the failing tests, hiding all that pass. This can also be managed by the HTML interface.
 
+### `QUnit.config.showskipped` (boolean) | default: `false`
+
+By default, the HTML Reporter will hide all skipped tests. Enabling this option will show the skipped tests. This can also be managed by the HTML interface.
+
 ### `QUnit.config.maxDepth` (number) | default: `5`
 
 Specifies the depth up-to which an object will be dumped during a diff. To run without a max depth, use a value of `-1`.

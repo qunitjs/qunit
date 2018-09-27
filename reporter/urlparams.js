@@ -40,6 +40,11 @@ import { window } from "../src/globals";
 			tooltip: "Only show tests and assertions that fail. Stored as query-strings."
 		},
 		{
+			id: "showskipped",
+			label: "Show skipped tests",
+			tooltip: "Reveal skipped tests. Stored as query-strings."
+		},
+		{
 			id: "noglobals",
 			label: "Check for Globals",
 			tooltip: "Enabling this will test if any test introduces new properties on the " +
