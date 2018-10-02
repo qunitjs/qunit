@@ -582,20 +582,6 @@ export function escapeText( s ) {
 		appendToolbar();
 	}
 
-	function appendTestsList( modules ) {
-		var i, l, x, z, test, moduleObj;
-
-		for ( i = 0, l = modules.length; i < l; i++ ) {
-			moduleObj = modules[ i ];
-
-			for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
-				test = moduleObj.tests[ x ];
-
-				appendTest( test.name, test.testId, moduleObj.name );
-			}
-		}
-	}
-
 	function appendTest( name, testId, moduleName ) {
 		var title, rerunTrigger, testBlock, assertList,
 			tests = id( "qunit-tests" );
@@ -641,7 +627,6 @@ export function escapeText( s ) {
 
 		// Initialize QUnit elements
 		appendInterface();
-		appendTestsList( details.modules );
 	} );
 
 	QUnit.done( function( details ) {
@@ -734,16 +719,9 @@ export function escapeText( s ) {
 	}
 
 	QUnit.testStart( function( details ) {
-		var running, testBlock, bad;
+		var running, bad;
 
-		testBlock = id( "qunit-test-output-" + details.testId );
-		if ( testBlock ) {
-			testBlock.className = "running";
-		} else {
-
-			// Report later registered tests
-			appendTest( details.name, details.testId, details.module );
-		}
+		appendTest( details.name, details.testId, details.module );
 
 		running = id( "qunit-testresult-display" );
 		if ( running ) {
