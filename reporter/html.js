@@ -356,7 +356,7 @@ export function escapeText( s ) {
 		"<label class='clickable" +
 		( config.moduleId.length ? "" : " checked" ) +
 		"'><input type='checkbox'" + ( config.moduleId.length ? "" : " checked='checked'" ) +
-		">All modules</label>";
+		" />All modules</label>";
 		allCheckbox = actions.lastChild.firstChild;
 		commit = actions.firstChild;
 		reset = commit.nextSibling;
