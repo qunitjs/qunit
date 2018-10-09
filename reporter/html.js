@@ -41,6 +41,7 @@ export function escapeText( s ) {
 	}
 
 	var config = QUnit.config,
+		hiddenTests = [],
 		document = window.document,
 		collapseNext = false,
 		hasOwn = Object.prototype.hasOwnProperty,
@@ -206,7 +207,26 @@ export function escapeText( s ) {
 			config[ field.name ] = value || false;
 			tests = id( "qunit-tests" );
 			if ( tests ) {
-				toggleClass( tests, "hidepass", value || false );
+				var length = tests.children.length;
+				var children = tests.children;
+
+				if ( field.checked ) {
+					for ( var i = 0; i < length; i++ ) {
+						var test = children[ i ];
+
+						if ( test && test.className.indexOf( "pass" ) > -1 ) {
+							hiddenTests.push( test );
+						}
+					}
+
+					for ( const hiddenTest of hiddenTests ) {
+						tests.removeChild( hiddenTest );
+					}
+				} else {
+					while ( ( test = hiddenTests.pop() ) != null ) {
+						tests.appendChild( test );
+					}
+				}
 			}
 			window.history.replaceState( null, "", updatedUrl );
 		} else {
@@ -562,20 +582,6 @@ export function escapeText( s ) {
 		appendToolbar();
 	}
 
-	function appendTestsList( modules ) {
-		var i, l, x, z, test, moduleObj;
-
-		for ( i = 0, l = modules.length; i < l; i++ ) {
-			moduleObj = modules[ i ];
-
-			for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
-				test = moduleObj.tests[ x ];
-
-				appendTest( test.name, test.testId, moduleObj.name );
-			}
-		}
-	}
-
 	function appendTest( name, testId, moduleName ) {
 		var title, rerunTrigger, testBlock, assertList,
 			tests = id( "qunit-tests" );
@@ -606,7 +612,7 @@ export function escapeText( s ) {
 
 	// HTML Reporter initialization and load
 	QUnit.begin( function( details ) {
-		var i, moduleObj, tests;
+		var i, moduleObj;
 
 		// Sort modules by name for the picker
 		for ( i = 0; i < details.modules.length; i++ ) {
@@ -621,11 +627,6 @@ export function escapeText( s ) {
 
 		// Initialize QUnit elements
 		appendInterface();
-		appendTestsList( details.modules );
-		tests = id( "qunit-tests" );
-		if ( tests && config.hidepassed ) {
-			addClass( tests, "hidepass" );
-		}
 	} );
 
 	QUnit.done( function( details ) {
@@ -718,16 +719,9 @@ export function escapeText( s ) {
 	}
 
 	QUnit.testStart( function( details ) {
-		var running, testBlock, bad;
+		var running, bad;
 
-		testBlock = id( "qunit-test-output-" + details.testId );
-		if ( testBlock ) {
-			testBlock.className = "running";
-		} else {
-
-			// Report later registered tests
-			appendTest( details.name, details.testId, details.module );
-		}
+		appendTest( details.name, details.testId, details.module );
 
 		running = id( "qunit-testresult-display" );
 		if ( running ) {
@@ -844,7 +838,7 @@ export function escapeText( s ) {
 	} );
 
 	QUnit.testDone( function( details ) {
-		var testTitle, time, testItem, assertList,
+		var testTitle, time, testItem, assertList, status,
 			good, bad, testCounts, skipped, sourceName,
 			tests = id( "qunit-tests" );
 
@@ -853,6 +847,14 @@ export function escapeText( s ) {
 		}
 
 		testItem = id( "qunit-test-output-" + details.testId );
+
+		if ( details.failed > 0 ) {
+			status = "failed";
+		} else if ( details.todo ) {
+			status = "todo";
+		} else {
+			status = details.skipped ? "skipped" : "passed";
+		}
 
 		assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
 
@@ -937,6 +939,14 @@ export function escapeText( s ) {
 				toggleClass( sourceName, "qunit-collapsed" );
 			} );
 			testItem.appendChild( sourceName );
+		}
+
+		if ( config.hidepassed && status === "passed" ) {
+
+			// use removeChild instead of remove because of support
+			hiddenTests.push( testItem );
+
+			tests.removeChild( testItem );
 		}
 	} );
 
