@@ -18,7 +18,7 @@ Commit all of the above with the following message:
 
 Replace `@VERSION` with the version number you are releasing.
 
-For the final preparatory step, push your new commit to `master` on GitHub. In order to do this, you'll need to disable branch protections for administrators. This can be done [here](https://github.com/qunitjs/qunit/settings/branches/master). Once you're done with the release process, be sure to reenable any protections you disabled.
+For the final preparatory step, push your new commit to `master` on GitHub. In order to do this, you'll need to disable branch protections for administrators. This can be done [here](https://github.com/qunitjs/qunit/settings/branch_protection_rules/511767). Once you're done with the release process, be sure to reenable any protections you disabled.
 
 ## Performing the Release
 
@@ -26,6 +26,8 @@ For the actual release, we will use [QUnit's fork of jquery-release](https://git
 
 :warning: **WARNING** :warning:
 > Before attempting the process below, make sure you have the proper permissions to publish to the jQuery CDN or else you will run into issues. If you have any doubts, ask someone who has done a release before to verify for you.
+>
+> Additionally, if you use 2FA on npm (which you should), make sure your account is in [**auth-only** mode](https://docs.npmjs.com/getting-started/using-two-factor-authentication#levels-of-authentication) while doing the release. The release infrastructure does not currently support releasing with an OTP.
 
 Always start this process from a fresh clone of the release repo:
 
