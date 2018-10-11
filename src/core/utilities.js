@@ -1,4 +1,5 @@
 import { window, setTimeout } from "../globals";
+import Logger from "../logger";
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;
@@ -17,6 +18,17 @@ function detectPerformanceApi() {
 		typeof window.performance !== "undefined" &&
 		typeof window.performance.mark === "function" &&
 		typeof window.performance.measure === "function";
+}
+
+export function measure( comment, startMark, endMark ) {
+
+	// `performance.measure` may fail if the mark could not be found.
+	// reasons a specific mark could not be found include: outside code invoking `performance.clearMarks()`
+	try {
+		performance.measure( comment, startMark, endMark );
+	} catch ( ex ) {
+		Logger.warn( "performance.measure could not be executed because of ", ex.message );
+	}
 }
 
 export const defined = {
