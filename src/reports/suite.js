@@ -1,4 +1,4 @@
-import { performance, performanceNow } from "../core/utilities";
+import { measure, performance, performanceNow } from "../core/utilities";
 
 export default class SuiteReport {
 	constructor( name, parentSuite ) {
@@ -43,7 +43,8 @@ export default class SuiteReport {
 				performance.mark( `qunit_suite_${suiteLevel}_end` );
 
 				const suiteName = this.fullName.join( " – " );
-				performance.measure(
+
+				measure(
 					suiteLevel === 0 ? "QUnit Test Run" : `QUnit Test Suite: ${suiteName}`,
 					`qunit_suite_${suiteLevel}_start`,
 					`qunit_suite_${suiteLevel}_end`

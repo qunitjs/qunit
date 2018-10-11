@@ -1,4 +1,4 @@
-import { extend, performance, performanceNow } from "../core/utilities";
+import { extend, measure, performance, performanceNow } from "../core/utilities";
 
 export default class TestReport {
 	constructor( name, suite, options ) {
@@ -41,7 +41,8 @@ export default class TestReport {
 				performance.mark( "qunit_test_end" );
 
 				const testName = this.fullName.join( " – " );
-				performance.measure(
+
+				measure(
 					`QUnit Test: ${testName}`,
 					"qunit_test_start",
 					"qunit_test_end"
