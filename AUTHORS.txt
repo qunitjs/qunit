@@ -155,3 +155,4 @@ Tobias Bieniek <tobias.bieniek@gmail.com>
 Ger Hobbelt <ger@hobbelt.com>
 Shlomi Fish <shlomif@shlomifish.org>
 Gabriel Csapo <gabecsapo@gmail.com>
+Gabriel J. Csapo <gcsapo@linkedin.biz>

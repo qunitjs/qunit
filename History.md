@@ -1,3 +1,9 @@
+2.7.1 / 2018-10-17
+==================
+
+  * Core: guards performance.measure to not throw and cause tests to fail
+  * Build: Avoid Chromium sandbox on Jenkins (as for Travis CI)
+
 2.7.0 / 2018-10-10
 ==================
 
