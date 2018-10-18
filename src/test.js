@@ -4,6 +4,7 @@ import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
 import { emit } from "./events";
 import Assert from "./assert";
+import Promise from "./promise";
 
 import config from "./core/config";
 import {

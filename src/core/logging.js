@@ -1,5 +1,6 @@
 import config from "./config";
 import { objectType } from "./utilities";
+import Promise from "../promise";
 
 // Register logging callbacks
 export function registerLoggingCallbacks( obj ) {

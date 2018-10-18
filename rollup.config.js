@@ -1,14 +1,14 @@
 /* eslint-env node */
 
 var babel = require( "rollup-plugin-babel" );
+var resolve = require( "rollup-plugin-node-resolve" );
 
 module.exports = {
 	format: "iife",
 	exports: "none",
 	plugins: [
-		babel( {
-			exclude: "node_modules/**"
-		} )
+		resolve( { modulesOnly: true } ),
+		babel()
 	],
 
 	// eslint-disable-next-line no-multi-str

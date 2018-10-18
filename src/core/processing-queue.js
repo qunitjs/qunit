@@ -8,6 +8,7 @@ import {
 	runLoggingCallbacks
 } from "./logging";
 
+import Promise from "../promise";
 import {
 	globalSuite
 } from "../core";
@@ -33,7 +34,7 @@ const taskQueue = [];
 function advance() {
 	advanceTaskQueue();
 
-	if ( !taskQueue.length && !config.blocking ) {
+	if ( !taskQueue.length && !config.blocking && !config.current ) {
 		advanceTestQueue();
 	}
 }
