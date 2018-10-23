@@ -1,4 +1,5 @@
 import QUnit from "../src/core";
+import { extractStacktrace } from "../src/core/stacktrace";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
 
@@ -970,10 +971,18 @@ export function escapeText( s ) {
 	// Cover uncaught exceptions
 	// Returning true will suppress the default browser handler,
 	// returning false will let it run.
-	window.onerror = function( message, fileName, lineNumber, ...args ) {
+	window.onerror = function( message, fileName, lineNumber, columnNumber, errorObj, ...args ) {
 		var ret = false;
 		if ( originalWindowOnError ) {
-			ret = originalWindowOnError.call( this, message, fileName, lineNumber, ...args );
+			ret = originalWindowOnError.call(
+				this,
+				message,
+				fileName,
+				lineNumber,
+				columnNumber,
+				errorObj,
+				...args
+			);
 		}
 
 		// Treat return value as window.onerror itself does,
@@ -984,6 +993,14 @@ export function escapeText( s ) {
 				fileName,
 				lineNumber
 			};
+
+			// According to
+			// https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror,
+			// most modern browsers support an errorObj argument; use that to
+			// get a full stack trace if it's available.
+			if ( errorObj && errorObj.stack ) {
+				error.stacktrace = extractStacktrace( errorObj, 0 );
+			}
 
 			ret = QUnit.onError( error );
 		}

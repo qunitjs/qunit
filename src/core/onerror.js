@@ -12,10 +12,18 @@ export default function onError( error, ...args ) {
 		if ( config.current.ignoreGlobalErrors ) {
 			return true;
 		}
-		pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
+		pushFailure(
+			error.message,
+			error.stacktrace || error.fileName + ":" + error.lineNumber,
+			...args
+		);
 	} else {
 		test( "global failure", extend( function() {
-			pushFailure( error.message, error.fileName + ":" + error.lineNumber, ...args );
+			pushFailure(
+				error.message,
+				error.stacktrace || error.fileName + ":" + error.lineNumber,
+				...args
+			);
 		}, { validTest: true } ) );
 	}
 

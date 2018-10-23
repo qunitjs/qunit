@@ -16,6 +16,29 @@ QUnit.module( "QUnit.onError", function() {
 		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
 	} );
 
+	QUnit.test( "Should use stacktrace argument when it is present", function( assert ) {
+		assert.expect( 3 );
+
+		QUnit.config.current.pushFailure = function( message, source ) {
+			assert.strictEqual( message, "Error message", "Message is correct" );
+			assert.strictEqual(
+				source,
+				"DummyError\nfilePath.js:1 foo()\nfilePath.js:2 bar()",
+				"Source is correct"
+			);
+		};
+
+		var result = QUnit.onError( {
+			message: "Error message",
+			fileName: "filePath.js",
+			lineNumber: 1,
+			stacktrace: "DummyError\nfilePath.js:1 foo()\nfilePath.js:2 bar()"
+		} );
+
+		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
+	} );
+
+
 	QUnit.test( "Shouldn't push failure if ignoreGlobalErrors is enabled", function( assert ) {
 		assert.expect( 1 );
 
