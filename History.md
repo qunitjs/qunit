@@ -1,3 +1,25 @@
+2.7.1 / 2018-10-17
+==================
+
+  * Core: guards performance.measure to not throw and cause tests to fail
+  * Build: Avoid Chromium sandbox on Jenkins (as for Travis CI)
+
+2.7.0 / 2018-10-10
+==================
+
+  * HTML Reporter: remove test item when hidepassed is set to true (#1311)
+  * HTML Reporter: Add an XHTML output test
+  * HTML Reporter: Fix XHTML output (issue 1255).
+  * CLI: bump sane, this drops another native extension. (#1314)
+  * All: Add CODE_OF_CONDUCT pointing to the JS Foundation code of conduct
+  * reports/suite: Use performance API to add "User Timings"
+  * reports/test: Use performance API to add "User Timings"
+  * reports: Use `performance.now()` if available
+  * core/utilities: Add `performanceNow` export
+  * core/utilities: Add `hasPerformanceApi` constant
+  * Build: Upgrade grunt-contrib-qunit to 3.x (Headless Chrome)
+  * CLI: Sane Bump
+
 2.6.2 / 2018-08-19
 ==================
 

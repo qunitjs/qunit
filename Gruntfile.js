@@ -9,6 +9,9 @@ var reportDir = "build/report";
 
 var HAS_ASYNC_FUNCTIONS = semver.satisfies( process.version, ">= 7.10" );
 
+// Detect Travis CI or Jenkins.
+var isCI = process.env.CI || process.env.JENKINS_HOME;
+
 module.exports = function( grunt ) {
 	var livereloadPort = grunt.option( "livereload-port" ) || 35729;
 
@@ -123,7 +126,7 @@ module.exports = function( grunt ) {
 			all: {
 				options: {
 					timeout: 30000,
-					puppeteer: !process.env.CI ? {} : {
+					puppeteer: !isCI ? {} : {
 						args: [
 
 							// https://docs.travis-ci.com/user/chrome#sandboxing
@@ -153,6 +156,7 @@ module.exports = function( grunt ) {
 						"test/reporter-html/single-testid.html",
 						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/window-onerror-preexisting-handler.html",
+						"test/reporter-html/xhtml-single-testid.xhtml",
 						"test/reporter-urlparams.html",
 						"test/moduleId.html",
 						"test/onerror/inside-test.html",
