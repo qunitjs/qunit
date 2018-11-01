@@ -126,15 +126,21 @@ not ok 2 global failure
 # fail 2
 `,
 
+	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
 	"qunit no-tests":
 `TAP version 13
 not ok 1 global failure
   ---
   message: "No tests were run."
   severity: failed
-  actual: null
+  actual: {}
   expected: undefined
-  stack: undefined:undefined
+  stack: Error: No tests were run.
+    at done (.*)
+    at advanceTestQueue (.*)
+    at Object.advance (.*)
+    at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
+    at process._tickCallback (.*)
   ...
 1..1
 # pass 0
@@ -143,15 +149,21 @@ not ok 1 global failure
 # fail 1
 `,
 
+	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13
 not ok 1 global failure
   ---
   message: "No tests matched the filter "no matches"."
   severity: failed
-  actual: null
+  actual: {}
   expected: undefined
-  stack: undefined:undefined
+  stack: Error: No tests matched the filter "no matches".
+    at done (.*)
+    at advanceTestQueue (.*)
+    at Object.advance (.*)
+    at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
+    at process._tickCallback (.*)
   ...
 1..1
 # pass 0

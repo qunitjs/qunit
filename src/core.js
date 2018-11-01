@@ -143,6 +143,11 @@ function scheduleBegin() {
 	}
 }
 
+function unblockAndAdvanceQueue() {
+	config.blocking = false;
+	ProcessingQueue.advance();
+}
+
 export function begin() {
 	var i, l,
 		modulesLog = [];
@@ -171,11 +176,10 @@ export function begin() {
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
-		} );
+		} ).then( unblockAndAdvanceQueue );
+	} else {
+		unblockAndAdvanceQueue();
 	}
-
-	config.blocking = false;
-	ProcessingQueue.advance();
 }
 
 exportQUnit( QUnit );

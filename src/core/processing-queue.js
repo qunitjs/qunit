@@ -8,6 +8,7 @@ import {
 	runLoggingCallbacks
 } from "./logging";
 
+import Promise from "../promise";
 import {
 	globalSuite
 } from "../core";
@@ -33,31 +34,44 @@ const taskQueue = [];
 function advance() {
 	advanceTaskQueue();
 
-	if ( !taskQueue.length ) {
+	if ( !taskQueue.length && !config.blocking && !config.current ) {
 		advanceTestQueue();
 	}
 }
 
 /**
- * Advances the taskQueue to the next task if it is ready and not empty.
+ * Advances the taskQueue with an increased depth
  */
 function advanceTaskQueue() {
 	const start = now();
 	config.depth = ( config.depth || 0 ) + 1;
 
-	while ( taskQueue.length && !config.blocking ) {
+	processTaskQueue( start );
+
+	config.depth--;
+}
+
+/**
+ * Process the first task on the taskQueue as a promise.
+ * Each task is a function returned by https://github.com/qunitjs/qunit/blob/master/src/test.js#L381
+ */
+function processTaskQueue( start ) {
+	if ( taskQueue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
 			const task = taskQueue.shift();
-			task();
+			Promise.resolve( task() ).then( function() {
+				if ( !taskQueue.length ) {
+					advance();
+				} else {
+					processTaskQueue( start );
+				}
+			} );
 		} else {
 			setTimeout( advance );
-			break;
 		}
 	}
-
-	config.depth--;
 }
 
 /**
@@ -179,18 +193,19 @@ function done() {
 		failed: config.stats.bad,
 		total: config.stats.all,
 		runtime
-	} );
+	} ).then( () => {
 
-	// Clear own storage items if all tests passed
-	if ( storage && config.stats.bad === 0 ) {
-		for ( let i = storage.length - 1; i >= 0; i-- ) {
-			const key = storage.key( i );
+		// Clear own storage items if all tests passed
+		if ( storage && config.stats.bad === 0 ) {
+			for ( let i = storage.length - 1; i >= 0; i-- ) {
+				const key = storage.key( i );
 
-			if ( key.indexOf( "qunit-test-" ) === 0 ) {
-				storage.removeItem( key );
+				if ( key.indexOf( "qunit-test-" ) === 0 ) {
+					storage.removeItem( key );
+				}
 			}
 		}
-	}
+	} );
 }
 
 const ProcessingQueue = {

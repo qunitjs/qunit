@@ -8,7 +8,7 @@ categories:
 
 ## `QUnit.moduleDone( callback )`
 
-Register a callback to fire whenever a module ends.
+Register a callback to fire whenever a module ends. The callback can return a promise that will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
@@ -39,5 +39,16 @@ Using modern syntax:
 ```js
 QUnit.moduleDone( ( { name, failed, total } ) => {
   console.log( `Finished running: ${name} Failed/total: ${failed}, ${total}` );
+});
+```
+
+Returning a promise:
+
+```js
+QUnit.moduleDone( () => {
+  return new Promise(function(resolve, reject) {
+    // do some async work
+    resolve();
+  });
 });
 ```

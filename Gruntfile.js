@@ -146,6 +146,7 @@ module.exports = function( grunt ) {
 						"test/reorderError1.html",
 						"test/reorderError2.html",
 						"test/callbacks.html",
+						"test/callbacks-promises.html",
 						"test/events.html",
 						"test/events-in-test.html",
 						"test/logs.html",

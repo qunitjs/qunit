@@ -8,7 +8,7 @@ categories:
 
 ## `QUnit.testDone( callback )`
 
-Register a callback to fire whenever a test ends.
+Register a callback to fire whenever a test ends. The callback can return a promise that will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
@@ -69,4 +69,15 @@ QUnit.testDone( ( { module, name, total, passed, failed, skipped, todo, runtime 
 
   console.log( JSON.stringify( result, null, 2 ) );
 } );
+```
+
+Returning a promise:
+
+```js
+QUnit.testDone( () => {
+  return new Promise(function(resolve, reject) {
+    // do some async work
+    resolve();
+  });
+});
 ```
