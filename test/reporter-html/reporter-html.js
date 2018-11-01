@@ -31,6 +31,12 @@ QUnit.test( "<script id='qunit-unescaped-test'>'test';</script>", function( asse
 
 QUnit.module( "display test info" );
 
+QUnit.test( "Testing for running class", function( assert ) {
+	assert.expect( 1 );
+
+	assert.equal( document.querySelectorAll( ".running" ).length, 1 );
+} );
+
 QUnit.test( "running test name displayed", function( assert ) {
 	assert.expect( 2 );
 
