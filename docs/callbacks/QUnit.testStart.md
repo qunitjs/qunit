@@ -8,7 +8,7 @@ categories:
 
 ## `QUnit.testStart( callback )`
 
-Register a callback to fire whenever a test begins.
+Register a callback to fire whenever a test begins. The callback can return a promise that will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
@@ -38,5 +38,16 @@ Using modern syntax:
 ```js
 QUnit.testStart( ( { module, name } ) => {
   console.log( `Now running: ${module}: ${name}` );
+});
+```
+
+Returning a promise:
+
+```js
+QUnit.testStart( () => {
+  return new Promise(function(resolve, reject) {
+    // do some async work
+    resolve();
+  });
 });
 ```

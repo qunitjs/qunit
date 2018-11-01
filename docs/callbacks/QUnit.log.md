@@ -17,6 +17,8 @@ The properties of the details argument are listed below as options.
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback details object |
 
+**NOTE: Callback in QUnit.log() does not handle promises and must be synchronous.**
+
 #### Callback details: `callback( details: { result, actual, expected, message, source, module, name, runtime, todo } )`
 
 | parameter | description |

@@ -17,6 +17,8 @@ Register a callback to fire whenever the specified event is emitted. Conforms to
 | eventName (string) | The name of the event for which to execute the provided callback. |
 | callback (function) | Callback to execute. Receives a single argument representing the data for the event. |
 
+**NOTE: Callback in QUnit.on() does not handle promises and must be synchronous.**
+
 ### Example
 
 Printing results of a test suite.

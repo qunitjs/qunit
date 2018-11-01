@@ -8,7 +8,7 @@ categories:
 
 ## `QUnit.begin( callback )`
 
-Register a callback to fire whenever the test suite begins.
+Register a callback to fire whenever the test suite begins. The callback can return a promise that will be waited for before the next callback is handled.
 
 `QUnit.begin()` is called once before running any tests.
 
@@ -37,5 +37,16 @@ Using modern syntax:
 ```js
 QUnit.begin( ( { totalTests } ) => {
   console.log( `Test amount: ${totalTests}` );
+});
+```
+
+Returning a promise:
+
+```js
+QUnit.begin( () => {
+  return new Promise(function(resolve, reject) {
+    // do some async work
+    resolve();
+  });
 });
 ```
