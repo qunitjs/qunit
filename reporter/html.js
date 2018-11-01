@@ -724,7 +724,10 @@ export function escapeText( s ) {
 		appendTest( details.name, details.testId, details.module );
 
 		running = id( "qunit-testresult-display" );
+
 		if ( running ) {
+			addClass( running, "running" );
+
 			bad = QUnit.config.reorder && details.previousFailure;
 
 			running.innerHTML = [
@@ -847,6 +850,8 @@ export function escapeText( s ) {
 		}
 
 		testItem = id( "qunit-test-output-" + details.testId );
+
+		removeClass( testItem, "running" );
 
 		if ( details.failed > 0 ) {
 			status = "failed";
