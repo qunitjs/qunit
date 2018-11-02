@@ -1,3 +1,10 @@
+2.8.0 / 2018-11-02
+==================
+
+  * Core: adds back running class to items and adds tests
+  * Core: Adding promise handling on qunit callbacks: begin, moduleStart, testStart, testDone, moduleDone, and done (#1307)
+  * Core: Report full stack trace for uncaught errors if possible (#1324)
+
 2.7.1 / 2018-10-17
 ==================
 
