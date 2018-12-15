@@ -79,9 +79,21 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "report assert.throws() failures properly", co.wrap( function* ( assert ) {
+		const command = "qunit fail/throws-match.js";
+		try {
+			yield execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.equal( re.test( e.stdout ), true );
+		}
+	} ) );
+
 	QUnit.test( "exit code is 1 when failing tests are present", co.wrap( function* ( assert ) {
 		try {
-			yield execute( "qunit fail/*.js" );
+			yield execute( "qunit fail/failure.js" );
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 		}

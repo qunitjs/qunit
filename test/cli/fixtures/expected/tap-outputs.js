@@ -52,6 +52,23 @@ ok 2 Second > 1
 # todo 0
 # fail 0`,
 
+	"qunit 'fail/throws-match.js'":
+`TAP version 13
+not ok 1 global failure
+  ---
+  message: "match error"
+  severity: failed
+  actual: {}
+  expected: {}
+  stack: .*
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+`,
+
 	"qunit test single.js 'glob/**/*-test.js'":
 `TAP version 13
 ok 1 A-Test > derp
