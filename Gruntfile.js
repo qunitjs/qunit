@@ -14,6 +14,7 @@ var isCI = process.env.CI || process.env.JENKINS_HOME;
 
 module.exports = function( grunt ) {
 	var livereloadPort = grunt.option( "livereload-port" ) || 35729;
+	var connectPort = Number( grunt.option( "connect-port" ) ) || 8000;
 
 	// Load grunt tasks from NPM packages
 	require( "load-grunt-tasks" )( grunt );
@@ -33,13 +34,17 @@ module.exports = function( grunt ) {
 		connect: {
 			nolivereload: {
 				options: {
-					port: 8000,
+
+					// grunt-contrib-connect supports 'useAvailablePort' which
+					// automatically finds a suitable port, but we need to know
+					// it ahead of time to feed grunt-controb-qunit options.
+					port: connectPort,
 					base: "."
 				}
 			},
 			livereload: {
 				options: {
-					port: 8000,
+					port: connectPort,
 					base: ".",
 					livereload: livereloadPort
 				}
@@ -172,7 +177,7 @@ module.exports = function( grunt ) {
 						"test/module-only.html",
 						"test/module-skip.html",
 						"test/module-todo.html"
-					].map( file => `http://localhost:8000/${file}` )
+					].map( file => `http://localhost:${connectPort}/${file}` )
 				}
 			}
 		},
