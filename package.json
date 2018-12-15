@@ -79,7 +79,7 @@
     "dev": "grunt watch",
     "test": "grunt",
     "coverage": "grunt coverage",
-    "test:cli": "grunt build && npm link && qunit test/cli/*.js"
+    "test:cli": "grunt build && bin/qunit test/cli/*.js"
   },
   "commitplease": {
     "components": [
