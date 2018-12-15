@@ -12,6 +12,12 @@ plugins:
   # https://help.github.com/articles/redirects-on-github-pages/
   - jekyll-redirect-from
 
+# Theme
+# Not currently used, but not specifying results in github-pages
+# defaulting to compile Primer SASS, which causes problems.
+# https://github.com/jekyll/jekyll/issues/7426
+theme: minima
+
 # Conversion
 highlighter: rouge
 markdown: kramdown
