@@ -6,16 +6,22 @@ We're using GitHub pages. Anything going to the gh-pages branch will be immediat
 
 ### Requirements
 
-This is currenly tested using Jekyll and bundler gems from Ruby 2.4.1.1.
+* Ruby (tested with Ruby 2.4.1 and Ruby 2.5.3)
+* Bundler (if missing, install with `gem install bundler`)
 
-To setup for the first time:
+To install Jekyll and plugins the first time:
 
 ```shell
-gem install jekyll bundler
 bundle install
 ```
 
-To run it locally:
+To update Jekyll and any plugins (e.g. after changes to `Gemfile`):
+
+```shell
+bundle update
+```
+
+To regenerate the site and serve locally at <http://127.0.0.1:4000/>:
 
 ```shell
 bundle exec jekyll serve
