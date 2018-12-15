@@ -13,13 +13,10 @@ plugins:
   - jekyll-redirect-from
 
 # Conversion
-highlighter: rouge
-markdown: kramdown
 kramdown:
   input: GFM
-
-# Serving
-baseurl: ""
+sass:
+  style: compressed
 
 # Input files
 exclude:
