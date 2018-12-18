@@ -2,22 +2,15 @@
 
 const fs = require( "fs-extra" );
 const path = require( "path" );
-const exec = require( "execa" ).shell;
 const co = require( "co" );
 const fixturify = require( "fixturify" );
 
 const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
+const executeHelper = require( "./helpers/execute" );
 
 // Executes the provided command from within the fixtures directory
 function execute( command ) {
-	const cwd = process.cwd();
-	process.chdir( path.join( __dirname, "fixtures" ) );
-
-	const execution = exec( command, { stdio: [ null, null, null, "ipc" ] } );
-
-	process.chdir( cwd );
-
-	return execution;
+	return executeHelper( command, { stdio: [ null, null, null, "ipc" ] } );
 }
 
 const fixturePath = path.join( __dirname, "fixtures", "watching" );
