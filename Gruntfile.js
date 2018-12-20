@@ -162,6 +162,7 @@ module.exports = function( grunt ) {
 						"test/reporter-html/single-testid.html",
 						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/window-onerror-preexisting-handler.html",
+						"test/reporter-html/xhtml-escape-details-source.xhtml",
 						"test/reporter-html/xhtml-single-testid.xhtml",
 						"test/reporter-urlparams.html",
 						"test/moduleId.html",
