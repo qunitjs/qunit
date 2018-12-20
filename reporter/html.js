@@ -936,7 +936,7 @@ export function escapeText( s ) {
 		// Show the source of the test when showing assertions
 		if ( details.source ) {
 			sourceName = document.createElement( "p" );
-			sourceName.innerHTML = "<strong>Source: </strong>" + details.source;
+			sourceName.innerHTML = "<strong>Source: </strong>" + escapeText( details.source );
 			addClass( sourceName, "qunit-source" );
 			if ( testPassed ) {
 				addClass( sourceName, "qunit-collapsed" );
