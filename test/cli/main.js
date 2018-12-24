@@ -79,8 +79,22 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	// Test case for https://github.com/qunitjs/qunit/issues/1333
 	QUnit.test( "report assert.throws() failures properly", co.wrap( function* ( assert ) {
 		const command = "qunit fail/throws-match.js";
+		try {
+			yield execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.equal( re.test( e.stdout ), true );
+		}
+	} ) );
+
+	// Test case for https://github.com/qunitjs/qunit/issues/1340
+	QUnit.test( "report errors with mocked console", co.wrap( function* ( assert ) {
+		const command = "qunit fail/mocked-console.js";
 		try {
 			yield execute( command );
 		} catch ( e ) {

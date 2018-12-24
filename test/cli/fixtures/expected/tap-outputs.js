@@ -69,6 +69,16 @@ not ok 1 global failure
 # fail 1
 `,
 
+	"qunit 'fail/mocked-console.js'":
+`TAP version 13
+ok 2 Uncaught error > good
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+`,
+
 	"qunit test single.js 'glob/**/*-test.js'":
 `TAP version 13
 ok 1 A-Test > derp
