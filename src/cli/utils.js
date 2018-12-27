@@ -1,7 +1,47 @@
 "use strict";
 
-const walkSync = require( "walk-sync" );
-const existsStat = require( "exists-stat" );
+const fs = require( "fs" );
+const path = require( "path" );
+const { Minimatch } = require( "minimatch" );
+
+function existsStat() {
+	try {
+		return fs.statSync.apply( fs, arguments );
+	} catch ( e ) {
+		return null;
+	}
+}
+
+function findFilesInternal( dir, options, result = [], prefix = "" ) {
+	fs.readdirSync( dir ).forEach( ( name ) => {
+		const fullName = path.join( dir, name );
+		const stat = existsStat( fullName );
+		if ( !stat ) {
+			return;
+		}
+		const prefixedName = prefix + name;
+		const isIgnore = options.ignores.some( ( mm ) => mm.match( prefixedName ) );
+		if ( isIgnore ) {
+			return;
+		}
+		if ( stat.isDirectory() ) {
+			findFilesInternal( fullName, options, result, prefixedName + "/" );
+		} else {
+			const isMatch = options.matchers.some( ( mm ) => mm.match( prefixedName ) );
+			if ( isMatch ) {
+				result.push( prefixedName );
+			}
+		}
+	} );
+	return result;
+}
+
+function findFiles( baseDir, options ) {
+	return findFilesInternal( baseDir, {
+		matchers: ( options.match || [] ).map( ( pattern ) => new Minimatch( pattern ) ),
+		ignores: ( options.ignore || [] ).map( ( pattern ) => new Minimatch( pattern ) )
+	} );
+}
 
 function getFilesFromArgs( args ) {
 	let globs = args.slice();
@@ -23,7 +63,7 @@ function getFilesFromArgs( args ) {
 		}
 	} );
 
-	const files = walkSync( process.cwd(), { globs } );
+	const files = findFiles( process.cwd(), { match: globs } );
 
 	if ( !files.length ) {
 		error( "No files were found matching: " + args.join( ", " ) );
@@ -42,6 +82,7 @@ function capitalize( string ) {
 }
 
 module.exports = {
+	findFiles,
 	capitalize,
 	error,
 	getFilesFromArgs

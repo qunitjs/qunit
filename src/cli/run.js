@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require( "path" );
-const walkSync = require( "walk-sync" );
 
 const requireFromCWD = require( "./require-from-cwd" );
 const requireQUnit = require( "./require-qunit" );
@@ -107,9 +106,8 @@ run.restart = function( args ) {
 
 	this._restartDebounceTimer = setTimeout( () => {
 
-		const watchedFiles = walkSync( process.cwd(), {
-			globs: [ "**/*.js" ],
-			directories: false,
+		const watchedFiles = utils.findFiles( process.cwd(), {
+			match: [ "**/*.js" ],
 			ignore: IGNORED_GLOBS
 		} );
 
