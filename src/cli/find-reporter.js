@@ -1,8 +1,6 @@
 "use strict";
 
 const JSReporters = require( "js-reporters" );
-const path = require( "path" );
-const findup = require( "findup-sync" );
 const utils = require( "./utils" );
 const pkg = require( "../../package.json" );
 
@@ -69,9 +67,7 @@ function getReportersFromDependencies() {
 	);
 	return dependencies.filter( dep => {
 		try {
-			const depPath = path.dirname( require.resolve( dep ) );
-			const pkgPath = findup( "package.json", { cwd: depPath } );
-			const pkg = require( pkgPath );
+			const pkg = require( dep + "/package.json" );
 
 			return !!pkg.keywords && pkg.keywords.indexOf( "js-reporter" ) !== -1;
 		} catch ( e ) {
