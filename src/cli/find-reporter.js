@@ -4,7 +4,7 @@ const JSReporters = require( "js-reporters" );
 const path = require( "path" );
 const findup = require( "findup-sync" );
 const utils = require( "./utils" );
-const pkg = require( "../package.json" );
+const pkg = require( "../../package.json" );
 
 function findReporter( reporterName ) {
 	if ( !reporterName ) {

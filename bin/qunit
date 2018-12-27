@@ -3,8 +3,8 @@
 "use strict";
 
 const program = require( "commander" );
-const run = require( "./run" );
-const FindReporter = require( "./find-reporter" );
+const run = require( "../src/cli/run" );
+const FindReporter = require( "../src/cli/find-reporter" );
 const pkg = require( "../package.json" );
 
 const findReporter = FindReporter.findReporter;

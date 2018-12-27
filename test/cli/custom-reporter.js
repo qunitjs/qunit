@@ -2,7 +2,7 @@ const co = require( "co" );
 const JSReporters = require( "js-reporters" );
 const NPMReporter = require( "npm-reporter" );
 
-const findReporter = require( "../../bin/find-reporter" ).findReporter;
+const findReporter = require( "../../src/cli/find-reporter" ).findReporter;
 
 const expectedOutput = require( "./fixtures/expected/tap-outputs" );
 const execute = require( "./helpers/execute" );
