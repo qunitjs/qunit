@@ -13,14 +13,14 @@ module.exports = function requireQUnit() {
 		try {
 
 			// Second, we use the globally installed QUnit
-			delete require.cache[ resolve.sync( "../qunit/qunit" ) ];
-			return require( "../qunit/qunit" );
+			delete require.cache[ resolve.sync( "../../qunit/qunit" ) ];
+			return require( "../../qunit/qunit" );
 		} catch ( e ) {
 			if ( e.code === "MODULE_NOT_FOUND" ) {
 
 				// Finally, we use the local development version of QUnit
-				delete require.cache[ resolve.sync( "../dist/qunit" ) ];
-				return require( "../dist/qunit" );
+				delete require.cache[ resolve.sync( "../../dist/qunit" ) ];
+				return require( "../../dist/qunit" );
 			}
 
 			throw e;

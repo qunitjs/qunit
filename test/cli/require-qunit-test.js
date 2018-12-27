@@ -10,7 +10,7 @@ QUnit.module( "requireQUnit", function() {
 		const localQUnit = {
 			"@noCallThru": true
 		};
-		const requireQUnit = proxyquire( "../../bin/require-qunit", {
+		const requireQUnit = proxyquire( "../../src/cli/require-qunit", {
 			"resolve": resolveStub,
 			"qunit": localQUnit
 		} );
@@ -22,10 +22,10 @@ QUnit.module( "requireQUnit", function() {
 		const globalQUnit = {
 			"@noCallThru": true
 		};
-		const requireQUnit = proxyquire( "../../bin/require-qunit", {
+		const requireQUnit = proxyquire( "../../src/cli/require-qunit", {
 			"resolve": resolveStub,
 			"qunit": null,
-			"../qunit/qunit": globalQUnit
+			"../../qunit/qunit": globalQUnit
 		} );
 
 		assert.strictEqual( requireQUnit(), globalQUnit );
@@ -35,22 +35,22 @@ QUnit.module( "requireQUnit", function() {
 		const devQUnit = {
 			"@noCallThru": true
 		};
-		const requireQUnit = proxyquire( "../../bin/require-qunit", {
+		const requireQUnit = proxyquire( "../../src/cli/require-qunit", {
 			"resolve": resolveStub,
 			"qunit": null,
-			"../qunit/qunit": null,
-			"../dist/qunit": devQUnit
+			"../../qunit/qunit": null,
+			"../../dist/qunit": devQUnit
 		} );
 
 		assert.strictEqual( requireQUnit(), devQUnit );
 	} );
 
 	QUnit.test( "throws error if none of the modules are found", function( assert ) {
-		const requireQUnit = proxyquire( "../../bin/require-qunit", {
+		const requireQUnit = proxyquire( "../../src/cli/require-qunit", {
 			"resolve": resolveStub,
 			"qunit": null,
-			"../qunit/qunit": null,
-			"../dist/qunit": null
+			"../../qunit/qunit": null,
+			"../../dist/qunit": null
 		} );
 
 		assert.throws( requireQUnit, /Cannot find module/ );
