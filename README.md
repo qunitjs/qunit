@@ -1,5 +1,4 @@
-[![Travis Build Status](https://travis-ci.org/qunitjs/qunit.svg?branch=master)](https://travis-ci.org/qunitjs/qunit)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/qunitjs/qunit?svg=true&branch=master)](https://ci.appveyor.com/project/leobalter/qunit)
+[![Build Status](https://travis-ci.org/qunitjs/qunit.svg?branch=master)](https://travis-ci.org/qunitjs/qunit)
 [![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fqunitjs%2Fqunit.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fqunitjs%2Fqunit?ref=badge_shield)
