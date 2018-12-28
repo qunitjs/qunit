@@ -141,26 +141,23 @@ run.abort = function( callback ) {
 	}
 };
 
-function watcherEvent( event, args ) {
-	return ( file ) => {
-		console.log( `File ${event}: ${file}` );
-		run.restart( args );
-	};
-}
-
 run.watch = function watch() {
-	const sane = require( "sane" );
+	const watch = require( "node-watch" );
 	const args = Array.prototype.slice.call( arguments );
+	const baseDir = process.cwd();
 
-	const watcher = sane( process.cwd(), {
-		globs: [ "**/*.js" ],
-		ignored: IGNORED_GLOBS
+	const watcher = watch( baseDir, {
+		persistent: true,
+		recursive: true,
+		delay: 0,
+		filter: ( fullpath ) => {
+			return !/\/node_modules\//.test( fullpath ) &&
+				/\.js$/.test( fullpath );
+		}
+	}, ( event, fullpath ) => {
+		console.log( `File ${event}: ${path.relative( baseDir, fullpath )}` );
+		run.restart( args );
 	} );
-
-	watcher.on( "ready", () => run.apply( null, args ) );
-	watcher.on( "change", watcherEvent( "changed", args ) );
-	watcher.on( "add", watcherEvent( "added", args ) );
-	watcher.on( "delete", watcherEvent( "removed", args ) );
 
 	function stop() {
 		console.log( "Stopping QUnit..." );
@@ -173,6 +170,12 @@ run.watch = function watch() {
 
 	process.on( "SIGTERM", stop );
 	process.on( "SIGINT", stop );
+
+	// initial run must be delayed by at least 200ms
+	// https://github.com/yuanchuan/node-watch/issues/71
+	setTimeout( () => {
+		run.apply( null, args );
+	}, 210 );
 };
 
 module.exports = run;
