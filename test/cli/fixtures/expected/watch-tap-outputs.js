@@ -15,7 +15,7 @@ ok 1 foo
 # skip 0
 # todo 0
 # fail 0
-File changed: watching/foo.js
+File update: watching/foo.js
 Restarting...
 TAP version 13
 ok 1 bar
@@ -33,7 +33,7 @@ ok 1 foo
 # skip 0
 # todo 0
 # fail 0
-File added: watching/bar.js
+File update: watching/bar.js
 Restarting...
 TAP version 13
 ok 1 bar
@@ -53,7 +53,7 @@ ok 2 foo
 # skip 0
 # todo 0
 # fail 0
-File removed: watching/bar.js
+File remove: watching/bar.js
 Restarting...
 TAP version 13
 ok 1 foo
@@ -65,7 +65,7 @@ ok 1 foo
 Stopping QUnit...`,
 
 	"change-file-mid-run": `TAP version 13
-File changed: watching/bar.js
+File update: watching/bar.js
 Finishing current test and restarting...
 ok 1 Foo > one
 1..2
@@ -90,8 +90,8 @@ ok 1 Module > Test
 # skip 0
 # todo 0
 # fail 0
-File changed: watching/tests/foo.js
-File added: watching/bar.js
+File update: watching/tests/foo.js
+File update: watching/bar.js
 Restarting...
 TAP version 13
 ok 1 Module > Test
@@ -100,7 +100,7 @@ ok 1 Module > Test
 # skip 0
 # todo 0
 # fail 0
-File changed: watching/bar.js
+File update: watching/bar.js
 Restarting...
 TAP version 13
 ok 1 Module > Test

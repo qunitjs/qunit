@@ -34,7 +34,7 @@
     "commander": "2.12.2",
     "js-reporters": "1.2.1",
     "resolve": "1.5.0",
-    "sane": "^4.0.0",
+    "node-watch": "0.5.9",
     "minimatch": "3.0.4"
   },
   "devDependencies": {
