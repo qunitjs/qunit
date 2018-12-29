@@ -30,6 +30,10 @@
     "qunit/qunit.css",
     "LICENSE.txt"
   ],
+  "main": "qunit/qunit.js",
+  "engines": {
+    "node": ">=6"
+  },
   "dependencies": {
     "commander": "2.12.2",
     "js-reporters": "1.2.1",
@@ -94,9 +98,5 @@
       "Test",
       "Tests"
     ]
-  },
-  "main": "qunit/qunit.js",
-  "engines": {
-    "node": ">=4"
   }
 }
