@@ -89,7 +89,6 @@ module.exports = function( grunt ) {
 			},
 			js: [
 				"*.js",
-				"bin/qunit",
 				"bin/**/*.js",
 				"reporter/**/*.js",
 				"runner/**/*.js",

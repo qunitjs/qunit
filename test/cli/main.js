@@ -139,7 +139,7 @@ QUnit.module( "CLI Main", function() {
 
 	if ( semver.gte( process.versions.node, "9.0.0" ) ) {
 		QUnit.test( "callbacks and hooks from modules are properly released for garbage collection", co.wrap( function* ( assert ) {
-			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit memory-leak/*.js";
+			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit.js memory-leak/*.js";
 			const execution = yield execute( command );
 
 			assert.equal( execution.code, 0 );
