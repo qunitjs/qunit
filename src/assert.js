@@ -286,11 +286,13 @@ class Assert {
 			// We don't want to validate thrown error
 			if ( !expected ) {
 				result = true;
-				expected = null;
 
 			// Expected is a regexp
 			} else if ( expectedType === "regexp" ) {
 				result = expected.test( errorString( actual ) );
+
+				// Log the string form of the regexp
+				expected = String( expected );
 
 			// Expected is a constructor, maybe an Error constructor
 			} else if ( expectedType === "function" && actual instanceof expected ) {
@@ -302,6 +304,9 @@ class Assert {
 					actual.name === expected.name &&
 					actual.message === expected.message;
 
+				// Log the string form of the Error object
+				expected = errorString( expected );
+
 			// Expected is a validation function which returns true if validation passed
 			} else if ( expectedType === "function" && expected.call( {}, actual ) === true ) {
 				expected = null;
@@ -311,7 +316,9 @@ class Assert {
 
 		currentTest.assert.pushResult( {
 			result,
-			actual,
+
+			// undefined if it didn't throw
+			actual: actual && errorString( actual ),
 			expected,
 			message
 		} );
@@ -378,11 +385,13 @@ class Assert {
 				// We don't want to validate
 				if ( expected === undefined ) {
 					result = true;
-					expected = actual;
 
 					// Expected is a regexp
 				} else if ( expectedType === "regexp" ) {
 					result = expected.test( errorString( actual ) );
+
+					// Log the string form of the regexp
+					expected = String( expected );
 
 					// Expected is a constructor, maybe an Error constructor
 				} else if ( expectedType === "function" && actual instanceof expected ) {
@@ -393,6 +402,9 @@ class Assert {
 					result = actual instanceof expected.constructor &&
 						actual.name === expected.name &&
 						actual.message === expected.message;
+
+					// Log the string form of the Error object
+					expected = errorString( expected );
 
 					// Expected is a validation function which returns true if validation passed
 				} else {
@@ -412,7 +424,9 @@ class Assert {
 
 				currentTest.assert.pushResult( {
 					result,
-					actual,
+
+					// leave rejection value of undefined as-is
+					actual: actual && errorString( actual ),
 					expected,
 					message
 				} );
@@ -431,12 +445,14 @@ Assert.prototype.raises = Assert.prototype[ "throws" ];
 /**
  * Converts an error into a simple string for comparisons.
  *
- * @param {Error} error
+ * @param {Error|Object} error
  * @return {String}
  */
 function errorString( error ) {
 	const resultErrorString = error.toString();
 
+	// If the error wasn't a subclass of Error but something like
+	// an object literal with name and message properties...
 	if ( resultErrorString.substring( 0, 7 ) === "[object" ) {
 		const name = error.name ? error.name.toString() : "Error";
 		const message = error.message ? error.message.toString() : "";

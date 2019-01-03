@@ -54,12 +54,12 @@ ok 2 Second > 1
 
 	"qunit fail/throws-match.js":
 `TAP version 13
-not ok 1 global failure
+not ok 1 Throws match > bad
   ---
   message: "match error"
   severity: failed
-  actual: {}
-  expected: {}
+  actual: "Error: Match me with a pattern"
+  expected: "/incorrect pattern/"
   stack: .*
   ...
 1..1
