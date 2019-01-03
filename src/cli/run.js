@@ -159,6 +159,10 @@ run.watch = function watch() {
 		run.restart( args );
 	} );
 
+	watcher.on( "ready", () => {
+		run.apply( null, args );
+	} );
+
 	function stop() {
 		console.log( "Stopping QUnit..." );
 
@@ -170,12 +174,6 @@ run.watch = function watch() {
 
 	process.on( "SIGTERM", stop );
 	process.on( "SIGINT", stop );
-
-	// initial run must be delayed by at least 200ms
-	// https://github.com/yuanchuan/node-watch/issues/71
-	setTimeout( () => {
-		run.apply( null, args );
-	}, 210 );
 };
 
 module.exports = run;
