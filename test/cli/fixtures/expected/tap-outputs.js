@@ -52,7 +52,7 @@ ok 2 Second > 1
 # todo 0
 # fail 0`,
 
-	"qunit 'fail/throws-match.js'":
+	"qunit fail/throws-match.js":
 `TAP version 13
 not ok 1 global failure
   ---
