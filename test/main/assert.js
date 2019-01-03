@@ -252,7 +252,7 @@ QUnit.test( "throws", function( assert ) {
 			};
 		},
 		{ name: "SomeName", message: "some message" },
-		"thrown error object is similar to the expected plain object"
+		"thrown object is similar to the expected plain object"
 	);
 
 	assert.throws(
@@ -378,7 +378,7 @@ QUnit.test( "rejects", function( assert ) {
 			message: "some message"
 		} ),
 		{ name: "SomeName", message: "some message" },
-		"thrown error object is similar to the expected plain object"
+		"thrown object is similar to the expected plain object"
 	);
 
 	assert.rejects(
