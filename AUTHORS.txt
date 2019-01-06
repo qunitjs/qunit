@@ -128,8 +128,8 @@ Daniel De Jager <danielmiester@gmail.com>
 Brahim Arkni <brahim.arkni@gmail.com>
 Cory Forsyth <cory.forsyth@gmail.com>
 Ed <proteenx11@gmail.com>
-yagni <yagni@users.noreply.github.com>
 Manoj Kumar <manoj@kumarmj.me>
+yagni <yagni@users.noreply.github.com>
 Tobias Oetzel <tobias.oetzel@sap.com>
 Ray Tiley <raytiley@gmail.com>
 Dustin Specker <dustinspecker@dustinspecker.com>
