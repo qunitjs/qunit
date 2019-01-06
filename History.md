@@ -1,3 +1,13 @@
+2.9.0 / 2019-01-06
+==================
+
+  * Assert: Report RegExp/Error as strings from `rejects()`/`throws()` (#1333)
+  * Build: Add macOS and Windows to the Travis CI test matrix
+  * Build: Update engine requirement package.json to Node 6
+  * CLI: Reduce size of the dependencies tree (#1342)
+  * CLI: Re-implement run.watch() with 'node-watch' instead of 'sane' (#1342)
+  * HTML Reporter: Fix an unescaped details.source (#1341)
+
 2.8.0 / 2018-11-02
 ==================
 
