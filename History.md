@@ -1,3 +1,9 @@
+2.9.1 / 2019-01-07
+==================
+
+  * Build: Fix (and add tests) missing required files in 2.9.0. (#1368)
+  * Build: Set "root: true" in eslintrc
+
 2.9.0 / 2019-01-06
 ==================
 
