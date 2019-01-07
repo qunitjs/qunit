@@ -1,5 +1,12 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
   "env": {
     "node": true
+  },
+  "extends": ["plugin:node/recommended"],
+  "rules": {
+    "no-process-exit": "off"
   }
 }
