@@ -14,12 +14,14 @@ module.exports = function requireQUnit() {
 
 			// Second, we use the globally installed QUnit
 			delete require.cache[ resolve.sync( "../../qunit/qunit" ) ];
+			// eslint-disable-next-line node/no-missing-require
 			return require( "../../qunit/qunit" );
 		} catch ( e ) {
 			if ( e.code === "MODULE_NOT_FOUND" ) {
 
 				// Finally, we use the local development version of QUnit
 				delete require.cache[ resolve.sync( "../../dist/qunit" ) ];
+				// eslint-disable-next-line node/no-missing-require
 				return require( "../../dist/qunit" );
 			}
 
