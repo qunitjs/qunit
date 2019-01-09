@@ -350,12 +350,16 @@ export function escapeText( s ) {
 	}
 
 	function toolbarModuleFilter() {
-		var allCheckbox, commit, reset,
+		var commit, reset,
 			moduleFilter = document.createElement( "form" ),
 			label = document.createElement( "label" ),
 			moduleSearch = document.createElement( "input" ),
 			dropDown = document.createElement( "div" ),
 			actions = document.createElement( "span" ),
+			applyButton = document.createElement( "button" ),
+			resetButton = document.createElement( "button" ),
+			allModulesLabel = document.createElement( "label" ),
+			allCheckbox = document.createElement( "input" ),
 			dropDownList = document.createElement( "ul" ),
 			dirty = false;
 
@@ -370,15 +374,27 @@ export function escapeText( s ) {
 		label.innerHTML = "Module: ";
 		label.appendChild( moduleSearch );
 
+		applyButton.textContent = "Apply";
+		applyButton.style.display = "none";
+
+		resetButton.textContent = "Reset";
+		resetButton.type = "reset";
+		resetButton.style.display = "none";
+
+		allCheckbox.type = "checkbox";
+		allCheckbox.checked = config.moduleId.length === 0;
+
+		allModulesLabel.classList.add( "clickable" );
+		if ( config.moduleId.length ) {
+			allModulesLabel.classList.add( "checked" );
+		}
+		allModulesLabel.appendChild( allCheckbox );
+		allModulesLabel.appendChild( document.createTextNode( "All modules" ) );
+
 		actions.id = "qunit-modulefilter-actions";
-		actions.innerHTML =
-		"<button style='display:none'>Apply</button>" +
-		"<button type='reset' style='display:none'>Reset</button>" +
-		"<label class='clickable" +
-		( config.moduleId.length ? "" : " checked" ) +
-		"'><input type='checkbox'" + ( config.moduleId.length ? "" : " checked='checked'" ) +
-		" />All modules</label>";
-		allCheckbox = actions.lastChild.firstChild;
+		actions.appendChild( applyButton );
+		actions.appendChild( resetButton );
+		actions.appendChild( allModulesLabel );
 		commit = actions.firstChild;
 		reset = commit.nextSibling;
 		addEvent( commit, "click", applyUrlParams );
