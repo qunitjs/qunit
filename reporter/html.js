@@ -384,9 +384,9 @@ export function escapeText( s ) {
 		allCheckbox.type = "checkbox";
 		allCheckbox.checked = config.moduleId.length === 0;
 
-		allModulesLabel.classList.add( "clickable" );
+		allModulesLabel.className = "clickable";
 		if ( config.moduleId.length ) {
-			allModulesLabel.classList.add( "checked" );
+			allModulesLabel.className = "checked";
 		}
 		allModulesLabel.appendChild( allCheckbox );
 		allModulesLabel.appendChild( document.createTextNode( "All modules" ) );
