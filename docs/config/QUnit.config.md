@@ -184,8 +184,8 @@ If you want to configure QUnit before it is loaded, you can introduce the global
 // QUnit is not yet loaded here
 window.QUnit = {
   config: {
-    autoStart: false,
-    noGlobals: true,
+    autostart: false,
+    noglobals: true,
   }
 };
 ```
