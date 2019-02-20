@@ -137,6 +137,18 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "timeouts correctly recover", co.wrap( function* ( assert ) {
+		const command = "qunit timeout";
+		try {
+			yield execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.equal( re.test( e.stdout ), true );
+		}
+	} ) );
+
 	if ( semver.gte( process.versions.node, "9.0.0" ) ) {
 		QUnit.test( "callbacks and hooks from modules are properly released for garbage collection", co.wrap( function* ( assert ) {
 			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit.js memory-leak/*.js";

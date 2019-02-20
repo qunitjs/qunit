@@ -166,6 +166,26 @@ not ok 1 global failure
 # fail 1
 `,
 
+	"qunit timeout":
+`TAP version 13
+not ok 1 timeout > first
+  ---
+  message: "Test took longer than 10ms; test timed out."
+  severity: failed
+  actual: null
+  expected: undefined
+  stack:     at ontimeout (.*)
+    at tryOnTimeout (.*)
+    at Timer.listOnTimeout (.*)
+  ...
+ok 2 timeout > second
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+`,
+
 	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13
