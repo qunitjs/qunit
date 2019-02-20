@@ -242,9 +242,11 @@ Test.prototype = {
 				processHooks( test, module.parentModule );
 			}
 
-			if ( module.hooks[ handler ].length ) {
-				for ( let i = 0; i < module.hooks[ handler ].length; i++ ) {
-					hooks.push( test.queueHook( module.hooks[ handler ][ i ], handler, module ) );
+			const hooksForHandler = module.hooks[ handler ];
+
+			if ( hooksForHandler && hooksForHandler.length ) {
+				for ( let i = 0; i < hooksForHandler.length; i++ ) {
+					hooks.push( test.queueHook( hooksForHandler[ i ], handler, module ) );
 				}
 			}
 		}

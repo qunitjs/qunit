@@ -186,6 +186,36 @@ ok 2 timeout > second
 # fail 1
 `,
 
+	"qunit undefined-hooks":
+`TAP version 13
+not ok 1 undefined hooks
+  ---
+  message: "Promise rejected during "undefined hooks": undefined"
+  severity: failed
+  actual: null
+  expected: undefined
+  stack:     at process._tickCallback (.*)
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+not ok 2 global failure
+  ---
+  message: "assert.async callback called after test finished."
+  severity: failed
+  actual: null
+  expected: undefined
+  stack: undefined:undefined
+  ...
+1..2
+# pass 0
+# skip 0
+# todo 0
+# fail 2
+`,
+
 	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13
