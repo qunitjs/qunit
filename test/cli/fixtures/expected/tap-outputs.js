@@ -176,7 +176,7 @@ not ok 1 timeout > first
   expected: undefined
   stack:     at ontimeout (.*)
     at tryOnTimeout (.*)
-    at Timer.listOnTimeout (.*)
+    (.*)\\s*(.*)?
   ...
 ok 2 timeout > second
 1..2
