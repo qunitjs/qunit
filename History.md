@@ -1,3 +1,11 @@
+2.9.2 / 2019-02-21
+==================
+
+  * Core: Ensuring semaphores are balanced when timeout occurs (#1376)
+  * Docs: Fix the casing for autostart and noglobals (#1373)
+  * HTML Reporter: Avoid inline styles to support CSP without 'unsafe-inline'
+  * Buid: Update 'resolve' to v1.9.0
+
 2.9.1 / 2019-01-07
 ==================
 
