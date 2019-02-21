@@ -728,6 +728,7 @@ export function only( testName, callback ) {
 
 // Put a hold on processing and return a function that will release it.
 export function internalStop( test ) {
+	let released = false;
 	test.semaphore += 1;
 	config.blocking = true;
 
@@ -748,13 +749,13 @@ export function internalStop( test ) {
 					`Test took longer than ${timeoutDuration}ms; test timed out.`,
 					sourceFromStacktrace( 2 )
 				);
+				released = true;
 				internalRecover( test );
 			}, timeoutDuration );
 		}
 
 	}
 
-	let released = false;
 	return function resume() {
 		if ( released ) {
 			return;
