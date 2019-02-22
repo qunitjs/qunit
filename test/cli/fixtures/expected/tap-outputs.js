@@ -188,9 +188,9 @@ ok 2 timeout > second
 
 	"qunit undefined-hooks":
 `TAP version 13
-not ok 1 undefined hooks
+not ok 1 assertion after errored/rejected tests does not cause further errors
   ---
-  message: "Promise rejected during "undefined hooks": undefined"
+  message: "Promise rejected during "assertion after errored/rejected tests does not cause further errors": undefined"
   severity: failed
   actual: null
   expected: undefined
@@ -203,7 +203,7 @@ not ok 1 undefined hooks
 # fail 1
 not ok 2 global failure
   ---
-  message: "assert.async callback called after test finished."
+  message: "Assertion occurred after test had finished."
   severity: failed
   actual: null
   expected: undefined

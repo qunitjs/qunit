@@ -1,6 +1,4 @@
-QUnit.test( "undefined hooks", function( assert ) {
-	const done = assert.async();
-	assert.ok( 1 == "1", "Passed!" ); // eslint-disable-line eqeqeq
-	setTimeout( done, 10 );
+QUnit.test( "assertion after errored/rejected tests does not cause further errors", function( assert ) {
+	setTimeout( () => assert.ok( true ), 10 );
 	return Promise.reject();
 } );
