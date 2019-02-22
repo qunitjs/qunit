@@ -194,7 +194,7 @@ not ok 1 undefined hooks
   severity: failed
   actual: null
   expected: undefined
-  stack:     at process._tickCallback (.*)
+  stack:(.*\n)?(.*)process._tickCallback (.*)
   ...
 1..1
 # pass 0

@@ -149,7 +149,7 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
-	QUnit.only( "undefined hooks fail gracefully", co.wrap( function* ( assert ) {
+	QUnit.test( "undefined hooks fail gracefully", co.wrap( function* ( assert ) {
 		const command = "qunit undefined-hooks";
 
 		try {
