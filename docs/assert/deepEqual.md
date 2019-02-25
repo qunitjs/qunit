@@ -1,7 +1,7 @@
 ---
 layout: default
 title: deepEqual
-description: A deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.
+description: A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
 categories:
   - assert
 redirect_from:
@@ -10,7 +10,7 @@ redirect_from:
 
 ## `deepEqual( actual, expected [, message ] )`
 
-A deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.
+A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
@@ -24,6 +24,8 @@ The `deepEqual()` assertion can be used just like `equal()` when comparing the v
 
 [`notDeepEqual()`](/assert/notDeepEqual) can be used to explicitly test deep, strict inequality.
 
+[`propEqual()`](/assert/propEqual) can be used to explicitly test deep, strict equality but only considering own properties. `deepEqual()` compares all inherited properties.
+
 ### Examples
 
 Compare the value of two objects.
@@ -33,4 +35,18 @@ QUnit.test( "deepEqual test", function( assert ) {
 
   assert.deepEqual( obj, { foo: "bar" }, "Two objects can be the same in value" );
 });
+```
+
+```js
+QUnit.test( 'deepEqual failing test', function( assert ) {
+  assert.deepEqual( {
+    a: 'Albert',
+    b: 'Berta',
+    num: 123
+  }, {
+    a: 'Albert',
+    b: 'Berta',
+    num: '123' // Fails: the number `123` is not strictly equal to the string `'123'`.
+  } );
+} );
 ```
