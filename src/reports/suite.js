@@ -23,6 +23,8 @@ export default class SuiteReport {
 			}
 		}
 
+		console.group( `Test Suite: ${this.name}` );
+
 		return {
 			name: this.name,
 			fullName: this.fullName.slice(),
@@ -51,6 +53,8 @@ export default class SuiteReport {
 				);
 			}
 		}
+
+		console.groupEnd();
 
 		return {
 			name: this.name,

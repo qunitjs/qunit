@@ -27,6 +27,8 @@ export default class TestReport {
 			}
 		}
 
+		console.group( `Test: ${this.name}` );
+
 		return {
 			name: this.name,
 			suiteName: this.suiteName,
@@ -49,6 +51,8 @@ export default class TestReport {
 				);
 			}
 		}
+
+		console.groupEnd();
 
 		return extend( this.start(), {
 			runtime: this.getRuntime(),

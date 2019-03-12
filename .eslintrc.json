@@ -7,6 +7,9 @@
     "parserOptions": {
         "sourceType": "module"
     },
+    "globals": {
+        "console": true
+    },
     "rules": {
         "arrow-spacing": ["error", { "before": true, "after": true }],
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
