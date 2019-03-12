@@ -10,8 +10,10 @@ export const now = Date.now || function() {
 export const isNodeJS = detectNodeJS();
 
 function detectNodeJS() {
-	// eslint-disable-next-line no-undef
-	return typeof process !== "undefined" && process.release.name === "node";
+	/* eslint-disable no-undef */
+	return typeof process !== "undefined" &&
+		process.release !== undefined &&
+		process.release.name === "node";
 }
 
 export const hasPerformanceApi = detectPerformanceApi();
