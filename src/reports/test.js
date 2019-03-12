@@ -25,10 +25,10 @@ export default class TestReport {
 			if ( performance ) {
 				performance.mark( "qunit_test_start" );
 			}
-		}
 
-		if ( console.group && !isNodeJS ) {
-			console.group( `Test: ${this.name}` );
+			if ( console.group && !isNodeJS ) {
+				console.group( `Test: ${this.name}` );
+			}
 		}
 
 		return {
@@ -52,10 +52,10 @@ export default class TestReport {
 					"qunit_test_end"
 				);
 			}
-		}
 
-		if ( console.groupEnd && !isNodeJS ) {
-			console.groupEnd();
+			if ( console.groupEnd && !isNodeJS ) {
+				console.groupEnd();
+			}
 		}
 
 		return extend( this.start(), {

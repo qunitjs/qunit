@@ -21,10 +21,10 @@ export default class SuiteReport {
 				const suiteLevel = this.fullName.length;
 				performance.mark( `qunit_suite_${suiteLevel}_start` );
 			}
-		}
 
-		if ( console.group && !isNodeJS ) {
-			console.group( `Test Suite: ${this.name}` );
+			if ( console.group && !isNodeJS ) {
+				console.group( `Test Suite: ${this.name}` );
+			}
 		}
 
 		return {
@@ -54,10 +54,10 @@ export default class SuiteReport {
 					`qunit_suite_${suiteLevel}_end`
 				);
 			}
-		}
 
-		if ( console.groupEnd && !isNodeJS ) {
-			console.groupEnd();
+			if ( console.groupEnd && !isNodeJS ) {
+				console.groupEnd();
+			}
 		}
 
 		return {
