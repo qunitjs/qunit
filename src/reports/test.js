@@ -27,7 +27,9 @@ export default class TestReport {
 			}
 		}
 
-		console.group( `Test: ${this.name}` );
+		if ( console.group ) {
+			console.group( `Test: ${this.name}` );
+		}
 
 		return {
 			name: this.name,
@@ -52,7 +54,9 @@ export default class TestReport {
 			}
 		}
 
-		console.groupEnd();
+		if ( console.groupEnd ) {
+			console.groupEnd();
+		}
 
 		return extend( this.start(), {
 			runtime: this.getRuntime(),

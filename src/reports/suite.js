@@ -23,7 +23,9 @@ export default class SuiteReport {
 			}
 		}
 
-		console.group( `Test Suite: ${this.name}` );
+		if ( console.group ) {
+			console.group( `Test Suite: ${this.name}` );
+		}
 
 		return {
 			name: this.name,
@@ -54,7 +56,9 @@ export default class SuiteReport {
 			}
 		}
 
-		console.groupEnd();
+		if ( console.groupEnd ) {
+			console.groupEnd();
+		}
 
 		return {
 			name: this.name,
