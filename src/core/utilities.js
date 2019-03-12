@@ -7,6 +7,13 @@ export const now = Date.now || function() {
 	return new Date().getTime();
 };
 
+export const isNodeJS = detectNodeJS();
+
+function detectNodeJS() {
+	// eslint-disable-next-line no-undef
+	return typeof process !== "undefined" && process.release.name === "node";
+}
+
 export const hasPerformanceApi = detectPerformanceApi();
 export const performance = hasPerformanceApi ? window.performance : undefined;
 export const performanceNow = hasPerformanceApi ?

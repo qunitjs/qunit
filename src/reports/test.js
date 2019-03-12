@@ -1,4 +1,4 @@
-import { extend, measure, performance, performanceNow } from "../core/utilities";
+import { extend, measure, performance, performanceNow, isNodeJS } from "../core/utilities";
 
 export default class TestReport {
 	constructor( name, suite, options ) {
@@ -27,7 +27,7 @@ export default class TestReport {
 			}
 		}
 
-		if ( console.group ) {
+		if ( console.group && !isNodeJS ) {
 			console.group( `Test: ${this.name}` );
 		}
 
@@ -54,7 +54,7 @@ export default class TestReport {
 			}
 		}
 
-		if ( console.groupEnd ) {
+		if ( console.groupEnd && !isNodeJS ) {
 			console.groupEnd();
 		}
 

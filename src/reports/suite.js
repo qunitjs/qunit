@@ -1,4 +1,4 @@
-import { measure, performance, performanceNow } from "../core/utilities";
+import { measure, performance, performanceNow, isNodeJS } from "../core/utilities";
 
 export default class SuiteReport {
 	constructor( name, parentSuite ) {
@@ -23,7 +23,7 @@ export default class SuiteReport {
 			}
 		}
 
-		if ( console.group ) {
+		if ( console.group && !isNodeJS ) {
 			console.group( `Test Suite: ${this.name}` );
 		}
 
@@ -56,7 +56,7 @@ export default class SuiteReport {
 			}
 		}
 
-		if ( console.groupEnd ) {
+		if ( console.groupEnd && !isNodeJS ) {
 			console.groupEnd();
 		}
 
