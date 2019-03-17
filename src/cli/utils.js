@@ -44,26 +44,35 @@ function findFiles( baseDir, options ) {
 }
 
 function getFilesFromArgs( args ) {
-	let globs = args.slice();
+	const globs = args.slice();
 
 	// Default to files in the test directory
 	if ( !globs.length ) {
 		globs.push( "test/**/*.js" );
 	}
 
+	const files = [];
+	const filteredGlobs = [];
+
 	// For each of the potential globs, we check if it is a directory path and
 	// update it so that it matches the JS files in that directory.
-	globs = globs.map( glob => {
+	// Filter out if glob is file path.
+	globs.forEach( glob => {
 		const stat = existsStat( glob );
 
 		if ( stat && stat.isDirectory() ) {
-			return `${glob}/**/*.js`;
+			filteredGlobs.push( `${glob}/**/*.js` );
+		} else if ( stat && stat.isFile() ) {
+			files.push( glob );
+			return false;
 		} else {
-			return glob;
+			filteredGlobs.push( glob );
 		}
 	} );
 
-	const files = findFiles( process.cwd(), { match: globs } );
+	if ( filteredGlobs.length ) {
+		files.push.apply( files, findFiles( process.cwd(), { match: filteredGlobs } ) );
+	}
 
 	if ( !files.length ) {
 		error( "No files were found matching: " + args.join( ", " ) );
