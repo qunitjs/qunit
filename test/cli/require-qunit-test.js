@@ -18,7 +18,7 @@ QUnit.module( "requireQUnit", function() {
 		assert.strictEqual( requireQUnit(), localQUnit );
 	} );
 
-	QUnit.test( "finds globally installled QUnit", function( assert ) {
+	QUnit.test( "finds globally installed QUnit", function( assert ) {
 		const globalQUnit = {
 			"@noCallThru": true
 		};
