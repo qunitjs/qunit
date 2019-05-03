@@ -61,13 +61,23 @@ function processTaskQueue( start ) {
 
 		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
 			const task = taskQueue.shift();
-			Promise.resolve( task() ).then( function() {
+			const processNextTaskOrAdvance = () => {
 				if ( !taskQueue.length ) {
 					advance();
 				} else {
 					processTaskQueue( start );
 				}
-			} );
+			};
+			const throwAndAdvance = ( err ) => {
+				setTimeout( advance );
+				throw err;
+			};
+
+			// Without throwAndAdvance, qunit does not continue advanceing the processing queue if
+			// task() throws an error
+			Promise.resolve( task() )
+				.then( processNextTaskOrAdvance, throwAndAdvance )
+				.catch( throwAndAdvance );
 		} else {
 			setTimeout( advance );
 		}
@@ -153,13 +163,25 @@ function unitSamplerGenerator( seed ) {
 	};
 }
 
+// Clear own storage items when tests completes
+function cleanStorage() {
+	const storage = config.storage;
+	if ( storage && config.stats.bad === 0 ) {
+		for ( let i = storage.length - 1; i >= 0; i-- ) {
+			const key = storage.key( i );
+
+			if ( key.indexOf( "qunit-test-" ) === 0 ) {
+				storage.removeItem( key );
+			}
+		}
+	}
+}
+
 /**
  * This function is called when the ProcessingQueue is done processing all
  * items. It handles emitting the final run events.
  */
 function done() {
-	const storage = config.storage;
-
 	ProcessingQueue.finished = true;
 
 	const runtime = now() - config.started;
@@ -193,18 +215,9 @@ function done() {
 		failed: config.stats.bad,
 		total: config.stats.all,
 		runtime
-	} ).then( () => {
-
-		// Clear own storage items if all tests passed
-		if ( storage && config.stats.bad === 0 ) {
-			for ( let i = storage.length - 1; i >= 0; i-- ) {
-				const key = storage.key( i );
-
-				if ( key.indexOf( "qunit-test-" ) === 0 ) {
-					storage.removeItem( key );
-				}
-			}
-		}
+	} ).then( cleanStorage, function( err ) {
+		cleanStorage();
+		throw err;
 	} );
 }
 

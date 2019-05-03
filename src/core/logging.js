@@ -1,26 +1,41 @@
 import config from "./config";
 import { objectType } from "./utilities";
 import Promise from "../promise";
+import {
+	setTimeout
+} from "../globals";
 
-// Register logging callbacks
+function _promisfyCallbacksSequentially( callbacks, args ) {
+	return callbacks.reduce( ( promiseChain, callback ) => {
+		const executeCallback = () => callback( args );
+		return promiseChain.then(
+			executeCallback,
+			( err ) => {
+				setTimeout( executeCallback );
+				throw err;
+			}
+		);
+	}, Promise.resolve( [] ) );
+}
+
+function _registerLoggingCallback( key ) {
+	const loggingCallback = ( callback ) => {
+		if ( objectType( callback ) !== "function" ) {
+			throw new Error(
+				"QUnit logging methods require a callback function as their first parameters."
+			);
+		}
+
+		config.callbacks[ key ].push( callback );
+	};
+
+	return loggingCallback;
+}
+
 export function registerLoggingCallbacks( obj ) {
 	var i, l, key,
 		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
 			"moduleStart", "moduleDone" ];
-
-	function registerLoggingCallback( key ) {
-		var loggingCallback = function( callback ) {
-			if ( objectType( callback ) !== "function" ) {
-				throw new Error(
-					"QUnit logging methods require a callback function as their first parameters."
-				);
-			}
-
-			config.callbacks[ key ].push( callback );
-		};
-
-		return loggingCallback;
-	}
 
 	for ( i = 0, l = callbackNames.length; i < l; i++ ) {
 		key = callbackNames[ i ];
@@ -30,7 +45,7 @@ export function registerLoggingCallbacks( obj ) {
 			config.callbacks[ key ] = [];
 		}
 
-		obj[ key ] = registerLoggingCallback( key );
+		obj[ key ] = _registerLoggingCallback( key );
 	}
 }
 
@@ -46,10 +61,5 @@ export function runLoggingCallbacks( key, args ) {
 		return;
 	}
 
-	// ensure that each callback is executed serially
-	return callbacks.reduce( ( promiseChain, callback ) => {
-		return promiseChain.then( () => {
-			return Promise.resolve( callback( args ) );
-		} );
-	}, Promise.resolve( [] ) );
+	return _promisfyCallbacksSequentially( callbacks, args );
 }
