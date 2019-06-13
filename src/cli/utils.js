@@ -12,6 +12,16 @@ function existsStat() {
 	}
 }
 
+
+function getIgnoreList( baseDir ) {
+	const gitFilePath = path.join( baseDir, ".gitignore" );
+	if ( fs.existsSync( gitFilePath ) ) {
+		const gitIgnore = fs.readFileSync( gitFilePath, "utf-8" );
+		return gitIgnore.trim().split( "\n" );
+	}
+	return [];
+}
+
 function findFilesInternal( dir, options, result = [], prefix = "" ) {
 	fs.readdirSync( dir ).forEach( ( name ) => {
 		const fullName = path.join( dir, name );
@@ -85,5 +95,6 @@ module.exports = {
 	findFiles,
 	capitalize,
 	error,
-	getFilesFromArgs
+	getFilesFromArgs,
+	getIgnoreList
 };

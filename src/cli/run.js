@@ -7,8 +7,10 @@ const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
 
 const IGNORED_GLOBS = [
-	"**/node_modules/**"
-];
+	".git",
+	"node_modules"
+].concat( utils.getIgnoreList( process.cwd() ) );
+
 const RESTART_DEBOUNCE_LENGTH = 200;
 
 let QUnit;
