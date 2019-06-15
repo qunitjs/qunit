@@ -50,6 +50,18 @@ QUnit.test( "running test name displayed", function( assert ) {
 	);
 } );
 
+QUnit.test( "running test suite progress displayed", function( assert ) {
+	assert.expect( 1 );
+
+	var displaying = document.getElementById( "qunit-testresult" );
+
+	var expected = /\d+ \/ \d+ tests completed in \d+ milliseconds, with \d+ failed, \d+ skipped, and \d+ todo./;
+	assert.ok(
+		expected.test( displaying.innerHTML ),
+		"Expect test suite progress to be found in displayed text"
+	);
+} );
+
 QUnit.module( "timing", {
 	getPreviousTest: function( assert ) {
 		return document.getElementById( "qunit-test-output-" + assert.test.testId )
@@ -135,7 +147,6 @@ QUnit.test( "logs location", function( assert ) {
 		"Source references to the current file and line number"
 	);
 } );
-
 
 QUnit.test( "disables autocomplete on module filter", function( assert ) {
 	var moduleFilterSearch = document.getElementById( "qunit-modulefilter-search" );
