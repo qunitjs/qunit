@@ -1,5 +1,7 @@
 import QUnit from "../src/core";
+import Test from "../src/test";
 import { extractStacktrace } from "../src/core/stacktrace";
+import { now } from "../src/core/utilities";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
 
@@ -735,6 +737,29 @@ export function escapeText( s ) {
 		return nameHtml;
 	}
 
+	function getProgressHtml( runtime, stats, total ) {
+		var completed = stats.passedTests +
+			stats.skippedTests +
+			stats.todoTests +
+			stats.failedTests;
+
+		return [
+			"<br />",
+			completed,
+			" / ",
+			total,
+			" tests completed in ",
+			runtime,
+			" milliseconds, with ",
+			stats.failedTests,
+			" failed, ",
+			stats.skippedTests,
+			" skipped, and ",
+			stats.todoTests,
+			" todo."
+		].join( "" );
+	}
+
 	QUnit.testStart( function( details ) {
 		var running, bad;
 
@@ -751,7 +776,8 @@ export function escapeText( s ) {
 				bad ?
 					"Rerunning previously failed test: <br />" :
 					"Running: <br />",
-				getNameHtml( details.name, details.module )
+				getNameHtml( details.name, details.module ),
+				getProgressHtml( now() - config.started, stats, Test.count )
 			].join( "" );
 		}
 
