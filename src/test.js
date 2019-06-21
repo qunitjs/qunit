@@ -118,19 +118,25 @@ Test.prototype = {
 
 		// ensure the callbacks are executed serially for each module
 		var callbackPromises = notStartedModules.reduce( ( promiseChain, startModule ) => {
-			return promiseChain.then( () => {
+			const moduleStartCallback = () => {
 				startModule.stats = { all: 0, bad: 0, started: now() };
 				emit( "suiteStart", startModule.suiteReport.start( true ) );
 				return runLoggingCallbacks( "moduleStart", {
 					name: startModule.name,
 					tests: startModule.tests
 				} );
-			} );
+			};
+
+			return promiseChain.then( moduleStartCallback, moduleStartCallback );
 		}, Promise.resolve( [] ) );
 
-		return callbackPromises.then( () => {
+		const testStartHandler = () => {
 			config.current = this;
-
+			const testStartResolvedHandler = () => {
+				if ( !config.pollution ) {
+					saveGlobal();
+				}
+			};
 			this.testEnvironment = extend( {}, module.testEnvironment );
 
 			this.started = now();
@@ -140,10 +146,16 @@ Test.prototype = {
 				module: module.name,
 				testId: this.testId,
 				previousFailure: this.previousFailure
-			} ).then( () => {
-				if ( !config.pollution ) {
-					saveGlobal();
-				}
+			} ).then( testStartResolvedHandler, function( err ) {
+				setTimeout( testStartResolvedHandler );
+				throw err;
+			} );
+		};
+
+		return callbackPromises.then( testStartHandler, ( err ) => {
+			return Promise.reject( err ).catch( ( err ) => {
+				setTimeout( testStartHandler );
+				throw err;
 			} );
 		} );
 	},
@@ -319,23 +331,7 @@ Test.prototype = {
 		emit( "testEnd", this.testReport.end( true ) );
 		this.testReport.slimAssertions();
 
-		return runLoggingCallbacks( "testDone", {
-			name: testName,
-			module: moduleName,
-			skipped: skipped,
-			todo: todo,
-			failed: bad,
-			passed: this.assertions.length - bad,
-			total: this.assertions.length,
-			runtime: skipped ? 0 : this.runtime,
-
-			// HTML Reporter use
-			assertions: this.assertions,
-			testId: this.testId,
-
-			// Source of Test
-			source: this.stack
-		} ).then( function() {
+		const testDoneResolvedHandler = function() {
 			if ( module.testsRun === numberOfTests( module ) ) {
 				const completedModules = [ module ];
 
@@ -353,8 +349,35 @@ Test.prototype = {
 					} );
 				}, Promise.resolve( [] ) );
 			}
-		} ).then( function() {
+		};
+
+		return runLoggingCallbacks( "testDone", {
+			name: testName,
+			module: moduleName,
+			skipped: skipped,
+			todo: todo,
+			failed: bad,
+			passed: this.assertions.length - bad,
+			total: this.assertions.length,
+			runtime: skipped ? 0 : this.runtime,
+
+			// HTML Reporter use
+			assertions: this.assertions,
+			testId: this.testId,
+
+			// Source of Test
+			source: this.stack
+		} ).then(
+			testDoneResolvedHandler,
+			function( err ) {
+				setTimeout( testDoneResolvedHandler );
+				throw err;
+			}
+		).then( function() {
 			config.current = undefined;
+		}, function( err ) {
+			config.current = undefined;
+			throw err;
 		} );
 
 		function logSuiteEnd( module ) {
@@ -660,7 +683,6 @@ function checkPollution() {
 	if ( newGlobals.length > 0 ) {
 		pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
 	}
-
 	deletedGlobals = diff( old, config.pollution );
 	if ( deletedGlobals.length > 0 ) {
 		pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );

@@ -176,7 +176,10 @@ export function begin() {
 		runLoggingCallbacks( "begin", {
 			totalTests: Test.count,
 			modules: modulesLog
-		} ).then( unblockAndAdvanceQueue );
+		} ).then( unblockAndAdvanceQueue, function( err ) {
+			setTimeout( unblockAndAdvanceQueue );
+			throw err;
+		} );
 	} else {
 		unblockAndAdvanceQueue();
 	}

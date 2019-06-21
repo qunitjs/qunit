@@ -884,15 +884,14 @@ export function escapeText( s ) {
 	} );
 
 	QUnit.testDone( function( details ) {
-		var testTitle, time, testItem, assertList, status,
+		var testTitle, time, assertList, status,
 			good, bad, testCounts, skipped, sourceName,
-			tests = id( "qunit-tests" );
+			tests = id( "qunit-tests" ),
+			testItem = id( "qunit-test-output-" + details.testId );
 
-		if ( !tests ) {
+		if ( !tests || !testItem ) {
 			return;
 		}
-
-		testItem = id( "qunit-test-output-" + details.testId );
 
 		removeClass( testItem, "running" );
 
