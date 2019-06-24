@@ -734,6 +734,12 @@ export function only( testName, callback ) {
 	newTest.queue();
 }
 
+// Resets config.timeout with a new timeout duration.
+export function resetTestTimeout( timeoutDuration ) {
+	clearTimeout( config.timeout );
+	config.timeout = setTimeout( config.timeoutHandler( timeoutDuration ), timeoutDuration );
+}
+
 // Put a hold on processing and return a function that will release it.
 export function internalStop( test ) {
 	let released = false;
@@ -752,16 +758,21 @@ export function internalStop( test ) {
 
 		if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
 			clearTimeout( config.timeout );
-			config.timeout = setTimeout( function() {
-				pushFailure(
-					`Test took longer than ${timeoutDuration}ms; test timed out.`,
-					sourceFromStacktrace( 2 )
-				);
-				released = true;
-				internalRecover( test );
-			}, timeoutDuration );
+			config.timeoutHandler = function( timeout ) {
+				return function() {
+					pushFailure(
+						`Test took longer than ${timeout}ms; test timed out.`,
+						sourceFromStacktrace( 2 )
+					);
+					released = true;
+					internalRecover( test );
+				};
+			};
+			config.timeout = setTimeout(
+				config.timeoutHandler( timeoutDuration ),
+				timeoutDuration
+			);
 		}
-
 	}
 
 	return function resume() {

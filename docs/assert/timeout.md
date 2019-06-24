@@ -19,6 +19,8 @@ Sets the length of time to wait for async operations before failing the test.
 
 `assert.timeout()` sets the length of time, in milliseconds, to wait for async operations in the current test. This is equivalent to setting `config.testTimeout` on a per-test basis. The timeout length only applies when performing async operations.
 
+If `assert.timeout()` is called after a timeout has already been set, the old timeout will be cleared and the new duration will be used for the new timer.
+
 If `0` is passed, then the test will be assumed to be completely synchronous. If a non-numeric value is passed as an argument, the function will throw an error.
 
 ### Examples
