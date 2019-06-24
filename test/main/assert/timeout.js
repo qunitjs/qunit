@@ -45,6 +45,23 @@ QUnit.module( "assert.timeout", function() {
 		}, /You must pass a number as the duration to assert.timeout/ );
 	} );
 
+	QUnit.test( "reset a timeout if an existing timeout has been set", function( assert ) {
+		assert.timeout( 50 );
+		assert.expect( 1 );
+
+		setTimeout( function() {
+			assert.timeout( 10 );
+			var originalPushFailure = QUnit.config.current.pushFailure;
+			QUnit.config.current.pushFailure = function pushFailureStub( message ) {
+				QUnit.config.current.pushFailure = originalPushFailure;
+
+				assert.equal( message, "Test took longer than 10ms; test timed out." );
+				done();
+			};
+		} );
+		var done = assert.async();
+	} );
+
 	QUnit.module( "a value of zero", function() {
 		function stubPushFailure( assert ) {
 			var originalPushFailure = QUnit.config.current.pushFailure;

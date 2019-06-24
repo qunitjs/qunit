@@ -1,11 +1,12 @@
 import dump from "./dump";
 import equiv from "./equiv";
-import { internalStop } from "./test";
+import { internalStop, resetTestTimeout } from "./test";
 import Logger from "./logger";
 
 import config from "./core/config";
 import { objectType, objectValues } from "./core/utilities";
 import { sourceFromStacktrace } from "./core/stacktrace";
+import { clearTimeout } from "./globals";
 
 class Assert {
 	constructor( testContext ) {
@@ -20,6 +21,15 @@ class Assert {
 		}
 
 		this.test.timeout = duration;
+
+		// If a timeout has been set, clear it and reset with the new duration
+		if ( config.timeout ) {
+			clearTimeout( config.timeout );
+
+			if ( config.timeoutHandler && this.test.timeout > 0 ) {
+				resetTestTimeout( this.test.timeout );
+			}
+		}
 	}
 
 	// Documents a "step", which is a string value, in a test as a passing assertion
