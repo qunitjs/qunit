@@ -34,9 +34,9 @@ export default function Test( settings ) {
 	this.assertions = [];
 	this.semaphore = 0;
 	this.module = config.currentModule;
-	this.stack = sourceFromStacktrace( 3 );
 	this.steps = [];
 	this.timeout = undefined;
+	this.errorForStack = new Error();
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
@@ -112,6 +112,12 @@ function getNotStartedModules( startModule ) {
 }
 
 Test.prototype = {
+
+	// generating a stack trace can be expensive, so using a getter defers this until we need it
+	get stack() {
+		return extractStacktrace( this.errorForStack, 2 );
+	},
+
 	before: function() {
 		var module = this.module,
 			notStartedModules = getNotStartedModules( module );
@@ -318,6 +324,7 @@ Test.prototype = {
 		// avoid leaking it. It is not used by the legacy testDone callbacks.
 		emit( "testEnd", this.testReport.end( true ) );
 		this.testReport.slimAssertions();
+		const test = this;
 
 		return runLoggingCallbacks( "testDone", {
 			name: testName,
@@ -334,7 +341,8 @@ Test.prototype = {
 			testId: this.testId,
 
 			// Source of Test
-			source: this.stack
+			// generating stack trace is expensive, so using a getter will help defer this until we need it
+			get source() { return test.stack; }
 		} ).then( function() {
 			if ( module.testsRun === numberOfTests( module ) ) {
 				const completedModules = [ module ];
