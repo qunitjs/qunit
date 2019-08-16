@@ -303,7 +303,7 @@ QUnit.module( "Robot", function() {
   // ...
 } );
 
-// Currenly working on implementing features related to androids
+// Currently working on implementing features related to androids
 QUnit.module.only( "Android", function( hooks ) {
   hooks.beforeEach( function() {
     this.android = new Android();
@@ -337,7 +337,7 @@ QUnit.module( "Robot", function() {
   // ...
 } );
 
-// Tests related to androids are failling due to unkown cause.
+// Tests related to androids are failling due to unknown cause.
 // Skipping them for now.
 QUnit.module.skip( "Android", function( hooks ) {
   hooks.beforeEach( function() {
