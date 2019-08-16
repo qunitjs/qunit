@@ -24,8 +24,8 @@ The properties of the details argument are listed below as options.
 | parameter | description |
 |-----------|-------------|
 | `result` (boolean) | The boolean result of an assertion, `true` means passed, `false` means failed. |
-| `actual` | One side of a comparision assertion. Can be _undefined_ when `ok()` is used. |
-| `expected` | One side of a comparision assertion. Can be _undefined_ when `ok()` is used. |
+| `actual` | One side of a comparison assertion. Can be _undefined_ when `ok()` is used. |
+| `expected` | One side of a comparison assertion. Can be _undefined_ when `ok()` is used. |
 | `message` (string) | A string description provided by the assertion. |
 | `source` (string) | The associated stacktrace, either from an exception or pointing to the source of the assertion. Depends on browser support for providing stacktraces, so can be undefined. |
 | `module` (string) | The test module name of the assertion. If the assertion is not connected to any module, the property's value will be _undefined_. |

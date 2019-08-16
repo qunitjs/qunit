@@ -126,7 +126,7 @@ QUnit.module( "Module with Promise-aware everything", {
 	}
 } );
 
-QUnit.test( "fullfilled Promise", function( assert ) {
+QUnit.test( "fulfilled Promise", function( assert ) {
 	assert.expect( 5 );
 	return createMockPromise( assert );
 } );

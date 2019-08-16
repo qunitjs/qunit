@@ -679,7 +679,7 @@ export function escapeText( s ) {
 			assertLi,
 			assertList;
 
-		// Update remaing tests to aborted
+		// Update remaining tests to aborted
 		if ( abortButton && abortButton.disabled ) {
 			html = "Tests aborted after " + details.runtime + " milliseconds.";
 

@@ -163,7 +163,7 @@ QUnit.config.urlConfig.push({
 
 ---
 
-Add a dropdown to the toolbar, using the `urlConfig` property. This assumes there's other code on the page that will check the `QUnit.config.jquery` property to react to the selection, loading the appropiate jQuery Core version.
+Add a dropdown to the toolbar, using the `urlConfig` property. This assumes there's other code on the page that will check the `QUnit.config.jquery` property to react to the selection, loading the appropriate jQuery Core version.
 
 ```js
 QUnit.config.urlConfig.push({
