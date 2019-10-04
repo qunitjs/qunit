@@ -4,6 +4,8 @@ title: QUnit.log
 description: Register a callback to fire whenever an assertion completes.
 categories:
   - callbacks
+redirect_from:
+  - "/QUnit.log/"
 ---
 
 ## `QUnit.log( callback )`
