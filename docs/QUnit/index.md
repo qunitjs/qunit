@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Main assertions
+title: Main Methods
 category: main
 categories:
   - topics
