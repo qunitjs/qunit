@@ -23,12 +23,11 @@ Workflows for documentation or code changes are outlined below.
 
 ### Code
 
-For code changes, you'll need to have [`node.js`](https://nodejs.org/en/) and
-[`yarn`](https://yarnpkg.com/en/) installed on your machine.
+For code changes, you'll need to have [`node.js`](https://nodejs.org/en/) installed on your machine.
 
-Install dependencies in the repository via `yarn install`. Make your code
-changes and run `yarn test` to lint and test the changes. To run tests as you
-make changes to the code base, you can use `yarn dev` which will rebuild QUnit
+Install dependencies in the repository via `npm install`. Make your code
+changes and run `npm test` to lint and test the changes. To run tests as you
+make changes to the code base, you can use `npm run dev` which will rebuild QUnit
 and run tests any time you make a change to the source code.
 
 Almost all code changes should be accompanied by new unit tests to verify the
