@@ -6,7 +6,7 @@ We're using GitHub pages. Anything going to the gh-pages branch will be immediat
 
 ### Requirements
 
-* Ruby (tested with Ruby 2.4.1 and Ruby 2.5.3)
+* Ruby (tested with Ruby 2.6.4)
 * Bundler (if missing, install with `gem install bundler`)
 
 To install Jekyll and plugins the first time:
