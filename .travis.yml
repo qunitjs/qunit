@@ -14,10 +14,7 @@ matrix:
       node_js: "10"
       # On Windows, run test:main only instead of test.
       # https://github.com/qunitjs/qunit/issues/1359
-      # On Windows, disable yarn-gpg due to it causing the
-      # build to never finish (background process)
-      # https://travis-ci.community/t/timeout-after-build-finished-and-succeeded/1336
-      env: NPM_SCRIPT=test:main YARN_GPG=no
+      env: NPM_SCRIPT=test:main
     - os: osx
       # On Mac, test only the last LTS.
       node_js: "10"
@@ -27,7 +24,6 @@ matrix:
 script:
   - npm run $NPM_SCRIPT
 cache:
-  yarn: true
   directories:
     - $HOME/.npm
     - $HOME/.cache
