@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Configuration tools
+title: Configuration Tools
 category: config
 categories:
   - topics

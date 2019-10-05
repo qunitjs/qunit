@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Callback handlers
+title: Callback Handlers
 category: callbacks
 categories:
   - topics
