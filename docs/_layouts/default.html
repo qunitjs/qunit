@@ -3,7 +3,7 @@ layout: wrapper
 ---
 
 <section class="sidebar">
-    <h2>Main methods:</h2>
+    <h2>Main Methods</h2>
     <ul class="sidebar-list">
     {% assign methods = site.pages | where:'categories', 'main' %}
     {% for page in methods %}
@@ -13,7 +13,7 @@ layout: wrapper
     {% endfor %}
     </ul>
 
-    <h2>Assertions:</h2>
+    <h2>Assertions</h2>
     <ul class="sidebar-list">
     {% assign assertions = site.pages | where:'categories', 'assert' %}
     {% for page in assertions %}
@@ -23,7 +23,7 @@ layout: wrapper
     {% endfor %}
     </ul>
 
-    <h2>Config:</h2>
+    <h2>Configuration Tools</h2>
 
     <ul class="sidebar-list">
     {% assign config = site.pages | where:'categories', 'config' %}
@@ -34,7 +34,7 @@ layout: wrapper
     {% endfor %}
     </ul>
 
-    <h2>Callbacks:</h2>
+    <h2>Callback Handlers</h2>
 
     <ul class="sidebar-list">
     {% assign callbacks = site.pages | where:'categories', 'callbacks' %}
@@ -45,7 +45,7 @@ layout: wrapper
     {% endfor %}
     </ul>
 
-    <h2>Async control:</h2>
+    <h2>Async Control</h2>
 
     <ul class="sidebar-list">
     {% assign async = site.pages | where:'categories', 'async' %}

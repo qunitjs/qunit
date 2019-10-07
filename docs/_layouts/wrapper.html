@@ -23,14 +23,35 @@
                 </div>
                 <nav role="navigation" class="site-nav">
                     <ul class="site-nav-list">
-                        {% assign topics = site.pages | where:'categories', 'topics' %}
-                        {% for topic in topics %}
                         <li class="site-nav-list-item">
-                            <a class="site-nav-list-link" href="{{ topic.url }}">
-                                {{ topic.title }}
+                            <a class="site-nav-list-link" href="/QUnit/">
+                                Main Methods
                             </a>
                         </li>
-                        {% endfor %}
+
+                        <li class="site-nav-list-item">
+                            <a class="site-nav-list-link" href="/assert/">
+                                Assertions
+                            </a>
+                        </li>
+
+                        <li class="site-nav-list-item">
+                            <a class="site-nav-list-link" href="/config/">
+                                Configuration Tools
+                            </a>
+                        </li>
+
+                        <li class="site-nav-list-item">
+                            <a class="site-nav-list-link" href="/callbacks/">
+                                Callback Handlers
+                            </a>
+                        </li>
+
+                        <li class="site-nav-list-item">
+                            <a class="site-nav-list-link" href="/async">
+                                Async Control
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
