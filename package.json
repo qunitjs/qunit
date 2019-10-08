@@ -2,7 +2,7 @@
   "name": "qunit",
   "title": "QUnit",
   "description": "An easy-to-use JavaScript Unit Testing framework.",
-  "version": "2.9.3-pre",
+  "version": "2.9.4-pre",
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "jQuery Foundation and other contributors",
