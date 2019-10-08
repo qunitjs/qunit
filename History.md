@@ -1,3 +1,18 @@
+2.9.3 / 2019-10-08
+==================
+
+  * Docs: Rename "Main assertions" to "Main Methods" and match casing of other pages
+  * Docs: Update Gemfile.lock
+  * Docs: Repair url <https://api.qunitjs.com/QUnit.log/> with redirect
+  * Core: Reset testTimeout on assert.timeout if config.timeout has already been set
+  * Core: Defer getting the test source until we need it
+  * HTML Reporter: Display progress and runtime while test suite is executing (#1398)
+  * CLI: Ignore those folders mentioned in the gitignore
+  * CSS: Tweak CSS to address dropdown and button styles
+  * Docs: Update Travis badge
+  * Docs: deepEqual() checks strict inherited equality
+  * Docs: Add a few missing steps to release docs
+
 2.9.2 / 2019-02-21
 ==================
 
