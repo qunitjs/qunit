@@ -81,12 +81,8 @@ QUnit.module( "after (skip)", {
 	}
 } );
 
-QUnit.test( "does not run after initial tests", function( assert ) {
+QUnit.test( "does not run after final non-skipped tests", function( assert ) {
 	assert.expect( 0 );
-} );
-
-QUnit.test( "runs after final unskipped test", function( assert ) {
-	assert.expect( 1 );
 } );
 
 QUnit.skip( "last test in module is skipped" );
