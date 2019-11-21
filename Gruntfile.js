@@ -119,6 +119,7 @@ module.exports = function( grunt ) {
 						"test/callbacks.html",
 						"test/callbacks-promises.html",
 						"test/events.html",
+						"test/events-filters.html",
 						"test/events-in-test.html",
 						"test/logs.html",
 						"test/setTimeout.html",

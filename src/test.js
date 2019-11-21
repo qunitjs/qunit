@@ -206,7 +206,7 @@ Test.prototype = {
 
 		const runHook = () => {
 			if ( hookName === "before" ) {
-				if ( hookOwner.unskippedTestsRun !== 0 ) {
+				if ( hookOwner.testsRun !== 0 ) {
 					return;
 				}
 
@@ -216,7 +216,7 @@ Test.prototype = {
 			// The 'after' hook should only execute when there are not tests left and
 			// when the 'after' and 'finish' tasks are the only tasks left to process
 			if ( hookName === "after" &&
-				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
+				!lastTestWithinModuleExecuted( hookOwner ) &&
 				( config.queue.length > 0 || ProcessingQueue.taskCount() > 2 ) ) {
 				return;
 			}
@@ -308,7 +308,11 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( module, skipped );
+		if ( skipped ) {
+			incrementTestsIgnored( module );
+		} else {
+			incrementTestsRun( module );
+		}
 
 		// Store result when possible
 		if ( storage ) {
@@ -343,13 +347,13 @@ Test.prototype = {
 			// generating stack trace is expensive, so using a getter will help defer this until we need it
 			get source() { return test.stack; }
 		} ).then( function() {
-			if ( module.testsRun === numberOfTests( module ) ) {
+			if ( allTestsExecuted( module ) ) {
 				const completedModules = [ module ];
 
 				// Check if the parent modules, iteratively, are done. If that the case,
 				// we emit the `suiteEnd` event and trigger `moduleDone` callback.
 				let parent = module.parentModule;
-				while ( parent && parent.testsRun === numberOfTests( parent ) ) {
+				while ( parent && allTestsExecuted( parent ) ) {
 					completedModules.push( parent );
 					parent = parent.parentModule;
 				}
@@ -393,6 +397,7 @@ Test.prototype = {
 		const test = this;
 
 		if ( !this.valid() ) {
+			incrementTestsIgnored( this.module );
 			return;
 		}
 
@@ -852,23 +857,32 @@ function collectTests( module ) {
 	return tests;
 }
 
-function numberOfTests( module ) {
-	return collectTests( module ).length;
+// This returns true after all executable and skippable tests
+// in a module have been proccessed, and informs 'suiteEnd'
+// and moduleDone().
+function allTestsExecuted( module ) {
+	return module.testsRun + module.testsIgnored === collectTests( module ).length;
 }
 
-function numberOfUnskippedTests( module ) {
-	return collectTests( module ).filter( test => !test.skip ).length;
+// This returns true during the last executable non-skipped test
+// within a module, and informs the running of the 'after' hook
+// for a given module. This runs only once for a given module,
+// but must run during the last non-skipped test. When it runs,
+// there may be non-zero skipped tests left.
+function lastTestWithinModuleExecuted( module ) {
+	return module.testsRun === collectTests( module ).filter( test => !test.skip ).length - 1;
 }
 
-function notifyTestsRan( module, skipped ) {
+function incrementTestsRun( module ) {
 	module.testsRun++;
-	if ( !skipped ) {
-		module.unskippedTestsRun++;
-	}
 	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
-		if ( !skipped ) {
-			module.unskippedTestsRun++;
-		}
+	}
+}
+
+function incrementTestsIgnored( module ) {
+	module.testsIgnored++;
+	while ( ( module = module.parentModule ) ) {
+		module.testsIgnored++;
 	}
 }

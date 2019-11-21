@@ -28,7 +28,7 @@ function createModule( name, testEnvironment, modifiers ) {
 		tests: [],
 		moduleId: generateHash( moduleName ),
 		testsRun: 0,
-		unskippedTestsRun: 0,
+		testsIgnored: 0,
 		childModules: [],
 		suiteReport: new SuiteReport( name, parentSuite ),
 
