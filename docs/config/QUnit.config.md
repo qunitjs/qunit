@@ -101,6 +101,10 @@ Enabling this option will cause tests to fail, if they don't call `expect()` at 
 
 This property allows QUnit to run specific tests identified by the hashed version of their module name and test name. You can specify one or multiple tests to run.
 
+### `QUnit.config.testIds` (array) | default: `array`
+
+This property allows QUnit to return all hashed testIds of all loaded tests.
+
 ### `QUnit.config.testTimeout` (number) | default: `undefined`
 
 Specify a global timeout in milliseconds after which all tests will fail with an appropriate message. Useful when async tests aren't finishing, to prevent the testrunner getting stuck. Set to something high, e.g. 30000 (30 seconds) to avoid slow tests to time out by accident.
