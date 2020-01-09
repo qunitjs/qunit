@@ -1,4 +1,4 @@
-<img src="docs/img/logo-qunit@2x.png" />
+<img src="docs/img/QUnit-Logo-Large.png" />
 
 [![Build Status](https://travis-ci.com/qunitjs/qunit.svg?branch=master)](https://travis-ci.com/qunitjs/qunit)
 [![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
