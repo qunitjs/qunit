@@ -105,6 +105,10 @@
 	height: 1.6em;
 }
 
+#qunit-toolbar-filters {
+	float: right;
+}
+
 .qunit-url-config,
 .qunit-filter,
 #qunit-modulefilter {
@@ -114,7 +118,6 @@
 
 .qunit-filter,
 #qunit-modulefilter {
-	float: right;
 	position: relative;
 	margin-left: 1em;
 }

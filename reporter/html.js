@@ -502,13 +502,22 @@ export function escapeText( s ) {
 		return moduleFilter;
 	}
 
+	function toolbarFilters() {
+		var toolbarFilters = document.createElement( "span" );
+
+		toolbarFilters.id = "qunit-toolbar-filters";
+		toolbarFilters.appendChild( toolbarLooseFilter() );
+		toolbarFilters.appendChild( toolbarModuleFilter() );
+
+		return toolbarFilters;
+	}
+
 	function appendToolbar() {
 		var toolbar = id( "qunit-testrunner-toolbar" );
 
 		if ( toolbar ) {
 			toolbar.appendChild( toolbarUrlConfigContainer() );
-			toolbar.appendChild( toolbarModuleFilter() );
-			toolbar.appendChild( toolbarLooseFilter() );
+			toolbar.appendChild( toolbarFilters() );
 			toolbar.appendChild( document.createElement( "div" ) ).className = "clearfix";
 		}
 	}
