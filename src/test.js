@@ -296,7 +296,8 @@ Test.prototype = {
 			bad = 0,
 			storage = config.storage;
 
-		this.runtime = now() - this.started;
+		this.ended = now();
+		this.runtime = this.ended - this.started;
 
 		config.stats.all += this.assertions.length;
 		module.stats.all += this.assertions.length;
@@ -334,6 +335,8 @@ Test.prototype = {
 			failed: bad,
 			passed: this.assertions.length - bad,
 			total: this.assertions.length,
+			started: skipped ? 0 : this.started,
+			ended: skipped ? 0 : this.ended,
 			runtime: skipped ? 0 : this.runtime,
 
 			// HTML Reporter use
@@ -372,13 +375,18 @@ Test.prototype = {
 			module.hooks = {};
 
 			emit( "suiteEnd", module.suiteReport.end( true ) );
+
+			const ended = now();
+
 			return runLoggingCallbacks( "moduleDone", {
 				name: module.name,
 				tests: module.tests,
 				failed: module.stats.bad,
 				passed: module.stats.all - module.stats.bad,
 				total: module.stats.all,
-				runtime: now() - module.stats.started
+				started: module.stats.started,
+				ended: ended,
+				runtime: ended - module.stats.started
 			} );
 		}
 	},
@@ -450,6 +458,8 @@ Test.prototype = {
 		}
 
 		// Destructure of resultInfo = { result, actual, expected, message, negative }
+		const ended = now();
+
 		var source,
 			details = {
 				module: this.module.name,
@@ -459,7 +469,9 @@ Test.prototype = {
 				actual: resultInfo.actual,
 				testId: this.testId,
 				negative: resultInfo.negative || false,
-				runtime: now() - this.started,
+				ended,
+				started: this.started,
+				runtime: ended - this.started,
 				todo: !!this.todo
 			};
 

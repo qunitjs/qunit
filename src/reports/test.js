@@ -66,6 +66,14 @@ export default class TestReport {
 		return this._endTime - this._startTime;
 	}
 
+	getStartTime() {
+		return this._startTime;
+	}
+
+	getEndTime() {
+		return this._endTime;
+	}
+
 	getStatus() {
 		if ( this.skipped ) {
 			return "skipped";

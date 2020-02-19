@@ -162,7 +162,8 @@ function done() {
 
 	ProcessingQueue.finished = true;
 
-	const runtime = now() - config.started;
+	const ended = now();
+	const runtime = ended - config.started;
 	const passed = config.stats.all - config.stats.bad;
 
 	if ( config.stats.all === 0 ) {
@@ -192,6 +193,8 @@ function done() {
 		passed,
 		failed: config.stats.bad,
 		total: config.stats.all,
+		started: config.started,
+		ended,
 		runtime
 	} ).then( () => {
 
