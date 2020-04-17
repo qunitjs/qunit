@@ -6,6 +6,7 @@ import { extend, objectType, generateHash } from "./core/utilities";
 import { globalSuite } from "./core";
 
 let focused = false;
+let someFocused = false;
 
 const moduleStack = [];
 
@@ -96,7 +97,7 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 }
 
 export default function module( name, options, executeNow ) {
-	if ( focused ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 
@@ -116,8 +117,22 @@ module.only = function() {
 	focused = true;
 };
 
-module.skip = function( name, options, executeNow ) {
+module.some = function() {
 	if ( focused ) {
+		return;
+	}
+
+	if ( !someFocused ) {
+		config.modules.length = 0;
+		config.queue.length = 0;
+		someFocused = true;
+	}
+
+	processModule( ...arguments );
+};
+
+module.skip = function( name, options, executeNow ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 
@@ -125,7 +140,7 @@ module.skip = function( name, options, executeNow ) {
 };
 
 module.todo = function( name, options, executeNow ) {
-	if ( focused ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 

@@ -72,6 +72,12 @@ QUnit.module( "module B", function() {
 			assert.ok( false, "this test should not run" );
 		} );
 	} );
+
+	QUnit.module.some( "This also should not run", function() {
+		QUnit.test( "normal test", function( assert ) {
+			assert.ok( false, "this test should not run" );
+		} );
+	} );
 } );
 
 QUnit.module( "module C", function() {
