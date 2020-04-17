@@ -12,6 +12,10 @@ QUnit.test( "another implicitly skipped test", function( assert ) {
 	assert.ok( false, "test should be skipped" );
 } );
 
+QUnit.some( "another implicitly skipped test using some", function( assert ) {
+	assert.ok( false, "test should be skipped" );
+} );
+
 QUnit.only( "ignore the subsequent calls to only", function( assert ) {
 	assert.ok( false, "this test should be skipped" );
 } );

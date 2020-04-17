@@ -24,6 +24,7 @@ import ProcessingQueue from "./core/processing-queue";
 import TestReport from "./reports/test";
 
 let focused = false;
+let someFocused = false;
 
 export default function Test( settings ) {
 	var i, l;
@@ -677,7 +678,7 @@ function checkPollution() {
 
 // Will be exposed as QUnit.test
 export function test( testName, callback ) {
-	if ( focused ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 
@@ -690,7 +691,7 @@ export function test( testName, callback ) {
 }
 
 export function todo( testName, callback ) {
-	if ( focused ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 
@@ -705,7 +706,7 @@ export function todo( testName, callback ) {
 
 // Will be exposed as QUnit.skip
 export function skip( testName ) {
-	if ( focused ) {
+	if ( focused || someFocused ) {
 		return;
 	}
 
@@ -725,6 +726,25 @@ export function only( testName, callback ) {
 
 	config.queue.length = 0;
 	focused = true;
+
+	const newTest = new Test( {
+		testName: testName,
+		callback: callback
+	} );
+
+	newTest.queue();
+}
+
+// Will be exposed as QUnit.some
+export function some( testName, callback ) {
+	if ( focused ) {
+		return;
+	}
+
+	if ( !someFocused ) {
+		config.queue.length = 0;
+		someFocused = true;
+	}
 
 	const newTest = new Test( {
 		testName: testName,
