@@ -35,6 +35,10 @@ QUnit.done( function() {
 			"75e1bf3f": {
 				skipped: false,
 				todo: false
+			},
+			"c7ae85c2": {
+				skipped: false,
+				todo: false
 			}
 		} );
 	} );
@@ -77,5 +81,11 @@ QUnit.module( "module B", function() {
 QUnit.module( "module C", function() {
 	QUnit.test( "test C", function( assert ) {
 		assert.ok( false, "this test should not run" );
+	} );
+} );
+
+QUnit.module.only( "module D", function() {
+	QUnit.test( "test D", function( assert ) {
+		assert.ok( true, "this test should run as well" );
 	} );
 } );

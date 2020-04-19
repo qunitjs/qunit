@@ -104,14 +104,12 @@ export default function module( name, options, executeNow ) {
 }
 
 module.only = function() {
-	if ( focused ) {
-		return;
+	if ( !focused ) {
+		config.modules.length = 0;
+		config.queue.length = 0;
 	}
 
-	config.modules.length = 0;
-	config.queue.length = 0;
-
-	module( ...arguments );
+	processModule( ...arguments );
 
 	focused = true;
 };
