@@ -8,7 +8,7 @@ categories:
 
 ## `QUnit.only( name, callback )`
 
-Adds a test to exclusively run, preventing all other tests from running.
+Add a set of tests to exclusively run, preventing other tests from running.
 
 | parameter | description |
 |-----------|-------------|
@@ -23,9 +23,7 @@ Adds a test to exclusively run, preventing all other tests from running.
 
 ### Description
 
-Use this method to focus your test suite on a specific test. `QUnit.only` will cause any other tests in your suite to be ignored.
-
-Note that if more than one `QUnit.only` is present only the first instance will run.
+Use this method to focus your test suite on a specific set of tests. `QUnit.only` will cause any other tests in your suite to be ignored.
 
 This is an alternative to filtering tests to run in the HTML reporter. It is especially useful when you use a console reporter or in a codebase with a large set of long running tests.
 
@@ -48,9 +46,13 @@ QUnit.test( "stomp", function( assert ) {
   assert.ok( false, "I'm not quite ready yet" );
 });
 
-// You're currently working on the laser feature, so we run only this test
+// You're currently working on the laser feature, so we run only these tests
 QUnit.only( "laser", function( assert ) {
   assert.ok( this.robot.laser() );
+});
+
+QUnit.only( "other laser", function( assert ) {
+  assert.ok( this.robot.otherLaser() );
 });
 ```
 
@@ -73,8 +75,12 @@ test( "stomp", t => {
   t.ok( false, "I'm not quite ready yet" );
 });
 
-// You're currently working on the laser feature, so we run only this test
+// You're currently working on the laser feature, so we run only these tests
 only( "laser", function( t ) {
   t.ok( this.robot.laser() );
+});
+
+only( "other laser", function( t ) {
+  t.ok( this.robot.otherLaser() );
 });
 ```

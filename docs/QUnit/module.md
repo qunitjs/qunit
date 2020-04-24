@@ -61,8 +61,6 @@ The module's callback is invoked with the test environment as its `this` context
 
 When you are debugging your code, you will often need to _only_ run a subset of tests. You can append `only` to `QUnit.module` to specify which module you want to run.
 
-Note that if more than one module was defined using `QUnit.module.only()`, only the first one will run.
-
 It works the same way `QUnit.only()` does for tests.
 
 ## Inclusive tests
