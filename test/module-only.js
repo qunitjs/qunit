@@ -39,6 +39,14 @@ QUnit.done( function() {
 			"c7ae85c2": {
 				skipped: false,
 				todo: false
+			},
+			"74b800d1": {
+				skipped: false,
+				todo: false
+			},
+			"2f8fb2a2": {
+				skipped: false,
+				todo: false
 			}
 		} );
 	} );
@@ -87,5 +95,29 @@ QUnit.module( "module C", function() {
 QUnit.module.only( "module D", function() {
 	QUnit.test( "test D", function( assert ) {
 		assert.ok( true, "this test should run as well" );
+	} );
+} );
+
+QUnit.module.only( "module E", function() {
+	QUnit.module( "module F", function() {
+		QUnit.test( "test F", function( assert ) {
+			assert.ok( true, "this test should run as well" );
+		} );
+	} );
+
+	QUnit.test( "test E", function( assert ) {
+		assert.ok( true, "this test should run as well" );
+	} );
+} );
+
+QUnit.module.skip( "module G", function() {
+	QUnit.module.only( "module H", function() {
+		QUnit.test( "test H", function( assert ) {
+			assert.ok( false, "this test should not run" );
+		} );
+	} );
+
+	QUnit.test( "test G", function( assert ) {
+		assert.ok( false, "this test should not run" );
 	} );
 } );

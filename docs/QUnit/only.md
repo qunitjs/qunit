@@ -1,14 +1,14 @@
 ---
 layout: default
 title: only
-description: Adds a test to exclusively run, preventing all other tests from running.
+description: Adds a test to exclusively run, preventing any other tests not defined with `QUnit.only()` from running.
 categories:
   - main
 ---
 
 ## `QUnit.only( name, callback )`
 
-Add a set of tests to exclusively run, preventing other tests from running.
+Adds a test to exclusively run, preventing any other tests not defined with `QUnit.only()` from running.
 
 | parameter | description |
 |-----------|-------------|
@@ -23,7 +23,7 @@ Add a set of tests to exclusively run, preventing other tests from running.
 
 ### Description
 
-Use this method to focus your test suite on a specific set of tests. `QUnit.only` will cause any other tests in your suite to be ignored.
+Use this method to focus your test suite on specific tests. `QUnit.only` will cause any other tests in your suite to be ignored.
 
 This is an alternative to filtering tests to run in the HTML reporter. It is especially useful when you use a console reporter or in a codebase with a large set of long running tests.
 
