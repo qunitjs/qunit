@@ -15,7 +15,8 @@ import {
 	hasOwn,
 	inArray,
 	now,
-	objectType
+	objectType,
+	uniqueTestName
 } from "./core/utilities";
 import { runLoggingCallbacks } from "./core/logging";
 import { extractStacktrace, sourceFromStacktrace } from "./core/stacktrace";
@@ -26,7 +27,7 @@ import TestReport from "./reports/test";
 let focused = false;
 
 export default function Test( settings ) {
-	var i, l;
+	var testNames;
 
 	++Test.count;
 
@@ -62,12 +63,14 @@ export default function Test( settings ) {
 		valid: this.valid()
 	} );
 
-	// Register unique strings
-	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {
-		if ( this.module.tests[ i ].name === this.testName ) {
-			this.testName += " ";
-		}
-	}
+	// Register unique string for each test inside a module
+	//
+	// Note: this is the authoratative way of generating testId
+	// testIds are generated one at a time when individual test is being run
+	// config.testIds also simulates the process here by pushing the test name
+	// one at a time to match the uniqueTestName generation here
+	testNames = this.module.tests.map( test => test.name );
+	this.testName = uniqueTestName( testNames, this.testName );
 
 	this.testId = generateHash( this.module.name, this.testName );
 

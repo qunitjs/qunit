@@ -165,6 +165,7 @@ module.exports = function( grunt ) {
 						"test/reporter-html/xhtml-single-testid.xhtml",
 						"test/reporter-urlparams.html",
 						"test/moduleId.html",
+						"test/testIds.html",
 						"test/onerror/inside-test.html",
 						"test/onerror/outside-test.html",
 						"test/only.html",

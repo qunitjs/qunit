@@ -1,5 +1,5 @@
 import { window, localSessionStorage } from "../globals";
-import { extend } from "./utilities";
+import { extend, generateHash, uniqueTestName } from "./utilities";
 
 /**
  * Config object: Maintain internal state
@@ -58,7 +58,27 @@ const config = {
 	callbacks: {},
 
 	// The storage module to use for reordering tests
-	storage: localSessionStorage
+	storage: localSessionStorage,
+
+	// Get the testIds for all tests
+	// Simulates how test.js generates testIds by
+	// iteratively pushing testNames to get uniqueTestName
+	get testIds() {
+		var i, j, ml, tl, testIds = [], testNames, testName;
+
+		// Loop through all modules and tests and generate testIds
+		for ( i = 0, ml = config.modules.length; i < ml; i++ ) {
+			testNames = [];
+			for ( j = 0, tl = config.modules[ i ].tests.length; j < tl; j++ ) {
+				testName = uniqueTestName( testNames,
+					config.modules[ i ].tests[ j ].name );
+				testIds.push( generateHash( config.modules[ i ].name, testName ) );
+				testNames.push( testName );
+			}
+		}
+		return testIds;
+	}
+
 };
 
 // take a predefined QUnit.config and extend the defaults

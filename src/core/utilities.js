@@ -157,3 +157,14 @@ export function generateHash( module, testName ) {
 
 	return hex.slice( -8 );
 }
+
+// Append whitespace to duplicated seen test name
+export function uniqueTestName( testNames, testName ) {
+	var i, l;
+	for ( i = 0, l = testNames; i < l.length; i++ ) {
+		if ( testNames[ i ] === testName ) {
+			testName += " ";
+		}
+	}
+	return testName;
+}
