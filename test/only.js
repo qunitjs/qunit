@@ -1,17 +1,25 @@
-QUnit.module( "QUnit.only" );
+QUnit.module( "QUnit.only", function( hooks ) {
+	let testsRun = 0;
 
-QUnit.test( "implicitly skipped test", function( assert ) {
-	assert.ok( false, "test should be skipped" );
-} );
+	hooks.after( function( assert ) {
+		assert.strictEqual( testsRun, 2 );
+	} );
 
-QUnit.only( "only run this test", function( assert ) {
-	assert.ok( true, "only this test should run" );
-} );
+	QUnit.test( "implicitly skipped test", function( assert ) {
+		assert.ok( false, "test should be skipped" );
+	} );
 
-QUnit.test( "another implicitly skipped test", function( assert ) {
-	assert.ok( false, "test should be skipped" );
-} );
+	QUnit.only( "run this test", function( assert ) {
+		testsRun += 1;
+		assert.ok( true, "only this test should run" );
+	} );
 
-QUnit.only( "ignore the subsequent calls to only", function( assert ) {
-	assert.ok( false, "this test should be skipped" );
+	QUnit.test( "another implicitly skipped test", function( assert ) {
+		assert.ok( false, "test should be skipped" );
+	} );
+
+	QUnit.only( "all tests with only run", function( assert ) {
+		testsRun += 1;
+		assert.ok( true, "this test should run as well" );
+	} );
 } );

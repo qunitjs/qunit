@@ -719,12 +719,10 @@ export function skip( testName ) {
 
 // Will be exposed as QUnit.only
 export function only( testName, callback ) {
-	if ( focused ) {
-		return;
+	if ( !focused ) {
+		config.queue.length = 0;
+		focused = true;
 	}
-
-	config.queue.length = 0;
-	focused = true;
 
 	const newTest = new Test( {
 		testName: testName,

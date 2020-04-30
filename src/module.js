@@ -9,6 +9,11 @@ let focused = false;
 
 const moduleStack = [];
 
+function isParentModuleInQueue() {
+	const modulesInQueue = config.modules.map( module => module.moduleId );
+	return moduleStack.some( module => modulesInQueue.includes( module.moduleId ) );
+}
+
 function createModule( name, testEnvironment, modifiers ) {
 	const parentModule = moduleStack.length ? moduleStack.slice( -1 )[ 0 ] : null;
 	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
@@ -96,7 +101,7 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 }
 
 export default function module( name, options, executeNow ) {
-	if ( focused ) {
+	if ( focused && !isParentModuleInQueue() ) {
 		return;
 	}
 
@@ -104,14 +109,12 @@ export default function module( name, options, executeNow ) {
 }
 
 module.only = function() {
-	if ( focused ) {
-		return;
+	if ( !focused ) {
+		config.modules.length = 0;
+		config.queue.length = 0;
 	}
 
-	config.modules.length = 0;
-	config.queue.length = 0;
-
-	module( ...arguments );
+	processModule( ...arguments );
 
 	focused = true;
 };
