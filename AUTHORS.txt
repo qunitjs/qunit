@@ -169,3 +169,7 @@ Gerald Haagsma <haagsmag@gmail.com>
 Adam Byrne <misterbyrne@gmail.com>
 XhmikosR <xhmikosr@gmail.com>
 step2yeung <syeung@linkedin.com>
+Kean Loong Tan <keanification@gmail.com>
+Jim Lynch <mrdotjim@gmail.com>
+Eddy Lu <eddy.lu@mail.mcgill.ca>
+ventuno <ventuno@users.noreply.github.com>

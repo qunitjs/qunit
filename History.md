@@ -1,3 +1,10 @@
+2.10.0 / 2020-05-02
+==================
+
+  * Core: run all `only` tests (#1436)
+  * HTML Reporter: Correct tab order for toolbar filters
+  * Readme: add project logo (#1425)
+
 2.9.3 / 2019-10-08
 ==================
 
