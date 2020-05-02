@@ -2,11 +2,11 @@
   "name": "qunit",
   "title": "QUnit",
   "description": "An easy-to-use JavaScript Unit Testing framework.",
-  "version": "2.10.0-pre",
+  "version": "2.10.0",
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "jQuery Foundation and other contributors",
-    "url": "https://github.com/qunitjs/qunit/blob/master/AUTHORS.txt"
+    "url": "https://github.com/qunitjs/qunit/blob/2.10.0/AUTHORS.txt"
   },
   "repository": {
     "type": "git",
