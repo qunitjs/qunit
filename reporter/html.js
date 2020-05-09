@@ -334,17 +334,17 @@ export function escapeText( s ) {
 		return filter;
 	}
 
-	function moduleListHtml() {
+	function moduleListHtml( modules ) {
 		var i, checked,
 			html = "";
 
-		for ( i = 0; i < config.modules.length; i++ ) {
-			if ( config.modules[ i ].name !== "" ) {
-				checked = config.moduleId.indexOf( config.modules[ i ].moduleId ) > -1;
+		for ( i = 0; i < modules.length; i++ ) {
+			if ( modules[ i ].name !== "" ) {
+				checked = config.moduleId.indexOf( modules[ i ].moduleId ) > -1;
 				html += "<li><label class='clickable" + ( checked ? " checked" : "" ) +
-				"'><input type='checkbox' " + "value='" + config.modules[ i ].moduleId + "'" +
+				"'><input type='checkbox' " + "value='" + modules[ i ].moduleId + "'" +
 				( checked ? " checked='checked'" : "" ) + " />" +
-				escapeText( config.modules[ i ].name ) + "</label></li>";
+				escapeText( modules[ i ].name ) + "</label></li>";
 			}
 		}
 
@@ -402,7 +402,7 @@ export function escapeText( s ) {
 		addEvent( commit, "click", applyUrlParams );
 
 		dropDownList.id = "qunit-modulefilter-dropdown-list";
-		dropDownList.innerHTML = moduleListHtml();
+		dropDownList.innerHTML = moduleListHtml( config.modules );
 
 		dropDown.id = "qunit-modulefilter-dropdown";
 		dropDown.style.display = "none";
@@ -448,20 +448,20 @@ export function escapeText( s ) {
 			}
 		}
 
-		// Processes module search box input
-		function searchInput() {
-			var i, item,
-				searchText = moduleSearch.value.toLowerCase(),
-				listItems = dropDownList.children;
+		function filterModules( searchText ) {
+			return config.modules
+				.filter( module => module.name.toLowerCase().indexOf( searchText ) > -1 );
+		}
 
-			for ( i = 0; i < listItems.length; i++ ) {
-				item = listItems[ i ];
-				if ( !searchText || item.textContent.toLowerCase().indexOf( searchText ) > -1 ) {
-					item.style.display = "";
-				} else {
-					item.style.display = "none";
-				}
-			}
+		// Processes module search box input
+		var searchInputTimeout;
+		function searchInput() {
+			window.clearTimeout( searchInputTimeout );
+			searchInputTimeout = window.setTimeout( () => {
+				var searchText = moduleSearch.value.toLowerCase(),
+					filteredModules = filterModules( searchText );
+				dropDownList.innerHTML = moduleListHtml( filteredModules );
+			}, 200 );
 		}
 
 		// Processes selection changes
