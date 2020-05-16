@@ -4,6 +4,7 @@ import { extractStacktrace } from "../src/core/stacktrace";
 import { now } from "../src/core/utilities";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
+import fuzzysort from "fuzzysort";
 
 const stats = {
 	passedTests: 0,
@@ -372,6 +373,8 @@ export function escapeText( s ) {
 		addEvent( moduleSearch, "focus", searchFocus );
 		addEvent( moduleSearch, "click", searchFocus );
 
+		config.modules.forEach( module => module.namePrepared = fuzzysort.prepare( module.name ) );
+
 		label.id = "qunit-modulefilter-search-container";
 		label.innerHTML = "Module: ";
 		label.appendChild( moduleSearch );
@@ -449,8 +452,11 @@ export function escapeText( s ) {
 		}
 
 		function filterModules( searchText ) {
-			return config.modules
-				.filter( module => module.name.toLowerCase().indexOf( searchText ) > -1 );
+			if ( searchText === "" ) {
+				return config.modules;
+			}
+			return fuzzysort.go( searchText, config.modules, { key: "namePrepared" } )
+				.map( module => module.obj );
 		}
 
 		// Processes module search box input

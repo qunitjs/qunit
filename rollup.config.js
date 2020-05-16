@@ -2,12 +2,18 @@
 
 var babel = require( "rollup-plugin-babel" );
 var resolve = require( "rollup-plugin-node-resolve" );
+var commonjs = require( "rollup-plugin-commonjs" );
 
 module.exports = {
 	format: "iife",
 	exports: "none",
 	plugins: [
-		resolve( { modulesOnly: true } ),
+		resolve(),
+		commonjs( {
+			namedExports: {
+				"fuzzysort": [ "fuzzysort" ]
+			}
+		} ),
 		babel()
 	],
 
