@@ -455,7 +455,8 @@ export function escapeText( s ) {
 			if ( searchText === "" ) {
 				return config.modules;
 			}
-			return fuzzysort.go( searchText, config.modules, { key: "namePrepared" } )
+			return fuzzysort
+				.go( searchText, config.modules, { key: "namePrepared", threshold: -10000 } )
 				.map( module => module.obj );
 		}
 
