@@ -3,5 +3,5 @@
         // Don't transpile modules since Rollup does that
         [ "env", { modules: false } ]
     ],
-    "plugins": [ "external-helpers" ]
+    "plugins": [ "external-helpers", "babel-plugin-transform-object-rest-spread" ]
 }

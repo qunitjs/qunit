@@ -4,6 +4,7 @@ import { extractStacktrace } from "../src/core/stacktrace";
 import { now } from "../src/core/utilities";
 import { window, navigator } from "../src/globals";
 import "./urlparams";
+import Fuse from "fuse.js";
 
 const stats = {
 	passedTests: 0,
@@ -365,6 +366,12 @@ export function escapeText( s ) {
 			dropDownList = document.createElement( "ul" ),
 			dirty = false;
 
+		const options = {
+			keys: [ "name" ]
+		};
+
+		const fuse = new Fuse( config.modules, options );
+
 		moduleSearch.id = "qunit-modulefilter-search";
 		moduleSearch.autocomplete = "off";
 		addEvent( moduleSearch, "input", searchInput );
@@ -449,8 +456,10 @@ export function escapeText( s ) {
 		}
 
 		function filterModules( searchText ) {
-			return config.modules
-				.filter( module => module.name.toLowerCase().indexOf( searchText ) > -1 );
+			if ( searchText === "" ) {
+				return config.modules;
+			}
+			return fuse.search( searchText ).map( module => module.item );
 		}
 
 		// Processes module search box input
