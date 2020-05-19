@@ -367,9 +367,6 @@ export function escapeText( s ) {
 			dirty = false;
 
 		const options = {
-			includeScore: true,
-
-			// Search in `author` and in `tags` array
 			keys: [ "name" ]
 		};
 
