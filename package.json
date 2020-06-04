@@ -57,6 +57,7 @@
     "execa": "0.8.0",
     "fixturify": "0.3.4",
     "fs-extra": "5.0.0",
+    "fuzzysort": "^1.1.4",
     "grunt": "1.0.4",
     "grunt-cli": "1.2.0",
     "grunt-concurrent": "2.3.1",
@@ -75,6 +76,7 @@
     "proxyquire": "1.8.0",
     "requirejs": "2.3.5",
     "rollup-plugin-babel": "3.0.2",
+    "rollup-plugin-commonjs": "^8.0.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "semver": "5.4.1"
   },
