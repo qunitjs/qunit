@@ -173,6 +173,24 @@ class Assert {
 		} );
 	}
 
+	true( result, message ) {
+		this.pushResult( {
+			result: result === true,
+			actual: result,
+			expected: true,
+			message
+		} );
+	}
+
+	false( result, message ) {
+		this.pushResult( {
+			result: result === false,
+			actual: result,
+			expected: false,
+			message
+		} );
+	}
+
 	equal( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq

@@ -38,6 +38,22 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( NaN );
 } );
 
+QUnit.test( "true", function( assert ) {
+	function functionThatReturnsTrue() {
+		return true;
+	}
+	assert.true( true );
+	assert.true( functionThatReturnsTrue() );
+} );
+
+QUnit.test( "false", function( assert ) {
+	function functionThatReturnsFalse() {
+		return false;
+	}
+	assert.false( false );
+	assert.false( functionThatReturnsFalse() );
+} );
+
 QUnit.test( "equal", function( assert ) {
 	assert.equal( 1, 1 );
 	assert.equal( "foo", "foo" );
