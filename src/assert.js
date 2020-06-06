@@ -173,6 +173,38 @@ class Assert {
 		} );
 	}
 
+	strictlyTrue( result, message ) {
+		const isTrue = result === true;
+		if ( !message ) {
+			message = isTrue ?
+				"true" :
+				`failed, expected argument to be true, was: ${dump.parse( result )}`;
+		}
+
+		this.pushResult( {
+			result: isTrue,
+			actual: result,
+			expected: true,
+			message
+		} );
+	}
+
+	strictlyFalse( result, message ) {
+		const isFalse = result === false;
+		if ( !message ) {
+			message = isFalse ?
+				"false" :
+				`failed, expected argument to be false, was: ${dump.parse( result )}`;
+		}
+
+		this.pushResult( {
+			result: isFalse,
+			actual: result,
+			expected: false,
+			message
+		} );
+	}
+
 	equal( actual, expected, message ) {
 
 		// eslint-disable-next-line eqeqeq
