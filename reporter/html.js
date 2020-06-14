@@ -368,7 +368,8 @@ export function escapeText( s ) {
 
 		const options = {
 			keys: [ "name" ],
-			ignoreLocation: true
+			ignoreLocation: true,
+			ignoreFieldNorm: true
 		};
 		const fuse = new Fuse( config.modules, options );
 
