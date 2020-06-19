@@ -143,7 +143,7 @@ not ok 2 global failure
 # fail 2
 `,
 
-	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
+	// Ignore the last frame about Node processing ticks (differs between Node 10 ad 12+)
 	"qunit no-tests":
 `TAP version 13
 not ok 1 global failure
@@ -157,7 +157,7 @@ not ok 1 global failure
     at advanceTestQueue (.*)
     at Object.advance (.*)
     at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
-    at process._tickCallback (.*)
+    at .*
   ...
 1..1
 # pass 0
@@ -174,9 +174,8 @@ not ok 1 timeout > first
   severity: failed
   actual: null
   expected: undefined
-  stack:     at ontimeout (.*)
-    at tryOnTimeout (.*)
-    (.*)\\s*(.*)?
+  stack:     at .* (.*timers.js.*)
+    at .*(\n    at .*)?(\n    at .*)?
   ...
 ok 2 timeout > second
 1..2
@@ -186,7 +185,7 @@ ok 2 timeout > second
 # fail 1
 `,
 
-	// in node 8, the stack trace includes 'at <anonymous>. But not in node 6 or 10.
+	// Ignore the last frame about Node processing ticks (differs between Node 10 ad 12+)
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13
 not ok 1 global failure
@@ -200,7 +199,7 @@ not ok 1 global failure
     at advanceTestQueue (.*)
     at Object.advance (.*)
     at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
-    at process._tickCallback (.*)
+    at .*
   ...
 1..1
 # pass 0
@@ -220,7 +219,7 @@ ok 1 Single > has a test
 # todo 0
 # fail 0`,
 
-	"node --expose-gc --allow-natives-syntax ../../../bin/qunit.js memory-leak/*.js":
+	"node --expose-gc ../../../bin/qunit.js memory-leak/*.js":
 `TAP version 13
 ok 1 some nested module > can call method on foo
 ok 2 later thing > has released all foos
