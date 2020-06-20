@@ -38,20 +38,20 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( NaN );
 } );
 
-QUnit.test( "strictlyTrue", function( assert ) {
+QUnit.test( "true", function( assert ) {
 	function functionThatReturnsTrue() {
 		return true;
 	}
-	assert.strictlyTrue( true );
-	assert.strictlyTrue( functionThatReturnsTrue() );
+	assert.true( true );
+	assert.true( functionThatReturnsTrue() );
 } );
 
-QUnit.test( "strictlyFalse", function( assert ) {
+QUnit.test( "false", function( assert ) {
 	function functionThatReturnsFalse() {
 		return false;
 	}
-	assert.strictlyFalse( false );
-	assert.strictlyFalse( functionThatReturnsFalse() );
+	assert.false( false );
+	assert.false( functionThatReturnsFalse() );
 } );
 
 QUnit.test( "equal", function( assert ) {

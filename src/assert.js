@@ -173,7 +173,7 @@ class Assert {
 		} );
 	}
 
-	strictlyTrue( result, message ) {
+	true( result, message ) {
 		const isTrue = result === true;
 		if ( !message ) {
 			message = isTrue ?
@@ -189,7 +189,7 @@ class Assert {
 		} );
 	}
 
-	strictlyFalse( result, message ) {
+	false( result, message ) {
 		const isFalse = result === false;
 		if ( !message ) {
 			message = isFalse ?
