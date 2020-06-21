@@ -149,6 +149,15 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "allows running zero-assertion tests", co.wrap( function* ( assert ) {
+		const command = "qunit zero-assertions.js";
+		const execution = yield execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} ) );
+
 	if ( semver.gte( process.versions.node, "9.0.0" ) ) {
 		QUnit.test( "callbacks and hooks from modules are properly released for garbage collection", co.wrap( function* ( assert ) {
 			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit.js memory-leak/*.js";

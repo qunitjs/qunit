@@ -299,6 +299,7 @@ Test.prototype = {
 		this.runtime = now() - this.started;
 
 		config.stats.all += this.assertions.length;
+		config.stats.testCount += 1;
 		module.stats.all += this.assertions.length;
 
 		for ( i = 0; i < this.assertions.length; i++ ) {
