@@ -174,15 +174,8 @@ class Assert {
 	}
 
 	true( result, message ) {
-		const isTrue = result === true;
-		if ( !message ) {
-			message = isTrue ?
-				"true" :
-				`failed, expected argument to be true, was: ${dump.parse( result )}`;
-		}
-
 		this.pushResult( {
-			result: isTrue,
+			result: result === true,
 			actual: result,
 			expected: true,
 			message
@@ -190,15 +183,8 @@ class Assert {
 	}
 
 	false( result, message ) {
-		const isFalse = result === false;
-		if ( !message ) {
-			message = isFalse ?
-				"false" :
-				`failed, expected argument to be false, was: ${dump.parse( result )}`;
-		}
-
 		this.pushResult( {
-			result: isFalse,
+			result: result === false,
 			actual: result,
 			expected: false,
 			message

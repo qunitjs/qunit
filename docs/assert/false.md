@@ -8,7 +8,7 @@ categories:
 
 ## `false( state [, message ] )`
 
-A boolean check, inverse of `true()` equivalent to Chais's `assert.isFalse()`, and JUnit's `assertFalse()`. Passes if the first argument is false.
+A boolean check, inverse of `true()` equivalent to Chai's `assert.isFalse()`, and JUnit's `assertFalse()`. Passes if the first argument is false.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
@@ -19,7 +19,9 @@ A boolean check, inverse of `true()` equivalent to Chais's `assert.isFalse()`, a
 
 `false()` requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
 
-### Examples:
+[`true()`](/assert/true) can be used to explicitly test for a true value.
+
+### Examples
 
 ```js
 QUnit.test( "false test", function( assert ) {
