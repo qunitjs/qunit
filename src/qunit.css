@@ -11,8 +11,12 @@
 
 /** Font Family and Sizes */
 
-
-[id^=qunit] button {
+/* Style our buttons in a simple way, uninfluenced by the styles
+   the tested app might load. Don't affect buttons in #qunit-fixture!
+   https://github.com/qunitjs/qunit/pull/1395
+   https://github.com/qunitjs/qunit/issues/1437 */
+#qunit-testrunner-toolbar button,
+#qunit-testresult button {
 	font-size: initial;
 	border: initial;
 	background-color: buttonface;
