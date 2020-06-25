@@ -185,6 +185,15 @@ ok 2 timeout > second
 # fail 1
 `,
 
+	"qunit zero-assertions.js":
+`TAP version 13
+ok 1 Zero assertions > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
 	// Ignore the last frame about Node processing ticks (differs between Node 10 ad 12+)
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13

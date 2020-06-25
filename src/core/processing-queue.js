@@ -165,7 +165,7 @@ function done() {
 	const runtime = now() - config.started;
 	const passed = config.stats.all - config.stats.bad;
 
-	if ( config.stats.all === 0 ) {
+	if ( config.stats.testCount === 0 ) {
 
 		if ( config.filter && config.filter.length ) {
 			throw new Error( `No tests matched the filter "${config.filter}".` );

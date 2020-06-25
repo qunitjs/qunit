@@ -149,6 +149,15 @@ QUnit.module( "CLI Main", function() {
 		}
 	} ) );
 
+	QUnit.test( "allows running zero-assertion tests", co.wrap( function* ( assert ) {
+		const command = "qunit zero-assertions.js";
+		const execution = yield execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} ) );
+
 	// https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
 	// Created in Node 11.x, but starts working the way we need from Node 14.
 	if ( semver.gte( process.versions.node, "14.0.0" ) ) {
