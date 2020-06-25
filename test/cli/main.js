@@ -158,9 +158,11 @@ QUnit.module( "CLI Main", function() {
 		assert.equal( execution.stdout, expectedOutput[ command ] );
 	} ) );
 
-	if ( semver.gte( process.versions.node, "9.0.0" ) ) {
+	// https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
+	// Created in Node 11.x, but starts working the way we need from Node 14.
+	if ( semver.gte( process.versions.node, "14.0.0" ) ) {
 		QUnit.test( "callbacks and hooks from modules are properly released for garbage collection", co.wrap( function* ( assert ) {
-			const command = "node --expose-gc --allow-natives-syntax ../../../bin/qunit.js memory-leak/*.js";
+			const command = "node --expose-gc ../../../bin/qunit.js memory-leak/*.js";
 			const execution = yield execute( command );
 
 			assert.equal( execution.code, 0 );
