@@ -1,3 +1,8 @@
+2.10.1 / 2020-07-04
+==================
+
+  * CSS: Scope QUnit UI button style to not affect `#qunit-fixture` ([#1437](https://github.com/qunitjs/qunit/issues/1437)).
+
 2.10.0 / 2020-05-02
 ==================
 
