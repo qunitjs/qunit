@@ -1,6 +1,6 @@
 ---
 layout: default
-title: false
+title: "false"
 description: A strict boolean false comparison.
 categories:
   - assert
