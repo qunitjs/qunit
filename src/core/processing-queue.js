@@ -137,7 +137,7 @@ function addToTestQueue( testTasksFunc, prioritize, seed ) {
 function unitSamplerGenerator( seed ) {
 
 	// 32-bit xorshift, requires only a nonzero seed
-	// http://excamera.com/sphinx/article-xorshift.html
+	// https://excamera.com/sphinx/article-xorshift.html
 	let sample = parseInt( generateHash( seed ), 16 ) || -1;
 	return function() {
 		sample ^= sample << 13;

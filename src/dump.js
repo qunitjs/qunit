@@ -2,7 +2,7 @@ import config from "./core/config";
 import { inArray, toString, is } from "./core/utilities";
 
 // Based on jsDump by Ariel Flesler
-// http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
+// https://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
 export default ( function() {
 	function quote( str ) {
 		return "\"" + str.toString().replace( /\\/g, "\\\\" ).replace( /"/g, "\\\"" ) + "\"";
