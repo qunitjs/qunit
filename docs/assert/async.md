@@ -9,7 +9,6 @@ redirect_from:
   - "/QUnit.stop/"
   - "/QUnit/stop/"
   - "/stop/"
-  - "/async/"
 ---
 
 ## `async( [ acceptCallCount = 1 ] )`
