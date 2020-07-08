@@ -1,11 +1,11 @@
 ---
 layout: default
 categories: [config]
-title: QUnit.stack
+title: QUnit.stack()
 description: Returns a single line string representing the stacktrace (call stack)
 ---
 
-## `QUnit.stack( [ offset = 0 ] )`
+`QUnit.stack( [ offset = 0 ] )`
 
 Returns a single line string representing the stacktrace (call stack)
 

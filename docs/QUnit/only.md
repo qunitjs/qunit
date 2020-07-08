@@ -1,12 +1,12 @@
 ---
 layout: default
-title: only
+title: QUnit.only()
 description: Adds a test to exclusively run, preventing any other tests not defined with `QUnit.only()` from running.
 categories:
   - main
 ---
 
-## `QUnit.only( name, callback )`
+`QUnit.only( name, callback )`
 
 Adds a test to exclusively run, preventing any other tests not defined with `QUnit.only()` from running.
 

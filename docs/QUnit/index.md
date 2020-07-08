@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Main Methods
+title: Main methods
 category: main
 categories:
   - topics

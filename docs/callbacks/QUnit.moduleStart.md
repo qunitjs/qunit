@@ -1,6 +1,6 @@
 ---
 layout: default
-title: QUnit.moduleStart
+title: QUnit.moduleStart()
 description: Register a callback to fire whenever a module begins.
 categories:
   - callbacks
@@ -8,7 +8,7 @@ redirect_from:
   - "/QUnit.moduleStart/"
 ---
 
-## `QUnit.moduleStart( callback )`
+`QUnit.moduleStart( callback )`
 
 Register a callback to fire whenever a module begins. The callback can return a promise that will be waited for before the next callback is handled.
 

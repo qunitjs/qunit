@@ -1,6 +1,6 @@
 ---
 layout: default
-title: test
+title: QUnit.test()
 description: Add a test to run.
 categories:
   - main
@@ -12,7 +12,7 @@ redirect_from:
   - "/test/"
 ---
 
-## `QUnit.test( name, callback )`
+`QUnit.test( name, callback )`
 
 Add a test to run.
 

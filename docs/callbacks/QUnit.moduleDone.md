@@ -1,6 +1,6 @@
 ---
 layout: default
-title: QUnit.moduleDone
+title: QUnit.moduleDone()
 description: Register a callback to fire whenever a module ends.
 categories:
   - callbacks
@@ -8,7 +8,7 @@ redirect_from:
   - "/QUnit.moduleDone/"
 ---
 
-## `QUnit.moduleDone( callback )`
+`QUnit.moduleDone( callback )`
 
 Register a callback to fire whenever a module ends. The callback can return a promise that will be waited for before the next callback is handled.
 

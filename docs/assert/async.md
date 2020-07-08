@@ -1,6 +1,6 @@
 ---
 layout: default
-title: async
+title: assert.async()
 description: Instruct QUnit to wait for an asynchronous operation.
 categories:
   - assert
@@ -11,7 +11,7 @@ redirect_from:
   - "/stop/"
 ---
 
-## `async( [ acceptCallCount = 1 ] )`
+`async( [ acceptCallCount = 1 ] )`
 
 Instruct QUnit to wait for an asynchronous operation.
 

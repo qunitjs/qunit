@@ -1,12 +1,12 @@
 ---
 layout: default
-title: pushResult
+title: assert.pushResult()
 description: Report the result of a custom assertion.
 categories:
   - assert
 ---
 
-## `pushResult( data: { result, actual, expected, message } )`
+`pushResult( data: { result, actual, expected, message } )`
 
 Report the result of a custom assertion.
 

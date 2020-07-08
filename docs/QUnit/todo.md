@@ -1,12 +1,12 @@
 ---
 layout: default
-title: todo
+title: QUnit.todo()
 description: Adds a test which expects at least one failing assertion during its run.
 categories:
   - main
 ---
 
-## `QUnit.todo( name, callback )`
+`QUnit.todo( name, callback )`
 
 Adds a test which expects at least one failing assertion during its run.
 

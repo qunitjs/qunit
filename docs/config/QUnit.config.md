@@ -5,8 +5,6 @@ title: QUnit.config
 description: General configuration for QUnit. Check the description of each option for details.
 ---
 
-## `QUnit.config`
-
 Configuration for QUnit. QUnit has a bunch of internal configuration defaults, some of which are useful to override. Check the description for each option for details.
 
 ### `QUnit.config.altertitle` (boolean) | default: `true`

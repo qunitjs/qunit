@@ -1,6 +1,6 @@
 ---
 layout: default
-title: notEqual
+title: assert.notEqual()
 description: A non-strict comparison, checking for inequality.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/notEqual/"
 ---
 
-## `notEqual( actual, expected [, message ] )`
+`notEqual( actual, expected [, message ] )`
 
 A non-strict comparison, checking for inequality.
 

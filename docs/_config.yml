@@ -31,6 +31,8 @@ algolia:
   # with the content of the current Jekyll site.
   # The auth key for this is injected as secure env variable.
   index_name: qunitjs-api
+  # Auth key for client-side search queries.
+  search_only_api_key: aed00982db05bd21dd05310be057bda8
 
 # Serving
 baseurl: ""

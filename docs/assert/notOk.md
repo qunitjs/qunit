@@ -1,12 +1,12 @@
 ---
 layout: default
-title: notOk
+title: assert.notOk()
 description: A boolean check. Passes if the first argument is falsy.
 categories:
   - assert
 ---
 
-## `notOk( state [, message ] )`
+`notOk( state [, message ] )`
 
 A boolean check, inverse of `ok()` and CommonJS's `assert.ok()`, and equivalent to JUnit's `assertFalse()`. Passes if the first argument is falsy.
 

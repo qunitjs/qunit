@@ -1,6 +1,6 @@
 ---
 layout: default
-title: QUnit.testDone
+title: QUnit.testDone()
 description: Register a callback to fire whenever a test ends.
 categories:
   - callbacks
@@ -8,7 +8,7 @@ redirect_from:
   - "/QUnit.testDone/"
 ---
 
-## `QUnit.testDone( callback )`
+`QUnit.testDone( callback )`
 
 Register a callback to fire whenever a test ends. The callback can return a promise that will be waited for before the next callback is handled.
 

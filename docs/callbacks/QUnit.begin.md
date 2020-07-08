@@ -1,6 +1,6 @@
 ---
 layout: default
-title: QUnit.begin
+title: QUnit.begin()
 description: Register a callback to fire whenever the test suite begins.
 categories:
   - callbacks
@@ -8,7 +8,7 @@ redirect_from:
   - "/QUnit.begin/"
 ---
 
-## `QUnit.begin( callback )`
+`QUnit.begin( callback )`
 
 Register a callback to fire whenever the test suite begins. The callback can return a promise that will be waited for before the next callback is handled.
 

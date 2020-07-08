@@ -1,12 +1,12 @@
 ---
 layout: default
-title: true
+title: assert.true()
 description: A strict boolean true comparison.
 categories:
   - assert
 ---
 
-## `true( actual [, message ] )`
+`true( actual [, message ] )`
 
 A boolean check, equivalent to JUnit's `assertTrue()`. Passes if the first argument is `true`.
 

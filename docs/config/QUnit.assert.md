@@ -6,8 +6,6 @@ categories:
   - config
 ---
 
-## `QUnit.assert`
-
 Namespace for QUnit assertions.
 
 QUnit's built-in assertions are defined on the `QUnit.assert` object. An instance of this object is passed as the only argument to the `QUnit.test` function callback.

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: step
+title: assert.step()
 description: A marker for progress in a given test.
 categories:
   - assert
 ---
 
-## `step( [ message ] )`
+`step( [ message ] )`
 
 A marker for progress in a given test.
 

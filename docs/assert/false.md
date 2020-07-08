@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "false"
+title: assert.false()
 description: A strict boolean false comparison.
 categories:
   - assert
 ---
 
-## `false( actual [, message ] )`
+`false( actual [, message ] )`
 
 A boolean check, equivalent to JUnit's `assertFalse()`. Passes if the first argument is false.
 

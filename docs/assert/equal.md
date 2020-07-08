@@ -1,6 +1,6 @@
 ---
 layout: default
-title: equal
+title: assert.equal()
 description: A non-strict comparison.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/equal/"
 ---
 
-## `equal( actual, expected [, message ] )`
+`equal( actual, expected [, message ] )`
 
 A non-strict comparison, roughly equivalent to JUnit's `assertEquals`.
 

@@ -1,14 +1,14 @@
 ---
 layout: default
 categories: [config]
-title: QUnit.dump.parse
+title: QUnit.dump.parse()
 description: Advanced and extensible data dumping for JavaScript
 redirect_from:
   - "/QUnit.dump.parse/"
   - "/QUnit.jsDump.parse/"
 ---
 
-## `QUnit.dump.parse( data )`
+`QUnit.dump.parse( data )`
 
 Advanced and extensible data dumping for JavaScript
 

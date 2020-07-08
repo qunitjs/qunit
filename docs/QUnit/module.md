@@ -1,6 +1,6 @@
 ---
 layout: default
-title: module
+title: QUnit.module()
 description: Group related tests under a single label.
 categories:
   - main
@@ -9,7 +9,7 @@ redirect_from:
   - "/module/"
 ---
 
-## `QUnit.module( name [, hooks] [, nested ] )`
+`QUnit.module( name [, hooks] [, nested ] )`
 
 Group related tests under a single label.
 

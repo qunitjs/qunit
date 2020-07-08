@@ -1,12 +1,12 @@
 ---
 layout: default
-title: QUnit.on
+title: QUnit.on()
 description: Register a callback to fire whenever the specified event is emitted.
 categories:
   - callbacks
 ---
 
-## `QUnit.on( eventName, callback )`
+`QUnit.on( eventName, callback )`
 
 Register a callback to fire whenever the specified event is emitted. Conforms to the [js-reporters standard](https://github.com/js-reporters/js-reporters).
 

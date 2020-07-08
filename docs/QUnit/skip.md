@@ -1,12 +1,12 @@
 ---
 layout: default
-title: skip
+title: QUnit.skip()
 description: Adds a test like object to be skipped
 categories:
   - main
 ---
 
-## `QUnit.skip( name )`
+`QUnit.skip( name )`
 
 Adds a test like object to be skipped
 

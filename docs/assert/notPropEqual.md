@@ -1,6 +1,6 @@
 ---
 layout: default
-title: notPropEqual
+title: assert.notPropEqual()
 description: A strict comparison of an object's own properties, checking for inequality.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/notPropEqual/"
 ---
 
-## `notPropEqual( actual, expected [, message ] )`
+`notPropEqual( actual, expected [, message ] )`
 
 A strict comparison of an object's own properties, checking for inequality.
 

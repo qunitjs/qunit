@@ -1,6 +1,6 @@
 ---
 layout: default
-title: propEqual
+title: assert.propEqual()
 description: A strict type and value comparison of an object's own properties.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/propEqual/"
 ---
 
-## `propEqual( actual, expected [, message ] )`
+`propEqual( actual, expected [, message ] )`
 
 A strict type and value comparison of an object's own properties.
 

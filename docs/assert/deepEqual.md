@@ -1,6 +1,6 @@
 ---
 layout: default
-title: deepEqual
+title: assert.deepEqual()
 description: A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/deepEqual/"
 ---
 
-## `deepEqual( actual, expected [, message ] )`
+`deepEqual( actual, expected [, message ] )`
 
 A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
 

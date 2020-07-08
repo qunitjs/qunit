@@ -1,6 +1,6 @@
 ---
 layout: default
-title: throws
+title: assert.throws()
 description: Test if a callback throws an exception, and optionally compare the thrown error.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/throws/"
 ---
 
-## `throws( blockFn[, expectedMatcher][, message ] )`
+`throws( blockFn[, expectedMatcher][, message ] )`
 
 Test if a callback throws an exception, and optionally compare the thrown error.
 

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: verifySteps
+title: assert.verifySteps()
 description: A helper assertion to verify the order and number of steps in a test.
 categories:
   - assert
 ---
 
-## `verifySteps( steps [, message ] )`
+`verifySteps( steps [, message ] )`
 
 A helper assertion to verify the order and number of steps in a test.
 

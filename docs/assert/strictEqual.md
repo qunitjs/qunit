@@ -1,6 +1,6 @@
 ---
 layout: default
-title: strictEqual
+title: assert.strictEqual()
 description: A strict type and value comparison.
 categories:
   - assert
@@ -8,7 +8,7 @@ redirect_from:
   - "/strictEqual/"
 ---
 
-## `strictEqual( actual, expected [, message ] )`
+`strictEqual( actual, expected [, message ] )`
 
 A strict type and value comparison.
 

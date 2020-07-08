@@ -1,6 +1,6 @@
 ---
 layout: default
-title: start
+title: QUnit.start()
 description: QUnit.start() is used to start an async test set
 categories:
   - main
@@ -8,8 +8,6 @@ categories:
 redirect_from:
   - "/start/"
 ---
-
-## `QUnit.start()`
 
 `QUnit.start()` must be used to start a test run that has [`QUnit.config.autostart`](/config/QUnit.config) set to `false`.
 

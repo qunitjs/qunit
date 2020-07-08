@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Async Control
+title: Async control
 category: async
 categories:
   - topics
