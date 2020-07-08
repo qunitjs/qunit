@@ -4,6 +4,8 @@ title: notPropEqual
 description: A strict comparison of an object's own properties, checking for inequality.
 categories:
   - assert
+redirect_from:
+  - "/notPropEqual/"
 ---
 
 ## `notPropEqual( actual, expected [, message ] )`

@@ -4,6 +4,8 @@ title: QUnit.testDone
 description: Register a callback to fire whenever a test ends.
 categories:
   - callbacks
+redirect_from:
+  - "/QUnit.testDone/"
 ---
 
 ## `QUnit.testDone( callback )`

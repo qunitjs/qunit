@@ -4,6 +4,8 @@ title: QUnit.moduleStart
 description: Register a callback to fire whenever a module begins.
 categories:
   - callbacks
+redirect_from:
+  - "/QUnit.moduleStart/"
 ---
 
 ## `QUnit.moduleStart( callback )`

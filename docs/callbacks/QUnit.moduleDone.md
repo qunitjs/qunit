@@ -4,6 +4,8 @@ title: QUnit.moduleDone
 description: Register a callback to fire whenever a module ends.
 categories:
   - callbacks
+redirect_from:
+  - "/QUnit.moduleDone/"
 ---
 
 ## `QUnit.moduleDone( callback )`
