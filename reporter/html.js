@@ -217,8 +217,11 @@ export function escapeText( s ) {
 				if ( field.checked ) {
 					for ( var i = 0; i < length; i++ ) {
 						var test = children[ i ];
+						var className = test ? test.className : "";
+						var classNameHasPass = className.indexOf( "pass" ) > -1;
+						var classNameHasSkipped = className.indexOf( "skipped" ) > -1;
 
-						if ( test && test.className.indexOf( "pass" ) > -1 ) {
+						if ( classNameHasPass || classNameHasSkipped ) {
 							hiddenTests.push( test );
 						}
 					}
@@ -1005,7 +1008,7 @@ export function escapeText( s ) {
 			testItem.appendChild( sourceName );
 		}
 
-		if ( config.hidepassed && status === "passed" ) {
+		if ( config.hidepassed && ( status === "passed" || details.skipped ) ) {
 
 			// use removeChild instead of remove because of support
 			hiddenTests.push( testItem );
