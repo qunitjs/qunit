@@ -23,6 +23,14 @@ matrix:
     - os: linux
       node_js: "10"
       env: NPM_SCRIPT=coverage
+    - stage: "Update search index"
+      if: branch = master
+      language: ruby
+      rvm: 2.7
+      cache: bundler
+      before_install: cd docs/
+      install: bundle install
+      script: bundle exec jekyll algolia
 script:
   - npm run $NPM_SCRIPT
 cache:

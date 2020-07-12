@@ -24,6 +24,14 @@ markdown: kramdown
 kramdown:
   input: GFM
 
+# Search
+algolia:
+  application_id: HOJ487LP0L
+  # Which index the Travis job will create/update
+  # with the content of the current Jekyll site.
+  # The auth key for this is injected as secure env variable.
+  index_name: qunitjs-api
+
 # Serving
 baseurl: ""
 
