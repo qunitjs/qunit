@@ -57,8 +57,6 @@ You can verify all of the above were correctly published by using the following:
 * Bower: Run `bower info qunit` and verify the latest version number
 * NPM: Visit <https://www.npmjs.com/package/qunit>
 * CDN (release): Visit <https://code.jquery.com/qunit/qunit-x.x.x.js> (replacing `x.x.x` with the release number)
-* CDN (pre-release): Visit <https://code.jquery.com/qunit/qunit-git.js> and ensure that
-  the next `pre` version was built and published. Note that it may take a couple minutes for this version to update while [the build](http://jenkins.jquery.com/job/QUnit/) happens.
 
 ## Updating the website
 
