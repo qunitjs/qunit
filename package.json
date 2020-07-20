@@ -43,7 +43,7 @@
     "minimatch": "3.0.4"
   },
   "devDependencies": {
-    "async": "2.6.0",
+    "async": "^2.6.3",
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
@@ -68,7 +68,7 @@
     "grunt-coveralls": "2.0.0",
     "grunt-eslint": "20.1.0",
     "grunt-git-authors": "3.2.0",
-    "grunt-istanbul": "0.8.0",
+    "grunt-istanbul": "^0.8.0",
     "grunt-rollup": "8.2.0",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
