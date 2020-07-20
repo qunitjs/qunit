@@ -21,6 +21,9 @@ QUnit.module( "urlParams hidepassed module", function() {
 	QUnit.test( "passed", function( assert ) {
 		assert.ok( true );
 	} );
+	QUnit.skip( "skipped", function( assert ) {
+		assert.true( false, "can't seem to get this working" );
+	} );
 
 	QUnit.test( "passed", function( assert ) {
 

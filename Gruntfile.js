@@ -164,6 +164,7 @@ module.exports = function( grunt ) {
 						"test/reporter-html/xhtml-escape-details-source.xhtml",
 						"test/reporter-html/xhtml-single-testid.xhtml",
 						"test/reporter-urlparams.html",
+						"test/reporter-urlparams-hidepassed.html",
 						"test/moduleId.html",
 						"test/onerror/inside-test.html",
 						"test/onerror/outside-test.html",
