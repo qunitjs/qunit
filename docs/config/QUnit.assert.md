@@ -10,7 +10,7 @@ Namespace for QUnit assertions.
 
 QUnit's built-in assertions are defined on the `QUnit.assert` object. An instance of this object is passed as the only argument to the `QUnit.test` function callback.
 
-This object has properties for each of [QUnit's built-in assertion methods](/assert/).
+This object has properties for each of [QUnit's built-in assertion methods](../assert/index.md).
 
 ### Example
 

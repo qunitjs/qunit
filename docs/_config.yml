@@ -46,7 +46,7 @@ exclude:
   - CNAME
 
 # Output
-permalink: title
+permalink: title/
 
 ## Site variables
 ## accessible via `{{ site.* }}` in layouts.

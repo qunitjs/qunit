@@ -32,4 +32,4 @@ QUnit.test( "step test", function( assert ) {
 });
 ```
 
-_Note: See the [`verifySteps`](./verifySteps) entry for more detailed examples._
+_Note: See the [`verifySteps`](./verifySteps.md) entry for more detailed examples._

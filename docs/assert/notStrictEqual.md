@@ -22,9 +22,9 @@ A strict comparison, checking for inequality.
 
 The `notStrictEqual` assertion uses the strict inverted comparison operator (`!==`) to compare the actual and expected arguments. When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
-[`equal()`](/assert/equal) can be used to test equality.
+[`equal()`](./equal.md) can be used to test equality.
 
-[`strictEqual()`](/assert/strictEqual) can be used to test strict equality.
+[`strictEqual()`](./strictEqual.md) can be used to test strict equality.
 
 ### Examples
 

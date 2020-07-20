@@ -19,7 +19,7 @@ Adds a test which expects at least one failing assertion during its run.
 
 | parameter | description |
 |-----------|-------------|
-| `assert` (object) | A new instance object with the [assertion methods](/assert) |
+| `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
 ### Description
 

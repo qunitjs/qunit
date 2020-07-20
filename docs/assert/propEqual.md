@@ -22,9 +22,9 @@ A strict type and value comparison of an object's own properties.
 
 The `propEqual()` assertion provides strictly (`===`) comparison of Object properties. Unlike `deepEqual()`, this assertion can be used to compare two objects made with different constructors and prototype.
 
-[`strictEqual()`](/assert/strictEqual) can be used to test strict equality.
+[`strictEqual()`](./strictEqual.md) can be used to test strict equality.
 
-[`notPropEqual()`](/assert/notPropEqual) can be used to explicitly test strict inequality of Object properties.
+[`notPropEqual()`](./notPropEqual.md) can be used to explicitly test strict inequality of Object properties.
 
 ### Example
 

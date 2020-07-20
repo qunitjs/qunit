@@ -32,7 +32,7 @@ The properties of the details argument are listed below as options.
 | `source` (string) | The associated stacktrace, either from an exception or pointing to the source of the assertion. Depends on browser support for providing stacktraces, so can be undefined. |
 | `module` (string) | The test module name of the assertion. If the assertion is not connected to any module, the property's value will be _undefined_. |
 | `name` (string) | The test block name of the assertion. |
-| `runtime` (number) | The time elapsed in milliseconds since the start of the containing [`QUnit.test()`](/QUnit/test), including setup. |
+| `runtime` (number) | The time elapsed in milliseconds since the start of the containing [`QUnit.test()`](../QUnit/test.md), including setup. |
 | `todo` (boolean) | Indicates whether or not this assertion was part of a todo test. |
 
 ### Examples

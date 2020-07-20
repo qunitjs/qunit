@@ -19,7 +19,7 @@ A boolean check, equivalent to JUnit's `assertTrue()`. Passes if the first argum
 
 `true()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
 
-[`false()`](/assert/false) can be used to explicitly test for a false value.
+[`false()`](./false.md) can be used to explicitly test for a false value.
 
 ### Examples
 

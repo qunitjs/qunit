@@ -25,13 +25,13 @@ Add a test to run.
 
 | parameter | description |
 |-----------|-------------|
-| `assert` (object) | A new instance object with the [assertion methods](/assert) |
+| `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
 ### Description
 
 Add a test to run using `QUnit.test()`.
 
-The `assert` argument to the callback contains all of QUnit's [assertion methods](/assert). Use this argument to call your test assertions.
+The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
 
 `QUnit.test()` can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`able Promise as the result of your callback function.
 

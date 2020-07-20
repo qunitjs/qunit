@@ -16,7 +16,7 @@ Adds a test like object to be skipped
 
 ### Description
 
-Use this method to replace [`QUnit.test()`](/QUnit/test) instead of commenting out entire tests.
+Use this method to replace [`QUnit.test()`](./test.md) instead of commenting out entire tests.
 
 This test's prototype will be listed on the suite as a skipped test, ignoring the callback argument and the respective global and module's hooks.
 
