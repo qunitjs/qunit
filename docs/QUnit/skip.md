@@ -1,14 +1,14 @@
 ---
 layout: default
 title: QUnit.skip()
-description: Adds a test like object to be skipped
+description: Add a test that will be skipped.
 categories:
   - main
 ---
 
 `QUnit.skip( name )`
 
-Adds a test like object to be skipped
+Add a test, similar to `QUnit.test`, but that will be skipped.
 
 | parameter | description |
 |-----------|-------------|

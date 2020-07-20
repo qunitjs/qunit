@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.rejects()
-description: Test if the provided promise rejects, and optionally compare the rejection value.
+description: Test if the provided promise rejects.
 categories:
   - assert
 ---

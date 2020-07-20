@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.deepEqual()
-description: A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
+description: A deep recursive strict comparison.
 categories:
   - assert
 redirect_from:

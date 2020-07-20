@@ -2,7 +2,7 @@
 layout: default
 categories: [config]
 title: QUnit.extend()
-description: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object
+description: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object.
 ---
 
 `QUnit.extend( target, mixin )`

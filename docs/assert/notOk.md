@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.notOk()
-description: A boolean check. Passes if the first argument is falsy.
+description: Check if the first argument is falsy.
 categories:
   - assert
 ---

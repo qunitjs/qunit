@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.only()
-description: Adds a test to exclusively run, preventing any other tests not defined with `QUnit.only()` from running.
+description: Add a test that is exclusively run.
 categories:
   - main
 ---

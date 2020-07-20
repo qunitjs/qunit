@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.throws()
-description: Test if a callback throws an exception, and optionally compare the thrown error.
+description: Test if a callback throws an exception.
 categories:
   - assert
 redirect_from:

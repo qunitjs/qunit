@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.start()
-description: QUnit.start() is used to start an async test set
+description: Start an async test suite.
 categories:
   - main
   - async

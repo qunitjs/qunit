@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.ok()
-description: A boolean check, equivalent to CommonJS's assert.ok() and JUnit's assertTrue(). Passes if the first argument is truthy.
+description: Check if the first argument is truthy.
 categories:
   - assert
 redirect_from:

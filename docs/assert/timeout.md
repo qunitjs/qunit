@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.timeout()
-description: Sets the length of time to wait for async operations before failing the test.
+description: Set the length of time to wait for async operations before failing the test.
 categories:
   - assert
   - async
@@ -9,7 +9,7 @@ categories:
 
 `timeout( duration )`
 
-Sets the length of time to wait for async operations before failing the test.
+Set the length of time to wait for async operations before failing the test.
 
 | name | description |
 |------|-------------|

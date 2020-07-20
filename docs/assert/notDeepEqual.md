@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.notDeepEqual()
-description: An inverted deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.
+description: An inverted deep recursive comparison.
 categories:
   - assert
 redirect_from:
