@@ -181,6 +181,16 @@ hr {
 		display: flex;
 	}
 
+	.main {
+		// without this, the browser will apply 'auto' min-width
+		// to the flex item, which prevents things like <pre>
+		// from being clipped with scollable overflow, and thus
+		// gives the viewport needless vertical scrollbars.
+		// The 'min-width: 0;' rule effectively makes the browser
+		// behave the same as as when there is no flexbox at play.
+		min-width: 0;
+	}
+
 	.sidebar {
 		display: block;
 		flex: 0 0 220px;
