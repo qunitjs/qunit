@@ -4,6 +4,7 @@ title: assert.verifySteps()
 description: A helper assertion to verify the order and number of steps in a test.
 categories:
   - assert
+version_added: "2.2"
 ---
 
 `verifySteps( steps [, message ] )`

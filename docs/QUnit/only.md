@@ -4,6 +4,7 @@ title: QUnit.only()
 description: Add a test that is exclusively run.
 categories:
   - main
+version_added: "1.20"
 ---
 
 `QUnit.only( name, callback )`

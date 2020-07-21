@@ -6,6 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/throws/"
+version_added: "1.0"
 ---
 
 `throws( blockFn[, expectedMatcher][, message ] )`

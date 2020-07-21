@@ -7,6 +7,7 @@ categories:
   - async
 redirect_from:
   - "/start/"
+version_added: "1.0"
 ---
 
 `QUnit.start()` must be used to start a test run that has [`QUnit.config.autostart`](../config/QUnit.config.md) set to `false`.

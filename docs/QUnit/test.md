@@ -10,6 +10,7 @@ redirect_from:
   - "/QUnit.test/"
   - "/asyncTest/"
   - "/test/"
+version_added: "1.0"
 ---
 
 `QUnit.test( name, callback )`

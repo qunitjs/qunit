@@ -6,6 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/notDeepEqual/"
+version_added: "1.0"
 ---
 
 `notDeepEqual( actual, expected [, message ] )`

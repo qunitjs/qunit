@@ -6,6 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/notPropEqual/"
+version_added: "1.11"
 ---
 
 `notPropEqual( actual, expected [, message ] )`

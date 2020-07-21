@@ -4,6 +4,7 @@ title: QUnit.skip()
 description: Add a test that will be skipped.
 categories:
   - main
+version_added: "1.16"
 ---
 
 `QUnit.skip( name )`

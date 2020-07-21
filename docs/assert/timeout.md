@@ -5,6 +5,7 @@ description: Set the length of time to wait for async operations before failing 
 categories:
   - assert
   - async
+version_added: "2.4"
 ---
 
 `timeout( duration )`

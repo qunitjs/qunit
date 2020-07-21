@@ -1,0 +1,18 @@
+{%- comment -%}
+    @param (string) version Like "1.0", "2.2", or "unreleased".
+    @param (string) label Like "version added", "deprecated in", or "removed in".
+{%- endcomment -%}
+
+{%- assign _old_releases = " v1.0.0 v1.11.0 " -%}
+
+{%- assign _full_version = include.version | append: ".0" -%}
+{%- assign _old_version = _full_version | prepend: "v" -%}
+{%- if _old_releases contains _old_version -%}
+    {%- assign _full_version = _old_version -%}
+{%- endif -%}
+
+{%- if include.version == "unreleased" -%}
+not yet released
+{%- else -%}
+{{ include.label }}: <a href="https://github.com/qunitjs/qunit/releases/tag/{{ _full_version }}">{{ include.version }}</a>
+{%- endif -%}

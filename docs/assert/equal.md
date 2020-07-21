@@ -6,6 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/equal/"
+version_added: "1.0"
 ---
 
 `equal( actual, expected [, message ] )`

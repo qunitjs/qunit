@@ -4,6 +4,7 @@ title: QUnit.assert
 description: Namespace for QUnit assertions.
 categories:
   - config
+version_added: "1.7"
 ---
 
 Namespace for QUnit assertions.
