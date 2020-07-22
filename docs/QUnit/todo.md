@@ -27,6 +27,8 @@ Use this method to test a unit of code which is still under development (in a "t
 
 If all assertions pass, then the test will fail signaling that `QUnit.todo` should be replaced by `QUnit.test`.
 
+When a feature is still under development, you can use [`QUnit.module.todo()`](./module.md) to easily mark an entire module's tests as "todo".
+
 ### Example
 
 How to use `QUnit.todo` to denote code that is still under development.

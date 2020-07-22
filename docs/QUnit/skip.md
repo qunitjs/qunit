@@ -18,7 +18,9 @@ Add a test, similar to `QUnit.test`, but that will be skipped.
 
 Use this method to replace [`QUnit.test()`](./test.md) instead of commenting out entire tests.
 
-This test's prototype will be listed on the suite as a skipped test, ignoring the callback argument and the respective global and module's hooks.
+This test will be listed on the results as a skipped test. The callback and the respective module's hooks will not run.
+
+As the codebase becomes bigger, you may sometimes want to temporarily disable an entire group of tests at once. You can use [`QUnit.module.skip()`](./module.md) to recursively skip an entire module.
 
 ### Example
 
