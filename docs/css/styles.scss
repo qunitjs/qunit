@@ -29,11 +29,6 @@ $screen-xl: 1200px;
 
 /* Reset */
 
-ol, ul {
-	list-style: none;
-	padding: 0;
-}
-
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -549,6 +544,10 @@ tr td :last-child {
 	margin-bottom: 0;
 }
 
+.sidebar-list {
+	list-style: none;
+	padding: 0;
+}
 .sidebar-item {
 	border-left: 4px solid transparent;
 }
@@ -604,6 +603,10 @@ pre.highlight {
 	font-size: 95%;
 	line-height: 140%;
 	overflow-x: auto;
+}
+.highlight code {
+	padding: 0;
+	background: transparent;
 }
 
 @import "highlight";
