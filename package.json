@@ -33,12 +33,11 @@
   ],
   "main": "qunit/qunit.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   },
   "dependencies": {
     "commander": "2.12.2",
     "js-reporters": "1.2.1",
-    "resolve": "1.9.0",
     "node-watch": "0.6.4",
     "minimatch": "3.0.4"
   },
