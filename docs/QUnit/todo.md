@@ -4,6 +4,7 @@ title: QUnit.todo()
 description: Add a test which expects at least one failing assertion.
 categories:
   - main
+version_added: "2.2"
 ---
 
 `QUnit.todo( name, callback )`

@@ -171,6 +171,17 @@ hr {
 	display: none;
 }
 
+.version-details {
+	font-size: 90%;
+	font-weight: bold;
+	background: $color-light;
+	padding: 0.2em 0.4em;
+}
+.version-details--warning {
+	background-color: #fdf5c5;
+	border-color: #e6d252;
+}
+
 @media (min-width: $screen-m) {
 	.body {
 		display: flex;
@@ -190,6 +201,13 @@ hr {
 		display: block;
 		flex: 0 0 220px;
 		margin-right: 20px;
+	}
+
+	.version-details {
+		clear: right;
+		float: right;
+		text-align: right;
+		border: 1px solid $color-off-white;
 	}
 }
 

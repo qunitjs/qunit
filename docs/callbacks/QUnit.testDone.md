@@ -6,6 +6,7 @@ categories:
   - callbacks
 redirect_from:
   - "/QUnit.testDone/"
+version_added: "1.0"
 ---
 
 `QUnit.testDone( callback )`

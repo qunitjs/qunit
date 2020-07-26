@@ -6,6 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/ok/"
+version_added: "1.0"
 ---
 
 `ok( state [, message ] )`

@@ -4,11 +4,13 @@ categories: [config]
 title: QUnit.push()
 status: deprecated
 description: "<strong>DEPRECATED</strong> Report the result of a custom assertion."
+version_added: "1.0"
+version_deprecated: "2.1"
 ---
 
 `QUnit.push( result, actual, expected, message )`
 
-__DEPRECATED__: Report the result of a custom assertion.
+Report the result of a custom assertion.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
