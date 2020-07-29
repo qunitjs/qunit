@@ -2,7 +2,6 @@
 
 const fs = require( "fs-extra" );
 const path = require( "path" );
-const co = require( "co" );
 const fixturify = require( "fixturify" );
 
 const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
@@ -39,7 +38,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		fs.removeSync( fixturePath );
 	} );
 
-	QUnit.test( "runs tests and waits until SIGTERM", co.wrap( function* ( assert ) {
+	QUnit.test( "runs tests and waits until SIGTERM", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
 		} );
@@ -52,15 +51,15 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			kill( execution, "SIGTERM" );
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [ "runEnd" ] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
-	} ) );
+	} );
 
-	QUnit.test( "runs tests and waits until SIGINT", co.wrap( function* ( assert ) {
+	QUnit.test( "runs tests and waits until SIGINT", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
 		} );
@@ -73,15 +72,15 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			kill( execution );
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [ "runEnd" ] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
-	} ) );
+	} );
 
-	QUnit.test( "re-runs tests on file changed", co.wrap( function* ( assert ) {
+	QUnit.test( "re-runs tests on file changed", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
 		} );
@@ -101,15 +100,15 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			} );
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file" ] );
-	} ) );
+	} );
 
-	QUnit.test( "re-runs tests on file added", co.wrap( function* ( assert ) {
+	QUnit.test( "re-runs tests on file added", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
 		} );
@@ -129,15 +128,15 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			} );
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "add-file" ] );
-	} ) );
+	} );
 
-	QUnit.test( "re-runs tests on file removed", co.wrap( function* ( assert ) {
+	QUnit.test( "re-runs tests on file removed", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });",
 			"bar.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
@@ -158,15 +157,15 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			} );
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "remove-file" ] );
-	} ) );
+	} );
 
-	QUnit.test( "aborts and restarts when in middle of run", co.wrap( function* ( assert ) {
+	QUnit.test( "aborts and restarts when in middle of run", async function( assert ) {
 
 		// A proper abort finishes the currently running test and runs any remaining
 		// afterEach/after hooks to ensure cleanup happens.
@@ -221,7 +220,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 		execution.addListener( "message", one );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [
 			"bar export first",
@@ -244,9 +243,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file-mid-run" ] );
-	} ) );
+	} );
 
-	QUnit.test( "properly watches files after initial run", co.wrap( function* ( assert ) {
+	QUnit.test( "properly watches files after initial run", async function( assert ) {
 
 		fixturify.writeSync( fixturePath, {
 			"tests": {
@@ -295,7 +294,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			}
 		} );
 
-		const result = yield execution;
+		const result = await execution;
 
 		assert.verifySteps( [
 			"runEnd",
@@ -307,5 +306,5 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "add-file-after-run" ] );
-	} ) );
+	} );
 } );
