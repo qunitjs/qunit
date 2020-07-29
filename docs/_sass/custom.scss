@@ -1,0 +1,148 @@
+// Custom styles for api.qunitjs.com
+
+/* Two columns instead of one */
+.main {
+	padding: $size-spacing;
+}
+.sidebar {
+	display: none;
+}
+@media (min-width: $screen-m) {
+	.main {
+		display: flex;
+	}
+	.body {
+		// without this, the browser will apply 'auto' min-width
+		// to the flex item, which prevents things like <pre>
+		// from being clipped with scollable overflow, and thus
+		// gives the viewport needless vertical scrollbars.
+		// The 'min-width: 0;' rule effectively makes the browser
+		// behave the same as as when there is no flexbox at play.
+		min-width: 0;
+	}
+	.sidebar {
+		display: block;
+		flex: 0 0 220px;
+		margin-right: 20px;
+	}
+}
+
+/* Sidebar */
+
+.sidebar h4 {
+	margin-bottom: 0;
+}
+
+.sidebar-list,
+.page-list {
+	list-style: none;
+	padding: 0;
+}
+.sidebar-item {
+	border-left: 4px solid transparent;
+}
+.sidebar-item-active {
+	border-left-color: $color-vibrant;
+}
+
+.sidebar-item a {
+	border-left: 1px solid $color-bright;
+	// Larger and more consistent click target
+	display: block;
+
+	padding: $box-spacing / 2 $box-spacing / 2;
+
+	color: $color-accent;
+	text-decoration: none;
+}
+.sidebar-item-active a,
+.sidebar-item a:active,
+.sidebar-item a:hover,
+.sidebar-item a:focus {
+	background: $color-bright;
+	text-decoration: none;
+}
+
+/* Content table */
+
+table {
+	/* Reset */
+	border-collapse: collapse;
+	border-spacing: 0;
+
+	padding: 0;
+	margin-bottom: $size-spacing;
+
+	@media (max-width: $screen-m) {
+		display: block;
+		overflow: auto;
+	}
+}
+tr {
+	border-top: 1px solid $color-off-white;
+	background-color: $color-white;
+	margin: 0;
+	padding: 0;
+}
+tr:nth-child(2n) {
+	background-color: $color-light;
+}
+tr th,
+tr td {
+	text-align: left;
+	margin: 0;
+	padding: 0.3em 0.4em;
+	border: 1px solid $color-off-white;
+}
+tr th {
+	background: $color-light;
+	font-weight: bold;
+}
+tr th :first-child,
+tr td :first-child {
+	margin-top: 0;
+}
+tr th :last-child,
+tr td :last-child {
+	margin-bottom: 0;
+}
+
+/* Custom link styles */
+
+.body a {
+	text-decoration-color: $color-vibrant;
+	text-decoration-thickness: 2px;
+}
+.body a:hover > code,
+.body a:focus > code {
+	background-color: $color-bright;
+}
+
+/* API versioning */
+
+.version-details {
+	font-size: 90%;
+	font-weight: bold;
+	background: $color-light;
+	padding: 0.2em 0.4em;
+
+	@media (min-width: $screen-m) {
+		clear: right;
+		float: right;
+		text-align: right;
+		border: 1px solid $color-off-white;
+	}
+}
+.version-details--warning {
+	background-color: #fdf5c5;
+	border-color: #e6d252;
+}
+
+.warning {
+	padding: 0.5em $box-spacing;
+	margin: $box-spacing;
+	border-radius: 5px;
+
+	background: #fdf5c5;
+	border: 1px solid #e6d252;
+}

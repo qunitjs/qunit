@@ -3,9 +3,26 @@
 # This config file is meant for settings that affect your whole site.
 # These values are expected to rarely change. If you are editing this file
 # very often, consider using Jekyll's data files feature.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
-## Site settings
-## https://jekyllrb.com/docs/configuration/
+# Site settings
+#
+# https://jekyllrb.com/docs/configuration/
+title: QUnit API Docs
+description: "API reference documentation for QUnit."
+url: "https://api.qunitjs.com"
+baseurl: ""
+# This a custom theme so the native Jekyll theme system is ignored.
+# But, we use github-pages which has a default theme of 'primer'.
+# This is a problem because, even if we ignore its output file,
+# the combination of Jekyll/Sass/Primer has compile errors:
+# - https://github.com/jekyll/jekyll/issues/7426
+# - https://github.com/jekyll/jekyll/issues/4268
+# - https://github.com/sindresorhus/gulp-ruby-sass/issues/232
+# Workaround by disabling this. – https://github.com/github/pages-gem/issues/613
+theme: null
 
 # Plugins
 plugins:
@@ -13,10 +30,21 @@ plugins:
   - jekyll-redirect-from
 
 # Theme
-# Not currently used, but not specifying results in github-pages
-# defaulting to compile Primer SASS, which causes problems.
-# https://github.com/jekyll/jekyll/issues/7426
-theme: minima
+remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@ab6434b
+amethyst:
+  header_logo:
+    src: /img/logo-with-colored-text.svg
+    width: 250
+    height: 72
+  twitter: qunitjs
+  github: qunitjs
+  gitter: qunitjs/qunit
+  algolia:
+    search_only_api_key: aed00982db05bd21dd05310be057bda8
+    sources:
+      - index: qunitjs-api
+      - index: qunitjs
+        base: https://qunitjs.com
 
 # Conversion
 highlighter: rouge
@@ -24,18 +52,24 @@ markdown: kramdown
 kramdown:
   input: GFM
 
-# Search
+# Sass
+# https://jekyllrb.com/docs/assets/#sassscss
+sass:
+  style: compressed
+  sourcemap: never
+
+# Backend search index
+#
+# This applies to the 'jekyll algolia' command.
+# Requires the ALGOLIA_API_KEY secret environment variable.
+#
+# See <https://github.com/algolia/jekyll-algolia>.
 algolia:
   application_id: HOJ487LP0L
   # Which index the Travis job will create/update
   # with the content of the current Jekyll site.
   # The auth key for this is injected as secure env variable.
   index_name: qunitjs-api
-  # Auth key for client-side search queries.
-  search_only_api_key: aed00982db05bd21dd05310be057bda8
-
-# Serving
-baseurl: ""
 
 # Input files
 exclude:
@@ -46,7 +80,4 @@ exclude:
   - CNAME
 
 # Output
-permalink: title/
-
-## Site variables
-## accessible via `{{ site.* }}` in layouts.
+permalink: :title/

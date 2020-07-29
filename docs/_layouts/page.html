@@ -1,19 +1,8 @@
 ---
+# Like amethyst/page.html but without hero
 layout: wrapper
 ---
 
-<div id="main" class="main" role="main">
+<div class="main wrapper">
     {{ content }}
-
-    <h2>{{ page.title }}</h2>
-
-    <ul class="page-list">
-    {% assign pages = site.pages | where:'categories', page.category %}
-    {% for page in pages %}
-    <li class="page-item">
-        <h3><a href="{{ page.url }}">{{page.title}}</a></h3>
-        <p>{{page.description}}</p>
-    </li>
-    {% endfor %}
-    </ul>
 </div>

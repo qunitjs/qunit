@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: category
 title: Main methods
 category: main
 categories:

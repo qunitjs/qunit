@@ -1,5 +1,5 @@
 ---
-layout: wrapper
+layout: page
 ---
 
 <section class="sidebar">
@@ -56,7 +56,7 @@ layout: wrapper
     {% endfor %}
     </ul>
 </section>
-<div id="main" class="main" role="main">
+<div class="body" role="main">
     <h2>{{ page.title }}</h2>
     {%- if page.version_added or page.version_deprecated -%}
         {%- assign warning = false -%}

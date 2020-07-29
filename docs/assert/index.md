@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: category
 title: Assertions
 category: assert
 categories:
