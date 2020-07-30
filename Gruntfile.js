@@ -2,12 +2,9 @@
 
 var path = require( "path" );
 var fs = require( "fs-extra" );
-var semver = require( "semver" );
 
 var instrumentedDir = "build/instrumented";
 var reportDir = "build/report";
-
-var HAS_ASYNC_FUNCTIONS = semver.satisfies( process.version, ">= 7.10" );
 
 // Detect Travis CI or Jenkins.
 var isCI = process.env.CI || process.env.JENKINS_HOME;
@@ -207,7 +204,7 @@ module.exports = function( grunt ) {
 				"test/module-only",
 				"test/module-skip",
 				"test/module-todo",
-				HAS_ASYNC_FUNCTIONS ? "test/es2017/async-functions" : null
+				"test/es2017/async-functions"
 			].filter( Boolean )
 		},
 		"watch-repeatable": {
