@@ -1,46 +1,42 @@
 /* eslint-env node */
 "use strict";
 
-var async = require( "async" );
-
 module.exports = function( grunt ) {
-	grunt.registerMultiTask( "test-on-node", function() {
-		var runs = this.data.map( function( file ) {
-			return function( runEnd ) {
-				runQUnit( file, runEnd );
-			};
-		} );
-
+	grunt.registerMultiTask( "test-on-node", async function() {
 		var done = this.async();
 
-		async.series( runs, function( error, stats ) {
-			var totals = stats.reduce( function( totals, stats ) {
-				totals.passed += stats.passed;
-				totals.failed += stats.failed;
-				totals.skipped += stats.skipped;
-				totals.todo += stats.todo;
-				totals.passedAssertions += stats.passedAssertions;
-				totals.failedAssertions += stats.failedAssertions;
-				totals.runtime += stats.runtime;
-				return totals;
-			}, {
-				passed: 0,
-				failed: 0,
-				skipped: 0,
-				todo: 0,
-				runtime: 0,
-				passedAssertions: 0,
-				failedAssertions: 0
-			} );
+		const stats = [];
+		for ( const file of this.data ) {
+			const stat = await new Promise( resolve => runQUnit( file, resolve ) );
+			stats.push( stat );
+		}
 
-			grunt.log.writeln( "-----" );
-			grunt.log.ok( constructMessage( totals ) );
-
-			// Refresh the QUnit global to be used in other tests
-			global.QUnit = requireFresh( "../../dist/qunit" );
-
-			done( !error );
+		var totals = stats.reduce( function( totals, stats ) {
+			totals.passed += stats.passed;
+			totals.failed += stats.failed;
+			totals.skipped += stats.skipped;
+			totals.todo += stats.todo;
+			totals.passedAssertions += stats.passedAssertions;
+			totals.failedAssertions += stats.failedAssertions;
+			totals.runtime += stats.runtime;
+			return totals;
+		}, {
+			passed: 0,
+			failed: 0,
+			skipped: 0,
+			todo: 0,
+			runtime: 0,
+			passedAssertions: 0,
+			failedAssertions: 0
 		} );
+
+		grunt.log.writeln( "-----" );
+		grunt.log.ok( constructMessage( totals ) );
+
+		// Refresh the QUnit global to be used in other tests
+		global.QUnit = requireFresh( "../../dist/qunit" );
+
+		done( !totals.failed );
 	} );
 
 	function constructMessage( stats ) {
@@ -151,7 +147,7 @@ module.exports = function( grunt ) {
 			}
 
 			runDone = true;
-			runEnd( stats.failed, stats );
+			runEnd( stats );
 		} );
 	}
 };
