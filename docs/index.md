@@ -1,5 +1,6 @@
 ---
 layout: default
+excerpt: API reference documentation for QUnit.
 ---
 
 <p>QUnit is a powerful, easy-to-use JavaScript unit test suite.
