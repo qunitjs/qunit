@@ -5,7 +5,9 @@ description: A strict type and value comparison.
 categories:
   - assert
 redirect_from:
+  - "/same/"
   - "/strictEqual/"
+  - "/assert/same/"
 version_added: "1.0"
 ---
 
@@ -26,6 +28,10 @@ The `strictEqual()` assertion provides the most rigid comparison of type and val
 [`equal()`](./equal.md) can be used to test non-strict equality.
 
 [`notStrictEqual()`](./notStrictEqual.md) can be used to explicitly test strict inequality.
+
+### Changelog
+
+* Prior to QUnit 1.1, this method was known as `assert.same`.<br>The alias was removed in QUnit 1.3.
 
 ### Example
 

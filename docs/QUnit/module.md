@@ -99,7 +99,7 @@ teardown logic. These hooks can run around individual tests, or around a whole m
 
 Each [QUnit.test](./test.md) has its own test context object, accessible via its `this` variable. Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Example: Test context](#example-test-context).
 
-Changelog:
+**Changelog**:
 * The `before` and `after` options were introduced in [QUnit 2.0](https://github.com/qunitjs/qunit/releases/2.0.0).
 * The `beforeEach` and `afterEach` options were introduced in [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0).
 * The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.

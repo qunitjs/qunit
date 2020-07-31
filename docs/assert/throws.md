@@ -5,11 +5,13 @@ description: Test if a callback throws an exception.
 categories:
   - assert
 redirect_from:
+  - "/assert/raises/"
   - "/throws/"
 version_added: "1.0"
 ---
 
-`throws( blockFn[, expectedMatcher][, message ] )`
+`throws( blockFn[, expectedMatcher][, message ] )`<br>
+`raises( blockFn[, expectedMatcher][, message ] )`
 
 Test if a callback throws an exception, and optionally compare the thrown error.
 
@@ -31,7 +33,12 @@ The `expectedMatcher` argument can be:
 * A RegExp that matches (or partially matches) the String representation
 * A callback Function that must return `true` to pass the assertion check.
 
-> In very few environments, like Closure Compiler, `throws` is considered a reserved word and will cause an error. For that case, an alias is bundled called `raises`. It has the same signature and behaviour, just a different name.
+<p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises`. It has the same signature and behaviour, just a different name.</p>
+
+### Changelog
+
+* `assert.raises` was renamed to `assert.throws` in [QUnit 1.9](https://github.com/qunitjs/qunit/blob/v1.9.0/History.md).<br>The  `assert.raises` method remains as an alias to `assert.throws`.
+
 
 ### Example
 

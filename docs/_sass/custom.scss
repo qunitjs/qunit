@@ -133,16 +133,16 @@ tr td :last-child {
 		border: 1px solid $color-off-white;
 	}
 }
-.version-details--warning {
-	background-color: #fdf5c5;
-	border-color: #e6d252;
-}
-
-.warning {
+.note {
 	padding: 0.5em $box-spacing;
 	margin: $box-spacing;
 	border-radius: 5px;
 
-	background: #fdf5c5;
-	border: 1px solid #e6d252;
+    background: #fff;
+	border: 1px solid #5293e6;
+}
+.version-details--warning,
+.note--warning {
+	background-color: #fdf5c5;
+	border-color: #e6d252;
 }

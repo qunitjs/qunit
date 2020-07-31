@@ -6,6 +6,8 @@ categories:
   - assert
 redirect_from:
   - "/equal/"
+  - "/equals/"
+  - "/assert/equals/"
 version_added: "1.0"
 ---
 
@@ -26,6 +28,10 @@ The `equal` assertion uses the simple comparison operator (`==`) to compare the 
 [`notEqual()`](./notEqual.md) can be used to explicitly test inequality.
 
 [`strictEqual()`](./strictEqual.md) can be used to test strict equality.
+
+### Changelog
+
+* Prior to QUnit 1.1, this method was known as `assert.equals`.<br>The alias was removed in QUnit 1.3.
 
 ### Examples
 

@@ -12,7 +12,10 @@ layout: page
     {% for page in pages %}
     <li class="page-item">
         <h3><a href="{{ page.url }}">{{page.title}}</a></h3>
-        <p>{{page.description}}</p>
+        <p>
+            {%- if page.version_removed == nil and page.version_deprecated %}<strong>DEPRECATED</strong> {% endif -%}
+            {{page.description -}}
+        </p>
     </li>
     {% endfor %}
     </ul>

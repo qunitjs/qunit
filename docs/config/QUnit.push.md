@@ -1,9 +1,11 @@
 ---
 layout: default
-categories: [config]
+categories:
+- config
+- deprecated
 title: QUnit.push()
 status: deprecated
-description: "<strong>DEPRECATED</strong> Report the result of a custom assertion."
+description: Report the result of a custom assertion.
 version_added: "1.0"
 version_deprecated: "2.1"
 ---
@@ -19,7 +21,7 @@ Report the result of a custom assertion.
 | `expected`         | Known comparison value               |
 | `message` (string) | A short description of the assertion |
 
-<p class="warning" markdown="1">This method is __deprecated__ and it's recommended to use [`pushResult`](../assert/pushResult.md) on its direct reference in the assertion context.</p>
+<p class="note note--warning" markdown="1">This method is __deprecated__ and it's recommended to use [`pushResult`](../assert/pushResult.md) in the assertion context instead.</p>
 
 `QUnit.push` reflects to the current running test, and it may leak assertions in asynchronous mode. Checkout [`assert.pushResult()`](../assert/pushResult.md) to set a proper custom assertion.
 

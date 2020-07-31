@@ -12,7 +12,7 @@ version_added: "1.0"
 
 `QUnit.start()` must be used to start a test run that has [`QUnit.config.autostart`](../config/QUnit.config.md) set to `false`.
 
-<p class="warning" markdown="1">Warning: This method was previously used to control async tests on text contexts along with `QUnit.stop`. For asynchronous tests, use [`assert.async`](../assert/async.md) instead.</p>
+<p class="note note--warning" markdown="1">Warning: This method was previously used to control async tests on text contexts along with `QUnit.stop`. For asynchronous tests, use [`assert.async`](../assert/async.md) instead.</p>
 
 When your async test has multiple exit points, call `QUnit.start()` for the corresponding number of `QUnit.stop()` increments.
 
