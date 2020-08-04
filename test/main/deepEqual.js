@@ -212,8 +212,8 @@ QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
 		a.foo = 1;
 		var b = { foo: 1 };
 
-		assert.ok( QUnit.equiv( a, b ) );
-		assert.ok( QUnit.equiv( b, a ) );
+		assert.true( QUnit.equiv( a, b ) );
+		assert.true( QUnit.equiv( b, a ) );
 	} );
 
 QUnit.test( "Arrays basics", function( assert ) {
@@ -1693,23 +1693,23 @@ QUnit.module( "equiv Object-wrapped primitives" );
 QUnit.test( "Number", function( assert ) {
 	var SafeNumber = Number;
 
-	assert.ok( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ),
+	assert.true( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ),
 		"Number objects with same values are equivalent."
 	);
-	assert.ok( QUnit.equiv( new SafeNumber( 0 / 0 ), new SafeNumber( 0 / 0 ) ),
+	assert.true( QUnit.equiv( new SafeNumber( 0 / 0 ), new SafeNumber( 0 / 0 ) ),
 		"NaN Number objects are equivalent."
 	);
-	assert.ok( QUnit.equiv( new SafeNumber( 1 / 0 ), new SafeNumber( 2 / 0 ) ),
+	assert.true( QUnit.equiv( new SafeNumber( 1 / 0 ), new SafeNumber( 2 / 0 ) ),
 		"Infinite Number objects are equivalent."
 	);
 
-	assert.notOk( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 2 ) ),
+	assert.false( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 2 ) ),
 		"Number objects with different values are not equivalent."
 	);
-	assert.notOk( QUnit.equiv( new SafeNumber( 0 / 0 ), new SafeNumber( 1 / 0 ) ),
+	assert.false( QUnit.equiv( new SafeNumber( 0 / 0 ), new SafeNumber( 1 / 0 ) ),
 		"NaN Number objects and infinite Number objects are not equivalent."
 	);
-	assert.notOk( QUnit.equiv( new SafeNumber( 1 / 0 ), new SafeNumber( -1 / 0 ) ),
+	assert.false( QUnit.equiv( new SafeNumber( 1 / 0 ), new SafeNumber( -1 / 0 ) ),
 		"Positive and negative infinite Number objects are not equivalent."
 	);
 } );
@@ -1717,17 +1717,17 @@ QUnit.test( "Number", function( assert ) {
 QUnit.test( "String", function( assert ) {
 	var SafeString = String;
 
-	assert.ok( QUnit.equiv( new SafeString( "foo" ), new SafeString( "foo" ) ),
+	assert.true( QUnit.equiv( new SafeString( "foo" ), new SafeString( "foo" ) ),
 		"String objects with same values are equivalent."
 	);
-	assert.ok( QUnit.equiv( new SafeString( "" ), new SafeString( "" ) ),
+	assert.true( QUnit.equiv( new SafeString( "" ), new SafeString( "" ) ),
 		"Empty String objects are equivalent."
 	);
 
-	assert.notOk( QUnit.equiv( new SafeString( "foo" ), new SafeString( "bar" ) ),
+	assert.false( QUnit.equiv( new SafeString( "foo" ), new SafeString( "bar" ) ),
 		"String objects with different values are not equivalent."
 	);
-	assert.notOk( QUnit.equiv( new SafeString( "" ), new SafeString( "foo" ) ),
+	assert.false( QUnit.equiv( new SafeString( "" ), new SafeString( "foo" ) ),
 		"Empty and nonempty String objects are not equivalent."
 	);
 } );
@@ -1735,14 +1735,14 @@ QUnit.test( "String", function( assert ) {
 QUnit.test( "Boolean", function( assert ) {
 	var SafeBoolean = Boolean;
 
-	assert.ok( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ),
+	assert.true( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ),
 		"True Boolean objects are equivalent."
 	);
-	assert.ok( QUnit.equiv( new SafeBoolean( false ), new SafeBoolean( false ) ),
+	assert.true( QUnit.equiv( new SafeBoolean( false ), new SafeBoolean( false ) ),
 		"False Boolean objects are equivalent."
 	);
 
-	assert.notOk( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( false ) ),
+	assert.false( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( false ) ),
 		"Boolean objects with different values are not equivalent."
 	);
 } );

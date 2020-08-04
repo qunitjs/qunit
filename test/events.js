@@ -277,12 +277,12 @@ QUnit.done( function() {
 QUnit.module( "Events", function() {
 	QUnit.module( "Nested", function() {
 		QUnit.todo( "test1", function( assert ) {
-			assert.ok( false, "failing assertion" );
+			assert.true( false, "failing assertion" );
 		} );
 	} );
 
 	QUnit.test( "test2", function( assert ) {
-		assert.ok( true, "passing assertion" );
+		assert.true( true, "passing assertion" );
 	} );
 
 	QUnit.skip( "test3" );

@@ -36,7 +36,7 @@ QUnit.module( "assert.timeout", function() {
 		var wait = Date.now() + 10;
 		while ( Date.now() < wait ) {} // eslint-disable-line no-empty
 
-		assert.ok( true );
+		assert.true( true );
 	} );
 
 	QUnit.test( "throws an error if a non-numeric value is passed as duration", function( assert ) {
@@ -78,7 +78,7 @@ QUnit.module( "assert.timeout", function() {
 		QUnit.test( "does not fail a synchronous test using assert.async", function( assert ) {
 			assert.timeout( 0 );
 			var done = assert.async();
-			assert.ok( true );
+			assert.true( true );
 			done();
 		} );
 

@@ -1,9 +1,9 @@
 QUnit.module( "Failure", function() {
 	QUnit.test( "bad", function( assert ) {
-		assert.ok( false );
+		assert.true( false );
 	} );
 
 	QUnit.test( "bad again", function( assert ) {
-		assert.ok( false );
+		assert.true( false );
 	} );
 } );

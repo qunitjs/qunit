@@ -43,7 +43,7 @@ QUnit.module( "QUnit.onError", function() {
 		assert.expect( 1 );
 
 		QUnit.config.current.pushFailure = function() {
-			assert.ok( false, "No error should be pushed" );
+			assert.true( false, "No error should be pushed" );
 		};
 
 		QUnit.config.current.ignoreGlobalErrors = true;

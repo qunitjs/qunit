@@ -4,7 +4,7 @@ define( [ "qunit" ], function( QUnit ) {
 	return function() {
 		QUnit.module( "AMD autostart", {
 			after: function( assert ) {
-				assert.ok( true, "after hook ran" );
+				assert.true( true, "after hook ran" );
 			}
 		} );
 

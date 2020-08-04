@@ -40,7 +40,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 	QUnit.test( "runs tests and waits until SIGTERM", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
-			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
@@ -61,7 +61,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 	QUnit.test( "runs tests and waits until SIGINT", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
-			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
@@ -82,7 +82,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 	QUnit.test( "re-runs tests on file changed", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
-			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
@@ -91,7 +91,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		execution.once( "message", function( data ) {
 			assert.step( data );
 			fixturify.writeSync( fixturePath, {
-				"foo.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+				"foo.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
 			} );
 
 			execution.once( "message", function( data ) {
@@ -110,7 +110,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 	QUnit.test( "re-runs tests on file added", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
-			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });"
+			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
@@ -119,7 +119,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		execution.once( "message", function( data ) {
 			assert.step( data );
 			fixturify.writeSync( fixturePath, {
-				"bar.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+				"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
 			} );
 
 			execution.once( "message", function( data ) {
@@ -138,8 +138,8 @@ QUnit.module( "CLI Watch", function( hooks ) {
 
 	QUnit.test( "re-runs tests on file removed", async function( assert ) {
 		fixturify.writeSync( fixturePath, {
-			"foo.js": "QUnit.test('foo', function(assert) { assert.ok(true); });",
-			"bar.js": "QUnit.test('bar', function(assert) { assert.ok(true); });"
+			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });",
+			"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
@@ -185,11 +185,11 @@ QUnit.module( "CLI Watch", function( hooks ) {
 						process.send('testRunning');
 						var done = assert.async();
 						setTimeout(function() {
-							assert.ok(true);
+							assert.true(true);
 							done();
 						}, 500);
 					});
-					QUnit.test('two', function(assert) { assert.ok(true); });`
+					QUnit.test('two', function(assert) { assert.true(true); });`
 			},
 			"bar.js": "module.exports = 'bar export first';"
 		} );
@@ -253,7 +253,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 				"foo.js": `
 					QUnit.module('Module');
 					QUnit.test('Test', function(assert) {
-						assert.ok(true);
+						assert.true(true);
 					});`
 			}
 		} );
@@ -275,7 +275,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 								process.send(require('../bar.js'));
 								QUnit.module('Module');
 								QUnit.test('Test', function(assert) {
-									assert.ok(true);
+									assert.true(true);
 								});`
 						},
 						"bar.js": "module.exports = 'bar export first';"

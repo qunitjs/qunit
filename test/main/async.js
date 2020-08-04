@@ -1,7 +1,7 @@
 function asyncCallback( assert ) {
 	var done = assert.async();
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 }
@@ -13,7 +13,7 @@ QUnit.test( "single call", function( assert ) {
 
 	assert.expect( 1 );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 } );
@@ -23,19 +23,19 @@ QUnit.test( "multiple call", function( assert ) {
 
 	assert.expect( 4 );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	} );
 
@@ -47,11 +47,11 @@ QUnit.test( "parallel calls", function( assert ) {
 
 	assert.expect( 2 );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done1();
 	} );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done2();
 	} );
 } );
@@ -62,11 +62,11 @@ QUnit.test( "parallel calls of differing speeds", function( assert ) {
 
 	assert.expect( 2 );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done1();
 	} );
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done2();
 	}, 100 );
 } );
@@ -77,11 +77,11 @@ QUnit.test( "waterfall calls", function( assert ) {
 
 	assert.expect( 2 );
 	setTimeout( function() {
-		assert.ok( true, "first" );
+		assert.true( true, "first" );
 		done1();
 		done2 = assert.async();
 		setTimeout( function() {
-			assert.ok( true, "second" );
+			assert.true( true, "second" );
 			done2();
 		} );
 	} );
@@ -93,11 +93,11 @@ QUnit.test( "waterfall calls of differing speeds", function( assert ) {
 
 	assert.expect( 2 );
 	setTimeout( function() {
-		assert.ok( true, "first" );
+		assert.true( true, "first" );
 		done1();
 		done2 = assert.async();
 		setTimeout( function() {
-			assert.ok( true, "second" );
+			assert.true( true, "second" );
 			done2();
 		}, 100 );
 	} );
@@ -340,7 +340,7 @@ QUnit.module( "assert.async in afterEach", {
 	afterEach: function( assert ) {
 		var done = assert.async();
 		setTimeout( function() {
-			assert.ok( true, "afterEach synchronized before test was finished" );
+			assert.true( true, "afterEach synchronized before test was finished" );
 			done();
 		} );
 	}
@@ -371,7 +371,7 @@ QUnit.module( "assert.async in after", {
 	after: function( assert ) {
 		var done = assert.async();
 		setTimeout( function() {
-			assert.ok( true, "after synchronized before test was finished" );
+			assert.true( true, "after synchronized before test was finished" );
 			done();
 		} );
 	}
@@ -389,7 +389,7 @@ QUnit.test( "`done` can be called synchronously", function( assert ) {
 	assert.expect( 1 );
 	done = assert.async();
 
-	assert.ok( true );
+	assert.true( true );
 	done();
 } );
 
@@ -399,7 +399,7 @@ QUnit.test( "sole `done` is called last", function( assert ) {
 	assert.expect( 1 );
 	done = assert.async();
 	setTimeout( function() {
-		assert.ok( true, "should pass if called before `done`" );
+		assert.true( true, "should pass if called before `done`" );
 		done();
 	} );
 } );
@@ -412,10 +412,10 @@ QUnit.test( "multiple `done` calls, no assertions after final `done`", function(
 	done2 = assert.async();
 	setTimeout( function() {
 		done1();
-		assert.ok( true, "should pass if called after this `done` but before final `done`" );
+		assert.true( true, "should pass if called after this `done` but before final `done`" );
 	} );
 	setTimeout( function() {
-		assert.ok( true, "should pass if called before final `done`" );
+		assert.true( true, "should pass if called before final `done`" );
 		done2();
 	} );
 } );
@@ -423,26 +423,26 @@ QUnit.test( "multiple `done` calls, no assertions after final `done`", function(
 QUnit.module( "assertions after final assert.async callback", {
 	before: function( assert ) {
 		assert.async()();
-		assert.ok( true, "before" );
+		assert.true( true, "before" );
 	},
 
 	beforeEach: function( assert ) {
 		assert.async()();
-		assert.ok( true, "beforeEach" );
+		assert.true( true, "beforeEach" );
 	},
 
 	afterEach: function( assert ) {
 		assert.async()();
-		assert.ok( true, "afterEach" );
+		assert.true( true, "afterEach" );
 	},
 
 	after: function( assert ) {
 		assert.async()();
-		assert.ok( true, "after" );
+		assert.true( true, "after" );
 	}
 } );
 
 QUnit.test( "in any hook still pass", function( assert ) {
 	assert.expect( 5 );
-	assert.ok( true, "test callback" );
+	assert.true( true, "test callback" );
 } );

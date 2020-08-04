@@ -13,20 +13,20 @@ QUnit.module( "<script id='qunit-unescaped-module'>'module';</script>", {
 		if ( document.getElementById( "qunit-unescaped-module" ) ) {
 
 			// This can either be from in #qunit-modulefilter or #qunit-testresult
-			assert.ok( false, "Unescaped module name" );
+			assert.true( false, "Unescaped module name" );
 		}
 		if ( document.getElementById( "qunit-unescaped-test" ) ) {
-			assert.ok( false, "Unescaped test name" );
+			assert.true( false, "Unescaped test name" );
 		}
 		if ( document.getElementById( "qunit-unescaped-assertion" ) ) {
-			assert.ok( false, "Unescaped test name" );
+			assert.true( false, "Unescaped test name" );
 		}
 	}
 } );
 
 QUnit.test( "<script id='qunit-unescaped-test'>'test';</script>", function( assert ) {
 	assert.expect( 1 );
-	assert.ok( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
+	assert.true( true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>" );
 } );
 
 QUnit.module( "display test info" );
@@ -42,10 +42,10 @@ QUnit.test( "running test name displayed", function( assert ) {
 
 	var displaying = document.getElementById( "qunit-testresult" );
 
-	assert.ok( /running test name displayed/.test( displaying.innerHTML ),
+	assert.true( /running test name displayed/.test( displaying.innerHTML ),
 		"Expect test name to be found in displayed text"
 	);
-	assert.ok( /display test info/.test( displaying.innerHTML ),
+	assert.true( /display test info/.test( displaying.innerHTML ),
 		"Expect module name to be found in displayed text"
 	);
 } );
@@ -56,7 +56,7 @@ QUnit.test( "running test suite progress displayed", function( assert ) {
 	var displaying = document.getElementById( "qunit-testresult" );
 
 	var expected = /\d+ \/ \d+ tests completed in \d+ milliseconds, with \d+ failed, \d+ skipped, and \d+ todo./;
-	assert.ok(
+	assert.true(
 		expected.test( displaying.innerHTML ),
 		"Expect test suite progress to be found in displayed text"
 	);
@@ -97,7 +97,7 @@ QUnit.test( "basics", function( assert ) {
 	var previous = this.getPreviousTest( assert ),
 		runtime = this.filterClass( previous.getElementsByTagName( "span" ) );
 
-	assert.ok( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
+	assert.true( /^\d+ ms$/.test( runtime.innerHTML ), "Runtime reported in ms" );
 } );
 
 QUnit.test( "values", function( assert ) {
@@ -109,10 +109,10 @@ QUnit.test( "values", function( assert ) {
 	basics = this.filterClass( basics.getElementsByTagName( "span" ) );
 	setup = this.filterClass( setup.getElementsByTagName( "span" ) );
 
-	assert.ok( parseInt( basics.innerHTML, 10 ) < 100,
+	assert.true( parseInt( basics.innerHTML, 10 ) < 100,
 		"Fast runtime for trivial test"
 	);
-	assert.ok( parseInt( setup.innerHTML, 10 ) > 100,
+	assert.true( parseInt( setup.innerHTML, 10 ) > 100,
 		"Runtime includes beforeEach"
 	);
 } );
@@ -139,11 +139,11 @@ QUnit.test( "logs location", function( assert ) {
 		return;
 	}
 
-	assert.ok( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
+	assert.true( /(^| )qunit-source( |$)/.test( source.className ), "Source element exists" );
 	assert.equal( source.firstChild.innerHTML, "Source: " );
 
 	// The file test/reporter-html/reporter-html.js is a direct reference to this test file
-	assert.ok( /\/test\/reporter-html\/reporter-html\.js:\d+/.test( source.innerHTML ),
+	assert.true( /\/test\/reporter-html\/reporter-html\.js:\d+/.test( source.innerHTML ),
 		"Source references to the current file and line number"
 	);
 } );

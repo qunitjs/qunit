@@ -196,7 +196,7 @@ QUnit.test( module1Test2.name, function( assert ) {
 		"test runtime was a reasonable number"
 	);
 
-	assert.ok( testDoneContext.assertions instanceof Array, "testDone context: assertions" );
+	assert.true( testDoneContext.assertions instanceof Array, "testDone context: assertions" );
 
 	// TODO: more tests for testDoneContext.assertions
 
@@ -307,8 +307,8 @@ QUnit.test( module2Test4.name, function( assert ) {
 } );
 
 QUnit.todo( module2Test5.name, function( assert ) {
-	assert.ok( false );
-	assert.ok( true );
+	assert.true( false );
+	assert.true( true );
 } );
 
 QUnit.test( module2Test6.name, function( assert ) {

@@ -12,11 +12,11 @@
 	} );
 
 	QUnit.test( "just a test", function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 	} );
 
 	QUnit.test( "just a test", function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 	} );
 
 }( ( function() {

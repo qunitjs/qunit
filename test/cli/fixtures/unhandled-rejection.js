@@ -2,7 +2,7 @@
 
 QUnit.module( "Unhandled Rejections", function() {
 	QUnit.test( "test passes just fine, but has a rejected promise", function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 
 		const done = assert.async();
 

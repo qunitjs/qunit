@@ -152,7 +152,7 @@ QUnit.test( "Check dump recursion", function( assert ) {
 
 	circref = this.chainwrap( 10 );
 	circdump = QUnit.dump.parse( circref );
-	assert.ok( new RegExp( "recursion\\(-10\\)" ).test( circdump ),
+	assert.true( new RegExp( "recursion\\(-10\\)" ).test( circdump ),
 		"(" + circdump + ") should show -10 recursion level"
 	);
 } );

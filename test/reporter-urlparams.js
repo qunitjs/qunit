@@ -9,11 +9,10 @@ QUnit.config.urlConfig.push( "custom", "customArray" );
 // Don't change this module name without also changing the module parameter when loading this suite
 QUnit.module( "urlParams module", function() {
 	QUnit.test( "parsing", function( assert ) {
-		assert.ok( QUnit.urlParams, "urlParams property exists" );
 		assert.strictEqual( QUnit.urlParams.implicit, true, "implicit true value" );
 		assert.strictEqual( QUnit.urlParams.explicit, "yes", "explicit value" );
 		assert.deepEqual( QUnit.urlParams.array, [ "A", "B" ], "multiple values" );
-		assert.ok( QUnit.urlParams[ "escaped name" ], "escape sequences in name" );
+		assert.true( QUnit.urlParams[ "escaped name" ], "escape sequences in name" );
 		assert.strictEqual( QUnit.urlParams.toString, "string", "Object.prototype property" );
 		assert.strictEqual( QUnit.urlParams.module, "urlParams module", "escaped space as +" );
 		assert.strictEqual( QUnit.urlParams.filter, "urlParams module", "escaped space as %20" );
