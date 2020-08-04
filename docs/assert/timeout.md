@@ -43,7 +43,7 @@ QUnit.test( "Waiting for async function", function( assert ) {
   assert.timeout( 500 ); // Timeout of .5 seconds
   var promise = asyncFunction();
   return promise.then( function( result ) {
-    assert.ok( result );
+    assert.true( result );
   } );
 });
 ```
@@ -53,6 +53,6 @@ QUnit.test( "Waiting in an async test", async assert => {
   assert.timeout( 500 ); // Timeout of .5 seconds
 
   let result = await asyncFunction();
-  assert.ok( result );
+  assert.true( result );
 });
 ```

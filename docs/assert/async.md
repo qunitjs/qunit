@@ -50,11 +50,11 @@ QUnit.test( "two async calls", function( assert ) {
   var done1 = assert.async();
   var done2 = assert.async();
   setTimeout(function() {
-    assert.ok( true, "test resumed from async operation 1" );
+    assert.true( true, "test resumed from async operation 1" );
     done1();
   }, 500 );
   setTimeout(function() {
-    assert.ok( true, "test resumed from async operation 2" );
+    assert.true( true, "test resumed from async operation 2" );
     done2();
   }, 150);
 });
@@ -68,17 +68,17 @@ QUnit.test( "multiple call done()", function( assert ) {
   var done = assert.async( 3 );
 
   setTimeout(function() {
-    assert.ok( true, "first call done." );
+    assert.true( true, "first call done." );
     done();
   }, 500 );
 
   setTimeout(function() {
-    assert.ok( true, "second call done." );
+    assert.true( true, "second call done." );
     done();
   }, 500 );
 
   setTimeout(function() {
-    assert.ok( true, "third call done." );
+    assert.true( true, "third call done." );
     done();
   }, 500 );
 });

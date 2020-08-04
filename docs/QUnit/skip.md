@@ -41,7 +41,7 @@ QUnit.test( "say", function( assert ) {
 // Robot doesn't have a laser method, yet, skip this test
 // Will show up as skipped in the results
 QUnit.skip( "laser", function( assert ) {
-  assert.ok( this.robot.laser() );
+  assert.true( this.robot.laser() );
 });
 ```
 

@@ -41,19 +41,19 @@ If `QUnit.module` is defined without a `nested` callback argument, all subsequen
 QUnit.module( "Group A" );
 
 QUnit.test( "basic test example 1", function( assert ) {
-  assert.ok( true, "this is fine" );
+  assert.true( true, "this is fine" );
 });
 QUnit.test( "basic test example 2", function( assert ) {
-  assert.ok( true, "this is also fine" );
+  assert.true( true, "this is also fine" );
 });
 
 QUnit.module( "Group B" );
 
 QUnit.test( "basic test example 3", function( assert ) {
-  assert.ok( true, "this is fine" );
+  assert.true( true, "this is fine" );
 });
 QUnit.test( "basic test example 4", function( assert ) {
-  assert.ok( true, "this is also fine" );
+  assert.true( true, "this is also fine" );
 });
 ```
 
@@ -65,19 +65,19 @@ const { module, test } = QUnit;
 module( "Group A" );
 
 test( "basic test example", assert => {
-  assert.ok( true, "this is fine" );
+  assert.true( true, "this is fine" );
 });
 test( "basic test example 2", assert => {
-  assert.ok( true, "this is also fine" );
+  assert.true( true, "this is also fine" );
 });
 
 module( "Group B" );
 
 test( "basic test example 3", assert => {
-  assert.ok( true, "this is fine" );
+  assert.true( true, "this is fine" );
 });
 test( "basic test example 4", assert => {
-  assert.ok( true, "this is also fine" );
+  assert.true( true, "this is also fine" );
 });
 ```
 
@@ -148,22 +148,22 @@ const { module, test } = QUnit;
 module( "Group A", hooks => {
 
   test( "basic test example", assert => {
-    assert.ok( true, "this is fine" );
+    assert.true( true, "this is fine" );
   });
 
   test( "basic test example 2", assert => {
-    assert.ok( true, "this is also fine" );
+    assert.true( true, "this is also fine" );
   });
 });
 
 module( "Group B", hooks => {
 
   test( "basic test example 3", assert => {
-    assert.ok( true, "this is fine" );
+    assert.true( true, "this is fine" );
   });
 
   test( "basic test example 4", assert => {
-    assert.ok( true, "this is also fine" );
+    assert.true( true, "this is also fine" );
   });
 });
 ```

@@ -44,16 +44,16 @@ QUnit.module( "robot", {
 });
 
 QUnit.test( "say()", function( assert ) {
-  assert.ok( false, "I'm not quite ready yet" );
+  assert.true( false, "I'm not quite ready yet" );
 });
 
 // You're currently working on the laser methiod, so run only this test
 QUnit.only( "laser()", function( assert ) {
-  assert.ok( this.robot.laser() );
+  assert.true( this.robot.laser() );
 });
 
 QUnit.test( "stomp()", function( assert ) {
-  assert.ok( false, "I'm not quite ready yet" );
+  assert.true( false, "I'm not quite ready yet" );
 });
 
 ```
@@ -72,16 +72,16 @@ module( "robot", hooks => {
   });
 
   test( "say()", assert => {
-    assert.ok( false, "I'm not quite ready yet" );
+    assert.true( false, "I'm not quite ready yet" );
   });
 
   // You're currently working on the laser methiod, so run only this test
   only( "laser()", assert => {
-    assert.ok( robot.laser() );
+    assert.true( robot.laser() );
   });
 
   test( "stomp()", assert => {
-    assert.ok( false, "I'm not quite ready yet" );
+    assert.true( false, "I'm not quite ready yet" );
   });
 });
 ```
