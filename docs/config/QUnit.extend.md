@@ -37,6 +37,6 @@ QUnit.test( "QUnit.extend", function( assert ) {
   assert.strictEqual( base.a, 1, "Unspecified values are not modified" );
   assert.strictEqual( base.b, 2.5, "Existing values are updated" );
   assert.strictEqual( base.c, 3, "New values are defined" );
-  assert.strictEqual( base.z, undefined, "Values specified as `undefined` are removed" );
+  assert.false( "z" in base, "Values specified as `undefined` are removed" );
 });
 ```
