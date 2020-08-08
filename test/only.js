@@ -6,20 +6,20 @@ QUnit.module( "QUnit.only", function( hooks ) {
 	} );
 
 	QUnit.test( "implicitly skipped test", function( assert ) {
-		assert.ok( false, "test should be skipped" );
+		assert.true( false, "test should be skipped" );
 	} );
 
 	QUnit.only( "run this test", function( assert ) {
 		testsRun += 1;
-		assert.ok( true, "only this test should run" );
+		assert.true( true, "only this test should run" );
 	} );
 
 	QUnit.test( "another implicitly skipped test", function( assert ) {
-		assert.ok( false, "test should be skipped" );
+		assert.true( false, "test should be skipped" );
 	} );
 
 	QUnit.only( "all tests with only run", function( assert ) {
 		testsRun += 1;
-		assert.ok( true, "this test should run as well" );
+		assert.true( true, "this test should run as well" );
 	} );
 } );

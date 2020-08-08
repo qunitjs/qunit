@@ -15,10 +15,10 @@ This object has properties for each of [QUnit's built-in assertion methods](../a
 
 ### Example
 
-Use the `ok` assertion through the test callback parameter:
+Use the `true` assertion through the test callback parameter:
 
 ```js
-QUnit.test( "`ok` assertion defined in the callback parameter", function( assert ) {
-  assert.ok( true, "on the object passed to the `test` function" );
+QUnit.test( "`true` assertion defined in the callback parameter", function( assert ) {
+  assert.true( true, "on the object passed to the `test` function" );
 });
 ```

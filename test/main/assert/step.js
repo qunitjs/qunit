@@ -7,7 +7,7 @@ QUnit.test( "pushes a failing assertion if no message is given", function( asser
 	assert.pushResult = function pushResultStub( resultInfo ) {
 		assert.pushResult = originalPushResult;
 
-		assert.notOk( resultInfo.result );
+		assert.false( resultInfo.result );
 		assert.equal( resultInfo.message, "You must provide a message to assert.step" );
 	};
 
@@ -23,7 +23,7 @@ QUnit.test( "pushes a failing assertion if empty message is given", function( as
 	assert.pushResult = function pushResultStub( resultInfo ) {
 		assert.pushResult = originalPushResult;
 
-		assert.notOk( resultInfo.result );
+		assert.false( resultInfo.result );
 		assert.equal( resultInfo.message, "You must provide a message to assert.step" );
 	};
 
@@ -43,7 +43,7 @@ QUnit.test( "pushes a failing assertion if a non string message is given", funct
 
 		count += 1;
 
-		assert.notOk( resultInfo.result );
+		assert.false( resultInfo.result );
 		assert.equal( resultInfo.message, "You must provide a string value to assert.step" );
 
 		if ( count < 3 ) {
@@ -88,7 +88,7 @@ QUnit.test( "verifies the order and value of steps", function( assert ) {
 	assert.pushResult = function pushResultStub( resultInfo ) {
 		assert.pushResult = originalPushResult;
 
-		assert.notOk( resultInfo.result );
+		assert.false( resultInfo.result );
 	};
 
 	assert.verifySteps( [ "One step", "Red step", "Two step", "Blue step" ] );

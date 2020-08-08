@@ -38,6 +38,6 @@ QUnit.log( function( details ) {
 QUnit.test( "foo", function( assert ) {
 
   // the log callback will report the position of the following line.
-  assert.ok( true );
+  assert.true( true );
 } );
 ```

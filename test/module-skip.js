@@ -47,21 +47,21 @@ QUnit.done( function() {
 QUnit.module( "Parent module", function() {
 	QUnit.module( "A normal module", function() {
 		QUnit.test( "normal test", function( assert ) {
-			assert.ok( true, "this test should run" );
+			assert.true( true, "this test should run" );
 		} );
 	} );
 
 	QUnit.module.skip( "This module will be skipped", function() {
 		QUnit.test( "test will be treated as a skipped test", function( assert ) {
-			assert.ok( false, "this test should not run" );
+			assert.true( false, "this test should not run" );
 		} );
 
 		QUnit.todo( "a todo test that should be skipped", function( assert ) {
-			assert.ok( false, "this test should not run" );
+			assert.true( false, "this test should not run" );
 		} );
 
 		QUnit.skip( "a normal skipped test", function( assert ) {
-			assert.ok( false, "this test should not run" );
+			assert.true( false, "this test should not run" );
 		} );
 	} );
 } );

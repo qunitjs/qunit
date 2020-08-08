@@ -21,7 +21,7 @@ function createMockPromise( assert, reject, value ) {
 
 QUnit.module( "Module with Promise-aware before", {
 	before: function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 		return {};
 	}
 } );
@@ -44,7 +44,7 @@ QUnit.test( "fulfilled Promise", function( assert ) {
 
 QUnit.module( "Module with Promise-aware beforeEach", {
 	beforeEach: function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 		return {};
 	}
 } );
@@ -67,7 +67,7 @@ QUnit.test( "fulfilled Promise", function( assert ) {
 
 QUnit.module( "Module with Promise-aware afterEach", {
 	afterEach: function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 		return {};
 	}
 } );
@@ -90,7 +90,7 @@ QUnit.test( "fulfilled Promise", function( assert ) {
 
 QUnit.module( "Module with Promise-aware after", {
 	after: function( assert ) {
-		assert.ok( true );
+		assert.true( true );
 		return {};
 	}
 } );
@@ -150,7 +150,7 @@ QUnit.test( "fulfilled Promise with non-Promise async assertion", function( asse
 
 	var done = assert.async();
 	setTimeout( function() {
-		assert.ok( true );
+		assert.true( true );
 		done();
 	}, 100 );
 

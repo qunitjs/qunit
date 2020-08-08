@@ -1,10 +1,10 @@
 QUnit.test( "expect query and multiple issue", function( assert ) {
 	assert.expect( 2 );
-	assert.ok( true );
+	assert.true( true );
 	var expected = assert.expect();
 	assert.equal( expected, 2 );
 	assert.expect( expected + 1 );
-	assert.ok( true );
+	assert.true( true );
 } );
 
 if ( typeof document !== "undefined" ) {
@@ -72,7 +72,7 @@ if ( typeof document !== "undefined" ) {
 		hooks.afterEach( function( assert ) {
 			failure = failure || assert.hasFailingAssertions();
 			if ( failure ) {
-				assert.ok( false, "prior failure" );
+				assert.true( false, "prior failure" );
 				QUnit.config.fixture = originalValue;
 			} else {
 				QUnit.config.fixture = values.shift();
@@ -197,11 +197,11 @@ QUnit.module( "QUnit.skip", {
 	beforeEach: function( assert ) {
 
 		// Skip test hooks for skipped tests
-		assert.ok( false, "skipped function" );
+		assert.true( false, "skipped function" );
 		throw "Error";
 	},
 	afterEach: function( assert ) {
-		assert.ok( false, "skipped function" );
+		assert.true( false, "skipped function" );
 		throw "Error";
 	}
 } );

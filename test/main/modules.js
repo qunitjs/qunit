@@ -29,7 +29,7 @@ QUnit.test( "hooks order", function( assert ) {
 
 QUnit.module( "before", {
 	before: function( assert ) {
-		assert.ok( true, "before hook ran" );
+		assert.true( true, "before hook ran" );
 
 		if ( typeof this.beforeCount === "undefined" ) {
 			this.beforeCount = 0;
@@ -51,7 +51,7 @@ QUnit.test( "does not run before subsequent tests", function( assert ) {
 
 QUnit.module( "before (skip)", {
 	before: function( assert ) {
-		assert.ok( true, "before hook ran" );
+		assert.true( true, "before hook ran" );
 	}
 } );
 
@@ -63,7 +63,7 @@ QUnit.test( "runs before first unskipped test", function( assert ) {
 
 QUnit.module( "after", {
 	after: function( assert ) {
-		assert.ok( true, "after hook ran" );
+		assert.true( true, "after hook ran" );
 	}
 } );
 
@@ -77,7 +77,7 @@ QUnit.test( "runs after final test", function( assert ) {
 
 QUnit.module( "after (skip)", {
 	after: function( assert ) {
-		assert.ok( true, "after hook ran" );
+		assert.true( true, "after hook ran" );
 	}
 } );
 
@@ -93,10 +93,10 @@ QUnit.skip( "last test in module is skipped" );
 
 QUnit.module( "before/after with all tests skipped", {
 	before: function( assert ) {
-		assert.ok( false, "should not occur" );
+		assert.true( false, "should not occur" );
 	},
 	after: function( assert ) {
-		assert.ok( false, "should not occur" );
+		assert.true( false, "should not occur" );
 	}
 } );
 
@@ -144,7 +144,7 @@ QUnit.module( "async beforeEach test", {
 	beforeEach: function( assert ) {
 		var done = assert.async();
 		setTimeout( function() {
-			assert.ok( true );
+			assert.true( true );
 			done();
 		} );
 	}
@@ -152,14 +152,14 @@ QUnit.module( "async beforeEach test", {
 
 QUnit.test( "module with async beforeEach", function( assert ) {
 	assert.expect( 2 );
-	assert.ok( true );
+	assert.true( true );
 } );
 
 QUnit.module( "async afterEach test", {
 	afterEach: function( assert ) {
 		var done = assert.async();
 		setTimeout( function() {
-			assert.ok( true );
+			assert.true( true );
 			done();
 		} );
 	}
@@ -167,7 +167,7 @@ QUnit.module( "async afterEach test", {
 
 QUnit.test( "module with async afterEach", function( assert ) {
 	assert.expect( 2 );
-	assert.ok( true );
+	assert.true( true );
 } );
 
 QUnit.module( "save scope", {
@@ -192,18 +192,18 @@ QUnit.module( "pre-nested modules" );
 QUnit.module( "nested modules", function() {
 	QUnit.module( "first outer", {
 		afterEach: function( assert ) {
-			assert.ok( true, "first outer module afterEach called" );
+			assert.true( true, "first outer module afterEach called" );
 		},
 		beforeEach: function( assert ) {
-			assert.ok( true, "first outer beforeEach called" );
+			assert.true( true, "first outer beforeEach called" );
 		}
 	}, function() {
 		QUnit.module( "first inner", {
 			afterEach: function( assert ) {
-				assert.ok( true, "first inner module afterEach called" );
+				assert.true( true, "first inner module afterEach called" );
 			},
 			beforeEach: function( assert ) {
-				assert.ok( true, "first inner module beforeEach called" );
+				assert.true( true, "first inner module beforeEach called" );
 			}
 		}, function() {
 			QUnit.test( "in module, before-/afterEach called in out-in-out order", function( assert ) {
@@ -252,11 +252,11 @@ QUnit.module( "contained suite arguments", function( hooks ) {
 		var afterEach = hooks.afterEach;
 
 		beforeEach( function( assert ) {
-			assert.ok( true, "beforeEach called" );
+			assert.true( true, "beforeEach called" );
 		} );
 
 		afterEach( function( assert ) {
-			assert.ok( true, "afterEach called" );
+			assert.true( true, "afterEach called" );
 		} );
 
 		QUnit.test( "call hooks", function( assert ) {
@@ -268,11 +268,11 @@ QUnit.module( "contained suite arguments", function( hooks ) {
 			var afterEach = hooks.afterEach;
 
 			beforeEach( function( assert ) {
-				assert.ok( true, "nested beforeEach called" );
+				assert.true( true, "nested beforeEach called" );
 			} );
 
 			afterEach( function( assert ) {
-				assert.ok( true, "nested afterEach called" );
+				assert.true( true, "nested afterEach called" );
 			} );
 
 			QUnit.test( "call hooks", function( assert ) {
@@ -310,21 +310,21 @@ QUnit.module( "contained suite `this`", function( hooks ) {
 		this.inner = true;
 
 		hooks.beforeEach( function( assert ) {
-			assert.ok( this.outer );
-			assert.ok( this.inner );
+			assert.strictEqual( this.outer, 2 );
+			assert.true( this.inner );
 		} );
 
 		hooks.afterEach( function( assert ) {
-			assert.ok( this.outer );
-			assert.ok( this.inner );
+			assert.strictEqual( this.outer, 2 );
+			assert.true( this.inner );
 
 			// This change affects the outermodule afterEach assertion.
 			this.outer = 42;
 		} );
 
 		QUnit.test( "inner modules share outer environments", function( assert ) {
-			assert.ok( this.outer );
-			assert.ok( this.inner );
+			assert.strictEqual( this.outer, 2 );
+			assert.true( this.inner );
 		} );
 	} );
 
@@ -336,7 +336,7 @@ QUnit.module( "contained suite `this`", function( hooks ) {
 
 QUnit.module( "nested modules before/after", {
 	before: function( assert ) {
-		assert.ok( true, "before hook ran" );
+		assert.true( true, "before hook ran" );
 		this.lastHook = "before";
 	},
 	after: function( assert ) {
@@ -350,7 +350,7 @@ QUnit.module( "nested modules before/after", {
 
 	QUnit.module( "outer", {
 		before: function( assert ) {
-			assert.ok( true, "outer before hook ran" );
+			assert.true( true, "outer before hook ran" );
 			this.lastHook = "outer-before";
 		},
 		after: function( assert ) {

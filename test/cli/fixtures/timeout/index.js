@@ -8,7 +8,7 @@ QUnit.module( "timeout", function() {
 	QUnit.test( "second", function( assert ) {
 		return new Promise( resolve => setTimeout( resolve, 20 ) )
 			.then( () => {
-				assert.ok( true, "This promise resolved" );
+				assert.true( true, "This promise resolved" );
 			} );
 	} );
 } );

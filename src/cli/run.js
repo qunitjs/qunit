@@ -59,7 +59,7 @@ function run( args, options ) {
 			QUnit.module( files[ i ], function() {
 				const loadFailureMessage = `Failed to load the test file with error:\n${e.stack}`;
 				QUnit.test( loadFailureMessage, function( assert ) {
-					assert.ok( false, "should be able to load file" );
+					assert.true( false, "should be able to load file" );
 				} );
 			} );
 		}

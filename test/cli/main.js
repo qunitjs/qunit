@@ -209,7 +209,7 @@ QUnit.module( "CLI Main", function() {
 				await execute( command );
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
-				assert.ok( e.stderr.includes( "Error: Cannot find module 'does-not-exist-at-all'" ) );
+				assert.true( e.stderr.includes( "Error: Cannot find module 'does-not-exist-at-all'" ) );
 				assert.equal( e.stdout, "" );
 			}
 		} );

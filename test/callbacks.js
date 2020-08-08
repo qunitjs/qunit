@@ -128,7 +128,7 @@ QUnit.module( "module1", {
 }, function() {
 	QUnit.test( "test1", function( assert ) {
 		invokedHooks.push( "module1 > test1" );
-		assert.ok( true );
+		assert.true( true );
 	} );
 
 	QUnit.module( "module2", {
@@ -139,7 +139,7 @@ QUnit.module( "module1", {
 	}, function() {
 		QUnit.test( "test1", function( assert ) {
 			invokedHooks.push( "module2 > test1" );
-			assert.ok( true );
+			assert.true( true );
 		} );
 	} );
 
@@ -151,13 +151,13 @@ QUnit.module( "module1", {
 	}, function() {
 		QUnit.test( "test1", function( assert ) {
 			invokedHooks.push( "module3 > test1" );
-			assert.ok( true );
+			assert.true( true );
 		} );
 	} );
 
 	QUnit.test( "test2", function( assert ) {
 		invokedHooks.push( "module1 > test2" );
-		assert.ok( true );
+		assert.true( true );
 	} );
 
 	QUnit.module( "module4", {
@@ -168,7 +168,7 @@ QUnit.module( "module1", {
 	}, function() {
 		QUnit.test( "test1", function( assert ) {
 			invokedHooks.push( "module4 > test1" );
-			assert.ok( true );
+			assert.true( true );
 		} );
 	} );
 } );

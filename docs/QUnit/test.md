@@ -79,7 +79,7 @@ QUnit.test( "a Promise-returning test", function( assert ) {
 
   var thenable = new Promise(function( resolve, reject ) {
     setTimeout(function() {
-      assert.ok( true );
+      assert.true( true );
       resolve( "result" );
     }, 500 );
   });

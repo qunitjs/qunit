@@ -9,7 +9,7 @@
 			window.onerror = function( error ) {
 				QUnit.module( "Overload", function() {
 					QUnit.test( "error is thrown when overloading QUnit global", function( assert ) {
-						assert.ok( error.indexOf( "QUnit has already been defined." ) !== -1 );
+						assert.true( error.indexOf( "QUnit has already been defined." ) !== -1 );
 					} );
 				} );
 

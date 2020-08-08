@@ -47,6 +47,6 @@ QUnit.on( "assertion", function( data ) {
 QUnit.module( "Events During Test", function() {
 	QUnit.test( "test1", function( assert ) {
 		assert.expect( 2 );
-		assert.ok( true, "assertion1" );
+		assert.true( true, "assertion1" );
 	} );
 } );

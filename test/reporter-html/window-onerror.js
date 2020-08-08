@@ -13,7 +13,7 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 		assert.expect( 1 );
 
 		QUnit.onError = function() {
-			assert.ok( true, "QUnit.onError was called" );
+			assert.true( true, "QUnit.onError was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );

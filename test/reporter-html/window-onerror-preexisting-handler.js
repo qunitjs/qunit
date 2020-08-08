@@ -21,7 +21,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		onerrorReturnValue = false;
 
 		QUnit.onError = function() {
-			assert.ok( true, "QUnit.onError was called" );
+			assert.true( true, "QUnit.onError was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
@@ -33,7 +33,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		onerrorReturnValue = void 0;
 
 		QUnit.onError = function() {
-			assert.ok( true, "QUnit.onError was called" );
+			assert.true( true, "QUnit.onError was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
@@ -45,7 +45,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		onerrorReturnValue = "truthy value";
 
 		QUnit.onError = function() {
-			assert.ok( true, "QUnit.onError was called" );
+			assert.true( true, "QUnit.onError was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
@@ -57,7 +57,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		onerrorReturnValue = true;
 
 		QUnit.onError = function() {
-			assert.ok( false, "QUnit.onError should not have been called" );
+			assert.true( false, "QUnit.onError should not have been called" );
 		};
 
 		var result = window.onerror( "An error message", "filename.js", 1 );

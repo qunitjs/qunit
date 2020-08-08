@@ -56,7 +56,7 @@ QUnit.module( "later thing", function() {
 
 		let snapshot = await streamToString( v8.getHeapSnapshot() );
 		let matches = snapshot.match( reHeap );
-		assert.ok( matches && matches.length, "found local Foo in heap" );
+		assert.strictEqual( matches.length, 2, "found local Foo in heap" );
 
 		snapshot = matches = null;
 		foo2.destroy();
