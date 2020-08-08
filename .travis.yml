@@ -22,7 +22,8 @@ matrix:
       node_js: "10"
       env: NPM_SCRIPT=coverage
     - stage: "Update search index"
-      if: branch = master
+      # https://docs.travis-ci.com/user/conditions-v1
+      if: (branch = master) AND (type IN (push, cron))
       language: ruby
       rvm: 2.7
       cache: bundler
