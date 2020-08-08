@@ -19,7 +19,7 @@ This method will modify the `target` object to contain the "own" properties defi
 
 ### Example
 
-Define a custom `mod2` assertion that tests if the provided numbers are equivalent in modulo 2.
+Use `QUnit.extend` to merge two objects.
 
 ```js
 QUnit.test( "QUnit.extend", function( assert ) {
