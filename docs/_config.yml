@@ -40,7 +40,7 @@ amethyst:
   github: qunitjs
   gitter: qunitjs/qunit
   algolia:
-    search_only_api_key: aed00982db05bd21dd05310be057bda8
+    search_only_api_key: f492bec49e061a41cb8f57128483fd16
     sources:
       - index: qunitjs-api
       - index: qunitjs
@@ -65,7 +65,7 @@ sass:
 #
 # See <https://github.com/algolia/jekyll-algolia>.
 algolia:
-  application_id: HOJ487LP0L
+  application_id: EQYECMT6Q0
   # Which index the Travis job will create/update
   # with the content of the current Jekyll site.
   # The auth key for this is injected as secure env variable.
