@@ -11,7 +11,7 @@ var isCI = process.env.CI || process.env.JENKINS_HOME;
 
 module.exports = function( grunt ) {
 	var livereloadPort = grunt.option( "livereload-port" ) || 35729;
-	var connectPort = Number( grunt.option( "connect-port" ) ) || 8000;
+	var connectPort = Number( grunt.option( "connect-port" ) ) || 4000;
 
 	// Load grunt tasks from NPM packages
 	require( "load-grunt-tasks" )( grunt );
@@ -33,12 +33,24 @@ module.exports = function( grunt ) {
 				options: {
 
 					// grunt-contrib-connect supports 'useAvailablePort' which
-					// automatically finds a suitable port, but we need to know
-					// it ahead of time to feed grunt-controb-qunit options.
+					// automatically finds a suitable port, but we can't use that here because
+					// the grunt-contrib-qunit task needs to know the url ahead of time.
 					port: connectPort,
 					base: "."
 				}
 			},
+
+			// For manual testing.
+			any: {
+				options: {
+					port: connectPort,
+					useAvailablePort: true,
+					keepalive: true,
+					base: "."
+				}
+			},
+
+			// For use by the "watch" task.
 			livereload: {
 				options: {
 					port: connectPort,
@@ -127,7 +139,12 @@ module.exports = function( grunt ) {
 			all: {
 				options: {
 					timeout: 30000,
-					puppeteer: !isCI ? {} : {
+					puppeteer: !isCI ? {
+
+						// Allow Docker-based developer environmment to
+						// inject --no-sandbox as-needed for Chrome.
+						args: ( process.env.CHROMIUM_FLAGS || "" ).split( " " )
+					} : {
 						args: [
 
 							// https://docs.travis-ci.com/user/chrome#sandboxing
@@ -295,7 +312,4 @@ module.exports = function( grunt ) {
 	// https://github.com/gruntjs/grunt-contrib-watch/issues/50
 	grunt.renameTask( "watch", "watch-repeatable" );
 	grunt.registerTask( "watch", [ "connect:livereload", "watch-repeatable" ] );
-
-	grunt.registerTask( "default", [ "build", "test" ] );
-
 };
