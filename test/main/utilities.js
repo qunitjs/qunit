@@ -46,11 +46,13 @@ if ( typeof Symbol === "function" ) {
 	validateObjectType( Symbol( "HI!" ), "symbol" );
 }
 
-if ( typeof Map === "function" ) {
+// Support IE 11: Skip on IE11's non-compliant implementation
+if ( typeof Map === "function" && ( new Map ).toString() !== "[object Object]" ) {
 	validateObjectType( new Map( ), "map" );
 }
 
-if ( typeof Set === "function" ) {
+// Support IE 11: Skip on IE11's non-compliant implementation
+if ( typeof Set === "function" && ( new Set ).toString() !== "[object Object]" ) {
 	validateObjectType( new Set( ), "set" );
 }
 
