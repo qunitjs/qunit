@@ -19,3 +19,20 @@ export const localSessionStorage = ( function() {
 		return undefined;
 	}
 }() );
+
+// Support IE 9-10: Fallback for fuzzysort.js used by /reporter/html.js
+if ( !global.Map ) {
+	global.Map = function StringMap() {
+		var store = Object.create( null );
+		this.get = function( strKey ) {
+			return store[ strKey ];
+		};
+		this.set = function( strKey, val ) {
+			store[ strKey ] = val;
+			return this;
+		};
+		this.clear = function() {
+			store = Object.create( null );
+		};
+	};
+}

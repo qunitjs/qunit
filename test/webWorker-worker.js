@@ -1,4 +1,5 @@
 /* global importScripts */
+/* eslint-env es6 */
 importScripts(
 	"../dist/qunit.js",
 	"main/test.js",

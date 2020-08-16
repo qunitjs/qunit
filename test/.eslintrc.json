@@ -1,7 +1,8 @@
 {
 	"extends": [ "plugin:qunit/two" ],
 	"env": {
-		"browser": true
+		"browser": true,
+		"es6": false
 	},
 	"plugins": [
 		"html",
@@ -12,6 +13,7 @@
 	},
 	"globals": {
 		"QUnit": false,
+		"Promise": false,
 		"console": false
 	},
 	"rules": {

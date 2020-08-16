@@ -1,5 +1,5 @@
 QUnit.module( "QUnit.only", function( hooks ) {
-	let testsRun = 0;
+	var testsRun = 0;
 
 	hooks.after( function( assert ) {
 		assert.strictEqual( testsRun, 2 );

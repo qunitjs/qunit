@@ -22,7 +22,7 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 	QUnit.test( "Should extract stacktrace if it is available", function( assert ) {
 		assert.expect( 1 );
 
-		const errorObj = {
+		var errorObj = {
 			stack: "dummy.js:1 top()\ndummy.js:2 middle()\ndummy.js:3 bottom()"
 		};
 

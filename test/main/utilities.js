@@ -1,3 +1,5 @@
+/* globals Map, Set, Symbol */
+
 QUnit.module( "QUnit.objectType" );
 
 function Foo( ) { }

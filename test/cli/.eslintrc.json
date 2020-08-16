@@ -3,6 +3,7 @@
     "ecmaVersion": 2017
   },
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   }
 }
