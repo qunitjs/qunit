@@ -127,10 +127,10 @@ QUnit.test( "logs location", function( assert ) {
 	var previous = document.getElementById( "qunit-test-output-" + assert.test.testId )
 		.previousSibling;
 	var source = previous.lastChild;
-	var stack = QUnit.stack();
+	var err = new Error();
 
 	// Verify QUnit supported stack trace
-	if ( !stack ) {
+	if ( !err.stack ) {
 		assert.equal(
 			/(^| )qunit-source( |$)/.test( source.className ),
 			false,
