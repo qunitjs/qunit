@@ -85,13 +85,6 @@ module.exports = function( grunt ) {
 				dest: "dist/qunit.js"
 			}
 		},
-		rollup: {
-			options: require( "./rollup.config" ),
-			src: {
-				src: "src/qunit.js",
-				dest: "dist/qunit.js"
-			}
-		},
 		eslint: {
 			options: {
 				config: ".eslintrc.json"
@@ -292,12 +285,11 @@ module.exports = function( grunt ) {
 	} );
 
 	grunt.loadTasks( "build/tasks" );
-	grunt.registerTask( "build", [ "rollup:src", "copy:src-js", "copy:src-css" ] );
+	grunt.registerTask( "build-copy", [ "copy:src-js", "copy:src-css" ] );
 	grunt.registerTask( "test-base", [ "eslint", "search", "test-on-node" ] );
 	grunt.registerTask( "test", [ "test-base", "connect:nolivereload", "qunit" ] );
 	grunt.registerTask( "test-in-watch", [ "test-base", "qunit" ] );
 	grunt.registerTask( "coverage", [
-		"build",
 		"instrument",
 		"copy:dist-to-tmp",
 		"copy:instrumented-to-dist",

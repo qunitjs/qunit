@@ -1,7 +1,9 @@
 {
-    "presets": [
-        // Don't transpile modules since Rollup does that
-        [ "env", { modules: false } ]
-    ],
-    "plugins": [ "external-helpers" ]
+	"presets": [
+		[ "@babel/preset-env", {
+			targets: {
+				ie: 9
+			}
+		} ]
+	]
 }

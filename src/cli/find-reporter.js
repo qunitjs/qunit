@@ -71,7 +71,7 @@ function getReportersFromDependencies() {
 
 			return !!pkg.keywords && pkg.keywords.indexOf( "js-reporter" ) !== -1;
 		} catch ( e ) {
-			if ( e.code !== "MODULE_NOT_FOUND" ) {
+			if ( e.code !== "MODULE_NOT_FOUND" && e.code !== "ERR_PACKAGE_PATH_NOT_EXPORTED" ) {
 				throw e;
 			}
 		}

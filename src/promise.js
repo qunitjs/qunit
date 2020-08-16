@@ -1,3 +1,3 @@
-import _Promise from "es6-promise/lib/es6-promise";
+import _Promise from "es6-promise";
 
 export default typeof Promise !== "undefined" ? Promise : _Promise;
