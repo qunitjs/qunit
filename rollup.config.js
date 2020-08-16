@@ -1,24 +1,18 @@
 /* eslint-env node */
 
-var babel = require( "rollup-plugin-babel" );
-var resolve = require( "rollup-plugin-node-resolve" );
-var commonjs = require( "rollup-plugin-commonjs" );
+const { babel } = require( "@rollup/plugin-babel" );
+const { nodeResolve } = require( "@rollup/plugin-node-resolve" );
+const commonjs = require( "@rollup/plugin-commonjs" );
 
 module.exports = {
-	format: "iife",
-	exports: "none",
-	plugins: [
-		resolve(),
-		commonjs( {
-			namedExports: {
-				"fuzzysort": [ "fuzzysort" ]
-			}
-		} ),
-		babel()
-	],
+	input: "src/qunit.js",
+	output: {
+		file: "dist/qunit.js",
+		format: "iife",
+		exports: "none",
 
-	// eslint-disable-next-line no-multi-str
-	banner: "/*!\n\
+		// eslint-disable-next-line no-multi-str
+		banner: "/*!\n\
  * QUnit @VERSION\n\
  * https://qunitjs.com/\n\
  *\n\
@@ -29,9 +23,18 @@ module.exports = {
  * Date: @DATE\n\
  */",
 
-	globals: {
-		global: "(function() { return this; }())"
+		globals: {
+			global: "(function() { return this; }())"
+		}
 	},
+	plugins: [
+		nodeResolve(),
+		commonjs(),
+		babel( {
+			babelHelpers: "bundled",
+			babelrc: true
+		} )
+	],
 	external: [
 		"global"
 	]

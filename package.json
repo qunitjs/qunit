@@ -42,9 +42,9 @@
     "minimatch": "3.0.4"
   },
   "devDependencies": {
-    "babel-core": "6.26.0",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.6.1",
+    "@babel/core": "7.11.1",
+    "@babel/plugin-external-helpers": "7.10.4",
+    "@babel/preset-env": "7.11.0",
     "commitplease": "3.1.0",
     "es6-promise": "^4.2.5",
     "eslint-config-jquery": "1.0.1",
@@ -65,27 +65,27 @@
     "grunt-eslint": "20.1.0",
     "grunt-git-authors": "3.2.0",
     "grunt-istanbul": "^0.8.0",
-    "grunt-rollup": "8.2.0",
+    "rollup": "2.26.0",
     "grunt-search": "0.1.8",
     "load-grunt-tasks": "3.5.2",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
     "proxyquire": "1.8.0",
     "requirejs": "2.3.5",
-    "rollup-plugin-babel": "3.0.2",
-    "rollup-plugin-commonjs": "^8.0.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
+    "@rollup/plugin-babel": "5.2.0",
+    "@rollup/plugin-commonjs": "15.0.0",
+    "@rollup/plugin-node-resolve": "9.0.0",
     "semver": "5.4.1"
   },
   "scripts": {
-    "build": "grunt build",
+    "build": "rollup -c && grunt build-copy",
     "dev": "grunt watch",
-    "test": "grunt build test && bin/qunit.js test/cli/*.js",
+    "test": "npm run build && grunt test && bin/qunit.js test/cli/*.js",
     "test:lint": "grunt eslint",
-    "test:main": "grunt build test",
-    "test:cli": "grunt build && bin/qunit.js test/cli/*.js",
+    "test:main": "npm run build && grunt test",
+    "test:cli": "npm run build && bin/qunit.js test/cli/*.js",
     "authors": "grunt authors",
     "serve": "grunt connect:any",
-    "coverage": "grunt coverage"
+    "coverage": "npm run build && grunt coverage"
   },
   "commitplease": {
     "components": [
