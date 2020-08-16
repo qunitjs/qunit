@@ -154,7 +154,7 @@ QUnit.module( "assert.verifySteps value reference", function() {
 	} );
 
 	QUnit.test( "steps array should not be reset in logging function", function( assert ) {
-		const result = loggedAssertions[ "verification-assertion" ].actual;
+		var result = loggedAssertions[ "verification-assertion" ].actual;
 		assert.deepEqual( result, [ "step one", "step two" ] );
 	} );
 

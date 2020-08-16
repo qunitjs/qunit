@@ -313,7 +313,7 @@ QUnit.test( "rejects", function( assert ) {
 		return this.message;
 	};
 
-	const rejectsReturnValue = assert.rejects(
+	var rejectsReturnValue = assert.rejects(
 		buildMockPromise( "my error" )
 	);
 
