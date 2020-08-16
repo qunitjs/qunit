@@ -4,7 +4,7 @@ title: assert.false()
 description: A strict boolean false comparison.
 categories:
   - assert
-version_added: unreleased
+version_added: 2.11
 ---
 
 `false( actual [, message ] )`

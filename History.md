@@ -1,3 +1,17 @@
+
+2.11.0 / 2020-08-16
+==================
+
+  * All: Remove support for Node 6 and Node 8, require Node 10+.
+  * All: Remove dependency on "resolve" package. ([#1464](https://github.com/qunitjs/qunit/pull/1464))
+  * Core: Fix "No tests" to check test count instead of assert count. ([#1405](https://github.com/qunitjs/qunit/issues/1405))
+  * CLI: Fix error with `--watch` option, affected Node 14 on Linux. ([#1448](https://github.com/qunitjs/qunit/pull/1448))
+  * CLI: Improve performance for non-glob arguments. ([#1385](https://github.com/qunitjs/qunit/pull/1385))
+  * Assert: Add new strict boolean `assert.true` and `assert.false` methods. ([#1445](https://github.com/qunitjs/qunit/pull/1445))
+  * Docs: Redesign of <https://qunitjs.com>. ([#1458](https://github.com/qunitjs/qunit/issues/1458))
+  * HTML Reporter: Use fuzzy search when typing in the module filter. ([#1440](https://github.com/qunitjs/qunit/pull/1440))
+  * HTML Reporter: Hide skipped tests also when `hidepassed` is set. ([#1208](https://github.com/qunitjs/qunit/issues/1208))
+
 2.10.1 / 2020-07-04
 ==================
 

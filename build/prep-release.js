@@ -8,7 +8,7 @@ const fs = require( "fs" );
 
 const Repo = {
 	setFiles( version ) {
-		if ( typeof version !== "string" || /^\d+\.\d+\.\d+/.test( version ) ) {
+		if ( typeof version !== "string" || !/^\d+\.\d+\.\d+$/.test( version ) ) {
 			throw new Error( "Invalid or missing version argument" );
 		}
 		{

@@ -25,6 +25,7 @@ Benjamin Lee <leebenjp@gmail.com>
 Paul Irish <paul.irish@gmail.com>
 Oleg Slobodskoi <oleg008@gmail.com>
 Anton Matzneller <obhvsbypqghgc@gmail.com>
+Aurélien Bombo <hellosprt@gmail.com>
 Mathias Bynens <mathias@qiwi.be>
 Erik Vold <erikvvold@gmail.com>
 Wesley Walser <waw325@gmail.com>
@@ -54,7 +55,7 @@ Herbert Vojčík <herby@mailbox.sk>
 Richard Gibson <richard.gibson@gmail.com>
 Alex J Burke <alex@alexjeffburke.com>
 Sergii Kliuchnyk <sergiikliuchnyk@gmail.com>
-Corey Frang <gnarf@gnarf.net>
+Corey Frang <gnarf37@gmail.com>
 John Reeves <john@jonnyreeves.co.uk>
 Antranig Basman <amb26ohloh@ponder.org.uk>
 Vivin Paliath <vivin.paliath@gmail.com>
@@ -78,16 +79,14 @@ Katie Gengler <katie@kmg.io>
 Joshua Peek <josh@joshpeek.com>
 Leonardo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
-Corey Frang <gnarf37@gmail.com>
 Nathan Dauber <nathan@radialogica.com>
-Michał Gołębiowski-Owczarek <m.goleb@gmail.com>
-XhmikosR <xhmikosr@yahoo.com>
+Michał Gołębiowski-Owczarek <m.goleb@gmail.com>
+XhmikosR <xhmikosr@gmail.com>
 Patrick Stapleton <github@gdi2290.com>
 DarkPark <darkpark@pisem.net>
 Oleg Gaidarenko <markelog@gmail.com>
 Mike Sidorov <mikes.ekb@gmail.com>
 Don Kirkby <donkirkby@gmail.com>
-don <dkirkby@cfenet.ubc.ca>
 Sean Xu <jseanxu@live.com>
 Matthew Beale <matt.beale@madhatted.com>
 Mislav Marohnić <mislav.marohnic@gmail.com>
@@ -117,10 +116,9 @@ Sergio Cinos <sergio.cinos@gmail.com>
 Josh Soref <apache@soref.com>
 Jon Dufresne <jon.dufresne@gmail.com>
 Maksim Gudow <mmd1337@gmail.com>
-Trent Willis <twillis@linkedin.com>
+Trent Willis <trentmwillis@gmail.com>
 Frank Weigel <frank.weigel@sap.com>
 Jürg Lehni <juerg@scratchdisk.com>
-Frank Weigel <frank.weigel@sap.com>
 Maciej Lato <mlato@yahoo-inc.com>
 Shirish Kamath <shirishk.87@gmail.com>
 Parakleta <parakleta@darkreality.org>
@@ -142,22 +140,19 @@ NaridaL <adrianleonhard@gmail.com>
 Kevin Wang <kevin@fossa.io>
 Marten Schilstra <marten.schilstra@dockyard.com>
 Barrett K. Harber <barrett.harber@gmail.com>
-Robert Jackson <rjackson@linkedin.com>
+Robert Jackson <me@rwjblue.com>
 Cory <cory.forsyth@gmail.com>
 Kevin Ji <kevin.ji@outlook.com>
 Adrian Leonhard <adrianleonhard@gmail.com>
 Patrick Berkeley <patrickberkeley@gmail.com>
 Jean-Philippe Sirois <email@jpsirois.com>
 Stephen Yeung <step2yeung@outlook.com>
-Trent Willis <twillis@netflix.com>
 Christian <me@rndm.de>
 Tobias Bieniek <tobias.bieniek@gmail.com>
 Ger Hobbelt <ger@hobbelt.com>
 Shlomi Fish <shlomif@shlomifish.org>
-Gabriel Csapo <gabecsapo@gmail.com>
-Gabriel J. Csapo <gcsapo@linkedin.biz>
+Gabriel J. Csapo <gabecsapo@gmail.com>
 Anand Thakker <anandthakker@users.noreply.github.com>
-Robert Jackson <me@rwjblue.com>
 jelhan <jelhan@users.noreply.github.com>
 5j9 <5j9@users.noreply.github.com>
 Steve Calvert <steve.calvert@gmail.com>
@@ -167,9 +162,10 @@ Martin Feckie <mfeckie@gmail.com>
 SparshithNRai <nairbali@usc.edu>
 Gerald Haagsma <haagsmag@gmail.com>
 Adam Byrne <misterbyrne@gmail.com>
-XhmikosR <xhmikosr@gmail.com>
 step2yeung <syeung@linkedin.com>
 Kean Loong Tan <keanification@gmail.com>
 Jim Lynch <mrdotjim@gmail.com>
 Eddy Lu <eddy.lu@mail.mcgill.ca>
-ventuno <ventuno@users.noreply.github.com>
+ventuno <ernesto.mudu@gmail.com>
+Jessica Jordan <jayjayjpg@gmail.com>
+Ray Cohen <raycohen@gmail.com>
