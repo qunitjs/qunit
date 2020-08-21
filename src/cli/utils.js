@@ -2,7 +2,7 @@
 
 const fs = require( "fs" );
 const path = require( "path" );
-const picomatch = require( "picomatch" );
+const glob = require( "tiny-glob/sync" );
 
 function existsStat() {
 	try {
@@ -22,75 +22,47 @@ function getIgnoreList( baseDir ) {
 	return [];
 }
 
-function findFilesInternal( dir, options, result = [], prefix = "" ) {
-	fs.readdirSync( dir ).forEach( ( name ) => {
-		const fullName = path.join( dir, name );
-		const stat = existsStat( fullName );
-		if ( !stat ) {
-			return;
-		}
-		const prefixedName = prefix + name;
-		const isIgnore = options.ignores( prefixedName );
-
-		if ( isIgnore ) {
-			return;
-		}
-		if ( stat.isDirectory() ) {
-			findFilesInternal( fullName, options, result, prefixedName + "/" );
-		} else {
-			const isMatch = options.matchers( prefixedName );
-			if ( isMatch ) {
-				result.push( prefixedName );
-			}
-		}
-	} );
-	return result;
-}
-
-function findFiles( baseDir, options ) {
-	return findFilesInternal( baseDir, {
-		matchers: picomatch( options.match || [] ),
-		ignores: picomatch( options.ignore || [] )
-	} );
-}
-
 function getFilesFromArgs( args ) {
-	const globs = args.slice();
+	const patterns = args.slice();
 
 	// Default to files in the test directory
-	if ( !globs.length ) {
-		globs.push( "test/**/*.js" );
+	if ( !patterns.length ) {
+		patterns.push( "test/**/*.js" );
 	}
 
-	const files = [];
-	const filteredGlobs = [];
+	const files = new Set();
 
 	// For each of the potential globs, we check if it is a directory path and
 	// update it so that it matches the JS files in that directory.
-	globs.forEach( glob => {
-		const stat = existsStat( glob );
+	patterns.forEach( pattern => {
+		const stat = existsStat( pattern );
 
 		if ( stat && stat.isFile() ) {
 
-			// Remember known files to avoid (slow) directory-wide glob scanning.
+			// Optimisation:
+			// For non-glob simple files, skip (slow) directory-wide scanning.
 			// https://github.com/qunitjs/qunit/pull/1385
-			files.push( glob );
-		} else if ( stat && stat.isDirectory() ) {
-			filteredGlobs.push( `${glob}/**/*.js` );
+			files.add( pattern );
 		} else {
-			filteredGlobs.push( glob );
+			if ( stat && stat.isDirectory() ) {
+				pattern = `${pattern}/**/*.js`;
+			}
+			const results = glob( pattern, {
+				cwd: process.cwd(),
+				filesOnly: true,
+				flush: true
+			} );
+			for ( const result of results ) {
+				files.add( result );
+			}
 		}
 	} );
 
-	if ( filteredGlobs.length ) {
-		files.push.apply( files, findFiles( process.cwd(), { match: filteredGlobs } ) );
-	}
-
-	if ( !files.length ) {
+	if ( !files.size ) {
 		error( "No files were found matching: " + args.join( ", " ) );
 	}
 
-	return files;
+	return Array.from( files ).sort();
 }
 
 function error( message ) {
@@ -103,7 +75,6 @@ function capitalize( string ) {
 }
 
 module.exports = {
-	findFiles,
 	capitalize,
 	error,
 	getFilesFromArgs,

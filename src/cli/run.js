@@ -6,12 +6,9 @@ const requireFromCWD = require( "./require-from-cwd" );
 const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
 
-const IGNORED_GLOBS = [
-	".git",
-	"node_modules"
-].concat( utils.getIgnoreList( process.cwd() ) );
-
 const RESTART_DEBOUNCE_LENGTH = 200;
+
+const changedPendingPurge = [];
 
 let QUnit;
 
@@ -108,12 +105,8 @@ run.restart = function( args ) {
 
 	this._restartDebounceTimer = setTimeout( () => {
 
-		const watchedFiles = utils.findFiles( process.cwd(), {
-			match: [ "**/*.js" ],
-			ignore: IGNORED_GLOBS
-		} );
-
-		watchedFiles.forEach( file => delete require.cache[ path.resolve( file ) ] );
+		changedPendingPurge.forEach( file => delete require.cache[ path.resolve( file ) ] );
+		changedPendingPurge.length = 0;
 
 		if ( QUnit.config.queue.length ) {
 			console.log( "Finishing current test and restarting..." );
@@ -158,6 +151,7 @@ run.watch = function watch() {
 		}
 	}, ( event, fullpath ) => {
 		console.log( `File ${event}: ${path.relative( baseDir, fullpath )}` );
+		changedPendingPurge.push( fullpath );
 		run.restart( args );
 	} );
 
