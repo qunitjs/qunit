@@ -39,7 +39,7 @@
     "commander": "2.12.2",
     "js-reporters": "1.2.1",
     "node-watch": "0.6.4",
-    "minimatch": "3.0.4"
+    "picomatch": "2.2.2"
   },
   "devDependencies": {
     "@babel/core": "7.11.1",
