@@ -2,7 +2,7 @@
 
 const fs = require( "fs" );
 const path = require( "path" );
-const { Minimatch } = require( "minimatch" );
+const picomatch = require( "picomatch" );
 
 function existsStat() {
 	try {
@@ -30,14 +30,15 @@ function findFilesInternal( dir, options, result = [], prefix = "" ) {
 			return;
 		}
 		const prefixedName = prefix + name;
-		const isIgnore = options.ignores.some( ( mm ) => mm.match( prefixedName ) );
+		const isIgnore = options.ignores( prefixedName );
+
 		if ( isIgnore ) {
 			return;
 		}
 		if ( stat.isDirectory() ) {
 			findFilesInternal( fullName, options, result, prefixedName + "/" );
 		} else {
-			const isMatch = options.matchers.some( ( mm ) => mm.match( prefixedName ) );
+			const isMatch = options.matchers( prefixedName );
 			if ( isMatch ) {
 				result.push( prefixedName );
 			}
@@ -48,8 +49,8 @@ function findFilesInternal( dir, options, result = [], prefix = "" ) {
 
 function findFiles( baseDir, options ) {
 	return findFilesInternal( baseDir, {
-		matchers: ( options.match || [] ).map( ( pattern ) => new Minimatch( pattern ) ),
-		ignores: ( options.ignore || [] ).map( ( pattern ) => new Minimatch( pattern ) )
+		matchers: picomatch( options.match || [] ),
+		ignores: picomatch( options.ignore || [] )
 	} );
 }
 
