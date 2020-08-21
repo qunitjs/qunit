@@ -33,9 +33,9 @@ ok 1 Single > has a test
 
 	"qunit single.js double.js":
 `TAP version 13
-ok 1 Single > has a test
-ok 2 Double > has a test
-ok 3 Double > has another test
+ok 1 Double > has a test
+ok 2 Double > has another test
+ok 3 Single > has a test
 1..3
 # pass 3
 # skip 0
@@ -71,9 +71,9 @@ not ok 1 Throws match > bad
 
 	"qunit test single.js 'glob/**/*-test.js'":
 `TAP version 13
-ok 1 Single > has a test
-ok 2 A-Test > derp
-ok 3 Nested-Test > herp
+ok 1 A-Test > derp
+ok 2 Nested-Test > herp
+ok 3 Single > has a test
 ok 4 First > 1
 ok 5 Second > 1
 1..5
@@ -85,10 +85,10 @@ ok 5 Second > 1
 	"qunit --seed 's33d' test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
 TAP version 13
 ok 1 Second > 1
-ok 2 Nested-Test > herp
+ok 2 Single > has a test
 ok 3 First > 1
-ok 4 A-Test > derp
-ok 5 Single > has a test
+ok 4 Nested-Test > herp
+ok 5 A-Test > derp
 1..5
 # pass 5
 # skip 0
