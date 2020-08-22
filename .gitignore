@@ -1,6 +1,7 @@
 /__codeorigin
 /dist
 /node_modules
+/build/instrumented
 /build/report
 /browserstack-run.pid
 /temp/

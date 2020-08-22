@@ -1,8 +1,9 @@
 "use strict";
 
-const fs = require( "fs-extra" );
+const fs = require( "fs" );
 const path = require( "path" );
 const fixturify = require( "fixturify" );
+const rimraf = require( "rimraf" );
 
 const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
 const executeHelper = require( "./helpers/execute" );
@@ -28,14 +29,14 @@ function kill( execution, signal ) {
 
 QUnit.module( "CLI Watch", function( hooks ) {
 	hooks.beforeEach( function() {
-		fs.ensureDirSync( fixturePath );
+		fs.mkdirSync( path.dirname( fixturePath ), { recursive: true } );
 		fixturify.writeSync( fixturePath, {
 			"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });"
 		} );
 	} );
 
 	hooks.afterEach( function() {
-		fs.removeSync( fixturePath );
+		rimraf.sync( fixturePath );
 	} );
 
 	QUnit.test( "runs tests and waits until SIGTERM", async function( assert ) {

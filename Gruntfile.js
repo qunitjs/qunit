@@ -1,7 +1,7 @@
 /* eslint-env node */
 
+var fs = require( "fs" );
 var path = require( "path" );
-var fs = require( "fs-extra" );
 
 var instrumentedDir = "build/instrumented";
 var reportDir = "build/report";
@@ -14,15 +14,22 @@ module.exports = function( grunt ) {
 	var connectPort = Number( grunt.option( "connect-port" ) ) || 4000;
 
 	// Load grunt tasks from NPM packages
-	require( "load-grunt-tasks" )( grunt );
+	grunt.loadNpmTasks( "grunt-contrib-connect" );
+	grunt.loadNpmTasks( "grunt-contrib-copy" );
+	grunt.loadNpmTasks( "grunt-contrib-qunit" );
+	grunt.loadNpmTasks( "grunt-contrib-watch" );
+	grunt.loadNpmTasks( "grunt-coveralls" );
+	grunt.loadNpmTasks( "grunt-eslint" );
+	grunt.loadNpmTasks( "grunt-istanbul" );
+	grunt.loadNpmTasks( "grunt-search" );
 
 	function preprocess( code ) {
 		return code
 
-		// Embed version
+			// Embed version
 			.replace( /@VERSION/g, grunt.config( "pkg" ).version )
 
-		// Embed date (yyyy-mm-ddThh:mmZ)
+			// Embed date (yyyy-mm-ddThh:mmZ)
 			.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
 	}
 
@@ -280,8 +287,8 @@ module.exports = function( grunt ) {
 		var testName = file.split( "/test/" ).pop().replace( ".html", "" );
 		var reportPath = path.join( "build/report/phantom", testName + ".json" );
 
-		fs.ensureFileSync( reportPath );
-		fs.writeJsonSync( reportPath, coverage, { spaces: 0 } );
+		fs.mkdirSync( path.dirname( reportPath ), { recursive: true } );
+		fs.writeFileSync( reportPath, JSON.stringify( coverage ) + "\n" );
 	} );
 
 	grunt.loadTasks( "build/tasks" );
