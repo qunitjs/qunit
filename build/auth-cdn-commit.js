@@ -1,8 +1,9 @@
-/* eslint-env node */
-// Helper to publish QUnit releases to the jQuery CDN.
+// Helper to commit QUnit releases to the CDN repository.
 //
-// This is inspired by <https://github.com/jquery/jquery-release>
-// and <https://github.com/qunitjs/qunit-release>.
+// See also RELEASE.md.
+//
+// Inspired by <https://github.com/jquery/jquery-release>.
+/* eslint-env node */
 
 const fs = require( "fs" );
 const cp = require( "child_process" );

@@ -46,14 +46,17 @@ Prerequisites:
       * Ensure there is no leading or trailing whitespace on blank lines,
       * Remove any "Build", "Tests" and other commits not relevant to users,
       * Refer to the formatting of previous entries when in doubt.
-   2. Run `npm run authors` and copy any new authors to `AUTHORS.txt`. The order of this list is stable, so you only need to check the last entry. If you see duplicate entries proposed by the output of `npm run authors`, use the `.mailmap` file to normamlize entries to a canonical name or e-mail address, then run the npm command again.
-   3. Update the version property in `package.json` to have the right `-pre` version (e.g., if releasing version `2.3.0`, the version should be `2.3.0-pre`).
-   4. Commit all of the above with the following message (replace `@VERSION` with the release version):
+   2. Update the package.json and AUTHORS.txt files, by running the below command (replace `@VERSION` with the release version):
+      ```
+      node build/prep-release.js @VERSION
+      ```
+      Review the difference in the `AUTHORS.txt` file. If you see duplicate entries proposed, then use the `.mailmap` file to normamlize those entries to a canonical name or e-mail address, and then re-run the above command.
+   3. Commit all of the above with the following message (replace `@VERSION` with the release version):
       ```
       Build: Prepare @VERSION release, including authors and history update
       ```
-   5. Push your `release` branch to GitHub.
-   6. Create a pull request, approve it, and merge it once Travis CI is passing.
+   4. Push your `release` branch to GitHub.
+   5. Create a pull request, approve it, and merge it once Travis CI is passing.
 
 ## Performing the release
 
@@ -76,7 +79,7 @@ Prerequisites:
 
 3. Set the release version for npm and Bower metadata, by running the below command (replace `@VERSION` with the release version):
    ```
-   node build/prep-release.js @VERSION
+   node build/set-release.js @VERSION
    ```
    This script will edit `package.json` and `bower.json` for you. It does not require any credentials or permissions, apart from read-write in the project directory.
 
