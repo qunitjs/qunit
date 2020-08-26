@@ -1,4 +1,11 @@
 
+2.11.1 / 2020-08-25
+==================
+
+  * All: Remove dependency on "minimatch" package. ([#1476](https://github.com/qunitjs/qunit/pull/1476#issuecomment-680390062))
+  * CLI: Improve startup performance by using `tiny-glob`. ([#1476](https://github.com/qunitjs/qunit/pull/1476))
+  * Build: Update to commander 6.0.
+
 2.11.0 / 2020-08-16
 ==================
 
@@ -706,7 +713,7 @@
   * Track tests by the order in which they were run and create rerun links based on that number. Fixes #241 - Make Rerun link run only a single test.
   * Use QUnit.push for raises implementation. Fixes #243
   * CLI runner for phantomjs
-  * Fix jshint validation until they deal with /** */ comments properly
+  * Fix jshint validation until they deal with `/** */` comments properly
   * Update validTest() : Simplify logic, clarify vars and add comments
   * Refactor assertion helpers into QUnit.assert (backwards compatible)
   * Add Rerun link to placeholders. Fixes #240
@@ -730,7 +737,7 @@
   * Modify "Running..." to display test name. Fixes #220
   * Fixed clearing of sessionStorage in Firefox 3.6.
   * Fixes #217 by calling "block" with config.current.testEnvironment
-  * Add stats results to data. QUnit.jUnitReport function take one argument {   xml:'<?xml ...',   results:{failed:0, passed:0, total:0, time:0} }
+  * Add stats results to data. QUnit.jUnitReport function take one argument `{   xml:'<?xml ...',   results:{failed:0, passed:0, total:0, time:0} }`
   * Add link to MDN about stack property
 
 1.4.0 / 2012-03-10

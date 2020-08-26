@@ -97,7 +97,7 @@ Prerequisites:
    ```
    git add package.json bower.json qunit/
    git commit -m "Release @VERSION"
-   git tag -s "Release @VERSION"
+   git tag -s "@VERSION" -m "Release @VERSION"
    git push --follow-tags
    ```
 
