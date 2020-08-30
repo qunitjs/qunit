@@ -1,7 +1,7 @@
 QUnit.config.reorder = false;
 
 var totalTests, moduleContext, moduleDoneContext, testContext, testDoneContext, logContext,
-	testAutorun, beginModules,
+	beginModules,
 	module1Test1, module1Test2, module2Test1, module2Test2,
 	module2Test3, module2Test4, module2Test5, module2Test6,
 	begin = 0,
@@ -329,34 +329,4 @@ QUnit.test( module2Test6.name, function( assert ) {
 		todo: true,
 		testId: module2Test5.testId
 	}, "testDone context" );
-} );
-
-testAutorun = true;
-
-QUnit.done( function() {
-
-	if ( !testAutorun ) {
-		return;
-	}
-
-	testAutorun = false;
-
-	moduleStart = moduleDone = 0;
-
-	// Since these tests run *after* done, and as such
-	// QUnit is not able to know whether more tests are coming
-	// the module starts/ends after each test.
-	QUnit.module( "autorun" );
-
-	setTimeout( function() {
-		QUnit.test( "first", function( assert ) {
-			assert.equal( moduleStart, 1, "test started" );
-			assert.equal( moduleDone, 0, "test in progress" );
-		} );
-
-		QUnit.test( "second", function( assert ) {
-			assert.equal( moduleStart, 2, "test started" );
-			assert.equal( moduleDone, 1, "test in progress" );
-		} );
-	}, 5000 );
 } );
