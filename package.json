@@ -1,7 +1,7 @@
 {
   "name": "qunit",
   "title": "QUnit",
-  "description": "An easy-to-use JavaScript Unit Testing framework.",
+  "description": "The powerful, easy-to-use testing framework.",
   "version": "2.11.1-pre",
   "homepage": "https://qunitjs.com",
   "author": {
@@ -15,6 +15,11 @@
   "keywords": [
     "testing",
     "unit",
+    "assert",
+    "assertion",
+    "tap",
+    "tape",
+    "karma",
     "jquery"
   ],
   "bugs": {

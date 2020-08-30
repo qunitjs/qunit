@@ -23,14 +23,15 @@ run the tests after each small refactoring step and always know what change
 broke something.
 
 QUnit is similar to other unit testing frameworks like JUnit, but makes use of
-the features JavaScript provides and helps with testing code in the browser, such as built in support for asynchronicity and exception handling.
+the features JavaScript provides and helps with testing code in the browser, such
+as built in support for asynchronicity and exception handling.
 
 ## Support
 
-If you need help using QUnit, visit the [QUnit and Testing forum](https://forum.jquery.com/qunit-and-testing) or chat with us on [Gitter](https://gitter.im/qunitjs/qunit).
+If you need help using QUnit, chat with us on [Gitter](https://gitter.im/qunitjs/qunit).
 
-If you believe there is a bug with QUnit or would like to request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
+To report a bug or request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
 
-## Development / Contributions
+## Contribute
 
 If you are interested in helping develop QUnit, check out our [contributing guide](./CONTRIBUTING.md).
