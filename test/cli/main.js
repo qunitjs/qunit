@@ -135,6 +135,37 @@ QUnit.module( "CLI Main", function() {
 		}
 	} );
 
+	// https://nodejs.org/dist/v12.12.0/docs/api/cli.html#cli_enable_source_maps
+	if ( semver.gte( process.versions.node, "14.0.0" ) ) {
+
+		QUnit.test( "normal trace with native source map", async function( assert ) {
+			const command = "qunit sourcemap/source.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				const re = new RegExp( expectedOutput[ command ] );
+				assert.equal( re.test( e.stdout ), true );
+			}
+		} );
+
+		QUnit.test( "mapped trace with native source map", async function( assert ) {
+			const command = "NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				const re = new RegExp( expectedOutput[ command ] );
+				assert.equal( re.test( e.stdout ), true );
+				if ( !re.test( e.stdout ) ) {
+					assert.equal( e.stdout, expectedOutput[ command ] );
+				}
+			}
+		} );
+	}
+
 	QUnit.test( "timeouts correctly recover", async function( assert ) {
 		const command = "qunit timeout";
 		try {

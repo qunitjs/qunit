@@ -18,5 +18,8 @@
 	},
 	"rules": {
 		"max-len": "off"
-	}
+	},
+	"ignorePatterns": [
+		"cli/fixtures/sourcemap/*.min.js"
+	]
 }

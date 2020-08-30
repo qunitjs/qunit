@@ -166,6 +166,43 @@ not ok 1 global failure
 # fail 1
 `,
 
+	"qunit sourcemap/source.js":
+`TAP version 13
+ok 1 Example > good
+not ok 2 Example > bad
+  ---
+  message: "failed"
+  severity: failed
+  actual: false
+  expected: true
+  stack:     at .* \\(.*source.js:7:14\\)
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+`,
+
+	"NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js":
+`TAP version 13
+ok 1 Example > good
+not ok 2 Example > bad
+  ---
+  message: "failed"
+  severity: failed
+  actual: false
+  expected: true
+  stack:     at .* \\(.*source.min.js:1:.*\\)
+        -> .*source.js:7:10
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+`,
+
 	"qunit timeout":
 `TAP version 13
 not ok 1 timeout > first
