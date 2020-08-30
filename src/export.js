@@ -6,7 +6,7 @@ export default function exportQUnit( QUnit ) {
 
 	if ( defined.document ) {
 
-	// QUnit may be defined when it is preconfigured but then only QUnit and QUnit.config may be defined.
+		// QUnit may be defined when it is preconfigured but then only QUnit and QUnit.config may be defined.
 		if ( window.QUnit && window.QUnit.version ) {
 			throw new Error( "QUnit has already been defined." );
 		}

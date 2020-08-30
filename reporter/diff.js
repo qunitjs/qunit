@@ -42,7 +42,8 @@ QUnit.diff = ( function() {
 	 */
 	var DIFF_DELETE = -1,
 		DIFF_INSERT = 1,
-		DIFF_EQUAL = 0;
+		DIFF_EQUAL = 0,
+		hasOwn = Object.prototype.hasOwnProperty;
 
 	/**
 	 * Find the differences between two texts.  Simplifies the problem by stripping
@@ -970,11 +971,7 @@ QUnit.diff = ( function() {
 				line = text.substring( lineStart, lineEnd + 1 );
 				lineStart = lineEnd + 1;
 
-				const lineHashExists = lineHash.hasOwnProperty ?
-					lineHash.hasOwnProperty( line ) :
-					lineHash[ line ] !== undefined;
-
-				if ( lineHashExists ) {
+				if ( hasOwn.call( lineHash, line ) ) {
 					chars += String.fromCharCode( lineHash[ line ] );
 				} else {
 					chars += String.fromCharCode( lineArrayLength );

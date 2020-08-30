@@ -39,7 +39,7 @@ export function escapeText( s ) {
 
 ( function() {
 
-// Don't load the HTML Reporter on non-browser environments
+	// Don't load the HTML Reporter on non-browser environments
 	if ( typeof window === "undefined" || !window.document ) {
 		return;
 	}
@@ -133,7 +133,7 @@ export function escapeText( s ) {
 
 		for ( i = 0; i < urlConfig.length; i++ ) {
 
-		// Options can be either strings or objects with nonempty "id" properties
+			// Options can be either strings or objects with nonempty "id" properties
 			val = config.urlConfig[ i ];
 			if ( typeof val === "string" ) {
 				val = {
