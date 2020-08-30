@@ -16,7 +16,7 @@ module.exports = {
  * QUnit @VERSION\n\
  * https://qunitjs.com/\n\
  *\n\
- * Copyright jQuery Foundation and other contributors\n\
+ * Copyright OpenJS Foundation and other contributors\n\
  * Released under the MIT license\n\
  * https://jquery.org/license\n\
  *\n\
