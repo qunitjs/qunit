@@ -222,7 +222,7 @@ module.exports = function( grunt ) {
 				"test/module-skip",
 				"test/module-todo",
 				"test/es2017/async-functions"
-			].filter( Boolean )
+			]
 		},
 		"watch-repeatable": {
 			options: {
