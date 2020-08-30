@@ -10,7 +10,7 @@ module.exports = function execute( command, execaOptions ) {
 	const cwd = process.cwd();
 	process.chdir( path.join( __dirname, "..", "fixtures" ) );
 
-	command = command.replace( /^qunit\b/, "../../../bin/qunit.js" );
+	command = command.replace( /(^| )qunit\b/, "$1../../../bin/qunit.js" );
 	const execution = exec( command, execaOptions );
 
 	process.chdir( cwd );
