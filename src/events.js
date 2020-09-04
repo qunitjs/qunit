@@ -6,6 +6,7 @@ const SUPPORTED_EVENTS = [
 	"suiteStart",
 	"testStart",
 	"assertion",
+	"beforeTestEnd",
 	"testEnd",
 	"suiteEnd",
 	"runEnd"

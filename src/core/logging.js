@@ -5,7 +5,7 @@ import Promise from "../promise";
 // Register logging callbacks
 export function registerLoggingCallbacks( obj ) {
 	var i, l, key,
-		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
+		callbackNames = [ "begin", "done", "log", "testStart", "beforeTestDone", "testDone",
 			"moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {

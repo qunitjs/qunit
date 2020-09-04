@@ -26,6 +26,7 @@ QUnit.on( "suiteStart", callback( "suiteStart" ) );
 QUnit.on( "testStart", callback( "testStart" ) );
 QUnit.on( "assertion", callback( "assertion1" ) );
 QUnit.on( "assertion", callback( "assertion2" ) );
+QUnit.on( "beforeTestEnd", callback( "beforeTestEnd" ) );
 QUnit.on( "testEnd", callback( "testEnd" ) );
 QUnit.on( "suiteEnd", callback( "suiteEnd" ) );
 QUnit.on( "runEnd", callback( "runEnd" ) );
@@ -194,13 +195,16 @@ QUnit.done( function() {
 			"testStart",
 			"assertion1",
 			"assertion2",
+			"beforeTestEnd",
 			"testEnd",
 			"suiteEnd",
 			"testStart",
 			"assertion1",
 			"assertion2",
+			"beforeTestEnd",
 			"testEnd",
 			"testStart",
+			"beforeTestEnd",
 			"testEnd",
 			"suiteEnd",
 			"runEnd"

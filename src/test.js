@@ -37,6 +37,7 @@ export default function Test( settings ) {
 	this.steps = [];
 	this.timeout = undefined;
 	this.errorForStack = new Error();
+	this.bad = 0;
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
@@ -263,12 +264,73 @@ Test.prototype = {
 		return hooks;
 	},
 
-	finish: function() {
+	beforeFinish: function() {
 		config.current = this;
+
+		this.bad = 0;
+		var i,
+			module = this.module,
+			moduleName = module.name,
+			testName = this.testName,
+			skipped = !!this.skip,
+			todo = !!this.todo,
+			storage = config.storage;
+
+		config.stats.all += this.assertions.length;
+		config.stats.testCount += 1;
+		module.stats.all += this.assertions.length;
+
+		for ( i = 0; i < this.assertions.length; i++ ) {
+			if ( !this.assertions[ i ].result ) {
+				this.bad++;
+				config.stats.bad++;
+				module.stats.bad++;
+			}
+		}
+
+		// Store result when possible
+		if ( storage ) {
+			if ( this.bad ) {
+				storage.setItem( "qunit-test-" + moduleName + "-" + testName, this.bad );
+			} else {
+				storage.removeItem( "qunit-test-" + moduleName + "-" + testName );
+			}
+		}
+
+		emit( "beforeTestEnd", /* TODO */ true );
+		return runLoggingCallbacks( "beforeTestDone", {
+			name: testName,
+			module: moduleName,
+			skipped: skipped,
+			todo: todo,
+			failed: this.bad,
+			passed: this.assertions.length - this.bad,
+			total: this.assertions.length,
+
+			// HTML Reporter use
+			assertions: this.assertions,
+			testId: this.testId,
+
+			// Source of Test
+			// generating stack trace is expensive, so using a getter will help defer this until we need it
+			get source() { return test.stack; }
+		} );
+	},
+
+	finish: function() {
 
 		// Release the test callback to ensure that anything referenced has been
 		// released to be garbage collected.
 		this.callback = undefined;
+
+		var module = this.module,
+			moduleName = module.name,
+			testName = this.testName,
+			skipped = !!this.skip,
+			todo = !!this.todo,
+			bad = this.bad;
+
+		this.runtime = now() - this.started;
 
 		if ( this.steps.length ) {
 			const stepsList = this.steps.join( ", " );
@@ -287,44 +349,12 @@ Test.prototype = {
 				"expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var i,
-			module = this.module,
-			moduleName = module.name,
-			testName = this.testName,
-			skipped = !!this.skip,
-			todo = !!this.todo,
-			bad = 0,
-			storage = config.storage;
-
-		this.runtime = now() - this.started;
-
-		config.stats.all += this.assertions.length;
-		config.stats.testCount += 1;
-		module.stats.all += this.assertions.length;
-
-		for ( i = 0; i < this.assertions.length; i++ ) {
-			if ( !this.assertions[ i ].result ) {
-				bad++;
-				config.stats.bad++;
-				module.stats.bad++;
-			}
-		}
-
-		notifyTestsRan( module, skipped );
-
-		// Store result when possible
-		if ( storage ) {
-			if ( bad ) {
-				storage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );
-			} else {
-				storage.removeItem( "qunit-test-" + moduleName + "-" + testName );
-			}
-		}
-
 		// After emitting the js-reporters event we cleanup the assertion data to
 		// avoid leaking it. It is not used by the legacy testDone callbacks.
 		emit( "testEnd", this.testReport.end( true ) );
 		this.testReport.slimAssertions();
+		notifyTestsRan( module, skipped );
+
 		const test = this;
 
 		return runLoggingCallbacks( "testDone", {
@@ -414,6 +444,10 @@ Test.prototype = {
 
 				function() {
 					test.run();
+				},
+
+				function() {
+					test.beforeFinish();
 				},
 
 				...test.hooks( "afterEach" ).reverse(),
