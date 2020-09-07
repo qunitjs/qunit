@@ -98,7 +98,7 @@ Prerequisites:
    git add package.json bower.json qunit/
    git commit -m "Release @VERSION"
    git tag -s "@VERSION" -m "Release @VERSION"
-   git push --follow-tags
+   git push --tags
    ```
 
 7. Verify that Bower sees the release, by running `bower info qunit` and checking that the latest
