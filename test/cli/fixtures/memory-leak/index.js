@@ -2,17 +2,20 @@
 
 const v8 = require( "v8" );
 
-const foos = new WeakSet();
+// Hold explicit references as well so that V8 will consistently
+// not be able to GC them until we ask it to. This allows us to
+// verify that our heap logic works correctly by asserting both
+// presence and absence.
+const foos = new Set();
 class Foo {
 	constructor() {
+		this.id = `FooNum${foos.size}`;
 		foos.add( this );
 	}
 
-	sayHello() {
-		return "Hi!";
+	getId() {
+		return this.id.slice( 0, -1 );
 	}
-
-	destroy() { }
 }
 
 function streamToString( stream ) {
@@ -25,18 +28,20 @@ function streamToString( stream ) {
 }
 
 QUnit.module( "some nested module", function( hooks ) {
-	let foo1;
+	let foo1, foo2;
 
 	hooks.beforeEach( function() {
 		foo1 = new Foo();
 	} );
 
-	hooks.afterEach( function() {
-		foo1.destroy();
+	hooks.afterEach( function( assert ) {
+		foo2 = new Foo();
+		assert.equal( foo1.getId(), "FooNum" );
+		assert.equal( foo2.getId(), "FooNum" );
 	} );
 
 	QUnit.test( "can call method on foo", function( assert ) {
-		assert.equal( foo1.sayHello(), "Hi!" );
+		assert.equal( foo1.getId(), "FooNum" );
 	} );
 
 } );
@@ -44,25 +49,22 @@ QUnit.module( "some nested module", function( hooks ) {
 QUnit.module( "later thing", function() {
 	QUnit.test( "has released all foos", async function( assert ) {
 
-		// Create another one to ensure our heap match logic is working.
-		let foo2 = new Foo();
-
-		// The snapshot is expected to contain something like this:
-		// > "part of key (Foo @…) -> value (…) pair in WeakMap (…)"
+		// The snapshot is expected to contain entries like this:
+		// > "FooNum<integer>"
 		// It is important that the regex uses \d and that the above
-		// comment doesn't include a number after "@", as otherwise
-		// it will match the memory relating to this function's code.
-		const reHeap = /^[^\n]+Foo @\d[^\n]+/gm;
+		// comment doesn't include a number, as otherwise we will also
+		// get matches for the memory of this function's source code.
+		const reHeap = /^.*FooNum\d.*$/gm;
 
 		let snapshot = await streamToString( v8.getHeapSnapshot() );
 		let matches = snapshot.match( reHeap );
-		assert.strictEqual( matches.length, 2, "found local Foo in heap" );
+		assert.strictEqual( matches && matches.length, 2, "the before heap" );
 
 		snapshot = matches = null;
-		foo2.destroy();
+		assert.strictEqual( foos.size, 2, "foos in Set" );
 
 		// Comment out the below to test the failure mode
-		foo2 = null;
+		foos.clear();
 
 		// Requires `--expose-gc` flag to function properly.
 		gc();
