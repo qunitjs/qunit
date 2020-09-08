@@ -58,7 +58,7 @@ not ok 1 Throws match > bad
   ---
   message: "match error"
   severity: failed
-  actual: "Error: Match me with a pattern"
+  actual  : "Error: Match me with a pattern"
   expected: "/incorrect pattern/"
   stack: .*
   ...
@@ -116,7 +116,7 @@ not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promis
   ---
   message: "Error thrown in non-returned promise!"
   severity: failed
-  actual: {
+  actual  : {
   "message": "Error thrown in non-returned promise!",
   "stack": "Error: Error thrown in non-returned promise!\\n    at /some/path/wherever/unhandled-rejection.js:13:11"
 }
@@ -128,7 +128,7 @@ not ok 2 global failure
   ---
   message: "outside of a test context"
   severity: failed
-  actual: {
+  actual  : {
   "message": "outside of a test context",
   "stack": "Error: outside of a test context\\n    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)"
 }
@@ -150,7 +150,7 @@ not ok 1 global failure
   ---
   message: "No tests were run."
   severity: failed
-  actual: {}
+  actual  : {}
   expected: undefined
   stack: Error: No tests were run.
     at done (.*)
@@ -173,7 +173,7 @@ not ok 2 Example > bad
   ---
   message: "failed"
   severity: failed
-  actual: false
+  actual  : false
   expected: true
   stack:     at .* \\(.*source.js:7:14\\)
   ...
@@ -191,7 +191,7 @@ not ok 2 Example > bad
   ---
   message: "failed"
   severity: failed
-  actual: false
+  actual  : false
   expected: true
   stack:     at .* \\(.*source.min.js:1:.*\\)
         -> .*source.js:7:10
@@ -209,7 +209,7 @@ not ok 1 timeout > first
   ---
   message: "Test took longer than 10ms; test timed out."
   severity: failed
-  actual: null
+  actual  : null
   expected: undefined
   stack:     at .* (.*timers.js.*)
     at .*(\n    at .*)?(\n    at .*)?
@@ -238,7 +238,7 @@ not ok 1 global failure
   ---
   message: "No tests matched the filter "no matches"."
   severity: failed
-  actual: {}
+  actual  : {}
   expected: undefined
   stack: Error: No tests matched the filter "no matches".
     at done (.*)
