@@ -40,7 +40,7 @@ Prerequisites:
 
 4. Create and push the release preparation commit:
 
-   1. Run `git changelog -s <SHA1 of last preparation commit>` to update `History.md`. Clean up:
+   1. Run `git changelog` to update `History.md`. Clean up:
       * Replace `n.n.n` in the top section with the next release,
       * Ensure the previous release notes are still there,
       * Ensure there is no leading or trailing whitespace on blank lines,
@@ -53,7 +53,7 @@ Prerequisites:
       Review the difference in the `AUTHORS.txt` file. If you see duplicate entries proposed, then use the `.mailmap` file to normamlize those entries to a canonical name or e-mail address, and then re-run the above command.
    3. Commit all of the above with the following message (replace `@VERSION` with the release version):
       ```
-      Build: Prepare @VERSION release, including authors and history update
+      Build: Prepare @VERSION release
       ```
    4. Push your `release` branch to GitHub.
    5. Create a pull request, approve it, and merge it once Travis CI is passing.
