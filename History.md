@@ -1,4 +1,11 @@
 
+2.11.2 / 2020-09-09
+==================
+
+  * All: Update license to OpenJS Foundation.
+  * Build: Update to js-reporters 1.2.3. ([#1481](https://github.com/qunitjs/qunit/pull/1481))
+  * CLI: Align `actual` whitespace with `expected` in TapReporter. ([js-reporters/js-reporters#107](https://github.com/js-reporters/js-reporters/pull/107))
+
 2.11.1 / 2020-08-25
 ==================
 
