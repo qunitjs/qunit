@@ -1,8 +1,9 @@
 ---
 layout: default
-categories: [config]
 title: QUnit.dump.parse()
-description: Advanced and extensible data dumping for JavaScript
+description: Extensible data dumping and string serialization.
+categories:
+ - config
 redirect_from:
   - "/QUnit.dump.parse/"
   - "/QUnit.jsDump.parse/"
@@ -11,15 +12,20 @@ version_added: "1.0"
 
 `QUnit.dump.parse( data )`
 
-Advanced and extensible data dumping for JavaScript
+Extensible data dumping and string serialization.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `data`             | Data structure or Object to parse.   |
+| name      | description                          |
+|-----------|--------------------------------------|
+| `data`    | Data structure or Object to parse.   |
 
 This method does string serialization by parsing data structures and objects. It parses DOM elements to a string representation of their outer HTML. By default, nested structures will be displayed up to five levels deep. Anything beyond that is replaced by `[object Object]` and `[object Array]` placeholders.
 
 If you need more or less output, change the value of `QUnit.dump.maxDepth`, representing how deep the elements should be parsed.
+
+##### Changelog
+
+| [QUnit 2.1](https://github.com/qunitjs/qunit/releases/2.1.0) | The `QUnit.jsDump` alias was removed.
+| [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | The `QUnit.jsDump` interface was renamed to `QUnit.dump`.<br/>The `QUnit.jsDump` alias is deprecated.
 
 ### Examples
 
