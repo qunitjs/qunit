@@ -33,6 +33,12 @@ Modules can be nested inside other modules, in which case their tests' names wil
 
 The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.only()`](./only.md), [`QUnit.skip()`](./skip.md) or [`QUnit.todo()`](./todo.md) to all a module's tests at once. These were introduced in QUnit version [2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0).
 
+##### Changelog
+
+| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/2.0.0) | The `before` and `after` options were introduced.
+| [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | The `nested` scope feature was introduced.
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | The `beforeEach` and `afterEach` options were introduced.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
+
 ##### Example: Organizing tests
 
 If `QUnit.module` is defined without a `nested` callback argument, all subsequently defined tests will be grouped into the module until another module is defined.
@@ -98,12 +104,6 @@ teardown logic. These hooks can run around individual tests, or around a whole m
 **Note**: If additional tests are defined after the module's queue has emptied, it will not run the `after` hook again.
 
 Each [QUnit.test](./test.md) has its own test context object, accessible via its `this` variable. Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Example: Test context](#example-test-context).
-
-**Changelog**:
-* The `before` and `after` options were introduced in [QUnit 2.0](https://github.com/qunitjs/qunit/releases/2.0.0).
-* The `beforeEach` and `afterEach` options were introduced in [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0).
-* The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
-
 
 ##### Example: Declaring hook options
 
