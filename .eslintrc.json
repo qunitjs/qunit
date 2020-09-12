@@ -31,5 +31,37 @@
         "prefer-const": "error",
         "rest-spread-spacing": ["error", "never"],
         "wrap-iife": ["error", "any"]
-    }
+    },
+    "ignorePatterns": [
+        "build/instrumented/**",
+        "build/report/**",
+        "coverage/**",
+        "docs/_site/**",
+        "dist/**"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "bin/*.js",
+                "build/**/*.js",
+                "src/cli/*.js",
+                "Gruntfile.js",
+                "rollup.config.js"
+            ],
+            "excludedFiles": [
+                "build/coverage-bridge.js"
+            ],
+            "parserOptions": {
+                "sourceType": "script",
+                "ecmaVersion": 2018
+            },
+            "env": {
+                "node": true
+            },
+            "extends": ["plugin:node/recommended"],
+            "rules": {
+                "no-process-exit": "off"
+            }
+        }
+    ]
 }

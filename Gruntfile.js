@@ -93,20 +93,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		eslint: {
-			options: {
-				config: ".eslintrc.json"
-			},
-			js: [
-				"*.js",
-				"bin/**/*.js",
-				"reporter/**/*.js",
-				"runner/**/*.js",
-				"src/**/*.js",
-
-				"test/**/*.js",
-				"build/*.js",
-				"build/tasks/**/*.js"
-			],
+			js: ".",
 			html: {
 				options: {
 					rules: {

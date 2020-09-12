@@ -1,4 +1,4 @@
-/* global QUnit, window, define */
+/* global QUnit, window, define, require */
 
 ( function( factory ) {
 
