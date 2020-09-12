@@ -1,10 +1,8 @@
 /* eslint-env node */
 
-var fs = require( "fs" );
-var path = require( "path" );
-
-var instrumentedDir = "build/instrumented";
-var reportDir = "build/report";
+const fs = require( "fs" );
+const path = require( "path" );
+const { preprocess } = require( "./build/dist-replace.js" );
 
 // Detect Travis CI or Jenkins.
 var isCI = process.env.CI || process.env.JENKINS_HOME;
@@ -18,23 +16,10 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-qunit" );
 	grunt.loadNpmTasks( "grunt-contrib-watch" );
-	grunt.loadNpmTasks( "grunt-coveralls" );
 	grunt.loadNpmTasks( "grunt-eslint" );
-	grunt.loadNpmTasks( "grunt-istanbul" );
 	grunt.loadNpmTasks( "grunt-search" );
 
-	function preprocess( code ) {
-		return code
-
-			// Embed version
-			.replace( /@VERSION/g, grunt.config( "pkg" ).version )
-
-			// Embed date (yyyy-mm-ddThh:mmZ)
-			.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
-	}
-
 	grunt.initConfig( {
-		pkg: grunt.file.readJSON( "package.json" ),
 		connect: {
 			nolivereload: {
 				options: {
@@ -69,27 +54,9 @@ module.exports = function( grunt ) {
 		copy: {
 			options: { process: preprocess },
 
-			"src-js": {
-				src: "dist/qunit.js",
-				dest: "dist/qunit.js"
-			},
 			"src-css": {
 				src: "src/qunit.css",
 				dest: "dist/qunit.css"
-			},
-
-			// Moves files around during coverage runs
-			"dist-to-tmp": {
-				src: "dist/qunit.js",
-				dest: "dist/qunit.tmp.js"
-			},
-			"instrumented-to-dist": {
-				src: "build/instrumented/dist/qunit.js",
-				dest: "dist/qunit.js"
-			},
-			"tmp-to-dist": {
-				src: "dist/qunit.tmp.js",
-				dest: "dist/qunit.js"
 			}
 		},
 		eslint: {
@@ -233,66 +200,21 @@ module.exports = function( grunt ) {
 			options: {
 				port: livereloadPort
 			}
-		},
-
-		instrument: {
-			files: "dist/qunit.js",
-			options: {
-				lazy: false,
-				basePath: instrumentedDir
-			}
-		},
-
-		storeCoverage: {
-			options: {
-				dir: reportDir
-			}
-		},
-
-		makeReport: {
-			src: reportDir + "/**/*.json",
-			options: {
-				type: [ "lcov" ],
-				dir: reportDir,
-				print: "detail"
-			}
-		},
-
-		coveralls: {
-			options: {
-				force: true
-			},
-			all: {
-
-				// LCOV coverage file relevant to every target
-				src: "build/report/lcov.info"
-			}
 		}
 	} );
 
 	grunt.event.on( "qunit.coverage", function( file, coverage ) {
-		var testName = file.split( "/test/" ).pop().replace( ".html", "" );
-		var reportPath = path.join( "build/report/phantom", testName + ".json" );
+		var testName = file.split( "/test/" ).pop().replace( ".html", "" ).replace( /[/\\]/g, "--" );
+		var reportPath = path.join( ".nyc_output", "browser--" + testName + ".json" );
 
 		fs.mkdirSync( path.dirname( reportPath ), { recursive: true } );
 		fs.writeFileSync( reportPath, JSON.stringify( coverage ) + "\n" );
 	} );
 
 	grunt.loadTasks( "build/tasks" );
-	grunt.registerTask( "build-copy", [ "copy:src-js", "copy:src-css" ] );
 	grunt.registerTask( "test-base", [ "eslint", "search", "test-on-node" ] );
 	grunt.registerTask( "test", [ "test-base", "connect:nolivereload", "qunit" ] );
 	grunt.registerTask( "test-in-watch", [ "test-base", "qunit" ] );
-	grunt.registerTask( "coverage", [
-		"instrument",
-		"copy:dist-to-tmp",
-		"copy:instrumented-to-dist",
-		"test",
-		"copy:tmp-to-dist",
-		"storeCoverage",
-		"makeReport",
-		"coveralls"
-	] );
 
 	// Start the web server in a watch pre-task
 	// https://github.com/gruntjs/grunt-contrib-watch/issues/50

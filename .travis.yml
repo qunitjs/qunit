@@ -20,7 +20,7 @@ matrix:
       node_js: "10"
     - os: linux
       node_js: "10"
-      env: NPM_SCRIPT=coverage
+      env: NPM_SCRIPT=coveralls
     - stage: "Update search index"
       # https://docs.travis-ci.com/user/conditions-v1
       if: (branch = master) AND (type IN (push, cron))

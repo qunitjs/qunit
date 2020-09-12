@@ -33,11 +33,10 @@
         "wrap-iife": ["error", "any"]
     },
     "ignorePatterns": [
-        "build/instrumented/**",
-        "build/report/**",
         "coverage/**",
         "docs/_site/**",
-        "dist/**"
+        "dist/**",
+        "temp/**"
     ],
     "overrides": [
         {

@@ -3,11 +3,16 @@
 const { babel } = require( "@rollup/plugin-babel" );
 const { nodeResolve } = require( "@rollup/plugin-node-resolve" );
 const commonjs = require( "@rollup/plugin-commonjs" );
+const replace = require( "@rollup/plugin-replace" );
+
+const { replacements } = require( "./build/dist-replace.js" );
+const isCoverage = process.env.BUILD_TARGET === "coverage";
 
 module.exports = {
 	input: "src/qunit.js",
 	output: {
 		file: "dist/qunit.js",
+		sourcemap: isCoverage,
 		format: "iife",
 		exports: "none",
 
@@ -28,6 +33,10 @@ module.exports = {
 		}
 	},
 	plugins: [
+		replace( {
+			delimiters: [ "", "" ],
+			...replacements
+		} ),
 		nodeResolve(),
 		commonjs(),
 		babel( {

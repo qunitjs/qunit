@@ -51,6 +51,7 @@
     "@babel/plugin-external-helpers": "7.10.4",
     "@babel/preset-env": "7.11.0",
     "commitplease": "3.1.0",
+    "coveralls": "^3.1.0",
     "es6-promise": "^4.2.5",
     "eslint-config-jquery": "1.0.1",
     "eslint-plugin-html": "6.0.3",
@@ -65,24 +66,25 @@
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-qunit": "3.1.0",
     "grunt-contrib-watch": "1.1.0",
-    "grunt-coveralls": "2.0.0",
     "grunt-eslint": "23.0.0",
     "grunt-git-authors": "3.2.0",
-    "grunt-istanbul": "^0.8.0",
     "rollup": "2.26.0",
     "grunt-search": "0.1.8",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
+    "nyc": "^15.1.0",
     "proxyquire": "1.8.0",
     "requirejs": "2.3.5",
     "rimraf": "^2.7.1",
     "@rollup/plugin-babel": "5.2.0",
     "@rollup/plugin-commonjs": "15.0.0",
     "@rollup/plugin-node-resolve": "9.0.0",
+    "@rollup/plugin-replace": "^2.3.3",
     "semver": "5.4.1",
     "tiny-lr": "^1.1.1"
   },
   "scripts": {
-    "build": "rollup -c && grunt build-copy",
+    "build": "rollup -c && grunt copy:src-css",
+    "build:coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy:src-css",
     "dev": "grunt watch",
     "test": "npm run build && grunt test && bin/qunit.js test/cli/*.js",
     "test:lint": "grunt eslint",
@@ -90,7 +92,10 @@
     "test:cli": "npm run build && bin/qunit.js test/cli/*.js",
     "authors": "grunt authors",
     "serve": "grunt connect:any",
-    "coverage": "npm run build && grunt coverage"
+    "coverage": "npm run build:coverage && npm run coverage:_cli && npm run coverage:_main && nyc report",
+    "coverage:_cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
+    "coverage:_main": "nyc instrument --in-place dist/ && grunt connect:nolivereload qunit",
+    "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   },
   "commitplease": {
     "components": [
@@ -107,5 +112,20 @@
       "Test",
       "Tests"
     ]
+  },
+  "nyc": {
+    "include": [
+      "bin/**",
+      "dist/**",
+      "reporter/**",
+      "runner/**",
+      "src/**"
+    ],
+    "reporter": [
+      "text",
+      "html",
+      "lcovonly"
+    ],
+    "report-dir": "coverage"
   }
 }
