@@ -103,13 +103,11 @@
       "Assert",
       "Build",
       "CLI",
-      "CSS",
       "Core",
       "Docs",
       "Dump",
       "HTML Reporter",
-      "Readme",
-      "Test",
+      "Release",
       "Tests"
     ]
   },

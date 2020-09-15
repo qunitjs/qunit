@@ -14,7 +14,6 @@ Prerequisites:
 
 * Node.js 12, or later.
 * Git 2.11, or later.
-* [git-extras](https://github.com/tj/git-extras), for the `git changelog` utility.
 
 1. Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist.
 
@@ -40,23 +39,18 @@ Prerequisites:
 
 4. Create and push the release preparation commit:
 
-   1. Run `git changelog` to update `History.md`. Clean up:
-      * Replace `n.n.n` in the top section with the next release,
-      * Ensure the previous release notes are still there,
-      * Ensure there is no leading or trailing whitespace on blank lines,
-      * Remove any "Build", "Tests" and other commits not relevant to users,
-      * Refer to the formatting of previous entries when in doubt.
-   2. Update the package.json and AUTHORS.txt files, by running the below command (replace `@VERSION` with the release version):
+   1. Update the package.json and AUTHORS.txt files, by running the below command (replace `@VERSION` with the release version):
       ```
       node build/prep-release.js @VERSION
       ```
-      Review the difference in the `AUTHORS.txt` file. If you see duplicate entries proposed, then use the `.mailmap` file to normamlize those entries to a canonical name or e-mail address, and then re-run the above command.
-   3. Commit all of the above with the following message (replace `@VERSION` with the release version):
+      * Review the difference in the `AUTHORS.txt` file. If you see duplicate entries proposed, then use the `.mailmap` file to normamlize those entries to a canonical name or e-mail address, and then re-run the above command.
+      * Edit `History.md` and remove any "Build", "Tests" or other commits not relevant to end-users.
+   2. Commit all of the above with the following message (replace `@VERSION` with the release version):
       ```
       Build: Prepare @VERSION release
       ```
-   4. Push your `release` branch to GitHub.
-   5. Create a pull request, approve it, and merge it once Travis CI is passing.
+   3. Push your `release` branch to GitHub.
+   4. Create a pull request, approve it, and merge it once Travis CI is passing.
 
 ## Performing the release
 
