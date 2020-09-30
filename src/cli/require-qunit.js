@@ -4,7 +4,12 @@ module.exports = function requireQUnit( resolve = require.resolve ) {
 	try {
 
 		// First we attempt to find QUnit relative to the current working directory.
-		const localQUnitPath = resolve( "qunit", { paths: [ process.cwd() ] } );
+		const localQUnitPath = resolve( "qunit", {
+
+			// Support: Node 10. Explicitly check "node_modules" to avoid a bug.
+			// Fixed in Node 12+. See https://github.com/nodejs/node/issues/35367.
+			paths: [ process.cwd() + "/node_modules", process.cwd() ]
+		} );
 		delete require.cache[ localQUnitPath ];
 		return require( localQUnitPath );
 	} catch ( e ) {
