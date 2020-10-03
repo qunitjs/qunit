@@ -1,6 +1,5 @@
 import config from "./config";
 import {
-	defined,
 	generateHash,
 	now
 } from "./utilities";
@@ -59,7 +58,7 @@ function processTaskQueue( start ) {
 	if ( taskQueue.length && !config.blocking ) {
 		const elapsedTime = now() - start;
 
-		if ( !defined.setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
+		if ( !setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate ) {
 			const task = taskQueue.shift();
 			Promise.resolve( task() ).then( function() {
 				if ( !taskQueue.length ) {

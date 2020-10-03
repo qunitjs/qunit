@@ -8,7 +8,6 @@ import Promise from "./promise";
 
 import config from "./core/config";
 import {
-	defined,
 	diff,
 	extend,
 	generateHash,
@@ -746,7 +745,7 @@ export function internalStop( test ) {
 	config.blocking = true;
 
 	// Set a recovery timeout, if so configured.
-	if ( defined.setTimeout ) {
+	if ( setTimeout ) {
 		let timeoutDuration;
 
 		if ( typeof test.timeout === "number" ) {
@@ -822,7 +821,7 @@ function internalStart( test ) {
 	}
 
 	// Add a slight delay to allow more assertions etc.
-	if ( defined.setTimeout ) {
+	if ( setTimeout ) {
 		if ( config.timeout ) {
 			clearTimeout( config.timeout );
 		}
