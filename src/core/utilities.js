@@ -7,29 +7,36 @@ export const now = Date.now || function() {
 	return new Date().getTime();
 };
 
-export const hasPerformanceApi = detectPerformanceApi();
-export const performance = hasPerformanceApi ? window.performance : undefined;
-export const performanceNow = hasPerformanceApi ?
-	performance.now.bind( performance ) :
-	now;
+const nativePerf = getNativePerf();
 
-function detectPerformanceApi() {
-	return window &&
+function getNativePerf() {
+	if ( window &&
 		typeof window.performance !== "undefined" &&
 		typeof window.performance.mark === "function" &&
-		typeof window.performance.measure === "function";
-}
-
-export function measure( comment, startMark, endMark ) {
-
-	// `performance.measure` may fail if the mark could not be found.
-	// reasons a specific mark could not be found include: outside code invoking `performance.clearMarks()`
-	try {
-		performance.measure( comment, startMark, endMark );
-	} catch ( ex ) {
-		Logger.warn( "performance.measure could not be executed because of ", ex.message );
+		typeof window.performance.measure === "function"
+	) {
+		return window.performance;
+	} else {
+		return undefined;
 	}
 }
+
+export const performance = {
+	now: nativePerf ?
+		nativePerf.now.bind( nativePerf ) :
+		now,
+	measure: nativePerf ? function( comment, startMark, endMark ) {
+
+		// `performance.measure` may fail if the mark could not be found.
+		// reasons a specific mark could not be found include: outside code invoking `performance.clearMarks()`
+		try {
+			nativePerf.measure( comment, startMark, endMark );
+		} catch ( ex ) {
+			Logger.warn( "performance.measure could not be executed because of ", ex.message );
+		}
+	} : function() {},
+	mark: nativePerf ? nativePerf.mark.bind( nativePerf ) : function() {}
+};
 
 export const defined = {
 	document: window && window.document !== undefined,
