@@ -2,7 +2,7 @@ import QUnit from "../src/core";
 import Test from "../src/test";
 import { extractStacktrace } from "../src/core/stacktrace";
 import { now } from "../src/core/utilities";
-import { window, navigator } from "../src/globals";
+import { window, document, navigator } from "../src/globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
 
@@ -40,13 +40,12 @@ export function escapeText( s ) {
 ( function() {
 
 	// Don't load the HTML Reporter on non-browser environments
-	if ( typeof window === "undefined" || !window.document ) {
+	if ( !window || !document ) {
 		return;
 	}
 
 	var config = QUnit.config,
 		hiddenTests = [],
-		document = window.document,
 		collapseNext = false,
 		hasOwn = Object.prototype.hasOwnProperty,
 		unfilteredUrl = setUrl( { filter: undefined, module: undefined,

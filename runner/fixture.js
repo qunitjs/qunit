@@ -3,7 +3,7 @@ import { window, document } from "../src/globals";
 
 ( function() {
 
-	if ( typeof window === "undefined" || typeof document === "undefined" ) {
+	if ( !window || !document ) {
 		return;
 	}
 

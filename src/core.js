@@ -1,4 +1,4 @@
-import { window, setTimeout } from "./globals";
+import { window, document, setTimeout } from "./globals";
 
 import equiv from "./equiv";
 import dump from "./dump";
@@ -8,7 +8,7 @@ import Test, { test, skip, only, todo, pushFailure } from "./test";
 import exportQUnit from "./export";
 
 import config from "./core/config";
-import { defined, extend, objectType, is, now } from "./core/utilities";
+import { extend, objectType, is, now } from "./core/utilities";
 import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
 import ProcessingQueue from "./core/processing-queue";
@@ -31,7 +31,7 @@ var globalStartCalled = false;
 var runStarted = false;
 
 // Figure out if we're running the tests from a server or not
-QUnit.isLocal = !( defined.document && window.location.protocol !== "file:" );
+QUnit.isLocal = ( window && window.location && window.location.protocol === "file:" );
 
 // Expose the current QUnit version
 QUnit.version = "@VERSION";
@@ -70,7 +70,7 @@ extend( QUnit, {
 
 				// Starts from Node even if .load was not previously called. We still return
 				// early otherwise we'll wind up "beginning" twice.
-				if ( !defined.document ) {
+				if ( !document ) {
 					QUnit.load();
 				}
 
@@ -134,7 +134,7 @@ function scheduleBegin() {
 	runStarted = true;
 
 	// Add a slight delay to allow definition of more modules and tests.
-	if ( defined.setTimeout ) {
+	if ( setTimeout ) {
 		setTimeout( function() {
 			begin();
 		} );

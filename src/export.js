@@ -1,10 +1,9 @@
 /* global module, exports, define */
-import { defined } from "./core/utilities";
-import { window, self } from "./globals";
+import { window, document, self } from "./globals";
 
 export default function exportQUnit( QUnit ) {
 
-	if ( defined.document ) {
+	if ( window && document ) {
 
 		// QUnit may be defined when it is preconfigured but then only QUnit and QUnit.config may be defined.
 		if ( window.QUnit && window.QUnit.version ) {

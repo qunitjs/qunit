@@ -1,4 +1,4 @@
-import { window, setTimeout } from "../globals";
+import { window } from "../globals";
 import Logger from "../logger";
 
 export const toString = Object.prototype.toString;
@@ -36,11 +36,6 @@ export const performance = {
 		}
 	} : function() {},
 	mark: nativePerf ? nativePerf.mark.bind( nativePerf ) : function() {}
-};
-
-export const defined = {
-	document: window && window.document !== undefined,
-	setTimeout: setTimeout !== undefined
 };
 
 // Returns a new Array with the elements that are in a but not in b
