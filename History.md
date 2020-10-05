@@ -1,10 +1,17 @@
 
+2.11.3 / 2020-10-05
+==================
+
+### Fixed
+
+* CLI: Fix 'qunit' require error on Node 10 if qunit.json exists. [#1484](https://github.com/qunitjs/qunit/issues/1484)
+
 2.11.2 / 2020-09-09
 ==================
 
 ### Fixed
 
-* CLI: Align `actual` whitespace with `expected` in TapReporter. (Robert Jackson) [js-reporters/js-reporters#107](https://github.com/js-reporters/js-reporters/pull/107)  [#1481](https://github.com/qunitjs/qunit/pull/1481)
+* CLI: Align `actual` whitespace with `expected` in TapReporter. (Robert Jackson) [js-reporters/js-reporters#107](https://github.com/js-reporters/js-reporters/pull/107) [#1481](https://github.com/qunitjs/qunit/pull/1481)
 
 2.11.1 / 2020-08-25
 ==================
