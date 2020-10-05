@@ -603,7 +603,18 @@ export function escapeText( s ) {
 	function appendInterface() {
 		var qunit = id( "qunit" );
 
+		// For compat with QUnit 1.2, and to support fully custom theme HTML,
+		// we will use any existing elements if no id="qunit" element exists.
+		//
+		// Note that we don't fail or fallback to creating it ourselves,
+		// because not having id="qunit" (and not having the below elements)
+		// simply means QUnit acts headless, allowing users to use their own
+		// reporters, or for a test runner to listen for events directly without
+		// having the HTML reporter actively render anything.
 		if ( qunit ) {
+
+			// Since QUnit 1.3, these are created automatically if the page
+			// contains id="qunit".
 			qunit.innerHTML =
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
 			"<h2 id='qunit-banner'></h2>" +
