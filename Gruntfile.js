@@ -175,7 +175,8 @@ module.exports = function( grunt ) {
 				"test/module-only",
 				"test/module-skip",
 				"test/module-todo",
-				"test/es2017/async-functions"
+				"test/es2017/async-functions",
+				"test/es2017/throws"
 			]
 		},
 		"watch-repeatable": {

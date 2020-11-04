@@ -323,7 +323,8 @@ class Assert {
 				expected = String( expected );
 
 			// Expected is a constructor, maybe an Error constructor
-			} else if ( expectedType === "function" && actual instanceof expected ) {
+			} else if ( expectedType === "function" &&
+				expected.prototype !== undefined && actual instanceof expected ) {
 				result = true;
 
 			// Expected is an Error object
