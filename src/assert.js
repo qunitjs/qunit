@@ -322,7 +322,9 @@ class Assert {
 				// Log the string form of the regexp
 				expected = String( expected );
 
-			// Expected is a constructor, maybe an Error constructor
+			// Expected is a constructor, maybe an Error constructor.
+			// Note the extra check on its prototype - this is an implicit
+			// requirement of "instanceof", else it will throw a TypeError.
 			} else if ( expectedType === "function" &&
 				expected.prototype !== undefined && actual instanceof expected ) {
 				result = true;
