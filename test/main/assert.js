@@ -542,6 +542,16 @@ QUnit.test( "throws", function( assert ) {
 		/bar/,
 		"throws fail when regexp doesn't match the error message"
 	);
+
+	assert.throws(
+		function() {
+			throw "foo";
+		},
+		function() {
+			return false;
+		},
+		"throws fail when expected function returns false"
+	);
 } );
 
 QUnit.test( "rejects", function( assert ) {
