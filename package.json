@@ -41,10 +41,10 @@
     "node": ">=10"
   },
   "dependencies": {
-    "commander": "^6.0.0",
-    "js-reporters": "^1.2.3",
-    "node-watch": "^0.6.4",
-    "tiny-glob": "^0.2.6"
+    "commander": "6.0.0",
+    "js-reporters": "1.2.3",
+    "node-watch": "0.6.4",
+    "tiny-glob": "0.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
