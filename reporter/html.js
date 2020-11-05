@@ -49,8 +49,7 @@ export function escapeText( s ) {
 		collapseNext = false,
 		hasOwn = Object.prototype.hasOwnProperty,
 		unfilteredUrl = setUrl( { filter: undefined, module: undefined,
-			moduleId: undefined, testId: undefined } ),
-		modulesList = [];
+			moduleId: undefined, testId: undefined } );
 
 	function addEvent( elem, type, fn ) {
 		elem.addEventListener( type, fn, false );
@@ -659,19 +658,7 @@ export function escapeText( s ) {
 	}
 
 	// HTML Reporter initialization and load
-	QUnit.begin( function( details ) {
-		var i, moduleObj;
-
-		// Sort modules by name for the picker
-		for ( i = 0; i < details.modules.length; i++ ) {
-			moduleObj = details.modules[ i ];
-			if ( moduleObj.name ) {
-				modulesList.push( moduleObj.name );
-			}
-		}
-		modulesList.sort( function( a, b ) {
-			return a.localeCompare( b );
-		} );
+	QUnit.begin( function() {
 
 		// Initialize QUnit elements
 		appendInterface();
