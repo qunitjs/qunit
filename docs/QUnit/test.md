@@ -14,6 +14,9 @@ version_added: "1.0"
 ---
 
 `QUnit.test( name, callback )`
+`QUnit.test.only( name, callback )`<br>
+`QUnit.test.skip( name, callback )`<br>
+`QUnit.test.todo( name, callback )`
 
 Add a test to run.
 
@@ -27,6 +30,12 @@ Add a test to run.
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
+
+The `only`, `skip`, and `todo` variants of `QUnit.test` are aliases to the respective main QUnit methods:<br>
+
+* `QUnit.test.only()` is the same as [`QUnit.only()`](./only.md)
+* `QUnit.test.skip()` is the same as [`QUnit.skip()`](./skip.md)
+* `QUnit.test.todo()` is the same as [`QUnit.todo()`](./todo.md)
 
 ### Description
 
