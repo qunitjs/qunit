@@ -4,6 +4,7 @@ import equiv from "./equiv";
 import dump from "./dump";
 import module from "./module";
 import Assert from "./assert";
+import Logger from "./logger";
 import Test, { test, skip, only, todo, pushFailure } from "./test";
 import exportQUnit from "./export";
 
@@ -89,7 +90,13 @@ extend( QUnit, {
 
 	objectType: objectType,
 
-	extend: extend,
+	extend: function( ...args ) {
+		Logger.warn( "QUnit.extend is deprecated and will be removed in QUnit 3.0." +
+			" Please use Object.assign instead." );
+
+		// delegate to utility implementation, which does not warn and can be used elsewhere internally
+		return extend.apply( this, args );
+	},
 
 	load: function() {
 		config.pageLoaded = true;
