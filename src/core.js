@@ -4,7 +4,7 @@ import equiv from "./equiv";
 import dump from "./dump";
 import module from "./module";
 import Assert from "./assert";
-import Test, { test, skip, only, todo, pushFailure } from "./test";
+import Test, { test, pushFailure } from "./test";
 import exportQUnit from "./export";
 
 import config from "./core/config";
@@ -43,11 +43,10 @@ extend( QUnit, {
 
 	test: test,
 
-	todo: todo,
-
-	skip: skip,
-
-	only: only,
+	// alias other test flavors for easy access
+	todo: test.todo,
+	skip: test.skip,
+	only: test.only,
 
 	start: function( count ) {
 		var globalStartAlreadyCalled = globalStartCalled;

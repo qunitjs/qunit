@@ -689,48 +689,46 @@ export function test( testName, callback ) {
 	newTest.queue();
 }
 
-export function todo( testName, callback ) {
-	if ( focused ) {
-		return;
+extend( test, {
+	todo: function todo( testName, callback ) {
+		if ( focused ) {
+			return;
+		}
+
+		const newTest = new Test( {
+			testName,
+			callback,
+			todo: true
+		} );
+
+		newTest.queue();
+	},
+	skip: function skip( testName ) {
+		if ( focused ) {
+			return;
+		}
+
+		const test = new Test( {
+			testName: testName,
+			skip: true
+		} );
+
+		test.queue();
+	},
+	only: function only( testName, callback ) {
+		if ( !focused ) {
+			config.queue.length = 0;
+			focused = true;
+		}
+
+		const newTest = new Test( {
+			testName: testName,
+			callback: callback
+		} );
+
+		newTest.queue();
 	}
-
-	const newTest = new Test( {
-		testName,
-		callback,
-		todo: true
-	} );
-
-	newTest.queue();
-}
-
-// Will be exposed as QUnit.skip
-export function skip( testName ) {
-	if ( focused ) {
-		return;
-	}
-
-	const test = new Test( {
-		testName: testName,
-		skip: true
-	} );
-
-	test.queue();
-}
-
-// Will be exposed as QUnit.only
-export function only( testName, callback ) {
-	if ( !focused ) {
-		config.queue.length = 0;
-		focused = true;
-	}
-
-	const newTest = new Test( {
-		testName: testName,
-		callback: callback
-	} );
-
-	newTest.queue();
-}
+} );
 
 // Resets config.timeout with a new timeout duration.
 export function resetTestTimeout( timeoutDuration ) {
