@@ -31,11 +31,11 @@ program
 	.option( "-r, --reporter [name]", "specify the reporter to use; " +
 		"if no match is found or no name is provided, a list of available " +
 		"reporters will be displayed" )
-	.option( "--require <module>", "specify a module to require prior to running " +
+	.option( "--require <module>", "specify a module or script to include before running " +
 		"any tests.", collect, [] )
 	.option( "--seed [value]", "specify a seed to order your tests; " +
 		"if option is specified without a value, one will be generated" )
-	.option( "-w, --watch", "Watch files for changes and re-run the test suite" )
+	.option( "-w, --watch", "watch files for changes and re-run the test suite" )
 	.parse( process.argv );
 
 if ( program.reporter === true ) {
