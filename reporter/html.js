@@ -1,7 +1,7 @@
 import QUnit from "../src/core";
 import Test from "../src/test";
 import { extractStacktrace } from "../src/core/stacktrace";
-import { now } from "../src/core/utilities";
+import { now, extend } from "../src/core/utilities";
 import { window, document, navigator } from "../src/globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
@@ -244,7 +244,7 @@ export function escapeText( s ) {
 			querystring = "?",
 			location = window.location;
 
-		params = QUnit.extend( QUnit.extend( {}, QUnit.urlParams ), params );
+		params = extend( extend( {}, QUnit.urlParams ), params );
 
 		for ( key in params ) {
 
