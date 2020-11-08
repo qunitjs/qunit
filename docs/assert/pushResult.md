@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.pushResult()
-description: Report the result of a custom assertion.
+excerpt: Report the result of a custom assertion.
 categories:
   - assert
 version_added: "1.22"

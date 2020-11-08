@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.moduleStart()
-description: Register a callback to fire whenever a module begins.
+excerpt: Register a callback to fire whenever a module begins.
 categories:
   - callbacks
 redirect_from:

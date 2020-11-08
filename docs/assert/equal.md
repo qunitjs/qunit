@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.equal()
-description: A non-strict comparison.
+excerpt: A non-strict comparison.
 categories:
   - assert
 redirect_from:

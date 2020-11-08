@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.true()
-description: A strict boolean true comparison.
+excerpt: A strict boolean true comparison.
 categories:
   - assert
 version_added: "2.11"

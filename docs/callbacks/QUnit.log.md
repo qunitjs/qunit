@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.log()
-description: Register a callback to fire whenever an assertion completes.
+excerpt: Register a callback to fire whenever an assertion completes.
 categories:
   - callbacks
 redirect_from:

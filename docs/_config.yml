@@ -11,7 +11,7 @@
 #
 # https://jekyllrb.com/docs/configuration/
 title: QUnit API Docs
-description: "API reference documentation for QUnit."
+excerpt: "API reference documentation for QUnit."
 url: "https://api.qunitjs.com"
 baseurl: ""
 # This a custom theme so the native Jekyll theme system is ignored.

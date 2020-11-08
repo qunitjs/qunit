@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.rejects()
-description: Test if the provided promise rejects.
+excerpt: Test if the provided promise rejects.
 categories:
   - assert
 version_added: "2.5"

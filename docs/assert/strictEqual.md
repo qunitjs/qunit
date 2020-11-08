@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.strictEqual()
-description: A strict type and value comparison.
+excerpt: A strict type and value comparison.
 categories:
   - assert
 redirect_from:

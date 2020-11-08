@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.async()
-description: Instruct QUnit to wait for an asynchronous operation.
+excerpt: Instruct QUnit to wait for an asynchronous operation.
 categories:
   - assert
   - async

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.notEqual()
-description: A non-strict comparison, checking for inequality.
+excerpt: A non-strict comparison, checking for inequality.
 categories:
   - assert
 redirect_from:

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.testDone()
-description: Register a callback to fire whenever a test ends.
+excerpt: Register a callback to fire whenever a test ends.
 categories:
   - callbacks
 redirect_from:

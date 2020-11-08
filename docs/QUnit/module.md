@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.module()
-description: Group related tests under a common label.
+excerpt: Group related tests under a common label.
 categories:
   - main
 redirect_from:

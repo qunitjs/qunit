@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.test()
-description: Add a test to run.
+excerpt: Add a test to run.
 categories:
   - main
   - async

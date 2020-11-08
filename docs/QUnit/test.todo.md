@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.test.todo()
-description: Add a test which expects at least one failing assertion.
+excerpt: Add a test which expects at least one failing assertion.
 categories:
   - main
 redirect_from:
