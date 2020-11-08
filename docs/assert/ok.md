@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.ok()
-description: Check if the first argument is truthy.
+excerpt: Check if the first argument is truthy.
 categories:
   - assert
 redirect_from:

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.deepEqual()
-description: A deep recursive strict comparison.
+excerpt: A deep recursive strict comparison.
 categories:
   - assert
 redirect_from:

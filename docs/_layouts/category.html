@@ -14,7 +14,7 @@ layout: page
         <h3><a href="{{ page.url }}">{{page.title}}</a></h3>
         <p>
             {%- if page.version_removed == nil and page.version_deprecated %}<strong>DEPRECATED</strong> {% endif -%}
-            {{page.description -}}
+            {{ page.excerpt -}}
         </p>
     </li>
     {% endfor %}

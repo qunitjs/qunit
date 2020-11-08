@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.dump.parse()
-description: Extensible data dumping and string serialization.
+excerpt: Extensible data dumping and string serialization.
 categories:
  - config
 redirect_from:

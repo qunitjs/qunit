@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.test.skip()
-description: Add a test that will be skipped.
+excerpt: Add a test that will be skipped.
 categories:
   - main
 redirect_from:

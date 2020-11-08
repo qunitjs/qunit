@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.notOk()
-description: Check if the first argument is falsy.
+excerpt: Check if the first argument is falsy.
 categories:
   - assert
 version_added: "1.18"

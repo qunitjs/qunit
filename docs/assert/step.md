@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.step()
-description: A marker for progress in a given test.
+excerpt: A marker for progress in a given test.
 categories:
   - assert
 version_added: "2.2"

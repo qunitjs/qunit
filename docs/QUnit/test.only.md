@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.test.only()
-description: Add a test that is exclusively run.
+excerpt: Add a test that is exclusively run.
 categories:
   - main
 redirect_from:

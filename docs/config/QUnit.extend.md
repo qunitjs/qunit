@@ -5,7 +5,7 @@ categories:
 - deprecated
 title: QUnit.extend()
 status: deprecated
-description: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object.
+excerpt: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object.
 version_added: "1.0"
 version_deprecated: "2.12"
 ---
