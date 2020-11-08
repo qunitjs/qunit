@@ -193,6 +193,15 @@ QUnit.test( "testForPush", function( assert ) {
 	assert.testForPush( 1, 1, "should be call pushResult" );
 } );
 
+QUnit.module( "aliases" );
+
+[ "todo", "skip", "only" ].forEach( function( flavor ) {
+	QUnit.test( flavor, function( assert ) {
+		assert.true( QUnit.test[ flavor ] instanceof Function );
+		assert.equal( QUnit[ flavor ], QUnit.test[ flavor ] );
+	} );
+} );
+
 QUnit.module( "QUnit.skip", {
 	beforeEach: function( assert ) {
 
