@@ -14,9 +14,6 @@ version_added: "1.0"
 ---
 
 `QUnit.test( name, callback )`
-`QUnit.test.only( name, callback )`<br>
-`QUnit.test.skip( name, callback )`<br>
-`QUnit.test.todo( name, callback )`
 
 Add a test to run.
 
@@ -31,19 +28,24 @@ Add a test to run.
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-The `only`, `skip`, and `todo` variants of `QUnit.test` are aliases to the respective main QUnit methods:<br>
-
-* `QUnit.test.only()` is the same as [`QUnit.only()`](./only.md)
-* `QUnit.test.skip()` is the same as [`QUnit.skip()`](./skip.md)
-* `QUnit.test.todo()` is the same as [`QUnit.todo()`](./todo.md)
-
 ### Description
 
 Add a test to run using `QUnit.test()`.
 
 The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
 
-`QUnit.test()` can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`able Promise as the result of your callback function.
+`QUnit.test()` can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`-able Promise as the result of your callback function.
+
+See also:
+* [`QUnit.test.only()`](./test.only.md)
+* [`QUnit.test.skip()`](./test.skip.md)
+* [`QUnit.test.todo()`](./test.todo.md)
+
+
+##### Changelog
+
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added support for async functions, and returning of a Promise.
+
 
 ### Examples
 
@@ -54,25 +56,9 @@ function square( x ) {
   return x * x;
 }
 
-QUnit.test( "square()", function( assert ) {
-  var result = square( 2 );
-
-  assert.equal( result, 4, "square(2) equals 4" );
-});
-```
-
-Using modern syntax:
-
-```js
-function square( x ) {
-  return x * x;
-}
-
-const { test } = QUnit;
-
-test( "square()", t => {
-  t.equal( square( 2 ), 4, "square(2) equals 4" );
-  t.equal( square( 3 ), 9, "square(3) equals 9" );
+QUnit.test( "square()", assert => {
+  assert.equal( square( 2 ), 4, "square(2)" );
+  assert.equal( square( 3 ), 9, "square(3)" );
 });
 ```
 
@@ -83,16 +69,16 @@ An example of handling an asynchronous `then`able Promise result. This example u
 [ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 ```js
-QUnit.test( "a Promise-returning test", function( assert ) {
-  assert.expect( 1 );
-
-  var thenable = new Promise(function( resolve, reject ) {
-    setTimeout(function() {
-      assert.true( true );
-      resolve( "result" );
-    }, 500 );
+function fetchSquare( x ) {
+  return new Promise( resolve => {
+    setTimeout(() => { resolve( x * x ); }, 1000);
   });
-  return thenable;
+}
+
+QUnit.test( "Test with Promise", assert => {
+  return fetchSquare( 3 ).then( result => {
+    assert.equal( result, 9 );
+  });
 });
 ```
 
@@ -103,22 +89,12 @@ Following the example above, `QUnit.test` also supports JS [async functions][] s
 [async functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 ```js
-function squareAfter1Second(x) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(x * x);
-    }, 1000);
-  });
-}
+QUnit.test( "Test with async-await", async assert => {
+  const a = await fetchSquare(2);
+  const b = await fetchSquare(3);
 
-const { test } = QUnit;
-
-test( "an async test", async t => {
-  var a = await squareAfter1Second(2);
-  var b = await squareAfter1Second(3);
-
-  t.equal( a, 4 );
-  t.equal( b, 9 );
-  t.equal( await squareAfter1Second(5), 25 );
+  assert.equal( a, 4 );
+  assert.equal( b, 9 );
+  assert.equal( await fetchSquare(5), 25 );
 });
 ```
