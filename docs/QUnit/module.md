@@ -31,11 +31,12 @@ All tests inside a module will be grouped under that module. The test names will
 
 Modules can be nested inside other modules, in which case their tests' names will be labeled by their names recursively prefixed by their parent modules. See [§ Nested scope](#nested-scope).
 
-The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.only()`](./only.md), [`QUnit.skip()`](./skip.md) or [`QUnit.todo()`](./todo.md) to all a module's tests at once. These were introduced in QUnit version [2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0).
+The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.todo()`](./test.todo.md) to all a module's tests at once.
 
 ##### Changelog
 
-| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/2.0.0) | The `before` and `after` options were introduced.
+| [QUnit 2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0) | The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` aliases were introduced.
+| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | The `before` and `after` options were introduced.
 | [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | The `nested` scope feature was introduced.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | The `beforeEach` and `afterEach` options were introduced.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
 
@@ -66,9 +67,9 @@ QUnit.test( "basic test example 4", function( assert ) {
 Using modern syntax:
 
 ```js
-const { module, test } = QUnit;
+const { test } = QUnit;
 
-module( "Group A" );
+QUnit.module( "Group A" );
 
 test( "basic test example", assert => {
   assert.true( true, "this is fine" );
@@ -77,7 +78,7 @@ test( "basic test example 2", assert => {
   assert.true( true, "this is also fine" );
 });
 
-module( "Group B" );
+QUnit.module( "Group B" );
 
 test( "basic test example 3", assert => {
   assert.true( true, "this is fine" );
@@ -143,9 +144,9 @@ QUnit will run tests on the parent module before those of nested ones, even if l
 ##### Example: Nested scope
 
 ```js
-const { module, test } = QUnit;
+const { test } = QUnit;
 
-module( "Group A", hooks => {
+QUnit.module( "Group A", hooks => {
 
   test( "basic test example", assert => {
     assert.true( true, "this is fine" );
@@ -156,7 +157,7 @@ module( "Group A", hooks => {
   });
 });
 
-module( "Group B", hooks => {
+QUnit.module( "Group B", hooks => {
 
   test( "basic test example 3", assert => {
     assert.true( true, "this is fine" );
@@ -175,9 +176,9 @@ module( "Group B", hooks => {
 Use `before`/`beforeEach` hooks are queued for nested modules. `after`/`afterEach` hooks are stacked on nested modules.
 
 ```js
-const { module, test } = QUnit;
+const { test } = QUnit;
 
-module( "My Group", hooks => {
+QUnit.module( "My Group", hooks => {
 
   // It is valid to call the same hook methods more than once.
   hooks.beforeEach( assert => {
@@ -194,7 +195,7 @@ module( "My Group", hooks => {
     assert.expect( 2 );
   });
 
-  module( "Nested Group", hooks => {
+  QUnit.module( "Nested Group", hooks => {
 
     // This will run after the parent module's beforeEach hook
     hooks.beforeEach( assert => {
@@ -248,9 +249,9 @@ The test context is also available when using the nested scope. Beware that use 
 in arrow functions.
 
 ```js
-const { module, test } = QUnit;
+const { test } = QUnit;
 
-module( "Machine Maker", hooks => {
+QUnit.module( "Machine Maker", hooks => {
   hooks.beforeEach( function() {
     this.maker = new Maker();
     this.parts = [ "wheels", "motor", "chassis" ];
@@ -273,9 +274,9 @@ module( "Machine Maker", hooks => {
 It might be more convenient to use JavaScript's own lexical scope instead:
 
 ```js
-const { module, test } = QUnit;
+const { test } = QUnit;
 
-module( "Machine Maker", hooks => {
+QUnit.module( "Machine Maker", hooks => {
   let maker;
   let parts;
   hooks.beforeEach( () => {
@@ -334,7 +335,7 @@ QUnit.module( "Database connection", {
 
 ##### Example: Only run a subset of tests
 
-Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.only`](./only.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.test.only`](./test/only.md) instead of [`QUnit.test`](./test.md).
 
 ```js
 QUnit.module( "Robot", hooks => {
@@ -372,7 +373,7 @@ QUnit.module.only( "Android", hooks => {
 ```
 
 
-Use `QUnit.module.skip()` to treat an entire module's tests as if they used [`QUnit.skip`](./skip.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.skip()` to treat an entire module's tests as if they used [`QUnit.test.skip`](./test.skip.md) instead of [`QUnit.test`](./test.md).
 
 ```js
 QUnit.module( "Robot", hooks => {
@@ -405,7 +406,7 @@ QUnit.module.only( "Android", hooks => {
 
 
 Use `QUnit.module.todo()` to denote a feature that is still under development,
-and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.todo`](./todo.md) instead of [`QUnit.test`](./test.md).
+and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
 
 ```js
 QUnit.module.todo( "Robot", function( hooks ) {
