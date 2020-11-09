@@ -1,4 +1,20 @@
 
+2.12.0 / 2020-11-08
+==================
+
+### Added
+
+* Core: Add `QUnit.test.*` aliases for `QUnit.only()`, `QUnit.skip()`, and `QUnit.todo()`. (Steve McClure) [#1496](https://github.com/qunitjs/qunit/pull/1496)
+* Assert: Support arrow functions in `assert.throws()` expected callback. (Steve McClure) [#1492](https://github.com/qunitjs/qunit/pull/1492)
+
+### Changed
+
+* CLI: Update `node-watch` and `commander` dependencies. (Timo Tijhof) [#1500](https://github.com/qunitjs/qunit/pull/1500)
+
+### Deprecated
+
+* Core: Deprecate `QUnit.extend()`. (Steve McClure)
+
 2.11.3 / 2020-10-05
 ==================
 
@@ -55,7 +71,7 @@
 
 ### Changed
 
-* Core: Run all `QUni.only`-marked tests. (Ventuno) [#1436](https://github.com/qunitjs/qunit/pull/1436)
+* Core: Run all `QUnit.only`-marked tests. (Ventuno) [#1436](https://github.com/qunitjs/qunit/pull/1436)
 
 ### Fixed
 
