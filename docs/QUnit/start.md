@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.start()
-description: Start an async test suite.
+excerpt: Start an async test suite.
 categories:
   - main
   - async

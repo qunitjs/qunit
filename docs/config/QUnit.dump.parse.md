@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.dump.parse()
-description: Extensible data dumping and string serialization.
+excerpt: Extensible data dumping and string serialization.
 categories:
  - config
 redirect_from:
@@ -24,7 +24,7 @@ If you need more or less output, change the value of `QUnit.dump.maxDepth`, repr
 
 ##### Changelog
 
-| [QUnit 2.1](https://github.com/qunitjs/qunit/releases/2.1.0) | The `QUnit.jsDump` alias was removed.
+| [QUnit 2.1](https://github.com/qunitjs/qunit/releases/tag/2.1.0) | The `QUnit.jsDump` alias was removed.
 | [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | The `QUnit.jsDump` interface was renamed to `QUnit.dump`.<br/>The `QUnit.jsDump` alias is deprecated.
 
 ### Examples

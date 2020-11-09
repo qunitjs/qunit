@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.assert
-description: Namespace for QUnit assertions.
+excerpt: Namespace for QUnit assertions.
 categories:
   - config
 version_added: "1.7"

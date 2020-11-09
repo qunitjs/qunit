@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.moduleDone()
-description: Register a callback to fire whenever a module ends.
+excerpt: Register a callback to fire whenever a module ends.
 categories:
   - callbacks
 redirect_from:

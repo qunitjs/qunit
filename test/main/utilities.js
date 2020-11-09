@@ -62,3 +62,29 @@ maybeValidateObjectType( "async function() { }", "function" );
 maybeValidateObjectType( "async () => { }", "function" );
 maybeValidateObjectType( "() => { }", "function" );
 maybeValidateObjectType( "function* { }", "function" );
+
+QUnit.module( "extend" );
+
+QUnit.test( "appends to object", function( assert ) {
+	var base = { foo: 1 };
+	var copy = QUnit.extend( base, { bar: 2 } );
+
+	assert.deepEqual( base, { foo: 1, bar: 2 } );
+	assert.equal( copy, base, "returns mutated object" );
+} );
+
+QUnit.test( "overwrites duplicate fields", function( assert ) {
+	var base = { foo: 1 };
+	var copy = QUnit.extend( base, { foo: 2 } );
+
+	assert.deepEqual( base, { foo: 2 } );
+	assert.equal( copy, base, "returns mutated object" );
+} );
+
+QUnit.test( "removes undefined fields", function( assert ) {
+	var base = { foo: 1, bar: 2 };
+	var copy = QUnit.extend( base, { bar: undefined } );
+
+	assert.false( "bar" in base, "Values specified as `undefined` are removed" );
+	assert.equal( copy, base, "returns mutated object" );
+} );

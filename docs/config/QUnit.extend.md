@@ -1,9 +1,13 @@
 ---
 layout: default
-categories: [config]
+categories:
+- config
+- deprecated
 title: QUnit.extend()
-description: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object.
+status: deprecated
+excerpt: Copy the properties defined by the <code>mixin</code> object into the <code>target</code> object.
 version_added: "1.0"
+version_deprecated: "2.12"
 ---
 
 `QUnit.extend( target, mixin )`
@@ -14,6 +18,8 @@ Copy the properties defined by the `mixin` object into the `target` object
 |--------------------|--------------------------------------|
 | `target`           | An object whose properties are to be modified |
 | `mixin`            | An object describing which properties should be modified |
+
+<p class="note note--warning" markdown="1">This method is __deprecated__ and it's recommended to use [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) instead.</p>
 
 This method will modify the `target` object to contain the "own" properties defined by the `mixin`. If the `mixin` object specifies the value of any attribute as `undefined`, this property will instead be removed from the `target` object.
 

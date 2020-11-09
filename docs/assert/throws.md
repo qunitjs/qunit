@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.throws()
-description: Test if a callback throws an exception.
+excerpt: Test if a callback throws an exception.
 categories:
   - assert
 redirect_from:
@@ -35,17 +35,17 @@ The `expectedMatcher` argument can be:
 
 <p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises`. It has the same signature and behaviour, just a different name.</p>
 
-### Changelog
+##### Changelog
 
-* `assert.raises` was renamed to `assert.throws` in [QUnit 1.9](https://github.com/qunitjs/qunit/blob/v1.9.0/History.md).<br>The  `assert.raises` method remains as an alias to `assert.throws`.
-
+| [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
+| [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The  `assert.raises()` method remains supported as an alias.
 
 ### Example
 
 Assert the correct error message is received for a custom error object.
 
 ```js
-QUnit.test( "throws", function( assert ) {
+QUnit.test( "throws", assert => {
 
   function CustomError( message ) {
     this.message = message;
@@ -84,6 +84,14 @@ QUnit.test( "throws", function( assert ) {
     },
     new CustomError("some error description"),
     "raised error instance matches the CustomError instance"
+  );
+
+  assert.throws(
+    function() {
+      throw new CustomError("some error description");
+    },
+    ( err ) => err.toString() === "some error description",
+    "raised error instance satisfies the arrow function"
   );
 
   assert.throws(

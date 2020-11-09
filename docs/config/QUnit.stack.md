@@ -2,7 +2,7 @@
 layout: default
 categories: [config]
 title: QUnit.stack()
-description: Return a single line string representing the stacktrace.
+excerpt: Return a single line string representing the stacktrace.
 version_added: "1.19"
 ---
 
