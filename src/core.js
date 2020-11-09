@@ -4,6 +4,7 @@ import equiv from "./equiv";
 import dump from "./dump";
 import module from "./module";
 import Assert from "./assert";
+import Logger from "./logger";
 import Test, { test, skip, only, todo, pushFailure } from "./test";
 import exportQUnit from "./export";
 
@@ -71,7 +72,7 @@ extend( QUnit, {
 				// Starts from Node even if .load was not previously called. We still return
 				// early otherwise we'll wind up "beginning" twice.
 				if ( !document ) {
-					QUnit.load();
+					load();
 				}
 
 				return;
@@ -92,24 +93,8 @@ extend( QUnit, {
 	extend: extend,
 
 	load: function() {
-		config.pageLoaded = true;
-
-		// Initialize the configuration options
-		extend( config, {
-			stats: { all: 0, bad: 0, testCount: 0 },
-			started: 0,
-			updateRate: 1000,
-			autostart: true,
-			filter: ""
-		}, true );
-
-		if ( !runStarted ) {
-			config.blocking = false;
-
-			if ( config.autostart ) {
-				scheduleBegin();
-			}
-		}
+		Logger.warn( "QUnit.load is deprecated and will be removed in QUnit 3.0." );
+		load();
 	},
 
 	stack: function( offset ) {
@@ -128,6 +113,27 @@ QUnit.equiv = equiv;
 QUnit.dump = dump;
 
 registerLoggingCallbacks( QUnit );
+
+export function load() {
+	config.pageLoaded = true;
+
+	// Initialize the configuration options
+	extend( config, {
+		stats: { all: 0, bad: 0, testCount: 0 },
+		started: 0,
+		updateRate: 1000,
+		autostart: true,
+		filter: ""
+	}, true );
+
+	if ( !runStarted ) {
+		config.blocking = false;
+
+		if ( config.autostart ) {
+			scheduleBegin();
+		}
+	}
+}
 
 function scheduleBegin() {
 

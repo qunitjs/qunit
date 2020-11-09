@@ -1,4 +1,4 @@
-import QUnit from "../src/core";
+import QUnit, { load } from "../src/core";
 import Test from "../src/test";
 import { extractStacktrace } from "../src/core/stacktrace";
 import { now } from "../src/core/utilities";
@@ -1021,9 +1021,9 @@ export function escapeText( s ) {
 	} )( window.phantom );
 
 	if ( notPhantom && document.readyState === "complete" ) {
-		QUnit.load();
+		load();
 	} else {
-		addEvent( window, "load", QUnit.load );
+		addEvent( window, "load", load );
 	}
 
 	// Wrap window.onerror. We will call the original window.onerror to see if
