@@ -27,6 +27,8 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( Infinity );
 	assert.ok( {} );
 	assert.ok( [] );
+
+	assert.ok( true, "with message" );
 } );
 
 QUnit.test( "notOk", function( assert ) {
@@ -36,6 +38,8 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( null );
 	assert.notOk( undefined );
 	assert.notOk( NaN );
+
+	assert.notOk( false, "with message" );
 } );
 
 QUnit.test( "true", function( assert ) {
@@ -160,7 +164,7 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 15 );
+	assert.expect( 18 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -181,6 +185,17 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"simple string throw, no 'expected' value given"
 	);
+
+	assert.throws( function() {
+		// eslint-disable-next-line qunit/no-throws-string
+		assert.throws(
+			function() {
+				throw "my error";
+			},
+			"expected",
+			"throws fail when expected is string and message is non-null"
+		);
+	} );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -299,6 +314,34 @@ QUnit.test( "throws", function( assert ) {
 		},
 		/description/,
 		"throw error from property of 'this' context"
+	);
+
+	var errorObjectLiteral = {
+		toString: function() {
+			return "[object";
+		},
+		name: { // bad name
+			toString: function() { }
+		},
+		message: { // bad message
+			toString: function() { }
+		}
+	};
+	assert.throws(
+		function() {
+			throw errorObjectLiteral;
+		},
+		errorObjectLiteral
+	);
+
+	errorObjectLiteral.message.toString = function() {
+		return "dummy message";
+	};
+	assert.throws(
+		function() {
+			throw errorObjectLiteral;
+		},
+		errorObjectLiteral
 	);
 } );
 
