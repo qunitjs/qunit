@@ -108,6 +108,100 @@ QUnit.test( "dump, TypeError properties", function( assert ) {
 	} );
 } );
 
+QUnit.test( "maximum array depth", function( assert ) {
+	QUnit.dump.maxDepth = 1;
+	assert.equal(
+		QUnit.dump.parse( [ [ ] ] ),
+		"[\n  [object Array]\n]" );
+} );
+
+QUnit.test( "regex", function( assert ) {
+	assert.equal( QUnit.dump.parse( /foo/ ), "/foo/" );
+} );
+
+QUnit.test( "date", function( assert ) {
+	var date = new Date( "2020-11-10T03:24:00" );
+	assert.equal( QUnit.dump.parse( date ), "\"" + date + "\"" );
+} );
+
+QUnit.test( "error", function( assert ) {
+	assert.equal(
+		QUnit.dump.parse( new Error( "foo" ) ),
+		"Error(\"foo\")" );
+} );
+
+QUnit.test( "named function", function( assert ) {
+	var f = function foo() {};
+	assert.equal( QUnit.dump.parse( f ), "function foo(){\n  [code]\n}" );
+} );
+
+QUnit.test( "function args", function( assert ) {
+	// eslint-disable-next-line no-unused-vars
+	var f = function( foo, bar ) {};
+	assert.equal( QUnit.dump.parse( f ), "function f( a, b ){\n  [code]\n}" );
+} );
+
+QUnit.test( "multiline", function( assert ) {
+	QUnit.dump.multiline = false;
+
+	assert.equal( QUnit.dump.parse( [ [] ] ), "[ [] ]" );
+
+	QUnit.dump.multiline = true;
+} );
+
+QUnit.test( "HTML", function( assert ) {
+	QUnit.dump.HTML = true;
+
+	assert.equal(
+		QUnit.dump.parse( [ 1, 2 ] ),
+		"[<br />&#160;&#160;1,<br />&#160;&#160;2<br />]" );
+
+	QUnit.dump.multiline = false;
+	assert.equal(
+		QUnit.dump.parse( [ 1, 2 ] ),
+		"[&#160;1,&#160;2&#160;]" );
+
+	QUnit.dump.multiline = true;
+	QUnit.dump.HTML = false;
+} );
+
+QUnit.test( "HTML Nodes", function( assert ) {
+
+	var fakeWindow = {
+		setInterval: [],
+		document: {},
+		nodeType: undefined
+	};
+	assert.equal( QUnit.dump.parse( fakeWindow ), "[Window]" );
+
+	var fakeDocument = { nodeType: 9 };
+	assert.equal( QUnit.dump.parse( fakeDocument ), "[Document]" );
+
+	var fakeTextNode = {
+		nodeType: 3,
+		nodeName: "fakeTextNode",
+		nodeValue: "fakeValue"
+	};
+	assert.equal(
+		QUnit.dump.parse( fakeTextNode ),
+		"<faketextnode>fakeValue</faketextnode>" );
+
+	QUnit.dump.HTML = true;
+	assert.equal(
+		QUnit.dump.parse( fakeTextNode ),
+		"&lt;faketextnode&gt;fakeValue&lt;/faketextnode&gt;" );
+
+	QUnit.dump.HTML = false;
+} );
+
+QUnit.test( "Custom parser", function( assert ) {
+
+	var parser = "dummy value";
+	QUnit.dump.setParser( "CustomObject", parser );
+
+	assert.equal( QUnit.dump.parsers.CustomObject, parser );
+} );
+
 QUnit.module( "dump, recursions", {
 	Wrap: function( x ) {
 		this.wrap = x;
