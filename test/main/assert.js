@@ -27,6 +27,8 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( Infinity );
 	assert.ok( {} );
 	assert.ok( [] );
+
+	assert.ok( true, "with message" );
 } );
 
 QUnit.test( "notOk", function( assert ) {
@@ -36,6 +38,8 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( null );
 	assert.notOk( undefined );
 	assert.notOk( NaN );
+
+	assert.notOk( false, "with message" );
 } );
 
 QUnit.test( "true", function( assert ) {
@@ -160,7 +164,7 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 15 );
+	assert.expect( 20 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -181,6 +185,15 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"simple string throw, no 'expected' value given"
 	);
+
+	assert.throws( function() {
+		// eslint-disable-next-line qunit/no-throws-string
+		assert.throws(
+			undefined, // irrelevant - errors before even verifying this
+			"expected is a string",
+			"message is non-null"
+		);
+	}, /throws\/raises does not accept a string value for the expected argument/ );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -269,6 +282,45 @@ QUnit.test( "throws", function( assert ) {
 		},
 		{ name: "SomeName", message: "some message" },
 		"thrown object is similar to the expected plain object"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				name: "SomeName",
+				message: "some message"
+			};
+		},
+		/^SomeName: some message$/,
+		"thrown object matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {};
+		},
+		/^Error$/,
+		"thrown object with no name or message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				name: "SomeName"
+			};
+		},
+		/^SomeName$/,
+		"thrown object with name but no message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				message: "some message"
+			};
+		},
+		/^Error: some message$/,
+		"thrown object with message but no name matches formatted error message"
 	);
 
 	assert.throws(
