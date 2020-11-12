@@ -2,7 +2,7 @@ import QUnit from "../src/core";
 import Test from "../src/test";
 import { extractStacktrace } from "../src/core/stacktrace";
 import { now, extend } from "../src/core/utilities";
-import { window, document, navigator } from "../src/globals";
+import { window, document, navigator, console } from "../src/globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
 
@@ -1016,11 +1016,15 @@ export function escapeText( s ) {
 
 	// Avoid readyState issue with phantomjs
 	// Ref: #818
-	var notPhantom = ( function( p ) {
-		return !( p && p.version && p.version.major > 0 );
+	var usingPhantom = ( function( p ) {
+		return ( p && p.version && p.version.major > 0 );
 	} )( window.phantom );
 
-	if ( notPhantom && document.readyState === "complete" ) {
+	if ( usingPhantom ) {
+		console.warn( "Support for PhantomJS is deprecated and will be removed in QUnit 3.0." );
+	}
+
+	if ( !usingPhantom && document.readyState === "complete" ) {
 		QUnit.load();
 	} else {
 		addEvent( window, "load", QUnit.load );
