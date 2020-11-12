@@ -189,13 +189,11 @@ QUnit.test( "throws", function( assert ) {
 	assert.throws( function() {
 		// eslint-disable-next-line qunit/no-throws-string
 		assert.throws(
-			function() {
-				throw "my error";
-			},
-			"expected",
-			"throws fail when expected is string and message is non-null"
+			undefined, // irrelevant - errors before even verifying this
+			"expected is a string",
+			"message is non-null"
 		);
-	} );
+	}, /throws\/raises does not accept a string value for the expected argument/ );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -317,9 +315,6 @@ QUnit.test( "throws", function( assert ) {
 	);
 
 	var errorObjectLiteral = {
-		toString: function() {
-			return "[object";
-		},
 		name: { // bad name
 			toString: function() { }
 		},
@@ -327,11 +322,12 @@ QUnit.test( "throws", function( assert ) {
 			toString: function() { }
 		}
 	};
+
 	assert.throws(
 		function() {
 			throw errorObjectLiteral;
 		},
-		errorObjectLiteral
+		/^Error$/
 	);
 
 	errorObjectLiteral.message.toString = function() {
@@ -341,7 +337,7 @@ QUnit.test( "throws", function( assert ) {
 		function() {
 			throw errorObjectLiteral;
 		},
-		errorObjectLiteral
+		/^dummy message$/
 	);
 } );
 
