@@ -50,7 +50,6 @@
     "@babel/core": "^7.11.1",
     "@babel/plugin-external-helpers": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
-    "commitplease": "^3.1.0",
     "coveralls": "^3.1.0",
     "es6-promise": "^4.2.5",
     "eslint-config-jquery": "^1.0.1",
@@ -68,7 +67,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^23.0.0",
     "grunt-git-authors": "^3.2.0",
-    "rollup": "^2.26.0",
+    "rollup": "^2.30.0",
     "grunt-search": "^0.1.8",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
     "nyc": "^15.1.0",
@@ -76,8 +75,8 @@
     "requirejs": "^2.3.5",
     "rimraf": "^2.7.1",
     "@rollup/plugin-babel": "^5.2.0",
-    "@rollup/plugin-commonjs": "^15.0.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@rollup/plugin-replace": "^2.3.3",
     "semver": "^5.4.1",
     "tiny-lr": "^1.1.1"
@@ -96,20 +95,6 @@
     "coverage:_cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
     "coverage:_main": "nyc instrument --in-place dist/ && grunt connect:nolivereload qunit",
     "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
-  },
-  "commitplease": {
-    "components": [
-      "All",
-      "Assert",
-      "Build",
-      "CLI",
-      "Core",
-      "Docs",
-      "Dump",
-      "HTML Reporter",
-      "Release",
-      "Tests"
-    ]
   },
   "nyc": {
     "include": [
