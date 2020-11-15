@@ -9,7 +9,7 @@ version_added: "2.11"
 
 `false( actual [, message ] )`
 
-A boolean check, equivalent to JUnit's `assertFalse()`. Passes if the first argument is false.
+A strict comparison that passes if the first argument is boolean `false`.
 
 | name               | description                          |
 |--------------------|--------------------------------------|

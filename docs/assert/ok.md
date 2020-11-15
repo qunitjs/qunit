@@ -11,7 +11,7 @@ version_added: "1.0"
 
 `ok( state [, message ] )`
 
-A boolean check, equivalent to CommonJS's assert.ok() and JUnit's assertTrue(). Passes if the first argument is truthy.
+A boolean check. Passes if the first argument is truthy.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
