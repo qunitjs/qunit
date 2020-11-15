@@ -13,7 +13,7 @@ version_added: "1.0"
 
 `equal( actual, expected [, message ] )`
 
-A non-strict comparison, roughly equivalent to JUnit's `assertEquals`.
+A non-strict value comparison.
 
 | name               | description                          |
 |--------------------|--------------------------------------|

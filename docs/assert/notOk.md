@@ -9,7 +9,7 @@ version_added: "1.18"
 
 `notOk( state [, message ] )`
 
-A boolean check, inverse of `ok()` and CommonJS's `assert.ok()`, and equivalent to JUnit's `assertFalse()`. Passes if the first argument is falsy.
+A boolean check, inverse of `ok()`. Passes if the first argument is falsy.
 
 | name               | description                          |
 |--------------------|--------------------------------------|

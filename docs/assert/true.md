@@ -9,7 +9,7 @@ version_added: "2.11"
 
 `true( actual [, message ] )`
 
-A boolean check, equivalent to JUnit's `assertTrue()`. Passes if the first argument is `true`.
+A strict comparison that passes if the first argument is boolean `true`.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
