@@ -12,7 +12,7 @@ const changedPendingPurge = [];
 
 let QUnit;
 
-function run( args, options ) {
+async function run( args, options ) {
 
 	// Default to non-zero exit code to avoid false positives
 	process.exitCode = 1;
@@ -48,8 +48,42 @@ function run( args, options ) {
 		const filePath = path.resolve( process.cwd(), files[ i ] );
 		delete require.cache[ filePath ];
 
+		// Node.js 12.0.0 has node_module_version=72
+		// https://nodejs.org/en/download/releases/
+		const nodeVint = process.config.variables.node_module_version;
+
 		try {
-			require( filePath );
+
+			// QUnit supports passing ESM files to the 'qunit' command when used on
+			// Node.js 12 or later. The dynamic import() keyword supports both CommonJS files
+			// (.js, .cjs) and ESM files (.mjs), so we could simply use that unconditionally on
+			// newer Node versions, regardless of the given file path.
+			//
+			// But:
+			// - Node.js 12 emits a confusing "ExperimentalWarning" when using import(),
+			//   even if just to load a non-ESM file. So we should try to avoid it on non-ESM.
+			// - This Node.js feature is still considered experimental so to avoid unexpected
+			//   breakage we should continue using require(). Consider flipping once stable and/or
+			//   as part of QUnit 3.0.
+			// - Plugins and CLI bootstrap scripts may be hooking into require.extensions to modify
+			//   or transform code as it gets loaded. For compatibility with that, we should
+			//   support that until at least QUnit 3.0.
+			// - File extensions are not sufficient to differentiate between CJS and ESM.
+			//   Use of ".mjs" is optional, as a package may configure Node to default to ESM
+			//   and optionally use ".cjs" for CJS files.
+			//
+			// https://nodejs.org/docs/v12.7.0/api/modules.html#modules_addenda_the_mjs_extension
+			// https://nodejs.org/docs/v12.7.0/api/esm.html#esm_code_import_code_expressions
+			// https://github.com/qunitjs/qunit/issues/1465
+			try {
+				require( filePath );
+			} catch ( e ) {
+				if ( e.code === "ERR_REQUIRE_ESM" && ( !nodeVint || nodeVint >= 72 ) ) {
+					await import( filePath );
+				} else {
+					throw e;
+				}
+			}
 		} catch ( e ) {
 
 			// eslint-disable-next-line no-loop-func

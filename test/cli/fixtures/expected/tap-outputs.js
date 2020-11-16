@@ -203,6 +203,15 @@ not ok 2 Example > bad
 # fail 1
 `,
 
+	"qunit ../../es2018/esm.mjs":
+`TAP version 13
+ok 1 ESM test suite > sum\\(\\)
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit timeout":
 `TAP version 13
 not ok 1 timeout > first
