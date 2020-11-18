@@ -15,6 +15,28 @@
    the tested app might load. Don't affect buttons in #qunit-fixture!
    https://github.com/qunitjs/qunit/pull/1395
    https://github.com/qunitjs/qunit/issues/1437 */
+
+/** Fixed headers with scrollable tests **/
+
+body {
+  width: calc(100vw - 4px);
+  height: calc(100vh - 4px);
+  margin: 2px;
+}
+
+#qunit {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#qunit-tests {
+  flex: 1;
+  overflow: auto;
+}
+
+/** END Fixed headers with scrollable tests **/
+
 #qunit-testrunner-toolbar button,
 #qunit-testresult button {
 	font-size: initial;
