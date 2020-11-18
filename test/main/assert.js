@@ -164,7 +164,7 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 18 );
+	assert.expect( 20 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -286,6 +286,45 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
+			throw {
+				name: "SomeName",
+				message: "some message"
+			};
+		},
+		/^SomeName: some message$/,
+		"thrown object matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {};
+		},
+		/^Error$/,
+		"thrown object with no name or message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				name: "SomeName"
+			};
+		},
+		/^SomeName$/,
+		"thrown object with name but no message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				message: "some message"
+			};
+		},
+		/^Error: some message$/,
+		"thrown object with message but no name matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
 			throw new CustomError( "some error description" );
 		},
 		function( err ) {
@@ -312,32 +351,6 @@ QUnit.test( "throws", function( assert ) {
 		},
 		/description/,
 		"throw error from property of 'this' context"
-	);
-
-	var errorObjectLiteral = {
-		name: { // bad name
-			toString: function() { }
-		},
-		message: { // bad message
-			toString: function() { }
-		}
-	};
-
-	assert.throws(
-		function() {
-			throw errorObjectLiteral;
-		},
-		/^Error$/
-	);
-
-	errorObjectLiteral.message.toString = function() {
-		return "dummy message";
-	};
-	assert.throws(
-		function() {
-			throw errorObjectLiteral;
-		},
-		/^dummy message$/
 	);
 } );
 

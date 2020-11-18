@@ -485,17 +485,13 @@ function errorString( error ) {
 	// If the error wasn't a subclass of Error but something like
 	// an object literal with name and message properties...
 	if ( resultErrorString.substring( 0, 7 ) === "[object" ) {
-		const name = error.name ? error.name.toString() : "Error";
-		const message = error.message ? error.message.toString() : "";
+		const name = error.name ? String( error.name ) : "Error";
+		const message = error.message ? String( error.message ) : undefined;
 
-		if ( name && message ) {
+		if ( message ) {
 			return `${name}: ${message}`;
-		} else if ( name ) {
-			return name;
-		} else if ( message ) {
-			return message;
 		} else {
-			return "Error";
+			return name;
 		}
 	} else {
 		return resultErrorString;
