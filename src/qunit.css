@@ -30,9 +30,10 @@ body {
 
 #qunit-tests {
   position: absolute;
-  top: 185px;
+  top: 205px;
   bottom: 0px;
   overflow: auto;
+  width: 100%;
 }
 
 /** END Fixed headers with scrollable tests **/
