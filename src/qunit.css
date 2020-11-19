@@ -23,6 +23,7 @@ body {
   top: 0px;
   bottom: 0px;
   padding: 2px;
+  margin: 0px;
 }
 
 #qunit {
