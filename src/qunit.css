@@ -19,9 +19,8 @@
 /** Fixed headers with scrollable tests **/
 
 body {
-  width: calc(100vw - 4px);
   height: calc(100vh - 4px);
-  margin: 2px;
+  padding: 2px;
 }
 
 #qunit {
