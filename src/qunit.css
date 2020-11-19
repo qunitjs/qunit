@@ -20,20 +20,18 @@
 
 body {
   position: fixed;
+  left: 0px;
+  right: 0px;
   top: 0px;
   bottom: 0px;
   padding: 2px;
   margin: 0px;
 }
 
-#qunit {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
 #qunit-tests {
-  flex: 1;
+  position: absolute;
+  top: 185px;
+  bottom: 0px;
   overflow: auto;
 }
 
