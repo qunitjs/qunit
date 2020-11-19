@@ -19,7 +19,9 @@
 /** Fixed headers with scrollable tests **/
 
 body {
-  height: calc(100vh - 4px);
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
   padding: 2px;
 }
 
