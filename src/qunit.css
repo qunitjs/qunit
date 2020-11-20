@@ -18,7 +18,7 @@
 
 /** Fixed headers with scrollable tests **/
 
-body {
+#qunit {
   position: fixed;
   left: 0px;
   right: 0px;
