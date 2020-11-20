@@ -25,17 +25,13 @@ import TestReport from "./reports/test";
 let focused = false;
 
 export default function Test( settings ) {
-	var i, l;
-
-	++Test.count;
-
 	this.expected = null;
 	this.assertions = [];
 	this.semaphore = 0;
 	this.module = config.currentModule;
 	this.steps = [];
 	this.timeout = undefined;
-	this.errorForStack = new Error();
+	extend( this, settings );
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
@@ -45,24 +41,34 @@ export default function Test( settings ) {
 	// So, if a test is defined as `todo` and is inside a skipped module, we should
 	// then treat that test as if was defined as `skip`.
 	if ( this.module.skip ) {
-		settings.skip = true;
-		settings.todo = false;
+		this.skip = true;
+		this.todo = false;
 
 	// Skipped tests should be left intact
-	} else	if ( this.module.todo && !settings.skip ) {
-		settings.todo = true;
+	} else if ( this.module.todo && !this.skip ) {
+		this.todo = true;
 	}
 
-	extend( this, settings );
+	if ( !this.skip && typeof this.callback !== "function" ) {
+		const method = this.todo ? "QUnit.todo" : "QUnit.test";
+		throw new TypeError( `You must provide a callback to ${method}("${this.testName}")` );
+	}
 
-	this.testReport = new TestReport( settings.testName, this.module.suiteReport, {
-		todo: settings.todo,
-		skip: settings.skip,
+	// No validation after this. Beyond this point, failures must be recorded as
+	// a completed test with errors, instead of early bail out.
+	// Otherwise, internals may be left in an inconsistent state.
+	// Ref https://github.com/qunitjs/qunit/issues/1514
+
+	++Test.count;
+	this.errorForStack = new Error();
+	this.testReport = new TestReport( this.testName, this.module.suiteReport, {
+		todo: this.todo,
+		skip: this.skip,
 		valid: this.valid()
 	} );
 
 	// Register unique strings
-	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {
+	for ( let i = 0, l = this.module.tests; i < l.length; i++ ) {
 		if ( this.module.tests[ i ].name === this.testName ) {
 			this.testName += " ";
 		}
@@ -73,23 +79,16 @@ export default function Test( settings ) {
 	this.module.tests.push( {
 		name: this.testName,
 		testId: this.testId,
-		skip: !!settings.skip
+		skip: !!this.skip
 	} );
 
-	if ( settings.skip ) {
+	if ( this.skip ) {
 
 		// Skipped tests will fully ignore any sent callback
 		this.callback = function() {};
 		this.async = false;
 		this.expected = 0;
 	} else {
-		if ( typeof this.callback !== "function" ) {
-			const method = this.todo ? "todo" : "test";
-
-			// eslint-disable-next-line max-len
-			throw new TypeError( `You must provide a function as a test callback to QUnit.${method}("${settings.testName}")` );
-		}
-
 		this.assert = new Assert( this );
 	}
 }
