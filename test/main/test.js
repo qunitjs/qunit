@@ -229,11 +229,11 @@ QUnit.module( "Missing Callbacks" );
 QUnit.test( "QUnit.test without a callback logs a descriptive error", function( assert ) {
 	assert.throws( function() {
 		QUnit.test( "should throw an error" );
-	}, /You must provide a function as a test callback to QUnit.test\("should throw an error"\)/ );
+	}, /You must provide a callback to QUnit.test\("should throw an error"\)/ );
 } );
 
 QUnit.test( "QUnit.todo without a callback logs a descriptive error", function( assert ) {
 	assert.throws( function() {
 		QUnit.todo( "should throw an error" );
-	}, /You must provide a function as a test callback to QUnit.todo\("should throw an error"\)/ );
+	}, /You must provide a callback to QUnit.todo\("should throw an error"\)/ );
 } );
