@@ -450,7 +450,10 @@ Test.prototype = {
 
 	pushResult: function( resultInfo ) {
 		if ( this !== config.current ) {
-			throw new Error( "Assertion occurred after test had finished." );
+			const message = resultInfo && resultInfo.message || '';
+			const testName = this && this.testName || '';
+
+			throw new Error( "Assertion '" + message + "' occurred after test '" + testName + "' had finished." );
 		}
 
 		// Destructure of resultInfo = { result, actual, expected, message, negative }
