@@ -16,26 +16,25 @@
    https://github.com/qunitjs/qunit/pull/1395
    https://github.com/qunitjs/qunit/issues/1437 */
 
-/** Fixed headers with scrollable tests **/
+@supports (display: flex) or (display: -webkit-box) {
+  /** Fixed headers with scrollable tests **/
 
-#qunit {
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  padding: 2px;
-  margin: 0px;
+  #qunit {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    padding: 2px;
+    display: -webkit-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #qunit-tests {
+    overflow: scroll;
+  }
 }
-
-#qunit-tests {
-  position: absolute;
-  top: 205px;
-  bottom: 0px;
-  overflow: auto;
-  width: 100%;
-}
-
 /** END Fixed headers with scrollable tests **/
 
 #qunit-testrunner-toolbar button,
