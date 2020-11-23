@@ -234,10 +234,11 @@ QUnit.module( "test", function() {
 
 	( function() {
 		var previousTestAssert;
+		var firstTestName = "assertions after test finishes throws an error - part 1";
 
 		QUnit.module( "bad assertion context" );
 
-		QUnit.test( "assertions after test finishes throws an error - part 1", function( assert ) {
+		QUnit.test( firstTestName, function( assert ) {
 			assert.expect( 0 );
 			previousTestAssert = assert;
 		} );
@@ -245,8 +246,11 @@ QUnit.module( "test", function() {
 		QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
 			assert.expect( 1 );
 			assert.throws( function() {
-				previousTestAssert.ok( true );
-			}, /Assertion occurred after test had finished/ );
+				previousTestAssert.ok( true, "message here" );
+			}, "Assertion occurred after test had finished.\n" +
+			"> Test: " + firstTestName + "\n" +
+			"> Assertion: message here\n"
+			);
 		} );
 	}() );
 

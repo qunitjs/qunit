@@ -452,8 +452,9 @@ Test.prototype = {
 		if ( this !== config.current ) {
 			var message = resultInfo && resultInfo.message || "";
 			var testName = this && this.testName || "";
-			var error = "Assertion " + message +
-				" occurred after test " + testName + " had finished.";
+			var error = "Assertion occurred after test finished.\n" +
+			"> Test: " + testName + "\n" +
+			"> Message: " + message + "\n";
 
 			throw new Error( error );
 		}
