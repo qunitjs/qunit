@@ -1,15 +1,15 @@
-QUnit.test( "expect query and multiple issue", function( assert ) {
-	assert.expect( 2 );
-	assert.true( true );
-	var expected = assert.expect();
-	assert.equal( expected, 2 );
-	assert.expect( expected + 1 );
-	assert.true( true );
-} );
+QUnit.module( "test", function() {
 
-if ( typeof document !== "undefined" ) {
+	QUnit.test( "read and change assert.expect() count", function( assert ) {
+		assert.expect( 2 );
+		assert.true( true );
+		var expected = assert.expect();
+		assert.equal( expected, 2 );
+		assert.expect( expected + 1 );
+		assert.true( true );
+	} );
 
-	QUnit.module( "fixture", function( hooks ) {
+	( typeof document !== "undefined" ? QUnit.module : QUnit.module.skip )( "fixture management", function( hooks ) {
 		var failure = false,
 			values = [
 
@@ -153,87 +153,101 @@ if ( typeof document !== "undefined" ) {
 		} );
 	} );
 
-}
+	QUnit.module( "custom assertions" );
 
-QUnit.module( "custom assertions" );
+	QUnit.assert.mod2 = function( value, expected, message ) {
+		var actual = value % 2;
+		this.pushResult( {
+			result: actual === expected,
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
+	};
 
-QUnit.assert.mod2 = function( value, expected, message ) {
-	var actual = value % 2;
-	this.pushResult( {
-		result: actual === expected,
-		actual: actual,
-		expected: expected,
-		message: message
+	QUnit.assert.testForPush = function( value, expected, message ) {
+		this.push( true, value, expected, message, false );
+	};
+
+	QUnit.test( "mod2", function( assert ) {
+		assert.mod2( 2, 0, "2 % 2 == 0" );
+		assert.mod2( 3, 1, "3 % 2 == 1" );
 	} );
-};
 
-QUnit.assert.testForPush = function( value, expected, message ) {
-	this.push( true, value, expected, message, false );
-};
+	QUnit.test( "testForPush", function( assert ) {
+		QUnit.log( function( detail ) {
+			if ( detail.message === "should be call pushResult" ) {
+				assert.equal( detail.result, true );
+				assert.equal( detail.actual, 1 );
+				assert.equal( detail.expected, 1 );
+				assert.equal( detail.message, "should be call pushResult" );
+				assert.equal( detail.negative, false );
+			}
+		} );
+		assert.testForPush( 1, 1, "should be call pushResult" );
+	} );
 
-QUnit.test( "mod2", function( assert ) {
-	assert.expect( 2 );
+	QUnit.module( "aliases" );
 
-	assert.mod2( 2, 0, "2 % 2 == 0" );
-	assert.mod2( 3, 1, "3 % 2 == 1" );
-} );
+	[ "todo", "skip", "only" ].forEach( function( flavor ) {
+		QUnit.test( "test." + flavor, function( assert ) {
+			assert.strictEqual( typeof QUnit.test[ flavor ], "function" );
+			assert.strictEqual( QUnit[ flavor ], QUnit.test[ flavor ] );
+		} );
+	} );
 
-QUnit.test( "testForPush", function( assert ) {
-	assert.expect( 6 );
+	QUnit.module( "test.skip", {
+		beforeEach: function( assert ) {
 
-	QUnit.log( function( detail ) {
-		if ( detail.message === "should be call pushResult" ) {
-			assert.equal( detail.result, true );
-			assert.equal( detail.actual, 1 );
-			assert.equal( detail.expected, 1 );
-			assert.equal( detail.message, "should be call pushResult" );
-			assert.equal( detail.negative, false );
+			// Skip test hooks for skipped tests
+			assert.true( false, "skipped function" );
+			throw "Error";
+		},
+		afterEach: function( assert ) {
+			assert.true( false, "skipped function" );
+			throw "Error";
 		}
 	} );
-	assert.testForPush( 1, 1, "should be call pushResult" );
-} );
 
-QUnit.module( "aliases" );
+	QUnit.skip( "skip blocks are skipped", function( assert ) {
 
-[ "todo", "skip", "only" ].forEach( function( flavor ) {
-	QUnit.test( flavor, function( assert ) {
-		assert.true( QUnit.test[ flavor ] instanceof Function );
-		assert.equal( QUnit[ flavor ], QUnit.test[ flavor ] );
+		// This test callback won't run, even with broken code
+		assert.expect( 1000 );
+		throw "Error";
 	} );
-} );
 
-QUnit.module( "QUnit.skip", {
-	beforeEach: function( assert ) {
+	QUnit.skip( "skip without function" );
 
-		// Skip test hooks for skipped tests
-		assert.true( false, "skipped function" );
-		throw "Error";
-	},
-	afterEach: function( assert ) {
-		assert.true( false, "skipped function" );
-		throw "Error";
-	}
-} );
+	QUnit.module( "missing callbacks" );
 
-QUnit.skip( "test blocks are skipped", function( assert ) {
+	QUnit.test( "QUnit.test without a callback logs a descriptive error", function( assert ) {
+		assert.throws( function() {
+			QUnit.test( "should throw an error" );
+		}, /You must provide a callback to QUnit.test\("should throw an error"\)/ );
+	} );
 
-	// This test callback won't run, even with broken code
-	assert.expect( 1000 );
-	throw "Error";
-} );
+	QUnit.test( "QUnit.todo without a callback logs a descriptive error", function( assert ) {
+		assert.throws( function() {
+			QUnit.todo( "should throw an error" );
+		}, /You must provide a callback to QUnit.todo\("should throw an error"\)/ );
+	} );
 
-QUnit.skip( "no function" );
+	( function() {
+		var previousTestAssert;
 
-QUnit.module( "Missing Callbacks" );
+		QUnit.module( "bad assertion context" );
 
-QUnit.test( "QUnit.test without a callback logs a descriptive error", function( assert ) {
-	assert.throws( function() {
-		QUnit.test( "should throw an error" );
-	}, /You must provide a callback to QUnit.test\("should throw an error"\)/ );
-} );
+		QUnit.test( "assertions after test finishes throws an error - part 1", function( assert ) {
+			assert.expect( 0 );
+			previousTestAssert = assert;
+		} );
 
-QUnit.test( "QUnit.todo without a callback logs a descriptive error", function( assert ) {
-	assert.throws( function() {
-		QUnit.todo( "should throw an error" );
-	}, /You must provide a callback to QUnit.todo\("should throw an error"\)/ );
+		QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
+			assert.expect( 1 );
+			assert.throws( function() {
+				previousTestAssert.ok( true );
+			}, /Assertion occurred after test had finished/ );
+		} );
+	}() );
+
 } );

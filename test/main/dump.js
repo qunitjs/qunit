@@ -35,7 +35,6 @@ QUnit.test( "dump output, shallow", function( assert ) {
 		},
 		left: 0
 	};
-	assert.expect( 4 );
 	QUnit.dump.maxDepth = 1;
 	assert.equal( QUnit.dump.parse( obj ), "{\n  \"left\": 0,\n  \"top\": [object Object]\n}" );
 
@@ -202,49 +201,46 @@ QUnit.test( "Custom parser", function( assert ) {
 	assert.equal( QUnit.dump.parsers.CustomObject, parser );
 } );
 
-QUnit.module( "dump, recursions", {
-	Wrap: function( x ) {
-		this.wrap = x;
-		if ( x === undefined ) {
-			this.first = true;
-		}
-	},
-	chainwrap: function( depth, first, prev ) {
-		depth = depth || 0;
-		var last = prev || new this.Wrap();
-		first = first || last;
-
-		if ( depth === 1 ) {
-			first.wrap = last;
-		}
-		if ( depth > 1 ) {
-			last = this.chainwrap( depth - 1, first, new this.Wrap( last ) );
-		}
-
-		return last;
+function WrapFn( x ) {
+	this.wrap = x;
+	if ( x === undefined ) {
+		this.first = true;
 	}
-} );
+}
+
+function chainwrap( depth, first, prev ) {
+	depth = depth || 0;
+	var last = prev || new WrapFn();
+	first = first || last;
+
+	if ( depth === 1 ) {
+		first.wrap = last;
+	}
+	if ( depth > 1 ) {
+		last = chainwrap( depth - 1, first, new WrapFn( last ) );
+	}
+
+	return last;
+}
 
 QUnit.test( "Check dump recursion", function( assert ) {
-	assert.expect( 4 );
-
 	var noref, nodump, selfref, selfdump, parentref, parentdump, circref, circdump;
 
-	noref = this.chainwrap( 0 );
+	noref = chainwrap( 0 );
 	nodump = QUnit.dump.parse( noref );
 	assert.equal( nodump, "{\n  \"first\": true,\n  \"wrap\": undefined\n}" );
 
-	selfref = this.chainwrap( 1 );
+	selfref = chainwrap( 1 );
 	selfdump = QUnit.dump.parse( selfref );
 	assert.equal( selfdump, "{\n  \"first\": true,\n  \"wrap\": recursion(-1)\n}" );
 
-	parentref = this.chainwrap( 2 );
+	parentref = chainwrap( 2 );
 	parentdump = QUnit.dump.parse( parentref );
 	assert.equal( parentdump,
 		"{\n  \"wrap\": {\n    \"first\": true,\n    \"wrap\": recursion(-2)\n  }\n}"
 	);
 
-	circref = this.chainwrap( 10 );
+	circref = chainwrap( 10 );
 	circdump = QUnit.dump.parse( circref );
 	assert.true( new RegExp( "recursion\\(-10\\)" ).test( circdump ),
 		"(" + circdump + ") should show -10 recursion level"
@@ -254,15 +250,15 @@ QUnit.test( "Check dump recursion", function( assert ) {
 QUnit.test( "Check equal/deepEqual recursion", function( assert ) {
 	var noRecursion, selfref, circref;
 
-	noRecursion = this.chainwrap( 0 );
+	noRecursion = chainwrap( 0 );
 	assert.equal( noRecursion, noRecursion, "I should be equal to me." );
 	assert.deepEqual( noRecursion, noRecursion, "... and so in depth." );
 
-	selfref = this.chainwrap( 1 );
+	selfref = chainwrap( 1 );
 	assert.equal( selfref, selfref, "Even so if I nest myself." );
 	assert.deepEqual( selfref, selfref, "... into the depth." );
 
-	circref = this.chainwrap( 10 );
+	circref = chainwrap( 10 );
 	assert.equal( circref, circref, "Or hide that through some levels of indirection." );
 	assert.deepEqual( circref, circref, "... and checked on all levels!" );
 } );

@@ -1,8 +1,8 @@
 QUnit.module( "QUnit.onError", function() {
-	QUnit.test( "Should call pushFailure when inside a test", function( assert ) {
+	QUnit.test( "call pushFailure when inside a test", function( assert ) {
 		assert.expect( 3 );
 
-		QUnit.config.current.pushFailure = function( message, source ) {
+		assert.test.pushFailure = function( message, source ) {
 			assert.strictEqual( message, "Error message", "Message is correct" );
 			assert.strictEqual( source, "filePath.js:1", "Source is correct" );
 		};
@@ -16,10 +16,10 @@ QUnit.module( "QUnit.onError", function() {
 		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
 	} );
 
-	QUnit.test( "Should use stacktrace argument when it is present", function( assert ) {
+	QUnit.test( "use stacktrace argument", function( assert ) {
 		assert.expect( 3 );
 
-		QUnit.config.current.pushFailure = function( message, source ) {
+		assert.test.pushFailure = function( message, source ) {
 			assert.strictEqual( message, "Error message", "Message is correct" );
 			assert.strictEqual(
 				source,
@@ -39,14 +39,14 @@ QUnit.module( "QUnit.onError", function() {
 	} );
 
 
-	QUnit.test( "Shouldn't push failure if ignoreGlobalErrors is enabled", function( assert ) {
+	QUnit.test( "ignore failure when ignoreGlobalErrors is enabled", function( assert ) {
 		assert.expect( 1 );
 
-		QUnit.config.current.pushFailure = function() {
+		assert.test.pushFailure = function() {
 			assert.true( false, "No error should be pushed" );
 		};
 
-		QUnit.config.current.ignoreGlobalErrors = true;
+		assert.test.ignoreGlobalErrors = true;
 
 		var result = QUnit.onError( {
 			message: "Error message",

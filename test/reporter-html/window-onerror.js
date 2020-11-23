@@ -9,7 +9,7 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 		QUnit.onError = originalQUnitOnError;
 	} );
 
-	QUnit.test( "Should call QUnit.onError", function( assert ) {
+	QUnit.test( "call QUnit.onError", function( assert ) {
 		assert.expect( 1 );
 
 		QUnit.onError = function() {
@@ -19,7 +19,7 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "Should extract stacktrace if it is available", function( assert ) {
+	QUnit.test( "extract stacktrace", function( assert ) {
 		assert.expect( 1 );
 
 		var errorObj = {
@@ -34,7 +34,7 @@ QUnit.module( "window.onerror (no preexisting handler)", function( hooks ) {
 	} );
 
 
-	QUnit.test( "Should return QUnit.error return value if it is called", function( assert ) {
+	QUnit.test( "forward return value of QUnit.error", function( assert ) {
 		assert.expect( 1 );
 
 		var expected = {};

@@ -1689,9 +1689,7 @@ QUnit.test( "Test that must be done at the end because they extend some primitiv
 	}
 );
 
-QUnit.module( "equiv Object-wrapped primitives" );
-
-QUnit.test( "Number", function( assert ) {
+QUnit.test( "Number objects", function( assert ) {
 	var SafeNumber = Number;
 
 	assert.true( QUnit.equiv( new SafeNumber( 1 ), new SafeNumber( 1 ) ),
@@ -1715,7 +1713,7 @@ QUnit.test( "Number", function( assert ) {
 	);
 } );
 
-QUnit.test( "String", function( assert ) {
+QUnit.test( "String objects", function( assert ) {
 	var SafeString = String;
 
 	assert.true( QUnit.equiv( new SafeString( "foo" ), new SafeString( "foo" ) ),
@@ -1733,7 +1731,7 @@ QUnit.test( "String", function( assert ) {
 	);
 } );
 
-QUnit.test( "Boolean", function( assert ) {
+QUnit.test( "Boolean objects", function( assert ) {
 	var SafeBoolean = Boolean;
 
 	assert.true( QUnit.equiv( new SafeBoolean( true ), new SafeBoolean( true ) ),
@@ -1747,8 +1745,6 @@ QUnit.test( "Boolean", function( assert ) {
 		"Boolean objects with different values are not equivalent."
 	);
 } );
-
-QUnit.module( "equiv Maps and Sets" );
 
 var hasES6Set = ( function() {
 	if ( typeof Set !== "function" ) {
@@ -1966,13 +1962,11 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function( assert ) {
 	assert.equal( QUnit.equiv( m1, m2 ), false, "Maps containing different sets" );
 } );
 
-QUnit.module( "equiv Symbols" );
-
 var hasES6Symbol = ( function() {
 	return typeof Symbol === "function";
 }() );
 
-QUnit[ hasES6Symbol ? "test" : "skip" ]( "regular checks", function( assert ) {
+QUnit[ hasES6Symbol ? "test" : "skip" ]( "Symbols", function( assert ) {
 	var a = Symbol( 1 );
 	var b = Symbol( 1 );
 

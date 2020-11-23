@@ -60,8 +60,8 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 			};
 		} );
 
-		hooks.afterEach( function() {
-			QUnit.config.current.pushResult = originalPushResult;
+		hooks.afterEach( function( assert ) {
+			assert.pushResult = originalPushResult;
 		} );
 
 		// Actual test (outside QUnit.test context)

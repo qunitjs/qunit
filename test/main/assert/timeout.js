@@ -3,9 +3,9 @@ QUnit.module( "assert.timeout", function() {
 		assert.timeout( 10 );
 		assert.expect( 1 );
 
-		var originalPushFailure = QUnit.config.current.pushFailure;
-		QUnit.config.current.pushFailure = function pushFailureStub( message ) {
-			QUnit.config.current.pushFailure = originalPushFailure;
+		var original = assert.test.pushFailure;
+		assert.test.pushFailure = function( message ) {
+			assert.test.pushFailure = original;
 
 			assert.equal( message, "Test took longer than 10ms; test timed out." );
 		};
@@ -17,9 +17,9 @@ QUnit.module( "assert.timeout", function() {
 		assert.timeout( 10 );
 		assert.expect( 1 );
 
-		var originalPushFailure = QUnit.config.current.pushFailure;
-		QUnit.config.current.pushFailure = function pushFailureStub( message ) {
-			QUnit.config.current.pushFailure = originalPushFailure;
+		var original = assert.test.pushFailure;
+		assert.test.pushFailure = function( message ) {
+			assert.test.pushFailure = original;
 
 			assert.equal( message, "Test took longer than 10ms; test timed out." );
 		};
@@ -51,9 +51,9 @@ QUnit.module( "assert.timeout", function() {
 
 		setTimeout( function() {
 			assert.timeout( 10 );
-			var originalPushFailure = QUnit.config.current.pushFailure;
-			QUnit.config.current.pushFailure = function pushFailureStub( message ) {
-				QUnit.config.current.pushFailure = originalPushFailure;
+			var original = assert.test.pushFailure;
+			assert.test.pushFailure = function( message ) {
+				assert.test.pushFailure = original;
 
 				assert.equal( message, "Test took longer than 10ms; test timed out." );
 				done();
@@ -64,9 +64,9 @@ QUnit.module( "assert.timeout", function() {
 
 	QUnit.module( "a value of zero", function() {
 		function stubPushFailure( assert ) {
-			var originalPushFailure = QUnit.config.current.pushFailure;
-			QUnit.config.current.pushFailure = function pushFailureStub( message ) {
-				QUnit.config.current.pushFailure = originalPushFailure;
+			var original = assert.test.pushFailure;
+			assert.test.pushFailure = function( message ) {
+				assert.test.pushFailure = original;
 
 				assert.equal(
 					message,

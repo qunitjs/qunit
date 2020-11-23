@@ -87,7 +87,6 @@ QUnit.test( "notStrictEqual", function( assert ) {
 } );
 
 QUnit.test( "propEqual", function( assert ) {
-	assert.expect( 5 );
 	var objectCreate = Object.create || function( origin ) {
 		function O() {}
 		O.prototype = origin;
@@ -164,7 +163,6 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 20 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -354,9 +352,11 @@ QUnit.test( "throws", function( assert ) {
 	);
 } );
 
-QUnit.test( "rejects", function( assert ) {
-	assert.expect( 16 );
+QUnit.test( "raises", function( assert ) {
+	assert.strictEqual( assert.raises, assert.throws, "alias for throws" );
+} );
 
+QUnit.test( "rejects", function( assert ) {
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -469,10 +469,6 @@ QUnit.test( "rejects", function( assert ) {
 		buildMockPromise( undefined ),
 		"reject with undefined against no matcher"
 	);
-} );
-
-QUnit.test( "raises, alias for throws", function( assert ) {
-	assert.strictEqual( assert.raises, assert.throws );
 } );
 
 QUnit.module( "failing assertions", {
@@ -664,21 +660,3 @@ QUnit.test( "rejects", function( assert ) {
 		"rejects fails when provided an array"
 	);
 } );
-
-( function() {
-	var previousTestAssert;
-
-	QUnit.module( "delayed assertions" );
-
-	QUnit.test( "assertions after test finishes throws an error - part 1", function( assert ) {
-		assert.expect( 0 );
-		previousTestAssert = assert;
-	} );
-
-	QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
-		assert.expect( 1 );
-		assert.throws( function() {
-			previousTestAssert.ok( true );
-		}, /Assertion occurred after test had finished/ );
-	} );
-}() );
