@@ -34,6 +34,10 @@
   #qunit-tests {
     overflow: scroll;
   }
+
+  #qunit-banner {
+    flex: 5px 0 0;
+  }
 }
 /** END Fixed headers with scrollable tests **/
 
