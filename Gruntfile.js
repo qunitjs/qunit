@@ -122,7 +122,6 @@ module.exports = function( grunt ) {
 						"test/events-filters.html",
 						"test/events-in-test.html",
 						"test/logs.html",
-						"test/setTimeout.html",
 						"test/amd.html",
 						"test/reporter-html/legacy-markup.html",
 						"test/reporter-html/no-qunit-element.html",
