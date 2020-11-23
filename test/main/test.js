@@ -244,13 +244,14 @@ QUnit.module( "test", function() {
 		} );
 
 		QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
+			var error = "Assertion occurred after test finished.\n" +
+			"> Test: " + firstTestName + "\n" +
+			"> Message: message here\n";
+
 			assert.expect( 1 );
 			assert.throws( function() {
 				previousTestAssert.ok( true, "message here" );
-			}, "Assertion occurred after test had finished.\n" +
-			"> Test: " + firstTestName + "\n" +
-			"> Assertion: message here\n"
-			);
+			}, new Error( error ), "correct error thrown" );
 		} );
 	}() );
 
