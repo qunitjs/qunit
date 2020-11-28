@@ -5,62 +5,23 @@ module.exports = function( grunt ) {
 	grunt.registerMultiTask( "test-on-node", async function() {
 		var done = this.async();
 
-		const stats = [];
+		const totals = { files: 0, failed: 0 };
 		for ( const file of this.data ) {
-			const stat = await new Promise( resolve => runQUnit( file, resolve ) );
-			stats.push( stat );
+			totals.failed += await new Promise( resolve => runQUnit( file, resolve ) );
+			totals.files++;
 		}
 
-		var totals = stats.reduce( function( totals, stats ) {
-			totals.passed += stats.passed;
-			totals.failed += stats.failed;
-			totals.skipped += stats.skipped;
-			totals.todo += stats.todo;
-			totals.passedAssertions += stats.passedAssertions;
-			totals.failedAssertions += stats.failedAssertions;
-			totals.runtime += stats.runtime;
-			return totals;
-		}, {
-			passed: 0,
-			failed: 0,
-			skipped: 0,
-			todo: 0,
-			runtime: 0,
-			passedAssertions: 0,
-			failedAssertions: 0
-		} );
-
-		grunt.log.writeln( "-----" );
-		grunt.log.ok( constructMessage( totals ) );
+		if ( totals.failed ) {
+			grunt.log.error( `Ran ${totals.files} files, ${totals.failed} failed tests` );
+		} else {
+			grunt.log.ok( `Ran ${totals.files} files` );
+		}
 
 		// Refresh the QUnit global to be used in other tests
 		global.QUnit = requireFresh( "../../dist/qunit" );
 
 		done( !totals.failed );
 	} );
-
-	function constructMessage( stats ) {
-		var totalTests = stats.passed + stats.failed + stats.skipped + stats.todo,
-			totalAssertions = stats.passedAssertions + stats.failedAssertions;
-
-		return [
-			totalTests,
-			" tests completed with ",
-			stats.failed,
-			" failed, " +
-			stats.skipped,
-			" skipped, and ",
-			stats.todo,
-			" todo. \n" +
-			totalAssertions,
-			" assertions (in ",
-			stats.runtime,
-			"ms), passed: " +
-			stats.passedAssertions,
-			", failed: ",
-			stats.failedAssertions
-		].join( "" );
-	}
 
 	function requireFresh( path ) {
 		var resolvedPath = require.resolve( path );
@@ -78,76 +39,63 @@ module.exports = function( grunt ) {
 		global.QUnit = QUnit;
 
 		QUnit.config.autostart = false;
-
 		requireFresh( "../../" + file );
-
 		registerEvents( QUnit, file, runEnd );
-
 		QUnit.start();
 	}
 
-	function registerEvents( QUnit, file, runEnd ) {
-		var runDone = false;
-		var testActive = false;
-		var stats = {
-			passed: 0,
-			failed: 0,
-			skipped: 0,
-			todo: 0
-		};
+	function registerEvents( QUnit, fileName, callback ) {
 
-		QUnit.begin( function() {
-			grunt.log.ok( "Testing " + file + " ..." );
+		// Silence deprecation warnings
+		const warn = process.stderr.write;
+		process.stderr.write = function() {};
+		function restore() {
+			process.stderr.write = warn;
+		}
+
+		// These tests are relatively short. Buffer the output so that we
+		// only have to restore once, and can craft more condensed output.
+		let out = "";
+
+		QUnit.on( "runStart", () => {
+			out += "Testing " + fileName;
 		} );
 
-		QUnit.testStart( function() {
-			testActive = true;
-		} );
-
-		QUnit.log( function( details ) {
-			if ( !testActive || details.result || details.todo ) {
+		QUnit.on( "testEnd", ( testEnd ) => {
+			if ( testEnd.status === "todo" ) {
 				return;
 			}
-			var message = "name: " + details.name + " module: " + details.module +
-				" message: " + details.message;
-			grunt.log.error( message );
+			testEnd.errors.forEach( ( assertion ) => {
+				out += `\n\ntest: ${testEnd.name}\n` +
+					`module: ${testEnd.suiteName}\n` +
+					`message: ${assertion.message}\n${assertion.stack || ""}`;
+			} );
 		} );
 
-		QUnit.testDone( function( details ) {
-			testActive = false;
+		QUnit.on( "runEnd", ( suiteEnd ) => {
+			restore();
+			const stats = suiteEnd.testCounts;
 
-			var testPassed = details.failed > 0 ? details.todo : !details.todo;
-
-			if ( details.skipped ) {
-				stats.skipped++;
-			} else if ( !testPassed ) {
-				stats.failed++;
-			} else if ( details.todo ) {
-				stats.todo++;
+			if ( suiteEnd.status === "failed" ) {
+				out += "\n" + `${stats.total} tests in ${suiteEnd.runtime}ms`;
+				out += `, ${stats.passed} passed`;
+				if ( stats.failed ) {
+					out += `, ${stats.failed} failed`;
+				}
+				if ( stats.skipped ) {
+					out += `, ${stats.skipped} skipped`;
+				}
+				if ( stats.todo ) {
+					out += `, ${stats.todo} todo`;
+				}
+				out += ".";
+				grunt.log.error( out );
 			} else {
-				stats.passed++;
-			}
-		} );
-
-		QUnit.done( function( details ) {
-			if ( runDone ) {
-				return;
+				out += ` (${stats.total} tests in ${suiteEnd.runtime}ms)`;
+				grunt.log.writeln( out );
 			}
 
-			stats.runtime = details.runtime;
-			stats.passedAssertions = details.passed;
-			stats.failedAssertions = details.failed;
-
-			var message = constructMessage( stats );
-
-			if ( stats.failed ) {
-				grunt.log.error( message );
-			} else {
-				grunt.log.ok( message );
-			}
-
-			runDone = true;
-			runEnd( stats );
+			callback( stats.failed );
 		} );
 	}
 };

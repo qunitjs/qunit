@@ -15,7 +15,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		QUnit.onError = originalQUnitOnError;
 	} );
 
-	QUnit.test( "Should call QUnit.onError if handler returns false", function( assert ) {
+	QUnit.test( "call QUnit.onError if handler returns false", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = false;
@@ -27,7 +27,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "Should call QUnit.onError if handler returns void 0", function( assert ) {
+	QUnit.test( "call QUnit.onError if handler returns void 0", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = void 0;
@@ -39,7 +39,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "Should call QUnit.onError if handler returns truthy", function( assert ) {
+	QUnit.test( "call QUnit.onError if handler returns truthy", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = "truthy value";
@@ -51,7 +51,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "Should not handle error if other handler returns true", function( assert ) {
+	QUnit.test( "ignore error if other handler returns true", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = true;
@@ -65,7 +65,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		assert.strictEqual( result, true, "Our error handler should have returned true" );
 	} );
 
-	QUnit.test( "window.onerror handler should be called on window", function( assert ) {
+	QUnit.test( "window.onerror handler is called on window", function( assert ) {
 		assert.expect( 1 );
 
 		QUnit.onError = function() {};
@@ -75,7 +75,7 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 		assert.strictEqual( onerrorCallingContext, window, "Handler called with correct context" );
 	} );
 
-	QUnit.test( "Should return QUnit.error return value if it is called", function( assert ) {
+	QUnit.test( "forward return value of QUnit.error", function( assert ) {
 		assert.expect( 1 );
 
 		var expected = {};

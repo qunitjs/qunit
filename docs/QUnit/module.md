@@ -335,7 +335,7 @@ QUnit.module( "Database connection", {
 
 ##### Example: Only run a subset of tests
 
-Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.test.only`](./test/only.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.test.only`](./test.only.md) instead of [`QUnit.test`](./test.md).
 
 ```js
 QUnit.module( "Robot", hooks => {

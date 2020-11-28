@@ -1,4 +1,4 @@
-QUnit.module( "Should create a test and call pushFailure when outside a test", function( hooks ) {
+QUnit.module( "pushFailure outside a test", function( hooks ) {
 	var originalPushResult;
 
 	hooks.beforeEach( function() {
@@ -13,7 +13,7 @@ QUnit.module( "Should create a test and call pushFailure when outside a test", f
 
 			this.assert.strictEqual(
 				this.testName,
-				"global failure", "Test is appropriately named"
+				"global failure", "new test implicitly created and appropriately named"
 			);
 
 			this.assert.deepEqual( resultInfo, {
@@ -21,7 +21,7 @@ QUnit.module( "Should create a test and call pushFailure when outside a test", f
 				source: "filePath.js:1",
 				result: false,
 				actual: "actual"
-			}, "Expected assert.pushResult to be called with correct args" );
+			}, "assert.pushResult arguments" );
 		};
 
 	} );

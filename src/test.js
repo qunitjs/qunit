@@ -25,17 +25,13 @@ import TestReport from "./reports/test";
 let focused = false;
 
 export default function Test( settings ) {
-	var i, l;
-
-	++Test.count;
-
 	this.expected = null;
 	this.assertions = [];
 	this.semaphore = 0;
 	this.module = config.currentModule;
 	this.steps = [];
 	this.timeout = undefined;
-	this.errorForStack = new Error();
+	extend( this, settings );
 
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
@@ -45,24 +41,34 @@ export default function Test( settings ) {
 	// So, if a test is defined as `todo` and is inside a skipped module, we should
 	// then treat that test as if was defined as `skip`.
 	if ( this.module.skip ) {
-		settings.skip = true;
-		settings.todo = false;
+		this.skip = true;
+		this.todo = false;
 
 	// Skipped tests should be left intact
-	} else	if ( this.module.todo && !settings.skip ) {
-		settings.todo = true;
+	} else if ( this.module.todo && !this.skip ) {
+		this.todo = true;
 	}
 
-	extend( this, settings );
+	if ( !this.skip && typeof this.callback !== "function" ) {
+		const method = this.todo ? "QUnit.todo" : "QUnit.test";
+		throw new TypeError( `You must provide a callback to ${method}("${this.testName}")` );
+	}
 
-	this.testReport = new TestReport( settings.testName, this.module.suiteReport, {
-		todo: settings.todo,
-		skip: settings.skip,
+	// No validation after this. Beyond this point, failures must be recorded as
+	// a completed test with errors, instead of early bail out.
+	// Otherwise, internals may be left in an inconsistent state.
+	// Ref https://github.com/qunitjs/qunit/issues/1514
+
+	++Test.count;
+	this.errorForStack = new Error();
+	this.testReport = new TestReport( this.testName, this.module.suiteReport, {
+		todo: this.todo,
+		skip: this.skip,
 		valid: this.valid()
 	} );
 
 	// Register unique strings
-	for ( i = 0, l = this.module.tests; i < l.length; i++ ) {
+	for ( let i = 0, l = this.module.tests; i < l.length; i++ ) {
 		if ( this.module.tests[ i ].name === this.testName ) {
 			this.testName += " ";
 		}
@@ -73,23 +79,16 @@ export default function Test( settings ) {
 	this.module.tests.push( {
 		name: this.testName,
 		testId: this.testId,
-		skip: !!settings.skip
+		skip: !!this.skip
 	} );
 
-	if ( settings.skip ) {
+	if ( this.skip ) {
 
 		// Skipped tests will fully ignore any sent callback
 		this.callback = function() {};
 		this.async = false;
 		this.expected = 0;
 	} else {
-		if ( typeof this.callback !== "function" ) {
-			const method = this.todo ? "todo" : "test";
-
-			// eslint-disable-next-line max-len
-			throw new TypeError( `You must provide a function as a test callback to QUnit.${method}("${settings.testName}")` );
-		}
-
 		this.assert = new Assert( this );
 	}
 }
@@ -207,7 +206,7 @@ Test.prototype = {
 
 		const runHook = () => {
 			if ( hookName === "before" ) {
-				if ( hookOwner.unskippedTestsRun !== 0 ) {
+				if ( hookOwner.testsRun !== 0 ) {
 					return;
 				}
 
@@ -217,7 +216,7 @@ Test.prototype = {
 			// The 'after' hook should only execute when there are not tests left and
 			// when the 'after' and 'finish' tasks are the only tasks left to process
 			if ( hookName === "after" &&
-				hookOwner.unskippedTestsRun !== numberOfUnskippedTests( hookOwner ) - 1 &&
+				!lastTestWithinModuleExecuted( hookOwner ) &&
 				( config.queue.length > 0 || ProcessingQueue.taskCount() > 2 ) ) {
 				return;
 			}
@@ -309,7 +308,11 @@ Test.prototype = {
 			}
 		}
 
-		notifyTestsRan( module, skipped );
+		if ( skipped ) {
+			incrementTestsIgnored( module );
+		} else {
+			incrementTestsRun( module );
+		}
 
 		// Store result when possible
 		if ( storage ) {
@@ -344,13 +347,13 @@ Test.prototype = {
 			// generating stack trace is expensive, so using a getter will help defer this until we need it
 			get source() { return test.stack; }
 		} ).then( function() {
-			if ( module.testsRun === numberOfTests( module ) ) {
+			if ( allTestsExecuted( module ) ) {
 				const completedModules = [ module ];
 
 				// Check if the parent modules, iteratively, are done. If that the case,
 				// we emit the `suiteEnd` event and trigger `moduleDone` callback.
 				let parent = module.parentModule;
-				while ( parent && parent.testsRun === numberOfTests( parent ) ) {
+				while ( parent && allTestsExecuted( parent ) ) {
 					completedModules.push( parent );
 					parent = parent.parentModule;
 				}
@@ -394,6 +397,7 @@ Test.prototype = {
 		const test = this;
 
 		if ( !this.valid() ) {
+			incrementTestsIgnored( this.module );
 			return;
 		}
 
@@ -853,23 +857,32 @@ function collectTests( module ) {
 	return tests;
 }
 
-function numberOfTests( module ) {
-	return collectTests( module ).length;
+// This returns true after all executable and skippable tests
+// in a module have been proccessed, and informs 'suiteEnd'
+// and moduleDone().
+function allTestsExecuted( module ) {
+	return module.testsRun + module.testsIgnored === collectTests( module ).length;
 }
 
-function numberOfUnskippedTests( module ) {
-	return collectTests( module ).filter( test => !test.skip ).length;
+// This returns true during the last executable non-skipped test
+// within a module, and informs the running of the 'after' hook
+// for a given module. This runs only once for a given module,
+// but must run during the last non-skipped test. When it runs,
+// there may be non-zero skipped tests left.
+function lastTestWithinModuleExecuted( module ) {
+	return module.testsRun === collectTests( module ).filter( test => !test.skip ).length - 1;
 }
 
-function notifyTestsRan( module, skipped ) {
+function incrementTestsRun( module ) {
 	module.testsRun++;
-	if ( !skipped ) {
-		module.unskippedTestsRun++;
-	}
 	while ( ( module = module.parentModule ) ) {
 		module.testsRun++;
-		if ( !skipped ) {
-			module.unskippedTestsRun++;
-		}
+	}
+}
+
+function incrementTestsIgnored( module ) {
+	module.testsIgnored++;
+	while ( ( module = module.parentModule ) ) {
+		module.testsIgnored++;
 	}
 }

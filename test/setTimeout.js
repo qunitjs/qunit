@@ -1,21 +1,21 @@
-( function( window ) {
+( function( globalThis ) {
 
-	QUnit.module( "Module that mucks with time", {
+	QUnit.module( "Support mocked setTimeout", {
 		beforeEach: function() {
-			this.setTimeout = window.setTimeout;
-			window.setTimeout = function() {};
+			this.setTimeout = globalThis.setTimeout;
+			globalThis.setTimeout = function() {};
 		},
 
 		afterEach: function() {
-			window.setTimeout = this.setTimeout;
+			globalThis.setTimeout = this.setTimeout;
 		}
 	} );
 
-	QUnit.test( "just a test", function( assert ) {
+	QUnit.test( "test one", function( assert ) {
 		assert.true( true );
 	} );
 
-	QUnit.test( "just a test", function( assert ) {
+	QUnit.test( "test two", function( assert ) {
 		assert.true( true );
 	} );
 

@@ -119,9 +119,9 @@ module.exports = function( grunt ) {
 						"test/callbacks.html",
 						"test/callbacks-promises.html",
 						"test/events.html",
+						"test/events-filters.html",
 						"test/events-in-test.html",
 						"test/logs.html",
-						"test/setTimeout.html",
 						"test/amd.html",
 						"test/reporter-html/legacy-markup.html",
 						"test/reporter-html/no-qunit-element.html",
@@ -155,31 +155,43 @@ module.exports = function( grunt ) {
 		},
 		"test-on-node": {
 			files: [
-				"test/logs",
-				"test/main/test",
-				"test/main/assert",
-				"test/main/assert/step",
-				"test/main/assert/timeout",
-				"test/main/async",
-				"test/main/promise",
-				"test/main/modules",
-				"test/main/deepEqual",
-				"test/main/stack",
-				"test/main/utilities",
-				"test/events",
-				"test/events-in-test",
-				"test/onerror/inside-test",
-				"test/onerror/outside-test",
-				"test/only",
-				"test/setTimeout",
-				"test/main/dump",
-				"test/node/storage-1",
-				"test/node/storage-2",
-				"test/module-only",
-				"test/module-skip",
-				"test/module-todo",
-				"test/es2018/async-functions",
-				"test/es2018/throws"
+				"test/logs.js",
+				"test/main/test.js",
+				"test/main/assert.js",
+				"test/main/assert/step.js",
+				"test/main/assert/timeout.js",
+				"test/main/async.js",
+				"test/main/promise.js",
+				"test/main/modules.js",
+				"test/main/deepEqual.js",
+				"test/main/stack.js",
+				"test/main/utilities.js",
+				"test/events.js",
+				"test/events-in-test.js",
+				"test/onerror/inside-test.js",
+				"test/onerror/outside-test.js",
+				"test/only.js",
+				"test/setTimeout.js",
+				"test/main/dump.js",
+				"test/node/storage-1.js",
+				"test/node/storage-2.js",
+
+				// FIXME: These tests use an ugly hack that re-opens
+				// an already finished test run. This only works reliably
+				// via the HTML Reporter thanks to some delays in the bridge.
+				// These tests are about reporting, not about functional
+				// behaviour. They would be best run either as reflection on the
+				// DOM in an HTML Reporter test, or from the CLI by asserting
+				// TAP output. I suggest we do the latter, and then remove them
+				// from here.
+				//
+				// Ref https://github.com/qunitjs/qunit/issues/1511
+				//
+				// "test/module-only.js",
+				// "test/module-skip.js",
+				// "test/module-todo.js",
+				"test/es2018/async-functions.js",
+				"test/es2018/throws.js"
 			]
 		},
 		"watch-repeatable": {

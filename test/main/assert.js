@@ -27,6 +27,8 @@ QUnit.test( "ok", function( assert ) {
 	assert.ok( Infinity );
 	assert.ok( {} );
 	assert.ok( [] );
+
+	assert.ok( true, "with message" );
 } );
 
 QUnit.test( "notOk", function( assert ) {
@@ -36,6 +38,8 @@ QUnit.test( "notOk", function( assert ) {
 	assert.notOk( null );
 	assert.notOk( undefined );
 	assert.notOk( NaN );
+
+	assert.notOk( false, "with message" );
 } );
 
 QUnit.test( "true", function( assert ) {
@@ -83,7 +87,6 @@ QUnit.test( "notStrictEqual", function( assert ) {
 } );
 
 QUnit.test( "propEqual", function( assert ) {
-	assert.expect( 5 );
 	var objectCreate = Object.create || function( origin ) {
 		function O() {}
 		O.prototype = origin;
@@ -160,7 +163,6 @@ QUnit.test( "propEqual", function( assert ) {
 } );
 
 QUnit.test( "throws", function( assert ) {
-	assert.expect( 15 );
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -181,6 +183,15 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"simple string throw, no 'expected' value given"
 	);
+
+	assert.throws( function() {
+		// eslint-disable-next-line qunit/no-throws-string
+		assert.throws(
+			undefined, // irrelevant - errors before even verifying this
+			"expected is a string",
+			"message is non-null"
+		);
+	}, /throws\/raises does not accept a string value for the expected argument/ );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -273,6 +284,45 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
+			throw {
+				name: "SomeName",
+				message: "some message"
+			};
+		},
+		/^SomeName: some message$/,
+		"thrown object matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {};
+		},
+		/^Error$/,
+		"thrown object with no name or message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				name: "SomeName"
+			};
+		},
+		/^SomeName$/,
+		"thrown object with name but no message matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
+			throw {
+				message: "some message"
+			};
+		},
+		/^Error: some message$/,
+		"thrown object with message but no name matches formatted error message"
+	);
+
+	assert.throws(
+		function() {
 			throw new CustomError( "some error description" );
 		},
 		function( err ) {
@@ -302,9 +352,11 @@ QUnit.test( "throws", function( assert ) {
 	);
 } );
 
-QUnit.test( "rejects", function( assert ) {
-	assert.expect( 16 );
+QUnit.test( "raises", function( assert ) {
+	assert.strictEqual( assert.raises, assert.throws, "alias for throws" );
+} );
 
+QUnit.test( "rejects", function( assert ) {
 	function CustomError( message ) {
 		this.message = message;
 	}
@@ -417,10 +469,6 @@ QUnit.test( "rejects", function( assert ) {
 		buildMockPromise( undefined ),
 		"reject with undefined against no matcher"
 	);
-} );
-
-QUnit.test( "raises, alias for throws", function( assert ) {
-	assert.strictEqual( assert.raises, assert.throws );
 } );
 
 QUnit.module( "failing assertions", {
@@ -612,21 +660,3 @@ QUnit.test( "rejects", function( assert ) {
 		"rejects fails when provided an array"
 	);
 } );
-
-( function() {
-	var previousTestAssert;
-
-	QUnit.module( "delayed assertions" );
-
-	QUnit.test( "assertions after test finishes throws an error - part 1", function( assert ) {
-		assert.expect( 0 );
-		previousTestAssert = assert;
-	} );
-
-	QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
-		assert.expect( 1 );
-		assert.throws( function() {
-			previousTestAssert.ok( true );
-		}, /Assertion occurred after test had finished/ );
-	} );
-}() );

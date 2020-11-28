@@ -121,3 +121,9 @@ QUnit.module.skip( "module G", function() {
 		assert.true( false, "this test should not run" );
 	} );
 } );
+
+QUnit.module.todo( "module I", function() {
+	QUnit.test( "test I", function( assert ) {
+		assert.true( false, "this test should not run" );
+	} );
+} );

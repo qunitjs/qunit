@@ -2,12 +2,10 @@
 
 QUnit.module( "QUnit.objectType" );
 
-function Foo( ) { }
+function Foo() { }
 
 function validateObjectType( item, expected ) {
 	QUnit.test( "should properly detect " + expected, function( assert ) {
-		assert.expect( 1 );
-
 		var actual = QUnit.objectType( item );
 		assert.equal( actual, expected );
 	} );
@@ -43,7 +41,6 @@ validateObjectType( undefined, "undefined" );
 validateObjectType( { }, "object" );
 validateObjectType( new Foo( ), "object" );
 
-
 if ( typeof Symbol === "function" ) {
 	validateObjectType( Symbol( "HI!" ), "symbol" );
 }
@@ -63,7 +60,7 @@ maybeValidateObjectType( "async () => { }", "function" );
 maybeValidateObjectType( "() => { }", "function" );
 maybeValidateObjectType( "function* { }", "function" );
 
-QUnit.module( "extend" );
+QUnit.module( "QUnit.extend" );
 
 QUnit.test( "appends to object", function( assert ) {
 	var base = { foo: 1 };
