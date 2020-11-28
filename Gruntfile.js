@@ -190,8 +190,8 @@ module.exports = function( grunt ) {
 				// "test/module-only.js",
 				// "test/module-skip.js",
 				// "test/module-todo.js",
-				"test/es2017/async-functions.js",
-				"test/es2017/throws.js"
+				"test/es2018/async-functions.js",
+				"test/es2018/throws.js"
 			]
 		},
 		"watch-repeatable": {

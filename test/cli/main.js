@@ -135,6 +135,28 @@ QUnit.module( "CLI Main", function() {
 		}
 	} );
 
+	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
+		QUnit.test( "run ESM test suite with import statement", async function( assert ) {
+			const command = "qunit ../../es2018/esm.mjs";
+			const execution = await execute( command );
+
+			assert.equal( execution.code, 0 );
+
+			// Node 12 enabled ESM by default, without experimental flag,
+			// but left the warning in stderr. The warning was removed in Node 14.
+			// Don't bother checking stderr
+			if ( semver.gte( process.versions.node, "14.0.0" ) ) {
+				assert.equal( execution.stderr, "" );
+			}
+
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.equal( re.test( execution.stdout ), true );
+			if ( !re.test( execution.stdout ) ) {
+				assert.equal( execution.stdout, expectedOutput[ command ] );
+			}
+		} );
+	}
+
 	// https://nodejs.org/dist/v12.12.0/docs/api/cli.html#cli_enable_source_maps
 	if ( semver.gte( process.versions.node, "14.0.0" ) ) {
 
