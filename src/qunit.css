@@ -15,34 +15,6 @@
    the tested app might load. Don't affect buttons in #qunit-fixture!
    https://github.com/qunitjs/qunit/pull/1395
    https://github.com/qunitjs/qunit/issues/1437 */
-
-@supports (display: flex) or (display: -webkit-box) {
-  /** Fixed headers with scrollable tests **/
-
-  @media (min-height: 500px) {
-    #qunit {
-      position: fixed;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      bottom: 0px;
-      padding: 2px;
-      display: -webkit-box;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #qunit-tests {
-      overflow: scroll;
-    }
-
-    #qunit-banner {
-      flex: 5px 0 0;
-    }
-  }
-}
-/** END Fixed headers with scrollable tests **/
-
 #qunit-testrunner-toolbar button,
 #qunit-testresult button {
 	font-size: initial;
@@ -63,6 +35,33 @@
 #qunit-tests, #qunit-header, #qunit-banner, #qunit-filteredTest, #qunit-userAgent, #qunit-testresult, #qunit-modulefilter {
 	margin: 0;
 	padding: 0;
+}
+
+
+/** Fixed headers with scrollable tests */
+
+@supports (display: flex) or (display: -webkit-box) {
+	@media (min-height: 500px) {
+		#qunit {
+			position: fixed;
+			left: 0px;
+			right: 0px;
+			top: 0px;
+			bottom: 0px;
+			padding: 8px;
+			display: -webkit-box;
+			display: flex;
+			flex-direction: column;
+		}
+
+		#qunit-tests {
+			overflow: scroll;
+		}
+
+		#qunit-banner {
+			flex: 5px 0 0;
+		}
+	}
 }
 
 
