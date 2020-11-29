@@ -1,4 +1,22 @@
 
+2.13.0 / 2020-11-29
+==================
+
+### Added
+
+* Core: Log test name as part of "Assertion after test" failures. (brandonocasey) [#1517](https://github.com/qunitjs/qunit/pull/1517)
+* CLI: Add native support for ESM .mjs files on Node 12+. (Timo Tijhof) [#1465](https://github.com/qunitjs/qunit/issues/1465)
+
+### Deprecated
+
+* HTML Reporter: Deprecate PhantomJS. (Steve McClure)
+
+### Fixed
+
+* Core: Count tests run so that `suiteEnd` emits correctly with active filters. (Stephen Yeung) [#1416](https://github.com/qunitjs/qunit/issues/1416)
+* Core: Fix test counter bug when nesting invalid test functions. (Timo Tijhof)
+* HTML Reporter: Avoid leaking `Map` global in older browsers. (Timo Tijhof)
+
 2.12.0 / 2020-11-08
 ==================
 

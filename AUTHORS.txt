@@ -141,7 +141,6 @@ Kevin Wang <kevin@fossa.io>
 Marten Schilstra <marten.schilstra@dockyard.com>
 Barrett K. Harber <barrett.harber@gmail.com>
 Robert Jackson <me@rwjblue.com>
-Cory <cory.forsyth@gmail.com>
 Kevin Ji <kevin.ji@outlook.com>
 Adrian Leonhard <adrianleonhard@gmail.com>
 Patrick Berkeley <patrickberkeley@gmail.com>
@@ -162,7 +161,6 @@ Martin Feckie <mfeckie@gmail.com>
 SparshithNRai <nairbali@usc.edu>
 Gerald Haagsma <haagsmag@gmail.com>
 Adam Byrne <misterbyrne@gmail.com>
-step2yeung <syeung@linkedin.com>
 Kean Loong Tan <keanification@gmail.com>
 Jim Lynch <mrdotjim@gmail.com>
 Eddy Lu <eddy.lu@mail.mcgill.ca>
@@ -170,3 +168,4 @@ ventuno <ernesto.mudu@gmail.com>
 Jessica Jordan <jayjayjpg@gmail.com>
 Ray Cohen <raycohen@gmail.com>
 Steve McClure <smcclure15@gmail.com>
+brandonocasey <brandonocasey@gmail.com>
