@@ -136,8 +136,20 @@ QUnit.test( "named function", function( assert ) {
 
 QUnit.test( "function args", function( assert ) {
 	// eslint-disable-next-line no-unused-vars
-	var f = function( foo, bar ) {};
+	var f = function f( foo, bar ) {};
 	assert.equal( QUnit.dump.parse( f ), "function f( a, b ){\n  [code]\n}" );
+} );
+
+QUnit.test( "unnamed function", function( assert ) {
+	// eslint-disable-next-line no-unused-vars
+	var f = function( foo, bar ) {};
+
+	// Modern browsers are very smart, they are usually able to
+	// come up with a name based on the assignment. To test the
+	// code path for where there is no name, we will force it.
+	delete f.name;
+
+	assert.equal( QUnit.dump.parse( f ), "function( a, b ){\n  [code]\n}" );
 } );
 
 QUnit.test( "multiline", function( assert ) {
