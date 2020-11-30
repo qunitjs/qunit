@@ -38,6 +38,33 @@
 }
 
 
+/** Fixed headers with scrollable tests */
+
+@supports (display: flex) or (display: -webkit-box) {
+	@media (min-height: 500px) {
+		#qunit {
+			position: fixed;
+			left: 0px;
+			right: 0px;
+			top: 0px;
+			bottom: 0px;
+			padding: 8px;
+			display: -webkit-box;
+			display: flex;
+			flex-direction: column;
+		}
+
+		#qunit-tests {
+			overflow: scroll;
+		}
+
+		#qunit-banner {
+			flex: 5px 0 0;
+		}
+	}
+}
+
+
 /** Header (excluding toolbar) */
 
 #qunit-header {
