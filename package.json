@@ -44,7 +44,7 @@
     "commander": "6.2.0",
     "js-reporters": "1.2.3",
     "node-watch": "0.7.0",
-    "tiny-glob": "0.2.6"
+    "tiny-glob": "0.2.8"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
