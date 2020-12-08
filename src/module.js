@@ -5,8 +5,6 @@ import SuiteReport from "./reports/suite";
 import { extend, objectType, generateHash } from "./core/utilities";
 import { globalSuite } from "./core";
 
-let focused = false;
-
 const moduleStack = [];
 
 function isParentModuleInQueue() {
@@ -100,27 +98,31 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	}
 }
 
+let focused = false;
+
 export default function module( name, options, executeNow ) {
 	if ( focused && !isParentModuleInQueue() ) {
+		config.currentModule.closed = true;
 		return;
 	}
 
 	processModule( name, options, executeNow );
 }
 
-module.only = function() {
+module.only = function( ...args ) {
 	if ( !focused ) {
 		config.modules.length = 0;
 		config.queue.length = 0;
 	}
 
-	processModule( ...arguments );
+	processModule( ...args );
 
 	focused = true;
 };
 
 module.skip = function( name, options, executeNow ) {
 	if ( focused ) {
+		config.currentModule.closed = true;
 		return;
 	}
 
@@ -129,6 +131,7 @@ module.skip = function( name, options, executeNow ) {
 
 module.todo = function( name, options, executeNow ) {
 	if ( focused ) {
+		config.currentModule.closed = true;
 		return;
 	}
 

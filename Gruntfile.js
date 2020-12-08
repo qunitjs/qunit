@@ -143,6 +143,7 @@ module.exports = function( grunt ) {
 						"test/regex-exclude-filter.html",
 						"test/string-filter.html",
 						"test/module-only.html",
+						"test/module-only-flat.html",
 						"test/module-skip.html",
 						"test/module-todo.html",
 

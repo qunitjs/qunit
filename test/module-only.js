@@ -20,7 +20,8 @@ QUnit.done( function() {
 
 	done = true;
 
-	QUnit.test( "Compare stats", function( assert ) {
+	// somewhat circular - have to use "only" here so that this also runs
+	QUnit.test.only( "Compare stats", function( assert ) {
 		assert.expect( 1 );
 
 		assert.deepEqual( tests, {

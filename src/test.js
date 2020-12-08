@@ -22,8 +22,6 @@ import ProcessingQueue from "./core/processing-queue";
 
 import TestReport from "./reports/test";
 
-let focused = false;
-
 export default function Test( settings ) {
 	this.expected = null;
 	this.assertions = [];
@@ -685,9 +683,11 @@ function checkPollution() {
 	}
 }
 
+let focused = false;
+
 // Will be exposed as QUnit.test
 export function test( testName, callback ) {
-	if ( focused ) {
+	if ( focused || config.currentModule.closed ) {
 		return;
 	}
 
@@ -701,7 +701,7 @@ export function test( testName, callback ) {
 
 extend( test, {
 	todo: function todo( testName, callback ) {
-		if ( focused ) {
+		if ( focused || config.currentModule.closed ) {
 			return;
 		}
 
@@ -714,7 +714,7 @@ extend( test, {
 		newTest.queue();
 	},
 	skip: function skip( testName ) {
-		if ( focused ) {
+		if ( focused || config.currentModule.closed ) {
 			return;
 		}
 
