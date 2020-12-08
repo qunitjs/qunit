@@ -78,20 +78,23 @@ extend( QUnit, {
 				"QUnit.config.autostart was true" );
 		}
 
-		if ( config.pageLoaded ) {
-			scheduleBegin();
+		if ( !config.pageLoaded ) {
+
+			// The page isn't completely loaded yet, so we set autostart and then
+			// load if we're in Node or wait for the browser's load event.
+			config.autostart = true;
+
+			// Starts from Node even if .load was not previously called. We still return
+			// early otherwise we'll wind up "beginning" twice.
+			if ( !document ) {
+				QUnit.load();
+			}
+
 			return;
 		}
 
-		// The page isn't completely loaded yet, so we set autostart and then
-		// load if we're in Node or wait for the browser's load event.
-		config.autostart = true;
+		scheduleBegin();
 
-		// Starts from Node even if .load was not previously called. We still return
-		// early otherwise we'll wind up "beginning" twice.
-		if ( !document ) {
-			QUnit.load();
-		}
 	},
 
 	extend: function( ...args ) {
@@ -168,7 +171,7 @@ export function begin() {
 
 	// Avoid unnecessary information by not logging modules' test environments
 	const l = config.modules.length;
-	var modulesLog = [];
+	const modulesLog = [];
 	for ( let i = 0; i < l; i++ ) {
 		modulesLog.push( {
 			name: config.modules[ i ].name,
