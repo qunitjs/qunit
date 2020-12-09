@@ -142,11 +142,7 @@ module.exports = function( grunt ) {
 						"test/regex-exclude-filter.html",
 						"test/string-filter.html",
 						"test/module-skip.html",
-						"test/module-todo.html",
-
-						// ensure this is last - it has the potential to drool
-						// and omit subsequent tests during coverage runs
-						"test/sandboxed-iframe.html"
+						"test/module-todo.html"
 					].map( file => `http://localhost:${connectPort}/${file}` )
 				}
 			}
@@ -172,6 +168,10 @@ module.exports = function( grunt ) {
 				"test/main/dump.js",
 				"test/node/storage-1.js",
 				"test/node/storage-2.js",
+
+				"test/cli/fixtures/only/test.js",
+				"test/cli/fixtures/only/module.js",
+				"test/cli/fixtures/only/module-flat.js",
 
 				// FIXME: These tests use an ugly hack that re-opens
 				// an already finished test run. This only works reliably
