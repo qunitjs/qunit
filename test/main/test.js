@@ -89,7 +89,10 @@ QUnit.module( "test", function() {
 		QUnit.test( "automatically reset", function( assert ) {
 			assert.fixtureEquals( {
 				tagName: "div",
-				attributes: { id: "qunit-fixture" },
+				attributes: {
+					id: "qunit-fixture",
+					role: "region"
+				},
 				content: originalValue.innerHTML
 			} );
 			assert.equal( values.length, 5, "proper sequence" );
@@ -101,7 +104,10 @@ QUnit.module( "test", function() {
 		QUnit.test( "automatically reset after attribute value mutation", function( assert ) {
 			assert.fixtureEquals( {
 				tagName: "div",
-				attributes: { id: "qunit-fixture" },
+				attributes: {
+					id: "qunit-fixture",
+					role: "region"
+				},
 				content: originalValue.innerHTML
 			} );
 			assert.equal( values.length, 4, "proper sequence" );

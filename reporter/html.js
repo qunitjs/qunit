@@ -599,7 +599,7 @@ export function escapeText( s ) {
 	}
 
 	function appendInterface() {
-		var qunit = id( "qunit" );
+		const qunit = id( "qunit" );
 
 		// For compat with QUnit 1.2, and to support fully custom theme HTML,
 		// we will use any existing elements if no id="qunit" element exists.
@@ -611,12 +611,14 @@ export function escapeText( s ) {
 		// having the HTML reporter actively render anything.
 		if ( qunit ) {
 
+			qunit.setAttribute( "role", "main" );
+
 			// Since QUnit 1.3, these are created automatically if the page
 			// contains id="qunit".
 			qunit.innerHTML =
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-			"<h2 id='qunit-banner'></h2>" +
-			"<div id='qunit-testrunner-toolbar'></div>" +
+			"<div id='qunit-banner'></div>" +
+			"<div id='qunit-testrunner-toolbar' role='navigation'></div>" +
 			appendFilteredTest() +
 			"<h2 id='qunit-userAgent'></h2>" +
 			"<ol id='qunit-tests'></ol>";

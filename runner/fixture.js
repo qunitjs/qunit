@@ -20,6 +20,7 @@ import { window, document } from "../src/globals";
 
 		var fixture = document.getElementById( "qunit-fixture" );
 		if ( fixture ) {
+			fixture.setAttribute( "role", "region" );
 			config.fixture = fixture.cloneNode( true );
 		}
 	}
