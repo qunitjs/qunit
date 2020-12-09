@@ -4,6 +4,15 @@ const expectedOutput = require( "./fixtures/expected/tap-outputs" );
 const execute = require( "./helpers/execute" );
 const semver = require( "semver" );
 
+QUnit.assert.matches = function( actual, expected, message ) {
+	this.pushResult( {
+		result: expected.test( actual ),
+		actual,
+		expected: expected.toString(),
+		message
+	} );
+};
+
 QUnit.module( "CLI Main", function() {
 	QUnit.test( "defaults to running tests in 'test' directory", async function( assert ) {
 		const command = "qunit";
@@ -293,6 +302,40 @@ QUnit.module( "CLI Main", function() {
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
+		} );
+	} );
+
+	QUnit.module( "only", function() {
+		QUnit.test( "test", async function( assert ) {
+
+			const command = "qunit only/test.js";
+			const execution = await execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
+		} );
+
+		QUnit.test( "nested modules", async function( assert ) {
+
+			const command = "qunit only/module.js";
+			const execution = await execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.matches( execution.stdout, re );
+		} );
+
+		QUnit.test( "flat modules", async function( assert ) {
+
+			const command = "qunit only/module-flat.js";
+			const execution = await execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			const re = new RegExp( expectedOutput[ command ] );
+			assert.matches( execution.stdout, re );
 		} );
 	} );
 } );

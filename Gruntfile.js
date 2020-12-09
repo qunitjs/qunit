@@ -135,15 +135,12 @@ module.exports = function( grunt ) {
 						"test/moduleId.html",
 						"test/onerror/inside-test.html",
 						"test/onerror/outside-test.html",
-						"test/only.html",
 						"test/seed.html",
 						"test/overload.html",
 						"test/preconfigured.html",
 						"test/regex-filter.html",
 						"test/regex-exclude-filter.html",
 						"test/string-filter.html",
-						"test/module-only.html",
-						"test/module-only-flat.html",
 						"test/module-skip.html",
 						"test/module-todo.html",
 
@@ -171,7 +168,6 @@ module.exports = function( grunt ) {
 				"test/events-in-test.js",
 				"test/onerror/inside-test.js",
 				"test/onerror/outside-test.js",
-				"test/only.js",
 				"test/setTimeout.js",
 				"test/main/dump.js",
 				"test/node/storage-1.js",
@@ -188,7 +184,6 @@ module.exports = function( grunt ) {
 				//
 				// Ref https://github.com/qunitjs/qunit/issues/1511
 				//
-				// "test/module-only.js",
 				// "test/module-skip.js",
 				// "test/module-todo.js",
 				"test/es2018/async-functions.js",
