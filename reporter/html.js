@@ -617,7 +617,7 @@ export function escapeText( s ) {
 			// contains id="qunit".
 			qunit.innerHTML =
 			"<h1 id='qunit-header'>" + escapeText( document.title ) + "</h1>" +
-			"<div id='qunit-banner'></div>" +
+			"<h2 id='qunit-banner'></h2>" +
 			"<div id='qunit-testrunner-toolbar' role='navigation'></div>" +
 			appendFilteredTest() +
 			"<h2 id='qunit-userAgent'></h2>" +
