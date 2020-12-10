@@ -599,7 +599,7 @@ export function escapeText( s ) {
 	}
 
 	function appendInterface() {
-		const qunit = id( "qunit" );
+		var qunit = id( "qunit" );
 
 		// For compat with QUnit 1.2, and to support fully custom theme HTML,
 		// we will use any existing elements if no id="qunit" element exists.
