@@ -142,7 +142,11 @@ module.exports = function( grunt ) {
 						"test/regex-exclude-filter.html",
 						"test/string-filter.html",
 						"test/module-skip.html",
-						"test/module-todo.html"
+						"test/module-todo.html",
+
+						// ensure this is last - it has the potential to drool
+						// and omit subsequent tests during coverage runs
+						"test/sandboxed-iframe.html"
 					].map( file => `http://localhost:${connectPort}/${file}` )
 				}
 			}
