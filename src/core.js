@@ -38,11 +38,20 @@ QUnit.isLocal = ( window && window.location && window.location.protocol === "fil
 QUnit.version = "@VERSION";
 
 extend( QUnit, {
+	config,
+
+	dump,
+	equiv,
+	is,
+	objectType,
 	on,
+	onError,
+	onUnhandledRejection,
+	pushFailure,
 
+	assert: Assert.prototype,
 	module,
-
-	test: test,
+	test,
 
 	// alias other test flavors for easy access
 	todo: test.todo,
@@ -50,44 +59,43 @@ extend( QUnit, {
 	only: test.only,
 
 	start: function( count ) {
-		var globalStartAlreadyCalled = globalStartCalled;
 
-		if ( !config.current ) {
-			globalStartCalled = true;
-
-			if ( runStarted ) {
-				throw new Error( "Called start() while test already started running" );
-			} else if ( globalStartAlreadyCalled || count > 1 ) {
-				throw new Error( "Called start() outside of a test context too many times" );
-			} else if ( config.autostart ) {
-				throw new Error( "Called start() outside of a test context when " +
-					"QUnit.config.autostart was true" );
-			} else if ( !config.pageLoaded ) {
-
-				// The page isn't completely loaded yet, so we set autostart and then
-				// load if we're in Node or wait for the browser's load event.
-				config.autostart = true;
-
-				// Starts from Node even if .load was not previously called. We still return
-				// early otherwise we'll wind up "beginning" twice.
-				if ( !document ) {
-					QUnit.load();
-				}
-
-				return;
-			}
-		} else {
+		if ( config.current ) {
 			throw new Error( "QUnit.start cannot be called inside a test context." );
 		}
 
+		var globalStartAlreadyCalled = globalStartCalled;
+		globalStartCalled = true;
+
+		if ( runStarted ) {
+			throw new Error( "Called start() while test already started running" );
+		}
+		if ( globalStartAlreadyCalled || count > 1 ) {
+			throw new Error( "Called start() outside of a test context too many times" );
+		}
+		if ( config.autostart ) {
+			throw new Error( "Called start() outside of a test context when " +
+				"QUnit.config.autostart was true" );
+		}
+
+		if ( !config.pageLoaded ) {
+
+			// The page isn't completely loaded yet, so we set autostart and then
+			// load if we're in Node or wait for the browser's load event.
+			config.autostart = true;
+
+			// Starts from Node even if .load was not previously called. We still return
+			// early otherwise we'll wind up "beginning" twice.
+			if ( !document ) {
+				QUnit.load();
+			}
+
+			return;
+		}
+
 		scheduleBegin();
+
 	},
-
-	config: config,
-
-	is: is,
-
-	objectType: objectType,
 
 	extend: function( ...args ) {
 		Logger.warn( "QUnit.extend is deprecated and will be removed in QUnit 3.0." +
@@ -121,17 +129,8 @@ extend( QUnit, {
 	stack: function( offset ) {
 		offset = ( offset || 0 ) + 2;
 		return sourceFromStacktrace( offset );
-	},
-
-	onError,
-
-	onUnhandledRejection
+	}
 } );
-
-QUnit.pushFailure = pushFailure;
-QUnit.assert = Assert.prototype;
-QUnit.equiv = equiv;
-QUnit.dump = dump;
 
 registerLoggingCallbacks( QUnit );
 
@@ -155,37 +154,37 @@ function unblockAndAdvanceQueue() {
 }
 
 export function begin() {
-	var i, l,
-		modulesLog = [];
 
-	// If the test run hasn't officially begun yet
-	if ( !config.started ) {
-
-		// Record the time of the test run's beginning
-		config.started = now();
-
-		// Delete the loose unnamed module if unused.
-		if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
-			config.modules.shift();
-		}
-
-		// Avoid unnecessary information by not logging modules' test environments
-		for ( i = 0, l = config.modules.length; i < l; i++ ) {
-			modulesLog.push( {
-				name: config.modules[ i ].name,
-				tests: config.modules[ i ].tests
-			} );
-		}
-
-		// The test run is officially beginning now
-		emit( "runStart", globalSuite.start( true ) );
-		runLoggingCallbacks( "begin", {
-			totalTests: Test.count,
-			modules: modulesLog
-		} ).then( unblockAndAdvanceQueue );
-	} else {
+	if ( config.started ) {
 		unblockAndAdvanceQueue();
+		return;
 	}
+
+	// The test run hasn't officially begun yet
+	// Record the time of the test run's beginning
+	config.started = now();
+
+	// Delete the loose unnamed module if unused.
+	if ( config.modules[ 0 ].name === "" && config.modules[ 0 ].tests.length === 0 ) {
+		config.modules.shift();
+	}
+
+	// Avoid unnecessary information by not logging modules' test environments
+	const l = config.modules.length;
+	const modulesLog = [];
+	for ( let i = 0; i < l; i++ ) {
+		modulesLog.push( {
+			name: config.modules[ i ].name,
+			tests: config.modules[ i ].tests
+		} );
+	}
+
+	// The test run is officially beginning now
+	emit( "runStart", globalSuite.start( true ) );
+	runLoggingCallbacks( "begin", {
+		totalTests: Test.count,
+		modules: modulesLog
+	} ).then( unblockAndAdvanceQueue );
 }
 
 exportQUnit( QUnit );
