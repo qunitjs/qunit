@@ -40,11 +40,10 @@ export const performance = {
 
 // Returns a new Array with the elements that are in a but not in b
 export function diff( a, b ) {
-	var i, j,
-		result = a.slice();
+	const result = a.slice();
 
-	for ( i = 0; i < result.length; i++ ) {
-		for ( j = 0; j < b.length; j++ ) {
+	for ( let i = 0; i < result.length; i++ ) {
+		for ( let j = 0; j < b.length; j++ ) {
 			if ( result[ i ] === b[ j ] ) {
 				result.splice( i, 1 );
 				i--;
@@ -75,11 +74,10 @@ export function inArray( elem, array ) {
  * @return {Object} New object with only the own properties (recursively).
  */
 export function objectValues( obj ) {
-	var key, val,
-		vals = is( "array", obj ) ? [] : {};
-	for ( key in obj ) {
+	const vals = is( "array", obj ) ? [] : {};
+	for ( const key in obj ) {
 		if ( hasOwn.call( obj, key ) ) {
-			val = obj[ key ];
+			const val = obj[ key ];
 			vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
 		}
 	}
@@ -87,7 +85,7 @@ export function objectValues( obj ) {
 }
 
 export function extend( a, b, undefOnly ) {
-	for ( var prop in b ) {
+	for ( const prop in b ) {
 		if ( hasOwn.call( b, prop ) ) {
 			if ( b[ prop ] === undefined ) {
 				delete a[ prop ];
@@ -110,8 +108,8 @@ export function objectType( obj ) {
 		return "null";
 	}
 
-	var match = toString.call( obj ).match( /^\[object\s(.*)\]$/ ),
-		type = match && match[ 1 ];
+	const match = toString.call( obj ).match( /^\[object\s(.*)\]$/ );
+	const type = match && match[ 1 ];
 
 	switch ( type ) {
 	case "Number":

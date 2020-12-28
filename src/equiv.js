@@ -7,9 +7,9 @@ export default ( function() {
 	// Value pairs queued for comparison. Used for breadth-first processing order, recursion
 	// detection and avoiding repeated comparison (see below for details).
 	// Elements are { a: val, b: val }.
-	var pairs = [];
+	let pairs = [];
 
-	var getProto = Object.getPrototypeOf || function( obj ) {
+	const getProto = Object.getPrototypeOf || function( obj ) {
 		return obj.__proto__;
 	};
 
@@ -31,8 +31,8 @@ export default ( function() {
 	}
 
 	function compareConstructors( a, b ) {
-		var protoA = getProto( a );
-		var protoB = getProto( b );
+		let protoA = getProto( a );
+		let protoB = getProto( b );
 
 		// Comparing constructors is more strict than using `instanceof`
 		if ( a.constructor === b.constructor ) {
@@ -88,7 +88,7 @@ export default ( function() {
 		return true;
 	}
 
-	var callbacks = {
+	const callbacks = {
 		"string": useStrictEquality,
 		"boolean": useStrictEquality,
 		"number": useStrictEquality,
@@ -114,9 +114,8 @@ export default ( function() {
 		},
 
 		"array": function( a, b ) {
-			var i, len;
 
-			len = a.length;
+			const len = a.length;
 			if ( len !== b.length ) {
 
 				// Safe and faster
@@ -124,7 +123,7 @@ export default ( function() {
 			}
 
 
-			for ( i = 0; i < len; i++ ) {
+			for ( let i = 0; i < len; i++ ) {
 
 				// Compare non-containers; queue non-reference-equal containers
 				if ( !breadthFirstCompareChild( a[ i ], b[ i ] ) ) {
@@ -140,8 +139,6 @@ export default ( function() {
 		// a = new Set( [ {}, [], [] ] );
 		// b = new Set( [ {}, {}, [] ] );
 		"set": function( a, b ) {
-			var innerEq,
-				outerEq = true;
 
 			if ( a.size !== b.size ) {
 
@@ -151,6 +148,8 @@ export default ( function() {
 				// make them non-equivalent.
 				return false;
 			}
+
+			let outerEq = true;
 
 			a.forEach( function( aVal ) {
 
@@ -162,10 +161,9 @@ export default ( function() {
 					return;
 				}
 
-				innerEq = false;
+				let innerEq = false;
 
 				b.forEach( function( bVal ) {
-					var parentPairs;
 
 					// Likewise, short-circuit if the result is already known
 					if ( innerEq ) {
@@ -174,7 +172,7 @@ export default ( function() {
 
 					// Swap out the global pairs list, as the nested call to
 					// innerEquiv will clobber its contents
-					parentPairs = pairs;
+					const parentPairs = pairs;
 					if ( innerEquiv( bVal, aVal ) ) {
 						innerEq = true;
 					}
@@ -198,8 +196,6 @@ export default ( function() {
 		// a = new Map( [ [ {}, 1 ], [ {}, 1 ], [ [], 1 ] ] );
 		// b = new Map( [ [ {}, 1 ], [ [], 1 ], [ [], 1 ] ] );
 		"map": function( a, b ) {
-			var innerEq,
-				outerEq = true;
 
 			if ( a.size !== b.size ) {
 
@@ -209,6 +205,8 @@ export default ( function() {
 				// can make them non-equivalent.
 				return false;
 			}
+
+			let outerEq = true;
 
 			a.forEach( function( aVal, aKey ) {
 
@@ -220,10 +218,9 @@ export default ( function() {
 					return;
 				}
 
-				innerEq = false;
+				let innerEq = false;
 
 				b.forEach( function( bVal, bKey ) {
-					var parentPairs;
 
 					// Likewise, short-circuit if the result is already known
 					if ( innerEq ) {
@@ -232,7 +229,7 @@ export default ( function() {
 
 					// Swap out the global pairs list, as the nested call to
 					// innerEquiv will clobber its contents
-					parentPairs = pairs;
+					const parentPairs = pairs;
 					if ( innerEquiv( [ bVal, bKey ], [ aVal, aKey ] ) ) {
 						innerEq = true;
 					}
@@ -250,16 +247,16 @@ export default ( function() {
 		},
 
 		"object": function( a, b ) {
-			var i,
-				aProperties = [],
-				bProperties = [];
 
 			if ( compareConstructors( a, b ) === false ) {
 				return false;
 			}
 
+			const aProperties = [];
+			const bProperties = [];
+
 			// Be strict: don't ensure hasOwnProperty and go deep
-			for ( i in a ) {
+			for ( const i in a ) {
 
 				// Collect a's properties
 				aProperties.push( i );
@@ -281,7 +278,7 @@ export default ( function() {
 				}
 			}
 
-			for ( i in b ) {
+			for ( const i in b ) {
 
 				// Collect b's properties
 				bProperties.push( i );
@@ -293,7 +290,7 @@ export default ( function() {
 	};
 
 	function typeEquiv( a, b ) {
-		var type = objectType( a );
+		const type = objectType( a );
 
 		// Callbacks for containers will append to the pairs queue to achieve breadth-first
 		// search order. The pairs queue is also used to avoid reprocessing any pair of
@@ -307,7 +304,6 @@ export default ( function() {
 	}
 
 	function innerEquiv( a, b ) {
-		var i, pair;
 
 		// We're done when there's nothing more to compare
 		if ( arguments.length < 2 ) {
@@ -317,8 +313,8 @@ export default ( function() {
 		// Clear the global pair queue and add the top-level values being compared
 		pairs = [ { a: a, b: b } ];
 
-		for ( i = 0; i < pairs.length; i++ ) {
-			pair = pairs[ i ];
+		for ( let i = 0; i < pairs.length; i++ ) {
+			const pair = pairs[ i ];
 
 			// Perform type-specific comparison on any pairs that are not strictly
 			// equal. For container types, that comparison will postpone comparison

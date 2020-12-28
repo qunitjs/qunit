@@ -28,8 +28,8 @@ export const globalSuite = new SuiteReport();
 // it since each module has a suiteReport associated with it.
 config.currentModule.suiteReport = globalSuite;
 
-var globalStartCalled = false;
-var runStarted = false;
+let globalStartCalled = false;
+let runStarted = false;
 
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = ( window && window.location && window.location.protocol === "file:" );
@@ -64,7 +64,7 @@ extend( QUnit, {
 			throw new Error( "QUnit.start cannot be called inside a test context." );
 		}
 
-		var globalStartAlreadyCalled = globalStartCalled;
+		const globalStartAlreadyCalled = globalStartCalled;
 		globalStartCalled = true;
 
 		if ( runStarted ) {

@@ -62,7 +62,7 @@ const config = {
 };
 
 // take a predefined QUnit.config and extend the defaults
-var globalConfig = window && window.QUnit && window.QUnit.config;
+const globalConfig = window && window.QUnit && window.QUnit.config;
 
 // only extend the global config if there is no QUnit overload
 if ( window && window.QUnit && !window.QUnit.version ) {
