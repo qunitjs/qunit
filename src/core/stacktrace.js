@@ -1,22 +1,20 @@
 // Doesn't support IE9, it will return undefined on these browsers
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-var fileName = ( sourceFromStacktrace( 0 ) || "" )
+const fileName = ( sourceFromStacktrace( 0 ) || "" )
 	.replace( /(:\d+)+\)?/, "" )
 	.replace( /.+\//, "" );
 
 export function extractStacktrace( e, offset ) {
 	offset = offset === undefined ? 4 : offset;
 
-	var stack, include, i;
-
 	if ( e && e.stack ) {
-		stack = e.stack.split( "\n" );
+		const stack = e.stack.split( "\n" );
 		if ( /^error$/i.test( stack[ 0 ] ) ) {
 			stack.shift();
 		}
 		if ( fileName ) {
-			include = [];
-			for ( i = offset; i < stack.length; i++ ) {
+			const include = [];
+			for ( let i = offset; i < stack.length; i++ ) {
 				if ( stack[ i ].indexOf( fileName ) !== -1 ) {
 					break;
 				}
@@ -31,7 +29,7 @@ export function extractStacktrace( e, offset ) {
 }
 
 export function sourceFromStacktrace( offset ) {
-	var error = new Error();
+	let error = new Error();
 
 	// Support: Safari <=7 only, IE <=10 - 11 only
 	// Not all browsers generate the `stack` property for `new Error()`, see also #636

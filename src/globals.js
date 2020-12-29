@@ -10,7 +10,7 @@ export const document = window && window.document;
 export const navigator = window && window.navigator;
 
 export const localSessionStorage = ( function() {
-	var x = "qunit-test-string";
+	const x = "qunit-test-string";
 	try {
 		global.sessionStorage.setItem( x, x );
 		global.sessionStorage.removeItem( x );
