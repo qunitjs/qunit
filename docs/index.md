@@ -1,6 +1,8 @@
 ---
 layout: default
 excerpt: API reference documentation for QUnit.
+redirect_from:
+  - "/category/all/"
 ---
 
 <p>QUnit is a powerful, easy-to-use JavaScript unit test suite.
