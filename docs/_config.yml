@@ -14,6 +14,7 @@ title: QUnit API Docs
 excerpt: "API reference documentation for QUnit."
 url: "https://api.qunitjs.com"
 baseurl: ""
+permalink: :title/
 # This a custom theme so the native Jekyll theme system is ignored.
 # But, we use github-pages which has a default theme of 'primer'.
 # This is a problem because, even if we ignore its output file,
@@ -30,12 +31,14 @@ plugins:
   - jekyll-redirect-from
 
 # Theme
-remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@c28b0fe
+remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@5479c6b
 amethyst:
+  edituri_base: https://github.com/qunitjs/qunit/blob/master/docs/
   header_logo:
     src: /img/logo-with-colored-text.svg
     width: 250
     height: 72
+  mastodon: https://mastodon.technology/@qunitjs
   twitter: qunitjs
   github: qunitjs
   gitter: qunitjs/qunit
@@ -78,6 +81,3 @@ exclude:
   - README.md
   - CONTRIBUTING.md
   - CNAME
-
-# Output
-permalink: :title/

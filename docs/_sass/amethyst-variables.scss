@@ -1,14 +1,20 @@
 // Amethyst theme variables for QUnit
 // https://brand.jquery.org/colors/#qunit-purple
 
-// Primary purple
-$color-vibrant: #9c3493;
+// Primary color
+//
+// Usage: link text color, primary button background.
+$color-vibrant: #9c3493; // QUnit Primary Purple (Hue 300)
 
-// Secondary purple
-$color-accent: #390F39;
+// Dark shade
+//
+// Usage: navigation background, heading text color
+$color-accent: #390F39; // QUnit Secondary Purple
 
-// Medium purple, based on 2015 qunitjs.com design
-$color-medium: #6a2166;
-
-// Very light purple (matches hue 300 of primary)
-$color-bright: #fbdbfb;
+// Bright color
+//
+// Very close to white, generally within 20 hue points of $color-vibrant,
+// and within the following range: `hsl(???, 80-84%, 72-92%)`
+//
+// Usage: navigation link color, search result highlight background
+$color-bright: hsl(300, 80%, 92.2%);
