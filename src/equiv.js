@@ -1,27 +1,20 @@
-import { objectType, slice } from './core/utilities';
+import { objectType } from './core/utilities';
 import { StringSet } from './globals';
 
-const CONTAINER_TYPES = new StringSet(['object', 'array', 'map', 'set']);
+const BOXABLE_TYPES = new StringSet(['boolean', 'number', 'string']);
 
-// Value pairs queued for comparison. Used for breadth-first processing order, recursion
-// detection and avoiding repeated comparison (see below for details).
+// Memory for previously seen containers (object, array, map, set).
+// Used for recursion detection, and to avoid repeated comparison.
+//
 // Elements are { a: val, b: val }.
-let pairs = [];
+let memory = [];
 
 function useStrictEquality (a, b) {
-  // This only gets called if a and b are not strict equal, and is used to compare on
-  // the primitive values inside object wrappers. For example:
-  // `var i = 1;`
-  // `var j = new Number(1);`
-  // Neither a nor b can be null, as a !== b and they have the same type.
-  if (typeof a === 'object') {
-    a = a.valueOf();
-  }
-  if (typeof b === 'object') {
-    b = b.valueOf();
-  }
-
   return a === b;
+}
+
+function useObjectValueEquality (a, b) {
+  return a === b || a.valueOf() === b.valueOf();
 }
 
 function compareConstructors (a, b) {
@@ -45,29 +38,22 @@ function getRegExpFlags (regexp) {
   return 'flags' in regexp ? regexp.flags : regexp.toString().match(/[gimuy]*$/)[0];
 }
 
-function breadthFirstCompareChild (a, b) {
-  // If a is a container not reference-equal to b, postpone the comparison to the
-  // end of the pairs queue -- unless (a, b) has been seen before, in which case skip
-  // over the pair.
-  if (a === b) {
-    return true;
-  } else if (!CONTAINER_TYPES.has(objectType(a))) {
-    return typeEquiv(a, b);
-  } else if (pairs.every((pair) => pair.a !== a || pair.b !== b)) {
-    // Not yet started comparing this pair
-    pairs.push({ a, b });
-  }
-  return true;
-}
-
-const callbacks = {
-  string: useStrictEquality,
-  boolean: useStrictEquality,
-  number: useStrictEquality,
-  null: useStrictEquality,
+// Specialised comparisons after entryTypeCallbacks.object, based on `objectType()`
+const objTypeCallbacks = {
   undefined: useStrictEquality,
+  null: useStrictEquality,
+  // Handle boxed boolean
+  boolean: useObjectValueEquality,
+  number (a, b) {
+    // Handle NaN and boxed number
+    return a === b ||
+      a.valueOf() === b.valueOf() ||
+      (isNaN(a.valueOf()) && isNaN(b.valueOf()));
+  },
+  // Handle boxed string
+  string: useObjectValueEquality,
   symbol: useStrictEquality,
-  date: useStrictEquality,
+  date: useObjectValueEquality,
 
   nan () {
     return true;
@@ -80,10 +66,8 @@ const callbacks = {
       getRegExpFlags(a) === getRegExpFlags(b);
   },
 
-  // abort (identical references / instance methods were skipped earlier)
-  function () {
-    return false;
-  },
+  // identical reference only
+  function: useStrictEquality,
 
   array (a, b) {
     if (a.length !== b.length) {
@@ -92,8 +76,7 @@ const callbacks = {
     }
 
     for (let i = 0; i < a.length; i++) {
-      // Compare non-containers; queue non-reference-equal containers
-      if (!breadthFirstCompareChild(a[i], b[i])) {
+      if (!typeEquiv(a[i], b[i])) {
         return false;
       }
     }
@@ -133,15 +116,14 @@ const callbacks = {
           return;
         }
 
-        // Swap out the global pairs list, as the nested call to
-        // innerEquiv will clobber its contents
-        const parentPairs = pairs;
-        if (innerEquiv(bVal, aVal)) {
+        // Swap out the global memory, as nested typeEquiv() would clobber it
+        const originalMemory = memory;
+        memory = [];
+        if (typeEquiv(bVal, aVal)) {
           innerEq = true;
         }
-
-        // Replace the global pairs list
-        pairs = parentPairs;
+        // Restore
+        memory = originalMemory;
       });
 
       if (!innerEq) {
@@ -186,15 +168,15 @@ const callbacks = {
           return;
         }
 
-        // Swap out the global pairs list, as the nested call to
-        // innerEquiv will clobber its contents
-        const parentPairs = pairs;
-        if (innerEquiv([bVal, bKey], [aVal, aKey])) {
+        // Swap out the global memory, as nested typeEquiv() would clobber it
+        const originalMemory = memory;
+        memory = [];
+        // TODO: Optimization, call objTypeCallbacks.array directly
+        if (typeEquiv([bVal, bKey], [aVal, aKey])) {
           innerEq = true;
         }
-
-        // Replace the global pairs list
-        pairs = parentPairs;
+        // Restore
+        memory = originalMemory;
       });
 
       if (!innerEq) {
@@ -203,9 +185,38 @@ const callbacks = {
     });
 
     return outerEq;
-  },
+  }
+};
 
+// Entry points from typeEquiv, based on `typeof`
+const entryTypeCallbacks = {
+  undefined: useStrictEquality,
+  null: useStrictEquality,
+  boolean: useStrictEquality,
+  number (a, b) {
+    // Handle NaN
+    return a === b || (isNaN(a) && isNaN(b));
+  },
+  string: useStrictEquality,
+  symbol: useStrictEquality,
+
+  function: useStrictEquality,
   object (a, b) {
+    // Handle memory (skip recursion)
+    if (memory.some((pair) => pair.a === a && pair.b === b)) {
+      return true;
+    }
+    memory.push({ a, b });
+
+    const aObjType = objectType(a);
+    const bObjType = objectType(b);
+    if (aObjType !== 'object' || bObjType !== 'object') {
+      // Handle literal `null`
+      // Handle: Array, Map/Set, Date, Regxp/Function, boxed primitives
+      return aObjType === bObjType && objTypeCallbacks[aObjType](a, b);
+    }
+
+    // NOTE: Literal null must not make it here as it would throw
     if (compareConstructors(a, b) === false) {
       return false;
     }
@@ -213,7 +224,7 @@ const callbacks = {
     const aProperties = [];
     const bProperties = [];
 
-    // Be strict: don't ensure hasOwnProperty and go deep
+    // Be strict and go deep, no filtering with hasOwnProperty.
     for (const i in a) {
       // Collect a's properties
       aProperties.push(i);
@@ -228,9 +239,7 @@ const callbacks = {
       ) {
         continue;
       }
-
-      // Compare non-containers; queue non-reference-equal containers
-      if (!breadthFirstCompareChild(a[i], b[i])) {
+      if (!typeEquiv(a[i], b[i])) {
         return false;
       }
     }
@@ -240,50 +249,33 @@ const callbacks = {
       bProperties.push(i);
     }
 
-    return callbacks.array(aProperties.sort(), bProperties.sort());
+    return objTypeCallbacks.array(aProperties.sort(), bProperties.sort());
   }
 };
 
 function typeEquiv (a, b) {
-  const type = objectType(a);
-
-  // Callbacks for containers will append to the pairs queue to achieve breadth-first
-  // search order. The pairs queue is also used to avoid reprocessing any pair of
-  // containers that are reference-equal to a previously visited pair (a special case
-  // this being recursion detection).
-  //
-  // Because of this approach, once typeEquiv returns a false value, it should not be
-  // called again without clearing the pair queue else it may wrongly report a visited
-  // pair as being equivalent.
-  return objectType(b) === type && callbacks[type](a, b);
-}
-
-function innerEquiv (a, b) {
-  // We're done when there's nothing more to compare
-  if (arguments.length < 2) {
+  // Optimization: Only perform type-specific comparison when pairs are not strictly equal.
+  if (a === b) {
     return true;
   }
 
-  // Clear the global pair queue and add the top-level values being compared
-  pairs = [{ a, b }];
-
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i];
-
-    // Perform type-specific comparison on any pairs that are not strictly
-    // equal. For container types, that comparison will postpone comparison
-    // of any sub-container pair to the end of the pair queue. This gives
-    // breadth-first search order. It also avoids the reprocessing of
-    // reference-equal siblings, cousins etc, which can have a significant speed
-    // impact when comparing a container of small objects each of which has a
-    // reference to the same (singleton) large object.
-    if (pair.a !== pair.b && !typeEquiv(pair.a, pair.b)) {
-      return false;
-    }
+  const aType = typeof a;
+  const bType = typeof b;
+  if (aType !== bType) {
+    // Support comparing primitive to boxed primitives
+    // Try again after possibly unwrapping one
+    return (aType === 'object' && BOXABLE_TYPES.has(objectType(a)) ? a.valueOf() : a) ===
+      (bType === 'object' && BOXABLE_TYPES.has(objectType(b)) ? b.valueOf() : b);
   }
 
-  // ...across all consecutive argument pairs
-  return arguments.length === 2 || innerEquiv.apply(this, slice.call(arguments, 1));
+  return entryTypeCallbacks[aType](a, b);
+}
+
+function innerEquiv (a, b) {
+  const res = typeEquiv(a, b);
+  // Release any retained objects and reset recursion detection for next call
+  memory = [];
+  return res;
 }
 
 /**
@@ -292,10 +284,20 @@ function innerEquiv (a, b) {
  * @author Philippe Rathé <prathe@gmail.com>
  * @author David Chan <david@troi.org>
  */
-export default function equiv (...args) {
-  const result = innerEquiv(...args);
+export default function equiv (a, b) {
+  if (arguments.length === 2) {
+    return (a === b) || innerEquiv(a, b);
+  }
 
-  // Release any retained objects
-  pairs = [];
-  return result;
+  // Given 0 or 1 arguments, just return true (nothing to compare).
+  // Given (A,B,C,D) compare C,D then B,C then A,B.
+  let i = arguments.length - 1;
+  while (i > 0) {
+    if (!innerEquiv(arguments[i - 1], arguments[i])) {
+      return false;
+    }
+    i--;
+  }
+
+  return true;
 }
