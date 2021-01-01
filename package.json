@@ -100,8 +100,6 @@
     "include": [
       "bin/**",
       "dist/**",
-      "reporter/**",
-      "runner/**",
       "src/**"
     ],
     "reporter": [

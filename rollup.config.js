@@ -36,7 +36,10 @@ module.exports = {
 			// 1. Must not leak as global variable, since it's not full Map implementation.
 			// 2. Must be seen by fuzzysort as-is (e.g. not get renamed as normal
 			//    variables in an imported file would be).
-			return fs.readFileSync( __dirname + "/reporter/es6-map.js", "utf-8" ).toString().trim();
+			return fs.readFileSync(
+				__dirname + "/src/html-reporter/es6-map.js",
+				"utf-8"
+			).toString().trim();
 		},
 
 		globals: {

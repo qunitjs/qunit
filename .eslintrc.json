@@ -13,11 +13,11 @@
         "constructor-super": "error",
         "indent": ["error", "tab", {
                 "CallExpression": {
-                        "arguments": 1
+                    "arguments": 1
                 },
-		"MemberExpression": 1,
-		"SwitchCase": 0,
-		"outerIIFEBody": 1
+                "MemberExpression": 1,
+                "SwitchCase": 0,
+                "outerIIFEBody": 1
         }],
         "no-console": "off",
         "no-const-assign": "error",
@@ -33,6 +33,7 @@
         "wrap-iife": ["error", "any"]
     },
     "ignorePatterns": [
+        "__codeorigin/**",
         "coverage/**",
         "docs/_site/**",
         "dist/**",
@@ -60,6 +61,16 @@
             "extends": ["plugin:node/recommended"],
             "rules": {
                 "no-process-exit": "off"
+            }
+        },
+        {
+            "files": [
+                "test/**/*.html"
+            ],
+            "extends": ["eslint:recommended", "jquery"],
+            "rules": {
+                "wrap-iife": ["error", "any"],
+                "indent": "off"
             }
         }
     ]

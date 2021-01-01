@@ -1,5 +1,5 @@
-import QUnit from "../src/core";
-import { window, document } from "../src/globals";
+import QUnit from "../core";
+import { window, document } from "../globals";
 
 ( function() {
 

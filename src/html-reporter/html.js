@@ -1,8 +1,8 @@
-import QUnit from "../src/core";
-import Test from "../src/test";
-import { extractStacktrace } from "../src/core/stacktrace";
-import { now, extend } from "../src/core/utilities";
-import { window, document, navigator, console } from "../src/globals";
+import QUnit from "../core";
+import Test from "../test";
+import { extractStacktrace } from "../core/stacktrace";
+import { now, extend } from "../core/utilities";
+import { window, document, navigator, console } from "../globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
 
