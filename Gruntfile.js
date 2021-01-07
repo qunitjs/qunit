@@ -60,19 +60,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		eslint: {
-			js: ".",
-			html: {
-				options: {
-					rules: {
-						indent: "off"
-					}
-				},
-				src: [
-
-					// Linting HTML files via eslint-plugin-html
-					"test/**/*.html"
-				]
-			}
+			all: "."
 		},
 		search: {
 			options: {
@@ -85,8 +73,7 @@ module.exports = function( grunt ) {
 				failOnMatch: true
 			},
 			xhtml: [
-				"src/**/*.js",
-				"reporter/**/*.js"
+				"src/**/*.js"
 			]
 		},
 		qunit: {
@@ -204,7 +191,7 @@ module.exports = function( grunt ) {
 				".eslintrc.json",
 				"*.js",
 				"build/*.js",
-				"{src,test,reporter}/**/*.js",
+				"{src,test}/**/*.js",
 				"src/qunit.css",
 				"test/*.{html,js}",
 				"test/**/*.html"

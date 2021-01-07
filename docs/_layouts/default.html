@@ -70,7 +70,7 @@ layout: page
             {%- assign warning = true -%}
         {%- endif -%}
 
-    <p class="version-details{% if warning %} version-details--warning{% endif %}">
+    <p class="version-details{% if warning %} note--warning{% endif %}">
         {%- capture lines -%}
             {%- if page.version_added %}
                 {% include version.html version=page.version_added label="version added" %}

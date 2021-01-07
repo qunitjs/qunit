@@ -4,12 +4,11 @@ import Promise from "../promise";
 
 // Register logging callbacks
 export function registerLoggingCallbacks( obj ) {
-	var i, l, key,
-		callbackNames = [ "begin", "done", "log", "testStart", "testDone",
-			"moduleStart", "moduleDone" ];
+	const callbackNames = [ "begin", "done", "log", "testStart", "testDone",
+		"moduleStart", "moduleDone" ];
 
 	function registerLoggingCallback( key ) {
-		var loggingCallback = function( callback ) {
+		const loggingCallback = function( callback ) {
 			if ( objectType( callback ) !== "function" ) {
 				throw new Error(
 					"QUnit logging methods require a callback function as their first parameters."
@@ -22,8 +21,8 @@ export function registerLoggingCallbacks( obj ) {
 		return loggingCallback;
 	}
 
-	for ( i = 0, l = callbackNames.length; i < l; i++ ) {
-		key = callbackNames[ i ];
+	for ( let i = 0, l = callbackNames.length; i < l; i++ ) {
+		const key = callbackNames[ i ];
 
 		// Initialize key collection of logging callback
 		if ( objectType( config.callbacks[ key ] ) === "undefined" ) {
@@ -35,7 +34,7 @@ export function registerLoggingCallbacks( obj ) {
 }
 
 export function runLoggingCallbacks( key, args ) {
-	var callbacks = config.callbacks[ key ];
+	const callbacks = config.callbacks[ key ];
 
 	// Handling 'log' callbacks separately. Unlike the other callbacks,
 	// the log callback is not controlled by the processing queue,

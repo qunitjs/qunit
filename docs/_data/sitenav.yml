@@ -3,6 +3,8 @@
   sub:
     - name: Getting Started
       href: https://qunitjs.com/intro/
+    - name: Command-line interface
+      href: https://qunitjs.com/cli/
     - name: Plugins
       href: https://qunitjs.com/plugins/
     - name: 2.x Upgrade Guide
@@ -21,4 +23,9 @@
     - name: Async control
       href: /async/
 - name: About
-  href: https://qunitjs.com/about/
+  href: /about/
+  sub:
+    - name: Who's using QUnit?
+      href: /projects/
+    - name: About QUnit
+      href: /about/

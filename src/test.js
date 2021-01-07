@@ -94,8 +94,8 @@ export default function Test( settings ) {
 Test.count = 0;
 
 function getNotStartedModules( startModule ) {
-	var module = startModule,
-		modules = [];
+	let module = startModule;
+	const modules = [];
 
 	while ( module && module.testsRun === 0 ) {
 		modules.push( module );
@@ -115,11 +115,11 @@ Test.prototype = {
 	},
 
 	before: function() {
-		var module = this.module,
-			notStartedModules = getNotStartedModules( module );
+		const module = this.module;
+		const notStartedModules = getNotStartedModules( module );
 
 		// ensure the callbacks are executed serially for each module
-		var callbackPromises = notStartedModules.reduce( ( promiseChain, startModule ) => {
+		const callbackPromises = notStartedModules.reduce( ( promiseChain, startModule ) => {
 			return promiseChain.then( () => {
 				startModule.stats = { all: 0, bad: 0, started: now() };
 				emit( "suiteStart", startModule.suiteReport.start( true ) );
@@ -151,7 +151,6 @@ Test.prototype = {
 	},
 
 	run: function() {
-		var promise;
 
 		config.current = this;
 
@@ -178,7 +177,7 @@ Test.prototype = {
 		}
 
 		function runTest( test ) {
-			promise = test.callback.call( test.testEnvironment, test.assert );
+			const promise = test.callback.call( test.testEnvironment, test.assert );
 			test.resolvePromise( promise );
 
 			// If the test has a "lock" on it, but the timeout is 0, then we push a
@@ -283,14 +282,13 @@ Test.prototype = {
 				"expect(0) to accept zero assertions.", this.stack );
 		}
 
-		var i,
-			module = this.module,
-			moduleName = module.name,
-			testName = this.testName,
-			skipped = !!this.skip,
-			todo = !!this.todo,
-			bad = 0,
-			storage = config.storage;
+		const module = this.module;
+		const moduleName = module.name;
+		const testName = this.testName;
+		const skipped = !!this.skip;
+		const todo = !!this.todo;
+		let bad = 0;
+		const storage = config.storage;
 
 		this.runtime = now() - this.started;
 
@@ -298,7 +296,7 @@ Test.prototype = {
 		config.stats.testCount += 1;
 		module.stats.all += this.assertions.length;
 
-		for ( i = 0; i < this.assertions.length; i++ ) {
+		for ( let i = 0; i < this.assertions.length; i++ ) {
 			if ( !this.assertions[ i ].result ) {
 				bad++;
 				config.stats.bad++;
@@ -448,9 +446,9 @@ Test.prototype = {
 
 	pushResult: function( resultInfo ) {
 		if ( this !== config.current ) {
-			var message = resultInfo && resultInfo.message || "";
-			var testName = this && this.testName || "";
-			var error = "Assertion occurred after test finished.\n" +
+			const message = resultInfo && resultInfo.message || "";
+			const testName = this && this.testName || "";
+			const error = "Assertion occurred after test finished.\n" +
 				"> Test: " + testName + "\n" +
 				"> Message: " + message + "\n";
 
@@ -458,25 +456,24 @@ Test.prototype = {
 		}
 
 		// Destructure of resultInfo = { result, actual, expected, message, negative }
-		var source,
-			details = {
-				module: this.module.name,
-				name: this.testName,
-				result: resultInfo.result,
-				message: resultInfo.message,
-				actual: resultInfo.actual,
-				testId: this.testId,
-				negative: resultInfo.negative || false,
-				runtime: now() - this.started,
-				todo: !!this.todo
-			};
+		const details = {
+			module: this.module.name,
+			name: this.testName,
+			result: resultInfo.result,
+			message: resultInfo.message,
+			actual: resultInfo.actual,
+			testId: this.testId,
+			negative: resultInfo.negative || false,
+			runtime: now() - this.started,
+			todo: !!this.todo
+		};
 
 		if ( hasOwn.call( resultInfo, "expected" ) ) {
 			details.expected = resultInfo.expected;
 		}
 
 		if ( !resultInfo.result ) {
-			source = resultInfo.source || sourceFromStacktrace();
+			const source = resultInfo.source || sourceFromStacktrace();
 
 			if ( source ) {
 				details.source = source;
@@ -527,12 +524,11 @@ Test.prototype = {
 	},
 
 	resolvePromise: function( promise, phase ) {
-		var then, resume, message,
-			test = this;
 		if ( promise != null ) {
-			then = promise.then;
+			const test = this;
+			const then = promise.then;
 			if ( objectType( then ) === "function" ) {
-				resume = internalStop( test );
+				const resume = internalStop( test );
 				if ( config.notrycatch ) {
 					then.call( promise, function() { resume(); } );
 				} else {
@@ -540,7 +536,7 @@ Test.prototype = {
 						promise,
 						function() { resume(); },
 						function( error ) {
-							message = "Promise rejected " +
+							const message = "Promise rejected " +
 								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
 								" \"" + test.testName + "\": " +
 								( ( error && error.message ) || error );
@@ -559,13 +555,13 @@ Test.prototype = {
 	},
 
 	valid: function() {
-		var filter = config.filter,
-			regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter ),
-			module = config.module && config.module.toLowerCase(),
-			fullName = ( this.module.name + ": " + this.testName );
+		const filter = config.filter;
+		const regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec( filter );
+		const module = config.module && config.module.toLowerCase();
+		const fullName = ( this.module.name + ": " + this.testName );
 
 		function moduleChainNameMatch( testModule ) {
-			var testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
+			const testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
 			if ( testModuleName === module ) {
 				return true;
 			} else if ( testModule.parentModule ) {
@@ -611,8 +607,8 @@ Test.prototype = {
 	},
 
 	regexFilter: function( exclude, pattern, flags, fullName ) {
-		var regex = new RegExp( pattern, flags );
-		var match = regex.test( fullName );
+		const regex = new RegExp( pattern, flags );
+		const match = regex.test( fullName );
 
 		return match !== exclude;
 	},
@@ -621,7 +617,7 @@ Test.prototype = {
 		filter = filter.toLowerCase();
 		fullName = fullName.toLowerCase();
 
-		var include = filter.charAt( 0 ) !== "!";
+		const include = filter.charAt( 0 ) !== "!";
 		if ( !include ) {
 			filter = filter.slice( 1 );
 		}
@@ -643,7 +639,7 @@ export function pushFailure() {
 	}
 
 	// Gets current test obj
-	var currentTest = config.current;
+	const currentTest = config.current;
 
 	return currentTest.pushFailure.apply( currentTest, arguments );
 }
@@ -652,7 +648,7 @@ function saveGlobal() {
 	config.pollution = [];
 
 	if ( config.noglobals ) {
-		for ( var key in global ) {
+		for ( const key in global ) {
 			if ( hasOwn.call( global, key ) ) {
 
 				// In Opera sometimes DOM element ids show up here, ignore them
@@ -666,18 +662,16 @@ function saveGlobal() {
 }
 
 function checkPollution() {
-	var newGlobals,
-		deletedGlobals,
-		old = config.pollution;
+	const old = config.pollution;
 
 	saveGlobal();
 
-	newGlobals = diff( config.pollution, old );
+	const newGlobals = diff( config.pollution, old );
 	if ( newGlobals.length > 0 ) {
 		pushFailure( "Introduced global variable(s): " + newGlobals.join( ", " ) );
 	}
 
-	deletedGlobals = diff( old, config.pollution );
+	const deletedGlobals = diff( old, config.pollution );
 	if ( deletedGlobals.length > 0 ) {
 		pushFailure( "Deleted global variable(s): " + deletedGlobals.join( ", " ) );
 	}

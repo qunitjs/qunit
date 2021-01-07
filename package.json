@@ -43,7 +43,7 @@
   "dependencies": {
     "commander": "6.2.0",
     "js-reporters": "1.2.3",
-    "node-watch": "0.7.0",
+    "node-watch": "0.7.1",
     "tiny-glob": "0.2.8"
   },
   "devDependencies": {
@@ -100,8 +100,6 @@
     "include": [
       "bin/**",
       "dist/**",
-      "reporter/**",
-      "runner/**",
       "src/**"
     ],
     "reporter": [

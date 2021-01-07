@@ -1,4 +1,4 @@
-import QUnit from "../src/core";
+import QUnit from "../core";
 import { escapeText } from "./html";
 
 /*
