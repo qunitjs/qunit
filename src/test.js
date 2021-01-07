@@ -683,11 +683,11 @@ function checkPollution() {
 	}
 }
 
-let focused = false;
+let focused = false; // indicates that the "only" filter was used
 
 // Will be exposed as QUnit.test
 export function test( testName, callback ) {
-	if ( focused || config.currentModule.closed ) {
+	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
 
@@ -701,7 +701,7 @@ export function test( testName, callback ) {
 
 extend( test, {
 	todo: function todo( testName, callback ) {
-		if ( focused || config.currentModule.closed ) {
+		if ( focused || config.currentModule.ignored ) {
 			return;
 		}
 
@@ -714,7 +714,7 @@ extend( test, {
 		newTest.queue();
 	},
 	skip: function skip( testName ) {
-		if ( focused || config.currentModule.closed ) {
+		if ( focused || config.currentModule.ignored ) {
 			return;
 		}
 
@@ -726,6 +726,9 @@ extend( test, {
 		test.queue();
 	},
 	only: function only( testName, callback ) {
+		if ( config.currentModule.ignored ) {
+			return;
+		}
 		if ( !focused ) {
 			config.queue.length = 0;
 			focused = true;

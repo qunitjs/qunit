@@ -35,7 +35,8 @@ function createModule( name, testEnvironment, modifiers ) {
 		// This property will be used to mark own tests and tests of child suites
 		// as either `skipped` or `todo`.
 		skip: skip,
-		todo: skip ? false : todo
+		todo: skip ? false : todo,
+		ignored: modifiers.ignored || false
 	};
 
 	const env = {};
@@ -98,15 +99,13 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	}
 }
 
-let focused = false;
+let focused = false; // indicates that the "only" filter was used
 
 export default function module( name, options, executeNow ) {
-	if ( focused && !isParentModuleInQueue() ) {
-		config.currentModule.closed = true;
-		return;
-	}
 
-	processModule( name, options, executeNow );
+	const ignored = focused && !isParentModuleInQueue();
+
+	processModule( name, options, executeNow, { ignored } );
 }
 
 module.only = function( ...args ) {
@@ -122,7 +121,6 @@ module.only = function( ...args ) {
 
 module.skip = function( name, options, executeNow ) {
 	if ( focused ) {
-		config.currentModule.closed = true;
 		return;
 	}
 
@@ -131,7 +129,6 @@ module.skip = function( name, options, executeNow ) {
 
 module.todo = function( name, options, executeNow ) {
 	if ( focused ) {
-		config.currentModule.closed = true;
 		return;
 	}
 
