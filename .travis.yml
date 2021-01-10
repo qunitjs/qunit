@@ -1,27 +1,37 @@
 os: linux
 language: node_js
-node_js:
-  - "14"
-  - "12"
-  - "10"
-env:
-  - NPM_SCRIPT=test
-matrix:
+script: npm test
+jobs:
   fast_finish: true
   include:
-    - os: windows
+
+    - name: Linux (Node.js 14, Browser, CLI)
+      node_js: "14"
+
+    - name: Linux (Node.js 12, Browser, CLI)
+      node_js: "12"
+
+    - name: Linux (Node.js 10, Browser, CLI)
+      node_js: "10"
+
+    - name: Windows (Node.js, Browser)
+      os: windows
       # On Windows, test only the last LTS.
       node_js: "10"
-      # On Windows, run test:main only instead of test.
+      # On Windows, cannot test CLI yet.
       # https://github.com/qunitjs/qunit/issues/1359
-      env: NPM_SCRIPT=test:main
-    - os: osx
-      # On Mac, test only the last LTS.
+      script: npm run test:main
+
+    - name: macOS (Node.js, Browser, CLI)
+      os: osx
+      # On macOS, test only the last LTS.
       node_js: "10"
-    - os: linux
+
+    - name: Code coverage
       node_js: "10"
-      env: NPM_SCRIPT=coveralls
-    - stage: "Update search index"
+      script: npm run coveralls
+
+    - stage: Update search index
       # https://docs.travis-ci.com/user/conditions-v1
       if: (branch = master) AND (type IN (push, cron))
       language: ruby
@@ -30,8 +40,7 @@ matrix:
       before_install: cd docs/
       install: bundle install
       script: bundle exec jekyll algolia
-script:
-  - npm run $NPM_SCRIPT
+
 cache:
   directories:
     - $HOME/.npm
