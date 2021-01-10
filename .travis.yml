@@ -27,6 +27,24 @@ jobs:
       # On macOS, test only the last LTS.
       node_js: "10"
 
+    # To debug locally, run:
+    # ```
+    # nobody@isolated:/qunit$ npm run build
+    #
+    # you@here:/qunit$ docker run --rm --interactive --tty --mount type=bind,source="$mountsrc",target="$mountdest",readonly --entrypoint /bin/sh ubuntu:focal -c "cd $mountdest;bash"
+    #
+    # root@focal:/qunit# apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
+    # root@focal:/qunit# js68 test/mozjs.js
+    # ```
+    - name: SpiderMonkey
+      os: linux
+      dist: focal
+      node_js: "10"
+      script:
+        - npm run build
+        - sudo apt-get install -y libmozjs-68-dev
+        - js68 test/mozjs.js
+
     - name: Code coverage
       node_js: "10"
       script: npm run coveralls

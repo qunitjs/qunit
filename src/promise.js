@@ -1,3 +1,3 @@
-import _Promise from "es6-promise";
+import _Promise from "../lib/promise-polyfill.js";
 
-export default typeof Promise !== "undefined" ? Promise : _Promise;
+export default _Promise;

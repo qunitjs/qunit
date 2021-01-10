@@ -37,6 +37,7 @@
         "coverage/**",
         "docs/_site/**",
         "dist/**",
+        "lib/**",
         "temp/**"
     ],
     "overrides": [
