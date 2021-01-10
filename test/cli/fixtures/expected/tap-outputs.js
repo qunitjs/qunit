@@ -282,5 +282,54 @@ ok 2 later thing > has released all foos
 # pass 2
 # skip 0
 # todo 0
+# fail 0`,
+
+	"qunit only/test.js":
+`TAP version 13
+ok 1 run this test
+ok 2 all tests with only run
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`,
+
+	"qunit only/module.js":
+`TAP version 13
+not ok 1 # TODO module B > Only this module should run > a todo test
+  ---
+  message: "not implemented yet"
+  severity: todo
+  actual  : false
+  expected: true
+  stack: .*
+  ...
+ok 2 # SKIP module B > Only this module should run > implicitly skipped test
+ok 3 module B > Only this module should run > normal test
+ok 4 module D > test D
+ok 5 module E > module F > test F
+ok 6 module E > test E
+1..8
+# pass 6
+# skip 1
+# todo 1
+# fail 0`,
+
+	"qunit only/module-flat.js":
+`TAP version 13
+not ok 1 # TODO module B > test B
+  ---
+  message: "not implemented yet"
+  severity: todo
+  actual  : false
+  expected: true
+  stack: .*
+  ...
+ok 2 # SKIP module B > test C
+ok 3 module B > test D
+1..4
+# pass 2
+# skip 1
+# todo 1
 # fail 0`
 };
