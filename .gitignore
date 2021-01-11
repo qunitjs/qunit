@@ -1,8 +1,7 @@
 /.nyc_output
 /__codeorigin
 /coverage
-/dist
 /node_modules
-/browserstack-run.pid
+/qunit
 /temp
 /docs/_site/

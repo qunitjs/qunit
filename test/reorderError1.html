@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>QUnit - Asserts it does not skip tests after reordering</title>
-	<link rel="stylesheet" href="../dist/qunit.css">
-	<script src="../dist/qunit.js"></script>
+	<link rel="stylesheet" href="../qunit/qunit.css">
+	<script src="../qunit/qunit.js"></script>
 	<script>
 
 	// Ref #907
@@ -46,7 +46,7 @@
 		This new QUnit load could be replaced by an async call, but the grunt qunit
 		relies on QUnit loaded below and ignores the previously failed results.
 	-->
-	<script src="../dist/qunit.js"></script>
+	<script src="../qunit/qunit.js"></script>
 	<script src="reorderError1.js"></script>
 </head>
 <body>

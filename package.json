@@ -91,13 +91,13 @@
     "authors": "grunt authors",
     "coverage": "npm run build:coverage && npm run coverage:_cli && npm run coverage:_main && nyc report",
     "coverage:_cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
-    "coverage:_main": "nyc instrument --in-place dist/ && grunt connect:nolivereload qunit",
+    "coverage:_main": "nyc instrument --in-place qunit/ && grunt connect:nolivereload qunit",
     "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   },
   "nyc": {
     "include": [
       "bin/**",
-      "dist/**",
+      "qunit/**",
       "src/**"
     ],
     "reporter": [
