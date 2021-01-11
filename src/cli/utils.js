@@ -16,7 +16,7 @@ function existsStat() {
 function getIgnoreList( baseDir ) {
 	const gitFilePath = path.join( baseDir, ".gitignore" );
 	if ( fs.existsSync( gitFilePath ) ) {
-		const gitIgnore = fs.readFileSync( gitFilePath, "utf-8" );
+		const gitIgnore = fs.readFileSync( gitFilePath, "utf8" );
 		return gitIgnore.trim().split( "\n" );
 	}
 	return [];

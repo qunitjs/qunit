@@ -36,7 +36,7 @@ const Repo = {
 				"--format=* %s. (%aN)",
 				"--no-merges",
 				`${oldVersion}...HEAD`
-			], { encoding: "utf-8" } );
+			], { encoding: "utf8" } );
 
 			changes = changes
 				.trim()
