@@ -20,7 +20,7 @@ Report the result of a custom assertion.
 
 ### Examples
 
-If you need to express an expectation that is not abstracted by QUnit's built-in assertions, you can performing your own logic ad-hoc, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass a representative boolean result to [`assert.true()`](./true.md).
+If you need to express an expectation that is not abstracted by QUnit's built-in assertions, you can perform your own logic ad-hoc, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass your own representative boolean result to [`assert.true()`](./true.md).
 
 ```js
 QUnit.test( "bad example with remainder", assert => {

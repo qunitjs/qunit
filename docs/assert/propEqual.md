@@ -33,19 +33,45 @@ Compare the properties values of two objects.
 
 ```js
 QUnit.test( "example", assert => {
+  class Foo {
+    constructor() {
+      this.x = 1;
+      this.y = 2;
+    }
+    walk() {}
+    run() {}
+  }
+
+  const foo = new Foo();
+  const expected = {
+    x: 1,
+    y: 2
+  };
+
+  // succeeds, own properties are strictly equal,
+  // and inherited properties (such as which object constructor) are ignored.
+  assert.propEqual( foo,  );
+});
+```
+
+Using classic ES5 syntax:
+
+```js
+QUnit.test( "example", function ( assert ) {
   function Foo() {
     this.x = 1;
-    this.y = "2";
+    this.y = 2;
   }
   Foo.prototype.walk = function () {};
   Foo.prototype.run = function () {};
-  Foo.prototype.z = "inherited";
 
-  const result = new Foo();
-
-  assert.propEqual( result, {
+  var foo = new Foo();
+  var expected = {
     x: 1,
-    y: "2"
-  } );
+    y: 2
+  };
+
+  // succeeds, own properties are strictly equal.
+  assert.propEqual( foo, expected );
 });
 ```

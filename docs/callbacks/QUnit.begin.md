@@ -13,7 +13,7 @@ version_added: "1.0"
 
 Register a callback to fire whenever the test suite begins. The callback may be an async function, or a function that returns a promise, which will be waited for before the next callback is handled.
 
-The begin callback will be called once before QUnit runs any tests.
+The callback will be called once, before QUnit runs any tests.
 
 | parameter | description |
 |-----------|-------------|

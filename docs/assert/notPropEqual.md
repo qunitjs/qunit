@@ -33,19 +33,21 @@ Compare the values of two objects properties.
 
 ```js
 QUnit.test( "example", assert => {
-  function Foo() {
-    this.x = 1;
-    this.y = "2";
+  class Foo {
+    constructor() {
+      this.x = "1";
+      this.y = 2;
+    }
+    walk() {}
+    run() {}
   }
-  Foo.prototype.walk = function () {};
-  Foo.prototype.run = function () {};
-  Foo.prototype.z = "inherited";
 
-  const result = new Foo();
+  const foo = new Foo();
+  const expected = ;
 
-  // succeeds, property values are compared with strict equality
-  // and result has a "y" property with a string instead of a number.
-  assert.notPropEqual( result, {
+  // succeeds, only own property values are compared (using strict equality),
+  // and propery "x" is indeed not equal (string instead of number).
+  assert.notPropEqual( foo, {
     x: 1,
     y: 2
   } );
