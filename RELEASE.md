@@ -79,6 +79,7 @@ Prerequisites:
 
 4. Generate the release artifacts:
    ```
+   export SOURCE_DATE_EPOCH="$(git log -s --format=%at -1)"
    npm run build
    ```
 
