@@ -102,7 +102,7 @@ function addToTaskQueue( tasksArray ) {
 
 /**
  * Return the number of tasks remaining in the task queue to be processed.
- * @return {Number}
+ * @return {number}
  */
 function taskQueueLength() {
 	return taskQueue.length;
@@ -111,8 +111,8 @@ function taskQueueLength() {
 /**
  * Adds a test to the TestQueue for execution.
  * @param {Function} testTasksFunc
- * @param {Boolean} prioritize
- * @param {String} seed
+ * @param {boolean} prioritize
+ * @param {string} seed
  */
 function addToTestQueue( testTasksFunc, prioritize, seed ) {
 	if ( prioritize ) {

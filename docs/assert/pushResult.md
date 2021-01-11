@@ -7,7 +7,7 @@ categories:
 version_added: "1.22"
 ---
 
-`pushResult( data: { result, actual, expected, message } )`
+`pushResult( data )`
 
 Report the result of a custom assertion.
 
@@ -18,29 +18,59 @@ Report the result of a custom assertion.
 | `data.expected` | Known comparison value |
 | `data.message` (string) | A short description of the assertion |
 
-Some test suites may need to express an expectation that is not defined by any of QUnit's built-in assertions. This need may be met by encapsulating the expectation in a JavaScript function which returns a `Boolean` value representing the result; this value can then be passed into QUnit's `ok` assertion.
+### Examples
 
-A more readable solution would involve defining a custom assertion. If the expectation function invokes `pushResult`, QUnit will be notified of the result and report it accordingly.
-
-### Example
-
-Define a custom `mod2` assertion that tests if the provided numbers are equivalent in modulo 2.
+If you need to express an expectation that is not abstracted by QUnit's built-in assertions, you can performing your own logic ad-hoc, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass a representative boolean result to [`assert.true()`](./true.md).
 
 ```js
-QUnit.assert.mod2 = function( value, expected, message ) {
-    var actual = value % 2;
-    this.pushResult( {
-        result: actual === expected,
-        actual: actual,
-        expected: expected,
-        message: message
-    } );
+QUnit.test( "bad example with remainder", assert => {
+  const result = 3;
+  const actual = ( result % 2 ) === 1;
+  assert.true( actual, "remainder of mod 2 is 1" );
+  // In case of failure, there is no information about the
+  // actually observed remainder or the expected value
+});
+
+QUnit.test( "good example with remainder", assert => {
+  const result = 3;
+  assert.strictEqual( result % 2, 1, "remainder of mod 2" );
+});
+
+
+QUnit.test( "example with value in range", assert => {
+  const actual = 3;
+  const isBetween = ( actual >= 1 && actual <= 10 );
+  assert.true( isBetween, "result between 1 and 10" );
+  // No information in case of failure.
+  // Cannot be expressed in a useful way using strictEqual()
+  //
+  // Example of failure if result is out of range:
+  // > actual: false
+  // > expected: true
+});
+```
+
+With a custom assertion method, you can control how an assertion should be evaluated, separately from how its actual and expected values are described in case of a failure.
+
+For example:
+
+```js
+QUnit.assert.between = function( actual, from, to, message ) {
+  const isBetween = ( actual >= from && actual <= to );
+
+  this.pushResult( {
+    result: isBetween,
+    actual: actual,
+    expected: `between ${from} and ${to} inclusive`,
+    message: message
+  } );
 };
 
-QUnit.test( "mod2", function( assert ) {
-    assert.expect( 2 );
-
-    assert.mod2( 2, 0, "2 % 2 == 0" );
-    assert.mod2( 3, 1, "3 % 2 == 1" );
+QUnit.test( "custom assertion example", assert => {
+  const result = 3;
+  assert.between( result, 1, 10, "result" );
+  // Example of failure if result is out of range
+  // > actual: 42
+  // > expected: between 1 and 10
 });
 ```

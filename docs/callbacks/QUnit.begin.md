@@ -11,45 +11,62 @@ version_added: "1.0"
 
 `QUnit.begin( callback )`
 
-Register a callback to fire whenever the test suite begins. The callback can return a promise that will be waited for before the next callback is handled.
+Register a callback to fire whenever the test suite begins. The callback may be an async function, or a function that returns a promise, which will be waited for before the next callback is handled.
 
-`QUnit.begin()` is called once before running any tests.
+The begin callback will be called once before QUnit runs any tests.
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-#### Callback details: `callback( details: { totalTests } )`
+##### Details object
 
-| parameter | description |
+Passed to the callback:
+
+| property | description |
 |-----------|-------------|
 | `totalTests` | The number of total tests in the test suite |
 
-### Example
+### Examples
 
-Get total amount of tests.
+Get total number of tests known at the start.
 
 ```js
-QUnit.begin(function( details ) {
-  console.log( "Test amount:", details.totalTests );
+QUnit.begin( details => {
+  console.log( `Test amount: ${details.totalTests}` );
 });
 ```
 
-Using modern syntax:
+Use async-await to wait for some asynchronous work:
 
 ```js
-QUnit.begin( ( { totalTests } ) => {
-  console.log( `Test amount: ${totalTests}` );
+QUnit.begin( async details => {
+  await someAsyncWork();
+
+  console.log( `Test amount: ${details.totalTests}` );
 });
 ```
 
-Returning a promise:
+Using classic ES5 syntax:
 
 ```js
-QUnit.begin( () => {
-  return new Promise(function(resolve, reject) {
+QUnit.begin( function( details ) {
+  console.log( "Test amount:" + details.totalTests );
+});
+```
+
+```js
+function someAsyncWork() {
+  return new Promise( function( resolve, reject ) {
     // do some async work
     resolve();
+  });
+}
+
+QUnit.begin( function( details ) {
+  return someAsyncWork().then( function () {
+
+    console.log( "Test amount:" + details.totalTests );
   });
 });
 ```

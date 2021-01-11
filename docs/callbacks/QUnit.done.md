@@ -11,46 +11,43 @@ version_added: "1.0"
 
 `QUnit.done( callback )`
 
-Register a callback to fire whenever the test suite ends. The callback can return a promise that will be waited for before the next callback is handled.
+Register a callback to fire whenever the test suite ends. The callback may be an async function, or a function that return a promise which will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-#### Callback details: `callback( details: { failed, passed, total, runtime } )`
+##### Details object
 
-| parameter | description |
+Passed to the callback:
+
+| property | description |
 |-----------|-------------|
 | `failed` (number) | The number of failed assertions |
 | `passed` (number) | The number of passed assertions |
 | `total` (number) | The total number of assertions |
 | `runtime` (number) | The time in milliseconds it took tests to run from start to finish. |
 
-### Example
+### Examples
 
 Register a callback that logs test results to the console.
 
 ```js
-QUnit.done(function( details ) {
-  console.log( "Total: ", details.total, " Failed: ", details.failed, " Passed: ", details.passed, " Runtime: ", details.runtime );
+QUnit.done( details => {
+  console.log(
+    `Total: ${details.total} Failed: ${details.failed} `
+      + `Passed: ${details.passed} Runtime: ${details.runtime}`
+  );
 });
 ```
 
-Using modern syntax:
+Using classic ES5 syntax:
 
 ```js
-QUnit.done( ( { total, failed, passed, runtime } ) => {
-  console.log( `Total: ${total}, Failed: ${failed}, Passed: ${passed}, Runtime: ${runtime}` );
-});
-```
-
-Returning a promise:
-
-```js
-QUnit.done( () => {
-  return new Promise(function(resolve, reject) {
-    // do some async work
-    resolve();
-  });
+QUnit.done( function( details ) {
+  console.log(
+    "Total: " + details.total + " Failed: " + details.failed
+    + " Passed: " + details.passed + " Runtime: " + details.runtime
+  );
 });
 ```

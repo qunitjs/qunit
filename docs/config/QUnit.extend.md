@@ -23,13 +23,13 @@ Copy the properties defined by the `mixin` object into the `target` object
 
 This method will modify the `target` object to contain the "own" properties defined by the `mixin`. If the `mixin` object specifies the value of any attribute as `undefined`, this property will instead be removed from the `target` object.
 
-### Example
+### Examples
 
 Use `QUnit.extend` to merge two objects.
 
 ```js
-QUnit.test( "QUnit.extend", function( assert ) {
-  var base = {
+QUnit.test( "QUnit.extend", assert => {
+  const base = {
     a: 1,
     b: 2,
     z: 3

@@ -477,7 +477,7 @@ Assert.prototype.raises = Assert.prototype[ "throws" ];
  * Converts an error into a simple string for comparisons.
  *
  * @param {Error|Object} error
- * @return {String}
+ * @return {string}
  */
 function errorString( error ) {
 	const resultErrorString = error.toString();

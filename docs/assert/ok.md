@@ -22,16 +22,21 @@ A boolean check. Passes if the first argument is truthy.
 
 The most basic assertion in QUnit, `ok()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
 
-```js
-QUnit.test( "ok test", function( assert ) {
-  assert.ok( true, "true succeeds" );
-  assert.ok( "non-empty", "non-empty string succeeds" );
+### Examples
 
-  assert.ok( false, "false fails" );
-  assert.ok( 0, "0 fails" );
-  assert.ok( NaN, "NaN fails" );
-  assert.ok( "", "empty string fails" );
-  assert.ok( null, "null fails" );
-  assert.ok( undefined, "undefined fails" );
+```js
+QUnit.test( "example", assert => {
+  // success
+  assert.ok( true, "boolean true" );
+  assert.ok( "foo", "non-empty string" );
+  assert.ok( 1, "number one" );
+
+  // failure
+  assert.ok( false, "boolean false" );
+  assert.ok( "", "empty string" );
+  assert.ok( 0, "number zero" );
+  assert.ok( NaN, "NaN value" );
+  assert.ok( null, "null value" );
+  assert.ok( undefined, "undefined value" );
 });
 ```

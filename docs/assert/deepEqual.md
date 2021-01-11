@@ -29,25 +29,29 @@ The `deepEqual()` assertion can be used just like `equal()` when comparing the v
 
 ### Examples
 
-Compare the value of two objects.
-```js
-QUnit.test( "deepEqual test", function( assert ) {
-  var obj = { foo: "bar" };
+Validate the properties and values of a given object.
 
-  assert.deepEqual( obj, { foo: "bar" }, "Two objects can be the same in value" );
+```js
+QUnit.test( "good example", assert => {
+  const result = { foo: "bar" };
+
+  assert.deepEqual( result, { foo: "bar" }, "result object" );
 });
 ```
 
 ```js
-QUnit.test( 'deepEqual failing test', function( assert ) {
-  assert.deepEqual( {
-    a: 'Albert',
-    b: 'Berta',
+QUnit.test( "bad example", assert => {
+  const result = {
+    a: "Albert",
+    b: "Berta",
     num: 123
-  }, {
-    a: 'Albert',
-    b: 'Berta',
-    num: '123' // Fails: the number `123` is not strictly equal to the string `'123'`.
+  };
+
+  // fails because the number 123 is not strictly equal to the string "123".
+  assert.deepEqual( result, {
+    a: "Albert",
+    b: "Berta",
+    num: "123"
   } );
 } );
 ```

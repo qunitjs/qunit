@@ -27,27 +27,25 @@ The `propEqual()` assertion provides strictly (`===`) comparison of Object prope
 
 [`notPropEqual()`](./notPropEqual.md) can be used to explicitly test strict inequality of Object properties.
 
-### Example
+### Examples
 
 Compare the properties values of two objects.
 
 ```js
-QUnit.test( "propEqual test", function( assert ) {
-  function Foo( x, y, z ) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+QUnit.test( "example", assert => {
+  function Foo() {
+    this.x = 1;
+    this.y = "2";
   }
-  Foo.prototype.doA = function () {};
-  Foo.prototype.doB = function () {};
-  Foo.prototype.bar = 'prototype';
+  Foo.prototype.walk = function () {};
+  Foo.prototype.run = function () {};
+  Foo.prototype.z = "inherited";
 
-  var foo = new Foo( 1, "2", [] );
-  var bar = {
-    x : 1,
-    y : "2",
-    z : []
-  };
-  assert.propEqual( foo, bar, "Strictly the same properties without comparing objects constructors." );
+  const result = new Foo();
+
+  assert.propEqual( result, {
+    x: 1,
+    y: "2"
+  } );
 });
 ```

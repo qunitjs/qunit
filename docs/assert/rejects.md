@@ -33,53 +33,60 @@ The `expectedMatcher` argument can be:
 
 Note: in order to avoid confusion between the `message` and the `expectedMatcher`, the `expectedMatcher` **can not** be a string.
 
-### Example
-
-Assert the correct error message is received for a custom error object.
+### Examples
 
 ```js
-QUnit.test( "rejects", function( assert ) {
+QUnit.test( "rejects example", assert => {
 
-  assert.rejects(Promise.reject("some error description"));
+  // simple check
+  assert.rejects( Promise.reject( "some error" ) );
 
+  // simple check
   assert.rejects(
-    Promise.reject(new Error("some error description")),
-    "rejects with just a message, not using the 'expectedMatcher' argument"
+    Promise.reject( "some error" ),
+    "optional description here"
   );
 
+  // match pattern on actual error
   assert.rejects(
-    Promise.reject(new Error("some error description")),
-    /description/,
-    "`rejectionValue.toString()` contains `description`"
+    Promise.reject( new Error( "some error" ) ),
+    /some error/,
+    "optional description here"
   );
 
-  // Using a custom error like object
+  // Using a custom error constructor
   function CustomError( message ) {
     this.message = message;
   }
-
   CustomError.prototype.toString = function() {
     return this.message;
   };
 
+  // actual error is an instance of the expected constructor
   assert.rejects(
-    Promise.reject(new CustomError()),
-    CustomError,
-    "raised error is an instance of CustomError"
+    Promise.reject( new CustomError( "some error" ) ),
+    CustomError
   );
 
+  // actual error has strictly equal `constructor`, `name` and `message` properties
+  // of the expected error object
   assert.rejects(
-    Promise.reject(new CustomError("some error description")),
-    new CustomError("some error description"),
-    "raised error instance matches the CustomError instance"
+    Promise.reject( new CustomError( "some error" ) ),
+    new CustomError( "some error" )
   );
 
+  // custom validation arrow function
   assert.rejects(
-    Promise.reject(new CustomError("some error description")),
+    Promise.reject( new CustomError( "some error" ) ),
+    ( err ) => err.toString() === "some error"
+  );
+
+  // custom validation function
+  assert.rejects(
+    Promise.reject( new CustomError( "some error" ) ),
     function( err ) {
-      return err.toString() === "some error description";
-    },
-    "raised error instance satisfies the callback function"
+      return err.toString() === "some error";
+    }
   );
 });
 ```

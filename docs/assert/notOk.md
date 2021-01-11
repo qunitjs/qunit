@@ -20,18 +20,21 @@ A boolean check, inverse of `ok()`. Passes if the first argument is falsy.
 
 `notOk()` requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
 
-### Examples:
+### Examples
 
 ```js
-QUnit.test( "notOk test", function( assert ) {
-  assert.notOk( false, "false succeeds" );
-  assert.notOk( "", "empty string succeeds" );
-  assert.notOk( NaN, "NaN succeeds" );
-  assert.notOk( null, "null succeeds" );
-  assert.notOk( undefined, "undefined succeeds" );
+QUnit.test( "example", assert => {
+  // success
+  assert.notOk( false, "boolean false" );
+  assert.notOk( "", "empty string" );
+  assert.notOk( 0, "number zero" );
+  assert.notOk( NaN, "NaN value" );
+  assert.notOk( null, "null value" );
+  assert.notOk( undefined, "undefined value" );
 
-  assert.notOk( true, "true fails" );
-  assert.notOk( 1, "1 fails" );
-  assert.notOk( "not-empty", "not-empty string fails" );
+  // failure
+  assert.notOk( "foo", "non-empty string" );
+  assert.notOk( true, "boolean true" );
+  assert.notOk( 1, "number one" );
 });
 ```

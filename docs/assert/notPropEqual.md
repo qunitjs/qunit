@@ -32,18 +32,22 @@ When they aren't equal, the assertion passes; otherwise, it fails. When it fails
 Compare the values of two objects properties.
 
 ```js
-QUnit.test( "notPropEqual test", function( assert ) {
-  function Foo( x, y, z ) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+QUnit.test( "example", assert => {
+  function Foo() {
+    this.x = 1;
+    this.y = "2";
   }
-  Foo.prototype.doA = function () {};
-  Foo.prototype.doB = function () {};
-  Foo.prototype.bar = 'prototype';
+  Foo.prototype.walk = function () {};
+  Foo.prototype.run = function () {};
+  Foo.prototype.z = "inherited";
 
-  var foo = new Foo( 1, "2", [] );
-  var bar = new Foo( "1", 2, {} );
-  assert.notPropEqual( foo, bar, "Properties values are strictly compared." );
+  const result = new Foo();
+
+  // succeeds, property values are compared with strict equality
+  // and result has a "y" property with a string instead of a number.
+  assert.notPropEqual( result, {
+    x: 1,
+    y: 2
+  } );
 });
 ```

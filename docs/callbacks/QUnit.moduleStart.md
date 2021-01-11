@@ -15,39 +15,22 @@ Register a callback to fire whenever a module begins. The callback can return a 
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-#### Callback details: `callback( details: { name } )`
+##### Details object
 
-| parameter | description |
+Passed to the callback:
+
+| property | description |
 |-----------|-------------|
 | `name` (string) | Name of the next module to run |
 
-### Example
+### Examples
 
 Register a callback that logs the module name
 
 ```js
-QUnit.moduleStart(function( details ) {
-  console.log( "Now running: ", details.name );
-});
-```
-
-Using modern syntax:
-
-```js
-QUnit.moduleStart( ( { name } ) => {
-  console.log( `Now running: ${name}` );
-});
-```
-
-Returning a promise:
-
-```js
-QUnit.moduleStart( () => {
-  return new Promise(function(resolve, reject) {
-    // do some async work
-    resolve();
-  });
+QUnit.moduleStart( details => {
+  console.log( `Now running: ${details.name}` );
 });
 ```
