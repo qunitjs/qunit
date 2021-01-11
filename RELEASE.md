@@ -1,28 +1,30 @@
-# Release Process
+# Release process
 
-This guide walks you through a QUnit release.
+This guide walks you through the QUnit release.
 
 ⚠️ **WARNING** ⚠️
 
-> Before attempting the process below, make sure you have:
+> Before starting, make sure you have:
 >
 > * **Permission to publish to the jQuery CDN** via [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com).
 > * Permission to publish releases to npm for the [`qunit`](https://www.npmjs.com/package/qunit) npm package.
 > * Permission to publish the website via [qunitjs/qunit.com](https://github.com/qunitjs/qunitjs.com).
-
-Prerequisites:
-
-* Node.js 12, or later.
-* Git 2.11, or later.
+>
+> System prerequisites:
+>
+> * Node.js 12, or later.
+> * Git 2.11, or later.
 
 1. Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist.
 
-2. Ensure that you have a prestine copy of the canonical repo (not a fork), and create a local  `release` branch:
-   * Run `git remote -v` and verify the following:
+2. Create a local  `release` branch, and ensure it is up-to-date:
+   * Verify that the canonical repository is cloned (not a fork):
    ```
-   origin	git@github.com:qunitjs/qunit.git
+   git remote -v
+   # …
+   # origin	git@github.com:qunitjs/qunit.git
    ```
-   * Create or reset your `release` branch:
+   * Create or reset the `release` branch:
    ```
    git remote update && git checkout -B release -t origin/master
    ```
@@ -31,10 +33,13 @@ Prerequisites:
    ```
    npm ci && npm test
    ```
-   Run the tests in various real browsers as well, either locally or via [BrowserStack](https://www.browserstack.com/):
+   Run the tests in various real browsers, either locally or via [BrowserStack](https://www.browserstack.com/):
    ```
-   npm run serve
-   open 'http://localhost:4000/test/'
+   python3 -m http.server 4000
+   # or:
+   # php -S localhost:4000
+
+   open http://localhost:4000/test/
    ```
 
 4. Create and push the release preparation commit:
@@ -43,52 +48,60 @@ Prerequisites:
       ```
       node build/prep-release.js @VERSION
       ```
-      * Review the difference in the `AUTHORS.txt` file. If you see duplicate entries proposed, then use the `.mailmap` file to normamlize those entries to a canonical name or e-mail address, and then re-run the above command.
-      * Edit `History.md` and remove any "Build", "Tests" or other commits not relevant to end-users.
-   2. Commit all of the above with the following message (replace `@VERSION` with the release version):
+      * Use `git add -p` to review the changes.
+      * In `AUTHORS.txt`, if you see duplicate entries, then use the `.mailmap` file to normalize them to a canonical name and e-mail address, and then re-run the above command.
+      * Edit `History.md` to remove change not relevant to end-users (e.g. changes relating to tests, build, internal refactoring, doc fixes, etc.).
+   2. Commit the above changes with the following message (replace `@VERSION` with the release version):
       ```
       Build: Prepare @VERSION release
       ```
-   3. Push your `release` branch to GitHub.
-   4. Create a pull request, approve it, and merge it once Travis CI is passing.
+   3. Push the `release` branch to GitHub.
+   4. Create a pull request, and merge it once Travis CI is passing.
 
 ## Performing the release
 
-1. Create a local  `release` branch, and ensure you're working on the canonical repo (not a fork):
+5. Create a local  `release` branch, and ensure it is up-to-date:
    * Run `git remote -v` and verify the following:
    ```
    origin git@github.com:qunitjs/qunit.git
    ```
-   * Create or reset your `release` branch:
+   * Create or reset the `release` branch:
    ```
    git remote update && git checkout -B release -t origin/master
    ```
-
-2. Ensure that the latest commit is your release preparation commit:
+   * Verify that the latest commit is your release preparation commit:
    ```
    git show
    # Build: Prepare x.y.z release
    # …
    ```
 
-3. Set the release version for npm and Bower metadata, by running the below command (replace `@VERSION` with the release version):
+6. Make changes for the release commit:
+   * Set the release version for npm and Bower metadata (replace `@VERSION` with the release version):
    ```
    node build/set-release.js @VERSION
    ```
-   This script will edit `package.json` and `bower.json` for you. It does not require any credentials or permissions, apart from read-write in the project directory.
+   This script will edit `package.json` and `bower.json`. It does not need any credentials or permissions, apart from read-write in the project directory.
 
-4. Generate the release artifacts:
+   * Generate the release artifacts:
    ```
    export SOURCE_DATE_EPOCH="$(git log -s --format=%at -1)"
    npm run build
    ```
 
-5. Rename `dist/` to `qunit/`:
+   * Rename `dist/` to `qunit/`:
    ```
    mv dist/ qunit/
    ```
 
-6. Create the release commit, tag it, and push the tag to GitHub (replace `@VERSION` with the release version).<br>⚠️ Do not commit or push release artifacts to the main branch!
+   * Review the changes to the package and library files, compared to the previous release.
+   ```
+   node build/review-package.js @LAST_VERSION
+
+   # … reviews package.json, qunit.js, and qunit.css
+   ```
+
+7. Commit and publish the release to GitHub.<br>⚠️ Do not push to the main branch!
    ```
    git add package.json bower.json qunit/
    git commit -m "Release @VERSION"
@@ -96,15 +109,15 @@ Prerequisites:
    git push --tags
    ```
 
-7. Verify that Bower sees the release, by running `bower info qunit` and checking that the latest
+8. Verify that Bower sees the release, by running `bower info qunit` and checking that the latest
    version is indeed the version we just published.
 
-8. Publish the release to npm:
-   * Use `git status` to confirm once more that your checkout is clean apart from the release artifacts in `qunit/`.
+9. Publish the release to npm:
+   * Use `git status` to confirm once more that you have a clean working copy, apart from release artifacts in `qunit/`.
    * Run `npm publish`, this will bundle the current directory and publish it to npm with the name and version specified in `package.json`.
    * Verify that the release is displayed at <https://www.npmjs.com/package/qunit>.
 
-9. Publish the release to the jQuery CDN:
+10. Publish the release to the jQuery CDN:
    * Prepare the commit locally:
    ```
    node build/auth-cdn-commit.js real @VERSION
@@ -117,34 +130,31 @@ Prerequisites:
    # …
    git push
    ```
-   * Verify via <https://code.jquery.com/qunit/qunit-x.y.z.js>
+   * Verify that the release is listed at <https://code.jquery.com/qunit/> and accessible via <https://code.jquery.com/qunit/qunit-x.y.z.js>
 
 ## Updating the website
 
-Once you have successfully published the new release, we need to update the website.
+After the release is published, we need to update the website.
 
-    git clone git@github.com:qunitjs/qunitjs.com.git
-    cd qunitjs.com
+Check out the main branch of the [qunitjs/qunitjs.com](https://github.com/qunitjs/qunitjs.com) repository, and ensure it is clean and up-to-date. Update release links and demos to use the version we just released, using this script:
 
-Checkout the latest `master` branch of the website repo.
+```
+qunitjs.com$ node build/set-version.js <version>
+```
 
-Do a find and replace of the previous version number and insert the new version number. Commit these changes with the following message:
+Stage the changes it made, and commit with the following message:
 
-	All: Update url and version to @VERSION
+```
+All: Update url and version to <version>
+```
 
-Then push the commit:
-
-	git push
-
-Check the website in a few minutes after a build completes to verify it is updated.
+Push the commit, and check the website in a few minutes to verify the change ([deployment log](https://github.com/qunitjs/qunitjs.com/deployments/activity_log?environment=github-pages)).
 
 ## Final steps
 
 You're almost there! Make sure you update [GitHub releases](https://github.com/qunitjs/qunit/releases) using the changelog from `History.md`.
 
-Finally, make an announcement on the [@qunitjs](https://twitter.com/qunitjs) Twitter account. Mention highlights of the release if possible and feel free to include a second tweet if needed, but be sure to include a link to the release page like so:
-
-	Released @VERSION: https://github.com/qunitjs/qunit/releases/tag/x.y.z
+Finally, make an announcement on the [@qunitjs](https://twitter.com/qunitjs) Twitter account. Mention highlights of the release if possible, andinclude a link to the release page.
 
 That's it! If you made it this far, congratulations you have successfully released a version of QUnit!
 

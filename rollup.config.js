@@ -38,7 +38,7 @@ module.exports = {
 			//    variables in an imported file would be).
 			return fs.readFileSync(
 				__dirname + "/src/html-reporter/es6-map.js",
-				"utf-8"
+				"utf8"
 			).toString().trim();
 		},
 

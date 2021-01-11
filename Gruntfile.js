@@ -32,16 +32,6 @@ module.exports = function( grunt ) {
 				}
 			},
 
-			// For manual testing.
-			any: {
-				options: {
-					port: connectPort,
-					useAvailablePort: true,
-					keepalive: true,
-					base: "."
-				}
-			},
-
 			// For use by the "watch" task.
 			livereload: {
 				options: {
