@@ -25,6 +25,7 @@ class Assert {
 		// If a timeout has been set, clear it and reset with the new duration
 		if ( config.timeout ) {
 			clearTimeout( config.timeout );
+			config.timeout = null;
 
 			if ( config.timeoutHandler && this.test.timeout > 0 ) {
 				resetTestTimeout( this.test.timeout );
