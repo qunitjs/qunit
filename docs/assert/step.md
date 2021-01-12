@@ -21,16 +21,18 @@ The `step()` assertion registers a passing assertion with a provided message. Th
 
 Together with the `verifySteps()` method, `step()` assertions give you an easy way to verify both the count and order of code execution.
 
-### Example
+### Examples
 
 ```js
-QUnit.test( "step test", function( assert ) {
-  assert.expect( 1 );
-  obj.hook = function() {
-    assert.step('Hook is called!');
-  };
-  obj.invokeHookIndirectly();
+QUnit.test( "step example", assert => {
+  const thing = new MyThing();
+  thing.on( "something", () => {
+    assert.step( "something happened" );
+  });
+  thing.run();
+
+  assert.verifySteps([ "something happened" ]);
 });
 ```
 
-_Note: See the [`verifySteps`](./verifySteps.md) entry for more detailed examples._
+_Note: See [`verifySteps`](./verifySteps.md) for more detailed examples._

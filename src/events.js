@@ -19,9 +19,9 @@ const SUPPORTED_EVENTS = [
  *
  * @private
  * @method emit
- * @param {String} eventName
+ * @param {string} eventName
  * @param {Object} data
- * @return {Void}
+ * @return {void}
  */
 export function emit( eventName, data ) {
 	if ( objectType( eventName ) !== "string" ) {
@@ -42,9 +42,9 @@ export function emit( eventName, data ) {
  *
  * @public
  * @method on
- * @param {String} eventName
+ * @param {string} eventName
  * @param {Function} callback
- * @return {Void}
+ * @return {void}
  */
 export function on( eventName, callback ) {
 	if ( objectType( eventName ) !== "string" ) {

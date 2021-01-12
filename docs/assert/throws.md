@@ -40,68 +40,74 @@ The `expectedMatcher` argument can be:
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
 | [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The  `assert.raises()` method remains supported as an alias.
 
-### Example
-
-Assert the correct error message is received for a custom error object.
+### Examples
 
 ```js
-QUnit.test( "throws", assert => {
+QUnit.test( "throws example", assert => {
 
+  // simple check
+  assert.throws( function() {
+    throw new Error( "boo" );
+  });
+
+  // simple check
+  assert.throws(
+    function() {
+      throw new Error( "boo" );
+    },
+    "optional description here"
+  );
+
+  // match pattern on actual error
+  assert.throws(
+    function() {
+      throw new Error( "some error" );
+    },
+    /some error/,
+    "optional description here"
+  );
+
+  // using a custom error constructor
   function CustomError( message ) {
     this.message = message;
   }
-
   CustomError.prototype.toString = function() {
     return this.message;
   };
 
+  // actual error is an instance of the expected constructor
   assert.throws(
     function() {
-      throw "error"
+      throw new CustomError( "some error" );
     },
-    "throws with just a message, not using the 'expected' argument"
+    CustomError
   );
 
+  // actual error has strictly equal `constructor`, `name` and `message` properties
+  // of the expected error object
   assert.throws(
     function() {
-      throw new CustomError("some error description");
+      throw new CustomError( "some error" );
     },
-    /description/,
-    "raised error message contains 'description'"
+    new CustomError( "some error" )
   );
 
+  // custom validation arrow function
   assert.throws(
     function() {
-      throw new CustomError();
+      throw new CustomError( "some error" );
     },
-    CustomError,
-    "raised error is an instance of CustomError"
+    ( err ) => err.toString() === "some error"
   );
 
+  // custom validation function
   assert.throws(
     function() {
-      throw new CustomError("some error description");
-    },
-    new CustomError("some error description"),
-    "raised error instance matches the CustomError instance"
-  );
-
-  assert.throws(
-    function() {
-      throw new CustomError("some error description");
-    },
-    ( err ) => err.toString() === "some error description",
-    "raised error instance satisfies the arrow function"
-  );
-
-  assert.throws(
-    function() {
-      throw new CustomError("some error description");
+      throw new CustomError( "some error" );
     },
     function( err ) {
-      return err.toString() === "some error description";
-    },
-    "raised error instance satisfies the callback function"
+      return err.toString() === "some error";
+    }
   );
 });
 ```

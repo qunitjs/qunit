@@ -13,18 +13,19 @@ version_added: "1.0"
 
 Register a callback to fire whenever an assertion completes.
 
-This is one of several callbacks QUnit provides. Its intended for integration scenarios like PhantomJS or Jenkins.
-The properties of the details argument are listed below as options.
+This is one of several callbacks QUnit provides. It's intended for continuous integration scenarios.
+
+**NOTE: The QUnit.log() callback does not handle promises and MUST be synchronous.**
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-**NOTE: Callback in QUnit.log() does not handle promises and must be synchronous.**
+##### Details object
 
-#### Callback details: `callback( details: { result, actual, expected, message, source, module, name, runtime, todo } )`
+Passed to the callback:
 
-| parameter | description |
+| property | description |
 |-----------|-------------|
 | `result` (boolean) | The boolean result of an assertion, `true` means passed, `false` means failed. |
 | `actual` | One side of a comparison assertion. Can be _undefined_ when `ok()` is used. |
@@ -38,62 +39,34 @@ The properties of the details argument are listed below as options.
 
 ### Examples
 
-Register a callback that logs the assertion result and its message
+Register a callback that logs the assertion result and its message:
 
 ```js
-QUnit.log(function( details ) {
-  console.log( "Log: ", details.result, details.message );
-});
-```
-
-Using modern syntax:
-
-```js
-QUnit.log( ( { result, message } ) => {
-  console.log( `Log: ${result}, ${message}` );
+QUnit.log( details => {
+  console.log( `Log: ${details.result}, ${details.message}` );
 });
 ```
 
 ---
 
-Logs the module and test block whenever an assertion fails.
+Log the module name and test result whenever an assertion fails:
 
 ```js
-QUnit.log(function( details ) {
+QUnit.log( details ) => {
   if ( details.result ) {
     return;
   }
-  var loc = details.module + ": " + details.name + ": ",
-    output = "FAILED: " + loc + ( details.message ? details.message + ", " : "" );
 
+  let output = `[FAILED] ${details.module} > ${details.name}`;
+
+  if ( details.message ) {
+    output += `: ${details.message}`;
+  }
   if ( details.actual ) {
-    output += "expected: " + details.expected + ", actual: " + details.actual;
+    output += `\nexpected: ${details.expected}\nactual: ${details.actual}`;
   }
   if ( details.source ) {
-    output += ", " + details.source;
-  }
-  console.log( output );
-});
-```
-
-Using modern syntax:
-
-```js
-QUnit.log( ( { result, module, name, message, actual, expected, source } ) => {
-  if ( result ) {
-    return;
-  }
-
-  let output = `FAILED: ${module}: ${name}: `;
-
-  if ( message ) {
-    output += `${message}, `;
-  }
-  if ( actual ) {
-    output += `expected: ${expected}, actual: ${actual}`;
-  }
-  if ( source ) {
-    output += `, ${source}`;
+    output += `\n${details.source}`;
   }
 
   console.log( output );

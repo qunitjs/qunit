@@ -41,7 +41,7 @@ When debugging a larger area of code, you may want to _only_ run all tests withi
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | The `QUnit.only()` method was renamed to `QUnit.test.only()`.<br/>Use of `QUnit.only()` remains supported as an alias.
 | [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | The `QUnit.only()` method was introduced.
 
-### Example
+### Examples
 
 How to use `QUnit.test.only` to filter which tests are run.
 

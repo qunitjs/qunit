@@ -13,7 +13,7 @@ version_added: "1.0"
 
 `equal( actual, expected [, message ] )`
 
-A non-strict value comparison.
+A non-strict comparison of two values.
 
 | name               | description                          |
 |--------------------|--------------------------------------|
@@ -24,6 +24,8 @@ A non-strict value comparison.
 ### Description
 
 The `equal` assertion uses the simple comparison operator (`==`) to compare the actual and expected arguments. When they are equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
+
+This method is similar to the `assertEquals()` method found in xUnit-style frameworks.
 
 [`notEqual()`](./notEqual.md) can be used to explicitly test inequality.
 

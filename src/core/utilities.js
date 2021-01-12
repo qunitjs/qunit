@@ -60,7 +60,7 @@ export function diff( a, b ) {
  * @method inArray
  * @param {Any} elem
  * @param {Array} array
- * @return {Boolean}
+ * @return {boolean}
  */
 export function inArray( elem, array ) {
 	return array.indexOf( elem ) !== -1;

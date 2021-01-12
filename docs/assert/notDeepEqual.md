@@ -30,9 +30,10 @@ The `notDeepEqual()` assertion can be used just like `equal()` when comparing th
 Compare the value of two objects.
 
 ```js
-QUnit.test( "notDeepEqual test", function( assert ) {
-  var obj = { foo: "bar" };
+QUnit.test( "example", assert => {
+  const result = { foo: "yep" };
 
-  assert.notDeepEqual( obj, { foo: "bla" }, "Different object, same key, different value, not equal" );
+  // succeeds, objects are similar but have a different foo value.
+  assert.notDeepEqual( result, { foo: "nope" } );
 });
 ```
