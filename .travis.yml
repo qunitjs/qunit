@@ -46,6 +46,8 @@ jobs:
         - js68 test/mozjs.js
 
     - name: Code coverage
+      # https://docs.travis-ci.com/user/conditions-v1
+      if: (fork = false)
       node_js: "10"
       script: npm run coveralls
 
