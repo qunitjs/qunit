@@ -1,4 +1,22 @@
 
+2.14.0 / 2021-01-12
+==================
+
+### Added
+
+* HTML Reporter: Use a fixed header with scrollable test results. (Bryan Crotaz) [#1513](https://github.com/qunitjs/qunit/pull/1513)
+* Core: Add official support for SpiderMonkey runtime. (Timo Tijhof) [#1535](https://github.com/qunitjs/qunit/issues/1535)
+
+### Changed
+
+* CLI: Update and re-audit `tiny-glob` and `node-watch`  dependencies. [#1522](https://github.com/qunitjs/qunit/issues/1522), [#1524](https://github.com/qunitjs/qunit/issues/1524)
+
+### Fixed
+
+* HTML Reporter: Set `main` and `navigation` ARIA roles. (Steve McClure) [#1084](https://github.com/qunitjs/qunit/issues/1084)
+* Core: Fix `QUnit.module.only` logic for unscoped modules. (Steve McClure) [#1272](https://github.com/qunitjs/qunit/issues/1272)
+* Assert: Fix `assert.timeout()` bug causing a non-async test to fail. [#1539](https://github.com/qunitjs/qunit/issues/1539)
+
 2.13.0 / 2020-11-29
 ==================
 
