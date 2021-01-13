@@ -13,7 +13,7 @@
 
 ### Fixed
 
-* HTML Reporter: Set `main` and `navigation` ARIA roles. (Steve McClure) [#1084](https://github.com/qunitjs/qunit/issues/1084)
+* HTML Reporter: Set `main` and `navigation` ARIA roles. (Steve McClure) [#1427](https://github.com/qunitjs/qunit/issues/1427)
 * Core: Fix `QUnit.module.only` logic for unscoped modules. (Steve McClure) [#1272](https://github.com/qunitjs/qunit/issues/1272)
 * Assert: Fix `assert.timeout()` bug causing a non-async test to fail. [#1539](https://github.com/qunitjs/qunit/issues/1539)
 
