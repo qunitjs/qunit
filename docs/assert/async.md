@@ -69,7 +69,7 @@ QUnit.test( "two async calls", assert => {
 
 ##### Example: Require multiple calls
 
-The `acceptCallCount` parameter can be used to require multiple calls to the same callback. In the below exxample, the test passes after exactly three calls.
+The `acceptCallCount` parameter can be used to require multiple calls to the same callback. In the below example, the test passes after exactly three calls.
 
 ```js
 function uploadBatch(batch, notify, complete) {
