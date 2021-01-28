@@ -11,15 +11,17 @@ version_added: "1.0"
 
 `QUnit.testDone( callback )`
 
-Register a callback to fire whenever a test ends. The callback can return a promise that will be waited for before the next callback is handled.
+Register a callback to fire whenever a test ends. The callback may be an async function, or a function that return a promise which will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-#### Callback details: `callback( details: { name, module, failed, passed, total, runtime, skipped, todo } )`
+##### Details object
 
-| parameter | description |
+Passed to the callback:
+
+| property | description |
 |-----------|-------------|
 | `name` (string) | Name of the current test |
 | `module` (string) | Name of the current module |
@@ -30,13 +32,13 @@ Register a callback to fire whenever a test ends. The callback can return a prom
 | `skipped` (boolean) | Indicates whether or not the current test was skipped |
 | `todo` (boolean) | Indicates whether or not the current test was a todo |
 
-### Example
+### Examples
 
-Register a callback that logs results of a single test
+Register a callback that logs results of a single test:
 
 ```js
-QUnit.testDone( function( details ) {
-  var result = {
+QUnit.testDone( details => {
+  const result = {
     "Module name": details.module,
     "Test name": details.name,
     "Assertions": {
@@ -51,36 +53,4 @@ QUnit.testDone( function( details ) {
 
   console.log( JSON.stringify( result, null, 2 ) );
 } );
-```
-
-Using modern syntax:
-
-```js
-QUnit.testDone( ( { module, name, total, passed, failed, skipped, todo, runtime } ) => {
-  var result = {
-    "Module name": module,
-    "Test name": name,
-    "Assertions": {
-      "Total": total,
-      "Passed": passed,
-      "Failed": failed
-    },
-    "Skipped": skipped,
-    "Todo": todo,
-    "Runtime": runtime
-  };
-
-  console.log( JSON.stringify( result, null, 2 ) );
-} );
-```
-
-Returning a promise:
-
-```js
-QUnit.testDone( () => {
-  return new Promise(function(resolve, reject) {
-    // do some async work
-    resolve();
-  });
-});
 ```

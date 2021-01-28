@@ -32,7 +32,18 @@ The `notEqual` assertion uses the simple inverted comparison operator (`!=`) to 
 The simplest assertion example:
 
 ```js
-QUnit.test( "a test", function( assert ) {
-  assert.notEqual( 1, "2", "String '2' and number 1 don't have the same value" );
+QUnit.test( "good example", assert => {
+  const result = "2";
+
+  // succeeds, 1 and 2 are different.
+  assert.notEqual( result, 1, "string and number" );
+});
+
+QUnit.test( "bad example", assert => {
+  const result = "2";
+
+  // fails, the number 2 and the string "2" are actually considered equal
+  // when loosely compared. Use notStrictEqual instead to consider them different
+  assert.notEqual( result, 2, "string and number" );
 });
 ```

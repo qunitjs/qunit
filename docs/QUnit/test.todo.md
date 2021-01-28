@@ -39,7 +39,7 @@ You can also use [`QUnit.module.todo()`](./module.md) to manage the "todo" state
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | The `QUnit.todo()` method was renamed to `QUnit.test.todo()`.<br/>Use of `QUnit.todo()` remains supported as an alias.
 | [QUnit 2.2](https://github.com/qunitjs/qunit/releases/tag/2.2.0) | The `QUnit.todo()` method was introduced.
 
-### Example
+### Examples
 
 How to use `QUnit.test.todo` to denote code that is still under development.
 

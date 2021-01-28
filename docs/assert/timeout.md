@@ -27,32 +27,38 @@ If `0` is passed, then the test will be assumed to be completely synchronous. If
 ### Examples
 
 ```js
-QUnit.test( "Waiting for focus event", function( assert ) {
-  assert.timeout( 1000 ); // Timeout of 1 second
-  var done = assert.async();
-  var input = $( "#test-input" ).focus();
-  setTimeout(function() {
-    assert.equal( document.activeElement, input[0], "Input was focused" );
+QUnit.test( "wait for an event", assert => {
+  assert.timeout( 1000 ); // Timeout after 1 second
+  const done = assert.done();
+
+  const adder = new NumberAdder();
+  adder.on( "ready", res => {
+    assert.strictEqual( res, 12 );
     done();
   });
+  adder.run([ 1, 1, 2, 3, 5 ]);
 });
 ```
 
 ```js
-QUnit.test( "Waiting for async function", function( assert ) {
-  assert.timeout( 500 ); // Timeout of .5 seconds
-  var promise = asyncFunction();
+QUnit.test( "wait for an async function", async assert => {
+  assert.timeout( 500 ); // Timeout after 0.5 seconds
+
+  const result = await asyncAdder( 5, 7 );
+  assert.strictEqual( result, 12 );
+});
+```
+
+Using classic ES5 syntax:
+
+```js
+QUnit.test( "wait for a returned promise", function( assert ) {
+  assert.timeout( 500 ); // Timeout after 0.5 seconds
+
+  var promise = asyncAdder( 5, 7 );
+
   return promise.then( function( result ) {
-    assert.true( result );
+    assert.strictEqual( result, 12 );
   } );
-});
-```
-
-```js
-QUnit.test( "Waiting in an async test", async assert => {
-  assert.timeout( 500 ); // Timeout of .5 seconds
-
-  let result = await asyncFunction();
-  assert.true( result );
 });
 ```

@@ -25,6 +25,7 @@ class Assert {
 		// If a timeout has been set, clear it and reset with the new duration
 		if ( config.timeout ) {
 			clearTimeout( config.timeout );
+			config.timeout = null;
 
 			if ( config.timeoutHandler && this.test.timeout > 0 ) {
 				resetTestTimeout( this.test.timeout );
@@ -477,7 +478,7 @@ Assert.prototype.raises = Assert.prototype[ "throws" ];
  * Converts an error into a simple string for comparisons.
  *
  * @param {Error|Object} error
- * @return {String}
+ * @return {string}
  */
 function errorString( error ) {
 	const resultErrorString = error.toString();

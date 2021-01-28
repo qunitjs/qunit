@@ -11,15 +11,17 @@ version_added: "1.0"
 
 `QUnit.moduleDone( callback )`
 
-Register a callback to fire whenever a module ends. The callback can return a promise that will be waited for before the next callback is handled.
+Register a callback to fire whenever a module ends. The callback may be an async function, or a function that return a promise which will be waited for before the next callback is handled.
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback details object |
+| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-#### Callback details: `callback( details: { name, failed, passed, total, runtime } )`
+##### Details object
 
-| parameter | description |
+Passed to the callback:
+
+| property | description |
 |-----------|-------------|
 | `name` (string) | Name of this module |
 | `failed` (number) | The number of failed assertions |
@@ -27,31 +29,12 @@ Register a callback to fire whenever a module ends. The callback can return a pr
 | `total` (number) | The total number of assertions |
 | `runtime` (number) | The execution time in millseconds of this module |
 
-### Example
+### Examples
 
 Register a callback that logs the module results
 
 ```js
-QUnit.moduleDone(function( details ) {
-  console.log( "Finished running: ", details.name, "Failed/total: ", details.failed, details.total );
-});
-```
-
-Using modern syntax:
-
-```js
-QUnit.moduleDone( ( { name, failed, total } ) => {
-  console.log( `Finished running: ${name} Failed/total: ${failed}, ${total}` );
-});
-```
-
-Returning a promise:
-
-```js
-QUnit.moduleDone( () => {
-  return new Promise(function(resolve, reject) {
-    // do some async work
-    resolve();
-  });
+QUnit.moduleDone( details => {
+  console.log( `Finished running: ${details.name} Failed/total: ${details.failed}/${total}` );
 });
 ```

@@ -36,7 +36,7 @@ const Repo = {
 				"--format=* %s. (%aN)",
 				"--no-merges",
 				`${oldVersion}...HEAD`
-			], { encoding: "utf-8" } );
+			], { encoding: "utf8" } );
 
 			changes = changes
 				.trim()
@@ -50,7 +50,8 @@ const Repo = {
 				} )
 				.sort()
 				.map( change => change.line )
-				.join( "\n" );
+				.join( "\n" ) +
+				"\n";
 
 			const today = new Date().toISOString().slice( 0, 10 );
 			const newSection = `\n${version} / ${today}

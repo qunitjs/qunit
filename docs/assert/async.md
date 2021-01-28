@@ -28,58 +28,72 @@ This replaces functionality previously provided by `QUnit.stop()` and [`QUnit.st
 
 ### Examples
 
-Tell QUnit to wait for the `done()` call inside the timeout.
+##### Example: Wait for callback
+
+Tell QUnit to wait for the `done()` call from a callback.
 
 ```js
-QUnit.test( "assert.async() test", function( assert ) {
-  var done = assert.async();
-  var input = $( "#test-input" ).focus();
-  setTimeout(function() {
-    assert.equal( document.activeElement, input[0], "Input was focused" );
+function fetchDouble( num, callback ) {
+  const double = num * 2;
+  callback( double );
+}
+
+QUnit.test( "async example", assert => {
+  const done = assert.async();
+
+  fetchDouble( 21, res => {
+    assert.strictEqual( res, 42, "Result" );
     done();
   });
 });
 ```
+##### Example: Wait for multiple callbacks
 
-Call `assert.async()` for each operation. Each `done` callback can be called at most once.
+Call `assert.async()` multiple times to wait for multiple async operations. Each `done` callback must be called exactly once for the test to pass.
 
 ```js
-QUnit.test( "two async calls", function( assert ) {
-  assert.expect( 2 );
+QUnit.test( "two async calls", assert => {
+  const done1 = assert.async();
+  const done2 = assert.async();
 
-  var done1 = assert.async();
-  var done2 = assert.async();
-  setTimeout(function() {
-    assert.true( true, "test resumed from async operation 1" );
+  fetchDouble( 3, res => {
+    assert.strictEqual( res, 6, "double of 3" );
     done1();
-  }, 500 );
-  setTimeout(function() {
-    assert.true( true, "test resumed from async operation 2" );
+  });
+  fetchDouble( 9, res => {
+    assert.strictEqual( res, 18, "double of 9" );
     done2();
-  }, 150);
+  });
 });
 ```
 
-Set up an async test three exit points. Each `done()` call adds up to the `acceptCallCount`. After three calls, the test is done.
+##### Example: Require multiple calls
+
+The `acceptCallCount` parameter can be used to require multiple calls to the same callback. In the below exxample, the test passes after exactly three calls.
 
 ```js
-QUnit.test( "multiple call done()", function( assert ) {
-  assert.expect( 3 );
-  var done = assert.async( 3 );
+function uploadBatch(batch, notify, complete) {
+  batch.forEach( (item) => {
+    // Do something with item
+    notify();
+  });
+  complete(null)
+}
 
-  setTimeout(function() {
-    assert.true( true, "first call done." );
-    done();
-  }, 500 );
+QUnit.test( "acceptCallCount example", assert => {
+  assert.timeout( 1000 );
 
-  setTimeout(function() {
-    assert.true( true, "second call done." );
-    done();
-  }, 500 );
+  const notify = assert.async( 3 );
+  const done = assert.async();
 
-  setTimeout(function() {
-    assert.true( true, "third call done." );
-    done();
-  }, 500 );
+  uploadBatch(
+    [ "a", "b", "c" ],
+    notify,
+    (err) => {
+      assert.strictEqual( err, null, "complete error parameter" );
+
+      done();
+    }
+  );
 });
 ```

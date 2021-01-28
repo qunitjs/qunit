@@ -16,14 +16,15 @@ version_added: "1.0"
 
 When your async test has multiple exit points, call `QUnit.start()` for the corresponding number of `QUnit.stop()` increments.
 
-### Example
+### Examples
 
 A test run that does not begin when the page is done loading. This example uses an Asynchronous Module Definition (AMD) loader-style `require` call.
 
 ```js
 QUnit.config.autostart = false;
 
-require(["test/tests1.js", "test/tests2.js"], function() {
-  QUnit.start();
-});
+require(
+  [ "test/tests1.js", "test/tests2.js" ],
+  QUnit.start
+);
 ```

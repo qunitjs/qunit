@@ -760,9 +760,9 @@ export function internalStop( test ) {
 		}
 
 		if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
-			clearTimeout( config.timeout );
 			config.timeoutHandler = function( timeout ) {
 				return function() {
+					config.timeout = null;
 					pushFailure(
 						`Test took longer than ${timeout}ms; test timed out.`,
 						sourceFromStacktrace( 2 )
@@ -771,6 +771,7 @@ export function internalStop( test ) {
 					internalRecover( test );
 				};
 			};
+			clearTimeout( config.timeout );
 			config.timeout = setTimeout(
 				config.timeoutHandler( timeoutDuration ),
 				timeoutDuration
@@ -827,17 +828,14 @@ function internalStart( test ) {
 
 	// Add a slight delay to allow more assertions etc.
 	if ( setTimeout ) {
-		if ( config.timeout ) {
-			clearTimeout( config.timeout );
-		}
+		clearTimeout( config.timeout );
 		config.timeout = setTimeout( function() {
 			if ( test.semaphore > 0 ) {
 				return;
 			}
 
-			if ( config.timeout ) {
-				clearTimeout( config.timeout );
-			}
+			clearTimeout( config.timeout );
+			config.timeout = null;
 
 			begin();
 		} );
