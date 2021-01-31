@@ -4,6 +4,7 @@ module.exports = function requireQUnit( resolve = require.resolve ) {
 	try {
 
 		// First we attempt to find QUnit relative to the current working directory.
+		// eslint-disable-next-line node/no-missing-require
 		const localQUnitPath = resolve( "qunit", {
 
 			// Support: Node 10. Explicitly check "node_modules" to avoid a bug.
@@ -16,6 +17,7 @@ module.exports = function requireQUnit( resolve = require.resolve ) {
 		try {
 
 			// Second, we use the globally installed QUnit
+			// eslint-disable-next-line node/no-unpublished-require, node/no-missing-require
 			delete require.cache[ resolve( "../../qunit/qunit" ) ];
 			// eslint-disable-next-line node/no-missing-require, node/no-unpublished-require
 			return require( "../../qunit/qunit" );
@@ -23,6 +25,7 @@ module.exports = function requireQUnit( resolve = require.resolve ) {
 			if ( e.code === "MODULE_NOT_FOUND" ) {
 
 				// Finally, we use the local development version of QUnit
+				// eslint-disable-next-line node/no-unpublished-require, node/no-missing-require
 				delete require.cache[ resolve( "../../dist/qunit" ) ];
 				// eslint-disable-next-line node/no-missing-require, node/no-unpublished-require
 				return require( "../../dist/qunit" );

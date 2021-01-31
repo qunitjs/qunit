@@ -79,7 +79,7 @@ async function run( args, options ) {
 				require( filePath );
 			} catch ( e ) {
 				if ( e.code === "ERR_REQUIRE_ESM" && ( !nodeVint || nodeVint >= 72 ) ) {
-					await import( filePath );
+					await import( filePath ); // eslint-disable-line node/no-unsupported-features/es-syntax
 				} else {
 					throw e;
 				}
