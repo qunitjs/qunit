@@ -43,7 +43,6 @@ QUnit.test( "example", assert => {
   }
 
   const foo = new Foo();
-  const expected = ;
 
   // succeeds, only own property values are compared (using strict equality),
   // and propery "x" is indeed not equal (string instead of number).
