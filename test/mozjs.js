@@ -2,7 +2,7 @@
 /* eslint-disable lines-around-comment */
 /* global loadRelativeToScript */
 
-loadRelativeToScript( "../dist/qunit.js" );
+loadRelativeToScript( "../qunit/qunit.js" );
 
 QUnit.on( "runStart", () => {
 	print( "Running tests..." );

@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
 		}
 
 		// Refresh the QUnit global to be used in other tests
-		global.QUnit = requireFresh( "../../dist/qunit" );
+		global.QUnit = requireFresh( "../../qunit/qunit.js" );
 
 		done( !totals.failed );
 	} );
@@ -33,7 +33,7 @@ module.exports = function( grunt ) {
 
 		// Resolve current QUnit path and remove it from the require cache
 		// to avoid stacking the QUnit logs.
-		var QUnit = requireFresh( "../../dist/qunit" );
+		var QUnit = requireFresh( "../../qunit/qunit.js" );
 
 		// Expose QUnit to the global scope to be seen on the other tests.
 		global.QUnit = QUnit;

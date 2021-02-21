@@ -12,7 +12,7 @@ const isCoverage = process.env.BUILD_TARGET === "coverage";
 module.exports = {
 	input: "src/qunit.js",
 	output: {
-		file: "dist/qunit.js",
+		file: "qunit/qunit.js",
 		sourcemap: isCoverage,
 		format: "iife",
 		exports: "none",

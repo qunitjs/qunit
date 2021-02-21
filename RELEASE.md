@@ -89,11 +89,6 @@ This guide walks you through the QUnit release.
    npm run build
    ```
 
-   * Rename `dist/` to `qunit/`:
-   ```
-   mv dist/ qunit/
-   ```
-
    * Review the changes to the package and library files, compared to the previous release.
    ```
    node build/review-package.js @LAST_VERSION
