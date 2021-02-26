@@ -40,10 +40,6 @@ module.exports = {
 				__dirname + "/src/html-reporter/es6-map.js",
 				"utf8"
 			).toString().trim();
-		},
-
-		globals: {
-			global: "(function() { return this; }())"
 		}
 	},
 	plugins: [
@@ -57,8 +53,5 @@ module.exports = {
 			babelHelpers: "bundled",
 			babelrc: true
 		} )
-	],
-	external: [
-		"global"
 	]
 };
