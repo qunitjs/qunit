@@ -4,15 +4,6 @@ const expectedOutput = require( "./fixtures/expected/tap-outputs" );
 const execute = require( "./helpers/execute" );
 const semver = require( "semver" );
 
-QUnit.assert.matches = function( actual, expected, message ) {
-	this.pushResult( {
-		result: expected.test( actual ),
-		actual,
-		expected: expected.toString(),
-		message
-	} );
-};
-
 QUnit.module( "CLI Main", function() {
 	QUnit.test( "defaults to running tests in 'test' directory", async function( assert ) {
 		const command = "qunit";
@@ -93,8 +84,7 @@ QUnit.module( "CLI Main", function() {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.equal( re.test( e.stdout ), true );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} );
 
@@ -113,8 +103,7 @@ QUnit.module( "CLI Main", function() {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.equal( re.test( e.stdout ), true );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} );
 
@@ -158,11 +147,7 @@ QUnit.module( "CLI Main", function() {
 				assert.equal( execution.stderr, "" );
 			}
 
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.equal( re.test( execution.stdout ), true );
-			if ( !re.test( execution.stdout ) ) {
-				assert.equal( execution.stdout, expectedOutput[ command ] );
-			}
+			assert.equal( execution.stdout, expectedOutput[ command ] );
 		} );
 	}
 
@@ -188,11 +173,7 @@ QUnit.module( "CLI Main", function() {
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
-				const re = new RegExp( expectedOutput[ command ] );
-				assert.equal( re.test( e.stdout ), true );
-				if ( !re.test( e.stdout ) ) {
-					assert.equal( e.stdout, expectedOutput[ command ] );
-				}
+				assert.equal( e.stdout, expectedOutput[ command ] );
 			}
 		} );
 	}
@@ -204,8 +185,7 @@ QUnit.module( "CLI Main", function() {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.equal( re.test( e.stdout ), true );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} );
 
@@ -249,8 +229,7 @@ QUnit.module( "CLI Main", function() {
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
-				const re = new RegExp( expectedOutput[ command ] );
-				assert.equal( re.test( e.stdout ), true );
+				assert.equal( e.stdout, expectedOutput[ command ] );
 			}
 		} );
 	} );
@@ -323,8 +302,7 @@ QUnit.module( "CLI Main", function() {
 
 			assert.equal( execution.code, 0 );
 			assert.equal( execution.stderr, "" );
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.matches( execution.stdout, re );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
 		} );
 
 		QUnit.test( "flat modules", async function( assert ) {
@@ -334,8 +312,7 @@ QUnit.module( "CLI Main", function() {
 
 			assert.equal( execution.code, 0 );
 			assert.equal( execution.stderr, "" );
-			const re = new RegExp( expectedOutput[ command ] );
-			assert.matches( execution.stdout, re );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
 		} );
 	} );
 } );
