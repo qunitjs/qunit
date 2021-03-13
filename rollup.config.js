@@ -25,8 +25,6 @@ module.exports = {
  * Copyright OpenJS Foundation and other contributors\n\
  * Released under the MIT license\n\
  * https://jquery.org/license\n\
- *\n\
- * Date: @DATE\n\
  */",
 
 		intro: function() {

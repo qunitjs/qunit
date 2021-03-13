@@ -85,7 +85,6 @@ This guide walks you through the QUnit release.
 
    * Generate the release artifacts:
    ```
-   export SOURCE_DATE_EPOCH="$(git log -s --format=%at -1)"
    npm run build
    ```
 
