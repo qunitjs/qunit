@@ -9,8 +9,8 @@ const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
 const executeHelper = require( "./helpers/execute" );
 
 // Executes the provided command from within the fixtures directory
-function execute( command ) {
-	return executeHelper( command, { stdio: [ null, null, null, "ipc" ] } );
+function execute( command, hook ) {
+	return executeHelper( command, { stdio: [ null, null, null, "ipc" ] }, hook );
 }
 
 const fixturePath = path.join( __dirname, "fixtures", "watching" );
@@ -39,20 +39,21 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		rimraf.sync( fixturePath );
 	} );
 
-	QUnit.test( "runs tests and waits until SIGTERM", async function( assert ) {
+	QUnit.test( "runs tests and waits until SIGTERM", async assert => {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
-		const execution = execute( `${command} --watch` );
-
-		execution.on( "message", function( data ) {
-			assert.step( data );
-			kill( execution, "SIGTERM" );
-		} );
-
-		const result = await execution;
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.on( "message", data => {
+					assert.step( data );
+					kill( execution, "SIGTERM" );
+				} );
+			}
+		);
 
 		assert.verifySteps( [ "runEnd" ] );
 		assert.equal( result.code, 0 );
@@ -60,20 +61,21 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
 	} );
 
-	QUnit.test( "runs tests and waits until SIGINT", async function( assert ) {
+	QUnit.test( "runs tests and waits until SIGINT", async assert => {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
-		const execution = execute( `${command} --watch` );
-
-		execution.on( "message", function( data ) {
-			assert.step( data );
-			kill( execution );
-		} );
-
-		const result = await execution;
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.on( "message", data => {
+					assert.step( data );
+					kill( execution );
+				} );
+			}
+		);
 
 		assert.verifySteps( [ "runEnd" ] );
 		assert.equal( result.code, 0 );
@@ -81,27 +83,28 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "no-change" ] );
 	} );
 
-	QUnit.test( "re-runs tests on file changed", async function( assert ) {
+	QUnit.test( "re-runs tests on file changed", async assert => {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
-		const execution = execute( `${command} --watch` );
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.once( "message", data => {
+					assert.step( data );
+					fixturify.writeSync( fixturePath, {
+						"foo.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
+					} );
 
-		execution.once( "message", function( data ) {
-			assert.step( data );
-			fixturify.writeSync( fixturePath, {
-				"foo.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
-			} );
-
-			execution.once( "message", function( data ) {
-				assert.step( data );
-				kill( execution );
-			} );
-		} );
-
-		const result = await execution;
+					execution.once( "message", data => {
+						assert.step( data );
+						kill( execution );
+					} );
+				} );
+			}
+		);
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
@@ -109,27 +112,28 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file" ] );
 	} );
 
-	QUnit.test( "re-runs tests on file added", async function( assert ) {
+	QUnit.test( "re-runs tests on file added", async assert => {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
-		const execution = execute( `${command} --watch` );
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.once( "message", data => {
+					assert.step( data );
+					fixturify.writeSync( fixturePath, {
+						"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
+					} );
 
-		execution.once( "message", function( data ) {
-			assert.step( data );
-			fixturify.writeSync( fixturePath, {
-				"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
-			} );
-
-			execution.once( "message", function( data ) {
-				assert.step( data );
-				kill( execution );
-			} );
-		} );
-
-		const result = await execution;
+					execution.once( "message", data => {
+						assert.step( data );
+						kill( execution );
+					} );
+				} );
+			}
+		);
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
@@ -137,28 +141,29 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "add-file" ] );
 	} );
 
-	QUnit.test( "re-runs tests on file removed", async function( assert ) {
+	QUnit.test( "re-runs tests on file removed", async assert => {
 		fixturify.writeSync( fixturePath, {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });",
 			"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
 		} );
 
 		const command = "qunit watching";
-		const execution = execute( `${command} --watch` );
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.once( "message", data => {
+					assert.step( data );
+					fixturify.writeSync( fixturePath, {
+						"bar.js": null
+					} );
 
-		execution.once( "message", function( data ) {
-			assert.step( data );
-			fixturify.writeSync( fixturePath, {
-				"bar.js": null
-			} );
-
-			execution.once( "message", function( data ) {
-				assert.step( data );
-				kill( execution );
-			} );
-		} );
-
-		const result = await execution;
+					execution.once( "message", data => {
+						assert.step( data );
+						kill( execution );
+					} );
+				} );
+			}
+		);
 
 		assert.verifySteps( [ "runEnd", "runEnd" ] );
 		assert.equal( result.code, 0 );
@@ -166,7 +171,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "remove-file" ] );
 	} );
 
-	QUnit.test( "aborts and restarts when in middle of run", async function( assert ) {
+	QUnit.test( "aborts and restarts when in middle of run", async assert => {
 
 		// A proper abort finishes the currently running test and runs any remaining
 		// afterEach/after hooks to ensure cleanup happens.
@@ -196,32 +201,31 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		} );
 
 		const command = "qunit watching/tests";
-		const execution = execute( `${command} --watch` );
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.on( "message", function handle( data ) {
+					if ( data === "testRunning" ) {
+						fixturify.writeSync( fixturePath, {
+							"bar.js": "module.exports = 'bar export second';"
+						} );
+					}
 
-		function one( data ) {
-			if ( data === "testRunning" ) {
-				fixturify.writeSync( fixturePath, {
-					"bar.js": "module.exports = 'bar export second';"
-				} );
-			}
-
-			assert.step( data );
-
-			if ( data === "runEnd" ) {
-				execution.removeListener( "message", one );
-				execution.addListener( "message", function( data ) {
 					assert.step( data );
 
 					if ( data === "runEnd" ) {
-						kill( execution );
+						execution.off( "message", handle );
+						execution.on( "message", data => {
+							assert.step( data );
+
+							if ( data === "runEnd" ) {
+								kill( execution );
+							}
+						} );
 					}
 				} );
 			}
-		}
-
-		execution.addListener( "message", one );
-
-		const result = await execution;
+		);
 
 		assert.verifySteps( [
 			"bar export first",
@@ -246,7 +250,7 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "change-file-mid-run" ] );
 	} );
 
-	QUnit.test( "properly watches files after initial run", async function( assert ) {
+	QUnit.test( "properly watches files after initial run", async assert => {
 
 		fixturify.writeSync( fixturePath, {
 			"tests": {
@@ -259,43 +263,44 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			}
 		} );
 
-		const command = "qunit watching/tests";
-		const execution = execute( `${command} --watch` );
 		let count = 0;
+		const command = "qunit watching/tests";
+		const result = await execute(
+			`${command} --watch`,
+			execution => {
+				execution.on( "message", data => {
+					assert.step( data );
 
-		execution.addListener( "message", function( data ) {
-			assert.step( data );
+					if ( data === "runEnd" ) {
+						count++;
 
-			if ( data === "runEnd" ) {
-				count++;
+						if ( count === 1 ) {
+							fixturify.writeSync( fixturePath, {
+								"tests": {
+									"foo.js": `
+										process.send(require('../bar.js'));
+										QUnit.module('Module');
+										QUnit.test('Test', function(assert) {
+											assert.true(true);
+										});`
+								},
+								"bar.js": "module.exports = 'bar export first';"
+							} );
+						}
 
-				if ( count === 1 ) {
-					fixturify.writeSync( fixturePath, {
-						"tests": {
-							"foo.js": `
-								process.send(require('../bar.js'));
-								QUnit.module('Module');
-								QUnit.test('Test', function(assert) {
-									assert.true(true);
-								});`
-						},
-						"bar.js": "module.exports = 'bar export first';"
-					} );
-				}
+						if ( count === 2 ) {
+							fixturify.writeSync( fixturePath, {
+								"bar.js": "module.exports = 'bar export second';"
+							} );
+						}
 
-				if ( count === 2 ) {
-					fixturify.writeSync( fixturePath, {
-						"bar.js": "module.exports = 'bar export second';"
-					} );
-				}
-
-				if ( count === 3 ) {
-					kill( execution );
-				}
+						if ( count === 3 ) {
+							kill( execution );
+						}
+					}
+				} );
 			}
-		} );
-
-		const result = await execution;
+		);
 
 		assert.verifySteps( [
 			"runEnd",
