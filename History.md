@@ -1,4 +1,16 @@
 
+2.14.1 / 2021-03-14
+==================
+
+### Changed
+
+* CLI: Upgrade `commander` to 7.1.0. (Timo Tijhof) [#1564](https://github.com/qunitjs/qunit/issues/1564)
+
+### Fixed
+
+* Core: Restore strict mode compatibility (Edward Faulkner) [#1558](https://github.com/qunitjs/qunit/pull/1558)
+* HTML Reporter: Check for undefined `testItem` in testDone callback. (Timo Tijhof)
+
 2.14.0 / 2021-01-12
 ==================
 
