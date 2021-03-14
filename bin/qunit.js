@@ -38,20 +38,21 @@ program
 	.option( "-w, --watch", "watch files for changes and re-run the test suite" )
 	.parse( process.argv );
 
-if ( program.reporter === true ) {
+const opts = program.opts();
+
+if ( opts.reporter === true ) {
 	displayAvailableReporters();
 }
 
-const args = program.args;
 const options = {
-	filter: program.filter,
-	reporter: findReporter( program.reporter ),
-	requires: program.require,
-	seed: program.seed
+	filter: opts.filter,
+	reporter: findReporter( opts.reporter ),
+	requires: opts.require,
+	seed: opts.seed
 };
 
-if ( program.watch ) {
-	run.watch( args, options );
+if ( opts.watch ) {
+	run.watch( program.args, options );
 } else {
-	run( args, options );
+	run( program.args, options );
 }
