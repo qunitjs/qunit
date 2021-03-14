@@ -41,7 +41,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "commander": "6.2.1",
+    "commander": "7.1.0",
     "js-reporters": "1.2.3",
     "node-watch": "0.7.1",
     "tiny-glob": "0.2.8"
