@@ -1,5 +1,4 @@
-import global from "global";
-
+import globalThis from "../lib/global-this-polyfill";
 import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
 import { emit } from "./events";
@@ -648,8 +647,8 @@ function saveGlobal() {
 	config.pollution = [];
 
 	if ( config.noglobals ) {
-		for ( const key in global ) {
-			if ( hasOwn.call( global, key ) ) {
+		for ( const key in globalThis ) {
+			if ( hasOwn.call( globalThis, key ) ) {
 
 				// In Opera sometimes DOM element ids show up here, ignore them
 				if ( /^qunit-test-output/.test( key ) ) {

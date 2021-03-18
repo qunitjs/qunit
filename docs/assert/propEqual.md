@@ -43,14 +43,13 @@ QUnit.test( "example", assert => {
   }
 
   const foo = new Foo();
-  const expected = {
-    x: 1,
-    y: 2
-  };
 
   // succeeds, own properties are strictly equal,
   // and inherited properties (such as which object constructor) are ignored.
-  assert.propEqual( foo,  );
+  assert.propEqual( foo, {
+    x: 1,
+    y: 2
+  } );
 });
 ```
 

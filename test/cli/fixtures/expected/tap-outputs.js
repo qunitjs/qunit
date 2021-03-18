@@ -60,14 +60,13 @@ not ok 1 Throws match > bad
   severity: failed
   actual  : "Error: Match me with a pattern"
   expected: "/incorrect pattern/"
-  stack: .*
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/fail/throws-match.js:3:10)
   ...
 1..1
 # pass 0
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"qunit test single.js 'glob/**/*-test.js'":
 `TAP version 13
@@ -140,10 +139,9 @@ not ok 2 global failure
 # pass 0
 # skip 0
 # todo 0
-# fail 2
-`,
+# fail 2`,
 
-	// Ignore the last frame about Node processing ticks (differs between Node 10 ad 12+)
+	// The last frame differs between Node 10 and 12+ (changes in processing of ticks)
 	"qunit no-tests":
 `TAP version 13
 not ok 1 global failure
@@ -153,18 +151,17 @@ not ok 1 global failure
   actual  : {}
   expected: undefined
   stack: Error: No tests were run.
-    at done (.*)
-    at advanceTestQueue (.*)
-    at Object.advance (.*)
-    at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
-    at .*
+    at done (/qunit/qunit/qunit.js)
+    at advanceTestQueue (/qunit/qunit/qunit.js)
+    at Object.advance (/qunit/qunit/qunit.js)
+    at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+    at internal
   ...
 1..1
 # pass 0
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"qunit sourcemap/source.js":
 `TAP version 13
@@ -181,8 +178,7 @@ not ok 2 Example > bad
 # pass 1
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js":
 `TAP version 13
@@ -193,19 +189,18 @@ not ok 2 Example > bad
   severity: failed
   actual  : false
   expected: true
-  stack:     at .* \\(.*source.min.js:1:.*\\)
-        -> .*source.js:7:10
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.min.js:1:133)
+        -> /qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10
   ...
 1..2
 # pass 1
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"qunit ../../es2018/esm.mjs":
 `TAP version 13
-ok 1 ESM test suite > sum\\(\\)
+ok 1 ESM test suite > sum()
 1..1
 # pass 1
 # skip 0
@@ -220,16 +215,14 @@ not ok 1 timeout > first
   severity: failed
   actual  : null
   expected: undefined
-  stack:     at .* (.*timers.js.*)
-    at .*(\n    at .*)?(\n    at .*)?
+  stack:     at internal
   ...
 ok 2 timeout > second
 1..2
 # pass 1
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"qunit zero-assertions.js":
 `TAP version 13
@@ -250,18 +243,17 @@ not ok 1 global failure
   actual  : {}
   expected: undefined
   stack: Error: No tests matched the filter "no matches".
-    at done (.*)
-    at advanceTestQueue (.*)
-    at Object.advance (.*)
-    at unblockAndAdvanceQueue (.*)(\n    at <anonymous>)?
-    at .*
+    at done (/qunit/qunit/qunit.js)
+    at advanceTestQueue (/qunit/qunit/qunit.js)
+    at Object.advance (/qunit/qunit/qunit.js)
+    at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+    at internal
   ...
 1..1
 # pass 0
 # skip 0
 # todo 0
-# fail 1
-`,
+# fail 1`,
 
 	"qunit single.js --require require-dep --require './node_modules/require-dep/module.js'":
 `required require-dep/index.js
@@ -302,7 +294,7 @@ not ok 1 # TODO module B > Only this module should run > a todo test
   severity: todo
   actual  : false
   expected: true
-  stack: .*
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/only/module.js:17:15)
   ...
 ok 2 # SKIP module B > Only this module should run > implicitly skipped test
 ok 3 module B > Only this module should run > normal test
@@ -323,7 +315,7 @@ not ok 1 # TODO module B > test B
   severity: todo
   actual  : false
   expected: true
-  stack: .*
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/only/module-flat.js:9:13)
   ...
 ok 2 # SKIP module B > test C
 ok 3 module B > test D

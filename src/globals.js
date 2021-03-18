@@ -1,10 +1,10 @@
-import global from "global";
+import globalThis from "../lib/global-this-polyfill";
 
-export const window = global.window;
-export const self = global.self;
-export const console = global.console;
-export const setTimeout = global.setTimeout;
-export const clearTimeout = global.clearTimeout;
+export const window = globalThis.window;
+export const self = globalThis.self;
+export const console = globalThis.console;
+export const setTimeout = globalThis.setTimeout;
+export const clearTimeout = globalThis.clearTimeout;
 
 export const document = window && window.document;
 export const navigator = window && window.navigator;
@@ -12,9 +12,9 @@ export const navigator = window && window.navigator;
 export const localSessionStorage = ( function() {
 	const x = "qunit-test-string";
 	try {
-		global.sessionStorage.setItem( x, x );
-		global.sessionStorage.removeItem( x );
-		return global.sessionStorage;
+		globalThis.sessionStorage.setItem( x, x );
+		globalThis.sessionStorage.removeItem( x );
+		return globalThis.sessionStorage;
 	} catch ( e ) {
 		return undefined;
 	}

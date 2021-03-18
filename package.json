@@ -2,11 +2,11 @@
   "name": "qunit",
   "title": "QUnit",
   "description": "The powerful, easy-to-use testing framework.",
-  "version": "2.14.0-pre",
+  "version": "2.14.1-pre",
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "OpenJS Foundation and other contributors",
-    "url": "https://github.com/qunitjs/qunit/blob/master/AUTHORS.txt"
+    "url": "https://github.com/qunitjs/qunit/blob/main/AUTHORS.txt"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "commander": "6.2.1",
+    "commander": "7.1.0",
     "js-reporters": "1.2.3",
     "node-watch": "0.7.1",
     "tiny-glob": "0.2.8"
@@ -51,10 +51,10 @@
     "@babel/plugin-external-helpers": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "coveralls": "^3.1.0",
-    "eslint-config-jquery": "^1.0.1",
-    "eslint-plugin-html": "^6.0.3",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-qunit": "^3.2.0",
+    "eslint-config-jquery": "^3.0.0",
+    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-qunit": "^5.3.0",
     "execa": "^0.8.0",
     "fixturify": "^0.3.4",
     "fuzzysort": "^1.1.4",
@@ -91,13 +91,13 @@
     "authors": "grunt authors",
     "coverage": "npm run build:coverage && npm run coverage:_cli && npm run coverage:_main && nyc report",
     "coverage:_cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
-    "coverage:_main": "nyc instrument --in-place dist/ && grunt connect:nolivereload qunit",
+    "coverage:_main": "nyc instrument --in-place qunit/ && grunt connect:nolivereload qunit",
     "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   },
   "nyc": {
     "include": [
       "bin/**",
-      "dist/**",
+      "qunit/**",
       "src/**"
     ],
     "reporter": [

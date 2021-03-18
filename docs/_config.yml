@@ -33,7 +33,7 @@ plugins:
 # Theme
 remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@5479c6b
 amethyst:
-  edituri_base: https://github.com/qunitjs/qunit/blob/master/docs/
+  edituri_base: https://github.com/qunitjs/qunit/blob/main/docs/
   header_logo:
     src: /img/logo-with-colored-text.svg
     width: 250

@@ -35,7 +35,7 @@ const Repo = {
 			const data = JSON.parse( json );
 
 			data.version = version;
-			data.author.url = data.author.url.replace( "master", version );
+			data.author.url = data.author.url.replace( "main", version );
 
 			fs.writeFileSync(
 				__dirname + "/../" + file,
