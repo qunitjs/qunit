@@ -6,7 +6,7 @@
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "OpenJS Foundation and other contributors",
-    "url": "https://github.com/qunitjs/qunit/blob/master/AUTHORS.txt"
+    "url": "https://github.com/qunitjs/qunit/blob/main/AUTHORS.txt"
   },
   "repository": {
     "type": "git",
