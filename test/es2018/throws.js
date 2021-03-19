@@ -73,9 +73,7 @@ QUnit.module( "failing assertions", {
 			};
 		}
 	}, function() {
-
 		QUnit.test( "does not die when class is expected", function( assert ) {
-
 			class CustomError extends Error {}
 
 			assert.throws(
