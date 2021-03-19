@@ -30,6 +30,10 @@ export default function Test( settings ) {
 	this.timeout = undefined;
 	extend( this, settings );
 
+	if ( !this.params ) {
+		this.params = [];
+	}
+
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
 	// As for `todo` module, all its tests will be treated as `todo` except for
@@ -176,7 +180,7 @@ Test.prototype = {
 		}
 
 		function runTest( test ) {
-			const promise = test.callback.call( test.testEnvironment, test.assert );
+			const promise = test.callback.call( test.testEnvironment, test.assert, ...test.params );
 			test.resolvePromise( promise );
 
 			// If the test has a "lock" on it, but the timeout is 0, then we push a
@@ -692,6 +696,37 @@ export function test( testName, callback ) {
 	newTest.queue();
 }
 
+function skip( data, testName ) {
+	if ( focused || config.currentModule.ignored ) {
+		return;
+	}
+
+	const test = new Test( {
+		testName: testName,
+		skip: true,
+		params: data
+	} );
+
+	test.queue();
+}
+function only( data, testName, callback ) {
+	if ( config.currentModule.ignored ) {
+		return;
+	}
+	if ( !focused ) {
+		config.queue.length = 0;
+		focused = true;
+	}
+
+	const newTest = new Test( {
+		testName: testName,
+		callback: callback,
+		params: data
+	} );
+
+	newTest.queue();
+}
+
 extend( test, {
 	todo: function todo( testName, callback ) {
 		if ( focused || config.currentModule.ignored ) {
@@ -706,33 +741,39 @@ extend( test, {
 
 		newTest.queue();
 	},
-	skip: function skip( testName ) {
-		if ( focused || config.currentModule.ignored ) {
-			return;
-		}
-
-		const test = new Test( {
-			testName: testName,
-			skip: true
-		} );
-
-		test.queue();
+	skip: function( testName ) {
+		skip( undefined, testName );
 	},
-	only: function only( testName, callback ) {
+	only: function( testName, callback ) {
+		only( undefined, testName, callback );
+	},
+	each: function( data, testName, callback ) {
 		if ( config.currentModule.ignored ) {
 			return;
 		}
-		if ( !focused ) {
-			config.queue.length = 0;
-			focused = true;
-		}
 
-		const newTest = new Test( {
-			testName: testName,
-			callback: callback
+		data.forEach( ( datum, i ) => {
+			const newTest = new Test( {
+				testName: `${i} ${testName}`,
+				callback: callback,
+				params: datum
+			} );
+			newTest.queue();
 		} );
+	}
+} );
 
-		newTest.queue();
+
+extend( test.each, {
+	skip: function( data, testName ) {
+		data.forEach( ( datum, i ) => {
+			skip( datum, `${i} ${testName}` );
+		} );
+	},
+	only: function( data, testName, callback ) {
+		data.forEach( ( datum, i ) => {
+			only( datum, `${i} ${testName}`, callback );
+		} );
 	}
 } );
 
