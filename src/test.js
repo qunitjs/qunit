@@ -696,7 +696,7 @@ export function test( testName, callback ) {
 	newTest.queue();
 }
 
-function skip( data, testName ) {
+function skip( testName, data ) {
 	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
@@ -709,7 +709,7 @@ function skip( data, testName ) {
 
 	test.queue();
 }
-function only( data, testName, callback ) {
+function only( testName, data, callback ) {
 	if ( config.currentModule.ignored ) {
 		return;
 	}
@@ -742,12 +742,12 @@ extend( test, {
 		newTest.queue();
 	},
 	skip: function( testName ) {
-		skip( undefined, testName );
+		skip( testName, undefined );
 	},
 	only: function( testName, callback ) {
-		only( undefined, testName, callback );
+		only( testName, undefined, callback );
 	},
-	each: function( data, testName, callback ) {
+	each: function( testName, data, callback ) {
 		if ( config.currentModule.ignored ) {
 			return;
 		}
@@ -765,14 +765,14 @@ extend( test, {
 
 
 extend( test.each, {
-	skip: function( data, testName ) {
+	skip: function( testName, data ) {
 		data.forEach( ( datum, i ) => {
-			skip( datum, `${i} ${testName}` );
+			skip( `${i} ${testName}`, datum );
 		} );
 	},
-	only: function( data, testName, callback ) {
+	only: function( testName, data, callback ) {
 		data.forEach( ( datum, i ) => {
-			only( datum, `${i} ${testName}`, callback );
+			only( `${i} ${testName}`, datum, callback );
 		} );
 	}
 } );
