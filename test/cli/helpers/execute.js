@@ -14,6 +14,14 @@ function normalize( actual ) {
 	return actual
 		.replace( reDir, "/qunit" )
 		.replace( /(\/qunit\/qunit\/qunit\.js):\d+:\d+\)/g, "$1)" )
+
+		// convert sourcemap'ed traces from Node 14 and earlier to the
+		// standard format used by Node 15+.
+		// https://github.com/nodejs/node/commit/15804e0b3f
+		// https://github.com/nodejs/node/pull/37252
+		// Convert "at foo (/min.js:1)\n -> /src.js:2" to "at foo (/src.js:2)"
+		.replace( /\b(at [^(]+\s\()[^)]+(\))\n\s+-> ([^\n]+)/g, "$1$3$2" )
+
 		.replace( / at .+\([^/)][^)]*\)/g, " at internal" )
 
 		// merge successive lines after initial frame
