@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "commander": "7.1.0",
-    "js-reporters": "1.2.3",
+    "js-reporters": "2.0.0",
     "node-watch": "0.7.1",
     "tiny-glob": "0.2.8"
   },
