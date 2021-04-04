@@ -96,12 +96,12 @@ ok 5 A-Test > derp
 
 	"qunit --reporter npm-reporter": "Run ended!",
 	"qunit --reporter does-not-exist": `No reporter found matching "does-not-exist".
-Available reporters from JS Reporters are: console, tap
-Available custom reporters from dependencies are: npm-reporter
+Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
 `,
 
-	"qunit --reporter": `Available reporters from JS Reporters are: console, tap
-Available custom reporters from dependencies are: npm-reporter
+	"qunit --reporter": `Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
 `,
 
 	/* eslint-disable max-len */
