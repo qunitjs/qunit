@@ -51,6 +51,15 @@ export function escapeText( s ) {
 		unfilteredUrl = setUrl( { filter: undefined, module: undefined,
 			moduleId: undefined, testId: undefined } );
 
+
+	function trim( string ) {
+		if ( typeof string.trim === "function" ) {
+			return string.trim();
+		} else {
+			return string.replace( /^\s+|\s+$/g, "" );
+		}
+	}
+
 	function addEvent( elem, type, fn ) {
 		elem.addEventListener( type, fn, false );
 	}
@@ -93,9 +102,7 @@ export function escapeText( s ) {
 		}
 
 		// Trim for prettiness
-		elem.className = typeof set.trim === "function" ?
-			set.trim() :
-			set.replace( /^\s+|\s+$/g, "" );
+		elem.className = trim( set );
 	}
 
 	function id( name ) {
@@ -113,6 +120,11 @@ export function escapeText( s ) {
 	}
 
 	function interceptNavigation( ev ) {
+
+		// Trim potential accidental whitespace so that QUnit doesn't throw an error about no tests matching the filter.
+		var filterInputElem = id( "qunit-filter-input" );
+		filterInputElem.value = trim( filterInputElem.value );
+
 		applyUrlParams();
 
 		if ( ev && ev.preventDefault ) {
@@ -902,15 +914,14 @@ export function escapeText( s ) {
 	} );
 
 	QUnit.testDone( function( details ) {
-		var testTitle, time, testItem, assertList, status,
+		var testTitle, time, assertList, status,
 			good, bad, testCounts, skipped, sourceName,
-			tests = id( "qunit-tests" );
+			tests = id( "qunit-tests" ),
+			testItem = id( "qunit-test-output-" + details.testId );
 
-		if ( !tests ) {
+		if ( !tests || !testItem ) {
 			return;
 		}
-
-		testItem = id( "qunit-test-output-" + details.testId );
 
 		removeClass( testItem, "running" );
 

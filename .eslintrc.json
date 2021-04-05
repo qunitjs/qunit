@@ -36,8 +36,8 @@
         "__codeorigin/**",
         "coverage/**",
         "docs/_site/**",
-        "dist/**",
         "lib/**",
+        "qunit/**",
         "temp/**"
     ],
     "overrides": [

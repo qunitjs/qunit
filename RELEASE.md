@@ -26,7 +26,7 @@ This guide walks you through the QUnit release.
    ```
    * Create or reset the `release` branch:
    ```
-   git remote update && git checkout -B release -t origin/master
+   git remote update && git checkout -B release -t origin/main
    ```
 
 3. Install dev dependencies and run the tests:
@@ -67,7 +67,7 @@ This guide walks you through the QUnit release.
    ```
    * Create or reset the `release` branch:
    ```
-   git remote update && git checkout -B release -t origin/master
+   git remote update && git checkout -B release -t origin/main
    ```
    * Verify that the latest commit is your release preparation commit:
    ```
@@ -85,13 +85,7 @@ This guide walks you through the QUnit release.
 
    * Generate the release artifacts:
    ```
-   export SOURCE_DATE_EPOCH="$(git log -s --format=%at -1)"
    npm run build
-   ```
-
-   * Rename `dist/` to `qunit/`:
-   ```
-   mv dist/ qunit/
    ```
 
    * Review the changes to the package and library files, compared to the previous release.

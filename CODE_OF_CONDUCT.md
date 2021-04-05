@@ -1,1 +1,1 @@
-This project adheres to the [JS Foundation Code of Conduct](https://js.foundation/community/code-of-conduct).
+This project adheres to the [OpenJS Foundation Code of Conduct](https://code-of-conduct.openjsf.org/).

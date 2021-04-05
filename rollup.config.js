@@ -12,7 +12,7 @@ const isCoverage = process.env.BUILD_TARGET === "coverage";
 module.exports = {
 	input: "src/qunit.js",
 	output: {
-		file: "dist/qunit.js",
+		file: "qunit/qunit.js",
 		sourcemap: isCoverage,
 		format: "iife",
 		exports: "none",
@@ -25,8 +25,6 @@ module.exports = {
  * Copyright OpenJS Foundation and other contributors\n\
  * Released under the MIT license\n\
  * https://jquery.org/license\n\
- *\n\
- * Date: @DATE\n\
  */",
 
 		intro: function() {
@@ -40,10 +38,6 @@ module.exports = {
 				__dirname + "/src/html-reporter/es6-map.js",
 				"utf8"
 			).toString().trim();
-		},
-
-		globals: {
-			global: "(function() { return this; }())"
 		}
 	},
 	plugins: [
@@ -57,8 +51,5 @@ module.exports = {
 			babelHelpers: "bundled",
 			babelrc: true
 		} )
-	],
-	external: [
-		"global"
 	]
 };

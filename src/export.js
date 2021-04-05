@@ -1,6 +1,6 @@
 /* global module, exports, define */
 import { window, document, self } from "./globals";
-import global from "global";
+import globalThis from "../lib/global-this-polyfill";
 
 export default function exportQUnit( QUnit ) {
 	let exportedModule = false;
@@ -54,6 +54,6 @@ export default function exportQUnit( QUnit ) {
 	// For other environments, such as SpiderMonkey (mozjs) and other
 	// embedded JavaScript engines
 	if ( !exportedModule ) {
-		global.QUnit = QUnit;
+		globalThis.QUnit = QUnit;
 	}
 }

@@ -46,7 +46,7 @@ module.exports = function( grunt ) {
 
 			"src-css": {
 				src: "src/qunit.css",
-				dest: "dist/qunit.css"
+				dest: "qunit/qunit.css"
 			}
 		},
 		eslint: {

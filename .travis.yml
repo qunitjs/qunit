@@ -8,11 +8,13 @@ jobs:
     - name: Linux (Node.js 14, Browser, CLI)
       node_js: "14"
 
-    - name: Linux (Node.js 12, Browser, CLI)
+    - name: Linux (Node.js 12, CLI)
       node_js: "12"
+      script: npm run test:cli
 
-    - name: Linux (Node.js 10, Browser, CLI)
+    - name: Linux (Node.js 10, CLI)
       node_js: "10"
+      script: npm run test:cli
 
     - name: Windows (Node.js, Browser)
       os: windows
@@ -22,16 +24,17 @@ jobs:
       # https://github.com/qunitjs/qunit/issues/1359
       script: npm run test:main
 
-    - name: macOS (Node.js, Browser, CLI)
+    - name: macOS (Node.js, CLI)
       os: osx
       # On macOS, test only the last LTS.
       node_js: "10"
+      script: npm run test:cli
 
     # To debug locally, run:
     # ```
     # nobody@isolated:/qunit$ npm run build
     #
-    # you@here:/qunit$ docker run --rm --interactive --tty --mount type=bind,source="$mountsrc",target="$mountdest",readonly --entrypoint /bin/sh ubuntu:focal -c "cd $mountdest;bash"
+    # you@here:/qunit$ MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:focal -c "cd /$MNT;bash"
     #
     # root@focal:/qunit# apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
     # root@focal:/qunit# js68 test/mozjs.js
@@ -53,7 +56,7 @@ jobs:
 
     - stage: Update search index
       # https://docs.travis-ci.com/user/conditions-v1
-      if: (branch = master) AND (type IN (push, cron))
+      if: (branch = main) AND (type IN (push, cron))
       language: ruby
       rvm: 2.7
       cache: bundler

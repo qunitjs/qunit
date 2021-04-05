@@ -52,7 +52,7 @@ function advanceTaskQueue() {
 
 /**
  * Process the first task on the taskQueue as a promise.
- * Each task is a function returned by https://github.com/qunitjs/qunit/blob/master/src/test.js#L381
+ * Each task is a function added by Test#queue() in /src/test.js
  */
 function processTaskQueue( start ) {
 	if ( taskQueue.length && !config.blocking ) {
