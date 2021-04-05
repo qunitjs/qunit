@@ -122,11 +122,12 @@ QUnit.module( "HTML Reporter", function() {
 
 		// Verify QUnit supported stack trace
 		if ( !err.stack ) {
-			assert.equal(
+			assert.false(
 				/(^| )qunit-source( |$)/.test( source.className ),
-				false,
 				"Don't add source information on unsupported environments"
 			);
+
+			// eslint-disable-next-line qunit/no-early-return
 			return;
 		}
 

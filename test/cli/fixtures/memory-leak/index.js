@@ -57,8 +57,8 @@ QUnit.module( "later thing", function() {
 		const reHeap = /^.*FooNum\d.*$/gm;
 
 		let snapshot = await streamToString( v8.getHeapSnapshot() );
-		let matches = snapshot.match( reHeap );
-		assert.strictEqual( matches && matches.length, 2, "the before heap" );
+		let matches = snapshot.match( reHeap ) || [];
+		assert.strictEqual( matches.length, 2, "the before heap" );
 
 		snapshot = matches = null;
 		assert.strictEqual( foos.size, 2, "foos in Set" );
@@ -71,6 +71,6 @@ QUnit.module( "later thing", function() {
 
 		snapshot = await streamToString( v8.getHeapSnapshot() );
 		matches = snapshot.match( reHeap );
-		assert.strictEqual( null, matches, "the after heap" );
+		assert.strictEqual( matches, null, "the after heap" );
 	} );
 } );
