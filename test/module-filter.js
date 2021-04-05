@@ -1,3 +1,5 @@
+/* eslint-disable qunit/no-identical-names */
+
 QUnit.config.module = "Foo";
 
 QUnit.module( "Foo" );

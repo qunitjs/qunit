@@ -30,7 +30,7 @@ QUnit.module( "pushFailure outside a test", function( hooks ) {
 		QUnit.config.current.pushResult = originalPushResult;
 	} );
 
-	// Actual test (outside QUnit.test context).
+	// Actual test, outside QUnit.test context.
 	QUnit.onError( {
 		message: "Error message",
 		fileName: "filePath.js",
