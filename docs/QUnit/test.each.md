@@ -15,7 +15,7 @@ Add a parametrized test to run.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `data` (Array) | Array of arrays of parameters to be passed as input to each test |
+| `data` (Array) | Array of arrays of parameters to be passed as input to each test. Or a 1D array of primitives |
 | `callback` (function) | Function to close over assertions |
 
 #### Callback parameters: `callback( assert, ..args )`:
@@ -48,5 +48,9 @@ function square( x ) {
 
 QUnit.test( "square()", [ [ 2, 4 ], [ 3, 9 ] ], assert value, expected => {
   assert.equal( square( value ), expected, `square(${value})` );
+});
+
+QUnit.test( "isEven()", [ 2, 4 ], assert value => {
+  assert.true( isEven( value ), `isEven(${value})` );
 });
 ```

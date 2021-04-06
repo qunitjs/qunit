@@ -3,4 +3,7 @@ QUnit.module.only( "test.each.only", function() {
 	QUnit.test.each.only( "test.each.only", [ [ 1, 2, 3 ], [ 1, 1, 2 ] ], function( assert, a, b, result ) {
 		assert.strictEqual( a + b, result );
 	} );
+	QUnit.test.each.only( "test.each.only 1D", [ 1, [], "some" ], function( assert, value ) {
+		assert.true( Boolean( value ) );
+	} );
 } );

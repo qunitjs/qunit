@@ -727,6 +727,18 @@ function only( testName, data, callback ) {
 	newTest.queue();
 }
 
+function normalizeTable( data ) {
+	const isTable = data.every( Array.isArray );
+	if ( isTable ) {
+		return data;
+	}
+	return data.map( datum => [ datum ] );
+}
+
+function runEach( data, eachFn ) {
+	normalizeTable( data ).forEach( eachFn );
+}
+
 extend( test, {
 	todo: function todo( testName, callback ) {
 		if ( focused || config.currentModule.ignored ) {
@@ -752,7 +764,7 @@ extend( test, {
 			return;
 		}
 
-		data.forEach( ( datum, i ) => {
+		runEach( data, ( datum, i ) => {
 			const newTest = new Test( {
 				testName: `${i} ${testName}`,
 				callback: callback,
@@ -766,12 +778,12 @@ extend( test, {
 
 extend( test.each, {
 	skip: function( testName, data ) {
-		data.forEach( ( datum, i ) => {
+		runEach( data, ( datum, i ) => {
 			skip( `${i} ${testName}`, datum );
 		} );
 	},
 	only: function( testName, data, callback ) {
-		data.forEach( ( datum, i ) => {
+		runEach( data, ( datum, i ) => {
 			only( `${i} ${testName}`, datum, callback );
 		} );
 	}
