@@ -27,7 +27,8 @@ Add a parameterized test to run.
 
 ### Description
 
-Add a parameterized test to run using `QUnit.test.each()`.
+Add a parameterized test to run using `QUnit.test.each()`. `QUnit.test.each()` generates multiple calls to `QUnit.test()` so `then`-able behavior is maintained.
+
 
 The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
 `QUnit.test.each.only`, `QUnit.test.each.skip` and `QUnit.test.each.todo` are also available.
