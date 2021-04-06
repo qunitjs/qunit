@@ -340,9 +340,17 @@ class Assert {
 				expected = errorString( expected );
 
 			// Expected is a validation function which returns true if validation passed
-			} else if ( expectedType === "function" && expected.call( {}, actual ) === true ) {
-				expected = null;
-				result = true;
+			} else if ( expectedType === "function" ) {
+
+				// protect against accidental semantics which could hard error in the test
+				try {
+					result = expected.call( {}, actual ) === true;
+					expected = null;
+				} catch ( e ) {
+
+					// assign the "expected" to a nice error string to communicate the local failure to the user
+					expected = errorString( e );
+				}
 			}
 		}
 

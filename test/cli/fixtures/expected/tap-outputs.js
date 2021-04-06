@@ -96,12 +96,12 @@ ok 5 A-Test > derp
 
 	"qunit --reporter npm-reporter": "Run ended!",
 	"qunit --reporter does-not-exist": `No reporter found matching "does-not-exist".
-Available reporters from JS Reporters are: console, tap
-Available custom reporters from dependencies are: npm-reporter
+Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
 `,
 
-	"qunit --reporter": `Available reporters from JS Reporters are: console, tap
-Available custom reporters from dependencies are: npm-reporter
+	"qunit --reporter": `Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
 `,
 
 	/* eslint-disable max-len */
@@ -172,7 +172,7 @@ not ok 2 Example > bad
   severity: failed
   actual  : false
   expected: true
-  stack:     at .* \\(.*source.js:7:14\\)
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.js:7:14)
   ...
 1..2
 # pass 1
@@ -189,8 +189,7 @@ not ok 2 Example > bad
   severity: failed
   actual  : false
   expected: true
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.min.js:1:133)
-        -> /qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10
+  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10)
   ...
 1..2
 # pass 1
