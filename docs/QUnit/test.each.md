@@ -1,7 +1,7 @@
 ---
 layout: default
 title: QUnit.test.each()
-excerpt: Add a parametrized test to run.
+excerpt: Add a parameterized test to run.
 categories:
   - main
   - async
@@ -10,15 +10,15 @@ version_added: "1.0"
 
 `QUnit.test.each( name, data, callback )`
 
-Add a parametrized test to run.
+Add a parameterized test to run.
 
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `data` (Array) | Array of arrays of parameters to be passed as input to each test. Or a 1D array of primitives |
+| `data` (Array) | Array of arrays of parameters to be passed as input to each test. This can also be specified as a 1D array of primitives |
 | `callback` (function) | Function to close over assertions |
 
-#### Callback parameters: `callback( assert, ..args )`:
+#### Callback parameters: `callback( assert, ...args )`:
 
 | parameter | description |
 |-----------|-------------|
@@ -27,9 +27,10 @@ Add a parametrized test to run.
 
 ### Description
 
-Add a parametrized test to run using `QUnit.test.each()`.
+Add a parameterized test to run using `QUnit.test.each()`.
 
 The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
+`QUnit.test.each.only`, `QUnit.test.each.skip` and `QUnit.test.each.todo` are also available.
 
 See also:
 * [`QUnit.test.only()`](./test.only.md)
@@ -46,11 +47,11 @@ function square( x ) {
   return x * x;
 }
 
-QUnit.test( "square()", [ [ 2, 4 ], [ 3, 9 ] ], assert value, expected => {
+QUnit.test.each( "square()", [ [ 2, 4 ], [ 3, 9 ] ], ( assert value, expected ) => {
   assert.equal( square( value ), expected, `square(${value})` );
 });
 
-QUnit.test( "isEven()", [ 2, 4 ], assert value => {
+QUnit.test.each( "isEven()", [ 2, 4 ], ( assert, value ) => {
   assert.true( isEven( value ), `isEven(${value})` );
 });
 ```

@@ -696,15 +696,29 @@ export function test( testName, callback ) {
 	newTest.queue();
 }
 
-function skip( testName, data ) {
+function todo( testName, data, callback ) {
+	if ( focused || config.currentModule.ignored ) {
+		return;
+	}
+
+	const newTest = new Test( {
+		testName,
+		callback,
+		todo: true,
+		params: data
+	} );
+
+	newTest.queue();
+}
+
+function skip( testName ) {
 	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
 
 	const test = new Test( {
 		testName: testName,
-		skip: true,
-		params: data
+		skip: true
 	} );
 
 	test.queue();
@@ -736,25 +750,22 @@ function normalizeTable( data ) {
 }
 
 function runEach( data, eachFn ) {
-	normalizeTable( data ).forEach( eachFn );
+	if ( Array.isArray( data ) ) {
+		normalizeTable( data ).forEach( eachFn );
+	} else {
+		throw new Error(
+			`test.each expects array of arrays or an array of primitives is the expected input.
+${typeof data} was found instead.`
+		);
+	}
 }
 
 extend( test, {
-	todo: function todo( testName, callback ) {
-		if ( focused || config.currentModule.ignored ) {
-			return;
-		}
-
-		const newTest = new Test( {
-			testName,
-			callback,
-			todo: true
-		} );
-
-		newTest.queue();
+	todo: function( testName, callback ) {
+		todo( testName, undefined, callback );
 	},
 	skip: function( testName ) {
-		skip( testName, undefined );
+		skip( testName );
 	},
 	only: function( testName, callback ) {
 		only( testName, undefined, callback );
@@ -777,9 +788,14 @@ extend( test, {
 
 
 extend( test.each, {
-	skip: function( testName, data ) {
+	todo: function( testName, data, callback ) {
 		runEach( data, ( datum, i ) => {
-			skip( `${i} ${testName}`, datum );
+			todo( `${i} ${testName}`, datum, callback );
+		} );
+	},
+	skip: function( testName, data ) {
+		runEach( data, ( _, i ) => {
+			skip( `${i} ${testName}` );
 		} );
 	},
 	only: function( testName, data, callback ) {
