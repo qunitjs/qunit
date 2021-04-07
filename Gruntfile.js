@@ -13,6 +13,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-qunit" );
 	grunt.loadNpmTasks( "grunt-search" );
+	grunt.loadNpmTasks( "grunt-exec" );
 
 	grunt.initConfig( {
 		connect: {
