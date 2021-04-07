@@ -764,9 +764,7 @@ extend( test, {
 	todo: function( testName, callback ) {
 		todo( testName, undefined, callback );
 	},
-	skip: function( testName ) {
-		skip( testName );
-	},
+	skip,
 	only: function( testName, callback ) {
 		only( testName, undefined, callback );
 	},
