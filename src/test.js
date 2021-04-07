@@ -754,7 +754,7 @@ function runEach( data, eachFn ) {
 		normalizeTable( data ).forEach( eachFn );
 	} else {
 		throw new Error(
-			`test.each expects array of arrays or an array of primitives is the expected input.
+			`test.each expects an array of arrays or an array of primitives as the expected input.
 ${typeof data} was found instead.`
 		);
 	}
