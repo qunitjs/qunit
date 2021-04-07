@@ -48,7 +48,17 @@ function square( x ) {
   return x * x;
 }
 
-QUnit.test.each( "square()", [ [ 2, 4 ], [ 3, 9 ] ], ( assert value, expected ) => {
+function isEven( x ) {
+  return x % 2 === 0;
+}
+
+function isAsyncEven( x ) {
+  return new Promise( resolve => {
+    return resolve( isEven( x ) );
+  } );
+}
+
+QUnit.test.each( "square()", [ [ 2, 4 ], [ 3, 9 ] ], ( assert, value, expected ) => {
   assert.equal( square( value ), expected, `square(${value})` );
 });
 
