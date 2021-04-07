@@ -680,20 +680,24 @@ function checkPollution() {
 	}
 }
 
-let focused = false; // indicates that the "only" filter was used
-
-// Will be exposed as QUnit.test
-export function test( testName, callback ) {
+function addTestWithData( data ) {
 	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
 
-	const newTest = new Test( {
+	const newTest = new Test( data );
+
+	newTest.queue();
+}
+
+let focused = false; // indicates that the "only" filter was used
+
+// Will be exposed as QUnit.test
+export function test( testName, callback ) {
+	addTestWithData( {
 		testName: testName,
 		callback: callback
 	} );
-
-	newTest.queue();
 }
 
 function todo( testName, data, callback ) {
@@ -769,17 +773,12 @@ extend( test, {
 		only( testName, undefined, callback );
 	},
 	each: function( testName, data, callback ) {
-		if ( config.currentModule.ignored ) {
-			return;
-		}
-
 		runEach( data, ( datum, i ) => {
-			const newTest = new Test( {
+			addTestWithData( {
 				testName: `${i} ${testName}`,
 				callback: callback,
 				params: datum
 			} );
-			newTest.queue();
 		} );
 	}
 } );
