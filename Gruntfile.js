@@ -4,7 +4,6 @@ const fs = require( "fs" );
 const path = require( "path" );
 const { preprocess } = require( "./build/dist-replace.js" );
 
-// Detect Travis CI or Jenkins.
 var isCI = process.env.CI || process.env.JENKINS_HOME;
 
 module.exports = function( grunt ) {
@@ -70,17 +69,16 @@ module.exports = function( grunt ) {
 			all: {
 				options: {
 					timeout: 30000,
-					puppeteer: !isCI ? {
+					puppeteer: {
+						args: isCI ?
 
-						// Allow Docker-based developer environmment to
-						// inject --no-sandbox as-needed for Chrome.
-						args: ( process.env.CHROMIUM_FLAGS || "" ).split( " " )
-					} : {
-						args: [
+							// For CI
+							[ "--no-sandbox" ] :
 
-							// https://docs.travis-ci.com/user/chrome#sandboxing
-							"--no-sandbox"
-						]
+							// For local development
+							// Allow Docker-based developer environmment to
+							// inject --no-sandbox as-needed for Chrome.
+							( process.env.CHROMIUM_FLAGS || "" ).split( " " )
 					},
 					inject: [
 						path.resolve( "./build/coverage-bridge.js" ),
