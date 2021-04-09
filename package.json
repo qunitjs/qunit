@@ -67,7 +67,6 @@
     "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-qunit": "^3.1.0",
-    "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^23.0.0",
     "grunt-git-authors": "^3.2.0",
     "grunt-search": "^0.1.8",
@@ -77,13 +76,11 @@
     "requirejs": "^2.3.5",
     "rimraf": "^2.7.1",
     "rollup": "^2.30.0",
-    "semver": "^5.4.1",
-    "tiny-lr": "^1.1.1"
+    "semver": "^5.4.1"
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",
     "build:coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy:src-css",
-    "dev": "grunt watch",
     "test": "npm run build && grunt test && bin/qunit.js test/cli/*.js",
     "test:lint": "grunt eslint",
     "test:main": "npm run build && grunt test",
@@ -91,7 +88,7 @@
     "authors": "grunt authors",
     "coverage": "npm run build:coverage && npm run coverage:_cli && npm run coverage:_main && nyc report",
     "coverage:_cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
-    "coverage:_main": "nyc instrument --in-place qunit/ && grunt connect:nolivereload qunit",
+    "coverage:_main": "nyc instrument --in-place qunit/ && grunt connect:base qunit",
     "coveralls-upload": "cat coverage/lcov.info | coveralls"
   },
   "nyc": {

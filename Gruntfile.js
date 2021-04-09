@@ -7,20 +7,17 @@ const { preprocess } = require( "./build/dist-replace.js" );
 var isCI = process.env.CI || process.env.JENKINS_HOME;
 
 module.exports = function( grunt ) {
-	var livereloadPort = grunt.option( "livereload-port" ) || 35729;
 	var connectPort = Number( grunt.option( "connect-port" ) ) || 4000;
 
-	// Load grunt tasks from NPM packages
 	grunt.loadNpmTasks( "grunt-contrib-connect" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-qunit" );
-	grunt.loadNpmTasks( "grunt-contrib-watch" );
 	grunt.loadNpmTasks( "grunt-eslint" );
 	grunt.loadNpmTasks( "grunt-search" );
 
 	grunt.initConfig( {
 		connect: {
-			nolivereload: {
+			base: {
 				options: {
 
 					// grunt-contrib-connect supports 'useAvailablePort' which
@@ -28,15 +25,6 @@ module.exports = function( grunt ) {
 					// the grunt-contrib-qunit task needs to know the url ahead of time.
 					port: connectPort,
 					base: "."
-				}
-			},
-
-			// For use by the "watch" task.
-			livereload: {
-				options: {
-					port: connectPort,
-					base: ".",
-					livereload: livereloadPort
 				}
 			}
 		},
@@ -168,29 +156,6 @@ module.exports = function( grunt ) {
 				"test/es2018/async-functions.js",
 				"test/es2018/throws.js"
 			]
-		},
-		"watch-repeatable": {
-			options: {
-				atBegin: true,
-				spawn: false,
-				interrupt: true
-			},
-			files: [
-				".eslintrc.json",
-				"*.js",
-				"build/*.js",
-				"{src,test}/**/*.js",
-				"src/qunit.css",
-				"test/*.{html,js}",
-				"test/**/*.html"
-			],
-			tasks: [ "build", "livereload", "test-in-watch" ]
-		},
-
-		livereload: {
-			options: {
-				port: livereloadPort
-			}
 		}
 	} );
 
@@ -203,12 +168,5 @@ module.exports = function( grunt ) {
 	} );
 
 	grunt.loadTasks( "build/tasks" );
-	grunt.registerTask( "test-base", [ "eslint", "search", "test-on-node" ] );
-	grunt.registerTask( "test", [ "test-base", "connect:nolivereload", "qunit" ] );
-	grunt.registerTask( "test-in-watch", [ "test-base", "qunit" ] );
-
-	// Start the web server in a watch pre-task
-	// https://github.com/gruntjs/grunt-contrib-watch/issues/50
-	grunt.renameTask( "watch", "watch-repeatable" );
-	grunt.registerTask( "watch", [ "connect:livereload", "watch-repeatable" ] );
+	grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "connect:base", "qunit" ] );
 };
