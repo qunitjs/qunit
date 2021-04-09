@@ -42,6 +42,7 @@ module.exports = {
 	},
 	plugins: [
 		replace( {
+			preventAssignment: true,
 			delimiters: [ "", "" ],
 			...replacements
 		} ),
