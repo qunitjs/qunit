@@ -1,3 +1,5 @@
+[![Build Status: spider-check](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml)
+
 # api.qunitjs.com
 
 ## Building and Deploying
