@@ -56,7 +56,7 @@ This guide walks you through the QUnit release.
       Build: Prepare @VERSION release
       ```
    3. Push the `release` branch to GitHub.
-   4. Create a pull request, and merge it once Travis CI is passing.
+   4. Create a pull request, and merge it once CI is passing.
 
 ## Performing the release
 

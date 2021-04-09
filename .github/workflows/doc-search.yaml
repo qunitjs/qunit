@@ -1,0 +1,24 @@
+name: Update search index
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    name: Update search index
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      # https://github.com/ruby/setup-ruby
+      - uses: ruby/setup-ruby@v1
+        with:
+          working-directory: docs/
+          ruby-version: 2.7
+          bundler-cache: true
+
+      - run: bundle exec jekyll algolia
+        working-directory: docs/
+        env:
+          ALGOLIA_API_KEY: "${{ secrets.ALGOLIA_API_KEY }}"
