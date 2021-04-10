@@ -185,7 +185,7 @@ QUnit.done( function() {
 
 	done = true;
 
-	QUnit.module( "Events" );
+	QUnit.module( "Events-postdone" );
 	QUnit.test( "verify callback order and data at end of test", function( assert ) {
 		assert.deepEqual( invokedHooks, [
 			"runStart",

@@ -56,11 +56,12 @@ ok 2 Second > 1
 `TAP version 13
 not ok 1 Throws match > bad
   ---
-  message: "match error"
+  message: match error
   severity: failed
-  actual  : "Error: Match me with a pattern"
+  actual  : Error: Match me with a pattern
   expected: "/incorrect pattern/"
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/fail/throws-match.js:3:10)
+  stack: |
+        at Object.<anonymous> (/qunit/test/cli/fixtures/fail/throws-match.js:3:10)
   ...
 1..1
 # pass 0
@@ -113,27 +114,29 @@ Last test to run (hanging) has an async hold. Ensure all assert.async() callback
 `TAP version 13
 not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promise
   ---
-  message: "Error thrown in non-returned promise!"
+  message: Error thrown in non-returned promise!
   severity: failed
   actual  : {
   "message": "Error thrown in non-returned promise!",
   "stack": "Error: Error thrown in non-returned promise!\\n    at /some/path/wherever/unhandled-rejection.js:13:11"
 }
   expected: undefined
-  stack: Error: Error thrown in non-returned promise!
-    at /some/path/wherever/unhandled-rejection.js:13:11
+  stack: |
+    Error: Error thrown in non-returned promise!
+        at /some/path/wherever/unhandled-rejection.js:13:11
   ...
 not ok 2 global failure
   ---
-  message: "outside of a test context"
+  message: outside of a test context
   severity: failed
   actual  : {
   "message": "outside of a test context",
   "stack": "Error: outside of a test context\\n    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)"
 }
   expected: undefined
-  stack: Error: outside of a test context
-    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)
+  stack: |
+    Error: outside of a test context
+        at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)
   ...
 1..2
 # pass 0
@@ -146,16 +149,17 @@ not ok 2 global failure
 `TAP version 13
 not ok 1 global failure
   ---
-  message: "No tests were run."
+  message: No tests were run.
   severity: failed
   actual  : {}
   expected: undefined
-  stack: Error: No tests were run.
-    at done (/qunit/qunit/qunit.js)
-    at advanceTestQueue (/qunit/qunit/qunit.js)
-    at Object.advance (/qunit/qunit/qunit.js)
-    at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
-    at internal
+  stack: |
+    Error: No tests were run.
+        at done (/qunit/qunit/qunit.js)
+        at advanceTestQueue (/qunit/qunit/qunit.js)
+        at Object.advance (/qunit/qunit/qunit.js)
+        at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+        at internal
   ...
 1..1
 # pass 0
@@ -168,11 +172,12 @@ not ok 1 global failure
 ok 1 Example > good
 not ok 2 Example > bad
   ---
-  message: "failed"
+  message: failed
   severity: failed
   actual  : false
   expected: true
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.js:7:14)
+  stack: |
+        at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.js:7:14)
   ...
 1..2
 # pass 1
@@ -185,11 +190,12 @@ not ok 2 Example > bad
 ok 1 Example > good
 not ok 2 Example > bad
   ---
-  message: "failed"
+  message: failed
   severity: failed
   actual  : false
   expected: true
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10)
+  stack: |
+        at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10)
   ...
 1..2
 # pass 1
@@ -210,11 +216,12 @@ ok 1 ESM test suite > sum()
 `TAP version 13
 not ok 1 timeout > first
   ---
-  message: "Test took longer than 10ms; test timed out."
+  message: Test took longer than 10ms; test timed out.
   severity: failed
   actual  : null
   expected: undefined
-  stack:     at internal
+  stack: |
+        at internal
   ...
 ok 2 timeout > second
 1..2
@@ -232,21 +239,21 @@ ok 1 Zero assertions > has a test
 # todo 0
 # fail 0`,
 
-	// Ignore the last frame about Node processing ticks (differs between Node 10 ad 12+)
 	"qunit qunit --filter 'no matches' test":
 `TAP version 13
 not ok 1 global failure
   ---
-  message: "No tests matched the filter "no matches"."
+  message: "No tests matched the filter \\"no matches\\"."
   severity: failed
   actual  : {}
   expected: undefined
-  stack: Error: No tests matched the filter "no matches".
-    at done (/qunit/qunit/qunit.js)
-    at advanceTestQueue (/qunit/qunit/qunit.js)
-    at Object.advance (/qunit/qunit/qunit.js)
-    at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
-    at internal
+  stack: |
+    Error: No tests matched the filter "no matches".
+        at done (/qunit/qunit/qunit.js)
+        at advanceTestQueue (/qunit/qunit/qunit.js)
+        at Object.advance (/qunit/qunit/qunit.js)
+        at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+        at internal
   ...
 1..1
 # pass 0
@@ -289,11 +296,12 @@ ok 2 all tests with only run
 `TAP version 13
 not ok 1 # TODO module B > Only this module should run > a todo test
   ---
-  message: "not implemented yet"
+  message: not implemented yet
   severity: todo
   actual  : false
   expected: true
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/only/module.js:17:15)
+  stack: |
+        at Object.<anonymous> (/qunit/test/cli/fixtures/only/module.js:17:15)
   ...
 ok 2 # SKIP module B > Only this module should run > implicitly skipped test
 ok 3 module B > Only this module should run > normal test
@@ -310,11 +318,12 @@ ok 6 module E > test E
 `TAP version 13
 not ok 1 # TODO module B > test B
   ---
-  message: "not implemented yet"
+  message: not implemented yet
   severity: todo
   actual  : false
   expected: true
-  stack:     at Object.<anonymous> (/qunit/test/cli/fixtures/only/module-flat.js:9:13)
+  stack: |
+        at Object.<anonymous> (/qunit/test/cli/fixtures/only/module-flat.js:9:13)
   ...
 ok 2 # SKIP module B > test C
 ok 3 module B > test D

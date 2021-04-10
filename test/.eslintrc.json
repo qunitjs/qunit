@@ -1,5 +1,5 @@
 {
-	"extends": [ "plugin:qunit/two" ],
+	"extends": [ "plugin:qunit/recommended" ],
 	"env": {
 		"browser": true,
 		"es6": false
@@ -17,6 +17,13 @@
 		"console": false
 	},
 	"rules": {
+		"qunit/literal-compare-order": "off",
+		"qunit/no-arrow-tests": "off",
+		"qunit/no-assert-equal-boolean": "off",
+		"qunit/no-assert-logical-expression": "off",
+		"qunit/no-only": "off",
+		"qunit/require-expect": "off",
+		"qunit/resolve-async": "off",
 		"max-len": "off"
 	},
 	"ignorePatterns": [

@@ -64,7 +64,7 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 			assert.pushResult = originalPushResult;
 		} );
 
-		// Actual test (outside QUnit.test context)
+		// Actual test, outside QUnit.test context.
 		QUnit.onUnhandledRejection( {
 			message: "Error message",
 			fileName: "filePath.js",

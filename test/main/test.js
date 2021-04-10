@@ -177,11 +177,13 @@ QUnit.module( "test", function() {
 	QUnit.test( "testForPush", function( assert ) {
 		QUnit.log( function( detail ) {
 			if ( detail.message === "should be call pushResult" ) {
+				/* eslint-disable qunit/no-conditional-assertions */
 				assert.equal( detail.result, true );
 				assert.equal( detail.actual, 1 );
 				assert.equal( detail.expected, 1 );
 				assert.equal( detail.message, "should be call pushResult" );
 				assert.equal( detail.negative, false );
+				/* eslint-enable */
 			}
 		} );
 		assert.testForPush( 1, 1, "should be call pushResult" );
@@ -222,6 +224,8 @@ QUnit.module( "test", function() {
 
 	QUnit.test( "QUnit.test without a callback logs a descriptive error", function( assert ) {
 		assert.throws( function() {
+
+			// eslint-disable-next-line qunit/no-nested-tests
 			QUnit.test( "should throw an error" );
 		}, /You must provide a callback to QUnit.test\("should throw an error"\)/ );
 	} );

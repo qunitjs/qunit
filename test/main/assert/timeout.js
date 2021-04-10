@@ -49,6 +49,7 @@ QUnit.module( "assert.timeout", function() {
 		assert.timeout( 50 );
 		assert.expect( 1 );
 
+		var done = assert.async();
 		setTimeout( function() {
 			assert.timeout( 10 );
 			var original = assert.test.pushFailure;
@@ -59,7 +60,6 @@ QUnit.module( "assert.timeout", function() {
 				done();
 			};
 		} );
-		var done = assert.async();
 	} );
 
 	QUnit.module( "a value of zero", function() {

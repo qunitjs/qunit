@@ -1,0 +1,28 @@
+name: spider-check
+on:
+  # Once a day at 02:30
+  schedule:
+    - cron: '30 2 * * *'
+  # Or manually
+  workflow_dispatch:
+  # Or when developing this workflow
+  push:
+    paths:
+      - .github/workflows/spider-check.yaml
+  pull_request:
+    paths:
+      - .github/workflows/spider-check.yaml
+
+jobs:
+  spider-check:
+    # Includes Python 3
+    # https://github.com/actions/virtual-environments/blob/ubuntu20/20210318.0/images/linux/Ubuntu2004-README.md
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: qunitjs/hydra-link-checker
+          ref: v1.0.2
+
+      - name: Run hydra-link-checker
+        run: python3 hydra.py "https://api.qunitjs.com"

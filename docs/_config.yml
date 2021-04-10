@@ -69,7 +69,7 @@ sass:
 # See <https://github.com/algolia/jekyll-algolia>.
 algolia:
   application_id: EQYECMT6Q0
-  # Which index the Travis job will create/update
+  # Which index the CI job will create/update
   # with the content of the current Jekyll site.
   # The auth key for this is injected as secure env variable.
   index_name: qunitjs-api
@@ -81,3 +81,12 @@ exclude:
   - README.md
   - CONTRIBUTING.md
   - CNAME
+  # On GitHub's CI, something causes vendor/ to not be ignored by
+  # default, leading to an error:
+  #
+  # > Error: Invalid date 'Time.now.strftime(…)'
+  # > Document 'vendor/bundle/gems/jekyll…/…/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'
+  # > does not have a valid date in the YAML front matter.
+  #
+  # https://dev.to/michael/compile-a-jekyll-project-without-installing-jekyll-or-ruby-by-using-docker-4184
+  - vendor
