@@ -1,3 +1,5 @@
+import Logger from "./logger";
+
 import config from "./core/config";
 
 import SuiteReport from "./reports/suite";
@@ -94,6 +96,11 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 
 	function setHookFunction( module, hookName ) {
 		return function setHook( callback ) {
+			if ( config.currentModule !== module ) {
+				Logger.warn( "The `" + hookName + "` hook was called inside the wrong module. " +
+					"Instead, use hooks provided by the callback to the containing module." +
+					"This will become an error in QUnit 3.0." );
+			}
 			module.hooks[ hookName ].push( callback );
 		};
 	}
