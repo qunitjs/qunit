@@ -1,0 +1,45 @@
+name: browsers-quick
+on:
+  pull_request:
+  # Or when developing this workflow
+  push:
+    paths:
+      - .github/workflows/browsers-quick.yaml
+
+jobs:
+  run:
+    name: BrowserStack
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Use Node.js 10
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+
+      - name: Prepare
+        run: |
+          npm ci
+          npm run build
+
+      - name: Tests
+        run: npm run browserstack
+        env:
+          BROWSERSTACK_JSON: build/browserstack-quick.json
+          BROWSERSTACK_USERNAME: "${{ secrets.BROWSERSTACK_USERNAME }}"
+          BROWSERSTACK_KEY: "${{ secrets.BROWSERSTACK_KEY }}"
+          # Set "project" metadata
+          TRAVIS_REPO_SLUG: "${{ github.repository }} ${{ github.event_name}}"
+          # Set "commit" metadata
+          TRAVIS_COMMIT: "quick ${{ github.ref }} ${{ github.sha }}"
+          TUNNEL_ID: "${{ github.event_name }}-quick-${{ github.sha }}"

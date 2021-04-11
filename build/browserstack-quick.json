@@ -1,0 +1,28 @@
+{
+  "test_framework": "qunit",
+  "test_path": ["test/index.html"],
+  "test_server_port": "8899",
+  "exit_with_fail": true,
+  "timeout": 600,
+  "browsers": [
+    "firefox_45",
+    "firefox_current",
+    "ie_9",
+    "safari_9.1",
+    "safari_current",
+    "opera_current",
+    "chrome_current",
+    {
+      "device": "Samsung Galaxy S20",
+      "real_mobile": true,
+      "os": "android",
+      "os_version": "10.0"
+    },
+    {
+      "device": "iPhone SE",
+      "real_mobile": true,
+      "os": "ios",
+      "os_version": "11"
+    }
+  ]
+}
