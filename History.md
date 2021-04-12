@@ -1,4 +1,23 @@
 
+2.15.0 / 2021-04-12
+==================
+
+### Changed
+
+* HTML Reporter: Trim whitespace of the filter input. (Nathaniel Furniss) [#1573](https://github.com/qunitjs/qunit/pull/1573)
+* CLI: Upgrade `js-reporters` to 2.0.0. [#1577](https://github.com/qunitjs/qunit/pull/1577)
+
+### Deprecated
+
+* Core: Warn when setting hooks for a different module. (Ray Cohen) [#1586](https://github.com/qunitjs/qunit/pull/1586)
+
+### Fixed
+
+* Assert: Fix `assert.throws()` to fail gracefully when expected class does not match. (Steve McClure) [#1530](https://github.com/qunitjs/qunit/issues/1530)
+* CLI: Fix TAP output to support cyclical objects. (Zachary Mulgrew) [#1555](https://github.com/qunitjs/qunit/issues/1555) [js-reporters#104](https://github.com/js-reporters/js-reporters/issues/104)
+* CLI: Fix TAP output for the `Infinity` value, previously became `null`. (Timo Tijhof) [#1406](https://github.com/qunitjs/qunit/issues/1406)
+* CLI: Fix TAP output going silent if `console` object is mocked. (Timo Tijhof) [#1340](https://github.com/qunitjs/qunit/issues/1340)
+
 2.14.1 / 2021-03-14
 ==================
 
