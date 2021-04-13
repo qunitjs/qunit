@@ -158,3 +158,22 @@ QUnit.test( "equal values", function( assert ) {
 		""
 	);
 } );
+
+QUnit.test( "Edge cases", function( assert ) {
+	assert.throws(
+		function() {
+			QUnit.diff( "abc", null );
+		},
+		/Error: Null input. \(DiffMain\)/ );
+
+	// this hits several hard-to-reach cases for the sake of code coverage
+	var X = "x".repeat( 100 );
+	var Y = "y".repeat( 100 );
+	assert.equal(
+		QUnit.diff(
+			"A\nB\n" + X + "\nD",
+			"A\nCCC\nB\nCCC\n" + Y + "\nD" ),
+		"<span>A\n</span><ins>CCC\n</ins><span>B\n</span>" +
+		"<del>" + X + "</del><ins>CCC\n" + Y + "</ins>" +
+		"<span>\nD</span>" );
+} );
