@@ -1820,6 +1820,10 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function( assert ) {
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
+	s1 = new Set( [ 1, 3 ] );
+	s2 = new Set( [ 2, 3 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), false, "Sets can 'short-circuit' for early failure" );
+
 	// Sets Containing objects
 	o1 = { foo: 0, bar: true };
 	o2 = { foo: 0, bar: true };
