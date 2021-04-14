@@ -1,4 +1,5 @@
 /* globals Symbol:false */
+/* eslint-disable qunit/no-conditional-assertions */
 
 QUnit.module( "dump", {
 	afterEach: function() {

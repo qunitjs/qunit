@@ -1,0 +1,34 @@
+name: Code coverage
+on:
+  - push
+
+jobs:
+  run:
+    name: Code coverage
+    runs-on: ubuntu-20.04
+    env:
+      PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Use Node.js 10
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+
+      - run: npm ci
+
+      - name: Tests
+        run: npm run coverage
+
+      - run: npm run coveralls-upload
+        env:
+          COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
+          COVERALLS_GIT_BRANCH: "${{ github.ref }}"

@@ -1,0 +1,90 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  main-test:
+    strategy:
+      matrix:
+        include:
+          - name: "Linux: Node 14"
+            # Includes 'firefox', 'chromium', and more.
+            # https://github.com/actions/virtual-environments/blob/ubuntu20/20210302.0/images/linux/Ubuntu2004-README.md
+            os: ubuntu-20.04
+            node: 14.x
+            script: npm test
+
+          - name: "Linux: Node 12"
+            os: ubuntu-20.04
+            node: 12.x
+            script: npm test
+
+          - name: "Linux: Node 10"
+            os: ubuntu-20.04
+            node: 10.x
+            script: npm test
+
+          # On Windows, cannot test CLI yet.
+          # https://github.com/qunitjs/qunit/issues/1359
+          - name: "Windows: Node 14"
+            os: windows-latest
+            node: 14.x
+            script: npm run test:main
+
+          - name: "macOS: Node 14"
+            os: macos-latest
+            node: 14.x
+            script: npm test
+
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    env:
+      PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        if: ${{ runner.os != 'Windows' }}
+        with:
+          path: |
+            ~/.npm
+            ~/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: npm ci
+
+      - name: Tests
+        run: ${{ matrix.script }}
+
+  sm-test:
+    name: SpiderMonkey
+    runs-on: ubuntu-20.04
+    env:
+      PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            ~/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Use Node.js 10
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+      - name: Install mozjs
+        run: |
+          sudo apt-fast install -y libmozjs-68-dev
+      - run: npm ci
+      - run: npm run build
+      - name: Tests
+        run: js68 test/mozjs.js

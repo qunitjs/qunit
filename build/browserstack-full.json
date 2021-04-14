@@ -1,0 +1,101 @@
+{
+  "test_framework": "qunit",
+  "test_path": ["test/index.html"],
+  "test_server_port": "8899",
+  "exit_with_fail": true,
+  "timeout": 600,
+  "browsers": [
+    "firefox_45",
+    "firefox_78",
+    "firefox_previous",
+    "firefox_current",
+    "ie_9",
+    "ie_10",
+    "ie_11",
+    "edge_15",
+    "edge_18",
+    "edge_previous",
+    "edge_current",
+    "safari_9.1",
+    "safari_10.1",
+    "safari_11.1",
+    "safari_12.1",
+    "safari_13.1",
+    "safari_current",
+    "opera_36",
+    "opera_previous",
+    "opera_current",
+    "chrome_58",
+    "chrome_previous",
+    "chrome_current",
+    {
+      "device": "Samsung Galaxy S20",
+      "real_mobile": true,
+      "os": "android",
+      "os_version": "10.0"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "7"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "8"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "9"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "10"
+    },
+    {
+      "device": "iPhone SE",
+      "real_mobile": true,
+      "os": "ios",
+      "os_version": "11"
+    },
+    {
+      "device": "iPhone XR",
+      "real_mobile": true,
+      "os": "ios",
+      "os_version": "12"
+    }
+  ],
+  "@browsers_broken": [
+    {
+      "@ref": [
+        "https://github.com/browserstack/browserstack-runner/issues/245",
+        "Android 4, Android 5, Android 6"
+      ]
+    },
+    {
+      "@ref": [
+        "https://github.com/browserstack/browserstack-runner/issues/226",
+        "Android 7-10",
+        "iOS 13, 14"
+      ]
+    },
+    {
+      "device": "Samsung Galaxy S7",
+      "real_mobile": true,
+      "os": "android",
+      "os_version": "6.0"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "13"
+    },
+    {
+      "device": null,
+      "os": "ios",
+      "os_version": "14"
+    }
+  ]
+}
