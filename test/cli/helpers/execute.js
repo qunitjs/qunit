@@ -22,7 +22,7 @@ function normalize( actual ) {
 		// Convert "at foo (/min.js:1)\n -> /src.js:2" to "at foo (/src.js:2)"
 		.replace( /\b(at [^(]+\s\()[^)]+(\))\n\s+-> ([^\n]+)/g, "$1$3$2" )
 
-		.replace( / at .+\([^/)][^)]*\)/g, " at internal" )
+		.replace( / {2}at .+\([^/)][^)]*\)/g, "  at internal" )
 
 		// merge successive lines after initial frame
 		.replace( /(\n\s+at internal)+/g, "$1" )

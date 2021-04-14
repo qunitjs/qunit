@@ -397,7 +397,7 @@ QUnit.module( "CLI Main", () => {
 
 					// This isn't the *exact* the error message we want to see - it's been transformed
 					// by the execution to standardize on formatting. Should be improved.
-					result: e.stdout.indexOf( "Expected at internal to accept zero assertions." ) > -1,
+					result: e.stdout.indexOf( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ) > -1,
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
