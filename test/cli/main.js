@@ -133,6 +133,40 @@ QUnit.module( "CLI Main", () => {
 		}
 	} );
 
+	QUnit.test( "hard errors in test are caught and reported", async assert => {
+		const command = "qunit hard-error-in-test.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.notEqual( e.stdout.indexOf( "Died on test #2     at " ), -1 );
+			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in test" ), -1 );
+		}
+	} );
+
+	QUnit.test( "hard errors in hook are caught and reported", async assert => {
+		const command = "qunit hard-error-in-hook.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.notEqual( e.stdout.indexOf( "message: before failed on contains a hard error: expected error thrown in hook" ), -1 );
+			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in hook" ), -1 );
+		}
+	} );
+
 	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
 		QUnit.test( "run ESM test suite with import statement", async assert => {
 			const command = "qunit ../../es2018/esm.mjs";
@@ -278,6 +312,19 @@ QUnit.module( "CLI Main", () => {
 				} );
 			}
 		} );
+
+		QUnit.test( "errors if notrycatch is used and a rejection occurs in a hook", async assert => {
+			try {
+				await execute( "qunit notrycatch/returns-rejection-in-hook.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+
+					// only in stdout due to using `console.log` in manual `unhandledRejection` handler
+					result: e.stdout.indexOf( "Unhandled Rejection: bad things happen sometimes" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
 	} );
 
 	QUnit.module( "only", () => {
@@ -319,5 +366,56 @@ QUnit.module( "CLI Main", () => {
 		assert.equal( execution.code, 0 );
 		assert.equal( execution.stderr, "The `beforeEach` hook was called inside the wrong module. Instead, use hooks provided by the callback to the containing module.This will become an error in QUnit 3.0.", "The warning shows" );
 		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
+	QUnit.module( "assert.expect failing conditions", () => {
+		QUnit.test( "mismatched expected assertions", async assert => {
+			const command = "qunit assert-expect/failing-expect.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: false,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.notEqual( e.stdout.indexOf( "message: Expected 2 assertions, but 1 were run" ), -1, e.stdout );
+			}
+		} );
+
+		QUnit.test( "no assertions run - use expect(0)", async assert => {
+			const command = "qunit assert-expect/no-assertions.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: true,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.pushResult( {
+
+					// This isn't the *exact* the error message we want to see - it's been transformed
+					// by the execution to standardize on formatting. Should be improved.
+					result: e.stdout.indexOf( "Expected at internal to accept zero assertions." ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "requireExpects", async assert => {
+			const command = "qunit assert-expect/require-expects.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: false,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.notEqual( e.stdout.indexOf( "message: Expected number of assertions to be defined, but expect() was not called." ), -1, e.stdout );
+			}
+		} );
 	} );
 } );
