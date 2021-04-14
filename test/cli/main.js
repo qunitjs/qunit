@@ -336,6 +336,18 @@ QUnit.module( "CLI Main", () => {
 		assert.equal( execution.stdout, expectedOutput[ command ] );
 	} );
 
+	QUnit.test( "config.testTimeout", async assert => {
+		const command = "qunit config-testTimeout.js";
+
+		try {
+			await execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
+		}
+	} );
+
 	QUnit.module( "noglobals", () => {
 		QUnit.test( "add global variable", async assert => {
 			try {
@@ -357,6 +369,12 @@ QUnit.module( "CLI Main", () => {
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
+		} );
+
+		QUnit.test( "forgive global variable", async assert => {
+			const execution = await execute( "qunit noglobals/ignored.js" );
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
 		} );
 	} );
 
