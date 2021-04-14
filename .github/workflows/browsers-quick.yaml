@@ -1,10 +1,8 @@
 name: browsers-quick
 on:
-  pull_request:
-  # Or when developing this workflow
   push:
-    paths:
-      - .github/workflows/browsers-quick.yaml
+    branches:
+      - main
 
 jobs:
   run:
