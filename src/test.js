@@ -529,11 +529,11 @@ Test.prototype = {
 			if ( objectType( then ) === "function" ) {
 				const resume = internalStop( test );
 				if ( config.notrycatch ) {
-					then.call( promise, function() { resume(); } );
+					then.call( promise, resume );
 				} else {
 					then.call(
 						promise,
-						function() { resume(); },
+						resume,
 						function( error ) {
 							const message = "Promise rejected " +
 								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
