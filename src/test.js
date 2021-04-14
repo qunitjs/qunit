@@ -806,7 +806,6 @@ function internalStart( test ) {
 			"Invalid value on test.semaphore",
 			sourceFromStacktrace( 2 )
 		);
-		return;
 	}
 
 	// Don't start until equal number of stop-calls
@@ -822,7 +821,6 @@ function internalStart( test ) {
 			"Tried to restart test while already started (test's semaphore was 0 already)",
 			sourceFromStacktrace( 2 )
 		);
-		return;
 	}
 
 	// Add a slight delay to allow more assertions etc.

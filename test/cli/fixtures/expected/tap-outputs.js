@@ -340,5 +340,14 @@ ok 1 module providing hooks > module not providing hooks > has a test
 # pass 1
 # skip 0
 # todo 0
+# fail 0`,
+
+	"qunit config-module.js":
+`TAP version 13
+ok 1 Module B > Test B
+1..1
+# pass 1
+# skip 0
+# todo 0
 # fail 0`
 };

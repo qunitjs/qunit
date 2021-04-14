@@ -327,6 +327,63 @@ QUnit.module( "CLI Main", () => {
 		} );
 	} );
 
+	QUnit.test( "config.module", async assert => {
+		const command = "qunit config-module.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
+	QUnit.module( "noglobals", () => {
+		QUnit.test( "add global variable", async assert => {
+			try {
+				await execute( "qunit noglobals/add-global.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Introduced global variable(s): dummyGlobal" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "remove global variable", async assert => {
+			try {
+				await execute( "qunit noglobals/remove-global.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Deleted global variable(s): dummyGlobal" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+	} );
+
+	QUnit.module( "semaphore", () => {
+		QUnit.test( "invalid value", async assert => {
+			try {
+				await execute( "qunit semaphore/nan.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Invalid value on test.semaphore" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "try to restart ", async assert => {
+			try {
+				await execute( "qunit semaphore/restart.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: \"Tried to restart test while already started (test's semaphore was 0 already)" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+	} );
+
 	QUnit.module( "only", () => {
 		QUnit.test( "test", async assert => {
 
