@@ -198,16 +198,18 @@ QUnit.module( "CLI Main", () => {
 			}
 		} );
 
-		QUnit.test( "mapped trace with native source map", async assert => {
-			const command = "NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js";
-			try {
-				await execute( command );
-			} catch ( e ) {
-				assert.equal( e.code, 1 );
-				assert.equal( e.stderr, "" );
-				assert.equal( e.stdout, expectedOutput[ command ] );
-			}
-		} );
+		// skip if running in code coverage mode - that leads to conflicting maps-on-maps that invalidate this test
+		QUnit[ process.env.NYC_PROCESS_ID ? "skip" : "test" ](
+			"mapped trace with native source map", async function( assert ) {
+				const command = "NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js";
+				try {
+					await execute( command );
+				} catch ( e ) {
+					assert.equal( e.code, 1 );
+					assert.equal( e.stderr, "" );
+					assert.equal( e.stdout, expectedOutput[ command ] );
+				}
+			} );
 	}
 
 	QUnit.test( "timeouts correctly recover", async assert => {
