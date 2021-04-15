@@ -531,9 +531,7 @@ Test.prototype = {
 				if ( config.notrycatch ) {
 					then.call( promise, resume );
 				} else {
-					then.call(
-						promise,
-						resume,
+					then.call( promise, resume,
 						function( error ) {
 							const message = "Promise rejected " +
 								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
@@ -743,6 +741,8 @@ export function resetTestTimeout( timeoutDuration ) {
 }
 
 // Put a hold on processing and return a function that will release it.
+// This is used when the test returns a Promise, and the returned function
+// from this (to resume) is passed as its "resolve" handler.
 export function internalStop( test ) {
 	let released = false;
 	test.semaphore += 1;
