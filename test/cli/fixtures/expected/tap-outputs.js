@@ -357,52 +357,5 @@ not ok 1 times out before scheduled done is called
 # pass 0
 # skip 0
 # todo 0
-# fail 1`,
-
-	"qunit drooling-done.js":
-`TAP version 13
-not ok 1 Test A
-  ---
-  message: |+
-    Died on test #2     at Object.<anonymous> (/qunit/test/cli/fixtures/drooling-done.js:5:7)
-        at internal
-        at run (/qunit/src/cli/run.js:79:5): this is an intentional error
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-    Error: this is an intentional error
-        at Object.<anonymous> (/qunit/test/cli/fixtures/drooling-done.js:8:8)
-  ...
-not ok 2 Test B
-  ---
-  message: "\`assert.async\` callback from test 'Test A' was called during this test."
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/drooling-done.js:13:2)
-  ...
-1..2
-# pass 0
-# skip 0
-# todo 0
-# fail 2`,
-
-	"qunit too-many-done-calls.js":
-`TAP version 13
-not ok 1 Test A
-  ---
-  message: Too many calls to the \`assert.async\` callback
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/too-many-done-calls.js:5:2)
-  ...
-1..1
-# pass 0
-# skip 0
-# todo 0
 # fail 1`
 };

@@ -303,16 +303,12 @@ QUnit.module( "CLI Main", () => {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
 
-				// during code coverage, stacks change so we can't match exactly
-				// but can perform a sanity check
-				if ( process.env.NYC_PROCESS_ID ) {
-					assert.notEqual( e.stdout.indexOf(
-						"    not ok 2 Test B\n" +
-						"      ---\n" +
-						"      message: \"`assert.async` callback from test 'Test A' was called during this test.\"", -1 ) );
-				} else {
-					assert.equal( e.stdout, expectedOutput[ command ] );
-				}
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 2 Test B\n" +
+					"  ---\n" +
+					"  message: \"`assert.async` callback from test 'Test A' was called during this test.\"" ), e.stdout );
 			}
 		} );
 
@@ -323,7 +319,13 @@ QUnit.module( "CLI Main", () => {
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
-				assert.equal( e.stdout, expectedOutput[ command ] );
+
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 1 Test A\n" +
+					"  ---\n" +
+					"  message: Too many calls to the `assert.async` callback" ), e.stdout );
 			}
 		} );
 
