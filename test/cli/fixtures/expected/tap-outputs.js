@@ -340,5 +340,22 @@ ok 1 module providing hooks > module not providing hooks > has a test
 # pass 1
 # skip 0
 # todo 0
-# fail 0`
+# fail 0`,
+
+	"qunit delayed-done.js":
+`TAP version 13
+not ok 1 times out before scheduled done is called
+  ---
+  message: Test took longer than 10ms; test timed out.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`
 };

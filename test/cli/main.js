@@ -282,6 +282,17 @@ QUnit.module( "CLI Main", () => {
 		} );
 	} );
 
+	QUnit.test( "drooling calls to assert.async callback", async assert => {
+		const command = "qunit delayed-done.js";
+		try {
+			await execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
+		}
+	} );
+
 	QUnit.module( "only", () => {
 		QUnit.test( "test", async assert => {
 

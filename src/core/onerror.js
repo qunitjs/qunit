@@ -1,7 +1,6 @@
-import { pushFailure, test } from "../test";
+import { pushFailure } from "../test";
 
 import config from "./config";
-import { extend } from "./utilities";
 
 // Handle an unhandled exception. By convention, returns true if further
 // error handling should be suppressed and false otherwise.
@@ -17,14 +16,6 @@ export default function onError( error, ...args ) {
 			error.stacktrace || error.fileName + ":" + error.lineNumber,
 			...args
 		);
-	} else {
-		test( "global failure", extend( function() {
-			pushFailure(
-				error.message,
-				error.stacktrace || error.fileName + ":" + error.lineNumber,
-				...args
-			);
-		}, { validTest: true } ) );
 	}
 
 	return false;
