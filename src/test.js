@@ -528,24 +528,24 @@ Test.prototype = {
 			const then = promise.then;
 			if ( objectType( then ) === "function" ) {
 				const resume = internalStop( test );
+				const resolve = function() { resume(); };
 				if ( config.notrycatch ) {
-					then.call( promise, resume );
+					then.call( promise, resolve );
 				} else {
-					then.call( promise, resume,
-						function( error ) {
-							const message = "Promise rejected " +
-								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
-								" \"" + test.testName + "\": " +
-								( ( error && error.message ) || error );
-							test.pushFailure( message, extractStacktrace( error, 0 ) );
+					const reject = function( error ) {
+						const message = "Promise rejected " +
+							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+							" \"" + test.testName + "\": " +
+							( ( error && error.message ) || error );
+						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
-							// Else next test will carry the responsibility
-							saveGlobal();
+						// Else next test will carry the responsibility
+						saveGlobal();
 
-							// Unblock
-							internalRecover( test );
-						}
-					);
+						// Unblock
+						internalRecover( test );
+					};
+					then.call( promise, resolve, reject );
 				}
 			}
 		}
@@ -741,8 +741,6 @@ export function resetTestTimeout( timeoutDuration ) {
 }
 
 // Put a hold on processing and return a function that will release it.
-// This is used when the test returns a Promise, and the returned function
-// from this (to resume) is passed as its "resolve" handler.
 export function internalStop( test ) {
 	let released = false;
 	test.semaphore += 1;
