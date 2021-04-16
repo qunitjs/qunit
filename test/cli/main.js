@@ -282,15 +282,51 @@ QUnit.module( "CLI Main", () => {
 		} );
 	} );
 
-	QUnit.test( "drooling calls to assert.async callback", async assert => {
-		const command = "qunit delayed-done.js";
-		try {
-			await execute( command );
-		} catch ( e ) {
-			assert.equal( e.code, 1 );
-			assert.equal( e.stderr, "" );
-			assert.equal( e.stdout, expectedOutput[ command ] );
-		}
+	QUnit.module( "assert.async", () => {
+
+		QUnit.test( "assert.async callback after tests timeout", async assert => {
+			const command = "qunit delayed-done.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.equal( e.stdout, expectedOutput[ command ] );
+			}
+		} );
+
+		QUnit.test( "drooling calls across tests to assert.async callback", async assert => {
+			const command = "qunit drooling-done.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// during code coverage, stacks change so we can't match exactly
+				// but can perform a sanity check
+				if ( process.env.NYC_PROCESS_ID ) {
+					assert.notEqual( e.stdout.indexOf(
+						"    not ok 2 Test B\n" +
+						"      ---\n" +
+						"      message: \"`assert.async` callback from test 'Test A' was called during this test.\"", -1 ) );
+				} else {
+					assert.equal( e.stdout, expectedOutput[ command ] );
+				}
+			}
+		} );
+
+		QUnit.test( "too many calls to assert.async callback", async assert => {
+			const command = "qunit too-many-done-calls.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.equal( e.stdout, expectedOutput[ command ] );
+			}
+		} );
+
 	} );
 
 	QUnit.module( "only", () => {
