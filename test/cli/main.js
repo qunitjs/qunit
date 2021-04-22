@@ -293,7 +293,7 @@ QUnit.module( "CLI Main", () => {
 
 				// These are both undesirable, but at least confirm what the current state is.
 				// TDD should break these and update when possible.
-				assert.equal( e.code, 7 );
+				assert.notEqual( e.code, 0 ); // should be 1, but is sometimes 7 in different envs
 				assert.true( e.stderr.includes( "TypeError: Cannot read property 'length' of undefined" ), e.stderr );
 			}
 		} );
