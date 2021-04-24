@@ -312,7 +312,7 @@ QUnit.module( "CLI Main", () => {
 				assert.true( e.stdout.includes(
 					"not ok 2 Test B\n" +
 					"  ---\n" +
-					"  message: \"`assert.async` callback from test 'Test A' was called during this test.\"" ), e.stdout );
+					"  message: \"`assert.async` callback from test \\\"Test A\\\" was called during this test.\"" ), e.stdout );
 			}
 		} );
 
