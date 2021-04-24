@@ -282,6 +282,59 @@ QUnit.module( "CLI Main", () => {
 		} );
 	} );
 
+	QUnit.module( "assert.async", () => {
+
+		QUnit.test( "assert.async callback after tests timeout", async assert => {
+			const command = "qunit done-after-timeout.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.stdout, expectedOutput[ command ] );
+
+				// These are both undesirable, but at least confirm what the current state is.
+				// TDD should break these and update when possible.
+				assert.true( e.stderr.includes( "TypeError: Cannot read property 'length' of undefined" ), e.stderr );
+
+				// e.code should be 1, but is sometimes 0, 1, or 7 in different envs
+			}
+		} );
+
+		QUnit.test( "drooling calls across tests to assert.async callback", async assert => {
+			const command = "qunit drooling-done.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 2 Test B\n" +
+					"  ---\n" +
+					"  message: \"`assert.async` callback from test \\\"Test A\\\" was called during this test.\"" ), e.stdout );
+			}
+		} );
+
+		QUnit.test( "too many calls to assert.async callback", async assert => {
+			const command = "qunit too-many-done-calls.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 1 Test A\n" +
+					"  ---\n" +
+					"  message: Too many calls to the `assert.async` callback" ), e.stdout );
+			}
+		} );
+
+	} );
+
 	QUnit.module( "only", () => {
 		QUnit.test( "test", async assert => {
 
