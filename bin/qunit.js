@@ -4,11 +4,8 @@
 
 const program = require( "commander" );
 const run = require( "../src/cli/run" );
-const FindReporter = require( "../src/cli/find-reporter" );
+const { displayAvailableReporters } = require( "../src/cli/find-reporter" );
 const pkg = require( "../package.json" );
-
-const findReporter = FindReporter.findReporter;
-const displayAvailableReporters = FindReporter.displayAvailableReporters;
 
 const description = `Runs tests using the QUnit framework.
 
@@ -41,12 +38,13 @@ program
 const opts = program.opts();
 
 if ( opts.reporter === true ) {
-	displayAvailableReporters();
+	const requireQUnit = require( "../src/cli/require-qunit" );
+	displayAvailableReporters( requireQUnit().reporters );
 }
 
 const options = {
 	filter: opts.filter,
-	reporter: findReporter( opts.reporter ),
+	reporter: opts.reporter,
 	requires: opts.require,
 	seed: opts.seed
 };

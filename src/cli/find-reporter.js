@@ -1,21 +1,16 @@
 "use strict";
 
-const JSReporters = require( "js-reporters" );
 const utils = require( "./utils" );
 const pkg = require( "../../package.json" );
 
 const hasOwn = Object.prototype.hasOwnProperty;
-const builtin = {
-	console: JSReporters.ConsoleReporter,
-	tap: JSReporters.TapReporter
-};
 
-function findReporter( reporterName ) {
+function findReporter( reporterName, builtin ) {
 	if ( !reporterName ) {
-		return JSReporters.TapReporter;
+		return builtin.tap;
 	}
 
-	// First, check if the reporter is one of the standard js-reporters ones
+	// First, check if the reporter is one of the built-in ones
 	if ( hasOwn.call( builtin, reporterName ) ) {
 		return builtin[ reporterName ];
 	}
@@ -30,10 +25,10 @@ function findReporter( reporterName ) {
 	}
 
 	// If we didn't find a reporter, display the available reporters and exit
-	displayAvailableReporters( reporterName );
+	displayAvailableReporters( builtin, reporterName );
 }
 
-function displayAvailableReporters( inputReporterName ) {
+function displayAvailableReporters( builtin, inputReporterName ) {
 	const message = [];
 
 	if ( inputReporterName ) {
