@@ -5,6 +5,7 @@ const path = require( "path" );
 const requireFromCWD = require( "./require-from-cwd" );
 const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
+const { findReporter } = require( "./find-reporter" );
 
 const RESTART_DEBOUNCE_LENGTH = 200;
 
@@ -42,7 +43,7 @@ async function run( args, options ) {
 
 	options.requires.forEach( requireFromCWD );
 
-	options.reporter.init( QUnit );
+	findReporter( options.reporter, QUnit.reporters ).init( QUnit );
 
 	for ( let i = 0; i < files.length; i++ ) {
 		const filePath = path.resolve( process.cwd(), files[ i ] );
