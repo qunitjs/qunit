@@ -528,26 +528,24 @@ Test.prototype = {
 			const then = promise.then;
 			if ( objectType( then ) === "function" ) {
 				const resume = internalStop( test );
+				const resolve = function() { resume(); };
 				if ( config.notrycatch ) {
-					then.call( promise, function() { resume(); } );
+					then.call( promise, resolve );
 				} else {
-					then.call(
-						promise,
-						function() { resume(); },
-						function( error ) {
-							const message = "Promise rejected " +
-								( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
-								" \"" + test.testName + "\": " +
-								( ( error && error.message ) || error );
-							test.pushFailure( message, extractStacktrace( error, 0 ) );
+					const reject = function( error ) {
+						const message = "Promise rejected " +
+							( !phase ? "during" : phase.replace( /Each$/, "" ) ) +
+							" \"" + test.testName + "\": " +
+							( ( error && error.message ) || error );
+						test.pushFailure( message, extractStacktrace( error, 0 ) );
 
-							// Else next test will carry the responsibility
-							saveGlobal();
+						// Else next test will carry the responsibility
+						saveGlobal();
 
-							// Unblock
-							internalRecover( test );
-						}
-					);
+						// Unblock
+						internalRecover( test );
+					};
+					then.call( promise, resolve, reject );
 				}
 			}
 		}
@@ -806,7 +804,6 @@ function internalStart( test ) {
 			"Invalid value on test.semaphore",
 			sourceFromStacktrace( 2 )
 		);
-		return;
 	}
 
 	// Don't start until equal number of stop-calls
@@ -822,7 +819,6 @@ function internalStart( test ) {
 			"Tried to restart test while already started (test's semaphore was 0 already)",
 			sourceFromStacktrace( 2 )
 		);
-		return;
 	}
 
 	// Add a slight delay to allow more assertions etc.
