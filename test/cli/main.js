@@ -133,8 +133,8 @@ QUnit.module( "CLI Main", () => {
 		}
 	} );
 
-	QUnit.test( "hard errors in test are caught and reported", async assert => {
-		const command = "qunit hard-error-in-test.js";
+	QUnit.test( "hard errors in test using `assert.async` are caught and reported", async assert => {
+		const command = "qunit hard-error-in-test-with-no-async-handler.js";
 
 		try {
 			const result = await execute( command );
@@ -373,7 +373,7 @@ QUnit.module( "CLI Main", () => {
 			}
 		} );
 
-		QUnit.test( "forgive global variable", async assert => {
+		QUnit.test( "forgive qunit DOM global variables", async assert => {
 			const execution = await execute( "qunit noglobals/ignored.js" );
 			assert.equal( execution.code, 0 );
 			assert.equal( execution.stderr, "" );
@@ -457,6 +457,8 @@ QUnit.module( "CLI Main", () => {
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
+
+				// can't match exactly due to stack frames including internal line numbers
 				assert.notEqual( e.stdout.indexOf( "message: Expected 2 assertions, but 1 were run" ), -1, e.stdout );
 			}
 		} );
@@ -470,13 +472,11 @@ QUnit.module( "CLI Main", () => {
 					actual: result.stdout
 				} );
 			} catch ( e ) {
-				assert.pushResult( {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
 
-					// This isn't the *exact* the error message we want to see - it's been transformed
-					// by the execution to standardize on formatting. Should be improved.
-					result: e.stdout.indexOf( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ) > -1,
-					actual: e.stdout + "\n" + e.stderr
-				} );
+				// can't match exactly due to stack frames including internal line numbers
+				assert.notEqual( e.stdout.indexOf( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ), -1, e.stdout );
 			}
 		} );
 
