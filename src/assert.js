@@ -86,8 +86,17 @@ class Assert {
 		const resume = internalStop( test );
 
 		return function done() {
+
+			if ( config.current === undefined ) {
+				throw new Error( "`assert.async` callback from test \"" +
+					test.testName + "\" called after tests finished." );
+			}
+
 			if ( config.current !== test ) {
-				throw Error( "assert.async callback called after test finished." );
+				config.current.pushFailure(
+					"`assert.async` callback from test \"" +
+					test.testName + "\" was called during this test." );
+				return;
 			}
 
 			if ( popped ) {

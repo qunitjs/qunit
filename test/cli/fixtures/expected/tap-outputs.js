@@ -366,5 +366,22 @@ not ok 1 slow
 # pass 0
 # skip 0
 # todo 0
+# fail 1`,
+
+	"qunit done-after-timeout.js":
+`TAP version 13
+not ok 1 times out before scheduled done is called
+  ---
+  message: Test took longer than 10ms; test timed out.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
 # fail 1`
 };
