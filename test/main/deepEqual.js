@@ -121,6 +121,20 @@ QUnit.test( "Primitive types and constants", function( assert ) {
 	assert.equal( QUnit.equiv( new SafeObject(), { a: undefined } ), false, "empty object instantiation vs. other nonempty literal" );
 } );
 
+QUnit.test( "Consecutive argument pairs", function( assert ) {
+
+	// degenerate cases with <2 inputs
+	assert.equal( QUnit.equiv( ), true );
+	assert.equal( QUnit.equiv( 1 ), true );
+
+	// otherwise every "consecutive pair" must be equivalent
+	assert.equal( QUnit.equiv( 1, 1, 1 ), true );
+	assert.equal( QUnit.equiv( 1, 1, 2 ), false );
+	assert.equal( QUnit.equiv( 1, 1, 1, 1 ), true );
+	assert.equal( QUnit.equiv( 1, 1, 1, 2 ), false );
+	assert.equal( QUnit.equiv( 1, 1, 1, 1, 1 ), true );
+} );
+
 QUnit.test( "Objects basics", function( assert ) {
 	assert.equal( QUnit.equiv( {}, {} ), true );
 	assert.equal( QUnit.equiv( {}, null ), false );
@@ -1806,6 +1820,10 @@ QUnit[ hasES6Set ? "test" : "skip" ]( "Sets", function( assert ) {
 	s2 = new Set( [ undefined, null, false, 0, NaN, Infinity, -Infinity ] );
 	assert.equal( QUnit.equiv( s1, s2 ), true, "Multiple-element sets of tricky values" );
 
+	s1 = new Set( [ 1, 3 ] );
+	s2 = new Set( [ 2, 3 ] );
+	assert.equal( QUnit.equiv( s1, s2 ), false, "Sets can 'short-circuit' for early failure" );
+
 	// Sets Containing objects
 	o1 = { foo: 0, bar: true };
 	o2 = { foo: 0, bar: true };
@@ -1869,6 +1887,11 @@ QUnit[ hasES6Map ? "test" : "skip" ]( "Maps", function( assert ) {
 	m3 = new Map( [ [ 1, 3 ] ] );
 	assert.equal( QUnit.equiv( m1, m2 ), true, "Single element maps [1,1] vs [1,1]" );
 	assert.equal( QUnit.equiv( m1, m3 ), false, "Single element maps [1,1] vs [1,3]" );
+
+	// Mismatched sizes
+	m1 = new Map( [ [ 1, 2 ] ] );
+	m2 = new Map( [ [ 3, 4], [ 5, 6 ] ] );
+	assert.equal( QUnit.equiv( m1, m2 ), false, "Compare maps with mismatch sizes" );
 
 	// Tricky values
 	m1 = new Map( [

@@ -38,6 +38,8 @@ module.exports = function requireQUnit( resolve = require.resolve ) {
 			// - We are running a local command from within the source directory
 			//   of the QUnit project itself (e.g. qunit Git repository).
 			//   Use the library file relative to this command, within the source directory.
+			//   If you get "Error: Cannot find module ../../qunit/qunit", it probably
+			//   means you haven't yet run "npm run build".
 			//
 			// eslint-disable-next-line node/no-missing-require, node/no-unpublished-require
 			delete require.cache[ resolve( "../../qunit/qunit" ) ];

@@ -168,7 +168,7 @@ QUnit.module( "assert.async", function() {
 			assert.test.pushFailure = function( msg ) {
 				throw new Error( msg );
 			};
-			assert.throws( previousTestDone, /Error: `assert.async` callback from test 'errors if called after test finishes - part 1' was called during this test./ );
+			assert.throws( previousTestDone, /Error: `assert\.async` callback from test "errors if called after test finishes - part 1" was called during this test./ );
 		} );
 	}() );
 

@@ -8,6 +8,7 @@ jobs:
 
   main-test:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: "Linux: Node 14"
