@@ -29,7 +29,7 @@ If `0` is passed, then the test will be assumed to be completely synchronous. If
 ```js
 QUnit.test( "wait for an event", assert => {
   assert.timeout( 1000 ); // Timeout after 1 second
-  const done = assert.done();
+  const done = assert.async();
 
   const adder = new NumberAdder();
   adder.on( "ready", res => {
