@@ -167,8 +167,8 @@ QUnit.test( "Edge cases", function( assert ) {
 		/Error: Null input. \(DiffMain\)/ );
 
 	// this hits several hard-to-reach cases for the sake of code coverage
-	var X = "x".repeat( 100 );
-	var Y = "y".repeat( 100 );
+	var X = repeat( "x", 100 );
+	var Y = repeat( "y", 100 );
 	assert.equal(
 		QUnit.diff(
 			"A\nB\n" + X + "\nD",
@@ -176,4 +176,17 @@ QUnit.test( "Edge cases", function( assert ) {
 		"<span>A\n</span><ins>CCC\n</ins><span>B\n</span>" +
 		"<del>" + X + "</del><ins>CCC\n" + Y + "</ins>" +
 		"<span>\nD</span>" );
+
+	function repeat( substr, n ) {
+		if ( substr.repeat ) {
+			return substr.repeat( n );
+		}
+
+		// polyfill for IE
+		var r = "";
+		for ( var i = 0; i < n; i++ ) {
+			r += substr;
+		}
+		return r;
+	}
 } );
