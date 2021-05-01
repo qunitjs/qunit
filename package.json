@@ -70,6 +70,7 @@
     "grunt-eslint": "^23.0.0",
     "grunt-git-authors": "^3.2.0",
     "grunt-search": "^0.1.8",
+    "kleur": "4.1.4",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",
     "nyc": "^15.1.0",
     "proxyquire": "^1.8.0",

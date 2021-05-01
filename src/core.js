@@ -7,6 +7,7 @@ import Assert from "./assert";
 import Logger from "./logger";
 import Test, { test, pushFailure } from "./test";
 import exportQUnit from "./export";
+import reporters from "./reporters";
 
 import config from "./core/config";
 import { extend, objectType, is, now } from "./core/utilities";
@@ -42,6 +43,7 @@ extend( QUnit, {
 
 	dump,
 	equiv,
+	reporters,
 	is,
 	objectType,
 	on,
