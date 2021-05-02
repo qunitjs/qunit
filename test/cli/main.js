@@ -133,6 +133,40 @@ QUnit.module( "CLI Main", () => {
 		}
 	} );
 
+	QUnit.test( "hard errors in test using `assert.async` are caught and reported", async assert => {
+		const command = "qunit hard-error-in-test-with-no-async-handler.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.notEqual( e.stdout.indexOf( "Died on test #2     at " ), -1 );
+			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in test" ), -1 );
+		}
+	} );
+
+	QUnit.test( "hard errors in hook are caught and reported", async assert => {
+		const command = "qunit hard-error-in-hook.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.notEqual( e.stdout.indexOf( "message: before failed on contains a hard error: expected error thrown in hook" ), -1 );
+			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in hook" ), -1 );
+		}
+	} );
+
 	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
 		QUnit.test( "run ESM test suite with import statement", async assert => {
 			const command = "qunit ../../es2018/esm.mjs";
@@ -280,6 +314,147 @@ QUnit.module( "CLI Main", () => {
 				} );
 			}
 		} );
+
+		QUnit.test( "errors if notrycatch is used and a rejection occurs in a hook", async assert => {
+			try {
+				await execute( "qunit notrycatch/returns-rejection-in-hook.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+
+					// only in stdout due to using `console.log` in manual `unhandledRejection` handler
+					result: e.stdout.indexOf( "Unhandled Rejection: bad things happen sometimes" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+	} );
+
+	QUnit.test( "config.module", async assert => {
+		const command = "qunit config-module.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
+	QUnit.test( "config.testTimeout", async assert => {
+		const command = "qunit config-testTimeout.js";
+
+		try {
+			await execute( command );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stderr, "" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
+		}
+	} );
+
+	QUnit.module( "noglobals", () => {
+		QUnit.test( "add global variable", async assert => {
+			try {
+				await execute( "qunit noglobals/add-global.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Introduced global variable(s): dummyGlobal" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "remove global variable", async assert => {
+			try {
+				await execute( "qunit noglobals/remove-global.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Deleted global variable(s): dummyGlobal" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "forgive qunit DOM global variables", async assert => {
+			const execution = await execute( "qunit noglobals/ignored.js" );
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+		} );
+	} );
+
+	QUnit.module( "semaphore", () => {
+		QUnit.test( "invalid value", async assert => {
+			try {
+				await execute( "qunit semaphore/nan.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: Invalid value on test.semaphore" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+
+		QUnit.test( "try to restart ", async assert => {
+			try {
+				await execute( "qunit semaphore/restart.js" );
+			} catch ( e ) {
+				assert.pushResult( {
+					result: e.stdout.indexOf( "message: \"Tried to restart test while already started (test's semaphore was 0 already)" ) > -1,
+					actual: e.stdout + "\n" + e.stderr
+				} );
+			}
+		} );
+	} );
+
+	QUnit.module( "assert.async", () => {
+
+		QUnit.test( "assert.async callback after tests timeout", async assert => {
+			const command = "qunit done-after-timeout.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.stdout, expectedOutput[ command ] );
+
+				// These are both undesirable, but at least confirm what the current state is.
+				// TDD should break these and update when possible.
+				assert.true( e.stderr.includes( "TypeError: Cannot read property 'length' of undefined" ), e.stderr );
+
+				// e.code should be 1, but is sometimes 0, 1, or 7 in different envs
+			}
+		} );
+
+		QUnit.test( "drooling calls across tests to assert.async callback", async assert => {
+			const command = "qunit drooling-done.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 2 Test B\n" +
+					"  ---\n" +
+					"  message: \"`assert.async` callback from test \\\"Test A\\\" was called during this test.\"" ), e.stdout );
+			}
+		} );
+
+		QUnit.test( "too many calls to assert.async callback", async assert => {
+			const command = "qunit too-many-done-calls.js";
+			try {
+				await execute( command );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// code coverage and various Node versions can alter the stacks,
+				// so we can't compare exact strings, but we can spot-check
+				assert.true( e.stdout.includes(
+					"not ok 1 Test A\n" +
+					"  ---\n" +
+					"  message: Too many calls to the `assert.async` callback" ), e.stdout );
+			}
+		} );
+
 	} );
 
 	QUnit.module( "only", () => {
@@ -321,5 +496,56 @@ QUnit.module( "CLI Main", () => {
 		assert.equal( execution.code, 0 );
 		assert.equal( execution.stderr, "The `beforeEach` hook was called inside the wrong module. Instead, use hooks provided by the callback to the containing module. This will become an error in QUnit 3.0.", "The warning shows" );
 		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
+	QUnit.module( "assert.expect failing conditions", () => {
+		QUnit.test( "mismatched expected assertions", async assert => {
+			const command = "qunit assert-expect/failing-expect.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: false,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// can't match exactly due to stack frames including internal line numbers
+				assert.notEqual( e.stdout.indexOf( "message: Expected 2 assertions, but 1 were run" ), -1, e.stdout );
+			}
+		} );
+
+		QUnit.test( "no assertions run - use expect(0)", async assert => {
+			const command = "qunit assert-expect/no-assertions.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: true,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+
+				// can't match exactly due to stack frames including internal line numbers
+				assert.notEqual( e.stdout.indexOf( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ), -1, e.stdout );
+			}
+		} );
+
+		QUnit.test( "requireExpects", async assert => {
+			const command = "qunit assert-expect/require-expects.js";
+			try {
+				const result = await execute( command );
+				assert.pushResult( {
+					result: false,
+					actual: result.stdout
+				} );
+			} catch ( e ) {
+				assert.equal( e.code, 1 );
+				assert.equal( e.stderr, "" );
+				assert.notEqual( e.stdout.indexOf( "message: Expected number of assertions to be defined, but expect() was not called." ), -1, e.stdout );
+			}
+		} );
 	} );
 } );
