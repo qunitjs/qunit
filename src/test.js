@@ -180,7 +180,7 @@ Test.prototype = {
 		}
 
 		function runTest( test ) {
-			const promise = test.callback.call( test.testEnvironment, test.assert, ...test.params );
+			const promise = test.callback.call( test.testEnvironment, test.assert, test.params );
 			test.resolvePromise( promise );
 
 			// If the test has a "lock" on it, but the timeout is 0, then we push a
@@ -792,8 +792,11 @@ extend( test.each, {
 		runEach( data, ( _, i ) => {
 			skip( `${i} ${testName}` );
 		} );
-	},
-	only: function( testName, data, callback ) {
+	}
+} );
+
+extend( test.only, {
+	each: function( testName, data, callback ) {
 		runEach( data, ( datum, i ) => {
 			only( `${i} ${testName}`, datum, callback );
 		} );

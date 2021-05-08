@@ -10,7 +10,9 @@ import { globalSuite } from "./core";
 const moduleStack = [];
 
 function isParentModuleInQueue() {
-	const modulesInQueue = config.modules.map( module => module.moduleId );
+	const modulesInQueue = config.modules
+		.filter( module => !module.ignored )
+		.map( module => module.moduleId );
 	return moduleStack.some( module => modulesInQueue.includes( module.moduleId ) );
 }
 

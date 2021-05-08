@@ -107,7 +107,7 @@ module.exports = function( grunt ) {
 						"test/module-skip.html",
 						"test/module-todo.html",
 						"test/each.html",
-						"test/each-only.html",
+						"test/only-each.html",
 
 						// ensure this is last - it has the potential to drool
 						// and omit subsequent tests during coverage runs
