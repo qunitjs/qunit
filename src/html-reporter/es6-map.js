@@ -1,5 +1,4 @@
 // Support IE 9-10, PhantomJS: Fallback for fuzzysort.js used by ./html.js
-// eslint-disable-next-line no-unused-vars
 var Map = typeof Map === "function" ? Map : function StringMap() {
 	var store = Object.create( null );
 	this.get = function( strKey ) {
