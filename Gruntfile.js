@@ -12,7 +12,6 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-connect" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-qunit" );
-	grunt.loadNpmTasks( "grunt-eslint" );
 	grunt.loadNpmTasks( "grunt-search" );
 
 	grunt.initConfig( {
@@ -35,9 +34,6 @@ module.exports = function( grunt ) {
 				src: "src/qunit.css",
 				dest: "qunit/qunit.css"
 			}
-		},
-		eslint: {
-			all: "."
 		},
 		search: {
 			options: {
@@ -168,5 +164,5 @@ module.exports = function( grunt ) {
 	} );
 
 	grunt.loadTasks( "build/tasks" );
-	grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "connect:base", "qunit" ] );
+	grunt.registerTask( "test", [ "search", "test-on-node", "connect:base", "qunit" ] );
 };
