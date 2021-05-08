@@ -45,6 +45,14 @@ QUnit.module.only( "module D", function() {
 	} );
 } );
 
+QUnit.module( "module D1", function() {
+	QUnit.module( "module D2", function() {
+		QUnit.test( "test D3", function( assert ) {
+			assert.true( false, "this test should not run" );
+		} );
+	} );
+} );
+
 QUnit.module.only( "module E", function() {
 	QUnit.module( "module F", function() {
 		QUnit.test( "test F", function( assert ) {
