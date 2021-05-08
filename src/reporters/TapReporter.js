@@ -1,6 +1,6 @@
 import kleur from "kleur";
 import { console } from "../globals";
-const hasOwn = Object.hasOwnProperty;
+const hasOwn = Object.prototype.hasOwnProperty;
 
 /**
  * Format a given value into YAML.
@@ -181,7 +181,8 @@ export default class TapReporter {
 		// Cache references to console methods to ensure we can report failures
 		// from tests tests that mock the console object itself.
 		// https://github.com/qunitjs/qunit/issues/1340
-		this.log = options.log || console.log.bind( console );
+		// Support IE 9: Function#bind is supported, but no console.log.bind().
+		this.log = options.log || Function.prototype.bind.call( console.log, console );
 
 		this.testCount = 0;
 

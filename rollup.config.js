@@ -50,7 +50,14 @@ module.exports = {
 		commonjs(),
 		babel( {
 			babelHelpers: "bundled",
-			babelrc: true
+			babelrc: false,
+			presets: [
+				[ "@babel/preset-env", {
+					targets: {
+						ie: 9
+					}
+				} ]
+			]
 		} )
 	]
 };

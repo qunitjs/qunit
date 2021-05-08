@@ -6,7 +6,8 @@ export default class ConsoleReporter {
 		// Cache references to console methods to ensure we can report failures
 		// from tests tests that mock the console object itself.
 		// https://github.com/qunitjs/qunit/issues/1340
-		this.log = options.log || console.log.bind( console );
+		// Support IE 9: Function#bind is supported, but no console.log.bind().
+		this.log = options.log || Function.prototype.bind.call( console.log, console );
 
 		runner.on( "runStart", this.onRunStart.bind( this ) );
 		runner.on( "testStart", this.onTestStart.bind( this ) );
