@@ -1,8 +1,9 @@
-/.nyc_output
-/__codeorigin
-/coverage
-/node_modules
-/qunit
-/temp
+/.nyc_output/
+/__codeorigin/
+/coverage/
 /docs/_site/
 /docs/Gemfile.lock
+/node_modules/
+/qunit/
+/temp/
+/.eslintcache

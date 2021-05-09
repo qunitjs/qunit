@@ -12,7 +12,6 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-connect" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-qunit" );
-	grunt.loadNpmTasks( "grunt-eslint" );
 	grunt.loadNpmTasks( "grunt-search" );
 
 	grunt.initConfig( {
@@ -36,16 +35,13 @@ module.exports = function( grunt ) {
 				dest: "qunit/qunit.css"
 			}
 		},
-		eslint: {
-			all: "."
-		},
 		search: {
 			options: {
 
 				// Ensure that the only HTML entities used are those with a special status in XHTML
 				// and that any common singleton/empty HTML elements end with the XHTML-compliant
 				// "/>"rather than ">"
-				searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g, // eslint-disable-line max-len
+				searchString: /(&(?!gt|lt|amp|quot)[A-Za-z0-9]+;|<(?:hr|HR|br|BR|input|INPUT)(?![^>]*\/>)(?:\s+[^>]*)?>)/g,
 				logFormat: "console",
 				failOnMatch: true
 			},
@@ -170,5 +166,5 @@ module.exports = function( grunt ) {
 	} );
 
 	grunt.loadTasks( "build/tasks" );
-	grunt.registerTask( "test", [ "eslint", "search", "test-on-node", "connect:base", "qunit" ] );
+	grunt.registerTask( "test", [ "search", "test-on-node", "connect:base", "qunit" ] );
 };
