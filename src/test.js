@@ -739,6 +739,10 @@ function only( testName, data, callback ) {
 	newTest.queue();
 }
 
+function makeEachTestName( testName, argument ) {
+	return `${testName} #${argument}`;
+}
+
 function runEach( data, eachFn ) {
 	if ( Array.isArray( data ) ) {
 		data.forEach( eachFn );
@@ -761,7 +765,7 @@ extend( test, {
 	each: function( testName, data, callback ) {
 		runEach( data, ( datum, i ) => {
 			addTestWithData( {
-				testName: `${i} ${testName}`,
+				testName: makeEachTestName( testName, i ),
 				callback: callback,
 				params: datum
 			} );
@@ -769,27 +773,22 @@ extend( test, {
 	}
 } );
 
+test.todo.each = function( testName, data, callback ) {
+	runEach( data, ( datum, i ) => {
+		todo( makeEachTestName( testName, i ), datum, callback );
+	} );
+};
+test.skip.each = function( testName, data ) {
+	runEach( data, ( _, i ) => {
+		skip( makeEachTestName( testName, i ) );
+	} );
+};
 
-extend( test.each, {
-	todo: function( testName, data, callback ) {
-		runEach( data, ( datum, i ) => {
-			todo( `${i} ${testName}`, datum, callback );
-		} );
-	},
-	skip: function( testName, data ) {
-		runEach( data, ( _, i ) => {
-			skip( `${i} ${testName}` );
-		} );
-	}
-} );
-
-extend( test.only, {
-	each: function( testName, data, callback ) {
-		runEach( data, ( datum, i ) => {
-			only( `${i} ${testName}`, datum, callback );
-		} );
-	}
-} );
+test.only.each = function( testName, data, callback ) {
+	runEach( data, ( datum, i ) => {
+		only( makeEachTestName( testName, i ), datum, callback );
+	} );
+};
 
 // Resets config.timeout with a new timeout duration.
 export function resetTestTimeout( timeoutDuration ) {

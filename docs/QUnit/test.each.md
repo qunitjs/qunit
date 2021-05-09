@@ -31,7 +31,7 @@ Add a parameterized test to run using `QUnit.test.each()`. `QUnit.test.each()` g
 
 
 The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
-`QUnit.test.only.each`, `QUnit.test.each.skip` and `QUnit.test.each.todo` are also available.
+`QUnit.test.only.each`, `QUnit.test.skip.each` and `QUnit.test.todo.each` are also available.
 
 See also:
 * [`QUnit.test.only()`](./test.only.md)
@@ -67,7 +67,7 @@ QUnit.test.each( "isEven()", [ 2, 4 ], ( assert, value ) => {
 });
 
 QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, value ) => {
-  return isAsyncEven( value ).then( ( assert, value ) => {
+  return isAsyncEven( value ).then( ( value ) => {
     assert.true( isAsyncEven( value ), `isAsyncEven(${value})` );
   } );
 });

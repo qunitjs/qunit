@@ -19,14 +19,14 @@ QUnit.module( "test.each", function() {
 		} );
 	} );
 } );
-QUnit.module( "test.each.skip", function() {
+QUnit.module( "test.skip.each", function() {
 	QUnit.test( "do run", function( assert ) { assert.true( true ); } );
-	QUnit.test.each.skip( "test.each.skip", [ [ 1, 2, 3 ], [ 1, 1, 2 ] ], function( assert ) {
+	QUnit.test.skip.each( "test.skip.each", [ [ 1, 2, 3 ], [ 1, 1, 2 ] ], function( assert ) {
 		assert.true( false );
 	} );
 } );
-QUnit.module( "test.each.todo", function() {
-	QUnit.test.each.todo( "test.each.todo", [ [ 1, 2, 3 ], [ 1, 1, 2 ] ], function( assert ) {
+QUnit.module( "test.todo.each", function() {
+	QUnit.test.todo.each( "test.todo.each", [ [ 1, 2, 3 ], [ 1, 1, 2 ] ], function( assert ) {
 		assert.true( false );
 	} );
 } );
