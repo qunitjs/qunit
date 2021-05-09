@@ -73,6 +73,11 @@ algolia:
   # with the content of the current Jekyll site.
   # The auth key for this is injected as secure env variable.
   index_name: qunitjs-api
+  # By default only HTML paragraphs are indexed (and headings, albeit through a different mechanism).
+  # * Include list items (similar to paragraphs).
+  # * Include tables (used for method parameter docs; index per row for better excerpts).
+  # * Exclude <pre> (mostly code examples, degrades result quality).
+  nodes_to_index: 'p,li,tr'
 
 # Input files
 exclude:
