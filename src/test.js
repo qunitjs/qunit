@@ -30,10 +30,6 @@ export default function Test( settings ) {
 	this.timeout = undefined;
 	extend( this, settings );
 
-	if ( !this.params ) {
-		this.params = [];
-	}
-
 	// If a module is skipped, all its tests and the tests of the child suites
 	// should be treated as skipped even if they are defined as `only` or `todo`.
 	// As for `todo` module, all its tests will be treated as `todo` except for
@@ -743,17 +739,9 @@ function only( testName, data, callback ) {
 	newTest.queue();
 }
 
-function normalizeTable( data ) {
-	const isTable = data.every( Array.isArray );
-	if ( isTable ) {
-		return data;
-	}
-	return data.map( datum => [ datum ] );
-}
-
 function runEach( data, eachFn ) {
 	if ( Array.isArray( data ) ) {
-		normalizeTable( data ).forEach( eachFn );
+		data.forEach( eachFn );
 	} else {
 		throw new Error(
 			`test.each expects an array of arrays or an array of primitives as the expected input.

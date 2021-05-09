@@ -4,6 +4,6 @@ QUnit.module.only( "test.each.only", function() {
 		assert.strictEqual( data[ 0 ] + data[ 1 ], data[ 2 ] );
 	} );
 	QUnit.test.only.each( "test.each.only 1D", [ 1, [], "some" ], function( assert, value ) {
-		assert.true( Boolean( value[ 0 ] ) );
+		assert.true( Boolean( value ) );
 	} );
 } );

@@ -62,11 +62,11 @@ QUnit.test.each( "square()", [ [ 2, 4 ], [ 3, 9 ] ], ( assert, [ value, expected
   assert.equal( square( value ), expected, `square(${value})` );
 });
 
-QUnit.test.each( "isEven()", [ 2, 4 ], ( assert, [ value ] ) => {
+QUnit.test.each( "isEven()", [ 2, 4 ], ( assert, value ) => {
   assert.true( isEven( value ), `isEven(${value})` );
 });
 
-QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, [ value ] ) => {
+QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, value ) => {
   return isAsyncEven( value ).then( ( assert, value ) => {
     assert.true( isAsyncEven( value ), `isAsyncEven(${value})` );
   } );
