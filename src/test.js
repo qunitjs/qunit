@@ -740,7 +740,7 @@ function only( testName, data, callback ) {
 }
 
 function makeEachTestName( testName, argument ) {
-	return `${testName} #${argument}`;
+	return `${testName} [${argument}]`;
 }
 
 function runEach( data, eachFn ) {
