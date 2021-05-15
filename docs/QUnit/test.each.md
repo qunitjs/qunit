@@ -4,8 +4,7 @@ title: QUnit.test.each()
 excerpt: Add a parameterized test to run.
 categories:
   - main
-  - async
-version_added: "1.0"
+version_added: "unreleased"
 ---
 
 `QUnit.test.each( name, data, callback )`
