@@ -13,7 +13,10 @@ QUnit.module( "test.each", function() {
 	QUnit.test.each( "test.each 1D", [ 1, [], "some" ], function( assert, value ) {
 		assert.true( Boolean( value ) );
 	} );
-	QUnit.test.each( "test.each fails with non-array input", [ "something", 1, undefined, null, {} ], function( assert, value ) {
+	QUnit.test.each( "test.each with object", { caseFoo: [ 1, 2, 3 ], caseBar: [ 1, 1, 2 ] }, function( assert, data ) {
+		assert.strictEqual( data[ 0 ] + data[ 1 ], data[ 2 ] );
+	} );
+	QUnit.test.each( "test.each fails with non-array input", [ "something", 1, undefined, null ], function( assert, value ) {
 		assert.throws( function() {
 			QUnit.test.each( "test.each 1D", value, function() { } );
 		} );

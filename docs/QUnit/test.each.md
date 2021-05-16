@@ -14,7 +14,7 @@ Add a parameterized test to run.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `data` (Array) | Array of arrays of parameters to be passed as input to each test. This can also be specified as a 1D array of primitives |
+| `data` (Array | Object) | Array of arrays of parameters to be passed as input to each test. This can also be specified as a 1D array of primitives or an object with each key representing a test case |
 | `callback` (function) | Function to close over assertions |
 
 #### Callback parameters: `callback( assert, args )`:
@@ -58,11 +58,15 @@ function isAsyncEven( x ) {
 }
 
 QUnit.test.each( "square()", [ [ 2, 4 ], [ 3, 9 ] ], ( assert, [ value, expected ] ) => {
-  assert.equal( square( value ), expected, `square(${value})` );
+  assert.strictEqual( square( value ), expected, `square(${value})` );
 });
 
 QUnit.test.each( "isEven()", [ 2, 4 ], ( assert, value ) => {
   assert.true( isEven( value ), `isEven(${value})` );
+});
+
+QUnit.test.each( "isEven()", { caseEven: [ 2, true ], caseNotEven: [ 3, false ] }, ( assert, [ value, expected ] ) => {
+  assert.strictEqual( isEven( value ), expected, `isEven(${value})` );
 });
 
 QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, value ) => {

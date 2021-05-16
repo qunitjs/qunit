@@ -746,10 +746,15 @@ function makeEachTestName( testName, argument ) {
 function runEach( data, eachFn ) {
 	if ( Array.isArray( data ) ) {
 		data.forEach( eachFn );
+	} else if ( typeof data === "object" && data !== null ) {
+		const keys = Object.keys( data );
+		keys.forEach( ( key ) => {
+			eachFn( data[ key ], key );
+		} );
 	} else {
 		throw new Error(
-			`test.each expects an array of arrays or an array of primitives as the expected input.
-${typeof data} was found instead.`
+			`test.each expects an array of arrays, an array of primitives, or an object 
+ as the expected input. ${typeof data} was found instead.`
 		);
 	}
 }
@@ -763,9 +768,9 @@ extend( test, {
 		only( testName, undefined, callback );
 	},
 	each: function( testName, data, callback ) {
-		runEach( data, ( datum, i ) => {
+		runEach( data, ( datum, testKey ) => {
 			addTestWithData( {
-				testName: makeEachTestName( testName, i ),
+				testName: makeEachTestName( testName, testKey ),
 				callback: callback,
 				params: datum
 			} );
@@ -774,19 +779,19 @@ extend( test, {
 } );
 
 test.todo.each = function( testName, data, callback ) {
-	runEach( data, ( datum, i ) => {
-		todo( makeEachTestName( testName, i ), datum, callback );
+	runEach( data, ( datum, testKey ) => {
+		todo( makeEachTestName( testName, testKey ), datum, callback );
 	} );
 };
 test.skip.each = function( testName, data ) {
-	runEach( data, ( _, i ) => {
-		skip( makeEachTestName( testName, i ) );
+	runEach( data, ( _, testKey ) => {
+		skip( makeEachTestName( testName, testKey ) );
 	} );
 };
 
 test.only.each = function( testName, data, callback ) {
-	runEach( data, ( datum, i ) => {
-		only( makeEachTestName( testName, i ), datum, callback );
+	runEach( data, ( datum, testKey ) => {
+		only( makeEachTestName( testName, testKey ), datum, callback );
 	} );
 };
 
