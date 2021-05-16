@@ -5,7 +5,7 @@ layout: page
 <section class="sidebar">
     <h4>Main methods</h4>
     <ul class="sidebar-list">
-    {% assign methods = site.pages | where:'categories', 'main' %}
+    {% assign methods = site.pages | where: 'categories', 'main' | sort_natural: 'title' %}
     {% for entry in methods %}
     <li class="sidebar-item{% if entry.url == page.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{entry.title}}</a>
@@ -15,7 +15,7 @@ layout: page
 
     <h4>Assertions</h4>
     <ul class="sidebar-list">
-    {% assign assertions = site.pages | where:'categories', 'assert' %}
+    {% assign assertions = site.pages | where: 'categories', 'assert' | sort_natural: 'title' %}
     {% for entry in assertions %}
     <li class="sidebar-item{% if entry.url == page.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{entry.title}}</a>
@@ -26,7 +26,7 @@ layout: page
     <h4>Configuration tools</h4>
 
     <ul class="sidebar-list">
-    {% assign config = site.pages | where:'categories', 'config' %}
+    {% assign config = site.pages | where: 'categories', 'config' | sort_natural: 'title' %}
     {% for entry in config %}
     <li class="sidebar-item{% if entry.url == page.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{entry.title}}</a>
@@ -37,7 +37,7 @@ layout: page
     <h4>Callback events</h4>
 
     <ul class="sidebar-list">
-    {% assign callbacks = site.pages | where:'categories', 'callbacks' %}
+    {% assign callbacks = site.pages | where: 'categories', 'callbacks' | sort_natural: 'title' %}
     {% for entry in callbacks %}
     <li class="sidebar-item{% if entry.url == page.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{entry.title}}</a>
@@ -48,7 +48,7 @@ layout: page
     <h4>Async control</h4>
 
     <ul class="sidebar-list">
-    {% assign async = site.pages | where:'categories', 'async' %}
+    {% assign async = site.pages | where: 'categories', 'async' | sort_natural: 'title' %}
     {% for entry in async %}
     <li class="sidebar-item{% if entry.url == page.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{entry.title}}</a>
