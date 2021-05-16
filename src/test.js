@@ -176,7 +176,7 @@ Test.prototype = {
 		}
 
 		function runTest( test ) {
-			const promise = test.callback.call( test.testEnvironment, test.assert );
+			const promise = test.callback.call( test.testEnvironment, test.assert, test.params );
 			test.resolvePromise( promise );
 
 			// If the test has a "lock" on it, but the timeout is 0, then we push a
@@ -674,65 +674,121 @@ function checkPollution() {
 	}
 }
 
+function addTestWithData( data ) {
+	if ( focused || config.currentModule.ignored ) {
+		return;
+	}
+
+	const newTest = new Test( data );
+
+	newTest.queue();
+}
+
 let focused = false; // indicates that the "only" filter was used
 
 // Will be exposed as QUnit.test
 export function test( testName, callback ) {
+	addTestWithData( {
+		testName: testName,
+		callback: callback
+	} );
+}
+
+function todo( testName, data, callback ) {
 	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
 
 	const newTest = new Test( {
-		testName: testName,
-		callback: callback
+		testName,
+		callback,
+		todo: true,
+		params: data
 	} );
 
 	newTest.queue();
 }
 
+function skip( testName ) {
+	if ( focused || config.currentModule.ignored ) {
+		return;
+	}
+
+	const test = new Test( {
+		testName: testName,
+		skip: true
+	} );
+
+	test.queue();
+}
+function only( testName, data, callback ) {
+	if ( config.currentModule.ignored ) {
+		return;
+	}
+	if ( !focused ) {
+		config.queue.length = 0;
+		focused = true;
+	}
+
+	const newTest = new Test( {
+		testName: testName,
+		callback: callback,
+		params: data
+	} );
+
+	newTest.queue();
+}
+
+function makeEachTestName( testName, argument ) {
+	return `${testName} [${argument}]`;
+}
+
+function runEach( data, eachFn ) {
+	if ( Array.isArray( data ) ) {
+		data.forEach( eachFn );
+	} else {
+		throw new Error(
+			`test.each expects an array of arrays or an array of primitives as the expected input.
+${typeof data} was found instead.`
+		);
+	}
+}
+
 extend( test, {
-	todo: function todo( testName, callback ) {
-		if ( focused || config.currentModule.ignored ) {
-			return;
-		}
-
-		const newTest = new Test( {
-			testName,
-			callback,
-			todo: true
-		} );
-
-		newTest.queue();
+	todo: function( testName, callback ) {
+		todo( testName, undefined, callback );
 	},
-	skip: function skip( testName ) {
-		if ( focused || config.currentModule.ignored ) {
-			return;
-		}
-
-		const test = new Test( {
-			testName: testName,
-			skip: true
-		} );
-
-		test.queue();
+	skip,
+	only: function( testName, callback ) {
+		only( testName, undefined, callback );
 	},
-	only: function only( testName, callback ) {
-		if ( config.currentModule.ignored ) {
-			return;
-		}
-		if ( !focused ) {
-			config.queue.length = 0;
-			focused = true;
-		}
-
-		const newTest = new Test( {
-			testName: testName,
-			callback: callback
+	each: function( testName, data, callback ) {
+		runEach( data, ( datum, i ) => {
+			addTestWithData( {
+				testName: makeEachTestName( testName, i ),
+				callback: callback,
+				params: datum
+			} );
 		} );
-
-		newTest.queue();
 	}
 } );
+
+test.todo.each = function( testName, data, callback ) {
+	runEach( data, ( datum, i ) => {
+		todo( makeEachTestName( testName, i ), datum, callback );
+	} );
+};
+test.skip.each = function( testName, data ) {
+	runEach( data, ( _, i ) => {
+		skip( makeEachTestName( testName, i ) );
+	} );
+};
+
+test.only.each = function( testName, data, callback ) {
+	runEach( data, ( datum, i ) => {
+		only( makeEachTestName( testName, i ), datum, callback );
+	} );
+};
 
 // Resets config.timeout with a new timeout duration.
 export function resetTestTimeout( timeoutDuration ) {
