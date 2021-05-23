@@ -14,11 +14,11 @@ version_deprecated: "2.1"
 
 Report the result of a custom assertion.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `result` (boolean) | Result of the assertion              |
-| `actual`           | Expression being tested              |
-| `expected`         | Known comparison value               |
+| name | description |
+|------|-------------|
+| `result` (boolean) | Result of the assertion |
+| `actual` | Expression being tested |
+| `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
 <p class="note note--warning" markdown="1">This method is __deprecated__ and it's recommended to use [`pushResult`](../assert/pushResult.md) in the assertion context instead.</p>

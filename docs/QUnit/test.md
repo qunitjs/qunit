@@ -34,7 +34,7 @@ Add a test to run using `QUnit.test()`.
 
 The `assert` argument to the callback contains all of QUnit's [assertion methods](../assert/index.md). Use this argument to call your test assertions.
 
-`QUnit.test()` can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`-able Promise as the result of your callback function.
+`QUnit.test()` can automatically handle the asynchronous resolution of a Promise on your behalf if you return a "then-able" Promise as the result of your callback function.
 
 See also:
 * [`QUnit.test.only()`](./test.only.md)
@@ -64,7 +64,7 @@ QUnit.test( "square()", assert => {
 
 ---
 
-An example of handling an asynchronous `then`able Promise result. This example uses an [ES6 Promise][] interface that is fulfilled after waiting 500ms.
+An example of handling an asynchronous "then-able" Promise result. This example uses an [ES6 Promise][] interface that is fulfilled after waiting 500ms.
 
 [ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 

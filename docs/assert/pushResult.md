@@ -11,8 +11,8 @@ version_added: "1.22"
 
 Report the result of a custom assertion.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
+| name | description |
+|------|-------------|
 | `data.result` (boolean) | Result of the assertion |
 | `data.actual` | Expression being tested |
 | `data.expected` | Known comparison value |

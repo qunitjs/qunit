@@ -13,9 +13,9 @@ version_added: "1.0"
 
 A boolean check. Passes if the first argument is truthy.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `state`            | Expression being tested              |
+| name | description |
+|------|-------------|
+| `state` | Expression being tested |
 | `message` (string) | A short description of the assertion |
 
 ### Description
