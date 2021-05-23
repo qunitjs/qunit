@@ -8,7 +8,7 @@ layout: page
     <h2>{{ page.title }}</h2>
 
     <ul class="page-list">
-    {% assign pages = site.pages | where:'categories', page.category %}
+    {% assign pages = site.pages | where: 'categories', page.category | sort_natural: 'title' %}
     {% for page in pages %}
     <li class="page-item">
         <h3><a href="{{ page.url }}">{{page.title}}</a></h3>

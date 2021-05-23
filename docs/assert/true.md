@@ -11,9 +11,9 @@ version_added: "2.11"
 
 A strict comparison that passes if the first argument is boolean `true`.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `actual`           | Expression being tested              |
+| name | description |
+|------|-------------|
+| `actual` | Expression being tested |
 | `message` (string) | A short description of the assertion |
 
 ### Description

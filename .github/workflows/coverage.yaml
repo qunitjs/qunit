@@ -32,3 +32,5 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
           COVERALLS_GIT_BRANCH: "${{ github.ref }}"
+          COVERALLS_SERVICE_NAME: github-actions
+          COVERALLS_SERVICE_JOB_ID: "${{ github.run_id }}"

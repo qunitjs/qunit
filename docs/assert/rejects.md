@@ -11,10 +11,10 @@ version_added: "2.5"
 
 Test if the provided promise rejects, and optionally compare the rejection value.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `promise` (thenable) | promise to test for rejection      |
-| `expectedMatcher`  | Rejection value matcher              |
+| name | description |
+|------|-------------|
+| `promise` (thenable) | promise to test for rejection |
+| `expectedMatcher` | Rejection value matcher |
 | `message` (string) | A short description of the assertion |
 
 

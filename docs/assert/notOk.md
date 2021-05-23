@@ -11,10 +11,10 @@ version_added: "1.18"
 
 A boolean check, inverse of `ok()`. Passes if the first argument is falsy.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| state              | Expression being tested              |
-| message (string)   | A short description of the assertion |
+| name | description |
+|------|-------------|
+| state | Expression being tested |
+| message (string) | A short description of the assertion |
 
 ### Description
 

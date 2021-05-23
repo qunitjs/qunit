@@ -11,9 +11,9 @@ version_added: "2.2"
 
 A helper assertion to verify the order and number of steps in a test.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `steps` (array)    | Array of strings representing steps to verify |
+| name | description |
+|------|-------------|
+| `steps` (array) | List of strings |
 | `message` (string) | A short description of the assertion |
 
 ### Description

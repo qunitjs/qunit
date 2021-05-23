@@ -14,9 +14,9 @@ version_added: "1.0"
 
 Extensible data dumping and string serialization.
 
-| name      | description                          |
-|-----------|--------------------------------------|
-| `data`    | Data structure or Object to parse.   |
+| name | description |
+|------|-------------|
+| `data` | Data structure or object to parse. |
 
 This method does string serialization by parsing data structures and objects. It parses DOM elements to a string representation of their outer HTML. By default, nested structures will be displayed up to five levels deep. Anything beyond that is replaced by `[object Object]` and `[object Array]` placeholders.
 
