@@ -17,7 +17,7 @@ Add tests using a data provider.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `dataset` (array) | List of data values passed to each test case |
+| `dataset` (array) | Array or object of data values passed to each test case |
 | `callback` (function) | Function to close over assertions |
 
 #### Callback parameters: `callback( assert, data )`:
