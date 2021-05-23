@@ -69,6 +69,12 @@ QUnit.test.each( "square()", [
 });
 ```
 
+##### Example: Object data provider
+
+QUnit.test.each( "isEven()", { caseEven: [ 2, true ], caseNotEven: [ 3, false ] }, ( assert, [ value, expected ] ) => {
+  assert.strictEqual( isEven( value ), expected, `isEven(${value})` );
+});
+
 ##### Example: Async functions with `each()`
 
 ```js
@@ -99,10 +105,6 @@ function isAsyncEven( x ) {
     resolve( isEven( x ) );
   } );
 }
-
-QUnit.test.each( "isEven()", { caseEven: [ 2, true ], caseNotEven: [ 3, false ] }, ( assert, [ value, expected ] ) => {
-  assert.strictEqual( isEven( value ), expected, `isEven(${value})` );
-});
 
 QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, value ) => {
   return isAsyncEven( value ).then( ( result ) => {
