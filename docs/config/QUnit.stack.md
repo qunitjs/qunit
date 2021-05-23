@@ -10,9 +10,9 @@ version_added: "1.19"
 
 Return a single line string representing the stacktrace (call stack)
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `offset` (number)  | Set the stacktrace line offset. Defaults to `0` |
+| name | description |
+|------|-------------|
+| `offset` (number) | Set the stacktrace line offset. Defaults to `0` |
 
 This method returns a single line string representing the stacktrace from where it was called. According to its offset argument, `QUnit.stack()` will return the correspondent line from the call stack.
 

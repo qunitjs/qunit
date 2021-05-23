@@ -11,9 +11,9 @@ version_added: "2.2"
 
 A marker for progress in a given test.
 
-| name               | description                          |
-|--------------------|--------------------------------------|
-| `message` (string) | Message to display for the step      |
+| name | description |
+|------|-------------|
+| `message` (string) | Message to display for the step |
 
 ### Description
 

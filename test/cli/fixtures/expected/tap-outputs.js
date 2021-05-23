@@ -341,6 +341,24 @@ ok 1 module providing hooks > module not providing hooks > has a test
 # todo 0
 # fail 0`,
 
+	"qunit async-module-warning/test.js":
+`TAP version 13
+ok 1 resulting parent module > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
+	"qunit async-module-warning/promise-test.js":
+`TAP version 13
+ok 1 module manually returning a promise > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit config-module.js":
 `TAP version 13
 ok 1 Module B > Test B
