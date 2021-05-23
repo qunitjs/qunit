@@ -1,3 +1,5 @@
+<p align="center"><img src="/docs/img/logo-with-colored-dark-text.svg" height="width" height="125" alt="QUnit"></p>
+
 # Contributing
 
 Welcome! Thanks for your interest in contributing to QUnit. This document is
@@ -6,6 +8,20 @@ anything should be added or clarified, definitely let us know.
 
 If this is your first time contributing to open-source software, you might want
 to take a look at the [GitHub Guides](https://guides.github.com/).
+
+If you get stuck or need help, you can always [chat with us](https://gitter.im/qunitjs/qunit).
+
+## Where to begin
+
+We've labelled some open issues as a "[good first issue](https://github.com/qunitjs/qunit/labels/good%20first%20issue)", which are issues that have a straight-forward outcome, don't require
+much knowledge of JavaScript, and don't require previous experience with QUnit.
+
+Issues marked as "[help welcome](https://github.com/qunitjs/qunit/labels/help%20welcome)" may require
+a bit more JavaScript experience, and either don't need detailed knowledge of our code, or serve as
+good ways to gain familiarity with just one or two areas of the code.
+
+You're also welcome to start on any other [open issue](https://github.com/qunitjs/qunit/issues).
+Feel free to comment in that case to ask for directions.
 
 ## Contributor License Agreement
 
@@ -29,7 +45,7 @@ to your GitHub fork, and create the pull request.
 The API documentation for QUnit lives in the `docs/` directory of this
 repository. For the rest of the QUnit website, see the [qunitjs.com repo](https://github.com/qunitjs/qunitjs.com).
 
-See [docs/README.md](docs/README.md) for how to preview the API documentation.
+See [docs/README.md](docs/README.md) for how to locally preview the API documentation site.
 
 ## Commit messages
 
