@@ -12,7 +12,7 @@
 </div>
 
 **QUnit** is a powerful, easy-to-use JavaScript testing framework. It was originally developed for the jQuery
-project and has since evolved to serve any client-side or server-side JavaScript code. QUnit has no dependencies and supports Node.js, SpiderMonkey, and all major browsers.
+project and has since evolved to test any client-side or server-side JavaScript code. QUnit has no dependencies and supports Node.js, SpiderMonkey, and all major web browsers.
 
 ## Documentation
 
