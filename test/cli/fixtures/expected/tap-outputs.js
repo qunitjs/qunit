@@ -400,5 +400,13 @@ not ok 1 times out before scheduled done is called
 # pass 0
 # skip 0
 # todo 0
-# fail 1`
+# fail 1`,
+
+	"qunit assert-expect/no-tests.js":
+`TAP version 13
+1..0
+# pass 0
+# skip 0
+# todo 0
+# fail 0`
 };
