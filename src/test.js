@@ -753,7 +753,7 @@ function runEach( data, eachFn ) {
 		} );
 	} else {
 		throw new Error(
-			`test.each() expects an array or an object as input, but
+			`test.each() expects an array or object as input, but
 found ${typeof data} instead.`
 		);
 	}
