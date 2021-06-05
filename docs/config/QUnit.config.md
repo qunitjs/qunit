@@ -27,6 +27,14 @@ By default, QUnit's HTML reporter collapses consecutive failing tests showing on
 
 This object isn't actually a configuration property, but is listed here anyway, as it's exported through `QUnit.config`. This gives you access to some QUnit internals at runtime. See below for an example.
 
+### `QUnit.config.failOnZeroTests` (boolean) | default: `true`
+
+Whether to fail the test run if no tests were run.
+
+By default, it is considered an error if no tests were loaded, or if no tests matched the current filter. Turning this option off means an empty test run will result in a success instead.
+
+* Version added: unreleased.
+
 ### `QUnit.config.filter` (string) | default: `undefined`
 
 Allows you to filter which tests are run by matching the module name and test title against the provided string. You can do an inverse filter, matching all tests that don't contain the string, by prefixing a `!` to the value.
