@@ -1,12 +1,21 @@
 [![Build Status: spider-check](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml)
 
-# api.qunitjs.com
+# [api.qunitjs.com](https://api.qunitjs.com/)
 
-## Building and Deploying
+## Table of contents
 
-We're using GitHub pages. Anything going to the gh-pages branch will be immediately published.
+<!-- For in-repo browsing convenience: -->
 
-### Requirements
+* [Main methods](./QUnit/)
+* [Assertions](./assert/)
+* [Configuration tools](./config/)
+* [Callback events](./callbacks/)
+
+## Contribute
+
+The API documentation site is hosted at <https://api.qunitjs.com> using GitHub Pages.
+
+#### Requirements
 
 * [Ruby](https://www.ruby-lang.org/) (tested with Ruby 2.7)
 * [Bundler](https://bundler.io/) (if missing, install with `gem install bundler`)
