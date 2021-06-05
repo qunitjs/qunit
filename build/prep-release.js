@@ -12,10 +12,30 @@ const util = require( "util" );
 const cp = require( "child_process" );
 const gitAuthors = require( "grunt-git-authors" );
 
+function parseLineResults( output = "" ) {
+	return output.trim().split( "\n" );
+}
+
+function versionAddedString( version ) {
+	return `version_added: "${version}"`;
+}
+
 const Repo = {
 	async prep( version ) {
 		if ( typeof version !== "string" || !/^\d+\.\d+\.\d+$/.test( version ) ) {
 			throw new Error( "Invalid or missing version argument" );
+		}
+		{
+			const UNRELEASED_VERSION = versionAddedString( "unreleased" );
+			parseLineResults( cp.execSync(
+				`grep -l '${UNRELEASED_VERSION}' docs/**/*.md`,
+				{ encoding: "utf8" } )
+			).forEach( filePath => {
+				const doc = fs.readFileSync( filePath, "utf8" );
+				fs.writeFileSync( filePath,
+					doc.replace( UNRELEASED_VERSION, versionAddedString( version ) )
+				);
+			} );
 		}
 		{
 			const file = "History.md";
@@ -38,9 +58,7 @@ const Repo = {
 				`${oldVersion}...HEAD`
 			], { encoding: "utf8" } );
 
-			changes = changes
-				.trim()
-				.split( "\n" )
+			changes = parseLineResults( changes )
 				.filter( line => !changeFilter.some( filter => filter.test( line ) ) )
 				.map( line => {
 					return {
