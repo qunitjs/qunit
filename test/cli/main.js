@@ -107,6 +107,15 @@ QUnit.module( "CLI Main", () => {
 		}
 	} );
 
+	QUnit.test( "exit code is 0 when no tests are run and failOnZeroTests is `false`", async assert => {
+		const command = "qunit assert-expect/no-tests.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
 	QUnit.test( "exit code is 1 when no tests exit before done", async assert => {
 		const command = "qunit hanging-test";
 		try {
