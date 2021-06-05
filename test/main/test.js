@@ -153,6 +153,26 @@ QUnit.module( "test", function() {
 		} );
 	} );
 
+	QUnit.module( "arguments", function( hooks ) {
+		var testArgs;
+		var todoArgs;
+		hooks.after( function( assert ) {
+			assert.strictEqual( testArgs, 1, "test() callback args" );
+			assert.strictEqual( todoArgs, 1, "test.todo() callback args" );
+		} );
+
+		QUnit.test( "test() callback", function( assert ) {
+			testArgs = arguments.length;
+			assert.true( true );
+		} );
+		QUnit.test.todo( "test.todo() callback", function( assert ) {
+
+			// Captured and asserted later since todo() is expected to fail
+			todoArgs = arguments.length;
+			assert.true( false );
+		} );
+	} );
+
 	QUnit.module( "custom assertions" );
 
 	QUnit.assert.mod2 = function( value, expected, message ) {
