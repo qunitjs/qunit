@@ -28,6 +28,8 @@ export default function Test( settings ) {
 	this.module = config.currentModule;
 	this.steps = [];
 	this.timeout = undefined;
+	this.data = undefined;
+	this.withData = false;
 	extend( this, settings );
 
 	// If a module is skipped, all its tests and the tests of the child suites
@@ -176,7 +178,12 @@ Test.prototype = {
 		}
 
 		function runTest( test ) {
-			const promise = test.callback.call( test.testEnvironment, test.assert, test.params );
+			let promise;
+			if ( test.withData ) {
+				promise = test.callback.call( test.testEnvironment, test.assert, test.data );
+			} else {
+				promise = test.callback.call( test.testEnvironment, test.assert );
+			}
 			test.resolvePromise( promise );
 
 			// If the test has a "lock" on it, but the timeout is 0, then we push a
@@ -674,54 +681,19 @@ function checkPollution() {
 	}
 }
 
-function addTestWithData( data ) {
-	if ( focused || config.currentModule.ignored ) {
-		return;
-	}
-
-	const newTest = new Test( data );
-
-	newTest.queue();
-}
-
 let focused = false; // indicates that the "only" filter was used
 
-// Will be exposed as QUnit.test
-export function test( testName, callback ) {
-	addTestWithData( {
-		testName: testName,
-		callback: callback
-	} );
-}
-
-function todo( testName, data, callback ) {
+function addTest( settings ) {
 	if ( focused || config.currentModule.ignored ) {
 		return;
 	}
 
-	const newTest = new Test( {
-		testName,
-		callback,
-		todo: true,
-		params: data
-	} );
+	const newTest = new Test( settings );
 
 	newTest.queue();
 }
 
-function skip( testName ) {
-	if ( focused || config.currentModule.ignored ) {
-		return;
-	}
-
-	const test = new Test( {
-		testName: testName,
-		skip: true
-	} );
-
-	test.queue();
-}
-function only( testName, data, callback ) {
+function addOnlyTest( settings ) {
 	if ( config.currentModule.ignored ) {
 		return;
 	}
@@ -730,13 +702,14 @@ function only( testName, data, callback ) {
 		focused = true;
 	}
 
-	const newTest = new Test( {
-		testName: testName,
-		callback: callback,
-		params: data
-	} );
+	const newTest = new Test( settings );
 
 	newTest.queue();
+}
+
+// Will be exposed as QUnit.test
+export function test( testName, callback ) {
+	addTest( { testName, callback } );
 }
 
 function makeEachTestName( testName, argument ) {
@@ -761,37 +734,54 @@ found ${typeof data} instead.`
 
 extend( test, {
 	todo: function( testName, callback ) {
-		todo( testName, undefined, callback );
+		addTest( { testName, callback, todo: true } );
 	},
-	skip,
+	skip: function( testName ) {
+		addTest( { testName, skip: true } );
+	},
 	only: function( testName, callback ) {
-		only( testName, undefined, callback );
+		addOnlyTest( { testName, callback } );
 	},
-	each: function( testName, data, callback ) {
-		runEach( data, ( datum, testKey ) => {
-			addTestWithData( {
+	each: function( testName, dataset, callback ) {
+		runEach( dataset, ( data, testKey ) => {
+			addTest( {
 				testName: makeEachTestName( testName, testKey ),
-				callback: callback,
-				params: datum
+				callback,
+				withData: true,
+				data
 			} );
 		} );
 	}
 } );
 
-test.todo.each = function( testName, data, callback ) {
-	runEach( data, ( datum, testKey ) => {
-		todo( makeEachTestName( testName, testKey ), datum, callback );
+test.todo.each = function( testName, dataset, callback ) {
+	runEach( dataset, ( data, testKey ) => {
+		addTest( {
+			testName: makeEachTestName( testName, testKey ),
+			callback,
+			todo: true,
+			withData: true,
+			data
+		} );
 	} );
 };
-test.skip.each = function( testName, data ) {
-	runEach( data, ( _, testKey ) => {
-		skip( makeEachTestName( testName, testKey ) );
+test.skip.each = function( testName, dataset ) {
+	runEach( dataset, ( _, testKey ) => {
+		addTest( {
+			testName: makeEachTestName( testName, testKey ),
+			skip: true
+		} );
 	} );
 };
 
-test.only.each = function( testName, data, callback ) {
-	runEach( data, ( datum, testKey ) => {
-		only( makeEachTestName( testName, testKey ), datum, callback );
+test.only.each = function( testName, dataset, callback ) {
+	runEach( dataset, ( data, testKey ) => {
+		addOnlyTest( {
+			testName: makeEachTestName( testName, testKey ),
+			callback,
+			withData: true,
+			data
+		} );
 	} );
 };
 

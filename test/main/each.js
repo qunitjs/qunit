@@ -21,6 +21,26 @@ QUnit.module( "test.each", function() {
 			QUnit.test.each( "test.each 1D", value, function() { } );
 		} );
 	} );
+
+	QUnit.module( "arguments", function( hooks ) {
+		var todoArgs;
+		hooks.after( function( assert ) {
+			assert.strictEqual( todoArgs, 2, "test.each.todo() callback args" );
+		} );
+
+		QUnit.test.each( "test.each() callback", [ 1 ], function( assert ) {
+			assert.strictEqual( arguments.length, 2 );
+		} );
+		QUnit.test.each( "test.each() callback with undefined", [ undefined ], function( assert ) {
+			assert.strictEqual( arguments.length, 2 );
+		} );
+		QUnit.test.todo.each( "test.each.todo() callback", [ 1 ], function( assert ) {
+
+			// Captured and asserted later since todo() is expected to fail
+			todoArgs = arguments.length;
+			assert.true( false );
+		} );
+	} );
 } );
 QUnit.module( "test.skip.each", function() {
 	QUnit.test( "do run", function( assert ) { assert.true( true ); } );
