@@ -71,9 +71,14 @@ QUnit.test.each( "square()", [
 
 ##### Example: Object data provider
 
-QUnit.test.each( "isEven()", { caseEven: [ 2, true ], caseNotEven: [ 3, false ] }, ( assert, [ value, expected ] ) => {
-  assert.strictEqual( isEven( value ), expected, `isEven(${value})` );
+```js
+QUnit.test.each( "isEven()", {
+  caseEven: [ 2, true ],
+  caseNotEven: [ 3, false ]
+}, ( assert, [ value, expected ] ) => {
+  assert.strictEqual( isEven( value ), expected );
 });
+```
 
 ##### Example: Async functions with `each()`
 
