@@ -341,6 +341,24 @@ ok 1 module providing hooks > module not providing hooks > has a test
 # todo 0
 # fail 0`,
 
+	"qunit async-module-warning/test.js":
+`TAP version 13
+ok 1 resulting parent module > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
+	"qunit async-module-warning/promise-test.js":
+`TAP version 13
+ok 1 module manually returning a promise > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit config-module.js":
 `TAP version 13
 ok 1 Module B > Test B
@@ -382,5 +400,13 @@ not ok 1 times out before scheduled done is called
 # pass 0
 # skip 0
 # todo 0
-# fail 1`
+# fail 1`,
+
+	"qunit assert-expect/no-tests.js":
+`TAP version 13
+1..0
+# pass 0
+# skip 0
+# todo 0
+# fail 0`
 };

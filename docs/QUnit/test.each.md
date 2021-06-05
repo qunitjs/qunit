@@ -17,7 +17,7 @@ Add tests using a data provider.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `dataset` (array) | List of data values passed to each test case |
+| `dataset` (array) | Array or object of data values passed to each test case |
 | `callback` (function) | Function to close over assertions |
 
 #### Callback parameters: `callback( assert, data )`:
@@ -66,6 +66,17 @@ QUnit.test.each( "square()", [
   [ 3, 9 ]
 ], ( assert, [ value, expected ] ) => {
   assert.equal( square( value ), expected, `${value} squared` );
+});
+```
+
+##### Example: Object data provider
+
+```js
+QUnit.test.each( "isEven()", {
+  caseEven: [ 2, true ],
+  caseNotEven: [ 3, false ]
+}, ( assert, [ value, expected ] ) => {
+  assert.strictEqual( isEven( value ), expected );
 });
 ```
 

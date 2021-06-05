@@ -83,7 +83,14 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	if ( objectType( executeNow ) === "function" ) {
 		moduleStack.push( module );
 		config.currentModule = module;
-		executeNow.call( module.testEnvironment, moduleFns );
+
+		const cbReturnValue = executeNow.call( module.testEnvironment, moduleFns );
+		if ( cbReturnValue != null && objectType( cbReturnValue.then ) === "function" ) {
+			Logger.warn( "Returning a promise from a module callback is not supported. " +
+				"Instead, use hooks for async behavior. " +
+				"This will become an error in QUnit 3.0." );
+		}
+
 		moduleStack.pop();
 		module = module.parentModule || currentModule;
 	}
