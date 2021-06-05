@@ -36,7 +36,9 @@ QUnit.on( "runEnd", ( suiteEnd ) => {
 	}
 } );
 
+// Sync with Gruntfile.js#test-on-node and test/index.html
 loadRelativeToScript( "../test/main/test.js" );
+loadRelativeToScript( "../test/main/each.js" );
 loadRelativeToScript( "../test/main/assert.js" );
 loadRelativeToScript( "../test/main/assert/step.js" );
 // Requires setTimeout, loadRelativeToScript( "../test/main/assert/timeout.js" );

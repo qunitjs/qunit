@@ -102,7 +102,6 @@ module.exports = function( grunt ) {
 						"test/string-filter.html",
 						"test/module-skip.html",
 						"test/module-todo.html",
-						"test/each.html",
 						"test/only-each.html",
 
 						// ensure this is last - it has the potential to drool
@@ -112,15 +111,19 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+
+		// Sync with test/index.html and test/mozjs.js
 		"test-on-node": {
 			files: [
 				"test/logs.js",
 				"test/main/test.js",
+				"test/main/each.js",
 				"test/main/assert.js",
 				"test/main/assert/step.js",
 				"test/main/assert/timeout.js",
 				"test/main/async.js",
 				"test/main/promise.js",
+				"test/main/dump.js",
 				"test/main/modules.js",
 				"test/main/deepEqual.js",
 				"test/main/stack.js",
@@ -130,7 +133,6 @@ module.exports = function( grunt ) {
 				"test/onerror/inside-test.js",
 				"test/onerror/outside-test.js",
 				"test/setTimeout.js",
-				"test/main/dump.js",
 				"test/node/storage-1.js",
 				"test/node/storage-2.js",
 
