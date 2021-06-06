@@ -3,6 +3,8 @@
 
 QUnit.module( "dump", {
 	afterEach: function() {
+
+		// Restore default
 		QUnit.dump.maxDepth = null;
 	}
 } );
@@ -239,6 +241,8 @@ function chainwrap( depth, first, prev ) {
 QUnit.test( "Check dump recursion", function( assert ) {
 	var noref, nodump, selfref, selfdump, parentref, parentdump, circref, circdump;
 
+	// QUnit.dump.maxDepth = 20;
+
 	noref = chainwrap( 0 );
 	nodump = QUnit.dump.parse( noref );
 	assert.equal( nodump, "{\n  \"first\": true,\n  \"wrap\": undefined\n}" );
@@ -262,6 +266,8 @@ QUnit.test( "Check dump recursion", function( assert ) {
 
 QUnit.test( "Check equal/deepEqual recursion", function( assert ) {
 	var noRecursion, selfref, circref;
+
+	// QUnit.dump.maxDepth = 20;
 
 	noRecursion = chainwrap( 0 );
 	assert.equal( noRecursion, noRecursion, "I should be equal to me." );

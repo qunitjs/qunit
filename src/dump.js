@@ -104,7 +104,10 @@ export default ( function() {
 				stack.pop();
 				return res;
 			}
-			return ( parserType === "string" ) ? parser : this.parsers.error;
+			if ( parserType === "string" ) {
+				return parser;
+			}
+			return "[ERROR: Missing QUnit.dump formatter for type " + objType + "]";
 		},
 		typeOf: function( obj ) {
 			let type;
@@ -180,6 +183,9 @@ export default ( function() {
 			error: function( error ) {
 				return "Error(\"" + error.message + "\")";
 			},
+
+			// This has been unused since QUnit 1.0.0.
+			// @todo Deprecate and remove.
 			unknown: "[Unknown]",
 			"null": "null",
 			"undefined": "undefined",
