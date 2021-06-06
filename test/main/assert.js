@@ -1,16 +1,11 @@
 function buildMockPromise( settledValue, shouldFulfill ) {
 
-	// Support IE 9: Promise not supported, test should not load polyfil globally to ensure
-	// QUnit works without it, so we create our own thenable with setTimeout.
-	// Support SpiderMonkey: setTimeout is not supported, re-use the IE 9 mock, but
-	// using SM's native Promise support for the deferred callback handling.
-	var defer = typeof setTimeout !== "undefined" ?
-		setTimeout :
-		function( fn ) {
-			Promise.resolve().then( fn );
-		};
+	// Support IE 9: Promise not supported, test MUST NOT load polyfil globally.
+	// Support SpiderMonkey: setTimeout is not supported, but native Promise is.
+	var defer = typeof setTimeout !== "undefined" ? setTimeout : function( fn ) {
+		Promise.resolve().then( fn );
+	};
 
-	// Return a mock self-fulfilling Promise ("thenable")
 	var thenable = {
 		then: function( fulfilledCallback, rejectedCallback ) {
 			defer( function() {
@@ -19,12 +14,10 @@ function buildMockPromise( settledValue, shouldFulfill ) {
 					rejectedCallback.call( thenable, settledValue );
 			} );
 
-			// returning another thennable for easy confirmation
-			// of return value
+			// returning another thenable for easy confirmation of return value
 			return buildMockPromise( "final promise", true );
 		}
 	};
-
 	return thenable;
 }
 

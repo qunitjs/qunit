@@ -43,7 +43,7 @@ loadRelativeToScript( "../test/main/assert.js" );
 loadRelativeToScript( "../test/main/assert/step.js" );
 // Requires setTimeout, loadRelativeToScript( "../test/main/assert/timeout.js" );
 // Requires setTimeout, loadRelativeToScript( "../test/main/async.js" );
-// Requires setTimeout, loadRelativeToScript( "../test/main/promise.js" );
+loadRelativeToScript( "../test/main/promise.js" );
 loadRelativeToScript( "../test/main/dump.js" );
 // Requires setTimeout, loadRelativeToScript( "../test/main/modules.js" );
 loadRelativeToScript( "../test/main/deepEqual.js" );
