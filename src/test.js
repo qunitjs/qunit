@@ -303,6 +303,13 @@ Test.prototype = {
 		module.stats.all += this.assertions.length;
 
 		for ( let i = 0; i < this.assertions.length; i++ ) {
+
+			// A failing assertion will counts toward the HTML Reporter's
+			// "X assertions, Y failed" line even if it was inside a todo.
+			// Inverting this would be similarly confusing since all but the last
+			// passing assertion inside a todo test should be considered as good.
+			// These stats don't decide the outcome of anything, so counting them
+			// as failing seems the most intuitive.
 			if ( !this.assertions[ i ].result ) {
 				bad++;
 				config.stats.bad++;
@@ -316,7 +323,9 @@ Test.prototype = {
 			incrementTestsRun( module );
 		}
 
-		// Store result when possible
+		// Store result when possible.
+		// Note that this also marks todo tests as bad, thus they get hoisted,
+		// and always run first on refresh.
 		if ( storage ) {
 			if ( bad ) {
 				storage.setItem( "qunit-test-" + moduleName + "-" + testName, bad );

@@ -28,6 +28,13 @@ jobs:
           npm ci
           npm run build
 
+      # To debug locally:
+      #
+      # ```
+      # $ export BROWSERSTACK_USERNAME="***"
+      # $ export BROWSERSTACK_KEY="***"
+      # $ BROWSERSTACK_JSON=build/browserstack-debug.json npm run browserstack
+      # ```
       - name: Tests
         run: npm run browserstack
         env:

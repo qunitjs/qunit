@@ -1,0 +1,11 @@
+{
+  "test_framework": "qunit",
+  "test_path": ["test/index.html"],
+  "test_server_port": "8899",
+  "exit_with_fail": true,
+  "timeout": 600,
+  "browsers": [
+    "firefox_current",
+    "chrome_current"
+  ]
+}

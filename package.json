@@ -53,7 +53,7 @@
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@rollup/plugin-replace": "^2.4.2",
-    "@qunitjs/browserstack-runner": "0.9.4-qunitjs.2",
+    "@qunitjs/browserstack-runner": "0.9.5-qunitjs.1",
     "coveralls": "^3.1.0",
     "eslint": "7.23.0",
     "eslint-config-jquery": "^3.0.0",
