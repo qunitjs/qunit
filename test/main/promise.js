@@ -216,4 +216,35 @@ QUnit.module( "Support for Promise", function() {
 
 		return createMockPromise( assert, true, "this is an error" );
 	} );
+
+	QUnit.module( "test.each()", {
+		afterEach: function( assert ) {
+
+			// Restore
+			if ( this.pushFailure ) {
+				assert.test.pushFailure = this.pushFailure;
+			}
+		}
+	} );
+
+	QUnit.test.each( "fulfilled Promise", [ 1 ], function( assert, _data ) {
+		assert.expect( 1 );
+
+		// Adds 1 assertion
+		return createMockPromise( assert );
+	} );
+
+	QUnit.test.each( "rejected Promise with Error", [ 1 ], function( assert, _data ) {
+		assert.expect( 2 );
+
+		this.pushFailure = assert.test.pushFailure;
+		assert.test.pushFailure = function( message ) {
+			assert.strictEqual(
+				message,
+				"Promise rejected during \"rejected Promise with Error [0]\": this is an error"
+			);
+		};
+
+		return createMockPromise( assert, true, new Error( "this is an error" ) );
+	} );
 } );
