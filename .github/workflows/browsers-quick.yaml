@@ -1,8 +1,6 @@
 name: browsers-quick
 on:
-  push:
-    branches:
-      - main
+  - push
 
 jobs:
   run:
