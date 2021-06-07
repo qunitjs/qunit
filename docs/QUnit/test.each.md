@@ -4,7 +4,7 @@ title: QUnit.test.each()
 excerpt: Add tests using a data provider.
 categories:
   - main
-version_added: "unreleased"
+version_added: "2.16.0"
 ---
 
 `QUnit.test.each( name, dataset, callback )`<br>

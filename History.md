@@ -1,4 +1,30 @@
 
+2.16.0 / 2021-06-06
+==================
+
+### Added
+
+* Core: New `QUnit.test.each()` method for data providers. (ventuno) [#1568](https://github.com/qunitjs/qunit/issues/1568)
+* Core: New `failOnZeroTests` configuration option. (Brenden Palmer)
+* Core: New `QUnit.reporters` interface. (Timo Tijhof) [f8948c9](https://github.com/qunitjs/qunit/commit/f8948c96fdcef0b0f96d27acaa59faacbabaf0f9) [js-reporters#133](https://github.com/js-reporters/js-reporters/issues/133)
+
+  This introduces support for using the `tap` reporter in a browser.
+  This was previously limited to the CLI.
+
+### Changed
+
+* Assert: Indicate which test a drooling `assert.async()` callback came from. (Steve McClure) [#1599](https://github.com/qunitjs/qunit/pull/1599)
+
+### Deprecated
+
+* Core: Warn when a module callback has a promise as a return value. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
+
+### Fixed
+
+* Core: Fix `QUnit.module.only()` regression where some unrelated modules also executed. (Steve McClure) [#1610](https://github.com/qunitjs/qunit/issues/1610)
+* CLI: Improve ESM detection. (Steve McClure) [#1593](https://github.com/qunitjs/qunit/issues/1593)
+* HTML Reporter: Increase contrast and use richer colors overall. (Timo Tijhof) [#1587](https://github.com/qunitjs/qunit/pull/1587)
+
 2.15.0 / 2021-04-12
 ==================
 

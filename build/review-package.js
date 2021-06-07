@@ -21,6 +21,7 @@ function getDiff( from, to ) {
 
 	try {
 		cp.execFileSync( "diff", [
+			"-w",
 			"--text",
 			"--unified",
 			...( isOld ? [] : [ "--color=always" ] ),
