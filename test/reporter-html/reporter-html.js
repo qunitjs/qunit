@@ -122,6 +122,7 @@ QUnit.module( "HTML Reporter", function() {
 
 		// Verify QUnit supported stack trace
 		if ( !err.stack ) {
+			// eslint-disable-next-line qunit/no-conditional-assertions
 			assert.false(
 				/(^| )qunit-source( |$)/.test( source.className ),
 				"Don't add source information on unsupported environments"
