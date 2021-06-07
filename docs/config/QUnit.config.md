@@ -33,7 +33,7 @@ Whether to fail the test run if no tests were run.
 
 By default, it is considered an error if no tests were loaded, or if no tests matched the current filter. Turning this option off means an empty test run will result in a success instead.
 
-* Version added: unreleased.
+* Version added: 2.16.0.
 
 ### `QUnit.config.filter` (string) | default: `undefined`
 
