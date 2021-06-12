@@ -4,7 +4,7 @@ title: assert.step()
 excerpt: A marker for progress in a given test.
 categories:
   - assert
-version_added: "2.2"
+version_added: "2.2.0"
 ---
 
 `step( [ message ] )`

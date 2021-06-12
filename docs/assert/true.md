@@ -4,7 +4,7 @@ title: assert.true()
 excerpt: A strict boolean true comparison.
 categories:
   - assert
-version_added: "2.11"
+version_added: "2.11.0"
 ---
 
 `true( actual [, message ] )`

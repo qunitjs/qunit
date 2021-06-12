@@ -6,7 +6,7 @@ categories:
   - callbacks
 redirect_from:
   - "/QUnit.log/"
-version_added: "1.0"
+version_added: "1.0.0"
 ---
 
 `QUnit.log( callback )`

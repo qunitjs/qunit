@@ -6,7 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/propEqual/"
-version_added: "1.11"
+version_added: "1.11.0"
 ---
 
 `propEqual( actual, expected [, message ] )`

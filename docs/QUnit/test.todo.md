@@ -7,7 +7,7 @@ categories:
 redirect_from:
   - "/QUnit.todo/"
   - "/QUnit/todo/"
-version_added: "2.2"
+version_added: "2.2.0"
 ---
 
 `QUnit.test.todo( name, callback )`<br>

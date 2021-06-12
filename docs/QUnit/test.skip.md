@@ -7,7 +7,7 @@ categories:
 redirect_from:
   - "/QUnit.skip/"
   - "/QUnit/skip/"
-version_added: "1.16"
+version_added: "1.16.0"
 ---
 
 `QUnit.test.skip( name, callback )`<br/>

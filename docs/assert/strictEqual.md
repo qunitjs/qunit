@@ -8,7 +8,7 @@ redirect_from:
   - "/same/"
   - "/strictEqual/"
   - "/assert/same/"
-version_added: "1.0"
+version_added: "1.0.0"
 ---
 
 `strictEqual( actual, expected [, message ] )`
