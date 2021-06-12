@@ -7,7 +7,7 @@ categories:
 redirect_from:
   - "/QUnit.module/"
   - "/module/"
-version_added: "1.0"
+version_added: "1.0.0"
 ---
 
 `QUnit.module( name [, options] [, nested ] )`<br>

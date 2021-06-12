@@ -6,7 +6,7 @@ categories:
 title: QUnit.push()
 status: deprecated
 excerpt: Report the result of a custom assertion.
-version_added: "1.0"
+version_added: "1.0.0"
 version_deprecated: "2.1"
 ---
 

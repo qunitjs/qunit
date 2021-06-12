@@ -7,7 +7,7 @@ categories:
 redirect_from:
   - "/QUnit.dump.parse/"
   - "/QUnit.jsDump.parse/"
-version_added: "1.0"
+version_added: "1.0.0"
 ---
 
 `QUnit.dump.parse( data )`

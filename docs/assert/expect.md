@@ -6,7 +6,7 @@ categories:
   - assert
 redirect_from:
   - "/expect/"
-version_added: "1.0"
+version_added: "1.0.0"
 ---
 
 `expect( amount )`

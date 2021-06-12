@@ -7,7 +7,7 @@ categories:
 redirect_from:
   - "/QUnit.only/"
   - "/QUnit/only/"
-version_added: "1.20"
+version_added: "1.20.0"
 ---
 
 `QUnit.test.only( name, callback )`<br>

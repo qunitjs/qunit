@@ -4,7 +4,7 @@ title: QUnit.on()
 excerpt: Register a callback to fire whenever the specified event is emitted.
 categories:
   - callbacks
-version_added: "2.2"
+version_added: "2.2.0"
 ---
 
 `QUnit.on( eventName, callback )`

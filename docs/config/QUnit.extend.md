@@ -6,7 +6,7 @@ categories:
 title: QUnit.extend()
 status: deprecated
 excerpt: Copy the properties from one object into a target object.
-version_added: "1.0"
+version_added: "1.0.0"
 version_deprecated: "2.12"
 ---
 

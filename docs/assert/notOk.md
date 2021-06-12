@@ -4,7 +4,7 @@ title: assert.notOk()
 excerpt: Check if the first argument is falsy.
 categories:
   - assert
-version_added: "1.18"
+version_added: "1.18.0"
 ---
 
 `notOk( state [, message ] )`
