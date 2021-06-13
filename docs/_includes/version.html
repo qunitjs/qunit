@@ -8,7 +8,7 @@
 {%- endcomment -%}
 {%- assign _old_releases = " v1.9.0 v1.10.0 v1.11.0 v1.12.0 " -%}
 
-{%- assign _full_version = include.version | append: ".0" -%}
+{%- assign _full_version = include.version -%}
 {%- assign _old_version = _full_version | prepend: "v" -%}
 {%- if _old_releases contains _old_version -%}
     {%- assign _full_version = _old_version -%}

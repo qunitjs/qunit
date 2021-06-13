@@ -4,7 +4,7 @@ title: assert.rejects()
 excerpt: Test if the provided promise rejects.
 categories:
   - assert
-version_added: "2.5"
+version_added: "2.5.0"
 ---
 
 `rejects( promise[, expectedMatcher][, message ] )`
