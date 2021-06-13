@@ -80,7 +80,6 @@
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",
-    "build:watch": "rollup -c -w",
     "build:coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy:src-css",
     "test": "npm run test:lint && npm run build && grunt test && bin/qunit.js test/cli/*.js",
     "test:lint": "eslint --cache .",

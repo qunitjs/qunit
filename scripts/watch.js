@@ -1,9 +1,9 @@
-
 const fs = require( "fs" );
 const http = require( "http" );
 const path = require( "path" );
 
-const { execFile } = require( "child_process" );
+const rollup = require( "rollup" );
+const loadConfigFile = require( "rollup/dist/loadConfigFile" );
 
 const server = http.createServer( ( req, res ) => {
 	try {
@@ -30,6 +30,45 @@ const server = http.createServer( ( req, res ) => {
 
 server.listen( 4000 );
 
-const rollout = execFile( "npm", [ "run", "build:watch" ] );
-rollout.stdout.on( "data", console.log );
-rollout.stderr.on( "data", console.log );
+function relativeOutput( output = [] ) {
+	return output.map( o => path.relative( process.cwd(), o ) ).join( ", " );
+}
+
+function inputToOutput( input, output ) {
+	return `${input} -> ${relativeOutput( output )}`;
+}
+
+loadConfigFile( path.resolve( process.cwd(), "rollup.config.js" ) ).then(
+	async( { options, warnings } ) => {
+
+		console.log( `We currently have ${warnings.count} warnings` );
+		warnings.flush();
+
+		for ( const optionsObj of options ) {
+			const bundle = await rollup.rollup( optionsObj );
+			await Promise.all( optionsObj.output.map( bundle.write ) );
+		}
+
+		const watcher = rollup.watch( options );
+
+		watcher.on( "event", event => {
+			const { code, result } = event;
+			if ( code === "BUNDLE_START" ) {
+				const { input, output } = event;
+				console.log( code, inputToOutput( input, output ) );
+			} else if ( code === "BUNDLE_END" ) {
+				const { duration, input, output } = event;
+				console.log( code, inputToOutput( input, output ), `${duration}ms` );
+			} else if ( code === "ERROR" ) {
+				console.error( event.error );
+			}
+			if ( result ) {
+				result.close();
+			}
+		} );
+
+		process.on( "exit", ( _ ) => {
+			watcher.close();
+		} );
+	}
+);
