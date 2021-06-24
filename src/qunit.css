@@ -450,6 +450,9 @@
 
 	border-bottom: 1px solid #FFF;
 }
+#qunit-testresult a {
+	color: #2F68DA;
+}
 #qunit-testresult .clearfix {
 	height: 0;
 	clear: both;

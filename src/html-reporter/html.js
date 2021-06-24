@@ -6,6 +6,7 @@ import "./urlparams";
 import fuzzysort from "fuzzysort";
 
 const stats = {
+	failedTests: [],
 	defined: 0,
 	completed: 0
 };
@@ -683,6 +684,21 @@ export function escapeText( s ) {
 		appendInterface();
 	} );
 
+	function getRerunFailedHtml( failedTests ) {
+		if ( failedTests.length === 0 ) {
+			return "";
+		}
+
+		var href = setUrl( { testId: failedTests } );
+		return [
+			"<br /><a href='" + escapeText( href ) + "'>",
+			failedTests.length === 1 ?
+				"Rerun 1 failed test" :
+				"Rerun " + failedTests.length + " failed tests",
+			"</a>"
+		].join( "" );
+	}
+
 	QUnit.on( "runEnd", function( runEnd ) {
 		var banner = id( "qunit-banner" ),
 			tests = id( "qunit-tests" ),
@@ -705,7 +721,8 @@ export function escapeText( s ) {
 				config.stats.all,
 				"</span> passed, <span class='failed'>",
 				config.stats.bad,
-				"</span> failed."
+				"</span> failed.",
+				getRerunFailedHtml( stats.failedTests )
 			].join( "" ),
 			test,
 			assertLi,
@@ -795,7 +812,8 @@ export function escapeText( s ) {
 				bad ?
 					"Rerunning previously failed test: <br />" :
 					"Running: ",
-				getNameHtml( details.name, details.module )
+				getNameHtml( details.name, details.module ),
+				getRerunFailedHtml( stats.failedTests )
 			].join( "" );
 		}
 
@@ -933,15 +951,20 @@ export function escapeText( s ) {
 
 			// Collapse the passing tests
 			addClass( assertList, "qunit-collapsed" );
-		} else if ( config.collapse ) {
-			if ( !collapseNext ) {
+		} else {
 
-				// Skip collapsing the first failing test
-				collapseNext = true;
-			} else {
+			stats.failedTests.push( details.testId );
 
-				// Collapse remaining tests
-				addClass( assertList, "qunit-collapsed" );
+			if ( config.collapse ) {
+				if ( !collapseNext ) {
+
+					// Skip collapsing the first failing test
+					collapseNext = true;
+				} else {
+
+					// Collapse remaining tests
+					addClass( assertList, "qunit-collapsed" );
+				}
 			}
 		}
 
