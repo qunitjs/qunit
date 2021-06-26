@@ -7,16 +7,16 @@ const loadConfigFile = require( "rollup/dist/loadConfigFile" );
 
 const server = http.createServer( ( req, res ) => {
 	try {
-		const requestedPath = path.format( {
-			root: process.cwd(),
+		const requestedPath = path.join(
+			process.cwd(),
 
 			// path.normalize will remove any "..".
 			// Probably useless as at least Chrome resolves any ".."
 			// _before_ sending the request.
 			// Probably still a good idea to avoid accessing anything
 			// _outside_ of process.cwd() anyways.
-			base: path.normalize( req.url )
-		} );
+			path.normalize( req.url )
+		);
 		if ( fs.existsSync( requestedPath ) ) {
 			return res.end( fs.readFileSync( requestedPath ) );
 		}
