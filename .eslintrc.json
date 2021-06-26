@@ -45,7 +45,6 @@
             "files": [
                 "bin/*.js",
                 "build/**/*.js",
-                "scripts/*.js",
                 "src/cli/*.js",
                 "Gruntfile.js",
                 "rollup.config.js"

@@ -85,7 +85,7 @@
     "test:lint": "eslint --cache .",
     "test:main": "npm run build && grunt test",
     "test:cli": "npm run build && bin/qunit.js test/cli/*.js",
-    "build:dev": "node scripts/watch.js",
+    "build:dev": "node build/watch.js",
     "browserstack": "browserstack-runner -v",
     "authors": "grunt authors",
     "coverage": "npm run build:coverage && npm run coverage:_cli && npm run coverage:_main && nyc report",
