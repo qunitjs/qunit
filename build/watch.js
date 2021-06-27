@@ -3,6 +3,7 @@ const http = require( "http" );
 const path = require( "path" );
 
 const rollup = require( "rollup" );
+const kleur = require( "kleur" );
 const loadConfigFile = require( "rollup/dist/loadConfigFile" );
 
 const server = http.createServer( ( req, res ) => {
@@ -38,16 +39,21 @@ function inputToOutput( input, output ) {
 	return `${input} -> ${relativeOutput( output )}`;
 }
 
+function errorString( err ) {
+	let str = kleur.bold(
+		( err.plugin ? `(plugin ${err.plugin}) ` : "" ) + err.toString()
+	);
+	str += "\n" + ( err.loc ? `${err.loc.file} ${err.loc.line}:${err.loc.column}` : err.id );
+	str += `\n${kleur.grey( err.frame )}`;
+	str += `\n${kleur.grey( err.stack )}`;
+	return str;
+}
+
 loadConfigFile( path.resolve( process.cwd(), "rollup.config.js" ) ).then(
 	async( { options, warnings } ) => {
 
-		console.log( `We currently have ${warnings.count} warnings` );
+		console.log( kleur.grey( `We currently have ${warnings.count} warnings` ) );
 		warnings.flush();
-
-		for ( const optionsObj of options ) {
-			const bundle = await rollup.rollup( optionsObj );
-			await Promise.all( optionsObj.output.map( bundle.write ) );
-		}
 
 		const watcher = rollup.watch( options );
 
@@ -60,7 +66,7 @@ loadConfigFile( path.resolve( process.cwd(), "rollup.config.js" ) ).then(
 				const { duration, input, output } = event;
 				console.log( code, inputToOutput( input, output ), `${duration}ms` );
 			} else if ( code === "ERROR" ) {
-				console.error( event.error );
+				console.error( errorString( event.error ) );
 			}
 			if ( result ) {
 				result.close();
@@ -71,4 +77,12 @@ loadConfigFile( path.resolve( process.cwd(), "rollup.config.js" ) ).then(
 			watcher.close();
 		} );
 	}
-);
+).catch( ( err ) => {
+
+	// Handle generic script error from before watcher starts
+	console.error( err );
+
+	// Watcher didn't get created so no reason to keep the process.
+	// It doesn't exit automatically because the http server is alive.
+	process.exit( 1 );
+} );
