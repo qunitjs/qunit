@@ -298,6 +298,17 @@ QUnit.test( "throws", function( assert ) {
 
 	assert.throws(
 		function() {
+			throw {
+				name: true,
+				message: "some message"
+			};
+		},
+		/^true: some message$/,
+		"formatted string for Error object with non-string name property"
+	);
+
+	assert.throws(
+		function() {
 			throw {};
 		},
 		/^Error$/,

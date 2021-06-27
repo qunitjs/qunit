@@ -1,41 +1,51 @@
 QUnit.module( "QUnit.onError", function() {
 	QUnit.test( "call pushFailure when inside a test", function( assert ) {
-		assert.expect( 3 );
+		assert.expect( 2 );
 
-		assert.test.pushFailure = function( message, source ) {
-			assert.strictEqual( message, "Error message", "Message is correct" );
-			assert.strictEqual( source, "filePath.js:1", "Source is correct" );
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( result ) {
+			pushed = result;
+			assert.pushResult = original;
 		};
 
-		var result = QUnit.onError( {
+		var suppressed = QUnit.onError( {
 			message: "Error message",
 			fileName: "filePath.js",
 			lineNumber: 1
 		} );
 
-		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
+		assert.strictEqual( suppressed, false, "onError should allow other error handlers to run" );
+		assert.propEqual( pushed, {
+			result: false,
+			message: "global failure: Error: Error message",
+			source: "filePath.js:1"
+		}, "pushed result" );
 	} );
 
 	QUnit.test( "use stacktrace argument", function( assert ) {
-		assert.expect( 3 );
+		assert.expect( 2 );
 
-		assert.test.pushFailure = function( message, source ) {
-			assert.strictEqual( message, "Error message", "Message is correct" );
-			assert.strictEqual(
-				source,
-				"DummyError\nfilePath.js:1 foo()\nfilePath.js:2 bar()",
-				"Source is correct"
-			);
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( result ) {
+			pushed = result;
+			assert.pushResult = original;
 		};
 
-		var result = QUnit.onError( {
+		var suppressed = QUnit.onError( {
 			message: "Error message",
 			fileName: "filePath.js",
 			lineNumber: 1,
 			stacktrace: "DummyError\nfilePath.js:1 foo()\nfilePath.js:2 bar()"
 		} );
 
-		assert.strictEqual( result, false, "onError should allow other error handlers to run" );
+		assert.strictEqual( suppressed, false, "onError should allow other error handlers to run" );
+		assert.propEqual( pushed, {
+			result: false,
+			message: "global failure: Error: Error message",
+			source: "DummyError\nfilePath.js:1 foo()\nfilePath.js:2 bar()"
+		}, "pushed result" );
 	} );
 
 

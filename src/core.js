@@ -18,8 +18,8 @@ import ProcessingQueue from "./core/processing-queue";
 import SuiteReport from "./reports/suite";
 
 import { on, emit } from "./events";
-import onError from "./core/onerror";
-import onUnhandledRejection from "./core/on-unhandled-rejection";
+import onWindowError from "./core/onerror";
+import onUncaughtException from "./core/on-uncaught-exception";
 
 const QUnit = {};
 export const globalSuite = new SuiteReport();
@@ -47,8 +47,8 @@ extend( QUnit, {
 	is,
 	objectType,
 	on,
-	onError,
-	onUnhandledRejection,
+	onError: onWindowError,
+	onUncaughtException,
 	pushFailure,
 
 	assert: Assert.prototype,
@@ -97,6 +97,12 @@ extend( QUnit, {
 
 		scheduleBegin();
 
+	},
+
+	onUnhandledRejection: function( reason ) {
+		Logger.warn( "QUnit.onUnhandledRejection is deprecated and will be removed in QUnit 3.0." +
+			" Please use QUnit.onUncaughtException instead." );
+		onUncaughtException( reason );
 	},
 
 	extend: function( ...args ) {

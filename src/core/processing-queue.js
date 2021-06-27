@@ -1,4 +1,5 @@
 import config from "./config";
+import onUncaughtException from "./on-uncaught-exception";
 import {
 	generateHash,
 	now
@@ -159,32 +160,35 @@ function unitSamplerGenerator( seed ) {
 function done() {
 	const storage = config.storage;
 
-	ProcessingQueue.finished = true;
-
 	const runtime = now() - config.started;
 	const passed = config.stats.all - config.stats.bad;
 
+	// We have reached the end of the processing queue, but there is one more
+	// thing we'd like to report as a possible failing test. For this to work
+	// we need to call `onUncaughtException` before closing `ProcessingQueue.finished`.
+	// However, we do need to call `advance()` in order to resume the processing queue.
+	// Once this new test is finished processing, we'll reach `done` again, and
+	// that time the below condition should evaluate to false.
 	if ( config.stats.testCount === 0 && config.failOnZeroTests === true ) {
-
+		let error;
 		if ( config.filter && config.filter.length ) {
-			throw new Error( `No tests matched the filter "${config.filter}".` );
+			error = new Error( `No tests matched the filter "${config.filter}".` );
+		} else if ( config.module && config.module.length ) {
+			error = new Error( `No tests matched the module "${config.module}".` );
+		} else if ( config.moduleId && config.moduleId.length ) {
+			error = new Error( `No tests matched the moduleId "${config.moduleId}".` );
+		} else if ( config.testId && config.testId.length ) {
+			error = new Error( `No tests matched the testId "${config.testId}".` );
+		} else {
+			error = new Error( "No tests were run." );
 		}
 
-		if ( config.module && config.module.length ) {
-			throw new Error( `No tests matched the module "${config.module}".` );
-		}
-
-		if ( config.moduleId && config.moduleId.length ) {
-			throw new Error( `No tests matched the moduleId "${config.moduleId}".` );
-		}
-
-		if ( config.testId && config.testId.length ) {
-			throw new Error( `No tests matched the testId "${config.testId}".` );
-		}
-
-		throw new Error( "No tests were run." );
-
+		onUncaughtException( error );
+		advance();
+		return;
 	}
+
+	ProcessingQueue.finished = true;
 
 	emit( "runEnd", globalSuite.end( true ) );
 	runLoggingCallbacks( "done", {

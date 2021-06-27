@@ -113,29 +113,28 @@ Last test to run (hanging) has an async hold. Ensure all assert.async() callback
 `TAP version 13
 not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promise
   ---
-  message: Error thrown in non-returned promise!
+  message: global failure: Error: Error thrown in non-returned promise!
   severity: failed
-  actual  : {
-  "message": "Error thrown in non-returned promise!",
-  "stack": "Error: Error thrown in non-returned promise!\\n    at /some/path/wherever/unhandled-rejection.js:13:11"
-}
+  actual  : undefined
   expected: undefined
   stack: |
     Error: Error thrown in non-returned promise!
-        at /some/path/wherever/unhandled-rejection.js:13:11
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:10:10
+        at internal
   ...
 not ok 2 global failure
   ---
-  message: outside of a test context
+  message: Error: outside of a test context
   severity: failed
-  actual  : {
-  "message": "outside of a test context",
-  "stack": "Error: outside of a test context\\n    at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)"
-}
+  actual  : undefined
   expected: undefined
   stack: |
     Error: outside of a test context
-        at Object.<anonymous> (/some/path/wherever/unhandled-rejection.js:20:18)
+        at Object.<anonymous> (/qunit/test/cli/fixtures/unhandled-rejection.js:17:18)
+        at processModule (/qunit/qunit/qunit.js)
+        at Object.module$1 [as module] (/qunit/qunit/qunit.js)
+        at Object.<anonymous> (/qunit/test/cli/fixtures/unhandled-rejection.js:3:7)
+        at internal
   ...
 1..2
 # pass 0
@@ -148,9 +147,9 @@ not ok 2 global failure
 `TAP version 13
 not ok 1 global failure
   ---
-  message: No tests were run.
+  message: Error: No tests were run.
   severity: failed
-  actual  : {}
+  actual  : undefined
   expected: undefined
   stack: |
     Error: No tests were run.
@@ -242,9 +241,9 @@ ok 1 Zero assertions > has a test
 `TAP version 13
 not ok 1 global failure
   ---
-  message: "No tests matched the filter \\"no matches\\"."
+  message: "Error: No tests matched the filter \\"no matches\\"."
   severity: failed
-  actual  : {}
+  actual  : undefined
   expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".

@@ -89,28 +89,34 @@ async function run( args, options ) {
 				}
 			}
 		} catch ( e ) {
-
-			// eslint-disable-next-line no-loop-func
-			QUnit.module( files[ i ], function() {
-				const loadFailureMessage = `Failed to load the test file with error:\n${e.stack}`;
-				QUnit.test( loadFailureMessage, function( assert ) {
-					assert.true( false, "should be able to load file" );
-				} );
-			} );
+			const error = new Error( `Failed to load file ${files[ i ]}\n${e.name}: ${e.message}` );
+			error.stack = e.stack;
+			QUnit.onUncaughtException( error );
 		}
 	}
 
+	// The below handlers set exitCode directly, to make sure it is set even if the
+	// uncaught exception happens after the last test (shortly before "runEnd", or
+	// asynchronously after "runEnd" if the process is still running).
+	//
+	// The variable makes sure that if the uncaught exception is before "runEnd",
+	// or from another "runEnd" callback, it also won't turn the error code
+	// back into a success.
+	let uncaught = false;
+
+	// Handle the unhandled
+	process.on( "unhandledRejection", ( reason, _promise ) => {
+		QUnit.onUncaughtException( reason );
+		process.exitCode = 1;
+		uncaught = true;
+	} );
+	process.on( "uncaughtException", ( error, _origin ) => {
+		QUnit.onUncaughtException( error );
+		process.exitCode = 1;
+		uncaught = true;
+	} );
+
 	let running = true;
-
-	// Listen for unhandled rejections, and call QUnit.onUnhandledRejection
-	process.on( "unhandledRejection", function( reason ) {
-		QUnit.onUnhandledRejection( reason );
-	} );
-
-	process.on( "uncaughtException", function( error ) {
-		QUnit.onError( error );
-	} );
-
 	process.on( "exit", function() {
 		if ( running ) {
 			console.error( "Error: Process exited before tests finished running" );
@@ -130,7 +136,7 @@ async function run( args, options ) {
 	QUnit.on( "runEnd", function setExitCode( data ) {
 		running = false;
 
-		if ( data.testCounts.failed ) {
+		if ( data.testCounts.failed || uncaught ) {
 			process.exitCode = 1;
 		} else {
 			process.exitCode = 0;

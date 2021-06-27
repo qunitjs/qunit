@@ -3,6 +3,7 @@ import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
 import { emit } from "./events";
 import Assert from "./assert";
+import Logger from "./logger";
 import Promise from "./promise";
 
 import config from "./core/config";
@@ -48,6 +49,20 @@ export default function Test( settings ) {
 		this.todo = true;
 	}
 
+	// Queuing a late test after the run has ended is not allowed.
+	// This was once supported for internal use by QUnit.onError().
+	// Ref https://github.com/qunitjs/qunit/issues/1377
+	if ( ProcessingQueue.finished ) {
+
+		// Using this for anything other than onError(), such as testing in QUnit.done(),
+		// is unstable and will likely result in the added tests being ignored by CI.
+		// (Meaning the CI passes irregardless of the added tests).
+		//
+		// TODO: Make this an error in QUnit 3.0
+		// throw new Error( "Unexpected new test after the run already ended" );
+		Logger.warn( "Unexpected test after runEnd. This is unstable and will fail in QUnit 3.0." );
+		return;
+	}
 	if ( !this.skip && typeof this.callback !== "function" ) {
 		const method = this.todo ? "QUnit.todo" : "QUnit.test";
 		throw new TypeError( `You must provide a callback to ${method}("${this.testName}")` );
@@ -452,11 +467,6 @@ Test.prototype = {
 		this.previousFailure = !!previousFailCount;
 
 		ProcessingQueue.add( runTest, prioritize, config.seed );
-
-		// If the queue has already finished, we manually process the new test
-		if ( ProcessingQueue.finished ) {
-			ProcessingQueue.advance();
-		}
 	},
 
 	pushResult: function( resultInfo ) {

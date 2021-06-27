@@ -4,7 +4,7 @@ import { internalStop, resetTestTimeout } from "./test";
 import Logger from "./logger";
 
 import config from "./core/config";
-import { objectType, objectValues } from "./core/utilities";
+import { objectType, objectValues, errorString } from "./core/utilities";
 import { sourceFromStacktrace } from "./core/stacktrace";
 import { clearTimeout } from "./globals";
 
@@ -490,26 +490,5 @@ class Assert {
 // Known to us are: Closure Compiler, Narwhal
 // eslint-disable-next-line dot-notation
 Assert.prototype.raises = Assert.prototype[ "throws" ];
-
-/**
- * Converts an error into a simple string for comparisons.
- *
- * @param {Error|Object} error
- * @return {string}
- */
-function errorString( error ) {
-	const resultErrorString = error.toString();
-
-	// If the error wasn't a subclass of Error but something like
-	// an object literal with name and message properties...
-	if ( resultErrorString.slice( 0, 7 ) === "[object" ) {
-
-		// Based on https://es5.github.com/#x15.11.4.4
-		const name = error.name ? String( error.name ) : "Error";
-		return error.message ? `${name}: ${error.message}` : name;
-	} else {
-		return resultErrorString;
-	}
-}
 
 export default Assert;
