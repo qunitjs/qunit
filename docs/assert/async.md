@@ -18,7 +18,7 @@ Instruct QUnit to wait for an asynchronous operation.
 
 | name | description |
 |------|-------------|
-| `acceptCallCount` (Number) | Number of expected callbacks before the test is done. Defaults to `1`. |
+| `acceptCallCount` (number) | Number of expected callbacks before the test is done. Defaults to `1`. |
 
 ### Description
 
