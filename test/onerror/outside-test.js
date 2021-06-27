@@ -1,39 +1,47 @@
 QUnit.module( "pushFailure outside a test", function( hooks ) {
 	var originalPushResult;
+	var pushedName = null;
+	var pushedResult = null;
 
-	hooks.beforeEach( function() {
+	hooks.before( function( assert ) {
 
-		// Duck-punch pushResult so we can check test name and assert args.
-		originalPushResult = QUnit.config.current.pushResult;
+		// Duck-punch pushResult to capture the first test assertion.
+		originalPushResult = assert.pushResult;
+		assert.pushResult = function( resultInfo ) {
+			pushedName = assert.test.testName;
+			pushedResult = resultInfo;
 
-		QUnit.config.current.pushResult = function( resultInfo ) {
+			// Restore pushResult to not affect our hooks.after() assertion and dummy test.
+			assert.pushResult = originalPushResult;
 
-			// Restore pushResult for this assert object, to allow following assertions.
-			this.pushResult = originalPushResult;
-
-			this.assert.strictEqual(
-				this.testName,
-				"global failure", "new test implicitly created and appropriately named"
-			);
-
-			this.assert.deepEqual( resultInfo, {
-				message: "Error message",
-				source: "filePath.js:1",
-				result: false,
-				actual: "actual"
-			}, "assert.pushResult arguments" );
+			// Replace with dummy to avoid "zero assertions" error.
+			originalPushResult( { result: true, message: "dummy" } );
 		};
-
 	} );
 
-	hooks.afterEach( function() {
-		QUnit.config.current.pushResult = originalPushResult;
+	hooks.after( function( assert ) {
+		assert.strictEqual(
+			pushedName,
+			"global failure",
+			"new test implicitly created and appropriately named"
+		);
+		assert.propEqual( pushedResult, {
+			result: false,
+			message: "Error: Error message",
+			source: "filePath.js:1"
+		}, "pushed result" );
 	} );
 
-	// Actual test, outside QUnit.test context.
+	// This should generate a new test, since we're outside a QUnit.test context.
 	QUnit.onError( {
 		message: "Error message",
 		fileName: "filePath.js",
 		lineNumber: 1
-	}, "actual" );
+	} );
+
+	// This dummy test ensures hooks.after() will run even if QUnit.onError()
+	// failed to create the expected (failing) test.
+	QUnit.test( "dummy", function( assert ) {
+		assert.true( true );
+	} );
 } );

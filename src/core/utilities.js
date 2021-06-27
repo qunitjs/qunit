@@ -157,3 +157,25 @@ export function generateHash( module, testName ) {
 
 	return hex.slice( -8 );
 }
+
+/**
+ * Converts an error into a simple string for comparisons.
+ *
+ * @param {Error|any} error
+ * @return {string}
+ */
+export function errorString( error ) {
+
+	// Use String() instead of toString() to handle non-object values like undefined or null.
+	const resultErrorString = String( error );
+
+	// If the error wasn't a subclass of Error but something like
+	// an object literal with name and message properties...
+	if ( resultErrorString.slice( 0, 7 ) === "[object" ) {
+
+		// Based on https://es5.github.io/#x15.11.4.4
+		return ( error.name || "Error" ) + ( error.message ? `: ${error.message}` : "" );
+	} else {
+		return resultErrorString;
+	}
+}

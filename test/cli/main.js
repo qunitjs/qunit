@@ -71,7 +71,8 @@ QUnit.module( "CLI Main", () => {
 		try {
 			await execute( "qunit syntax-error/test.js" );
 		} catch ( e ) {
-			assert.true( e.stdout.includes( "not ok 1 syntax-error/test.js > Failed to load the test file with error:" ) );
+			assert.true( e.stdout.includes( "not ok 1 global failure" ) );
+			assert.true( e.stdout.includes( "Failed to load file syntax-error/test.js" ) );
 			assert.true( e.stdout.includes( "ReferenceError: varIsNotDefined is not defined" ) );
 			assert.equal( e.code, 1 );
 		}
@@ -534,11 +535,11 @@ CALLBACK: done`;
 			} catch ( e ) {
 				assert.equal( e.stdout, expectedOutput[ command ] );
 
-				// These are both undesirable, but at least confirm what the current state is.
-				// TDD should break these and update when possible.
-				assert.true( e.stderr.includes( "TypeError: Cannot read property 'length' of undefined" ), e.stderr );
-
-				// e.code should be 1, but is sometimes 0, 1, or 7 in different envs
+				assert.pushResult( {
+					result: e.stderr.includes( "Error: `assert.async` callback from test \"times out before scheduled done is called\" called after tests finished." ),
+					actual: e.stderr
+				} );
+				assert.equal( e.code, 1 );
 			}
 		} );
 

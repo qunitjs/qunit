@@ -45,15 +45,9 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 				this.deepEqual(
 					resultInfo,
 					{
-						message: "Error message",
+						message: "Error: Error message",
 						source: "filePath.js:1",
-						result: false,
-						actual: {
-							message: "Error message",
-							fileName: "filePath.js",
-							lineNumber: 1,
-							stack: "filePath.js:1"
-						}
+						result: false
 					},
 					"Expected assert.pushResult to be called with correct args"
 				);
@@ -65,11 +59,8 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 		} );
 
 		// Actual test, outside QUnit.test context.
-		QUnit.onUnhandledRejection( {
-			message: "Error message",
-			fileName: "filePath.js",
-			lineNumber: 1,
-			stack: "filePath.js:1"
-		} );
+		var error = new Error( "Error message" );
+		error.stack = "filePath.js:1";
+		QUnit.onUncaughtException( error );
 	} );
 }
