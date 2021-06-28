@@ -5,6 +5,7 @@ on:
 jobs:
   run:
     name: BrowserStack
+    if: github.repository == "qunitjs/qunit" # skip on forks
     runs-on: ubuntu-latest
     env:
       PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
