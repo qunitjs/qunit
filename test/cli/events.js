@@ -3,32 +3,47 @@
  * by QUnit after the test run finishes. They are expected to adhere to the
  * js-reporters standard.
  */
-
-var invokedHooks = [],
-	invokedHookDetails = {},
-	done = false;
+const invokedHooks = [];
+const invokedHookDetails = {};
+const requireQUnit = require( "../../src/cli/require-qunit" );
+const myQUnit = requireQUnit();
 
 function callback( name ) {
 	invokedHookDetails[ name ] = [];
 
 	return function( details ) {
-		if ( done ) {
-			return;
-		}
-
 		invokedHooks.push( name );
 		invokedHookDetails[ name ].push( details );
 	};
 }
 
-QUnit.on( "runStart", callback( "runStart" ) );
-QUnit.on( "suiteStart", callback( "suiteStart" ) );
-QUnit.on( "testStart", callback( "testStart" ) );
-QUnit.on( "assertion", callback( "assertion1" ) );
-QUnit.on( "assertion", callback( "assertion2" ) );
-QUnit.on( "testEnd", callback( "testEnd" ) );
-QUnit.on( "suiteEnd", callback( "suiteEnd" ) );
-QUnit.on( "runEnd", callback( "runEnd" ) );
+myQUnit.on( "runStart", callback( "runStart" ) );
+myQUnit.on( "suiteStart", callback( "suiteStart" ) );
+myQUnit.on( "testStart", callback( "testStart" ) );
+myQUnit.on( "assertion", callback( "assertion1" ) );
+myQUnit.on( "assertion", callback( "assertion2" ) );
+myQUnit.on( "testEnd", callback( "testEnd" ) );
+myQUnit.on( "suiteEnd", callback( "suiteEnd" ) );
+myQUnit.on( "runEnd", callback( "runEnd" ) );
+
+myQUnit.module( "Events", function() {
+	myQUnit.module( "Nested", function() {
+		myQUnit.todo( "test1", function( assert ) {
+			assert.true( false, "failing assertion" );
+		} );
+	} );
+
+	myQUnit.test( "test2", function( assert ) {
+		assert.true( true, "passing assertion" );
+	} );
+
+	myQUnit.skip( "test3" );
+} );
+
+const myQunitRun = new Promise( resolve => {
+	myQUnit.on( "runEnd", resolve );
+} );
+myQUnit.start();
 
 var test1Start = {
 	name: "test1",
@@ -178,15 +193,12 @@ function removeUnstableProperties( obj ) {
 
 // After all the tests run, we verify the events were fired in the correct order
 // with the correct data
-QUnit.done( function() {
-	if ( done ) {
-		return;
-	}
+QUnit.module( "Events", function() {
 
-	done = true;
+	QUnit.test( "verify callback order and data at end of test", async assert => {
 
-	QUnit.module( "Events-postdone" );
-	QUnit.test( "verify callback order and data at end of test", function( assert ) {
+		await myQunitRun;
+
 		assert.deepEqual( invokedHooks, [
 			"runStart",
 			"suiteStart",
@@ -272,18 +284,4 @@ QUnit.done( function() {
 			"end of suite with tests and child suites data is correct"
 		);
 	} );
-} );
-
-QUnit.module( "Events", function() {
-	QUnit.module( "Nested", function() {
-		QUnit.todo( "test1", function( assert ) {
-			assert.true( false, "failing assertion" );
-		} );
-	} );
-
-	QUnit.test( "test2", function( assert ) {
-		assert.true( true, "passing assertion" );
-	} );
-
-	QUnit.skip( "test3" );
 } );

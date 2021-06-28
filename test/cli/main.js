@@ -71,8 +71,8 @@ QUnit.module( "CLI Main", () => {
 		try {
 			await execute( "qunit syntax-error/test.js" );
 		} catch ( e ) {
-			assert.notEqual( e.stdout.indexOf( "not ok 1 syntax-error/test.js > Failed to load the test file with error:" ), -1 );
-			assert.notEqual( e.stdout.indexOf( "ReferenceError: varIsNotDefined is not defined" ), -1 );
+			assert.true( e.stdout.includes( "not ok 1 syntax-error/test.js > Failed to load the test file with error:" ) );
+			assert.true( e.stdout.includes( "ReferenceError: varIsNotDefined is not defined" ) );
 			assert.equal( e.code, 1 );
 		}
 	} );
@@ -174,6 +174,118 @@ QUnit.module( "CLI Main", () => {
 			assert.notEqual( e.stdout.indexOf( "message: before failed on contains a hard error: expected error thrown in hook" ), -1 );
 			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in hook" ), -1 );
 		}
+	} );
+
+	QUnit.test( "callbacks", async assert => {
+		const expected = `CALLBACK: begin1
+CALLBACK: begin2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module1 > before
+CALLBACK: module1 > beforeEach
+TEST: module1 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module1 > afterEach
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module2 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module2 > beforeEach
+TEST: module2 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module2 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module2 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module3 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module3 > beforeEach
+TEST: module3 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module3 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module3 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module1 > beforeEach
+TEST: module1 > test2
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module1 > afterEach
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module4 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module4 > beforeEach
+TEST: module4 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module4 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module4 > after
+CALLBACK: module1 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: done1
+CALLBACK: done2`;
+
+		const command = "qunit callbacks.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.stderr, expected );
+		assert.equal( execution.code, 0 );
+	} );
+
+	QUnit.test( "callbacks with promises", async assert => {
+		const expected = `CALLBACK: begin
+CALLBACK: begin2
+CALLBACK: moduleStart
+CALLBACK: moduleStart
+CALLBACK: testStart - test1
+CALLBACK: testDone - test1
+CALLBACK: moduleDone - module1 > nestedModule1
+CALLBACK: testStart - test2
+CALLBACK: testDone - test2
+CALLBACK: moduleStart
+CALLBACK: testStart - test3
+CALLBACK: testDone - test3
+CALLBACK: moduleDone - module1 > nestedModule2
+CALLBACK: moduleDone - module1
+CALLBACK: done`;
+
+		const command = "qunit callbacks-promises.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.stderr, expected );
+		assert.equal( execution.code, 0 );
 	} );
 
 	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
@@ -395,7 +507,7 @@ QUnit.module( "CLI Main", () => {
 				await execute( "qunit semaphore/nan.js" );
 			} catch ( e ) {
 				assert.pushResult( {
-					result: e.stdout.indexOf( "message: Invalid value on test.semaphore" ) > -1,
+					result: e.stdout.includes( "message: Invalid value on test.semaphore" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}

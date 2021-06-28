@@ -1,28 +1,16 @@
+QUnit.config.reorder = false;
+
 var tests = {};
 
-var done = false;
-
 QUnit.testDone( function( details ) {
-	if ( done ) {
-		return;
-	}
-
 	tests[ details.testId ] = {
 		skipped: details.skipped,
 		todo: details.todo
 	};
 } );
 
-QUnit.done( function() {
-	if ( done ) {
-		return;
-	}
-
-	done = true;
-
-	QUnit.test( "Compare stats", function( assert ) {
-		assert.expect( 1 );
-
+QUnit.module( "parent module", function( hooks ) {
+	hooks.after( function( assert ) {
 		assert.deepEqual( tests, {
 			"efa6d5f5": {
 				skipped: false,
@@ -42,9 +30,7 @@ QUnit.done( function() {
 			}
 		} );
 	} );
-} );
 
-QUnit.module( "parent module", function() {
 	QUnit.module( "a normal module", function() {
 		QUnit.test( "normal test", function( assert ) {
 			assert.true( true, "this test should run" );
@@ -63,5 +49,10 @@ QUnit.module( "parent module", function() {
 		QUnit.test( "a normal test that will be treated as a todo", function( assert ) {
 			assert.true( false, "not implemented yet" );
 		} );
+	} );
+
+	// We need one more test to ensure hooks.after() runs after the above has finished.
+	QUnit.test( "another test", function( assert ) {
+		assert.true( true, "this test should run" );
 	} );
 } );
