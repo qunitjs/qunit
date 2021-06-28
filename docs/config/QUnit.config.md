@@ -1,8 +1,9 @@
 ---
 layout: default
-categories: [config]
 title: QUnit.config
 excerpt: General configuration for QUnit. Check the description of each option for details.
+categories:
+  - config
 redirect_from:
   - "/QUnit.config/"
 ---

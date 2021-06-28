@@ -58,7 +58,7 @@ export function diff( a, b ) {
  * Determines whether an element exists in a given array or not.
  *
  * @method inArray
- * @param {Any} elem
+ * @param {any} elem
  * @param {Array} array
  * @return {boolean}
  */

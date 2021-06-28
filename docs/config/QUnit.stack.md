@@ -1,14 +1,15 @@
 ---
 layout: default
-categories: [config]
 title: QUnit.stack()
 excerpt: Return a single line string representing the stacktrace.
+categories:
+- config
 version_added: "1.19.0"
 ---
 
 `QUnit.stack( [ offset = 0 ] )`
 
-Return a single line string representing the stacktrace (call stack)
+Return a single line string representing the stacktrace (call stack).
 
 | name | description |
 |------|-------------|

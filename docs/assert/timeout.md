@@ -1,7 +1,7 @@
 ---
 layout: default
 title: assert.timeout()
-excerpt: Set the length of time to wait for async operations before failing the test.
+excerpt: Set how long to wait for async operations.
 categories:
   - assert
   - async
@@ -10,19 +10,19 @@ version_added: "2.4.0"
 
 `timeout( duration )`
 
-Set the length of time to wait for async operations before failing the test.
+Set how long to wait for async operations to complete before failing the test.
 
 | name | description |
 |------|-------------|
-| `duration` (Number) | The length of time, in milliseconds, to wait for async operations. |
+| `duration` (number) | The length of time, in milliseconds, to wait for async operations. |
 
 ### Description
 
-`assert.timeout()` sets the length of time, in milliseconds, to wait for async operations in the current test. This is equivalent to setting `config.testTimeout` on a per-test basis. The timeout length only applies when performing async operations.
+`assert.timeout()` defines how long to wait (at most) in the current test. It overrides [`QUnit.config.testTimeout`](../config/QUnit.config.md) on a per-test basis.
 
-If `assert.timeout()` is called after a timeout has already been set, the old timeout will be cleared and the new duration will be used for the new timer.
+The timeout length only applies when performing async operations. If `0` is passed, then any asynchronous task may fail the test.
 
-If `0` is passed, then the test will be assumed to be completely synchronous. If a non-numeric value is passed as an argument, the function will throw an error.
+If `assert.timeout()` is called after a timeout has already been set, the old timeout will be cleared and the new duration will be used for a new timer. If a non-numeric value is passed as an argument, the function will throw an error.
 
 ### Examples
 
