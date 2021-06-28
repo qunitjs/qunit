@@ -18,7 +18,7 @@ jobs:
     # Includes Python 3
     # https://github.com/actions/virtual-environments/blob/ubuntu20/20210318.0/images/linux/Ubuntu2004-README.md
     runs-on: ubuntu-latest
-    if: github.repository == "qunitjs/qunit" # skip on forks
+    if: ${{ github.repository == "qunitjs/qunit" }} # skip on forks, noisy cron and likely stale main branch
     steps:
       - uses: actions/checkout@v2
         with:
