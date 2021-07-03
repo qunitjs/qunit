@@ -1,22 +1,13 @@
 ---
-layout: page
+layout: default
 ---
+{{ content }}
 
-<div class="body" role="main">
-    {{ content }}
-
-    <h2>{{ page.title }}</h2>
-
-    <ul class="page-list">
-    {% assign pages = site.pages | where: 'categories', page.category | sort_natural: 'title' %}
-    {% for page in pages %}
-    <li class="page-item">
-        <h3><a href="{{ page.url }}">{{page.title}}</a></h3>
-        <p>
-            {%- if page.version_removed == nil and page.version_deprecated %}<strong>DEPRECATED</strong> {% endif -%}
-            {{ page.excerpt -}}
-        </p>
-    </li>
-    {% endfor %}
-    </ul>
-</div>
+{%- assign pages = site.pages | where: 'categories', page.category | sort_natural: 'title' -%}
+{% for page in pages %}
+<h3 id="{{ page.title | slugify }}"><a href="{{ page.url }}">{{ page.title }}</a></h3>
+<p>
+	{%- if page.version_removed == nil and page.version_deprecated %}<strong>DEPRECATED</strong> {% endif -%}
+	{{ page.excerpt -}}
+</p>
+{% endfor -%}
