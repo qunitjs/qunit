@@ -23,16 +23,6 @@ layout: page
     {%- endfor %}
     </ul>
 
-    <h4>Configuration tools</h4>
-    <ul class="sidebar-list">
-    {%- assign list = site.pages | where: 'categories', 'config' | sort_natural: 'title' -%}
-    {% for entry in list %}
-    <li class="sidebar-item{% if page.url == entry.url %} sidebar-item-active{% endif %}">
-        <a href="{{ entry.url }}">{{ entry.title }}</a>
-    </li>
-    {%- endfor %}
-    </ul>
-
     <h4>Callback events</h4>
     <ul class="sidebar-list">
     {%- assign list = site.pages | where: 'categories', 'callbacks' | sort_natural: 'title' -%}
@@ -46,6 +36,33 @@ layout: page
     <h4>Async control</h4>
     <ul class="sidebar-list">
     {%- assign list = site.pages | where: 'categories', 'async' | sort_natural: 'title' -%}
+    {% for entry in list %}
+    <li class="sidebar-item{% if page.url == entry.url %} sidebar-item-active{% endif %}">
+        <a href="{{ entry.url }}">{{ entry.title }}</a>
+    </li>
+    {%- endfor %}
+    </ul>
+
+    <h4>Configuration</h4>
+    <ul class="sidebar-list">
+    {%- assign index = site.pages | where: 'category', 'config' | first -%}
+    {%- assign list = site.pages | where: 'categories', 'config' | sort_natural: 'title' -%}
+    {%- assign self_in_list = list | where: 'url', page.url | size -%}
+    <li class="sidebar-item{% if page.url == index.url %} sidebar-item-active{% endif %}">
+        <a href="{{ index.url }}">{{index.title}}</a>
+    </li>
+    {% if page.url == index.url or self_in_list > 0 %}
+    {% for entry in list %}
+    <li class="sidebar-item{% if page.url == entry.url %} sidebar-item-active{% endif %}">
+        <a href="{{ entry.url }}">{{ entry.title }}</a>
+    </li>
+    {%- endfor %}
+    {%- endif %}
+    </ul>
+
+    <h4>Extension interface</h4>
+    <ul class="sidebar-list">
+    {%- assign list = site.pages | where: 'categories', 'extension' | sort_natural: 'title' -%}
     {% for entry in list %}
     <li class="sidebar-item{% if page.url == entry.url %} sidebar-item-active{% endif %}">
         <a href="{{ entry.url }}">{{ entry.title }}</a>

@@ -3,7 +3,9 @@ layout: default
 title: QUnit.assert
 excerpt: Namespace for QUnit assertion methods.
 categories:
-  - config
+  - extension
+redirect_from:
+  - "/config/QUnit.assert/"
 version_added: "1.7.0"
 ---
 
