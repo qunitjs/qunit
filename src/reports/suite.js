@@ -5,6 +5,11 @@ export default class SuiteReport {
 		this.name = name;
 		this.fullName = parentSuite ? parentSuite.fullName.concat( name ) : [];
 
+		// When an "error" event is emitted from onUncaughtException(), the
+		// "runEnd" event should report the status as failed.
+		// The "runEnd" event data is made by this class (as "globalSuite").
+		this.globalFailureCount = 0;
+
 		this.tests = [];
 		this.childSuites = [];
 
@@ -71,6 +76,9 @@ export default class SuiteReport {
 	}
 
 	getTestCounts( counts = { passed: 0, failed: 0, skipped: 0, todo: 0, total: 0 } ) {
+		counts.failed += this.globalFailureCount;
+		counts.total += this.globalFailureCount;
+
 		counts = this.tests.reduce( ( counts, test ) => {
 			if ( test.valid ) {
 				counts[ test.getStatus() ]++;

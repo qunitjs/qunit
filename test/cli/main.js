@@ -177,6 +177,8 @@ QUnit.module( "CLI Main", () => {
 		}
 	} );
 
+	// Regression test against "details of begin error swallowed"
+	// https://github.com/qunitjs/qunit/issues/1446
 	QUnit.test( "report failure in begin callback", async assert => {
 		const command = "qunit bad-callbacks/begin-throw.js";
 
@@ -188,11 +190,7 @@ QUnit.module( "CLI Main", () => {
 			} );
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
-
-			// FIXME: The details of this error are swallowed
-			// https://github.com/qunitjs/qunit/issues/1446
-			assert.equal( e.stdout, "TAP version 13" );
-			assert.equal( e.stderr, "Error: Process exited before tests finished running" );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} );
 
@@ -207,17 +205,7 @@ QUnit.module( "CLI Main", () => {
 			} );
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
-			assert.equal( e.stdout, `TAP version 13
-ok 1 module1 > test1
-1..1
-# pass 1
-# skip 0
-# todo 0
-# fail 0` );
-			assert.equal( e.stderr, `Error: No dice
-    at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:8
-    at /qunit/qunit/qunit.js
-    at internal` );
+			assert.equal( e.stdout, expectedOutput[ command ] );
 		}
 	} );
 
@@ -614,13 +602,8 @@ CALLBACK: done`;
 			try {
 				await execute( command );
 			} catch ( e ) {
-				assert.equal( e.stdout, expectedOutput[ command ] );
-
-				assert.pushResult( {
-					result: e.stderr.includes( "Error: `assert.async` callback from test \"times out before scheduled done is called\" called after tests finished." ),
-					actual: e.stderr
-				} );
 				assert.equal( e.code, 1 );
+				assert.equal( e.stdout, expectedOutput[ command ] );
 			}
 		} );
 

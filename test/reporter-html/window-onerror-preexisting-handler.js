@@ -2,50 +2,50 @@
 /* exported onerrorReturnValue */
 
 QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
-	var originalQUnitOnError;
+	var originalOnUncaught;
 
 	hooks.beforeEach( function() {
 		onerrorReturnValue = null;
 		onerrorCallingContext = null;
 
-		originalQUnitOnError = QUnit.onError;
+		originalOnUncaught = QUnit.onUncaughtException;
 	} );
 
 	hooks.afterEach( function() {
-		QUnit.onError = originalQUnitOnError;
+		QUnit.onUncaughtException = originalOnUncaught;
 	} );
 
-	QUnit.test( "call QUnit.onError if handler returns false", function( assert ) {
+	QUnit.test( "call QUnit.onUncaughtException if handler returns false", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = false;
 
-		QUnit.onError = function() {
-			assert.true( true, "QUnit.onError was called" );
+		QUnit.onUncaughtException = function() {
+			assert.true( true, "QUnit.onUncaughtException was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "call QUnit.onError if handler returns void 0", function( assert ) {
+	QUnit.test( "call QUnit.onUncaughtException if handler returns void 0", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = void 0;
 
-		QUnit.onError = function() {
-			assert.true( true, "QUnit.onError was called" );
+		QUnit.onUncaughtException = function() {
+			assert.true( true, "QUnit.onUncaughtException was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
 	} );
 
-	QUnit.test( "call QUnit.onError if handler returns truthy", function( assert ) {
+	QUnit.test( "call QUnit.onUncaughtException if handler returns truthy", function( assert ) {
 		assert.expect( 1 );
 
 		onerrorReturnValue = "truthy value";
 
-		QUnit.onError = function() {
-			assert.true( true, "QUnit.onError was called" );
+		QUnit.onUncaughtException = function() {
+			assert.true( true, "QUnit.onUncaughtException was called" );
 		};
 
 		window.onerror( "An error message", "filename.js", 1 );
@@ -56,8 +56,8 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 
 		onerrorReturnValue = true;
 
-		QUnit.onError = function() {
-			assert.true( false, "QUnit.onError should not have been called" );
+		QUnit.onUncaughtException = function() {
+			assert.true( false, "QUnit.onUncaughtException should not have been called" );
 		};
 
 		var result = window.onerror( "An error message", "filename.js", 1 );
@@ -68,24 +68,22 @@ QUnit.module( "window.onerror (with preexisting handler)", function( hooks ) {
 	QUnit.test( "window.onerror handler is called on window", function( assert ) {
 		assert.expect( 1 );
 
-		QUnit.onError = function() {};
+		QUnit.onUncaughtException = function() {};
 
 		window.onerror( "An error message", "filename.js", 1 );
 
 		assert.strictEqual( onerrorCallingContext, window, "Handler called with correct context" );
 	} );
 
-	QUnit.test( "forward return value of QUnit.error", function( assert ) {
+	QUnit.test( "forward return value of prexisting onerror", function( assert ) {
 		assert.expect( 1 );
 
-		var expected = {};
+		onerrorReturnValue = {};
 
-		QUnit.onError = function() {
-			return expected;
-		};
+		QUnit.onUncaughtException = function() {};
 
 		var result = window.onerror( "An error message", "filename.js", 1 );
 
-		assert.strictEqual( result, expected, "QUnit.onError return value was returned" );
+		assert.strictEqual( result, onerrorReturnValue, "return value" );
 	} );
 } );

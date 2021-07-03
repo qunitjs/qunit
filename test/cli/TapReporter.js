@@ -3,9 +3,8 @@ const { EventEmitter } = require( "events" );
 
 function mockStack( error ) {
 	error.stack = `    at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-    at require (internal/modules/cjs/helpers.js:22:18)
-    at /dev/null/node_modules/mocha/lib/mocha.js:220:27
-    at startup (internal/bootstrap/node.js:283:19)`;
+    at require (internal/helpers.js:22:18)
+    at /dev/null/src/example/foo.js:220:27`;
 	return error;
 }
 
@@ -131,19 +130,49 @@ QUnit.module( "TapReporter", hooks => {
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-        at require (internal/modules/cjs/helpers.js:22:18)
-        at /dev/null/node_modules/mocha/lib/mocha.js:220:27
-        at startup (internal/bootstrap/node.js:283:19)
+        at require (internal/helpers.js:22:18)
+        at /dev/null/src/example/foo.js:220:27
   ...
   ---
   message: second error
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-        at require (internal/modules/cjs/helpers.js:22:18)
-        at /dev/null/node_modules/mocha/lib/mocha.js:220:27
-        at startup (internal/bootstrap/node.js:283:19)
+        at require (internal/helpers.js:22:18)
+        at /dev/null/src/example/foo.js:220:27
   ...
+`
+		);
+	} );
+
+	QUnit.test( "output global failure (string)", assert => {
+		emitter.emit( "error", "Boo" );
+
+		assert.strictEqual( buffer, `${kleur.red( "not ok 1 global failure" )}
+  ---
+  message: Boo
+  severity: failed
+  ...
+Bail out! Boo
+`
+		);
+	} );
+
+	QUnit.test( "output global failure (Error)", assert => {
+		const err = new ReferenceError( "Boo is not defined" );
+		mockStack( err );
+		emitter.emit( "error", err );
+
+		assert.strictEqual( buffer, `${kleur.red( "not ok 1 global failure" )}
+  ---
+  message: ReferenceError: Boo is not defined
+  severity: failed
+  stack: |
+        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
+        at require (internal/helpers.js:22:18)
+        at /dev/null/src/example/foo.js:220:27
+  ...
+Bail out! ReferenceError: Boo is not defined
 `
 		);
 	} );

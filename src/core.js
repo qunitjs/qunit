@@ -118,7 +118,6 @@ extend( QUnit, {
 
 		// Initialize the configuration options
 		extend( config, {
-			stats: { all: 0, bad: 0, testCount: 0 },
 			started: 0,
 			updateRate: 1000,
 			autostart: true,

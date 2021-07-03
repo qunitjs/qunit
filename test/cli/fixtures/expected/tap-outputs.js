@@ -107,8 +107,21 @@ Extra reporters found among package dependencies: npm-reporter`,
 Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.`,
 	/* eslint-enable max-len */
 	"qunit unhandled-rejection.js":
-`TAP version 13
-not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promise
+`not ok 1 global failure
+  ---
+  message: Error: outside of a test context
+  severity: failed
+  stack: |
+    Error: outside of a test context
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
+        at processModule (/qunit/qunit/qunit.js)
+        at Object.module$1 [as module] (/qunit/qunit/qunit.js)
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
+        at internal
+  ...
+Bail out! Error: outside of a test context
+TAP version 13
+not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promise
   ---
   message: global failure: Error: Error thrown in non-returned promise!
   severity: failed
@@ -117,20 +130,6 @@ not ok 1 Unhandled Rejections > test passes just fine, but has a rejected promis
   stack: |
     Error: Error thrown in non-returned promise!
         at /qunit/test/cli/fixtures/unhandled-rejection.js:10:10
-        at internal
-  ...
-not ok 2 global failure
-  ---
-  message: Error: outside of a test context
-  severity: failed
-  actual  : undefined
-  expected: undefined
-  stack: |
-    Error: outside of a test context
-        at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
-        at processModule (/qunit/qunit/qunit.js)
-        at Object.module$1 [as module] (/qunit/qunit/qunit.js)
-        at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
         at internal
   ...
 1..2
@@ -146,8 +145,6 @@ not ok 1 global failure
   ---
   message: Error: No tests were run.
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests were run.
         at done (/qunit/qunit/qunit.js)
@@ -156,6 +153,7 @@ not ok 1 global failure
         at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
         at internal
   ...
+Bail out! Error: No tests were run.
 1..1
 # pass 0
 # skip 0
@@ -240,8 +238,6 @@ not ok 1 global failure
   ---
   message: "Error: No tests matched the filter \\"no matches\\"."
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".
         at done (/qunit/qunit/qunit.js)
@@ -250,6 +246,7 @@ not ok 1 global failure
         at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
         at internal
   ...
+Bail out! Error: No tests matched the filter "no matches".
 1..1
 # pass 0
 # skip 0
@@ -381,6 +378,39 @@ not ok 1 slow
 # todo 0
 # fail 1`,
 
+	"qunit bad-callbacks/begin-throw.js":
+`TAP version 13
+not ok 1 global failure
+  ---
+  message: Error: No dice
+  severity: failed
+  stack: |
+    Error: No dice
+        at /qunit/test/cli/fixtures/bad-callbacks/begin-throw.js:2:8
+        at /qunit/qunit/qunit.js
+        at internal
+  ...
+Bail out! Error: No dice`,
+
+	"qunit bad-callbacks/done-throw.js":
+`TAP version 13
+ok 1 module1 > test1
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Bail out! Error: No dice
+  ---
+  message: Error: No dice
+  severity: failed
+  stack: |
+    Error: No dice
+        at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:8
+        at /qunit/qunit/qunit.js
+        at internal
+  ...`,
+
 	"qunit done-after-timeout.js":
 `TAP version 13
 not ok 1 times out before scheduled done is called
@@ -396,7 +426,16 @@ not ok 1 times out before scheduled done is called
 # pass 0
 # skip 0
 # todo 0
-# fail 1`,
+# fail 1
+Bail out! Error: \`assert.async\` callback from test "times out before scheduled done is called" called after tests finished.
+  ---
+  message: "Error: \`assert.async\` callback from test \\"times out before scheduled done is called\\" called after tests finished."
+  severity: failed
+  stack: |
+    Error: \`assert.async\` callback from test "times out before scheduled done is called" called after tests finished.
+        at Timeout.done [as _onTimeout] (/qunit/qunit/qunit.js)
+        at internal
+  ...`,
 
 	"qunit assert-expect/no-tests.js":
 `TAP version 13

@@ -1,4 +1,5 @@
 import kleur from "kleur";
+import { errorString } from "../core/utilities";
 import { console } from "../globals";
 const hasOwn = Object.prototype.hasOwnProperty;
 
@@ -84,11 +85,11 @@ function prettyYamlValue( value, indent = 4 ) {
 		// Is this a complex string?
 		if (
 			value === "" ||
-      rSpecialJson.test( value ) ||
-      rSpecialYaml.test( value[ 0 ] ) ||
-      rUntrimmed.test( value ) ||
-      rNumerical.test( value ) ||
-      rBool.test( value )
+				rSpecialJson.test( value ) ||
+				rSpecialYaml.test( value[ 0 ] ) ||
+				rUntrimmed.test( value ) ||
+				rNumerical.test( value ) ||
+				rBool.test( value )
 		) {
 			if ( !/\n/.test( value ) ) {
 
@@ -185,7 +186,10 @@ export default class TapReporter {
 		this.log = options.log || Function.prototype.bind.call( console.log, console );
 
 		this.testCount = 0;
+		this.ended = false;
+		this.bailed = false;
 
+		runner.on( "error", this.onError.bind( this ) );
 		runner.on( "runStart", this.onRunStart.bind( this ) );
 		runner.on( "testEnd", this.onTestEnd.bind( this ) );
 		runner.on( "runEnd", this.onRunEnd.bind( this ) );
@@ -197,6 +201,27 @@ export default class TapReporter {
 
 	onRunStart( _globalSuite ) {
 		this.log( "TAP version 13" );
+	}
+
+	onError( error ) {
+		if ( this.bailed ) {
+			return;
+		}
+
+		this.bailed = true;
+
+		// Imitate onTestEnd
+		// Skip this if we're past "runEnd" as it would look odd
+		if ( !this.ended ) {
+			this.testCount = this.testCount + 1;
+			this.log( kleur.red( `not ok ${this.testCount} global failure` ) );
+			this.logError( error );
+		}
+
+		this.log( "Bail out! " + errorString( error ).split( "\n" )[ 0 ] );
+		if ( this.ended ) {
+			this.logError( error );
+		}
 	}
 
 	onTestEnd( test ) {
@@ -212,16 +237,18 @@ export default class TapReporter {
 			this.log(
 				kleur.cyan( `not ok ${this.testCount} # TODO ${test.fullName.join( " > " )}` )
 			);
-			test.errors.forEach( ( error ) => this.logError( error, "todo" ) );
+			test.errors.forEach( ( error ) => this.logAssertion( error, "todo" ) );
 		} else {
 			this.log(
 				kleur.red( `not ok ${this.testCount} ${test.fullName.join( " > " )}` )
 			);
-			test.errors.forEach( ( error ) => this.logError( error ) );
+			test.errors.forEach( ( error ) => this.logAssertion( error ) );
 		}
 	}
 
 	onRunEnd( globalSuite ) {
+		this.ended = true;
+
 		this.log( `1..${globalSuite.testCounts.total}` );
 		this.log( `# pass ${globalSuite.testCounts.passed}` );
 		this.log( kleur.yellow( `# skip ${globalSuite.testCounts.skipped}` ) );
@@ -229,7 +256,7 @@ export default class TapReporter {
 		this.log( kleur.red( `# fail ${globalSuite.testCounts.failed}` ) );
 	}
 
-	logError( error, severity ) {
+	logAssertion( error, severity ) {
 		let out = "  ---";
 		out += `\n  message: ${prettyYamlValue( error.message || "failed" )}`;
 		out += `\n  severity: ${prettyYamlValue( severity || "failed" )}`;
@@ -249,6 +276,17 @@ export default class TapReporter {
 			out += `\n  stack: ${prettyYamlValue( error.stack + "\n" )}`;
 		}
 
+		out += "\n  ...";
+		this.log( out );
+	}
+
+	logError( error ) {
+		let out = "  ---";
+		out += `\n  message: ${prettyYamlValue( errorString( error ) )}`;
+		out += `\n  severity: ${prettyYamlValue( "failed" )}`;
+		if ( error && error.stack ) {
+			out += `\n  stack: ${prettyYamlValue( error.stack + "\n" )}`;
+		}
 		out += "\n  ...";
 		this.log( out );
 	}

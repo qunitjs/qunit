@@ -1,12 +1,11 @@
 QUnit.module( "QUnit.onError", function() {
-	QUnit.test( "call pushFailure when inside a test", function( assert ) {
+	QUnit.test( "inside a test", function( assert ) {
 		assert.expect( 2 );
 
 		var original = assert.pushResult;
 		var pushed = null;
 		assert.pushResult = function( result ) {
 			pushed = result;
-			assert.pushResult = original;
 		};
 
 		var suppressed = QUnit.onError( {
@@ -14,6 +13,8 @@ QUnit.module( "QUnit.onError", function() {
 			fileName: "filePath.js",
 			lineNumber: 1
 		} );
+
+		assert.pushResult = original;
 
 		assert.strictEqual( suppressed, false, "onError should allow other error handlers to run" );
 		assert.propEqual( pushed, {
@@ -50,20 +51,24 @@ QUnit.module( "QUnit.onError", function() {
 
 
 	QUnit.test( "ignore failure when ignoreGlobalErrors is enabled", function( assert ) {
-		assert.expect( 1 );
+		assert.expect( 2 );
 
-		assert.test.pushFailure = function() {
-			assert.true( false, "No error should be pushed" );
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( result ) {
+			pushed = result;
 		};
-
 		assert.test.ignoreGlobalErrors = true;
 
-		var result = QUnit.onError( {
+		var suppressed = QUnit.onError( {
 			message: "Error message",
 			fileName: "filePath.js",
 			lineNumber: 1
 		} );
 
-		assert.strictEqual( result, true, "onError should not allow other error handlers to run" );
+		assert.pushResult = original;
+
+		assert.strictEqual( pushed, null, "No error should be pushed" );
+		assert.strictEqual( suppressed, true, "onError should not allow other error handlers to run" );
 	} );
 } );

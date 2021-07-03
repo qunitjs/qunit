@@ -163,12 +163,11 @@ function done() {
 	const runtime = now() - config.started;
 	const passed = config.stats.all - config.stats.bad;
 
-	// We have reached the end of the processing queue, but there is one more
-	// thing we'd like to report as a possible failing test. For this to work
-	// we need to call `onUncaughtException` before closing `ProcessingQueue.finished`.
-	// However, we do need to call `advance()` in order to resume the processing queue.
-	// Once this new test is finished processing, we'll reach `done` again, and
-	// that time the below condition should evaluate to false.
+	ProcessingQueue.finished = true;
+
+	// We have reached the end of the processing queue and are about to emit the
+	// "runEnd" event after which reporters typically stop listening and exit
+	// the process. First, check if we need to emit one final error.
 	if ( config.stats.testCount === 0 && config.failOnZeroTests === true ) {
 		let error;
 		if ( config.filter && config.filter.length ) {
@@ -184,11 +183,7 @@ function done() {
 		}
 
 		onUncaughtException( error );
-		advance();
-		return;
 	}
-
-	ProcessingQueue.finished = true;
 
 	emit( "runEnd", globalSuite.end( true ) );
 	runLoggingCallbacks( "done", {

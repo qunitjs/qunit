@@ -9,6 +9,7 @@ export default class ConsoleReporter {
 		// Support IE 9: Function#bind is supported, but no console.log.bind().
 		this.log = options.log || Function.prototype.bind.call( console.log, console );
 
+		runner.on( "error", this.onError.bind( this ) );
 		runner.on( "runStart", this.onRunStart.bind( this ) );
 		runner.on( "testStart", this.onTestStart.bind( this ) );
 		runner.on( "testEnd", this.onTestEnd.bind( this ) );
@@ -17,6 +18,10 @@ export default class ConsoleReporter {
 
 	static init( runner, options ) {
 		return new ConsoleReporter( runner, options );
+	}
+
+	onError( error ) {
+		this.log( "error", error );
 	}
 
 	onRunStart( runStart ) {
