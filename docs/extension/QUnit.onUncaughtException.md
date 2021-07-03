@@ -3,8 +3,10 @@ layout: default
 title: QUnit.onUncaughtException()
 excerpt: Handle a global error.
 categories:
- - config
+ - extension
 version_added: "unreleased"
+redirect_from:
+  - "/config/QUnit.onUncaughtException/"
 ---
 
 `QUnit.onUncaughtException( error )`

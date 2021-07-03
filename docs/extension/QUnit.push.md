@@ -3,8 +3,10 @@ layout: default
 title: QUnit.push()
 excerpt: Report the result of a custom assertion.
 categories:
-- config
+- extension
 - deprecated
+redirect_from:
+  - "/config/QUnit.push/"
 version_added: "1.0.0"
 version_deprecated: "2.1.0"
 ---
