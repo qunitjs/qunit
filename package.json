@@ -66,7 +66,7 @@
     "grunt": "^1.4.1",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-qunit": "^4.0.0",
+    "grunt-contrib-qunit": "^5.0.1",
     "grunt-git-authors": "^3.2.0",
     "grunt-search": "^0.1.8",
     "kleur": "4.1.4",

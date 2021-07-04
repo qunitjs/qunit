@@ -16,7 +16,7 @@ jobs:
     if: ${{ github.repository == 'qunitjs/qunit' }} # skip on forks, needs secret
     runs-on: ubuntu-latest
     env:
-      PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
+      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v2
 
@@ -24,7 +24,7 @@ jobs:
         with:
           path: |
             ~/.npm
-            ~/.puppeteer_download
+            ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Use Node.js 10
