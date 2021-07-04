@@ -22,7 +22,17 @@ function normalize( actual ) {
 		// Convert "at foo (/min.js:1)\n -> /src.js:2" to "at foo (/src.js:2)"
 		.replace( /\b(at [^(]+\s\()[^)]+(\))\n\s+-> ([^\n]+)/g, "$1$3$2" )
 
+		// CJS-style internal traces:
+		// Convert "at load (internal/modules/cjs/loader.js:7)" to "at internal"
+		//
+		// ESM-style internal traces from Node 14+:
+		// Convert "at wrap (node:internal/modules/cjs/loader:1)" to "at internal"
 		.replace( / {2}at .+\([^/)][^)]*\)/g, "  at internal" )
+
+		// Strip frames from indirect nyc dependencies that are specific
+		// to code coverage jobs:
+		// Convert "at load (/qunit/node_modules/append-transform/index.js:6" to "at internal"
+		.replace( / {2}at .+\/.*node_modules\/append-transform\/.*\)/g, "  at internal" )
 
 		// merge successive lines after initial frame
 		.replace( /(\n\s+at internal)+/g, "$1" )
@@ -55,3 +65,5 @@ module.exports = async function execute( command, execaOptions, hook ) {
 		throw e;
 	}
 };
+
+module.exports.normalize = normalize;
