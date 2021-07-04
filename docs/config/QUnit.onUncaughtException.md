@@ -4,7 +4,7 @@ title: QUnit.onUncaughtException()
 excerpt: Handle a global error.
 categories:
  - config
-version_added: "unversioned"
+version_added: "unreleased"
 ---
 
 `QUnit.onUncaughtException( error )`

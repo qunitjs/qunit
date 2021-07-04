@@ -6,7 +6,7 @@ categories:
 - config
 - deprecated
 version_added: "1.0.0"
-version_deprecated: "2.12"
+version_deprecated: "2.12.0"
 ---
 
 `QUnit.extend( target, mixin )`

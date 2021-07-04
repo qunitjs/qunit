@@ -6,7 +6,7 @@ categories:
 - config
 - deprecated
 version_added: "1.0.0"
-version_deprecated: "2.1"
+version_deprecated: "2.1.0"
 ---
 
 `QUnit.push( result, actual, expected, message )`
