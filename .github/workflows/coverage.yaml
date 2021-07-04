@@ -5,7 +5,7 @@ on:
 jobs:
   run:
     name: Code coverage
-    if: ${{ github.repository == "qunitjs/qunit" }} # skip on forks, needs secret
+    if: ${{ github.repository == 'qunitjs/qunit' }} # skip on forks, needs secret
     runs-on: ubuntu-20.04
     env:
       PUPPETEER_DOWNLOAD_PATH: ~/.puppeteer_download
