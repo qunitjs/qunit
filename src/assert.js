@@ -360,6 +360,11 @@ class Assert {
 					// assign the "expected" to a nice error string to communicate the local failure to the user
 					expected = errorString( e );
 				}
+			} else {
+				result = false;
+				message = "invalid expected value provided to `assert.throws` " +
+						"callback in \"" + currentTest.testName + "\": " +
+						expectedType + ".";
 			}
 		}
 
