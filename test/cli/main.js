@@ -18,7 +18,7 @@ QUnit.module( "CLI Main", () => {
 		try {
 			await execute( "qunit does-not-exist.js" );
 		} catch ( e ) {
-			assert.equal( e.stderr.indexOf( "No files were found matching" ), 0 );
+			assert.true( e.stderr.includes( "No files were found matching" ) );
 		}
 	} );
 
@@ -155,8 +155,8 @@ QUnit.module( "CLI Main", () => {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			assert.notEqual( e.stdout.indexOf( "Died on test #2     at " ), -1 );
-			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in test" ), -1 );
+			assert.true( e.stdout.includes( "Died on test #2     at " ) );
+			assert.true( e.stdout.includes( "Error: expected error thrown in test" ) );
 		}
 	} );
 
@@ -172,8 +172,89 @@ QUnit.module( "CLI Main", () => {
 		} catch ( e ) {
 			assert.equal( e.code, 1 );
 			assert.equal( e.stderr, "" );
-			assert.notEqual( e.stdout.indexOf( "message: before failed on contains a hard error: expected error thrown in hook" ), -1 );
-			assert.notEqual( e.stdout.indexOf( "Error: expected error thrown in hook" ), -1 );
+			assert.true( e.stdout.includes( "message: before failed on contains a hard error: expected error thrown in hook" ) );
+			assert.true( e.stdout.includes( "Error: expected error thrown in hook" ) );
+		}
+	} );
+
+	QUnit.test( "report failure in begin callback", async assert => {
+		const command = "qunit bad-callbacks/begin-throw.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+
+			// FIXME: The details of this error are swallowed
+			// https://github.com/qunitjs/qunit/issues/1446
+			assert.equal( e.stdout, "TAP version 13" );
+			assert.equal( e.stderr, "Error: Process exited before tests finished running" );
+		}
+	} );
+
+	QUnit.test( "report failure in done callback", async assert => {
+		const command = "qunit bad-callbacks/done-throw.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+			assert.equal( e.stdout, `TAP version 13
+ok 1 module1 > test1
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0` );
+			assert.equal( e.stderr, `Error: No dice
+    at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:8
+    at /qunit/qunit/qunit.js
+    at internal` );
+		}
+	} );
+
+	QUnit.test( "report failure in moduleDone callback", async assert => {
+		const command = "qunit bad-callbacks/moduleDone-throw.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+
+			// FIXME: The details of this error are swallowed
+			assert.equal( e.stdout, `TAP version 13
+ok 1 module1 > test1` );
+			assert.equal( e.stderr, "Error: Process exited before tests finished running" );
+		}
+	} );
+
+	QUnit.test( "report failure in testStart callback", async assert => {
+		const command = "qunit bad-callbacks/testStart-throw.js";
+
+		try {
+			const result = await execute( command );
+			assert.pushResult( {
+				result: false,
+				actual: result.stdout
+			} );
+		} catch ( e ) {
+			assert.equal( e.code, 1 );
+
+			// FIXME: The details of this error are swallowed
+			assert.equal( e.stdout, "TAP version 13" );
+			assert.equal( e.stderr, "Error: Process exited before tests finished running" );
 		}
 	} );
 
@@ -431,7 +512,7 @@ CALLBACK: done`;
 				assert.pushResult( {
 
 					// only in stdout due to using `console.log` in manual `unhandledRejection` handler
-					result: e.stdout.indexOf( "Unhandled Rejection: bad things happen sometimes" ) > -1,
+					result: e.stdout.includes( "Unhandled Rejection: bad things happen sometimes" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
@@ -444,7 +525,7 @@ CALLBACK: done`;
 				assert.pushResult( {
 
 					// only in stdout due to using `console.log` in manual `unhandledRejection` handler
-					result: e.stdout.indexOf( "Unhandled Rejection: bad things happen sometimes" ) > -1,
+					result: e.stdout.includes( "Unhandled Rejection: bad things happen sometimes" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
@@ -478,7 +559,7 @@ CALLBACK: done`;
 				await execute( "qunit noglobals/add-global.js" );
 			} catch ( e ) {
 				assert.pushResult( {
-					result: e.stdout.indexOf( "message: Introduced global variable(s): dummyGlobal" ) > -1,
+					result: e.stdout.includes( "message: Introduced global variable(s): dummyGlobal" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
@@ -489,7 +570,7 @@ CALLBACK: done`;
 				await execute( "qunit noglobals/remove-global.js" );
 			} catch ( e ) {
 				assert.pushResult( {
-					result: e.stdout.indexOf( "message: Deleted global variable(s): dummyGlobal" ) > -1,
+					result: e.stdout.includes( "message: Deleted global variable(s): dummyGlobal" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
@@ -519,7 +600,7 @@ CALLBACK: done`;
 				await execute( "qunit semaphore/restart.js" );
 			} catch ( e ) {
 				assert.pushResult( {
-					result: e.stdout.indexOf( "message: \"Tried to restart test while already started (test's semaphore was 0 already)" ) > -1,
+					result: e.stdout.includes( "message: \"Tried to restart test while already started (test's semaphore was 0 already)" ),
 					actual: e.stdout + "\n" + e.stderr
 				} );
 			}
@@ -652,7 +733,7 @@ CALLBACK: done`;
 				assert.equal( e.stderr, "" );
 
 				// can't match exactly due to stack frames including internal line numbers
-				assert.notEqual( e.stdout.indexOf( "message: Expected 2 assertions, but 1 were run" ), -1, e.stdout );
+				assert.true( e.stdout.includes( "message: Expected 2 assertions, but 1 were run" ), e.stdout );
 			}
 		} );
 
@@ -669,7 +750,7 @@ CALLBACK: done`;
 				assert.equal( e.stderr, "" );
 
 				// can't match exactly due to stack frames including internal line numbers
-				assert.notEqual( e.stdout.indexOf( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ), -1, e.stdout );
+				assert.true( e.stdout.includes( "Expected at least one assertion, but none were run - call expect(0) to accept zero assertions." ), e.stdout );
 			}
 		} );
 
@@ -684,7 +765,7 @@ CALLBACK: done`;
 			} catch ( e ) {
 				assert.equal( e.code, 1 );
 				assert.equal( e.stderr, "" );
-				assert.notEqual( e.stdout.indexOf( "message: Expected number of assertions to be defined, but expect() was not called." ), -1, e.stdout );
+				assert.true( e.stdout.includes( "message: Expected number of assertions to be defined, but expect() was not called." ), e.stdout );
 			}
 		} );
 	} );
