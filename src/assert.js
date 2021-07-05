@@ -442,8 +442,11 @@ class Assert {
 					// Log the string form of the regexp
 					expected = String( expected );
 
-					// Expected is a constructor, maybe an Error constructor
-				} else if ( expectedType === "function" && actual instanceof expected ) {
+				// Expected is a constructor, maybe an Error constructor.
+				// Note the extra check on its prototype - this is an implicit
+				// requirement of "instanceof", else it will throw a TypeError.
+				} else if ( expectedType === "function" &&
+					expected.prototype !== undefined && actual instanceof expected ) {
 					result = true;
 
 					// Expected is an Error object
@@ -456,18 +459,24 @@ class Assert {
 					expected = errorString( expected );
 
 					// Expected is a validation function which returns true if validation passed
-				} else {
-					if ( expectedType === "function" ) {
+				} else if ( expectedType === "function" ) {
+
+					// protect against accidental semantics which could hard error in the test
+					try {
 						result = expected.call( {}, actual ) === true;
 						expected = null;
+					} catch ( e ) {
 
-						// Expected is some other invalid type
-					} else {
-						result = false;
-						message = "invalid expected value provided to `assert.rejects` " +
-							"callback in \"" + currentTest.testName + "\": " +
-							expectedType + ".";
+						// assign the "expected" to a nice error string to communicate the local failure to the user
+						expected = errorString( e );
 					}
+
+				// Expected is some other invalid type
+				} else {
+					result = false;
+					message = "invalid expected value provided to `assert.rejects` " +
+						"callback in \"" + currentTest.testName + "\": " +
+						expectedType + ".";
 				}
 
 
