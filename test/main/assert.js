@@ -194,7 +194,7 @@ QUnit.test( "throws", function( assert ) {
 			"expected is a string",
 			"message is non-null"
 		);
-	}, /throws\/raises does not accept a string value for the expected argument/ );
+	}, /^Error: assert\.throws\/raises does not accept a string value for the expected argument/ );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -364,6 +364,42 @@ QUnit.test( "throws", function( assert ) {
 		/description/,
 		"throw error from property of 'this' context"
 	);
+
+	// the following are nested assertions, validating that it
+	// initially throws due to an invalid expected value
+
+	assert.throws(
+		function() {
+			assert.throws(
+				undefined, // irrelevant
+				2
+			);
+		},
+		/^Error: Invalid expected value type \(number\) provided to assert\.throws\/raises\.$/,
+		"throws errors when provided a number"
+	);
+
+	assert.throws(
+		function() {
+			assert.throws(
+				undefined, // irrelevant
+				false
+			);
+		},
+		/^Error: Invalid expected value type \(boolean\) provided to assert\.throws\/raises\.$/,
+		"throws errors when provided a boolean"
+	);
+
+	assert.throws(
+		function() {
+			assert.throws(
+				undefined, // irrelevant
+				[]
+			);
+		},
+		/^Error: Invalid expected value type \(array\) provided to assert\.throws\/raises\.$/,
+		"throws errors when provided an array"
+	);
 } );
 
 QUnit.test( "raises", function( assert ) {
@@ -482,6 +518,54 @@ QUnit.test( "rejects", function( assert ) {
 	assert.rejects(
 		buildMockPromise( undefined ),
 		"reject with undefined against no matcher"
+	);
+
+	// the following are nested assertions, validating that it
+	// initially throws due to an invalid expected value
+
+	assert.throws(
+		function() {
+			assert.rejects(
+				undefined, // irrelevant
+				2
+			);
+		},
+		/^Error: Invalid expected value type \(number\) provided to assert\.rejects\.$/,
+		"rejects errors when provided a number"
+	);
+
+	assert.throws(
+		function() {
+			assert.rejects(
+				undefined, // irrelevant
+				false
+			);
+		},
+		/^Error: Invalid expected value type \(boolean\) provided to assert\.rejects\.$/,
+		"rejects errors when provided a boolean"
+	);
+
+	assert.throws(
+		function() {
+			assert.rejects(
+				undefined, // irrelevant
+				[]
+			);
+		},
+		/^Error: Invalid expected value type \(array\) provided to assert\.rejects\.$/,
+		"rejects errors when provided an array"
+	);
+
+	assert.throws(
+		function() {
+			assert.rejects(
+				undefined, // irrelevant
+				"expected is a string",
+				"message is non-null"
+			);
+		},
+		/^Error: assert\.rejects does not accept a string value for the expected argument/,
+		"rejects errors when provided a string"
 	);
 } );
 
@@ -614,30 +698,6 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"throws fail when expected function returns false"
 	);
-
-	assert.throws(
-		function() {
-			throw "foo";
-		},
-		2,
-		"throws fails when provided a number"
-	);
-
-	assert.rejects(
-		function() {
-			throw "foo";
-		},
-		false,
-		"throws fails when provided a boolean"
-	);
-
-	assert.rejects(
-		function() {
-			throw "foo";
-		},
-		[],
-		"throws fails when provided an array"
-	);
 } );
 
 QUnit.test( "rejects", function( assert ) {
@@ -673,28 +733,4 @@ QUnit.test( "rejects", function( assert ) {
 	);
 
 	assert.rejects( null );
-
-	assert.rejects(
-		buildMockPromise( "foo" ),
-		2,
-		"rejects fails when provided a number"
-	);
-
-	assert.rejects(
-		buildMockPromise( "foo" ),
-		"string matcher",
-		"rejects fails when provided a string"
-	);
-
-	assert.rejects(
-		buildMockPromise( "foo" ),
-		false,
-		"rejects fails when provided a boolean"
-	);
-
-	assert.rejects(
-		buildMockPromise( "foo" ),
-		[],
-		"rejects fails when provided an array"
-	);
 } );

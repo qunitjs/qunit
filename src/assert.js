@@ -295,20 +295,9 @@ class Assert {
 		let actual,
 			result = false;
 
-		const currentTest = ( this instanceof Assert && this.test ) || config.current;
+		[ expected, message ] = validateExpectedExceptionArgs( expected, message, "throws/raises" );
 
-		// 'expected' is optional unless doing string comparison
-		if ( objectType( expected ) === "string" ) {
-			if ( message == null ) {
-				message = expected;
-				expected = null;
-			} else {
-				throw new Error(
-					"throws/raises does not accept a string value for the expected argument.\n" +
-					"Use a non-string object value (e.g. regExp) instead if it's necessary."
-				);
-			}
-		}
+		const currentTest = ( this instanceof Assert && this.test ) || config.current;
 
 		currentTest.ignoreGlobalErrors = true;
 		try {
@@ -319,10 +308,7 @@ class Assert {
 		currentTest.ignoreGlobalErrors = false;
 
 		if ( actual ) {
-			const data = validateException( actual, expected, message, currentTest, "throws" );
-			result = data.result;
-			expected = data.expected;
-			message = data.message;
+			[ result, expected, message ] = validateException( actual, expected, message );
 		}
 
 		currentTest.assert.pushResult( {
@@ -337,26 +323,9 @@ class Assert {
 
 	rejects( promise, expected, message ) {
 
+		[ expected, message ] = validateExpectedExceptionArgs( expected, message, "rejects" );
+
 		const currentTest = ( this instanceof Assert && this.test ) || config.current;
-
-		// 'expected' is optional unless doing string comparison
-		if ( objectType( expected ) === "string" ) {
-			if ( message === undefined ) {
-				message = expected;
-				expected = undefined;
-			} else {
-				message = "assert.rejects does not accept a string value for the expected " +
-					"argument.\nUse a non-string object value (e.g. validator function) instead " +
-					"if necessary.";
-
-				currentTest.assert.pushResult( {
-					result: false,
-					message: message
-				} );
-
-				return;
-			}
-		}
 
 		const then = promise && promise.then;
 		if ( objectType( then ) !== "function" ) {
@@ -390,16 +359,16 @@ class Assert {
 			},
 
 			function handleRejection( actual ) {
-
-				const data = validateException( actual, expected, message, currentTest, "rejects" );
+				let result;
+				[ result, expected, message ] = validateException( actual, expected, message );
 
 				currentTest.assert.pushResult( {
-					result: data.result,
+					result,
 
 					// leave rejection value of undefined as-is
 					actual: actual && errorString( actual ),
-					expected: data.expected,
-					message: data.message
+					expected,
+					message
 				} );
 				done();
 			}
@@ -407,9 +376,47 @@ class Assert {
 	}
 }
 
-function validateException( actual, expected, message, currentTest, assertionMethod ) {
+function validateExpectedExceptionArgs( expected, message, assertionMethod ) {
+	const expectedType = objectType( expected );
+
+	// 'expected' is optional unless doing string comparison
+	if ( expectedType === "string" ) {
+		if ( message === undefined ) {
+			message = expected;
+			expected = undefined;
+			return [ expected, message ];
+		} else {
+			throw new Error(
+				"assert." + assertionMethod +
+				" does not accept a string value for the expected argument.\n" +
+				"Use a non-string object value (e.g. RegExp or validator function) " +
+				"instead if necessary."
+			);
+		}
+	}
+
+	const valid =
+		expected === undefined ||
+		expected === null ||
+		expectedType === "regexp" ||
+		expectedType === "function" ||
+		expectedType === "object";
+
+	if ( !valid ) {
+		const message =
+			"Invalid expected value type (" + expectedType + ") " +
+			"provided to assert." + assertionMethod + ".";
+		throw new Error( message );
+	}
+
+	return [ expected, message ];
+}
+
+function validateException( actual, expected, message ) {
 	let result = false;
 	const expectedType = objectType( expected );
+
+	// These branches should be exhaustive, based on validation done in validateExpectedException
 
 	// We don't want to validate
 	if ( expected === undefined || expected === null ) {
@@ -450,20 +457,9 @@ function validateException( actual, expected, message, currentTest, assertionMet
 			// assign the "expected" to a nice error string to communicate the local failure to the user
 			expected = errorString( e );
 		}
-
-	// Expected is some other invalid type
-	} else {
-		result = false;
-		message = "invalid expected value provided to `assert." + assertionMethod + "` " +
-			"callback in \"" + currentTest.testName + "\": " +
-			expectedType + ".";
 	}
 
-	return {
-		result,
-		expected,
-		message
-	};
+	return [ result, expected, message ];
 }
 
 // Provide an alternative to assert.throws(), for environments that consider throws a reserved word
