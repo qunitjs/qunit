@@ -483,6 +483,13 @@ QUnit.test( "rejects", function( assert ) {
 		buildMockPromise( undefined ),
 		"reject with undefined against no matcher"
 	);
+
+	// should return a thenable
+	var returnValue = assert.rejects(
+		buildMockPromise( undefined )
+	);
+	assert.strictEqual( typeof returnValue, "object" );
+	assert.strictEqual( typeof returnValue.then, "function" );
 } );
 
 QUnit.module( "failing assertions", {
