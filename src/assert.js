@@ -295,7 +295,7 @@ class Assert {
 		let actual,
 			result = false;
 
-		[ expected, message ] = validateExpectedExceptionArgs( expected, message, "throws/raises" );
+		[ expected, message ] = validateExpectedExceptionArgs( expected, message, "throws" );
 
 		const currentTest = ( this instanceof Assert && this.test ) || config.current;
 

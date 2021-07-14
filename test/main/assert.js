@@ -194,7 +194,7 @@ QUnit.test( "throws", function( assert ) {
 			"expected is a string",
 			"message is non-null"
 		);
-	}, /^Error: assert\.throws\/raises does not accept a string value for the expected argument/ );
+	}, /^Error: assert\.throws does not accept a string value for the expected argument/ );
 
 	// This test is for IE 7 and prior which does not properly
 	// implement Error.prototype.toString
@@ -375,7 +375,7 @@ QUnit.test( "throws", function( assert ) {
 				2
 			);
 		},
-		/^Error: Invalid expected value type \(number\) provided to assert\.throws\/raises\.$/,
+		/^Error: Invalid expected value type \(number\) provided to assert\.throws\.$/,
 		"throws errors when provided a number"
 	);
 
@@ -386,7 +386,7 @@ QUnit.test( "throws", function( assert ) {
 				false
 			);
 		},
-		/^Error: Invalid expected value type \(boolean\) provided to assert\.throws\/raises\.$/,
+		/^Error: Invalid expected value type \(boolean\) provided to assert\.throws\.$/,
 		"throws errors when provided a boolean"
 	);
 
@@ -397,7 +397,7 @@ QUnit.test( "throws", function( assert ) {
 				[]
 			);
 		},
-		/^Error: Invalid expected value type \(array\) provided to assert\.throws\/raises\.$/,
+		/^Error: Invalid expected value type \(array\) provided to assert\.throws\.$/,
 		"throws errors when provided an array"
 	);
 } );
