@@ -488,8 +488,8 @@ QUnit.test( "rejects", function( assert ) {
 	var returnValue = assert.rejects(
 		buildMockPromise( undefined )
 	);
-	assert.ok( returnValue );
-	assert.ok( returnValue.then );
+	assert.strictEqual( typeof returnValue, "object" );
+	assert.strictEqual( typeof returnValue.then, "function" );
 } );
 
 QUnit.module( "failing assertions", {
