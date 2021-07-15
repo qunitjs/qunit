@@ -3,10 +3,11 @@ layout: default
 title: QUnit.dump.parse()
 excerpt: Extensible data dumping and string serialization.
 categories:
- - config
+ - extension
 redirect_from:
   - "/QUnit.dump.parse/"
   - "/QUnit.jsDump.parse/"
+  - "/config/QUnit.dump.parse/"
 version_added: "1.0.0"
 ---
 

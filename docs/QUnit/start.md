@@ -10,7 +10,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-`QUnit.start()` must be used to start a test run that has [`QUnit.config.autostart`](../config/QUnit.config.md) set to `false`.
+`QUnit.start()` must be used to start a test run that has [`QUnit.config.autostart`](../config/autostart.md) set to `false`.
 
 <p class="note note--warning" markdown="1">Warning: This method was previously used to control async tests on text contexts along with `QUnit.stop`. For asynchronous tests, use [`assert.async`](../assert/async.md) instead.</p>
 

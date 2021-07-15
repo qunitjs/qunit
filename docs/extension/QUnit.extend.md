@@ -3,8 +3,10 @@ layout: default
 title: QUnit.extend()
 excerpt: Copy the properties from one object into a target object.
 categories:
-- config
+- extension
 - deprecated
+redirect_from:
+  - "/config/QUnit.extend/"
 version_added: "1.0.0"
 version_deprecated: "2.12.0"
 ---

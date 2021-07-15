@@ -8,8 +8,9 @@
 
 * [Main methods](./QUnit/)
 * [Assertions](./assert/)
-* [Configuration tools](./config/)
 * [Callback events](./callbacks/)
+* [Configuration options](./config/)
+* [Extension interface](./extension/)
 
 ## Contribute
 

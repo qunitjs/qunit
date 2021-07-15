@@ -13,7 +13,17 @@ function normalize( actual ) {
 
 	return actual
 		.replace( reDir, "/qunit" )
+
+		// Convert "at processModule (/qunit/qunit/qunit.js:1:2)" to "at processModule (/qunit/qunit/qunit.js)"
 		.replace( /(\/qunit\/qunit\/qunit\.js):\d+:\d+\)/g, "$1)" )
+
+		// Convert "at /qunit/qunit/qunit.js:1:2" to "at /qunit/qunit/qunit.js"
+		.replace( /( {2}at \/qunit\/qunit\/qunit\.js):\d+:\d+/g, "$1" )
+
+		// Strip inferred names for anonymous test closures (as Node 10 did),
+		// to match the output of Node 12+.
+		// Convert "at QUnit.done (/qunit/test/foo.js:1:2)" to "at /qunit/test/foo.js:1:2"
+		.replace( /\b(at )\S+ \((\/qunit\/test\/[^:]+:\d+:\d+)\)/g, "$1$2" )
 
 		// convert sourcemap'ed traces from Node 14 and earlier to the
 		// standard format used by Node 15+.
@@ -62,6 +72,7 @@ module.exports = async function execute( command, execaOptions, hook ) {
 		return result;
 	} catch ( e ) {
 		e.stdout = normalize( String( e.stdout ).trimEnd() );
+		e.stderr = normalize( String( e.stderr ).trimEnd() );
 		throw e;
 	}
 };

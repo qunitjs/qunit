@@ -599,6 +599,14 @@ QUnit.test( "rejects", function( assert ) {
 		/^Error: assert\.rejects does not accept a string value for the expected argument/,
 		"rejects errors when provided a string"
 	);
+
+	// should return a thenable
+	var returnValue = assert.rejects(
+		buildMockPromise( undefined )
+	);
+	assert.strictEqual( typeof returnValue, "object" );
+	assert.strictEqual( typeof returnValue.then, "function" );
+
 } );
 
 QUnit.module( "failing assertions", {

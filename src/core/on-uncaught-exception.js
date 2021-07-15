@@ -47,6 +47,9 @@ export default function onUncaughtException( error ) {
 		// emitted after "runEnd" and before the process exits.
 		// The HTML Reporter can use this to renmder it on the page in a test-like
 		// block for easy discovery.
-		Logger.warn( `${message}\n${source}` );
+		//
+		// Avoid printing "Error: foo" twice if the environment's native stack trace
+		// already includes that in its format.
+		Logger.warn( source.indexOf( source ) !== -1 ? source : `${message}\n${source}` );
 	}
 }

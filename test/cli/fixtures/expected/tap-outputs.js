@@ -61,7 +61,7 @@ not ok 1 Throws match > bad
   actual  : Error: Match me with a pattern
   expected: "/incorrect pattern/"
   stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/fail/throws-match.js:3:10)
+        at /qunit/test/cli/fixtures/fail/throws-match.js:3:10
   ...
 1..1
 # pass 0
@@ -98,16 +98,13 @@ ok 5 A-Test > derp
 	"qunit --reporter npm-reporter": "Run ended!",
 	"qunit --reporter does-not-exist": `No reporter found matching "does-not-exist".
 Built-in reporters: console, tap
-Extra reporters found among package dependencies: npm-reporter
-`,
+Extra reporters found among package dependencies: npm-reporter`,
 
 	"qunit --reporter": `Built-in reporters: console, tap
-Extra reporters found among package dependencies: npm-reporter
-`,
+Extra reporters found among package dependencies: npm-reporter`,
 
 	"qunit hanging-test": `Error: Process exited before tests finished running
-Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.
-`,
+Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.`,
 	/* eslint-enable max-len */
 	"qunit unhandled-rejection.js":
 `TAP version 13
@@ -130,10 +127,10 @@ not ok 2 global failure
   expected: undefined
   stack: |
     Error: outside of a test context
-        at Object.<anonymous> (/qunit/test/cli/fixtures/unhandled-rejection.js:17:18)
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
         at processModule (/qunit/qunit/qunit.js)
         at Object.module$1 [as module] (/qunit/qunit/qunit.js)
-        at Object.<anonymous> (/qunit/test/cli/fixtures/unhandled-rejection.js:3:7)
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
         at internal
   ...
 1..2
@@ -175,7 +172,7 @@ not ok 2 Example > bad
   actual  : false
   expected: true
   stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/source.js:7:14)
+        at /qunit/test/cli/fixtures/sourcemap/source.js:7:14
   ...
 1..2
 # pass 1
@@ -193,7 +190,7 @@ not ok 2 Example > bad
   actual  : false
   expected: true
   stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10)
+        at /qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10
   ...
 1..2
 # pass 1
@@ -299,7 +296,7 @@ not ok 1 # TODO module B > Only this module should run > a todo test
   actual  : false
   expected: true
   stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/only/module.js:17:15)
+        at /qunit/test/cli/fixtures/only/module.js:17:15
   ...
 ok 2 # SKIP module B > Only this module should run > implicitly skipped test
 ok 3 module B > Only this module should run > normal test
@@ -321,7 +318,7 @@ not ok 1 # TODO module B > test B
   actual  : false
   expected: true
   stack: |
-        at Object.<anonymous> (/qunit/test/cli/fixtures/only/module-flat.js:9:13)
+        at /qunit/test/cli/fixtures/only/module-flat.js:9:13
   ...
 ok 2 # SKIP module B > test C
 ok 3 module B > test D
