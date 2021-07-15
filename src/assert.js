@@ -396,8 +396,7 @@ function validateExpectedExceptionArgs( expected, message, assertionMethod ) {
 	}
 
 	const valid =
-		expected === undefined ||
-		expected === null ||
+		!expected || // TODO: be more explicit here
 		expectedType === "regexp" ||
 		expectedType === "function" ||
 		expectedType === "object";
@@ -419,7 +418,7 @@ function validateException( actual, expected, message ) {
 	// These branches should be exhaustive, based on validation done in validateExpectedException
 
 	// We don't want to validate
-	if ( expected === undefined || expected === null ) {
+	if ( !expected ) {
 		result = true;
 
 	// Expected is a regexp

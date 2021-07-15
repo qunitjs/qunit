@@ -379,15 +379,33 @@ QUnit.test( "throws", function( assert ) {
 		"throws errors when provided a number"
 	);
 
+	// note that "falsey" values are actually ok
+	assert.throws(
+		function() {
+			throw new this.CustomError( "some error description" );
+		},
+		0,
+		"throws passes when expected is falsey (0)"
+	);
+
 	assert.throws(
 		function() {
 			assert.throws(
 				undefined, // irrelevant
-				false
+				true
 			);
 		},
 		/^Error: Invalid expected value type \(boolean\) provided to assert\.throws\.$/,
 		"throws errors when provided a boolean"
+	);
+
+	// note that "falsey" values are actually ok
+	assert.throws(
+		function() {
+			throw new this.CustomError( "some error description" );
+		},
+		false,
+		"throws passes when expected is falsey (false)"
 	);
 
 	assert.throws(
@@ -534,15 +552,29 @@ QUnit.test( "rejects", function( assert ) {
 		"rejects errors when provided a number"
 	);
 
+	// note that "falsey" values are actually ok
+	assert.rejects(
+		buildMockPromise( undefined ),
+		false,
+		"throws passes when expected is falsey (false)"
+	);
+
 	assert.throws(
 		function() {
 			assert.rejects(
 				undefined, // irrelevant
-				false
+				true
 			);
 		},
 		/^Error: Invalid expected value type \(boolean\) provided to assert\.rejects\.$/,
 		"rejects errors when provided a boolean"
+	);
+
+	// note that "falsey" values are actually ok
+	assert.rejects(
+		buildMockPromise( undefined ),
+		false,
+		"throws passes when expected is falsey (false)"
 	);
 
 	assert.throws(
