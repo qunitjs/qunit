@@ -738,6 +738,27 @@ QUnit.test( "throws", function( assert ) {
 		},
 		"throws fail when expected function returns false"
 	);
+
+	// non-function actual values
+	assert.throws(
+		undefined,
+		"throws fails when actual value is undefined" );
+
+	assert.throws(
+		2,
+		"throws fails when actual value is a number" );
+
+	assert.throws(
+		[],
+		"throws fails when actual value is an array" );
+
+	assert.throws(
+		"notafunction",
+		"throws fails when actual value is a string" );
+
+	assert.throws(
+		{},
+		"throws fails when actual value is an object" );
 } );
 
 QUnit.test( "rejects", function( assert ) {

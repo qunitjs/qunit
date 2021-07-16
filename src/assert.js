@@ -292,12 +292,26 @@ class Assert {
 	}
 
 	[ "throws" ]( block, expected, message ) {
-		let actual,
-			result = false;
 
 		[ expected, message ] = validateExpectedExceptionArgs( expected, message, "throws" );
 
 		const currentTest = ( this instanceof Assert && this.test ) || config.current;
+
+		if ( objectType( block ) !== "function" ) {
+			const message = "The value provided to `assert.throws` in " +
+				"\"" + currentTest.testName + "\" was not a function.";
+
+			currentTest.assert.pushResult( {
+				result: false,
+				actual: block,
+				message
+			} );
+
+			return;
+		}
+
+		let actual;
+		let result = false;
 
 		currentTest.ignoreGlobalErrors = true;
 		try {
