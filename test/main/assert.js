@@ -555,8 +555,8 @@ QUnit.test( "rejects", function( assert ) {
 	// note that "falsey" values are actually ok
 	assert.rejects(
 		buildMockPromise( undefined ),
-		false,
-		"throws passes when expected is falsey (false)"
+		0,
+		"rejects passes when expected is falsey (0)"
 	);
 
 	assert.throws(
@@ -574,7 +574,7 @@ QUnit.test( "rejects", function( assert ) {
 	assert.rejects(
 		buildMockPromise( undefined ),
 		false,
-		"throws passes when expected is falsey (false)"
+		"rejects passes when expected is falsey (false)"
 	);
 
 	assert.throws(
