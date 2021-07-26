@@ -29,7 +29,7 @@ export default function onUncaughtException( error ) {
 			result: false,
 			message: `global failure: ${errorString( error )}`,
 
-			// We could let callers specify an offset to substract a number of frames via
+			// We could let callers specify an offset to subtract a number of frames via
 			// sourceFromStacktrace, in case they are a wrapper further away from the error
 			// handler, and thus reduce some noise in the stack trace. However, we're not
 			// doing this right now because it would almost never be used in practice given
