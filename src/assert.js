@@ -72,47 +72,10 @@ class Assert {
 		}
 	}
 
-	// Put a hold on processing and return a function that will release it a maximum of once.
+	// Create a new async pause and return a new function that can release the pause.
 	async( count ) {
-		const test = this.test;
-
-		let popped = false,
-			acceptCallCount = count;
-
-		if ( typeof acceptCallCount === "undefined" ) {
-			acceptCallCount = 1;
-		}
-
-		const resume = internalStop( test );
-
-		return function done() {
-
-			if ( config.current === undefined ) {
-				throw new Error( "`assert.async` callback from test \"" +
-					test.testName + "\" called after tests finished." );
-			}
-
-			if ( config.current !== test ) {
-				config.current.pushFailure(
-					"`assert.async` callback from test \"" +
-					test.testName + "\" was called during this test." );
-				return;
-			}
-
-			if ( popped ) {
-				test.pushFailure( "Too many calls to the `assert.async` callback",
-					sourceFromStacktrace( 2 ) );
-				return;
-			}
-
-			acceptCallCount -= 1;
-			if ( acceptCallCount > 0 ) {
-				return;
-			}
-
-			popped = true;
-			resume();
-		};
+		const requiredCalls = count === undefined ? 1 : count;
+		return internalStop( this.test, requiredCalls );
 	}
 
 	// Exports test.push() to the user API

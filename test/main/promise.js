@@ -204,16 +204,16 @@ QUnit.module( "Support for Promise", function() {
 		return createMockPromise( assert, true, "this is an error" );
 	} );
 
-	QUnit.test( "rejected Promise with async lock", function( assert ) {
+	QUnit.test( "rejected Promise with async pause", function( assert ) {
 		assert.expect( 2 );
 
-		assert.async(); // Important! We don't explicitly release the async lock
+		assert.async(); // Important! We don't explicitly release the async pause
 
 		this.pushFailure = assert.test.pushFailure;
 		assert.test.pushFailure = function( message ) {
 			assert.strictEqual(
 				message,
-				"Promise rejected during \"rejected Promise with async lock\": this is an error"
+				"Promise rejected during \"rejected Promise with async pause\": this is an error"
 			);
 		};
 
