@@ -2,6 +2,7 @@ import { objectType, inArray } from "./core/utilities";
 
 const LISTENERS = Object.create( null );
 const SUPPORTED_EVENTS = [
+	"error",
 	"runStart",
 	"suiteStart",
 	"testStart",

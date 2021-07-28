@@ -95,25 +95,12 @@ async function run( args, options ) {
 		}
 	}
 
-	// The below handlers set exitCode directly, to make sure it is set even if the
-	// uncaught exception happens after the last test (shortly before "runEnd", or
-	// asynchronously after "runEnd" if the process is still running).
-	//
-	// The variable makes sure that if the uncaught exception is before "runEnd",
-	// or from another "runEnd" callback, it also won't turn the error code
-	// back into a success.
-	let uncaught = false;
-
 	// Handle the unhandled
 	process.on( "unhandledRejection", ( reason, _promise ) => {
 		QUnit.onUncaughtException( reason );
-		process.exitCode = 1;
-		uncaught = true;
 	} );
 	process.on( "uncaughtException", ( error, _origin ) => {
 		QUnit.onUncaughtException( error );
-		process.exitCode = 1;
-		uncaught = true;
 	} );
 
 	let running = true;
@@ -131,17 +118,24 @@ async function run( args, options ) {
 		}
 	} );
 
-	QUnit.start();
+	QUnit.on( "error", function( _error ) {
+
+		// Set exitCode directly, to make sure it is set to fail even if "runEnd" will never be
+		// reached, or if "runEnd" was already fired in the past and the process crashed later.
+		process.exitCode = 1;
+	} );
 
 	QUnit.on( "runEnd", function setExitCode( data ) {
 		running = false;
 
-		if ( data.testCounts.failed || uncaught ) {
+		if ( data.testCounts.failed ) {
 			process.exitCode = 1;
 		} else {
 			process.exitCode = 0;
 		}
 	} );
+
+	QUnit.start();
 }
 
 run.restart = function( args ) {

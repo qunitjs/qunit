@@ -1,5 +1,5 @@
-// Detect if the current browser supports `onunhandledrejection` (avoiding
-// errors for browsers without the capability)
+// Detect if the current browser supports `onunhandledrejection`
+// (avoiding errors in browsers without the capability)
 var HAS_UNHANDLED_REJECTION_HANDLER = "onunhandledrejection" in window;
 
 if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
@@ -8,9 +8,9 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 			var originalPushResult = assert.pushResult;
 			assert.pushResult = function( resultInfo ) {
 
-				// Inverts the result so we can test failing assertions
+				// Invert the result so we can test failing assertions
 				resultInfo.result = !resultInfo.result;
-				originalPushResult( resultInfo );
+				originalPushResult.call( this, resultInfo );
 			};
 		} );
 
@@ -25,42 +25,5 @@ if ( HAS_UNHANDLED_REJECTION_HANDLER ) {
 			setTimeout( done, 10 );
 		} );
 
-	} );
-
-	QUnit.module( "Unhandled Rejections outside test context", function( hooks ) {
-		var originalPushResult;
-
-		hooks.beforeEach( function( assert ) {
-
-			// Duck-punch pushResult so we can check test name and assert args.
-			originalPushResult = assert.pushResult;
-
-			assert.pushResult = function( resultInfo ) {
-
-				// Restore pushResult for this assert object, to allow following assertions.
-				this.pushResult = originalPushResult;
-
-				this.strictEqual( this.test.testName, "global failure", "Test is appropriately named" );
-
-				this.deepEqual(
-					resultInfo,
-					{
-						message: "Error: Error message",
-						source: "filePath.js:1",
-						result: false
-					},
-					"Expected assert.pushResult to be called with correct args"
-				);
-			};
-		} );
-
-		hooks.afterEach( function( assert ) {
-			assert.pushResult = originalPushResult;
-		} );
-
-		// Actual test, outside QUnit.test context.
-		var error = new Error( "Error message" );
-		error.stack = "filePath.js:1";
-		QUnit.onUncaughtException( error );
 	} );
 }

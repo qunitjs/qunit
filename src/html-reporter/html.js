@@ -1,11 +1,12 @@
 import QUnit from "../core";
+import Logger from "../logger";
 import Test from "../test";
-import { extractStacktrace } from "../core/stacktrace";
-import { now, extend } from "../core/utilities";
+import { now, extend, errorString } from "../core/utilities";
 import { window, document, navigator, console } from "../globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
 
+// TODO: Remove adhoc counting in favour of stats from QUnit.done() or "runEnd" event.
 const stats = {
 	passedTests: 0,
 	failedTests: 0,
@@ -654,14 +655,18 @@ export function escapeText( s ) {
 		title = document.createElement( "strong" );
 		title.innerHTML = getNameHtml( name, moduleName );
 
-		rerunTrigger = document.createElement( "a" );
-		rerunTrigger.innerHTML = "Rerun";
-		rerunTrigger.href = setUrl( { testId: testId } );
-
 		testBlock = document.createElement( "li" );
 		testBlock.appendChild( title );
-		testBlock.appendChild( rerunTrigger );
-		testBlock.id = "qunit-test-output-" + testId;
+
+		// No ID or rerun link for "global failure" blocks
+		if ( testId !== undefined ) {
+			rerunTrigger = document.createElement( "a" );
+			rerunTrigger.innerHTML = "Rerun";
+			rerunTrigger.href = setUrl( { testId: testId } );
+
+			testBlock.id = "qunit-test-output-" + testId;
+			testBlock.appendChild( rerunTrigger );
+		}
 
 		assertList = document.createElement( "ol" );
 		assertList.className = "qunit-assert-list";
@@ -669,6 +674,8 @@ export function escapeText( s ) {
 		testBlock.appendChild( assertList );
 
 		tests.appendChild( testBlock );
+
+		return testBlock;
 	}
 
 	// HTML Reporter initialization and load
@@ -1027,6 +1034,34 @@ export function escapeText( s ) {
 		}
 	} );
 
+	QUnit.on( "error", ( error ) => {
+		stats.failedTests++;
+
+		const testItem = appendTest( "global failure" );
+		if ( !testItem ) {
+
+			// HTML Reporter is probably disabled or not yet initialized.
+			Logger.warn( "global failure" );
+			Logger.warn( error );
+			return;
+		}
+
+		// Render similar to a failed assertion (see above QUnit.log callback)
+		let message = escapeText( errorString( error ) );
+		message = "<span class='test-message'>" + message + "</span>";
+		if ( error && error.stack ) {
+			message += "<table>" +
+				"<tr class='test-source'><th>Source: </th><td><pre>" +
+				escapeText( error.stack ) + "</pre></td></tr>" +
+				"</table>";
+		}
+		const assertList = testItem.getElementsByTagName( "ol" )[ 0 ];
+		const assertLi = document.createElement( "li" );
+		assertLi.className = "fail";
+		assertLi.innerHTML = message;
+		assertList.appendChild( assertLi );
+	} );
+
 	// Avoid readyState issue with phantomjs
 	// Ref: #818
 	var usingPhantom = ( function( p ) {
@@ -1068,21 +1103,27 @@ export function escapeText( s ) {
 		// Treat return value as window.onerror itself does,
 		// Only do our handling if not suppressed.
 		if ( ret !== true ) {
-			const error = {
-				message,
-				fileName,
-				lineNumber
-			};
+
+			// If there is a current test that sets the internal `ignoreGlobalErrors` field
+			// (such as during `assert.throws()`), then the error is ignored and native
+			// error reporting is suppressed as well. This is because in browsers, an error
+			// can sometimes end up in `window.onerror` instead of in the local try/catch.
+			// This ignoring of errors does not apply to our general onUncaughtException
+			// method, nor to our `unhandledRejection` handlers, as those are not meant
+			// to receive an "expected" error during `assert.throws()`.
+			if ( config.current && config.current.ignoreGlobalErrors ) {
+				return true;
+			}
 
 			// According to
 			// https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror,
 			// most modern browsers support an errorObj argument; use that to
 			// get a full stack trace if it's available.
-			if ( errorObj && errorObj.stack ) {
-				error.stacktrace = extractStacktrace( errorObj, 0 );
+			const error = errorObj || new Error( message );
+			if ( !error.stack && fileName && lineNumber ) {
+				error.stack = `${fileName}:${lineNumber}`;
 			}
-
-			ret = QUnit.onError( error );
+			QUnit.onUncaughtException( error );
 		}
 
 		return ret;

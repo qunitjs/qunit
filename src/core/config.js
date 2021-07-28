@@ -11,6 +11,8 @@ const config = {
 	// The queue of tests to run
 	queue: [],
 
+	stats: { all: 0, bad: 0, testCount: 0 },
+
 	// Block until document ready
 	blocking: true,
 
