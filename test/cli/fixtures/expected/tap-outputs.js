@@ -426,16 +426,88 @@ not ok 1 times out before scheduled done is called
 # pass 0
 # skip 0
 # todo 0
-# fail 1
-Bail out! Error: \`assert.async\` callback from test "times out before scheduled done is called" called after tests finished.
+# fail 1`,
+
+	"qunit drooling-done.js":
+`TAP version 13
+not ok 1 Test A
   ---
-  message: "Error: \`assert.async\` callback from test \\"times out before scheduled done is called\\" called after tests finished."
+  message: "Died on test #2     at Object.test (/qunit/qunit/qunit.js): this is an intentional error"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: this is an intentional error
+        at /qunit/test/cli/fixtures/drooling-done.js:8:8
+  ...
+ok 2 Test B
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1`,
+
+	"qunit drooling-extra-done.js":
+`TAP version 13
+ok 1 Test A
+not ok 2 Test B
+  ---
+  message: |+
+    Died on test #2     at Object.test (/qunit/qunit/qunit.js): Unexpected release of async pause during a different test.
+    > Test: Test A [async #1]
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: Unexpected release of async pause during a different test.
+    > Test: Test A [async #1]
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1`,
+
+	"qunit drooling-extra-done-outside.js":
+`TAP version 13
+ok 1 extra done scheduled outside any test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Bail out! Error: Unexpected release of async pause after tests finished.
+  ---
+  message: |+
+    Error: Unexpected release of async pause after tests finished.
+    > Test: extra done scheduled outside any test [async #1]
   severity: failed
   stack: |
-    Error: \`assert.async\` callback from test "times out before scheduled done is called" called after tests finished.
-        at Timeout.done [as _onTimeout] (/qunit/qunit/qunit.js)
+    Error: Unexpected release of async pause after tests finished.
+    > Test: extra done scheduled outside any test [async #1]
+        at Timeout.release [as _onTimeout] (/qunit/qunit/qunit.js)
         at internal
   ...`,
+
+	"qunit too-many-done-calls.js":
+`TAP version 13
+not ok 1 Test A
+  ---
+  message: |+
+    Died on test #2     at Object.test (/qunit/qunit/qunit.js): Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
 
 	"qunit assert-expect/no-tests.js":
 `TAP version 13

@@ -113,17 +113,12 @@ QUnit.module( "assert.async", function() {
 
 		assert.expect( 1 );
 
-		// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-		assert.test.pushFailure = function( msg ) {
-			throw new Error( msg );
-		};
-
 		var overDone = assert.async();
 		overDone();
 
 		assert.throws( function() {
 			overDone();
-		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+		}, /Tried to release async pause that was already released/ );
 
 		done();
 	} );
@@ -136,11 +131,6 @@ QUnit.module( "assert.async", function() {
 
 		assert.expect( 1 );
 
-		// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-		assert.test.pushFailure = function( msg ) {
-			throw new Error( msg );
-		};
-
 		var overDone = assert.async( 3 );
 		overDone();
 		overDone();
@@ -148,7 +138,7 @@ QUnit.module( "assert.async", function() {
 
 		assert.throws( function() {
 			overDone();
-		}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+		}, /Tried to release async pause that was already released/ );
 
 		done();
 	} );
@@ -163,12 +153,10 @@ QUnit.module( "assert.async", function() {
 		} );
 
 		QUnit.test( "errors if called after test finishes - part 2", function( assert ) {
-
-			// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-			assert.test.pushFailure = function( msg ) {
-				throw new Error( msg );
-			};
-			assert.throws( previousTestDone, /Error: `assert\.async` callback from test "errors if called after test finishes - part 1" was called during this test./ );
+			assert.throws(
+				previousTestDone,
+				/Unexpected release of async pause during a different test.\n> Test: errors if called after test finishes - part 1/
+			);
 		} );
 	}() );
 
@@ -179,17 +167,12 @@ QUnit.module( "assert.async", function() {
 			// internals in order to avoid post-`done` assertions causing additional failures
 			var done = assert.async();
 
-			// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-			assert.test.pushFailure = function( msg ) {
-				throw new Error( msg );
-			};
-
 			var overDone = assert.async();
 			overDone();
 
 			assert.throws( function() {
 				overDone();
-			}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+			}, /Tried to release async pause that was already released/ );
 
 			done();
 		}
@@ -204,17 +187,12 @@ QUnit.module( "assert.async", function() {
 			// internals in order to avoid post-`done` assertions causing additional failures
 			var done = assert.async();
 
-			// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-			assert.test.pushFailure = function( msg ) {
-				throw new Error( msg );
-			};
-
 			var overDone = assert.async();
 			overDone();
 
 			assert.throws( function() {
 				overDone();
-			}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+			}, /Tried to release async pause that was already released/ );
 
 			done();
 		}
@@ -229,17 +207,12 @@ QUnit.module( "assert.async", function() {
 			// internals in order to avoid post-`done` assertions causing additional failures
 			var done = assert.async();
 
-			// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-			assert.test.pushFailure = function( msg ) {
-				throw new Error( msg );
-			};
-
 			var overDone = assert.async();
 			overDone();
 
 			assert.throws( function() {
 				overDone();
-			}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+			}, /Tried to release async pause that was already released/ );
 
 			done();
 		}
@@ -254,17 +227,12 @@ QUnit.module( "assert.async", function() {
 			// internals in order to avoid post-`done` assertions causing additional failures
 			var done = assert.async();
 
-			// Duck-punch to force an Error to be thrown instead of a `pushFailure` call
-			assert.test.pushFailure = function( msg ) {
-				throw new Error( msg );
-			};
-
 			var overDone = assert.async();
 			overDone();
 
 			assert.throws( function() {
 				overDone();
-			}, new RegExp( "Too many calls to the `assert.async` callback" ) );
+			}, /Tried to release async pause that was already released/ );
 
 			done();
 		}
