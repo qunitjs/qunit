@@ -90,13 +90,6 @@ QUnit.test( "notStrictEqual", function( assert ) {
 } );
 
 QUnit.test( "propEqual", function( assert ) {
-	var objectCreate = Object.create || function( origin ) {
-		function O() {}
-		O.prototype = origin;
-		var r = new O();
-		return r;
-	};
-
 	function Foo( x, y, z ) {
 		this.x = x;
 		this.y = y;
@@ -108,7 +101,7 @@ QUnit.test( "propEqual", function( assert ) {
 
 	function Bar() {
 	}
-	Bar.prototype = objectCreate( Foo.prototype );
+	Bar.prototype = Object.create( Foo.prototype );
 	Bar.prototype.constructor = Bar;
 
 	assert.propEqual(
