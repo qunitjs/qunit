@@ -14,7 +14,7 @@ import onUncaughtException from "./on-uncaught-exception";
  * to receive an "expected" error during `assert.throws()`.
  *
  * @see <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror>
- * @deprecated since 2.17.0
+ * @deprecated since 2.17.0 Use QUnit.onUncaughtException instead.
  * @param {Object} details
  * @param {string} details.message
  * @param {string} details.fileName
@@ -23,7 +23,8 @@ import onUncaughtException from "./on-uncaught-exception";
  * @return {bool} True if native error reporting should be suppressed.
  */
 export default function onWindowError( details ) {
-	Logger.warn( "QUnit.onError is deprecated and will be removed in QUnit 3.0." );
+	Logger.warn( "QUnit.onError is deprecated and will be removed in QUnit 3.0." +
+			" Please use QUnit.onUncaughtException instead." );
 
 	if ( config.current && config.current.ignoreGlobalErrors ) {
 		return true;

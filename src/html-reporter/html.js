@@ -1,4 +1,5 @@
 import QUnit from "../core";
+import Logger from "../logger";
 import Test from "../test";
 import { now, extend, errorString } from "../core/utilities";
 import { window, document, navigator, console } from "../globals";
@@ -1040,8 +1041,8 @@ export function escapeText( s ) {
 		if ( !testItem ) {
 
 			// HTML Reporter is probably disabled or not yet initialized.
-			console.warn( "global failure" );
-			console.warn( error );
+			Logger.warn( "global failure" );
+			Logger.warn( error );
 			return;
 		}
 
