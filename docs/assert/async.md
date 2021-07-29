@@ -12,17 +12,17 @@ redirect_from:
 version_added: "1.16.0"
 ---
 
-`async( [ acceptCallCount = 1 ] )`
+`async( [ count = 1 ] )`
 
 Instruct QUnit to wait for an asynchronous operation.
 
 | name | description |
 |------|-------------|
-| `acceptCallCount` (number) | Number of expected callbacks before the test is done. Defaults to `1`. |
+| `count` (number) | Number of expected calls before the tests will resume. Defaults to `1`. |
 
 ### Description
 
-`assert.async()` returns a callback function and pauses test processing until the callback function is invoked the specified number of times. The callback will throw an `Error` if it is invoked more often than the accepted call count.
+`assert.async()` returns a callback function and pauses test processing until the callback function is called. The callback will throw an `Error` if it is invoked more often than the required call count.
 
 This replaces functionality previously provided by `QUnit.stop()` and [`QUnit.start()`](../QUnit/start.md).
 
@@ -69,7 +69,7 @@ QUnit.test( "two async calls", assert => {
 
 ##### Example: Require multiple calls
 
-The `acceptCallCount` parameter can be used to require multiple calls to the same callback. In the below example, the test passes after exactly three calls.
+The `count` parameter can be used to require multiple calls to the same callback. In the below example, the test passes after exactly three calls.
 
 ```js
 function uploadBatch(batch, notify, complete) {
@@ -80,7 +80,7 @@ function uploadBatch(batch, notify, complete) {
   complete(null)
 }
 
-QUnit.test( "acceptCallCount example", assert => {
+QUnit.test( "multiple calls example", assert => {
   assert.timeout( 1000 );
 
   const notify = assert.async( 3 );
