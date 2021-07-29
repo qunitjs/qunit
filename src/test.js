@@ -864,7 +864,7 @@ export function resetTestTimeout( timeoutDuration ) {
 //
 // * Pause release() is called too often, during the same test.
 //
-//   This is simply throws an error, after which uncaught error handling picks it up
+//   This simply throws an error, after which uncaught error handling picks it up
 //   and processing resumes.
 export function internalStop( test, requiredCalls = 1 ) {
 	config.blocking = true;
