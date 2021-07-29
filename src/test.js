@@ -918,7 +918,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 					pause.cancelled = true;
 					test.asyncPauses.delete( pauseId );
 
-					pushFailure(
+					test.pushFailure(
 						`Test took longer than ${timeout}ms; test timed out.`,
 						sourceFromStacktrace( 2 )
 					);
