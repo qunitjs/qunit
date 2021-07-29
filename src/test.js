@@ -915,13 +915,13 @@ export function internalStop( test, requiredCalls = 1 ) {
 			config.timeoutHandler = function( timeout ) {
 				return function() {
 					config.timeout = null;
+					pause.cancelled = true;
+					test.asyncPauses.delete( pauseId );
+
 					pushFailure(
 						`Test took longer than ${timeout}ms; test timed out.`,
 						sourceFromStacktrace( 2 )
 					);
-
-					pause.cancelled = true;
-					test.asyncPauses.delete( pauseId );
 					internalStart( test );
 				};
 			};
