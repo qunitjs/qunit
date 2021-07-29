@@ -109,7 +109,7 @@ async function run( args, options ) {
 			console.error( "Error: Process exited before tests finished running" );
 
 			const currentTest = QUnit.config.current;
-			if ( currentTest && currentTest.asyncPauses.size ) {
+			if ( currentTest && currentTest.asyncPauses.size > 0 ) {
 				const name = currentTest.testName;
 				console.error( "Last test to run (" + name + ") has an async hold. " +
 					"Ensure all assert.async() callbacks are invoked and Promises resolve. " +
