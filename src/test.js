@@ -869,7 +869,7 @@ export function resetTestTimeout( timeoutDuration ) {
 export function internalStop( test, requiredCalls = 1 ) {
 	config.blocking = true;
 
-	const pauseId = `#${test.asyncNextPauseId++}`;
+	const pauseId = test.asyncNextPauseId++;
 	const pause = {
 		cancelled: false,
 		remaining: requiredCalls
@@ -882,15 +882,15 @@ export function internalStop( test, requiredCalls = 1 ) {
 		}
 		if ( config.current === undefined ) {
 			throw new Error( "Unexpected release of async pause after tests finished.\n" +
-				`> Test: ${test.testName} [async ${pauseId}]` );
+				`> Test: ${test.testName} [async #${pauseId}]` );
 		}
 		if ( config.current !== test ) {
 			throw new Error( "Unexpected release of async pause during a different test.\n" +
-				`> Test: ${test.testName} [async ${pauseId}]` );
+				`> Test: ${test.testName} [async #${pauseId}]` );
 		}
 		if ( pause.remaining <= 0 ) {
 			throw new Error( "Tried to release async pause that was already released.\n" +
-				`> Test: ${test.testName} [async ${pauseId}]` );
+				`> Test: ${test.testName} [async #${pauseId}]` );
 		}
 
 		// The `requiredCalls` parameter exists to support `assert.async(count)`
