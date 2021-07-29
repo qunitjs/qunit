@@ -4,7 +4,10 @@ const path = require( "path" );
 
 const rollup = require( "rollup" );
 const kleur = require( "kleur" );
+const watch = require( "node-watch" );
 const loadConfigFile = require( "rollup/dist/loadConfigFile" );
+
+const { preprocess } = require( "./dist-replace.js" );
 
 const server = http.createServer( ( req, res ) => {
 	try {
@@ -49,40 +52,67 @@ function errorString( err ) {
 	return str;
 }
 
-loadConfigFile( path.resolve( process.cwd(), "rollup.config.js" ) ).then(
-	async( { options, warnings } ) => {
+async function startRollupWatch() {
+	const configFile = path.resolve( process.cwd(), "rollup.config.js" );
+	const { options, warnings } = await loadConfigFile( configFile );
 
-		console.log( kleur.grey( `We currently have ${warnings.count} warnings` ) );
-		warnings.flush();
+	console.log( kleur.grey( `[rollup] We currently have ${warnings.count} warnings` ) );
+	warnings.flush();
 
-		const watcher = rollup.watch( options );
+	const watcher = rollup.watch( options );
 
-		watcher.on( "event", event => {
-			const { code, result } = event;
-			if ( code === "BUNDLE_START" ) {
-				const { input, output } = event;
-				console.log( code, inputToOutput( input, output ) );
-			} else if ( code === "BUNDLE_END" ) {
-				const { duration, input, output } = event;
-				console.log( code, inputToOutput( input, output ), `${duration}ms` );
-			} else if ( code === "ERROR" ) {
-				console.error( errorString( event.error ) );
-			}
-			if ( result ) {
-				result.close();
-			}
-		} );
+	watcher.on( "event", event => {
+		const { code, result } = event;
+		if ( code === "BUNDLE_START" ) {
+			const { input, output } = event;
+			console.log( "[rollup] Start", inputToOutput( input, output ) );
+		} else if ( code === "BUNDLE_END" ) {
+			const { duration, input, output } = event;
+			console.log( "[rollup] End", inputToOutput( input, output ), `in ${duration}ms` );
+		} else if ( code === "ERROR" ) {
+			console.error( errorString( event.error ) );
+		}
+		if ( result ) {
+			result.close();
+		}
+	} );
+}
 
-		process.on( "exit", ( _ ) => {
-			watcher.close();
-		} );
+async function startCssWatch() {
+	const baseDir = process.cwd();
+	const cssInputFile = path.resolve( baseDir, "src/qunit.css" );
+	const cssOutputFile = path.resolve( baseDir, "qunit/qunit.css" );
+
+	function copyCss() {
+		const contents = preprocess( fs.readFileSync( cssInputFile, "utf8" ) );
+		fs.writeFileSync( cssOutputFile, contents );
+		console.log( "[css] Copied processed stylesheet to qunit/qunit.css" );
 	}
-).catch( ( err ) => {
 
-	// Handle generic script error from before watcher starts
-	console.error( err );
+	const watcher = watch( cssInputFile, {
+		persistent: true,
+		delay: 0
+	}, ( event, fullpath ) => {
+		console.log( `[css] File ${event}: ${path.relative( baseDir, fullpath )}` );
+		copyCss();
+	} );
 
-	// Watcher didn't get created so no reason to keep the process.
-	// It doesn't exit automatically because the http server is alive.
-	process.exit( 1 );
-} );
+	watcher.on( "ready", () => {
+		copyCss();
+	} );
+}
+
+( async function main() {
+	try {
+		await startRollupWatch();
+		await startCssWatch();
+	} catch ( err ) {
+
+		// Handle generic script error from before watcher starts
+		console.error( err );
+
+		// Watcher didn't get created so no reason to keep the process.
+		// It doesn't exit automatically because the http server is alive.
+		process.exit( 1 );
+	}
+}() );
