@@ -170,65 +170,58 @@ QUnit.test( "Objects basics", function( assert ) {
 
 } );
 
-QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
-	"Objects with null prototypes", function( assert ) {
+QUnit.test( "Objects with null prototypes", function( assert ) {
+	var nonEmptyWithNoProto;
 
-		var nonEmptyWithNoProto;
+	// Objects with no prototype, created via Object.create(null), are used
+	// e.g. as dictionaries.
+	// Being able to test equivalence against object literals is quite useful.
+	assert.equal(
+		QUnit.equiv( Object.create( null ), {} ),
+		true,
+		"empty object without prototype VS empty object"
+	);
 
-		// Objects with no prototype, created via Object.create(null), are used
-		// e.g. as dictionaries.
-		// Being able to test equivalence against object literals is quite useful.
-		assert.equal(
-			QUnit.equiv( Object.create( null ), {} ),
-			true,
-			"empty object without prototype VS empty object"
-		);
+	assert.equal(
+		QUnit.equiv( {}, Object.create( null ) ),
+		true,
+		"empty object VS empty object without prototype"
+	);
 
-		assert.equal(
-			QUnit.equiv( {}, Object.create( null ) ),
-			true,
-			"empty object VS empty object without prototype"
-		);
+	nonEmptyWithNoProto = Object.create( null );
+	nonEmptyWithNoProto.foo = "bar";
 
-		nonEmptyWithNoProto = Object.create( null );
-		nonEmptyWithNoProto.foo = "bar";
+	assert.equal(
+		QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
+		true,
+		"object without prototype VS object"
+	);
 
-		assert.equal(
-			QUnit.equiv( nonEmptyWithNoProto, { foo: "bar" } ),
-			true,
-			"object without prototype VS object"
-		);
+	assert.equal(
+		QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
+		true,
+		"object VS object without prototype"
+	);
+} );
 
-		assert.equal(
-			QUnit.equiv( { foo: "bar" }, nonEmptyWithNoProto ),
-			true,
-			"object VS object without prototype"
-		);
+QUnit.test( "Object prototype constructor is null", function( assert ) {
+
+	// Ref https://github.com/qunitjs/qunit/issues/851
+	// Instances of this custom class have similar characteristics to null-objects.
+	function NullObject() {}
+	NullObject.prototype = Object.create( null, {
+		constructor: {
+			value: null
+		}
 	} );
 
-// Ref #851
-QUnit[ typeof Object.create === "function" ? "test" : "skip" ](
-	"Object prototype constructor is null", function( assert ) {
+	var a = new NullObject();
+	a.foo = 1;
+	var b = { foo: 1 };
 
-		// Ref #851
-		// Unfortunately, in practice `Object.create(null)` is fairly costly.
-		// To mitigate this cost a specialized NullObject can be used. This
-		// Object has similar safe characteristics, but with dramatically
-		// reduced allocation costs.
-		function NullObject() {}
-		NullObject.prototype = Object.create( null, {
-			constructor: {
-				value: null
-			}
-		} );
-
-		var a = new NullObject();
-		a.foo = 1;
-		var b = { foo: 1 };
-
-		assert.true( QUnit.equiv( a, b ) );
-		assert.true( QUnit.equiv( b, a ) );
-	} );
+	assert.true( QUnit.equiv( a, b ) );
+	assert.true( QUnit.equiv( b, a ) );
+} );
 
 QUnit.test( "Arrays basics", function( assert ) {
 
