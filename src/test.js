@@ -832,8 +832,8 @@ export function resetTestTimeout( timeoutDuration ) {
 // * The test fails due to an uncaught exception.
 //
 //   In this case, Test.run() will call internalRecover() which empties the clears all
-//   async pauses and sets `killed = true`. The killed flag means we silently ignore
-//   any late calls to the resume() callback, as we will have moved on to a different
+//   async pauses and sets the cancelled flag, which means we silently ignore any
+//   late calls to the resume() callback, as we will have moved on to a different
 //   test by then, and we don't want to cause an extra "release during a different test"
 //   errors that the developer isn't really responsible for. This can happen when a test
 //   correctly schedules a call to release(), but also causes an uncaught error. The
@@ -871,13 +871,13 @@ export function internalStop( test, requiredCalls = 1 ) {
 
 	const pauseId = `#${test.asyncNextPauseId++}`;
 	const pause = {
-		killed: false,
+		cancelled: false,
 		remaining: requiredCalls
 	};
 	test.asyncPauses.set( pauseId, pause );
 
 	function release() {
-		if ( pause.killed ) {
+		if ( pause.cancelled ) {
 			return;
 		}
 		if ( config.current === undefined ) {
@@ -920,7 +920,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 						sourceFromStacktrace( 2 )
 					);
 
-					pause.killed = true;
+					pause.cancelled = true;
 					test.asyncPauses.delete( pauseId );
 					internalStart( test );
 				};
@@ -939,7 +939,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 // Forcefully release all processing holds.
 function internalRecover( test ) {
 	test.asyncPauses.forEach( pause => {
-		pause.killed = true;
+		pause.cancelled = true;
 	} );
 	test.asyncPauses.clear();
 	internalStart( test );

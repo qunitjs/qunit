@@ -10,5 +10,8 @@ QUnit.test( "Test A", assert => {
 
 QUnit.test( "Test B", assert => {
 	assert.ok( true );
-	done(); // Silently ignored since "Test A" already failed and we killed its async pauses.
+
+	// This bad call is silently ignored because "Test A" already failed
+	// and we cancelled the async pauses.
+	done();
 } );
