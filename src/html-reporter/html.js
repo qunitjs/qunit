@@ -1,17 +1,13 @@
 import QUnit from "../core";
 import Logger from "../logger";
-import Test from "../test";
-import { now, extend, errorString } from "../core/utilities";
+import { extend, errorString } from "../core/utilities";
 import { window, document, navigator, console } from "../globals";
 import "./urlparams";
 import fuzzysort from "fuzzysort";
 
-// TODO: Remove adhoc counting in favour of stats from QUnit.done() or "runEnd" event.
 const stats = {
-	passedTests: 0,
-	failedTests: 0,
-	skippedTests: 0,
-	todoTests: 0
+	defined: 0,
+	completed: 0
 };
 
 // Escape text for attribute or text content.
@@ -169,7 +165,7 @@ export function escapeText( s ) {
 				": </label><select id='qunit-urlconfig-" + escaped +
 				"' name='" + escaped + "' title='" + escapedTooltip + "'><option></option>";
 
-				if ( QUnit.is( "array", val.value ) ) {
+				if ( Array.isArray( val.value ) ) {
 					for ( j = 0; j < val.value.length; j++ ) {
 						escaped = escapeText( val.value[ j ] );
 						urlConfigHtml += "<option value='" + escaped + "'" +
@@ -679,37 +675,36 @@ export function escapeText( s ) {
 	}
 
 	// HTML Reporter initialization and load
-	QUnit.begin( function() {
+	QUnit.on( "runStart", function( runStart ) {
+
+		stats.defined = runStart.testCounts.total;
 
 		// Initialize QUnit elements
 		appendInterface();
 	} );
 
-	QUnit.done( function( details ) {
+	QUnit.on( "runEnd", function( runEnd ) {
 		var banner = id( "qunit-banner" ),
 			tests = id( "qunit-tests" ),
 			abortButton = id( "qunit-abort-tests-button" ),
-			totalTests = stats.passedTests +
-				stats.skippedTests +
-				stats.todoTests +
-				stats.failedTests,
+			assertPassed = config.stats.all - config.stats.bad,
 			html = [
-				totalTests,
+				runEnd.testCounts.total,
 				" tests completed in ",
-				details.runtime,
+				runEnd.runtime,
 				" milliseconds, with ",
-				stats.failedTests,
+				runEnd.testCounts.failed,
 				" failed, ",
-				stats.skippedTests,
+				runEnd.testCounts.skipped,
 				" skipped, and ",
-				stats.todoTests,
+				runEnd.testCounts.todo,
 				" todo.<br />",
 				"<span class='passed'>",
-				details.passed,
+				assertPassed,
 				"</span> assertions of <span class='total'>",
-				details.total,
+				config.stats.all,
 				"</span> passed, <span class='failed'>",
-				details.failed,
+				config.stats.bad,
 				"</span> failed."
 			].join( "" ),
 			test,
@@ -718,7 +713,7 @@ export function escapeText( s ) {
 
 		// Update remaining tests to aborted
 		if ( abortButton && abortButton.disabled ) {
-			html = "Tests aborted after " + details.runtime + " milliseconds.";
+			html = "Tests aborted after " + runEnd.runtime + " milliseconds.";
 
 			for ( var i = 0; i < tests.children.length; i++ ) {
 				test = tests.children[ i ];
@@ -734,7 +729,7 @@ export function escapeText( s ) {
 		}
 
 		if ( banner && ( !abortButton || abortButton.disabled === false ) ) {
-			banner.className = stats.failedTests ? "qunit-fail" : "qunit-pass";
+			banner.className = runEnd.status === "failed" ? "qunit-fail" : "qunit-pass";
 		}
 
 		if ( abortButton ) {
@@ -751,7 +746,7 @@ export function escapeText( s ) {
 			// use escape sequences in case file gets loaded with non-utf-8
 			// charset
 			document.title = [
-				( stats.failedTests ? "\u2716" : "\u2714" ),
+				( runEnd.status === "failed" ? "\u2716" : "\u2714" ),
 				document.title.replace( /^[\u2714\u2716] /i, "" )
 			].join( " " );
 		}
@@ -774,26 +769,12 @@ export function escapeText( s ) {
 		return nameHtml;
 	}
 
-	function getProgressHtml( runtime, stats, total ) {
-		var completed = stats.passedTests +
-			stats.skippedTests +
-			stats.todoTests +
-			stats.failedTests;
-
+	function getProgressHtml( stats ) {
 		return [
-			"<br />",
-			completed,
+			stats.completed,
 			" / ",
-			total,
-			" tests completed in ",
-			runtime,
-			" milliseconds, with ",
-			stats.failedTests,
-			" failed, ",
-			stats.skippedTests,
-			" skipped, and ",
-			stats.todoTests,
-			" todo."
+			stats.defined,
+			" tests completed.<br />"
 		].join( "" );
 	}
 
@@ -810,11 +791,11 @@ export function escapeText( s ) {
 			bad = QUnit.config.reorder && details.previousFailure;
 
 			running.innerHTML = [
+				getProgressHtml( stats ),
 				bad ?
 					"Rerunning previously failed test: <br />" :
-					"Running: <br />",
-				getNameHtml( details.name, details.module ),
-				getProgressHtml( now() - config.started, stats, Test.count )
+					"Running: ",
+				getNameHtml( details.name, details.module )
 			].join( "" );
 		}
 
@@ -974,9 +955,9 @@ export function escapeText( s ) {
 		testTitle.innerHTML += " <b class='counts'>(" + testCounts +
 		details.assertions.length + ")</b>";
 
-		if ( details.skipped ) {
-			stats.skippedTests++;
+		stats.completed++;
 
+		if ( details.skipped ) {
 			testItem.className = "skipped";
 			skipped = document.createElement( "em" );
 			skipped.className = "qunit-skipped-label";
@@ -1001,14 +982,6 @@ export function escapeText( s ) {
 			time.className = "runtime";
 			time.innerHTML = details.runtime + " ms";
 			testItem.insertBefore( time, assertList );
-
-			if ( !testPassed ) {
-				stats.failedTests++;
-			} else if ( details.todo ) {
-				stats.todoTests++;
-			} else {
-				stats.passedTests++;
-			}
 		}
 
 		// Show the source of the test when showing assertions
@@ -1035,8 +1008,6 @@ export function escapeText( s ) {
 	} );
 
 	QUnit.on( "error", ( error ) => {
-		stats.failedTests++;
-
 		const testItem = appendTest( "global failure" );
 		if ( !testItem ) {
 

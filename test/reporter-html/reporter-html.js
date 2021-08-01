@@ -46,7 +46,7 @@ QUnit.module( "HTML Reporter", function() {
 	QUnit.test( "run progress", function( assert ) {
 		var display = document.getElementById( "qunit-testresult" );
 
-		var expected = /\d+ \/ \d+ tests completed in \d+ milliseconds, with \d+ failed, \d+ skipped, and \d+ todo./;
+		var expected = /\d+ \/ \d+ tests completed/;
 		assert.true(
 			expected.test( display.innerHTML ),
 			"progress found in displayed text"
