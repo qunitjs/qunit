@@ -328,7 +328,7 @@ ok 3 module B > test D
 	"qunit module-nested.js":
 `TAP version 13
 ok 1 module 1 > test in module 1
-ok 2 module 2 > module 3 > test in module 3
+ok 2 module 3 > test in module 3
 1..2
 # pass 2
 # skip 0
