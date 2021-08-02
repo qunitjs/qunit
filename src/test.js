@@ -30,8 +30,8 @@ export default function Test( settings ) {
 	this.timeout = undefined;
 	this.data = undefined;
 	this.withData = false;
-	this.asyncNextPauseId = 1;
-	this.asyncPauses = new Map();
+	this.pauses = new Map();
+	this.nextPauseId = 1;
 	extend( this, settings );
 
 	// If a module is skipped, all its tests and the tests of the child suites
@@ -204,7 +204,7 @@ Test.prototype = {
 
 			// If the test has an async "pause" on it, but the timeout is 0, then we push a
 			// failure as the test should be synchronous.
-			if ( test.timeout === 0 && test.asyncPauses.size > 0 ) {
+			if ( test.timeout === 0 && test.pauses.size > 0 ) {
 				pushFailure(
 					"Test did not finish synchronously even though assert.timeout( 0 ) was used.",
 					sourceFromStacktrace( 2 )
@@ -869,12 +869,12 @@ export function resetTestTimeout( timeoutDuration ) {
 export function internalStop( test, requiredCalls = 1 ) {
 	config.blocking = true;
 
-	const pauseId = test.asyncNextPauseId++;
+	const pauseId = test.nextPauseId++;
 	const pause = {
 		cancelled: false,
 		remaining: requiredCalls
 	};
-	test.asyncPauses.set( pauseId, pause );
+	test.pauses.set( pauseId, pause );
 
 	function release() {
 		if ( pause.cancelled ) {
@@ -896,7 +896,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 		// The `requiredCalls` parameter exists to support `assert.async(count)`
 		pause.remaining--;
 		if ( pause.remaining === 0 ) {
-			test.asyncPauses.delete( pauseId );
+			test.pauses.delete( pauseId );
 		}
 
 		internalStart( test );
@@ -916,7 +916,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 				return function() {
 					config.timeout = null;
 					pause.cancelled = true;
-					test.asyncPauses.delete( pauseId );
+					test.pauses.delete( pauseId );
 
 					test.pushFailure(
 						`Test took longer than ${timeout}ms; test timed out.`,
@@ -938,10 +938,10 @@ export function internalStop( test, requiredCalls = 1 ) {
 
 // Forcefully release all processing holds.
 function internalRecover( test ) {
-	test.asyncPauses.forEach( pause => {
+	test.pauses.forEach( pause => {
 		pause.cancelled = true;
 	} );
-	test.asyncPauses.clear();
+	test.pauses.clear();
 	internalStart( test );
 }
 
@@ -949,7 +949,7 @@ function internalRecover( test ) {
 function internalStart( test ) {
 
 	// Ignore if other async pauses still exist.
-	if ( test.asyncPauses.size > 0 ) {
+	if ( test.pauses.size > 0 ) {
 		return;
 	}
 
@@ -957,7 +957,7 @@ function internalStart( test ) {
 	if ( setTimeout ) {
 		clearTimeout( config.timeout );
 		config.timeout = setTimeout( function() {
-			if ( test.asyncPauses.size > 0 ) {
+			if ( test.pauses.size > 0 ) {
 				return;
 			}
 
