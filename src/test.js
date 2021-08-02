@@ -902,6 +902,7 @@ export function internalStop( test, requiredCalls = 1 ) {
 		internalStart( test );
 	}
 
+	// Set a recovery timeout, if so configured.
 	if ( setTimeout ) {
 		let timeoutDuration;
 		if ( typeof test.timeout === "number" ) {
@@ -910,7 +911,6 @@ export function internalStop( test, requiredCalls = 1 ) {
 			timeoutDuration = config.testTimeout;
 		}
 
-		// Set a recovery timeout, if so configured.
 		if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
 			config.timeoutHandler = function( timeout ) {
 				return function() {
