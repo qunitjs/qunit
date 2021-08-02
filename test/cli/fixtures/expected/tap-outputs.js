@@ -325,6 +325,16 @@ ok 3 module B > test D
 # todo 1
 # fail 0`,
 
+	"qunit module-nested.js":
+`TAP version 13
+ok 1 module 1 > test in module 1
+ok 2 module 2 > module 3 > test in module 3
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit incorrect-hooks-warning/test.js":
 `TAP version 13
 ok 1 module providing hooks > module not providing hooks > has a test

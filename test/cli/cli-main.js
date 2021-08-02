@@ -657,6 +657,15 @@ CALLBACK: done`;
 		} );
 	} );
 
+	// Regression test for https://github.com/qunitjs/qunit/issues/1478
+	QUnit.test( "nested module scopes", async assert => {
+		const command = "qunit module-nested.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
 	QUnit.test( "warns about incorrect hook usage", async assert => {
 		const command = "qunit incorrect-hooks-warning/test.js";
 		const execution = await execute( command );
