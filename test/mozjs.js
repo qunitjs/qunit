@@ -49,6 +49,7 @@ loadRelativeToScript( "../test/main/dump.js" );
 loadRelativeToScript( "../test/main/deepEqual.js" );
 loadRelativeToScript( "../test/main/stack.js" );
 loadRelativeToScript( "../test/main/utilities.js" );
+loadRelativeToScript( "../test/main/onError.js" );
 loadRelativeToScript( "../test/main/onUncaughtException.js" );
 
 QUnit.start();
