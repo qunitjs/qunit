@@ -1,4 +1,10 @@
 // Helper for the "Reproducible builds" job.
+//
+// Prerequisites:
+// * Node.js 12+
+// * npm 7.7.0+
+// * tar (preinstalled on Linux/macOS)
+// * shasum (preinstalled on Linux/macOS)
 
 const cp = require( "child_process" );
 const fs = require( "fs" );
@@ -51,16 +57,22 @@ async function buildRelease( version, cacheDir = null ) {
 	} );
 
 	console.log( `... ${version}: building release` );
-	await execFile( "npm", [ "run", "build" ], {
-		env: {
-			PATH: process.env.PATH
-		},
-		cwd: gitDir
-	} );
+	await execFile( "npm", [ "run", "build" ],
+		{ env: { PATH: process.env.PATH }, cwd: gitDir }
+	);
+
+	console.log( `... ${version}: packing npm package` );
+	await execFile( "npm", [ "pack" ],
+		{ env: { PATH: process.env.PATH }, cwd: gitDir }
+	);
 
 	return {
 		js: fs.readFileSync( gitDir + "/qunit/qunit.js", "utf8" ),
-		css: fs.readFileSync( gitDir + "/qunit/qunit.css", "utf8" )
+		css: fs.readFileSync( gitDir + "/qunit/qunit.css", "utf8" ),
+		tgz: cp.execFileSync(
+			"shasum", [ "-a", "256", "-b", `qunit-${version}.tgz` ],
+			{ encoding: "utf8", cwd: gitDir }
+		)
 	};
 }
 
@@ -103,7 +115,7 @@ const Reproducible = {
 				}
 
 				const tarball = data.versions[ version ].dist.tarball;
-				const tarFile = path.join( tempDir, `npm-${version}${path.extname( tarball )}` );
+				const tarFile = path.join( tempDir, path.basename( tarball ) );
 				await utils.downloadFile( tarball, tarFile );
 
 				releases[ version ].npm = {
@@ -114,6 +126,10 @@ const Reproducible = {
 					css: cp.execFileSync(
 						"tar", [ "-xOf", tarFile, "package/qunit/qunit.css" ],
 						{ encoding: "utf8" }
+					),
+					tgz: cp.execFileSync(
+						"shasum", [ "-a", "256", "-b", path.basename( tarball ) ],
+						{ encoding: "utf8", cwd: tempDir }
 					)
 				};
 			}
@@ -144,8 +160,8 @@ const Reproducible = {
 				}
 
 				let verified = true;
-				for ( const distro of [ "cdn", "npm" ] ) {
-					for ( const file of [ "js", "css" ] ) {
+				for ( const distro in release ) {
+					for ( const file in release[ distro ] ) {
 						if ( release[ distro ][ file ] !== build[ file ] ) {
 							verified = false;
 							console.error(
@@ -160,6 +176,7 @@ const Reproducible = {
 						}
 					}
 				}
+
 				if ( verified ) {
 					console.log( `QUnit ${version} is reproducible and matches distributions!` );
 				}
