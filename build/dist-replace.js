@@ -16,6 +16,14 @@ if ( /pre/.test( distVersion ) ) {
 
 const replacements = {
 
+	// Normalize CRLF from fuzzysort.js.
+	//
+	// The way we upload files to npm, Git, and the jQuery CDN all normalize
+	// CRLF to LF. Thus, if we don't do this ourselves during the build, then
+	// reproducible build verification would find that the distribution is
+	// not identical to the reproduced build artefact.
+	"\r\n": "\n",
+
 	// Embed version
 	"@VERSION": distVersion
 };

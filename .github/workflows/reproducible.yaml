@@ -1,0 +1,26 @@
+name: Reproducible builds
+on:
+  # Once a week on Monday at 00:30 UTC
+  schedule:
+    - cron: '30 0 * * 1'
+  # Or manually
+  workflow_dispatch:
+  # Or when developing this workflow
+  push:
+    paths:
+      - .github/workflows/reproducible.yaml
+
+jobs:
+  run:
+    name: Verify releases
+    if: ${{ github.repository == 'qunitjs/qunit' }} # skip on forks, noisy cron
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+
+      - run: node build/reproducible-builds.js
