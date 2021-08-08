@@ -13,7 +13,7 @@ jobs:
         include:
           - name: "Linux: Node 14"
             # Includes 'firefox', 'chromium', and more.
-            # https://github.com/actions/virtual-environments/blob/ubuntu20/20210302.0/images/linux/Ubuntu2004-README.md
+            # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
             os: ubuntu-20.04
             node: 14.x
             # Run the lint step only once because, in March 2022, GitHub began
