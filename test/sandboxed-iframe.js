@@ -1,3 +1,12 @@
+// For debugging
+if ( self.__grunt_contrib_qunit__ === undefined ) {
+	self.__grunt_contrib_qunit__ = function() {
+		var args = [].slice.call( arguments );
+		args.unshift( "[grunt-contrib-qunit]" );
+		console.log.apply( console, args );
+	};
+}
+
 QUnit.module( "QUnit.only", function( hooks ) {
 	var testsRun = 0;
 

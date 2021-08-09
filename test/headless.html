@@ -2,27 +2,33 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>QUnit Headless Test Suite</title>
+	<title>Headless HTML Reporter</title>
 	<link rel="stylesheet" href="../qunit/qunit.css">
 	<script src="../qunit/qunit.js"></script>
 	<script src="main/test.js"></script>
 	<script src="main/deepEqual.js"></script>
 	<script>
 		( function() {
-			function createCallback( logType ) {
-				QUnit[ logType ]( function() {
-					console.log( logType, arguments );
+			function createCallback( eventName ) {
+				QUnit.on( eventName, function( eventData ) {
+					console.log( eventName, eventData );
 				} );
 			}
 
-			var logs = [ "begin", "testStart", "testDone", "log", "moduleStart", "moduleDone", "done" ];
-			for ( var i = 0; i < logs.length; i++ ) {
-				createCallback( logs[ i ] );
+			// For debugging
+			if ( self.__grunt_contrib_qunit__ === undefined ) {
+				var logs = [ "runStart", "testStart", "testEnd", "runEnd" ];
+				for ( var i = 0; i < logs.length; i++ ) {
+					createCallback( logs[ i ] );
+				}
 			}
 		}() );
 	</script>
 </head>
 <body>
+	<!-- There is no div#qunit element, which means there should
+	     not be any default UI on this page.
+	 -->
 	<div id="qunit-fixture">test markup</div>
 </body>
 </html>

@@ -1,20 +1,14 @@
-( function( window ) {
+QUnit.module( "Web Worker" );
 
-	QUnit.module( "Runs a QUnit suite in a Web Worker" );
+var testMethod = window.Worker ? "test" : "skip";
 
-	var testMethod = window.Worker ? "test" : "skip";
+QUnit[ testMethod ]( "main tests", function( assert ) {
+	assert.expect( 1 );
+	var done = assert.async();
+	var worker = new Worker( "webWorker-worker.js" );
 
-	QUnit[ testMethod ]( "test", function( assert ) {
-		assert.expect( 1 );
-		var done = assert.async();
-		var worker = new Worker( "webWorker-worker.js" );
-
-		worker.onmessage = function( event ) {
-			assert.equal( event.data.status, "passed" );
-			done();
-		};
-	} );
-
-}( ( function() {
-	return this;
-}() ) ) );
+	worker.onmessage = function( event ) {
+		assert.equal( event.data.status, "passed", "runEnd.status" );
+		done();
+	};
+} );
