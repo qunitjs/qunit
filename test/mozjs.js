@@ -40,12 +40,12 @@ QUnit.on( "runEnd", ( suiteEnd ) => {
 loadRelativeToScript( "../test/main/test.js" );
 loadRelativeToScript( "../test/main/each.js" );
 loadRelativeToScript( "../test/main/assert.js" );
-loadRelativeToScript( "../test/main/assert/step.js" );
-// Requires setTimeout, loadRelativeToScript( "../test/main/assert/timeout.js" );
-// Requires setTimeout, loadRelativeToScript( "../test/main/async.js" );
+loadRelativeToScript( "../test/main/assert-step.js" );
+// loadRelativeToScript( "../test/main/assert-timeout.js" ); // Requires setTimeout
+// loadRelativeToScript( "../test/main/async.js" ); // Requires setTimeout
 loadRelativeToScript( "../test/main/promise.js" );
 loadRelativeToScript( "../test/main/dump.js" );
-// Requires setTimeout, loadRelativeToScript( "../test/main/modules.js" );
+// loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
 loadRelativeToScript( "../test/main/deepEqual.js" );
 loadRelativeToScript( "../test/main/stack.js" );
 loadRelativeToScript( "../test/main/utilities.js" );
