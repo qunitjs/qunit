@@ -68,6 +68,8 @@ module.exports = function( grunt ) {
 						path.resolve( "./build/coverage-bridge.js" ),
 						require.resolve( "grunt-contrib-qunit/chrome/bridge" )
 					],
+
+					// @HTML_FILES
 					urls: [
 						"test/index.html",
 
@@ -118,8 +120,8 @@ module.exports = function( grunt ) {
 				"test/main/test.js",
 				"test/main/each.js",
 				"test/main/assert.js",
-				"test/main/assert/step.js",
-				"test/main/assert/timeout.js",
+				"test/main/assert-step.js",
+				"test/main/assert-timeout.js",
 				"test/main/async.js",
 				"test/main/promise.js",
 				"test/main/dump.js",
