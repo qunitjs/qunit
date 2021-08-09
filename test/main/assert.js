@@ -609,7 +609,7 @@ QUnit.module( "assert - failing assertions", {
 
 			// Inverts the result so we can test failing assertions
 			resultInfo.result = !resultInfo.result;
-			originalPushResult( resultInfo );
+			originalPushResult.call( this, resultInfo );
 		};
 	}
 } );

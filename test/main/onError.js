@@ -4,8 +4,8 @@ QUnit.module( "QUnit.onError", function() {
 
 		var original = assert.pushResult;
 		var pushed = null;
-		assert.pushResult = function( result ) {
-			pushed = result;
+		assert.pushResult = function( resultInfo ) {
+			pushed = resultInfo;
 		};
 
 		var suppressed = QUnit.onError( {

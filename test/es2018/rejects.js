@@ -34,12 +34,12 @@ QUnit.test( "rejects with expected class", function( assert ) {
 
 QUnit.module( "failing assertions", {
 	beforeEach: function( assert ) {
-		const originalPushResult = assert.pushResult;
+		const original = assert.pushResult;
 		assert.pushResult = function( resultInfo ) {
 
 			// Inverts the result so we can test failing assertions
 			resultInfo.result = !resultInfo.result;
-			originalPushResult( resultInfo );
+			original.call( this, resultInfo );
 		};
 	}
 }, function() {
@@ -53,7 +53,7 @@ QUnit.module( "failing assertions", {
 
 	QUnit.module( "inspect expected values", {
 		beforeEach: function( assert ) {
-			const originalPushResult = assert.pushResult;
+			const original = assert.pushResult;
 			assert.pushResult = function( resultInfo ) {
 
 				// avoid circular asserts and use if/throw to verify
@@ -62,7 +62,7 @@ QUnit.module( "failing assertions", {
 				}
 
 				// invoke the "outer" pushResult, which still inverts the result for negative testing
-				originalPushResult( resultInfo );
+				original.call( this, resultInfo );
 			};
 		}
 	}, function() {

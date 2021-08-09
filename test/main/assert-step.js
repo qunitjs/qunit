@@ -1,52 +1,54 @@
 QUnit.module( "assert.step", function() {
 
 	QUnit.test( "pushes a failing assertion if no message is given", function( assert ) {
-		var originalPushResult = assert.pushResult;
-		assert.pushResult = function pushResultStub( resultInfo ) {
-			assert.pushResult = originalPushResult;
-
-			assert.false( resultInfo.result );
-			assert.equal( resultInfo.message, "You must provide a message to assert.step" );
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( resultInfo ) {
+			pushed = resultInfo;
 		};
 
 		assert.step();
+
+		assert.pushResult = original;
+		assert.false( pushed.result );
+		assert.equal( pushed.message, "You must provide a message to assert.step" );
+
 		assert.verifySteps( [ undefined ] );
 	} );
 
 	QUnit.test( "pushes a failing assertion if empty message is given", function( assert ) {
-		var originalPushResult = assert.pushResult;
-		assert.pushResult = function pushResultStub( resultInfo ) {
-			assert.pushResult = originalPushResult;
-
-			assert.false( resultInfo.result );
-			assert.equal( resultInfo.message, "You must provide a message to assert.step" );
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( resultInfo ) {
+			pushed = resultInfo;
 		};
 
 		assert.step( "" );
+
+		assert.pushResult = original;
+		assert.false( pushed.result );
+		assert.equal( pushed.message, "You must provide a message to assert.step" );
+
 		assert.verifySteps( [ "" ] );
 	} );
 
 	QUnit.test( "pushes a failing assertion if a non string message is given", function( assert ) {
-		var count = 0;
-		var originalPushResult = assert.pushResult;
-
-		assert.pushResult = function pushResultStub( resultInfo ) {
-			assert.pushResult = originalPushResult;
-
-			count += 1;
-
-			assert.false( resultInfo.result );
-			assert.equal( resultInfo.message, "You must provide a string value to assert.step" );
-
-			if ( count < 3 ) {
-				assert.pushResult = pushResultStub;
-			}
+		var original = assert.pushResult;
+		var pushed = [];
+		assert.pushResult = function( resultInfo ) {
+			pushed.push( resultInfo );
 		};
 
 		assert.step( 1 );
 		assert.step( null );
 		assert.step( false );
 
+		assert.pushResult = original;
+		assert.deepEqual( pushed, [
+			{ result: false, message: "You must provide a string value to assert.step" },
+			{ result: false, message: "You must provide a string value to assert.step" },
+			{ result: false, message: "You must provide a string value to assert.step" }
+		] );
 		assert.verifySteps( [ 1, null, false ] );
 	} );
 
@@ -81,25 +83,27 @@ QUnit.module( "assert.step", function() {
 		assert.step( "Red step" );
 		assert.step( "Blue step" );
 
-		var originalPushResult = assert.pushResult;
-		assert.pushResult = function pushResultStub( resultInfo ) {
-			assert.pushResult = originalPushResult;
-
-			assert.false( resultInfo.result );
+		var original = assert.pushResult;
+		var pushed = null;
+		assert.pushResult = function( resultInfo ) {
+			pushed = resultInfo;
 		};
 
 		assert.verifySteps( [ "One step", "Red step", "Two step", "Blue step" ] );
+		assert.pushResult = original;
+
+		assert.false( pushed.result );
 	} );
 
 	QUnit.test( "verifies the order and value of failed steps", function( assert ) {
-		var originalPushResult = assert.pushResult;
 
 		assert.step( "One step" );
 
+		var original = assert.pushResult;
 		assert.pushResult = function noop() {};
 		assert.step();
 		assert.step( "" );
-		assert.pushResult = originalPushResult;
+		assert.pushResult = original;
 
 		assert.step( "Two step" );
 
