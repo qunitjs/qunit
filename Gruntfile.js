@@ -70,47 +70,51 @@ module.exports = function( grunt ) {
 					],
 					urls: [
 						"test/index.html",
+
+						"test/amd.html",
 						"test/autostart.html",
-						"test/startError.html",
+						"test/events-filters.html",
+						"test/events-in-test.html",
+						"test/headless.html",
+						"test/logs.html",
+						"test/module-filter.html",
+						"test/module-skip.html",
+						"test/module-todo.html",
+						"test/moduleId.html",
+						"test/only-each.html",
+						"test/overload.html",
+						"test/performance-mark.html",
+						"test/preconfigured.html",
+						"test/regex-exclude-filter.html",
+						"test/regex-filter.html",
 						"test/reorder.html",
 						"test/reorderError1.html",
 						"test/reorderError2.html",
-						"test/events-filters.html",
-						"test/events-in-test.html",
-						"test/logs.html",
-						"test/amd.html",
+						"test/reporter-urlparams-hidepassed.html",
+						"test/reporter-urlparams.html",
+						"test/sandboxed-iframe.html",
+						"test/seed.html",
+						"test/startError.html",
+						"test/string-filter.html",
+						"test/webWorker.html",
+
 						"test/reporter-html/legacy-markup.html",
 						"test/reporter-html/no-qunit-element.html",
 						"test/reporter-html/single-testid.html",
-						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/window-onerror-preexisting-handler.html",
+						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/xhtml-escape-details-source.xhtml",
-						"test/reporter-html/xhtml-single-testid.xhtml",
-						"test/reporter-urlparams.html",
-						"test/reporter-urlparams-hidepassed.html",
-						"test/moduleId.html",
-						"test/seed.html",
-						"test/overload.html",
-						"test/preconfigured.html",
-						"test/regex-filter.html",
-						"test/regex-exclude-filter.html",
-						"test/string-filter.html",
-						"test/module-skip.html",
-						"test/module-todo.html",
-						"test/only-each.html",
+						"test/reporter-html/xhtml-single-testid.xhtml"
 
-						// ensure this is last - it has the potential to drool
-						// and omit subsequent tests during coverage runs
-						"test/sandboxed-iframe.html"
 					].map( file => `http://localhost:${connectPort}/${file}` )
 				}
 			}
 		},
 
-		// Sync with test/index.html and test/mozjs.js
 		"test-on-node": {
 			files: [
-				"test/logs.js",
+
+				// Sync with test/index.html and test/mozjs.js
 				"test/main/test.js",
 				"test/main/each.js",
 				"test/main/assert.js",
@@ -125,32 +129,20 @@ module.exports = function( grunt ) {
 				"test/main/utilities.js",
 				"test/main/onError.js",
 				"test/main/onUncaughtException.js",
-				"test/events-in-test.js",
 				"test/setTimeout.js",
+
+				// Sync with test/*.html files that also make sense for Node.js
+				"test/events-in-test.js",
+				"test/logs.js",
+				"test/module-skip.js",
+				"test/module-todo.js",
+
 				"test/node/storage-1.js",
 				"test/node/storage-2.js",
-
-				"test/cli/fixtures/only/test.js",
-				"test/cli/fixtures/only/module.js",
-				"test/cli/fixtures/only/module-flat.js",
 
 				"test/es2018/async-functions.js",
 				"test/es2018/rejects.js",
 				"test/es2018/throws.js"
-
-				// FIXME: These tests use an ugly hack that re-opens
-				// an already finished test run. This only works reliably
-				// via the HTML Reporter thanks to some delays in the bridge.
-				// These tests are about reporting, not about functional
-				// behaviour. They would be best run either as reflection on the
-				// DOM in an HTML Reporter test, or from the CLI by asserting
-				// TAP output. I suggest we do the latter, and then remove them
-				// from here.
-				//
-				// Ref https://github.com/qunitjs/qunit/issues/1511
-				//
-				// "test/module-skip.js",
-				// "test/module-todo.js",
 			]
 		}
 	} );
