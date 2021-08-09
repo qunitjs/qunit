@@ -116,22 +116,22 @@ module.exports = function( grunt ) {
 		"test-on-node": {
 			files: [
 
-				// Sync with test/index.html and test/mozjs.js
-				"test/main/test.js",
-				"test/main/each.js",
+				// Sync with test/index.html
 				"test/main/assert.js",
 				"test/main/assert-step.js",
 				"test/main/assert-timeout.js",
 				"test/main/async.js",
-				"test/main/promise.js",
-				"test/main/dump.js",
-				"test/main/modules.js",
 				"test/main/deepEqual.js",
-				"test/main/stack.js",
-				"test/main/utilities.js",
+				"test/main/dump.js",
+				"test/main/each.js",
+				"test/main/modules.js",
 				"test/main/onError.js",
 				"test/main/onUncaughtException.js",
-				"test/setTimeout.js",
+				"test/main/promise.js",
+				"test/main/setTimeout.js",
+				"test/main/stack.js",
+				"test/main/test.js",
+				"test/main/utilities.js",
 
 				// Sync with test/*.html files that also make sense for Node.js
 				"test/events-in-test.js",

@@ -36,20 +36,21 @@ QUnit.on( "runEnd", ( suiteEnd ) => {
 	}
 } );
 
-// Sync with Gruntfile.js#test-on-node and test/index.html
-loadRelativeToScript( "../test/main/test.js" );
-loadRelativeToScript( "../test/main/each.js" );
+// Sync with test/index.html
 loadRelativeToScript( "../test/main/assert.js" );
 loadRelativeToScript( "../test/main/assert-step.js" );
 // loadRelativeToScript( "../test/main/assert-timeout.js" ); // Requires setTimeout
 // loadRelativeToScript( "../test/main/async.js" ); // Requires setTimeout
-loadRelativeToScript( "../test/main/promise.js" );
-loadRelativeToScript( "../test/main/dump.js" );
-// loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
 loadRelativeToScript( "../test/main/deepEqual.js" );
-loadRelativeToScript( "../test/main/stack.js" );
-loadRelativeToScript( "../test/main/utilities.js" );
+loadRelativeToScript( "../test/main/dump.js" );
+loadRelativeToScript( "../test/main/each.js" );
+// loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
 loadRelativeToScript( "../test/main/onError.js" );
 loadRelativeToScript( "../test/main/onUncaughtException.js" );
+loadRelativeToScript( "../test/main/promise.js" );
+loadRelativeToScript( "../test/main/setTimeout.js" );
+loadRelativeToScript( "../test/main/stack.js" );
+loadRelativeToScript( "../test/main/test.js" );
+loadRelativeToScript( "../test/main/utilities.js" );
 
 QUnit.start();

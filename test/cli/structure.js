@@ -19,14 +19,14 @@ QUnit.module( "structure", () => {
 			);
 		} );
 
-		QUnit.test( "index.html", assert => {
+		QUnit.test( "test/index.html", assert => {
 			const contents = fs.readFileSync( __dirname + "/../index.html", "utf8" );
 			files.forEach( file => {
 				assert.true( contents.includes( file ), file );
 			} );
 		} );
 
-		QUnit.test( "test-on-node", assert => {
+		QUnit.test( "Gruntfile#test-on-node", assert => {
 			const raw = fs.readFileSync( __dirname + "/../../Gruntfile.js", "utf8" );
 			const contents = raw.match( /test-on-node.*?\{.*?\}/s )[ 0 ];
 
@@ -35,14 +35,14 @@ QUnit.module( "structure", () => {
 			} );
 		} );
 
-		QUnit.test( "mozjs", assert => {
+		QUnit.test( "test/mozjs", assert => {
 			const contents = fs.readFileSync( __dirname + "/../mozjs.js", "utf8" );
 			files.forEach( file => {
 				assert.true( contents.includes( file ), file );
 			} );
 		} );
 
-		QUnit.test( "Web Worker", assert => {
+		QUnit.test( "test/webWorker-worker.js", assert => {
 			const contents = fs.readFileSync( __dirname + "/../webWorker-worker.js", "utf8" );
 			files.forEach( file => {
 				assert.true( contents.includes( file ), file );

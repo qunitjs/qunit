@@ -602,7 +602,7 @@ QUnit.test( "rejects", function( assert ) {
 
 } );
 
-QUnit.module( "failing assertions", {
+QUnit.module( "assert - failing assertions", {
 	beforeEach: function( assert ) {
 		var originalPushResult = assert.pushResult;
 		assert.pushResult = function( resultInfo ) {

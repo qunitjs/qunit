@@ -1,6 +1,6 @@
 ( function( globalThis ) {
 
-	QUnit.module( "Support mocked setTimeout", {
+	QUnit.module( "Support for mocked setTimeout", {
 		beforeEach: function() {
 			this.setTimeout = globalThis.setTimeout;
 			globalThis.setTimeout = function() {};
