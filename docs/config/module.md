@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.module
 excerpt: Select a single test module to run, by name.
-categories:
+groups:
   - config
 version_added: "1.8.0"
 ---

@@ -1,5 +1,5 @@
 ---
-layout: category
+layout: group
+group: deprecated
 title: Deprecated methods
-category: deprecated
 ---

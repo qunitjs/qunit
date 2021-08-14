@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.step()
 excerpt: A marker for progress in a given test.
-categories:
+groups:
   - assert
 version_added: "2.2.0"
 ---

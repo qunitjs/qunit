@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.stack()
 excerpt: Return a single line string representing the stacktrace.
-categories:
+groups:
 - extension
 redirect_from:
   - "/config/QUnit.stack/"

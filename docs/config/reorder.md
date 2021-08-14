@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.reorder
 excerpt: Allow re-running of previously failed tests out of order.
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.propEqual()
 excerpt: A strict type and value comparison of an object's own properties.
-categories:
+groups:
   - assert
 redirect_from:
   - "/propEqual/"

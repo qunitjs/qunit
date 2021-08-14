@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.equal()
 excerpt: A non-strict comparison.
-categories:
+groups:
   - assert
 redirect_from:
   - "/equal/"

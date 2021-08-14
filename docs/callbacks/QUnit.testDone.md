@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.testDone()
 excerpt: Register a callback to fire whenever a test ends.
-categories:
+groups:
   - callbacks
 redirect_from:
   - "/QUnit.testDone/"

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.throws()
 excerpt: Test if a callback throws an exception.
-categories:
+groups:
   - assert
 redirect_from:
   - "/assert/raises/"

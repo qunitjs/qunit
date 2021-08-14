@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.noglobals
 excerpt: Check the global object after each test and report new properties as failures.
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

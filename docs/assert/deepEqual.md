@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.deepEqual()
 excerpt: A deep recursive strict comparison.
-categories:
+groups:
   - assert
 redirect_from:
   - "/deepEqual/"

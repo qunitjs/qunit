@@ -1,0 +1,33 @@
+---
+# Similar to the Amethyst "page" layout, but with a sidebar and no hero title
+layout: wrapper
+---
+
+<div class="main wrapper">
+{% include sidebar.html blocks="sidebar_api" %}
+<div class="body" role="main">
+	<h2>{{ page.title }}</h2>
+	{%- if page.version_added or page.version_deprecated -%}
+		{%- assign warning = false -%}
+		{%- if page.version_added == "unreleased" or page.version_deprecated or page.version_removed -%}
+			{%- assign warning = true -%}
+		{%- endif -%}
+
+	<p class="version-details{% if warning %} note--warning{% endif %}">
+		{%- capture lines -%}
+			{%- if page.version_added %}
+				{% include version.html version=page.version_added label="version added" %}
+			{%- endif -%}
+			{%- if page.version_deprecated %}
+				{% include version.html version=page.version_deprecated label="deprecated in" %}
+			{%- endif -%}
+			{%- if page.version_removed %}
+				{% include version.html version=page.version_removed label="removed in" %}
+			{%- endif -%}
+		{%- endcapture -%}
+		{{ lines | strip | newline_to_br }}
+	</p>
+	{%- endif %}
+	{{- content }}
+</div>
+</div>

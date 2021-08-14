@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.test.each()
 excerpt: Add tests using a data provider.
-categories:
+groups:
   - main
 version_added: "2.16.0"
 ---

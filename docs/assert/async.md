@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.async()
 excerpt: Instruct QUnit to wait for an asynchronous operation.
-categories:
+groups:
   - assert
   - async
 redirect_from:

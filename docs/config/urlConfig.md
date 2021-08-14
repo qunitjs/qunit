@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.urlConfig
 excerpt: Register additional input fields in the toolbar (HTML Reporter).
-categories:
+groups:
   - config
   - extension
 version_added: "1.0.0"

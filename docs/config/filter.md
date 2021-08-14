@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.filter
 excerpt: Decide which tests should run based on a substring or pattern match.
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

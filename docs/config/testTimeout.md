@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.testTimeout
 excerpt: Set a global default timeout after which a test will fail.
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

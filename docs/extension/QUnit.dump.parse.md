@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.dump.parse()
 excerpt: Extensible data dumping and string serialization.
-categories:
+groups:
  - extension
 redirect_from:
   - "/QUnit.dump.parse/"

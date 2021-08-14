@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.notEqual()
 excerpt: A non-strict comparison, checking for inequality.
-categories:
+groups:
   - assert
 redirect_from:
   - "/notEqual/"

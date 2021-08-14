@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.maxDepth
 excerpt: The depth up-to which an object will be serialized during a diff (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.16.0"
 ---

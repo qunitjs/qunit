@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.altertitle
 excerpt: Insert a success or failure symbol in the document title (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

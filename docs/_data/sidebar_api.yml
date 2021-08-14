@@ -1,0 +1,21 @@
+- group: main
+
+- group: assert
+
+- group: callbacks
+
+- group: async
+
+- title: Configuration
+  group: config
+  collapsed: true
+
+- group: extension
+
+- type: list
+  title: Other
+  list:
+    - title: Deprecated methods
+      href: /deprecated/
+    # - title: Removed methods
+    #   href: /removed/

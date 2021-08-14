@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.expect()
 excerpt: Specify how many assertions are expected to run within a test.
-categories:
+groups:
   - assert
 redirect_from:
   - "/expect/"

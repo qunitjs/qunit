@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.timeout()
 excerpt: Set how long to wait for async operations.
-categories:
+groups:
   - assert
   - async
 version_added: "2.4.0"

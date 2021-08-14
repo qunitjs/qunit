@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.test.skip()
 excerpt: Add a test that will be skipped.
-categories:
+groups:
   - main
 redirect_from:
   - "/QUnit.skip/"

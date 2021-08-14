@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.test()
 excerpt: Add a test to run.
-categories:
+groups:
   - main
   - async
 redirect_from:

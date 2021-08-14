@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.hidepassed
 excerpt: Hide results of passed tests (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

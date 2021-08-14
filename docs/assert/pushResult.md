@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.pushResult()
 excerpt: Report the result of a custom assertion.
-categories:
+groups:
   - assert
 version_added: "1.22.0"
 ---

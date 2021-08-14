@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.notPropEqual()
 excerpt: A strict comparison of an object's own properties, checking for inequality.
-categories:
+groups:
   - assert
 redirect_from:
   - "/notPropEqual/"

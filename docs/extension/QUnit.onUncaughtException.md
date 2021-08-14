@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.onUncaughtException()
 excerpt: Handle a global error.
-categories:
+groups:
  - extension
 version_added: "unreleased"
 redirect_from:

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.test.only()
 excerpt: Add a test that is exclusively run.
-categories:
+groups:
   - main
 redirect_from:
   - "/QUnit.only/"

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.assert
 excerpt: Namespace for QUnit assertion methods.
-categories:
+groups:
   - extension
 redirect_from:
   - "/config/QUnit.assert/"

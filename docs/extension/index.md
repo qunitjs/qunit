@@ -1,7 +1,5 @@
 ---
-layout: category
+layout: group
+group: extension
 title: Extension interface
-category: extension
-categories:
-  - topics
 ---

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.strictEqual()
 excerpt: A strict type and value comparison.
-categories:
+groups:
   - assert
 redirect_from:
   - "/same/"

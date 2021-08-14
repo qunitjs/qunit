@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.autostart
 excerpt: Start running the tests once all files have been loaded.
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---

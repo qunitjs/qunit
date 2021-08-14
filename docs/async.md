@@ -1,7 +1,5 @@
 ---
-layout: category
+layout: group
+group: async
 title: Async control
-category: async
-categories:
-  - topics
 ---

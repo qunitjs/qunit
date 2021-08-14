@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page-api
 excerpt: API reference documentation for QUnit.
 redirect_from:
   - "/category/all/"

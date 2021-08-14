@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.current
 excerpt: Internal object representing the currently running test.
-categories:
+groups:
   - config
   - extension
 version_added: "1.0.0"

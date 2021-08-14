@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.begin()
 excerpt: Register a callback to fire whenever the test suite begins.
-categories:
+groups:
   - callbacks
 redirect_from:
   - "/QUnit.begin/"

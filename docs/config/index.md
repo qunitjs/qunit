@@ -1,9 +1,7 @@
 ---
-layout: category
+layout: group
+group: config
 title: QUnit.config
-category: config
-categories:
-  - topics
 redirect_from:
   - "/QUnit.config/"
   - "/config/QUnit.config/"

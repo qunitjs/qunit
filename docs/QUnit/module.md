@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.module()
 excerpt: Group related tests under a common label.
-categories:
+groups:
   - main
 redirect_from:
   - "/QUnit.module/"

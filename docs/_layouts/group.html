@@ -1,9 +1,9 @@
 ---
-layout: default
+layout: page-api
 ---
 {{ content }}
 
-{%- assign pages = site.pages | where: 'categories', page.category | sort_natural: 'title' -%}
+{%- assign pages = site.pages | where: 'groups', page.group | sort_natural: 'title' -%}
 {% for page in pages %}
 <h3 id="{{ page.title | slugify }}"><a href="{{ page.url }}">{{ page.title }}</a></h3>
 <p>

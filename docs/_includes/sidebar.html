@@ -1,0 +1,54 @@
+{%- comment -%}
+
+Parameters:
+
+* blocks: Key in `site.data` corresponding to a `_data/*.yml` file.
+
+{%- endcomment -%}
+<section class="sidebar">
+{% for block in site.data[include.blocks] -%}
+	{%- assign block_type = block.type | default: "group" -%}
+
+	{%- if block_type == "group" -%}
+		{%- assign group_page = site.pages | where: "layout", "group" | where: "group", block.group | first -%}
+		{%- assign block_title = block.title | default: group_page.title | default: block.group -%}
+		{%- assign group_contents = site.pages | where: 'groups', block.group | sort_natural: 'title' -%}
+
+		{%- assign is_display_index = false -%}
+		{%- assign is_display_contents = true -%}
+		{%- if block.collapsed -%}
+			{%- assign is_display_index = true -%}
+			{%- assign self_in_contents = group_contents | where: 'url', page.url | size -%}
+			{%- if page.url != group_page.url and self_in_contents == 0 -%}
+				{%- assign is_display_contents = false -%}
+			{%- endif -%}
+		{%- endif %}
+
+		<h4>{{ block_title }}</h4>
+		<ul class="sidebar-list">
+		{%- if is_display_index -%}
+			<li class="sidebar-item{% if page.url == group_page.url %} sidebar-item-active{% endif %}">
+				<a href="{{ group_page.url }}">{{ group_page.title }}</a>
+			</li>
+		{% endif -%}
+		{%- if is_display_contents -%}
+		{%- for entry in group_contents %}
+		<li class="sidebar-item{% if page.url == entry.url %} sidebar-item-active{% endif %}">
+			<a href="{{ entry.url }}">{{ entry.title }}</a>
+		</li>
+		{%- endfor -%}
+		{%- endif -%}
+		</ul>
+	{%- endif -%}
+	{%- if block_type == "list" -%}
+		<h4>{{ block.title }}</h4>
+		<ul class="sidebar-list">
+		{%- for entry in block.list %}
+		<li class="sidebar-item">
+			<a href="{{ entry.href }}">{{ entry.title }}</a>
+		</li>
+		{%- endfor -%}
+		</ul>
+	{%- endif -%}
+{% endfor %}
+</section>

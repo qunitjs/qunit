@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.false()
 excerpt: A strict boolean false comparison.
-categories:
+groups:
   - assert
 version_added: "2.11.0"
 ---

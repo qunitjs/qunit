@@ -1,7 +1,5 @@
 ---
-layout: category
+layout: group
+group: main
 title: Main methods
-category: main
-categories:
-  - topics
 ---

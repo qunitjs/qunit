@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.push()
 excerpt: Report the result of a custom assertion.
-categories:
+groups:
 - extension
 - deprecated
 redirect_from:

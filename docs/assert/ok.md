@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.ok()
 excerpt: Check if the first argument is truthy.
-categories:
+groups:
   - assert
 redirect_from:
   - "/ok/"

@@ -1,5 +1,5 @@
 ---
-layout: category
+layout: group
+group: removed
 title: Removed methods
-category: removed
 ---

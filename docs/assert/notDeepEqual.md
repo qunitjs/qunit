@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.notDeepEqual()
 excerpt: An inverted deep recursive comparison.
-categories:
+groups:
   - assert
 redirect_from:
   - "/notDeepEqual/"

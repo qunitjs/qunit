@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.extend()
 excerpt: Copy the properties from one object into a target object.
-categories:
+groups:
 - extension
 - deprecated
 redirect_from:

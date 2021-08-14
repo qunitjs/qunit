@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.moduleDone()
 excerpt: Register a callback to fire whenever a module ends.
-categories:
+groups:
   - callbacks
 redirect_from:
   - "/QUnit.moduleDone/"

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.moduleStart()
 excerpt: Register a callback to fire whenever a module begins.
-categories:
+groups:
   - callbacks
 redirect_from:
   - "/QUnit.moduleStart/"

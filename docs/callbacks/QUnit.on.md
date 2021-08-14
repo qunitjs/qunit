@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.on()
 excerpt: Register a callback to fire whenever the specified event is emitted.
-categories:
+groups:
   - callbacks
 version_added: "2.2.0"
 ---

@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.rejects()
 excerpt: Test if the provided promise rejects.
-categories:
+groups:
   - assert
 version_added: "2.5.0"
 ---

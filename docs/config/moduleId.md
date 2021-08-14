@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.moduleId
 excerpt: Select one or more modules to run, by their internal ID (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.23.0"
 ---

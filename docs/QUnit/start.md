@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.start()
 excerpt: Start an async test suite.
-categories:
+groups:
   - main
   - async
 redirect_from:

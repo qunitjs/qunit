@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: assert.notOk()
 excerpt: Check if the first argument is falsy.
-categories:
+groups:
   - assert
 version_added: "1.18.0"
 ---

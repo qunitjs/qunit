@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.log()
 excerpt: Register a callback to fire whenever an assertion completes.
-categories:
+groups:
   - callbacks
 redirect_from:
   - "/QUnit.log/"

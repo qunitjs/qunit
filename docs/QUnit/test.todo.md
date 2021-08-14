@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.test.todo()
 excerpt: Add a test which expects at least one failing assertion.
-categories:
+groups:
   - main
 redirect_from:
   - "/QUnit.todo/"

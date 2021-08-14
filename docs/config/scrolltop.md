@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.scrolltop
 excerpt: Scroll to the top of the page after the test run (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.14.0"
 ---

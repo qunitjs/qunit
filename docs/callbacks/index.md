@@ -1,9 +1,7 @@
 ---
-layout: category
+layout: group
+group: callbacks
 title: Callback events
-category: callbacks
-categories:
-  - topics
 redirect_from:
   - "/category/callbacks/"
 ---

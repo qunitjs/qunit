@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: page-api
 title: QUnit.config.collapse
 excerpt: Collapse the details of failing tests after the first one (HTML Reporter).
-categories:
+groups:
   - config
 version_added: "1.0.0"
 ---
