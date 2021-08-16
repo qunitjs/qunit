@@ -30,6 +30,8 @@ You can also match via a regular expression by setting the filter to a regular e
 
 While substring filters are always **case-insensitive**, a regular expression is only insensitive when passing the `/i` flag.
 
+See also:
+* [QUnit.config.module](./module.md)
 
 ### Examples
 

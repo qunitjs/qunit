@@ -29,7 +29,7 @@ When specified, only a single module will be run if its name is a complete case-
 This option is undefined by default, which means all loaded test modules will be run.
 
 See also:
-* [QUnit.config.test](./test.md).
+* [QUnit.config.filter](./filter.md).
 * [QUnit.config.moduleId](./moduleId.md).
 
 ##### Changelog
