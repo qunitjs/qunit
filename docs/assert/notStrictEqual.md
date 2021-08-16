@@ -19,7 +19,7 @@ A strict comparison, checking for inequality.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 The `notStrictEqual` assertion uses the strict inverted comparison operator (`!==`) to compare the actual and expected arguments. When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
@@ -27,7 +27,7 @@ The `notStrictEqual` assertion uses the strict inverted comparison operator (`!=
 
 [`strictEqual()`](./strictEqual.md) can be used to test strict equality.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "example", assert => {

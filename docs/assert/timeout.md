@@ -16,7 +16,7 @@ Set how long to wait for async operations to complete before failing the test.
 |------|-------------|
 | `duration` (number) | The length of time, in milliseconds, to wait for async operations. |
 
-### Description
+## Description
 
 `assert.timeout()` defines how long to wait (at most) in the current test. It overrides [`QUnit.config.testTimeout`](../config/testTimeout.md) on a per-test basis.
 
@@ -24,7 +24,7 @@ The timeout length only applies when performing async operations. If `0` is pass
 
 If `assert.timeout()` is called after a timeout has already been set, the old timeout will be cleared and the new duration will be used for a new timer. If a non-numeric value is passed as an argument, the function will throw an error.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "wait for an event", assert => {

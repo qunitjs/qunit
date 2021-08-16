@@ -22,13 +22,13 @@ Add a test to run.
 | `name` (string) | Title of unit being tested |
 | `callback` (function) | Function to close over assertions |
 
-#### Callback parameters: `callback( assert )`:
+### Callback parameters: `callback( assert )`:
 
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-### Description
+## Description
 
 Add a test to run using `QUnit.test()`.
 
@@ -41,13 +41,12 @@ See also:
 * [`QUnit.test.skip()`](./test.skip.md)
 * [`QUnit.test.todo()`](./test.todo.md)
 
-
-##### Changelog
+### Changelog
 
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added support for async functions, and returning of a Promise.
 
 
-### Examples
+## Examples
 
 A practical example, using the assert argument and no globals.
 

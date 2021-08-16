@@ -24,7 +24,7 @@ Copy the properties defined by a mixin object into a target object.
 
 This method will modify the `target` object to contain the "own" properties defined by the `mixin`. If the `mixin` object specifies the value of any attribute as `undefined`, this property will instead be removed from the `target` object.
 
-### Examples
+## Examples
 
 Use `QUnit.extend` to merge two objects.
 

@@ -10,7 +10,7 @@ version_added: "1.0.0"
 
 Internal object representing the currently running test.
 
-### Description
+## Description
 
 <table>
 <tr>
@@ -23,7 +23,7 @@ This property is not actually a configuration option, but is exposed under `QUni
 
 Internals may change without notice. When possible, use [QUnit.on](../callbacks/QUnit.on.md) or [other callbacks](../callbacks/index.md) instead.
 
-### Example
+## Example
 
 Access `QUnit.config.current.testName` to observe the currently running test's name.
 

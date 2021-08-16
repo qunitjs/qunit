@@ -9,7 +9,7 @@ version_added: "1.0.0"
 
 Start running the tests once all files have been loaded.
 
-### Description
+## Description
 
 <table>
 <tr>
@@ -26,7 +26,7 @@ By default, QUnit starts running the tests when `load` event is triggered on the
 
 Set this property to `false` if you load your test files asynchronously through custom means (e.g. RequireJS). Remember to call `QUnit.start()` once you're ready for tests to begin running.
 
-### Example
+## Example
 
 Disable autostart when loading tests asynchronously, such as when using RequireJS:
 

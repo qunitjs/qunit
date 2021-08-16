@@ -17,7 +17,7 @@ Register a callback to fire whenever a module begins. The callback can return a 
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -25,7 +25,7 @@ Passed to the callback:
 |-----------|-------------|
 | `name` (string) | Name of the next module to run |
 
-### Examples
+## Examples
 
 Register a callback that logs the module name
 

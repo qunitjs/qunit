@@ -16,7 +16,7 @@ A strict comparison that passes if the first argument is boolean `true`.
 | `actual` | Expression being tested |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 `true()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
 
@@ -24,7 +24,7 @@ This method is similar to the `assertTrue()` method found in xUnit-style framewo
 
 [`false()`](./false.md) can be used to explicitly test for a false value.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "example", assert => {

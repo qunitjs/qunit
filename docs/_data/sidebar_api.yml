@@ -1,6 +1,8 @@
 - group: main
+  expand: true
 
 - group: assert
+  expand: true
 
 - group: callbacks
 
@@ -8,14 +10,11 @@
 
 - title: Configuration
   group: config
-  collapsed: true
 
 - group: extension
 
-- type: list
-  title: Other
-  list:
-    - title: Deprecated methods
-      href: /deprecated/
-    # - title: Removed methods
-    #   href: /removed/
+- group: deprecated
+  expand: false
+
+# - group: removed
+#   expand: false

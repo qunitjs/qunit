@@ -17,7 +17,7 @@ Handle a global error that should result in a failed test run.
 |------|-------------|
 | `error` (any) | Usually an `Error` object, but any other thrown or rejected value may be given as well. |
 
-### Examples
+## Examples
 
 ```js
 const error = new Error( "Failed to reverse the polarity of the neutron flow" );

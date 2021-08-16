@@ -20,13 +20,13 @@ Add a test that is exclusively run, preventing other tests from running unless t
 | `name` (string) | Title of unit being tested |
 | `callback` (function) | Function to close over assertions |
 
-#### Callback parameters: `callback( assert )`:
+### Callback parameters: `callback( assert )`:
 
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-### Description
+## Description
 
 Use this method to focus your test suite on specific tests. `QUnit.only` will cause any other tests in your suite to be ignored.
 
@@ -36,12 +36,12 @@ It can also be used instead of the `--filter` CLI option, e.g. if you're already
 
 When debugging a larger area of code, you may want to _only_ run all tests within a given module. You can also use[`QUnit.module.only()`](./module.md) to automatically mark all tests in a module as "only" tests.
 
-##### Changelog
+### Changelog
 
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | The `QUnit.only()` method was renamed to `QUnit.test.only()`.<br/>Use of `QUnit.only()` remains supported as an alias.
 | [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | The `QUnit.only()` method was introduced.
 
-### Examples
+## Examples
 
 How to use `QUnit.test.only` to filter which tests are run.
 

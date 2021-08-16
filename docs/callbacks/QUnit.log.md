@@ -21,7 +21,7 @@ This is one of several callbacks QUnit provides. It's intended for continuous in
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -37,7 +37,7 @@ Passed to the callback:
 | `runtime` (number) | The time elapsed in milliseconds since the start of the containing [`QUnit.test()`](../QUnit/test.md), including setup. |
 | `todo` (boolean) | Indicates whether or not this assertion was part of a todo test. |
 
-### Examples
+## Examples
 
 Register a callback that logs the assertion result and its message:
 

@@ -17,7 +17,7 @@ Register a callback to fire whenever the test suite ends. The callback may be an
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -28,7 +28,7 @@ Passed to the callback:
 | `total` (number) | The total number of assertions |
 | `runtime` (number) | The time in milliseconds it took tests to run from start to finish. |
 
-### Examples
+## Examples
 
 Register a callback that logs test results to the console.
 

@@ -18,7 +18,7 @@ Test if the provided promise rejects, and optionally compare the rejection value
 | `message` (string) | A short description of the assertion |
 
 
-### Description
+## Description
 
 When testing code that is expected to return a rejected promise based on a
 specific set of circumstances, use `assert.rejects()` for testing and
@@ -33,7 +33,7 @@ The `expectedMatcher` argument can be:
 
 Note: in order to avoid confusion between the `message` and the `expectedMatcher`, the `expectedMatcher` **can not** be a string.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "rejects example", assert => {

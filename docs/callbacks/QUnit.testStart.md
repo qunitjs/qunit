@@ -17,7 +17,7 @@ Register a callback to fire whenever a test begins. The callback may be an async
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -28,7 +28,7 @@ Passed to the callback:
 | `testId` (string) | Id of the next test to run |
 | `previousFailure` (boolean) | Whether the next test failed on a previous run |
 
-### Examples
+## Examples
 
 Register a callback that logs the module and test name:
 

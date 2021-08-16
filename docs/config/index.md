@@ -9,7 +9,7 @@ redirect_from:
 
 General configuration options for QUnit.
 
-### Preconfiguring QUnit
+## Preconfiguring QUnit
 
 If you want to configure QUnit before it is loaded, you can introduce the global variable `QUnit` with the property `config` specified. All other properties of the QUnit object will be ignored. In the config properties you may specify any of the allowed QUnit.config values.
 

@@ -16,7 +16,7 @@ A helper assertion to verify the order and number of steps in a test.
 | `steps` (array) | List of strings |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 The `assert.verifySteps()` assertion compares a given array of string values (representing steps) with the order and values of previous `step()` calls. This assertion is helpful for verifying the order and count of portions of code paths, especially asynchronous ones.
 
@@ -28,11 +28,11 @@ Learn how to use the Step API and the value it adds to your test suite.
 * [Example: Testing publish/subscribe systems](#example-testing-publishsubscribe-systems)
 * [Example: Multiple steps verifications in one test](#example-multiple-steps-verifications-in-one-test)
 
-### Examples
+## Examples
 
 The **Step API** strictly validates the order and frequency of observed values. It also allows detecting of unexpected steps, which are then shown as part the test failure.
 
-#### Example: Testing event-based interfaces
+### Example: Testing event-based interfaces
 
 This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one provided by Node.js and other environments:
 
@@ -108,7 +108,7 @@ QUnit.test( "manual example without Step API", assert => {
 });
 ```
 
-#### Example: Testing publish/subscribe systems
+### Example: Testing publish/subscribe systems
 
 Use the **Step API** to verify messages received in a Pub-Sub channel or topic.
 
@@ -134,7 +134,7 @@ QUnit.test( "good example", assert => {
 });
 ```
 
-#### Example: Multiple steps verifications in one test
+### Example: Multiple steps verifications in one test
 
 The internal buffer of observed steps is automatically reset when calling `verifySteps()`.
 

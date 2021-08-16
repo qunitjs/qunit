@@ -16,7 +16,7 @@
 
 The API documentation site is hosted at <https://api.qunitjs.com> using GitHub Pages.
 
-#### Requirements
+### Requirements
 
 * [Ruby](https://www.ruby-lang.org/) (tested with Ruby 2.7)
 * [Bundler](https://bundler.io/) (if missing, install with `gem install bundler`)

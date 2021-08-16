@@ -19,7 +19,7 @@ A non-strict comparison, checking for inequality.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 The `notEqual` assertion uses the simple inverted comparison operator (`!=`) to compare the actual and expected arguments. When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
@@ -27,7 +27,7 @@ The `notEqual` assertion uses the simple inverted comparison operator (`!=`) to 
 
 [`notStrictEqual()`](./notStrictEqual.md) can be used to test strict inequality.
 
-### Examples
+## Examples
 
 The simplest assertion example:
 

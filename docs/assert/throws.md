@@ -22,7 +22,7 @@ Test if a callback throws an exception, and optionally compare the thrown error.
 | `message` (string) | A short description of the assertion |
 
 
-### Description
+## Description
 
 When testing code that is expected to throw an exception based on a specific set of circumstances, use `assert.throws()` to catch the error object for testing and comparison.
 
@@ -35,12 +35,12 @@ The `expectedMatcher` argument can be:
 
 <p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises`. It has the same signature and behaviour, just a different name.</p>
 
-##### Changelog
+### Changelog
 
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
 | [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The  `assert.raises()` method remains supported as an alias.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "throws example", assert => {

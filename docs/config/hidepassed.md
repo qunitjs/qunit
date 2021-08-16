@@ -9,7 +9,7 @@ version_added: "1.0.0"
 
 In the HTML Reporter, hide results of passed tests.
 
-### Description
+## Description
 
 <table>
 <tr>

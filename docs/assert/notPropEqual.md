@@ -27,7 +27,7 @@ When they aren't equal, the assertion passes; otherwise, it fails. When it fails
 
 [`propEqual()`](./propEqual.md) can be used to test strict equality of an Object properties.
 
-### Examples
+## Examples
 
 Compare the values of two objects properties.
 

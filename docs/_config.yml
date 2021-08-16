@@ -10,7 +10,7 @@
 # Site settings
 #
 # https://jekyllrb.com/docs/configuration/
-title: QUnit API Docs
+title: QUnit API
 excerpt: "API reference documentation for QUnit."
 url: "https://api.qunitjs.com"
 baseurl: ""
@@ -31,13 +31,15 @@ plugins:
   - jekyll-redirect-from
 
 # Theme
-remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@e4a547df
+remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@bb3af84
 amethyst:
+  home_href: https://qunitjs.com
   edituri_base: https://github.com/qunitjs/qunit/blob/main/docs/
   header_logo:
     src: /img/logo-with-colored-text.svg
     width: 250
     height: 72
+  release_base: https://github.com/qunitjs/qunit/releases/tag/
   mastodon: https://mastodon.technology/@qunitjs
   twitter: qunitjs
   github: qunitjs

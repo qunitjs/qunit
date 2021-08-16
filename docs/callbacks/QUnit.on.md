@@ -20,7 +20,7 @@ Use this to listen for events related to the test suite's execution. Available e
 | eventName (string) | The name of the event for which to execute the provided callback. |
 | callback (function) | Callback to execute. Receives a single argument representing the data for the event. |
 
-### Examples
+## Examples
 
 Printing results of a test suite.
 

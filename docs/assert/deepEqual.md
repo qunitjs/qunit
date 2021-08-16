@@ -19,7 +19,7 @@ A deep recursive strict comparison, working on primitive types, arrays, objects,
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 The `deepEqual()` assertion can be used just like `equal()` when comparing the value of objects, such that `{ key: value }` is equal to `{ key: value }`. For non-scalar values, identity will be disregarded by `deepEqual`.
 
@@ -27,7 +27,7 @@ The `deepEqual()` assertion can be used just like `equal()` when comparing the v
 
 [`propEqual()`](./propEqual.md) can be used to explicitly test deep, strict equality but only considering own properties. `deepEqual()` compares all inherited properties.
 
-### Examples
+## Examples
 
 Validate the properties and values of a given object.
 

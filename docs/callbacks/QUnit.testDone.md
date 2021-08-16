@@ -17,7 +17,7 @@ Register a callback to fire whenever a test ends. The callback may be an async f
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -32,7 +32,7 @@ Passed to the callback:
 | `skipped` (boolean) | Indicates whether or not the current test was skipped |
 | `todo` (boolean) | Indicates whether or not the current test was a todo |
 
-### Examples
+## Examples
 
 Register a callback that logs results of a single test:
 

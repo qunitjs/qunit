@@ -20,15 +20,15 @@ Instruct QUnit to wait for an asynchronous operation.
 |------|-------------|
 | `count` (number) | Number of expected calls before the tests will resume. Defaults to `1`. |
 
-### Description
+## Description
 
 `assert.async()` returns a callback function and pauses test processing until the callback function is called. The callback will throw an `Error` if it is invoked more often than the required call count.
 
 This replaces functionality previously provided by `QUnit.stop()` and [`QUnit.start()`](../QUnit/start.md).
 
-### Examples
+## Examples
 
-##### Example: Wait for callback
+### Example: Wait for callback
 
 Tell QUnit to wait for the `done()` call from a callback.
 
@@ -47,7 +47,7 @@ QUnit.test( "async example", assert => {
   });
 });
 ```
-##### Example: Wait for multiple callbacks
+### Example: Wait for multiple callbacks
 
 Call `assert.async()` multiple times to wait for multiple async operations. Each `done` callback must be called exactly once for the test to pass.
 
@@ -67,7 +67,7 @@ QUnit.test( "two async calls", assert => {
 });
 ```
 
-##### Example: Require multiple calls
+### Example: Require multiple calls
 
 The `count` parameter can be used to require multiple calls to the same callback. In the below example, the test passes after exactly three calls.
 

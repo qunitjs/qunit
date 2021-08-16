@@ -11,19 +11,6 @@
       href: https://qunitjs.com/upgrade-guide-2.x/
 - name: Documentation
   href: /
-  sub:
-    - name: Main methods
-      href: /QUnit/
-    - name: Assertions
-      href: /assert/
-    - name: Callback events
-      href: /callbacks/
-    - name: Async control
-      href: /async/
-    - name: Configuration options
-      href: /config/
-    - name: Extension interface
-      href: /extension/
 - name: About
   href: https://qunitjs.com/about/
   sub:

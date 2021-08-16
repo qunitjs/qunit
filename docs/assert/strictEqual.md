@@ -21,7 +21,7 @@ A strict type and value comparison.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-### Description
+## Description
 
 The `strictEqual()` assertion provides the most rigid comparison of type and value with the strict equality operator (`===`).
 
@@ -33,7 +33,7 @@ The `strictEqual()` assertion provides the most rigid comparison of type and val
 
 * Prior to QUnit 1.1, this method was known as `assert.same`.<br>The alias was removed in QUnit 1.3.
 
-### Examples
+## Examples
 
 Compare the value of two primitives, having the same value and type.
 

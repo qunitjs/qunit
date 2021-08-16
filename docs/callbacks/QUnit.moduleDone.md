@@ -17,7 +17,7 @@ Register a callback to fire whenever a module ends. The callback may be an async
 |-----------|-------------|
 | callback (function) | Callback to execute. Provides a single argument with the callback Details object |
 
-##### Details object
+### Details object
 
 Passed to the callback:
 
@@ -29,7 +29,7 @@ Passed to the callback:
 | `total` (number) | The total number of assertions |
 | `runtime` (number) | The execution time in millseconds of this module |
 
-### Examples
+## Examples
 
 Register a callback that logs the module results
 

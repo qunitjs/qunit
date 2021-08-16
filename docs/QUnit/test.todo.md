@@ -20,13 +20,13 @@ Add a test which expects at least one failing assertion during its run.
 | `name` (string) | Title of unit being tested |
 | `callback` (function) | Function to close over assertions |
 
-#### Callback parameters: `callback( assert )`:
+### Callback parameters: `callback( assert )`:
 
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-### Description
+## Description
 
 Use this method to test a unit of code that is still under development (in a "todo" state). The "todo" test will pass as long as there is at least one assertion still failing.
 
@@ -34,12 +34,12 @@ When all assertions are passing, the "todo" test will fail, thus signaling that 
 
 You can also use [`QUnit.module.todo()`](./module.md) to manage the "todo" state for all tests within a module at once.
 
-##### Changelog
+### Changelog
 
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | The `QUnit.todo()` method was renamed to `QUnit.test.todo()`.<br/>Use of `QUnit.todo()` remains supported as an alias.
 | [QUnit 2.2](https://github.com/qunitjs/qunit/releases/tag/2.2.0) | The `QUnit.todo()` method was introduced.
 
-### Examples
+## Examples
 
 How to use `QUnit.test.todo` to denote code that is still under development.
 

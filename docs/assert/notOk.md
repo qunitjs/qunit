@@ -16,11 +16,11 @@ A boolean check, inverse of `ok()`. Passes if the first argument is falsy.
 | state | Expression being tested |
 | message (string) | A short description of the assertion |
 
-### Description
+## Description
 
 `notOk()` requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
 
-### Examples
+## Examples
 
 ```js
 QUnit.test( "example", assert => {
