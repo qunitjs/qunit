@@ -671,7 +671,7 @@ CALLBACK: done`;
 		const execution = await execute( command );
 
 		assert.equal( execution.code, 0 );
-		assert.equal( execution.stderr, "The `beforeEach` hook was called inside the wrong module. Instead, use hooks provided by the callback to the containing module. This will become an error in QUnit 3.0.", "The warning shows" );
+		assert.equal( execution.stderr, "The `beforeEach` hook was called inside the wrong module (`module providing hooks > module not providing hooks`). Instead, use hooks provided by the callback to the containing module (`module providing hooks`). This will become an error in QUnit 3.0.", "The warning shows" );
 		assert.equal( execution.stdout, expectedOutput[ command ] );
 	} );
 
