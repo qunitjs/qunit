@@ -112,8 +112,10 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	function setHookFunction( module, hookName ) {
 		return function setHook( callback ) {
 			if ( config.currentModule !== module ) {
-				Logger.warn( "The `" + hookName + "` hook was called inside the wrong module. " +
-					"Instead, use hooks provided by the callback to the containing module. " +
+				Logger.warn( "The `" + hookName + "` hook was called inside the wrong module (`" +
+					config.currentModule.name + "`). " +
+					"Instead, use hooks provided by the callback to the containing module (`" +
+					module.name + "`). " +
 					"This will become an error in QUnit 3.0." );
 			}
 			module.hooks[ hookName ].push( callback );
