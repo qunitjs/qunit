@@ -434,6 +434,15 @@ CALLBACK: done`;
 			assert.equal( execution.stderr, "" );
 			assert.equal( execution.stdout, expectedOutput[ command ] );
 		} );
+
+		QUnit.test( "callbacks and hooks from filtered-out modules are properly released for garbage collection", async assert => {
+			const command = "node --expose-gc ../../../bin/qunit.js --filter '!child' memory-leak/*.js";
+			const execution = await execute( command );
+
+			assert.equal( execution.code, 0 );
+			assert.equal( execution.stderr, "" );
+			assert.equal( execution.stdout, expectedOutput[ command ] );
+		} );
 	}
 
 	QUnit.module( "filter", () => {
