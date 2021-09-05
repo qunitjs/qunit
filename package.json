@@ -43,7 +43,7 @@
   "dependencies": {
     "commander": "7.1.0",
     "node-watch": "0.7.1",
-    "tiny-glob": "0.2.8"
+    "tiny-glob": "0.2.9"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
