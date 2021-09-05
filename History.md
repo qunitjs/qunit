@@ -1,4 +1,31 @@
 
+2.17.0 / 2021-09-05
+==================
+
+### Added
+
+* HTML Reporter: Add "Rerun failed tests" link. (Jan Buschtöns) [#1626](https://github.com/qunitjs/qunit/pull/1626)
+* Core: New `error` event for bailing on uncaught errors. (Timo Tijhof) [#1638](https://github.com/qunitjs/qunit/pull/1638)
+
+### Changed
+
+* Core: Improve warning for incorrect hook usage to include module name. (Chris Krycho) [#1647](https://github.com/qunitjs/qunit/issues/1647)
+
+### Deprecated
+
+* Core: The internal `QUnit.onError` and `QUnit.onUnhandledRejection` callbacks are deprecated. [#1638](https://github.com/qunitjs/qunit/pull/1638)
+
+  These were undocumented, but may have been used in a fork or other custom runner for QUnit.
+  Switch to the supported [`QUnit.onUncaughtException`](https://api.qunitjs.com/extension/QUnit.onUncaughtException/) instead.
+
+### Fixed
+
+* Assert: Improve validation handling of `assert.throws()` and `assert.rejects()`. (Steve McClure) [#1637](https://github.com/qunitjs/qunit/issues/1637)
+* Core: Ensure skipped child module hooks don't leak memory. (Ben Demboski) [#1650](https://github.com/qunitjs/qunit/pull/1650)
+* Core: Fix bad module nesting when module closure throws global error. [#1478](https://github.com/qunitjs/qunit/issues/1478)
+* Core: Fix reporting of uncaught errors during `QUnit.begin()`. (Timo Tijhof) [#1446](https://github.com/qunitjs/qunit/issues/1446)
+* Core: Fix reporting of uncaught errors during or after `QUnit.done()`. (Timo Tijhof) [#1629](https://github.com/qunitjs/qunit/pull/1629)
+
 2.16.0 / 2021-06-06
 ==================
 

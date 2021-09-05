@@ -4,7 +4,7 @@ title: QUnit.onUncaughtException()
 excerpt: Handle a global error.
 groups:
  - extension
-version_added: "unreleased"
+version_added: "2.17.0"
 redirect_from:
   - "/config/QUnit.onUncaughtException/"
 ---

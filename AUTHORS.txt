@@ -176,3 +176,5 @@ Nathaniel Furniss <nlfurniss@gmail.com>
 zq <290353142@qq.com>
 Brenden Palmer <brendenpalmer@gmail.com>
 Ryuta Kamizono <kamipo@gmail.com>
+Chris Krycho <hello@chriskrycho.com>
+Ben Demboski <demboskb@gmail.com>
