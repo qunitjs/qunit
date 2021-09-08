@@ -1054,6 +1054,9 @@ export function escapeText( s ) {
 		assertLi.className = "fail";
 		assertLi.innerHTML = message;
 		assertList.appendChild( assertLi );
+
+		// Make it visible
+		testItem.className = "fail";
 	} );
 
 	// Avoid readyState issue with phantomjs
