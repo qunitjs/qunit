@@ -178,3 +178,4 @@ Brenden Palmer <brendenpalmer@gmail.com>
 Ryuta Kamizono <kamipo@gmail.com>
 Chris Krycho <hello@chriskrycho.com>
 Ben Demboski <demboskb@gmail.com>
+Jan Buschtöns <jan@buschtoens.me>

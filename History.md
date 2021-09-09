@@ -1,4 +1,11 @@
 
+2.17.1 / 2021-09-09
+==================
+
+### Fixed
+
+* HTML Reporter: Fix `display: none` regression with the "global failure" message. (Timo Tijhof) [#1651](https://github.com/qunitjs/qunit/issues/1651)
+
 2.17.0 / 2021-09-05
 ==================
 
