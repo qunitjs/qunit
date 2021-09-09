@@ -97,7 +97,7 @@ This guide walks you through the QUnit release.
 
 7. Commit and publish the release to GitHub.<br>⚠️ Do not push to the main branch!
    ```
-   git add package.json bower.json qunit/
+   git add -f package.json bower.json qunit/
    git commit -m "Release @VERSION"
    git tag -s "@VERSION" -m "Release @VERSION"
    git push --tags

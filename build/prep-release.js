@@ -13,7 +13,8 @@ const cp = require( "child_process" );
 const gitAuthors = require( "grunt-git-authors" );
 
 function parseLineResults( output = "" ) {
-	return output.trim().split( "\n" );
+	output = output.trim();
+	return !output ? [] : output.split( "\n" );
 }
 
 function versionAddedString( version ) {
@@ -27,10 +28,13 @@ const Repo = {
 		}
 		{
 			const UNRELEASED_VERSION = versionAddedString( "unreleased" );
-			parseLineResults( cp.execSync(
-				`grep -l '${UNRELEASED_VERSION}' docs/**/*.md`,
-				{ encoding: "utf8" } )
-			).forEach( filePath => {
+
+			// grep exits non-zero if no results
+			const results = parseLineResults( cp.execSync(
+				`grep -l '${UNRELEASED_VERSION}' docs/**/*.md || echo`,
+				{ encoding: "utf8" }
+			) );
+			results.forEach( filePath => {
 				const doc = fs.readFileSync( filePath, "utf8" );
 				fs.writeFileSync( filePath,
 					doc.replace( UNRELEASED_VERSION, versionAddedString( version ) )
