@@ -376,7 +376,7 @@ QUnit.module( "Robot", hooks => {
 });
 
 // Skip this module's tests.
-// For example if the android tests are failling due to unsolbed problem.
+// For example if the android tests are failling due to unsolved problems.
 QUnit.module.skip( "Android", hooks => {
   let android;
   hooks.beforeEach( () => {
