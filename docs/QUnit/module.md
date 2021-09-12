@@ -376,8 +376,8 @@ QUnit.module( "Robot", hooks => {
 });
 
 // Skip this module's tests.
-// For example if the android tests are failling due to unknown cause.
-QUnit.module.only( "Android", hooks => {
+// For example if the android tests are failling due to unsolbed problem.
+QUnit.module.skip( "Android", hooks => {
   let android;
   hooks.beforeEach( () => {
     android = new Android();
@@ -399,8 +399,7 @@ QUnit.module.only( "Android", hooks => {
 });
 ```
 
-Use `QUnit.module.todo()` to denote a feature that is still under development,
-and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.todo()` to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
 
 ```js
 QUnit.module.todo( "Robot", function( hooks ) {
