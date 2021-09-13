@@ -76,6 +76,13 @@ export default function Test( settings ) {
 
 	++Test.count;
 	this.errorForStack = new Error();
+	if ( this.callback && this.callback.validTest ) {
+
+		// Omit the test-level trace for the internal "No tests" test failure,
+		// There is already an assertion-level trace, and that's noisy enough
+		// as it is.
+		this.errorForStack.stack = undefined;
+	}
 	this.testReport = new TestReport( this.testName, this.module.suiteReport, {
 		todo: this.todo,
 		skip: this.skip,
