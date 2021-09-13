@@ -28,6 +28,11 @@ jobs:
             node: 10.x
             script: npm test
 
+          - name: "Integration"
+            os: ubuntu-20.04
+            node: 12.x
+            script: npm run test:integration
+
           # On Windows, cannot test CLI yet.
           # https://github.com/qunitjs/qunit/issues/1359
           - name: "Windows: Node 14"
@@ -81,7 +86,6 @@ jobs:
   #    root@ubuntu-tmp/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
   #    root@ubuntu-tmp/qunit$ js68 test/mozjs.js
   #    ```
-  #
   sm-test:
     name: SpiderMonkey
     runs-on: ubuntu-20.04

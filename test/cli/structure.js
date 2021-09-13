@@ -58,7 +58,7 @@ QUnit.module( "structure", () => {
 			cwd: __dirname + "/../",
 			filesOnly: true
 		} )
-			.filter( file => !file.includes( "--" ) )
+			.filter( file => !file.includes( "--" ) && !file.includes( "integration/" ) )
 			.map( file => `test/${file}` );
 
 		QUnit.test( "files", assert => {

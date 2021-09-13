@@ -3,8 +3,7 @@
 <div align="center">
 
 [![Build Status](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fqunitjs%2Fqunit.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fqunitjs%2Fqunit?ref=badge_shield)
-[![Coverage Status](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
+[![Test Coverage](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![npm](https://img.shields.io/npm/v/qunit.svg?style=flat)](https://www.npmjs.com/package/qunit)
 [![Reproducible Builds](https://img.shields.io/badge/Reproducible_Builds-ok-success?labelColor=1e5b96)](https://reproducible-builds.org/)
