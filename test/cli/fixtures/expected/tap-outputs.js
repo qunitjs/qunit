@@ -143,8 +143,10 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
 `TAP version 13
 not ok 1 global failure
   ---
-  message: Error: No tests were run.
+  message: No tests were run.
   severity: failed
+  actual  : undefined
+  expected: undefined
   stack: |
     Error: No tests were run.
         at done (/qunit/qunit/qunit.js)
@@ -153,7 +155,6 @@ not ok 1 global failure
         at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
         at internal
   ...
-Bail out! Error: No tests were run.
 1..1
 # pass 0
 # skip 0
@@ -236,8 +237,10 @@ ok 1 Zero assertions > has a test
 `TAP version 13
 not ok 1 global failure
   ---
-  message: "Error: No tests matched the filter \\"no matches\\"."
+  message: "No tests matched the filter \\"no matches\\"."
   severity: failed
+  actual  : undefined
+  expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".
         at done (/qunit/qunit/qunit.js)
@@ -246,7 +249,6 @@ not ok 1 global failure
         at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
         at internal
   ...
-Bail out! Error: No tests matched the filter "no matches".
 1..1
 # pass 0
 # skip 0

@@ -1,6 +1,6 @@
 import config from "./config";
-import onUncaughtException from "./on-uncaught-exception";
 import {
+	extend,
 	generateHash,
 	now
 } from "./utilities";
@@ -9,6 +9,9 @@ import {
 } from "./logging";
 
 import Promise from "../promise";
+import {
+	test
+} from "../test";
 import {
 	globalSuite
 } from "../core";
@@ -158,16 +161,10 @@ function unitSamplerGenerator( seed ) {
  * items. It handles emitting the final run events.
  */
 function done() {
-	const storage = config.storage;
-
-	const runtime = now() - config.started;
-	const passed = config.stats.all - config.stats.bad;
-
-	ProcessingQueue.finished = true;
 
 	// We have reached the end of the processing queue and are about to emit the
 	// "runEnd" event after which reporters typically stop listening and exit
-	// the process. First, check if we need to emit one final error.
+	// the process. First, check if we need to emit one final test.
 	if ( config.stats.testCount === 0 && config.failOnZeroTests === true ) {
 		let error;
 		if ( config.filter && config.filter.length ) {
@@ -182,8 +179,27 @@ function done() {
 			error = new Error( "No tests were run." );
 		}
 
-		onUncaughtException( error );
+		test( "global failure", extend( function( assert ) {
+			assert.pushResult( {
+				result: false,
+				message: error.message,
+				source: error.stack
+			} );
+		}, { validTest: true } ) );
+
+		// We do need to call `advance()` in order to resume the processing queue.
+		// Once this new test is finished processing, we'll reach `done` again, and
+		// that time the above condition will evaluate to false.
+		advance();
+		return;
 	}
+
+	const storage = config.storage;
+
+	const runtime = now() - config.started;
+	const passed = config.stats.all - config.stats.bad;
+
+	ProcessingQueue.finished = true;
 
 	emit( "runEnd", globalSuite.end( true ) );
 	runLoggingCallbacks( "done", {
