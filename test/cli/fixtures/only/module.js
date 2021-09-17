@@ -26,6 +26,10 @@ QUnit.module( "module B", function() {
 		} );
 	} );
 
+	QUnit.test( "test with the only-module as its peer", function( assert ) {
+		assert.true( false, "this test should not run" );
+	} );
+
 	QUnit.module( "This also should not run", function() {
 		QUnit.test( "normal test", function( assert ) {
 			assert.true( false, "this test should not run" );
