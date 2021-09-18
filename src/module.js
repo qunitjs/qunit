@@ -134,10 +134,14 @@ export default function module( name, options, executeNow ) {
 
 module.only = function( ...args ) {
 	if ( !focused ) {
+
+		// Upon the first module.only() call,
+		// delete any and all previously registered modules and tests.
 		config.modules.length = 0;
 		config.queue.length = 0;
 
-		// aggressively ignore any direct tests in "outer" nested modules
+		// Ignore any tests declared after this block within the same
+		// module parent. https://github.com/qunitjs/qunit/issues/1645
 		config.currentModule.ignored = true;
 	}
 
