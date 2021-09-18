@@ -136,11 +136,13 @@ module.only = function( ...args ) {
 	if ( !focused ) {
 		config.modules.length = 0;
 		config.queue.length = 0;
+
+		// aggressively ignore any direct tests in "outer" nested modules
+		config.currentModule.ignored = true;
 	}
 
-	processModule( ...args );
-
 	focused = true;
+	processModule( ...args );
 };
 
 module.skip = function( name, options, executeNow ) {
