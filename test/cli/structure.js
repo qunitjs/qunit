@@ -65,7 +65,7 @@ QUnit.module( "structure", () => {
 			assert.true( files.length > 5, "found files" );
 		} );
 
-		QUnit.test( "grunt-contrib-qunit", assert => {
+		QUnit.test( "Gruntfile", assert => {
 			const raw = fs.readFileSync( __dirname + "/../../Gruntfile.js", "utf8" );
 			const contents = raw.match( /@HTML_FILES.*?\[.*?\]/s )[ 0 ];
 

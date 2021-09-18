@@ -16,14 +16,17 @@ QUnit.test( "passing tests", assert => {
 } );
 
 QUnit.test.each( "failing tests", {
+	"assert": [ "fail-assert", `Testing fail-assert.html F
+>> example
+>> Message: some message
+>> Actual: false
+>> Expected: true
+>> at ` ],
 	"no-tests": [ "fail-no-tests", `Testing fail-no-tests.html F
 >> global failure
 >> Message: No tests were run.
 >> Error: No tests were run.
->>   at done (file:)
->>   at advanceTestQueue (file:)
->>   at Object.advance (file:)
->>   at unblockAndAdvanceQueue (file:)` ]
+>>   at done (file:)` ]
 }, ( assert, [ command, expected ] ) => {
 
 	try {
