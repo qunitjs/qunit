@@ -319,6 +319,16 @@ ok 6 module E > test E
 # todo 1
 # fail 0`,
 
+	"qunit only/module-then-test.js":
+`TAP version 13
+ok 1 module A > module B > test B
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0`,
+
+
 	"qunit only/module-flat.js":
 `TAP version 13
 not ok 1 # TODO module B > test B
