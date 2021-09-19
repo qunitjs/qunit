@@ -2,7 +2,7 @@ QUnit.config.module = "MODULE b";
 
 QUnit.module( "Module A", () => {
 	QUnit.test( "Test A", assert => {
-		assert.true( false ); // fail if hit
+		assert.true( false );
 	} );
 } );
 
@@ -14,6 +14,6 @@ QUnit.module( "Module B", () => {
 
 QUnit.module( "Module C", () => {
 	QUnit.test( "Test C", assert => {
-		assert.true( false ); // fail if hit
+		assert.true( false );
 	} );
 } );

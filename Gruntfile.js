@@ -79,10 +79,8 @@ module.exports = function( grunt ) {
 						"test/events-in-test.html",
 						"test/headless.html",
 						"test/logs.html",
-						"test/module-filter.html",
 						"test/module-skip.html",
 						"test/module-todo.html",
-						"test/moduleId.html",
 						"test/only-each.html",
 						"test/overload.html",
 						"test/performance-mark.html",
@@ -98,15 +96,18 @@ module.exports = function( grunt ) {
 						"test/seed.html",
 						"test/startError.html",
 						"test/string-filter.html",
+						"test/urlparams-module.html",
+						"test/urlparams-moduleId.html",
+						"test/urlparams-testId.html",
 						"test/webWorker.html",
 
 						"test/reporter-html/legacy-markup.html",
 						"test/reporter-html/no-qunit-element.html",
-						"test/reporter-html/single-testid.html",
+						"test/reporter-html/config-testId.html",
 						"test/reporter-html/window-onerror-preexisting-handler.html",
 						"test/reporter-html/window-onerror.html",
 						"test/reporter-html/xhtml-escape-details-source.xhtml",
-						"test/reporter-html/xhtml-single-testid.xhtml"
+						"test/reporter-html/xhtml-config-testId.xhtml"
 
 					].map( file => `http://localhost:${connectPort}/${file}` )
 				}
