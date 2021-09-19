@@ -9,8 +9,8 @@ const pkg = require( "../package.json" );
 
 const description = `Runs tests using the QUnit framework.
 
-  Files should be a space-separated list of file/directory paths and/or glob
-  expressions. Defaults to 'test/**/*.js'.
+  Files should be a space-separated list of files, directories, or glob expressions.
+  Defaults to 'test/**/*.js'.
 
   For more info on working with QUnit, check out https://qunitjs.com.`;
 
@@ -30,8 +30,8 @@ program
 		"reporters will be displayed" )
 	.option( "--require <module>", "specify a module or script to include before running " +
 		"any tests.", collect, [] )
-	.option( "--seed [value]", "specify a seed to order your tests; " +
-		"if option is specified without a value, one will be generated" )
+	.option( "--seed [value]", "specify a seed to re-order your tests; " +
+		"if specified without a value, a seed will be generated" )
 	.option( "-w, --watch", "watch files for changes and re-run the test suite" )
 	.parse( process.argv );
 
