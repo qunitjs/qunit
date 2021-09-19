@@ -538,6 +538,24 @@ CALLBACK: done`;
 		assert.equal( execution.stdout, expectedOutput[ command ] );
 	} );
 
+	QUnit.test( "config.moduleId", async assert => {
+		const command = "qunit config-moduleId.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
+	QUnit.test( "config.testId", async assert => {
+		const command = "qunit config-testId.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
 	QUnit.test( "config.testTimeout", async assert => {
 		const command = "qunit config-testTimeout.js";
 
