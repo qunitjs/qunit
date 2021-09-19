@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "devDependencies": {
+    "nyc": "15.1.0",
+    "qunit": "file:../../.."
+  },
+  "scripts": {
+    "test": "nyc qunit"
+  },
+  "nyc": {
+    "exclude": [
+      "test/"
+    ],
+    "report-dir": "coverage/",
+    "reporter": [
+      "text",
+      "html",
+      "lcov"
+    ]
+  }
+}

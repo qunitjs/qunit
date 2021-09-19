@@ -1,5 +1,4 @@
-# This file is for unifying the coding style for different editors and IDEs
-# editorconfig.org
+# https://editorconfig.org
 
 root = true
 
@@ -11,6 +10,8 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [test/cli/TapReporter.js]
+trim_trailing_whitespace = false
+[test/integration/nyc.js]
 trim_trailing_whitespace = false
 
 [*.{yml,md}]
