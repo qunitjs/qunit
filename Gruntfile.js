@@ -90,7 +90,6 @@ module.exports = function( grunt ) {
 						"test/reorder.html",
 						"test/reorderError1.html",
 						"test/reorderError2.html",
-						"test/reporter-urlparams-hidepassed.html",
 						"test/reporter-urlparams.html",
 						"test/sandboxed-iframe.html",
 						"test/seed.html",
@@ -101,6 +100,7 @@ module.exports = function( grunt ) {
 						"test/urlparams-testId.html",
 						"test/webWorker.html",
 
+						"test/reporter-html/hidepassed.html?hidepassed=true",
 						"test/reporter-html/legacy-markup.html",
 						"test/reporter-html/no-qunit-element.html",
 						"test/reporter-html/config-testId.html",
