@@ -385,6 +385,37 @@ ok 1 module manually returning a promise > has a test
 # todo 0
 # fail 0`,
 
+	"qunit config-filter-string.js":
+`TAP version 13
+ok 1 filter > foo test
+ok 2 filter > bar test
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0`,
+
+	"qunit config-filter-regex.js":
+`TAP version 13
+ok 1 filter > foo test
+ok 2 filter > FOO test
+ok 3 filter > bar test
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`,
+
+	"qunit config-filter-regex-exclude.js":
+`TAP version 13
+ok 1 filter > foo test
+ok 2 filter > Bar test
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit config-module.js":
 `TAP version 13
 ok 1 Module B > Test B
