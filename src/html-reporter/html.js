@@ -678,8 +678,17 @@ export function escapeText( s ) {
 	QUnit.on( "runStart", function( runStart ) {
 
 		stats.defined = runStart.testCounts.total;
+	} );
+
+	QUnit.begin( function() {
 
 		// Initialize QUnit elements
+		// This is done from begin() instead of runStart, because
+		// urlparams.js uses begin(), which we need to wait for.
+		// urlparams.js in turn uses begin() to allow plugins to
+		// add entries to QUnit.config.urlConfig, which may be done
+		// asynchronously.
+		// <https://github.com/qunitjs/qunit/issues/1657>
 		appendInterface();
 	} );
 
