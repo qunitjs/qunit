@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "devDependencies": {
+    "grunt": "^1.4.1",
+    "grunt-contrib-qunit": "^5.1.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  }
+}

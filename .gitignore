@@ -3,6 +3,8 @@
 /coverage/
 /docs/_site/
 /docs/Gemfile.lock
+/test/integration/*/package-lock.json
+/test/integration/*/node_modules/
 /node_modules/
 /qunit/
 /temp/
