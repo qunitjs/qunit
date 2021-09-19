@@ -38,7 +38,7 @@
         "docs/_site/**",
         "lib/**",
         "qunit/**",
-        "test/integration/*/qunit/**",
+        "test/integration/*/**",
         "temp/**"
     ],
     "overrides": [
