@@ -96,9 +96,9 @@
 
 <p>All tests inside a module will be grouped under that module. The test names will be preceded by the module name in the test results. Tests can be added to a module using the <a href="/QUnit/test/">QUnit.test</a> method.</p>
 
-<p>You can use modules to organize, select, and filter tests to run. See <a href="#example-organizing-tests">§ Example: Organizing tests</a>.</p>
+<p>You can use modules to organize, select, and filter tests to run. See <a href="#organizing-your-tests">§ Organizing your tests</a>.</p>
 
-<p>Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grantparent &gt; Parent &gt; Child &gt; my test”. See <a href="#nested-scope">§ Nested scope</a>.</p>
+<p>Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grantparent &gt; Parent &gt; Child &gt; my test”. See <a href="#nested-module-scope">§ Nested module scope</a>.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>, <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code>, and <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> methods are aliases for <code class="language-plaintext highlighter-rouge">QUnit.module()</code> that apply the behaviour of <a href="/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only()</code></a>, <a href="/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a> or <a href="/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a> to all a module’s tests at once.</p>
 
@@ -138,7 +138,7 @@ teardown logic. These hooks can run around individual tests, or around a whole m
 
 <p><strong>Note</strong>: If additional tests are defined after the module’s queue has emptied, it will not run the <code class="language-plaintext highlighter-rouge">after</code> hook again.</p>
 
-<p>Each <a href="/QUnit/test/">QUnit.test</a> has its own test context object, accessible via its <code class="language-plaintext highlighter-rouge">this</code> variable. Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See <a href="#example-test-context">§ Example: Test context</a>.</p>
+<p>Each <a href="/QUnit/test/">QUnit.test</a> has its own test context object, accessible via its <code class="language-plaintext highlighter-rouge">this</code> variable. Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See <a href="#using-the-test-context">§ Using the test context</a>.</p>
 
 <h3 id="nested-scope">Nested scope</h3>
 
@@ -187,9 +187,9 @@ declaratively.</p>
   </tbody>
 </table>
 
-<h2 class="no_toc" id="examples">Examples</h2>
+<h2 id="examples">Examples</h2>
 
-<h3 id="example-organizing-tests">Example: Organizing tests</h3>
+<h3 id="organizing-your-tests">Organizing your tests</h3>
 
 <p>If <code class="language-plaintext highlighter-rouge">QUnit.module</code> is defined without a <code class="language-plaintext highlighter-rouge">nested</code> callback argument, all subsequently defined tests will be grouped into the module until another module is defined.</p>
 
@@ -235,7 +235,7 @@ declaratively.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-declaring-hook-options">Example: Declaring hook options</h3>
+<h3 id="declaring-hook-options">Declaring hook options</h3>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">module A</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">before</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -253,7 +253,7 @@ declaratively.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-nested-scope">Example: Nested scope</h3>
+<h3 id="nested-module-scope">Nested module scope</h3>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
@@ -280,7 +280,7 @@ declaratively.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-hooks-on-nested-modules">Example: Hooks on nested modules</h3>
+<h3 id="hooks-on-nested-modules">Hooks on nested modules</h3>
 
 <p>Use <code class="language-plaintext highlighter-rouge">before</code>/<code class="language-plaintext highlighter-rouge">beforeEach</code> hooks are queued for nested modules. <code class="language-plaintext highlighter-rouge">after</code>/<code class="language-plaintext highlighter-rouge">afterEach</code> hooks are stacked on nested modules.</p>
 
@@ -324,7 +324,7 @@ declaratively.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-test-context">Example: Test context</h3>
+<h3 id="using-the-test-context">Using the test context</h3>
 
 <p>The test context object is exposed to hook callbacks.</p>
 
@@ -399,7 +399,7 @@ in arrow functions.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<hr />
+<h3 id="module-hook-with-promise">Module hook with Promise</h3>
 
 <p>An example of handling an asynchronous <code class="language-plaintext highlighter-rouge">then</code>able Promise result in hooks. This example uses an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">ES6 Promise</a> interface that is fulfilled after connecting to or disconnecting from database.</p>
 
@@ -429,7 +429,7 @@ in arrow functions.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-only-run-a-subset-of-tests">Example: Only run a subset of tests</h3>
+<h3 id="only-run-a-subset-of-tests">Only run a subset of tests</h3>
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code> to treat an entire module’s tests as if they used <a href="/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only</code></a> instead of <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
 
@@ -561,7 +561,7 @@ in arrow functions.</p>
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#options-object">Options object</a></li><li class="sidebar-item"><a href="#nested-scope">Nested scope</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a><ol><li class="sidebar-item"><a href="#example-organizing-tests">Example: Organizing tests</a></li><li class="sidebar-item"><a href="#example-declaring-hook-options">Example: Declaring hook options</a></li><li class="sidebar-item"><a href="#example-nested-scope">Example: Nested scope</a></li><li class="sidebar-item"><a href="#example-hooks-on-nested-modules">Example: Hooks on nested modules</a></li><li class="sidebar-item"><a href="#example-test-context">Example: Test context</a></li><li class="sidebar-item"><a href="#example-only-run-a-subset-of-tests">Example: Only run a subset of tests</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#options-object">Options object</a></li><li class="sidebar-item"><a href="#nested-scope">Nested scope</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#organizing-your-tests">Organizing your tests</a></li><li class="sidebar-item"><a href="#declaring-hook-options">Declaring hook options</a></li><li class="sidebar-item"><a href="#nested-module-scope">Nested module scope</a></li><li class="sidebar-item"><a href="#hooks-on-nested-modules">Hooks on nested modules</a></li><li class="sidebar-item"><a href="#using-the-test-context">Using the test context</a></li><li class="sidebar-item"><a href="#module-hook-with-promise">Module hook with Promise</a></li><li class="sidebar-item"><a href="#only-run-a-subset-of-tests">Only run a subset of tests</a></li></ol></li></ol></div>
 </aside>
 
 </div>

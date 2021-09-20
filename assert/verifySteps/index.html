@@ -93,17 +93,11 @@
 
 <p>Learn how to use the Step API and the value it adds to your test suite.</p>
 
-<ul>
-  <li><a href="#example-testing-event-based-interfaces">Example: Testing event-based interfaces</a></li>
-  <li><a href="#example-testing-publishsubscribe-systems">Example: Testing publish/subscribe systems</a></li>
-  <li><a href="#example-multiple-steps-verifications-in-one-test">Example: Multiple steps verifications in one test</a></li>
-</ul>
-
 <h2 id="examples">Examples</h2>
 
 <p>The <strong>Step API</strong> strictly validates the order and frequency of observed values. It also allows detecting of unexpected steps, which are then shown as part the test failure.</p>
 
-<h3 id="example-testing-event-based-interfaces">Example: Testing event-based interfaces</h3>
+<h3 id="test-event-based-interface">Test event-based interface</h3>
 
 <p>This example uses a class based on an <a href="https://nodejs.org/api/events.html"><code class="language-plaintext highlighter-rouge">EventEmitter</code></a>, such as the one provided by Node.js and other environments:</p>
 
@@ -176,7 +170,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-testing-publishsubscribe-systems">Example: Testing publish/subscribe systems</h3>
+<h3 id="test-publishsubscribe-system">Test publish/subscribe system</h3>
 
 <p>Use the <strong>Step API</strong> to verify messages received in a Pub-Sub channel or topic.</p>
 
@@ -201,7 +195,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<h3 id="example-multiple-steps-verifications-in-one-test">Example: Multiple steps verifications in one test</h3>
+<h3 id="multiple-steps-verifications-in-one-test">Multiple steps verifications in one test</h3>
 
 <p>The internal buffer of observed steps is automatically reset when calling <code class="language-plaintext highlighter-rouge">verifySteps()</code>.</p>
 
@@ -279,7 +273,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-testing-event-based-interfaces">Example: Testing event-based interfaces</a></li><li class="sidebar-item"><a href="#example-testing-publishsubscribe-systems">Example: Testing publish/subscribe systems</a></li><li class="sidebar-item"><a href="#example-multiple-steps-verifications-in-one-test">Example: Multiple steps verifications in one test</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#test-event-based-interface">Test event-based interface</a></li><li class="sidebar-item"><a href="#test-publishsubscribe-system">Test publish/subscribe system</a></li><li class="sidebar-item"><a href="#multiple-steps-verifications-in-one-test">Multiple steps verifications in one test</a></li></ol></li></ol></div>
 </aside>
 
 </div>
