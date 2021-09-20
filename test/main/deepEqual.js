@@ -1753,6 +1753,23 @@ QUnit.test( "Boolean objects", function( assert ) {
 	);
 } );
 
+QUnit.test( "Getter", function( assert ) {
+	var a = {
+		get x() { return 2; }
+	};
+	var a2 = {
+		get x() { return 2; }
+	};
+	var b = {
+		get x() { return 4; }
+	};
+	assert.false( QUnit.equiv( a, b ), "Getters with different values are not equivalent" );
+	assert.true( QUnit.equiv( a, a2 ), "Same value from different getters are equivalent" );
+
+	// Neither the presence of a descriptor nor the descriptor itself is compared
+	assert.true( QUnit.equiv( b, { x: 4 } ), "Getter and literal value are equivalent" );
+} );
+
 var hasES6Set = ( function() {
 	if ( typeof Set !== "function" ) {
 		return false;
