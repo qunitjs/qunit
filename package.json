@@ -2,7 +2,7 @@
   "name": "qunit",
   "title": "QUnit",
   "description": "The powerful, easy-to-use testing framework.",
-  "version": "2.17.1-pre",
+  "version": "2.17.2-pre",
   "homepage": "https://qunitjs.com",
   "author": {
     "name": "OpenJS Foundation and other contributors",

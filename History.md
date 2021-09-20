@@ -1,4 +1,17 @@
 
+2.17.2 / 2021-09-19
+==================
+
+### Changed
+
+* CLI: Reduce npm install size by 35 kB. (Timo Tijhof) [node-watch#115](https://github.com/yuanchuan/node-watch/pull/115)
+
+### Fixed
+
+* Core: Correctly ignore late tests after a nested `QUnit.module.only()` closure. (Steve McClure) [#1645](https://github.com/qunitjs/qunit/issues/1645)
+* Core: Restore fake test for "No tests were run" message. (Timo Tijhof) [#1652](https://github.com/qunitjs/qunit/pull/1652)
+* HTML Reporter: Restore URL parameter reading. (Timo Tijhof) [#1657](https://github.com/qunitjs/qunit/issues/1657)
+
 2.17.1 / 2021-09-09
 ==================
 
