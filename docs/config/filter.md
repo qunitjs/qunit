@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 Decide selectively which tests should run based on a substring or pattern match.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>
@@ -35,7 +33,7 @@ See also:
 
 ## Examples
 
-### Example: Substring filter
+### Substring filter
 
 The below matches `QUnit.module( "FooBar" )` and `QUnit.test( "createFooBar" )`.
 
@@ -49,7 +47,7 @@ As inverted filter, the below would skip `QUnit.module( "FooBar" )` and `QUnit.t
 QUnit.config.filter = '!foo';
 ```
 
-### Example: Regular expression filter
+### Regular expression filter
 
 The below would match `QUnit.test( "foo" )`, but not `QUnit.test( "Foo" )`.
 

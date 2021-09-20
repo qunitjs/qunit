@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 Start running the tests once all files have been loaded.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

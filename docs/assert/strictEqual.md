@@ -11,7 +11,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-`strictEqual( actual, expected [, message ] )`
+`strictEqual( actual, expected, message = "" )`
 
 A strict type and value comparison.
 
@@ -21,17 +21,15 @@ A strict type and value comparison.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-## Description
-
 The `strictEqual()` assertion provides the most rigid comparison of type and value with the strict equality operator (`===`).
 
-[`equal()`](./equal.md) can be used to test non-strict equality.
+[`assert.equal()`](./equal.md) can be used to test non-strict equality.
 
-[`notStrictEqual()`](./notStrictEqual.md) can be used to explicitly test strict inequality.
+[`assert.notStrictEqual()`](./notStrictEqual.md) can be used to explicitly test strict inequality.
 
-### Changelog
+## Changelog
 
-* Prior to QUnit 1.1, this method was known as `assert.same`.<br>The alias was removed in QUnit 1.3.
+* Prior to QUnit 1.1, this method was known as `assert.same()`.<br>The alias was removed in QUnit 1.3.
 
 ## Examples
 

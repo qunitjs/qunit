@@ -2,6 +2,8 @@
 layout: page-api
 title: QUnit API
 excerpt: API reference documentation for QUnit.
+amethyst:
+  prepend_description_heading: false
 redirect_from:
   - "/category/all/"
 ---

@@ -17,9 +17,7 @@ Specify how many assertions are expected to run within a test.
 |------|-------------|
 | `amount` | Number of assertions in this test. |
 
-## Description
-
-To ensure that an explicit number of assertions are run within any test, use `assert.expect( number )` to register an expected count. If the number of assertions run does not match the expected count, the test will fail.
+To ensure that an explicit number of assertions are run within any test, use `assert.expect()` to register an expected count. If the number of assertions run does not match the expected count, the test will fail.
 
 ## Examples
 

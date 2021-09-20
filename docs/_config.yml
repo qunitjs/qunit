@@ -1,44 +1,47 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole site.
-# These values are expected to rarely change. If you are editing this file
-# very often, consider using Jekyll's data files feature.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
-# Site settings
 #
-# https://jekyllrb.com/docs/configuration/
-title: QUnit API
-excerpt: "API reference documentation for QUnit."
+# Docs: https://jekyllrb.com/docs/configuration/
+title: QUnit
+description: The powerful, easy-to-use JavaScript testing framework.
 url: "https://api.qunitjs.com"
 baseurl: ""
 permalink: /:title/
-# This a custom theme so the native Jekyll theme system is ignored.
-# But, we use github-pages which has a default theme of 'primer'.
-# This is a problem because, even if we ignore its output file,
-# the combination of Jekyll/Sass/Primer has compile errors:
-# - https://github.com/jekyll/jekyll/issues/7426
-# - https://github.com/jekyll/jekyll/issues/4268
-# - https://github.com/sindresorhus/gulp-ruby-sass/issues/232
-# Workaround by disabling this. – https://github.com/github/pages-gem/issues/613
-theme: null
+lang: en
+timezone: UTC
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  toc_levels: "1,2"
+sass:
+  # https://jekyllrb.com/docs/assets/#sassscss
+  style: compressed
+  sourcemap: never
+exclude:
+  # Don't include these files in the website
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - CONTRIBUTING.md
+  - vendor
+  - build
 
-# Plugins
-plugins:
-  # https://help.github.com/articles/redirects-on-github-pages/
-  - jekyll-redirect-from
-
-# Theme
-remote_theme: https://github.com/qunitjs/jekyll-theme-amethyst@bb3af84
+# Theme settings
+#
+# Amethyst theme options are documented at:
+# https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/config.md
+#
+theme: jekyll-theme-amethyst
 amethyst:
+  # We keep a classic ICO file as well, for compat with de-facto standard
+  # machine discovery, e.g. search engines and analytics software.
+  favicon: /favicon.svg
   home_href: https://qunitjs.com
-  edituri_base: https://github.com/qunitjs/qunit/blob/main/docs/
   header_logo:
     src: /img/logo-with-colored-text.svg
     width: 250
     height: 72
+  edituri_base: https://github.com/qunitjs/qunit/blob/main/docs/
   release_base: https://github.com/qunitjs/qunit/releases/tag/
   mastodon: https://mastodon.technology/@qunitjs
   twitter: qunitjs
@@ -51,49 +54,22 @@ amethyst:
       - index: qunitjs
         base: https://qunitjs.com
 
-# Conversion
-highlighter: rouge
-markdown: kramdown
-kramdown:
-  input: GFM
 
-# Sass
-# https://jekyllrb.com/docs/assets/#sassscss
-sass:
-  style: compressed
-  sourcemap: never
-
-# Backend search index
+# Backend search settings
 #
-# This applies to the 'jekyll algolia' command.
-# Requires the ALGOLIA_API_KEY secret environment variable.
+# This applies to the 'jekyll algolia' command, which is typically
+# run from an after a commit is merged. The settings are documented at:
+# https://github.com/algolia/jekyll-algolia
 #
-# See <https://github.com/algolia/jekyll-algolia>.
+# To learn how to set this up, refer to:
+# https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-algolia-search
+#
 algolia:
   application_id: EQYECMT6Q0
-  # Which index the CI job will create/update
-  # with the content of the current Jekyll site.
-  # The auth key for this is injected as secure env variable.
+  # Which index_name the 'jekyll algolia' command will create or update.
   index_name: qunitjs-api
   # By default only HTML paragraphs are indexed (and headings, albeit through a different mechanism).
   # * Include list items (similar to paragraphs).
   # * Include tables (used for method parameter docs; index per row for better excerpts).
   # * Exclude <pre> (mostly code examples, degrades result quality).
   nodes_to_index: 'p,li,tr'
-
-# Input files
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - README.md
-  - CONTRIBUTING.md
-  - CNAME
-  # On GitHub's CI, something causes vendor/ to not be ignored by
-  # default, leading to an error:
-  #
-  # > Error: Invalid date 'Time.now.strftime(…)'
-  # > Document 'vendor/bundle/gems/jekyll…/…/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'
-  # > does not have a valid date in the YAML front matter.
-  #
-  # https://dev.to/michael/compile-a-jekyll-project-without-installing-jekyll-or-ruby-by-using-docker-4184
-  - vendor

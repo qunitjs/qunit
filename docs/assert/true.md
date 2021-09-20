@@ -7,7 +7,7 @@ groups:
 version_added: "2.11.0"
 ---
 
-`true( actual [, message ] )`
+`true( actual, message = "" )`
 
 A strict comparison that passes if the first argument is boolean `true`.
 
@@ -16,13 +16,11 @@ A strict comparison that passes if the first argument is boolean `true`.
 | `actual` | Expression being tested |
 | `message` (string) | A short description of the assertion |
 
-## Description
-
 `true()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
 
 This method is similar to the `assertTrue()` method found in xUnit-style frameworks.
 
-[`false()`](./false.md) can be used to explicitly test for a false value.
+[`assert.false()`](./false.md) can be used to explicitly test for a false value.
 
 ## Examples
 

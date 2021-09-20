@@ -10,8 +10,8 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-`throws( blockFn[, expectedMatcher][, message ] )`<br>
-`raises( blockFn[, expectedMatcher][, message ] )`
+`throws( blockFn, message = "" )`<br>
+`throws( blockFn, expectedMatcher, message = "" )`
 
 Test if a callback throws an exception, and optionally compare the thrown error.
 
@@ -20,9 +20,6 @@ Test if a callback throws an exception, and optionally compare the thrown error.
 | `blockFn` (function) | Function to execute |
 | `expectedMatcher` | Expected error matcher |
 | `message` (string) | A short description of the assertion |
-
-
-## Description
 
 When testing code that is expected to throw an exception based on a specific set of circumstances, use `assert.throws()` to catch the error object for testing and comparison.
 
@@ -33,12 +30,12 @@ The `expectedMatcher` argument can be:
 * A RegExp that matches (or partially matches) the String representation
 * A callback Function that must return `true` to pass the assertion check.
 
-<p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises`. It has the same signature and behaviour, just a different name.</p>
+<p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises()`. It has the same signature and behaviour, just a different name.</p>
 
-### Changelog
+## Changelog
 
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
-| [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The  `assert.raises()` method remains supported as an alias.
+| [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The `assert.raises()` method remains supported as an alias.
 
 ## Examples
 

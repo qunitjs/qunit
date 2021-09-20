@@ -16,8 +16,6 @@ Set how long to wait for async operations to complete before failing the test.
 |------|-------------|
 | `duration` (number) | The length of time, in milliseconds, to wait for async operations. |
 
-## Description
-
 `assert.timeout()` defines how long to wait (at most) in the current test. It overrides [`QUnit.config.testTimeout`](../config/testTimeout.md) on a per-test basis.
 
 The timeout length only applies when performing async operations. If `0` is passed, then any asynchronous task may fail the test.

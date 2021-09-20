@@ -9,8 +9,6 @@ version_added: "1.8.0"
 
 Select a single test module to run, by name.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>
@@ -29,10 +27,10 @@ When specified, only a single module will be run if its name is a complete case-
 This option is undefined by default, which means all loaded test modules will be run.
 
 See also:
-* [QUnit.config.filter](./filter.md).
-* [QUnit.config.moduleId](./moduleId.md).
+* [QUnit.config.filter](./filter.md)
+* [QUnit.config.moduleId](./moduleId.md)
 
-### Changelog
+## Changelog
 
 | [QUnit 1.23](https://github.com/qunitjs/qunit/releases/tag/1.23.0) | The public config property was restored.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | The public config property was removed (the URL query parameter was unaffected).

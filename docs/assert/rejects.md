@@ -7,7 +7,8 @@ groups:
 version_added: "2.5.0"
 ---
 
-`rejects( promise[, expectedMatcher][, message ] )`
+`rejects( promise, message = "" )`<br>
+`rejects( promise, expectedMatcher, message = "" )`
 
 Test if the provided promise rejects, and optionally compare the rejection value.
 
@@ -17,8 +18,6 @@ Test if the provided promise rejects, and optionally compare the rejection value
 | `expectedMatcher` | Rejection value matcher |
 | `message` (string) | A short description of the assertion |
 
-
-## Description
 
 When testing code that is expected to return a rejected promise based on a
 specific set of circumstances, use `assert.rejects()` for testing and

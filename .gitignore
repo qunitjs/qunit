@@ -2,6 +2,7 @@
 /__codeorigin/
 /coverage/
 /docs/_site/
+/docs/.jekyll-cache/
 /docs/Gemfile.lock
 /test/integration/*/package-lock.json
 /test/integration/*/node_modules/

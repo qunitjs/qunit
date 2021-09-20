@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.11.0"
 ---
 
-`notPropEqual( actual, expected [, message ] )`
+`notPropEqual( actual, expected, message = "" )`
 
 A strict comparison of an object's own properties, checking for inequality.
 
@@ -23,9 +23,9 @@ The `notPropEqual` assertion uses the strict inverted comparison operator (`!==`
 
 When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
-[`equal()`](./equal.md) can be used to test equality.
+[`assert.equal()`](./equal.md) can be used to test equality.
 
-[`propEqual()`](./propEqual.md) can be used to test strict equality of an Object properties.
+[`assert.propEqual()`](./propEqual.md) can be used to test strict equality of an Object properties.
 
 ## Examples
 

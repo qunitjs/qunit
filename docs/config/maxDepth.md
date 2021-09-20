@@ -9,8 +9,6 @@ version_added: "1.16.0"
 
 In the HTML Reporter, the depth up-to which an object will be serialized during the diff of an assertion failure.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>
@@ -24,4 +22,4 @@ In the HTML Reporter, the depth up-to which an object will be serialized during 
 
 To disable the depth limit, use a value of `-1`.
 
-This is used by [QUnit.dump.parse()](../extension/QUnit.dump.parse.md).
+This is used by [`QUnit.dump.parse()`](../extension/QUnit.dump.parse.md).

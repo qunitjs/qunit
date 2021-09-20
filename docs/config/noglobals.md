@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 Check the global object after each test and report new properties as failures.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

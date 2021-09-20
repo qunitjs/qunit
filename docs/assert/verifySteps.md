@@ -7,7 +7,7 @@ groups:
 version_added: "2.2.0"
 ---
 
-`verifySteps( steps [, message ] )`
+`verifySteps( steps, message = "" )`
 
 A helper assertion to verify the order and number of steps in a test.
 
@@ -16,23 +16,17 @@ A helper assertion to verify the order and number of steps in a test.
 | `steps` (array) | List of strings |
 | `message` (string) | A short description of the assertion |
 
-## Description
-
 The `assert.verifySteps()` assertion compares a given array of string values (representing steps) with the order and values of previous `step()` calls. This assertion is helpful for verifying the order and count of portions of code paths, especially asynchronous ones.
 
 The list of steps to validate is reset when `assert.verifySteps([/* ...snip ... */])` is called. This allows multiple combinations of `assert.step` and `assert.verifySteps` within the same test.
 
 Learn how to use the Step API and the value it adds to your test suite.
 
-* [Example: Testing event-based interfaces](#example-testing-event-based-interfaces)
-* [Example: Testing publish/subscribe systems](#example-testing-publishsubscribe-systems)
-* [Example: Multiple steps verifications in one test](#example-multiple-steps-verifications-in-one-test)
-
 ## Examples
 
 The **Step API** strictly validates the order and frequency of observed values. It also allows detecting of unexpected steps, which are then shown as part the test failure.
 
-### Example: Testing event-based interfaces
+### Test event-based interface
 
 This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one provided by Node.js and other environments:
 
@@ -108,7 +102,7 @@ QUnit.test( "manual example without Step API", assert => {
 });
 ```
 
-### Example: Testing publish/subscribe systems
+### Test publish/subscribe system
 
 Use the **Step API** to verify messages received in a Pub-Sub channel or topic.
 
@@ -134,7 +128,7 @@ QUnit.test( "good example", assert => {
 });
 ```
 
-### Example: Multiple steps verifications in one test
+### Multiple steps verifications in one test
 
 The internal buffer of observed steps is automatically reset when calling `verifySteps()`.
 

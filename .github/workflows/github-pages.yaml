@@ -1,0 +1,47 @@
+name: GitHub Pages
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-20.04
+    env:
+      DEPLOY_DIR: docs/_site/
+      DEPLOY_BRANCH: gh-pages
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare branch
+        run: |
+          mkdir "${DEPLOY_DIR}"
+          cd "${DEPLOY_DIR}"
+          # Clone and checkout existing branch, or initialise with a new and empty branch
+          git clone --depth 5 --branch "${DEPLOY_BRANCH}" "https://github.com/${GITHUB_REPOSITORY}.git" . || git init -b "${DEPLOY_BRANCH}"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+          # If your site is in a subdirectory
+          working-directory: ./docs/
+
+      - name: Jekyll build
+        # If your site is in a subdirectory
+        working-directory: ./docs/
+        run: bundle exec jekyll build
+
+      - name: Push to branch
+        # Inspired by https://github.com/helaili/jekyll-action/blob/2.2.0/entrypoint.sh
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          cd "${DEPLOY_DIR}"
+          touch .nojekyll
+          git config user.name "${GITHUB_ACTOR}" && \
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
+          git add . && \
+          git commit --allow-empty -m "Build commit ${GITHUB_SHA}" && \
+          git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${DEPLOY_BRANCH}"

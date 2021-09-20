@@ -1,10 +1,8 @@
 source "https://rubygems.org"
 ruby RUBY_VERSION
 
-# To upgrade, run `bundle update github-pages`.
-gem "github-pages", group: :jekyll_plugins
+# To apply changes, run `bundle update`.
+gem "jekyll-theme-amethyst", "0.4.1", group: :jekyll_plugins
 
-# Temporary fix for https://github.com/github/pages-gem/issues/752
-gem "webrick", "~> 1.7"
-
-gem 'jekyll-algolia', "1.7.0", group: :jekyll_plugins
+# Search
+gem "jekyll-algolia", "~> 1.7.0", group: :jekyll_plugins

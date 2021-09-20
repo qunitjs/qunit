@@ -20,14 +20,12 @@ Add tests using a data provider.
 | `dataset` (array) | Array or object of data values passed to each test case |
 | `callback` (function) | Function to close over assertions |
 
-### Callback parameters: `callback( assert, data )`:
+### Callback parameters
 
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 | `data` (any) | Data value |
-
-## Description
 
 Use this method to add multiple tests that are similar, but with different data passed in.
 
@@ -39,7 +37,7 @@ The [`only`](./test.only.md), [`skip`](./test.skip.md), and [`todo`](./test.todo
 
 ## Examples
 
-### Example: Basic data provider
+### Basic data provider
 
 ```js
 function isEven( x ) {
@@ -51,7 +49,7 @@ QUnit.test.each( "isEven()", [ 2, 4, 6 ], ( assert, data ) => {
 });
 ```
 
-### Example: Array data provider
+### Array data provider
 
 The original array is passed to your callback. [Array destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) can be used to unpack the data array, directly from the callback signature.
 
@@ -69,7 +67,7 @@ QUnit.test.each( "square()", [
 });
 ```
 
-### Example: Object data provider
+### Object data provider
 
 ```js
 QUnit.test.each( "isEven()", {
@@ -80,7 +78,7 @@ QUnit.test.each( "isEven()", {
 });
 ```
 
-### Example: Async functions with `each()`
+### Async functions with `each()`
 
 ```js
 function isEven( x ) {

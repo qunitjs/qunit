@@ -9,8 +9,6 @@ version_added: "1.7.0"
 
 Fail tests that don't specify how many assertions they expect.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

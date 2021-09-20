@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.19.0"
 ---
 
-`QUnit.stack( [ offset = 0 ] )`
+`QUnit.stack( offset = 0 )`
 
 Return a single line string representing the stacktrace (call stack).
 

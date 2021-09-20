@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-`deepEqual( actual, expected [, message ] )`
+`deepEqual( actual, expected, message = "" )`
 
 A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
 
@@ -19,13 +19,11 @@ A deep recursive strict comparison, working on primitive types, arrays, objects,
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-## Description
+The `deepEqual` assertion can be used to compare the property values of objects, such that `{ key: value }` is equal to `{ key: value }`. For objects, their identity is disregarded by `deepEqual`.
 
-The `deepEqual()` assertion can be used just like `equal()` when comparing the value of objects, such that `{ key: value }` is equal to `{ key: value }`. For non-scalar values, identity will be disregarded by `deepEqual`.
+`deepEqual` compares all inherited properties. Use [`assert.propEqual()`](./propEqual.md) to test deep and strict equality only on own properties.
 
-[`notDeepEqual()`](./notDeepEqual.md) can be used to explicitly test deep, strict inequality.
-
-[`propEqual()`](./propEqual.md) can be used to explicitly test deep, strict equality but only considering own properties. `deepEqual()` compares all inherited properties.
+[`assert.notDeepEqual()`](./notDeepEqual.md) can be used to explicitly test deep, strict inequality.
 
 ## Examples
 

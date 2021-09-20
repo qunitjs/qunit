@@ -50,6 +50,8 @@ QUnit.test( "example with value in range", assert => {
 });
 ```
 
+### Custom assertion
+
 With a custom assertion method, you can control how an assertion should be evaluated, separately from how its actual and expected values are described in case of a failure.
 
 For example:

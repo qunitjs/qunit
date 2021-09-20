@@ -9,8 +9,6 @@ version_added: "1.14.0"
 
 In the HTML Reporter, ensure the browser is scrolled to the top of the page when the tests are done.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

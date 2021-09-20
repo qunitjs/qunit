@@ -1,12 +1,15 @@
 - group: main
-  expand: true
+  expand: initial
 
 - group: assert
-  expand: true
 
 - group: callbacks
 
 - group: async
+  # These pages are all in at least one other group.
+  # It exisxts for discoverability, but we don't need
+  # to highlight its pages in two places.
+  expand: false
 
 - title: Configuration
   group: config

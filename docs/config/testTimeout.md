@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents tests from running indefinitely.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

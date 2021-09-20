@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 In the HTML Reporter, whether to insert a success or failure symbol in the document title.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

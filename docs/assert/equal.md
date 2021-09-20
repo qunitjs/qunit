@@ -11,7 +11,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-`equal( actual, expected [, message ] )`
+`equal( actual, expected, message = "" )`
 
 A non-strict comparison of two values.
 
@@ -21,17 +21,15 @@ A non-strict comparison of two values.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-## Description
-
 The `equal` assertion uses the simple comparison operator (`==`) to compare the actual and expected arguments. When they are equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
 This method is similar to the `assertEquals()` method found in xUnit-style frameworks.
 
-[`notEqual()`](./notEqual.md) can be used to explicitly test inequality.
+[`assert.notEqual()`](./notEqual.md) can be used to explicitly test inequality.
 
-[`strictEqual()`](./strictEqual.md) can be used to test strict equality.
+[`assert.strictEqual()`](./strictEqual.md) can be used to test strict equality.
 
-### Changelog
+## Changelog
 
 * Prior to QUnit 1.1, this method was known as `assert.equals`.<br>The alias was removed in QUnit 1.3.
 

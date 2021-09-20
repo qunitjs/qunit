@@ -9,8 +9,6 @@ version_added: "1.16.0"
 
 In the HTML Reporter, select one or more tests to run by their internal ID.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

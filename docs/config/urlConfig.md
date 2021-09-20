@@ -10,8 +10,6 @@ version_added: "1.0.0"
 
 In the HTML Reporter, this array is used to generate additional input fields in the toolbar.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>
@@ -63,6 +61,8 @@ value: {
 
 ## Examples
 
+### Add toolbar checkbox
+
 Add a new checkbox to the toolbar. You can then use the `QUnit.config.min` property in your code to implement a behaviour based on it.
 
 ```js
@@ -73,7 +73,7 @@ QUnit.config.urlConfig.push({
 });
 ```
 
----
+### Add dropdown menu
 
 Add a dropdown to the toolbar.
 

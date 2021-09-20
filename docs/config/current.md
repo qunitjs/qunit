@@ -10,8 +10,6 @@ version_added: "1.0.0"
 
 Internal object representing the currently running test.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

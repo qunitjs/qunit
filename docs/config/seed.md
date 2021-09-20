@@ -9,8 +9,6 @@ version_added: "1.23.0"
 
 Enable randomized ordering of tests.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

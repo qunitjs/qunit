@@ -9,8 +9,6 @@ version_added: "1.0.0"
 
 In the HTML Reporter, collapse the details of failing tests after the first one.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

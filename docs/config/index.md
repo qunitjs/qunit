@@ -11,10 +11,10 @@ General configuration options for QUnit.
 
 ## Preconfiguring QUnit
 
-If you want to configure QUnit before it is loaded, you can introduce the global variable `QUnit` with the property `config` specified. All other properties of the QUnit object will be ignored. In the config properties you may specify any of the allowed QUnit.config values.
+If you load QUnit asynchronously or otherwise need to configure QUnit before it is loaded, you can define the global variable `QUnit` with a `config` property. Any other properties of the QUnit object will be ignored. The config values specified here will be carried over to the real `QUnit.config` object.
 
 ```js
-// QUnit is not yet loaded here
+// Before QUnit is loaded
 window.QUnit = {
   config: {
     autostart: false,

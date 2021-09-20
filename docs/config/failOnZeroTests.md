@@ -9,8 +9,6 @@ version_added: "2.16.0"
 
 Whether to fail the test run if no tests were run.
 
-## Description
-
 <table>
 <tr>
   <th>type</th>

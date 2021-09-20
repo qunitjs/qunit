@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.11.0"
 ---
 
-`propEqual( actual, expected [, message ] )`
+`propEqual( actual, expected, message = "" )`
 
 A strict type and value comparison of an object's own properties.
 
@@ -19,13 +19,11 @@ A strict type and value comparison of an object's own properties.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-## Description
+The `propEqual` assertion provides strictly (`===`) comparison of Object properties. Unlike [`assert.deepEqual()`](./deepEqual.md), this assertion can be used to compare two objects made with different constructors or prototypes.
 
-The `propEqual()` assertion provides strictly (`===`) comparison of Object properties. Unlike `deepEqual()`, this assertion can be used to compare two objects made with different constructors and prototype.
+[`assert.strictEqual()`](./strictEqual.md) can be used to test strict equality.
 
-[`strictEqual()`](./strictEqual.md) can be used to test strict equality.
-
-[`notPropEqual()`](./notPropEqual.md) can be used to explicitly test strict inequality of Object properties.
+[`assert.notPropEqual()`](./notPropEqual.md) can be used to explicitly test strict inequality of Object properties.
 
 ## Examples
 
