@@ -13,7 +13,7 @@ version_added: "2.2.0"
 `QUnit.test.todo( name, callback )`<br>
 `QUnit.todo( name, callback )`
 
-Add a test which expects at least one failing assertion during its run.
+Add a test which expects at least one failing assertion or exception during its run.
 
 | parameter | description |
 |-----------|-------------|
@@ -26,7 +26,7 @@ Add a test which expects at least one failing assertion during its run.
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-Use this method to test a unit of code that is still under development (in a "todo" state). The "todo" test will pass as long as there is at least one assertion still failing.
+Use this method to test a unit of code that is still under development (in a "todo" state). The "todo" test will pass as long as there is at least one assertion still failing, or if an exception is thrown.
 
 When all assertions are passing, the "todo" test will fail, thus signaling that `QUnit.test.todo()` should be changed to [`QUnit.test()`](./test.md).
 
