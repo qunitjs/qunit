@@ -372,7 +372,7 @@ QUnit.module( "Robot", hooks => {
 });
 
 // Skip this module's tests.
-// For example if the android tests are failling due to unsolved problems.
+// For example if the android tests are failing due to unsolved problems.
 QUnit.module.skip( "Android", hooks => {
   let android;
   hooks.beforeEach( () => {
@@ -398,27 +398,24 @@ QUnit.module.skip( "Android", hooks => {
 Use `QUnit.module.todo()` to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
 
 ```js
-QUnit.module.todo( "Robot", function( hooks ) {
-  hooks.beforeEach( function() {
-    this.robot = new Robot();
+QUnit.module.todo( "Robot", hooks => {
+  let robot;
+  hooks.beforeEach( () => {
+    robot = new Robot();
   });
 
   QUnit.test( "Say", assert => {
     // Currently, it returns undefined
-    assert.strictEqual( this.robot.say(), "I'm Robot FN-2187" );
+    assert.strictEqual( robot.say(), "I'm Robot FN-2187" );
   });
 
-  QUnit.test( "Move arm", function ( assert ) {
-    // Move the arm to point (75, 80). Currently, it throws a NotImplementedError
-    assert.throws( function() {
-      this.robot.moveArmTo(75, 80);
-    }, /Not yet implemented/ );
-
-    assert.throws( function() {
-      assert.deepEqual( this.robot.getPosition(), { x: 75, y: 80 });
-    }, /Not yet implemented/ );
+  QUnit.test( "Move arm", assert => {
+    // Move the arm to point (75, 80). Currently, each throws a NotImplementedError
+    robot.moveArmTo( 75, 80 );
+    assert.deepEqual( robot.getPosition(), { x: 75, y: 80 } );
   });
 
   // ...
 });
 ```
+
