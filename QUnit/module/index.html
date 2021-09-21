@@ -474,7 +474,7 @@ in arrow functions.</p>
 <span class="p">});</span>
 
 <span class="c1">// Skip this module's tests.</span>
-<span class="c1">// For example if the android tests are failling due to unsolved problems.</span>
+<span class="c1">// For example if the android tests are failing due to unsolved problems.</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Android</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -499,25 +499,21 @@ in arrow functions.</p>
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module’s tests as if they used <a href="/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo</code></a> instead of <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">todo</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Robot</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">hooks</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">robot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">();</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">todo</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">robot</span><span class="p">;</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">robot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Say</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Currently, it returns undefined</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">robot</span><span class="p">.</span><span class="nx">say</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">I'm Robot FN-2187</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">say</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">I'm Robot FN-2187</span><span class="dl">"</span> <span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Move arm</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Move the arm to point (75, 80). Currently, it throws a NotImplementedError</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">robot</span><span class="p">.</span><span class="nx">moveArmTo</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
-    <span class="p">},</span> <span class="sr">/Not yet implemented/</span> <span class="p">);</span>
-
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">robot</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">(),</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span> <span class="p">});</span>
-    <span class="p">},</span> <span class="sr">/Not yet implemented/</span> <span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Move arm</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// Move the arm to point (75, 80). Currently, each throws a NotImplementedError</span>
+    <span class="nx">robot</span><span class="p">.</span><span class="nx">moveArmTo</span><span class="p">(</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">80</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">(),</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span> <span class="p">}</span> <span class="p">);</span>
   <span class="p">});</span>
 
   <span class="c1">// ...</span>

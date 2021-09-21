@@ -67,7 +67,7 @@
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.todo( name, callback )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.todo( name, callback )</code></p>
 
-<p>Add a test which expects at least one failing assertion during its run.</p>
+<p>Add a test which expects at least one failing assertion or exception during its run.</p>
 
 <table>
   <thead>
@@ -105,7 +105,7 @@
   </tbody>
 </table>
 
-<p>Use this method to test a unit of code that is still under development (in a “todo” state). The “todo” test will pass as long as there is at least one assertion still failing.</p>
+<p>Use this method to test a unit of code that is still under development (in a “todo” state). The “todo” test will pass as long as there is at least one assertion still failing, or if an exception is thrown.</p>
 
 <p>When all assertions are passing, the “todo” test will fail, thus signaling that <code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code> should be changed to <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>.</p>
 
