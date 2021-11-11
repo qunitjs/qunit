@@ -9,7 +9,7 @@ version_added: "1.18.0"
 
 `notOk( state, message = "" )`
 
-A boolean check, inverse of `ok()`. Passes if the first argument is falsy.
+A boolean check, inverse of [`assert.ok()`](./ok.md). Passes if the first argument is falsy.
 
 | name | description |
 |------|-------------|

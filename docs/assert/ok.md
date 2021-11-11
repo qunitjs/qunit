@@ -20,7 +20,7 @@ A boolean check. Passes if the first argument is truthy.
 
 The most basic assertion in QUnit, `ok()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
 
-[`assert.notOk()`](../notOk.md) is the inverse of this method.
+[`assert.notOk()`](./notOk.md) is the inverse of this method.
 
 ## Examples
 
