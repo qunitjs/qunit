@@ -157,7 +157,7 @@ Test.prototype = {
 		return callbackPromises.then( () => {
 			config.current = this;
 
-			this.testEnvironment = extend( {}, module.testEnvironment );
+			this.testEnvironment = Object.create( module.testEnvironment || {} );
 
 			this.started = now();
 			emit( "testStart", this.testReport.start( true ) );
@@ -226,17 +226,18 @@ Test.prototype = {
 
 	queueHook( hook, hookName, hookOwner ) {
 		const callHook = () => {
-			const promise = hook.call( this.testEnvironment, this.assert );
+			let promise;
+			if ( hookName === "before" || hookName === "after" ) {
+				promise = hook.call( this.module.testEnvironment, this.assert );
+			} else {
+				promise = hook.call( this.testEnvironment, this.assert );
+			}
 			this.resolvePromise( promise, hookName );
 		};
 
 		const runHook = () => {
-			if ( hookName === "before" ) {
-				if ( hookOwner.testsRun !== 0 ) {
-					return;
-				}
-
-				this.preserveEnvironment = true;
+			if ( hookName === "before" && hookOwner.testsRun !== 0 ) {
+				return;
 			}
 
 			// The 'after' hook should only execute when there are not tests left and
@@ -432,13 +433,6 @@ Test.prototype = {
 		}
 	},
 
-	preserveTestEnvironment: function() {
-		if ( this.preserveEnvironment ) {
-			this.module.testEnvironment = this.testEnvironment;
-			this.testEnvironment = extend( {}, this.module.testEnvironment );
-		}
-	},
-
 	queue() {
 		const test = this;
 
@@ -454,11 +448,6 @@ Test.prototype = {
 				},
 
 				...test.hooks( "before" ),
-
-				function() {
-					test.preserveTestEnvironment();
-				},
-
 				...test.hooks( "beforeEach" ),
 
 				function() {
