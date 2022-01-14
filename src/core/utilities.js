@@ -67,21 +67,52 @@ export function inArray( elem, array ) {
 }
 
 /**
- * Makes a clone of an object using only Array or Object as base,
- * and copies over the own enumerable properties.
+ * Recursively clone an object into a plain array or object, taking only the
+ * own enumerable properties.
  *
- * @param {Object} obj
- * @return {Object} New object with only the own properties (recursively).
+ * @param {any} obj
+ * @param {bool} [allowArray=true]
+ * @return {Object|Array}
  */
-export function objectValues( obj ) {
-	const vals = is( "array", obj ) ? [] : {};
+export function objectValues( obj, allowArray = true ) {
+	const vals = ( allowArray && is( "array", obj ) ) ? [] : {};
 	for ( const key in obj ) {
 		if ( hasOwn.call( obj, key ) ) {
 			const val = obj[ key ];
-			vals[ key ] = val === Object( val ) ? objectValues( val ) : val;
+			vals[ key ] = val === Object( val ) ? objectValues( val, allowArray ) : val;
 		}
 	}
 	return vals;
+}
+
+/**
+ * Recursively clone an object into a plain object, taking only the
+ * subset of own enumerable properties that exist a given model.
+ *
+ * @param {any} obj
+ * @param {any} model
+ * @return {Object}
+ */
+export function objectValuesSubset( obj, model ) {
+
+	// Return primitive values unchanged to avoid false positives or confusing
+	// results from assert.propContains().
+	// E.g. an actual null or false wrongly equaling an empty object,
+	// or an actual string being reported as object not matching a partial object.
+	if ( obj !== Object( obj ) ) {
+		return obj;
+	}
+
+	// Unlike objectValues(), subset arrays to a plain objects as well.
+	// This enables subsetting [20, 30] with {1: 30}.
+	const subset = {};
+
+	for ( const key in model ) {
+		if ( hasOwn.call( model, key ) && hasOwn.call( obj, key ) ) {
+			subset[ key ] = objectValuesSubset( obj[ key ], model[ key ] );
+		}
+	}
+	return subset;
 }
 
 export function extend( a, b, undefOnly ) {
