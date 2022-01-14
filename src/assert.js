@@ -4,7 +4,7 @@ import { internalStop, resetTestTimeout } from "./test";
 import Logger from "./logger";
 
 import config from "./core/config";
-import { objectType, objectValues, errorString } from "./core/utilities";
+import { objectType, objectValues, objectValuesSubset, errorString } from "./core/utilities";
 import { sourceFromStacktrace } from "./core/stacktrace";
 import { clearTimeout } from "./globals";
 
@@ -205,6 +205,36 @@ class Assert {
 
 	notPropEqual( actual, expected, message ) {
 		actual = objectValues( actual );
+		expected = objectValues( expected );
+
+		this.pushResult( {
+			result: !equiv( actual, expected ),
+			actual,
+			expected,
+			message,
+			negative: true
+		} );
+	}
+
+	propContains( actual, expected, message ) {
+		actual = objectValuesSubset( actual, expected );
+
+		// The expected parameter is usually a plain object, but clone it for
+		// consistency with propEqual(), and to make it easy to explain that
+		// inheritence is not considered (on either side), and to support
+		// recursively checking subsets of nested objects.
+		expected = objectValues( expected, false );
+
+		this.pushResult( {
+			result: equiv( actual, expected ),
+			actual,
+			expected,
+			message
+		} );
+	}
+
+	notPropContains( actual, expected, message ) {
+		actual = objectValuesSubset( actual, expected );
 		expected = objectValues( expected );
 
 		this.pushResult( {
