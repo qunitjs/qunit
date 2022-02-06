@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.propEqual()
-excerpt: A strict type and value comparison of an object's own properties.
+excerpt: Compare an object's own properties.
 groups:
   - assert
 redirect_from:
@@ -11,7 +11,7 @@ version_added: "1.11.0"
 
 `propEqual( actual, expected, message = "" )`
 
-A strict type and value comparison of an object's own properties.
+Compare an object's own properties using a strict comparison.
 
 | name | description |
 |------|-------------|
@@ -19,15 +19,20 @@ A strict type and value comparison of an object's own properties.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-The `propEqual` assertion provides strictly (`===`) comparison of Object properties. Unlike [`assert.deepEqual()`](./deepEqual.md), this assertion can be used to compare two objects made with different constructors or prototypes.
+The `propEqual` assertion compares only an object's own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype, unlike with [`assert.deepEqual()`](./deepEqual.md).
 
-[`assert.strictEqual()`](./strictEqual.md) can be used to test strict equality.
+The assertion fails if values differ, if there are additional properties, or if some properties are missing.
 
-[`assert.notPropEqual()`](./notPropEqual.md) can be used to explicitly test strict inequality of Object properties.
+This method is recursive and can compare any nested or complex object via a plain object.
+
+## See also
+
+* Use [`assert.propContains()`](./propContains.md) to only check a subset of properties.
+* Use [`assert.notPropEqual()`](./notPropEqual.md) to test for the inequality of object properties instead.
 
 ## Examples
 
-Compare the properties values of two objects.
+Compare the property values of two objects.
 
 ```js
 QUnit.test( "example", assert => {
@@ -43,11 +48,11 @@ QUnit.test( "example", assert => {
   const foo = new Foo();
 
   // succeeds, own properties are strictly equal,
-  // and inherited properties (such as which object constructor) are ignored.
+  // and inherited properties (such as which constructor) are ignored.
   assert.propEqual( foo, {
     x: 1,
     y: 2
-  } );
+  });
 });
 ```
 
@@ -63,12 +68,12 @@ QUnit.test( "example", function ( assert ) {
   Foo.prototype.run = function () {};
 
   var foo = new Foo();
+
+  // succeeds, own properties are strictly equal.
   var expected = {
     x: 1,
     y: 2
   };
-
-  // succeeds, own properties are strictly equal.
   assert.propEqual( foo, expected );
 });
 ```

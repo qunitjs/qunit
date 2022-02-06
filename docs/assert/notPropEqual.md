@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.notPropEqual()
-excerpt: A strict comparison of an object's own properties, checking for inequality.
+excerpt: Compare an object's own properties for inequality.
 groups:
   - assert
 redirect_from:
@@ -11,7 +11,7 @@ version_added: "1.11.0"
 
 `notPropEqual( actual, expected, message = "" )`
 
-A strict comparison of an object's own properties, checking for inequality.
+Compare an object's own properties using a strict inequality comparison.
 
 | name | description |
 |------|-------------|
@@ -19,13 +19,14 @@ A strict comparison of an object's own properties, checking for inequality.
 | `expected` | Known comparison value |
 | `message` (string) | A short description of the assertion |
 
-The `notPropEqual` assertion uses the strict inverted comparison operator (`!==`) to compare the actual and expected arguments as Objects regarding only their properties but not their constructors.
+The `notPropEqual` assertion compares only an object's own properties, using the strict inquality operator (`!==`).
 
-When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
+The test passes if there are properties with different values, or extra properties, or missing properties.
 
-[`assert.equal()`](./equal.md) can be used to test equality.
+## See also
 
-[`assert.propEqual()`](./propEqual.md) can be used to test strict equality of an Object properties.
+* Use [`assert.notPropContains()`](./notPropContains.md) to only check for the absence or inequality of some properties.
+* Use [`assert.propEqual()`](./propEqual.md) to test for equality of properties instead.
 
 ## Examples
 
@@ -49,6 +50,6 @@ QUnit.test( "example", assert => {
   assert.notPropEqual( foo, {
     x: 1,
     y: 2
-  } );
+  });
 });
 ```
