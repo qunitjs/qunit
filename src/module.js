@@ -5,7 +5,7 @@ import config from "./core/config";
 import SuiteReport from "./reports/suite";
 
 import { extend, objectType, generateHash } from "./core/utilities";
-import { globalSuite } from "./core";
+import { runSuite } from "./core";
 
 const moduleStack = [];
 
@@ -19,20 +19,37 @@ function isParentModuleInQueue() {
 function createModule( name, testEnvironment, modifiers ) {
 	const parentModule = moduleStack.length ? moduleStack.slice( -1 )[ 0 ] : null;
 	const moduleName = parentModule !== null ? [ parentModule.name, name ].join( " > " ) : name;
-	const parentSuite = parentModule ? parentModule.suiteReport : globalSuite;
+	const parentSuite = parentModule ? parentModule.suiteReport : runSuite;
 
 	const skip = parentModule !== null && parentModule.skip || modifiers.skip;
 	const todo = parentModule !== null && parentModule.todo || modifiers.todo;
 
+	const env = {};
+	if ( parentModule ) {
+		extend( env, parentModule.testEnvironment );
+	}
+	extend( env, testEnvironment );
+
 	const module = {
 		name: moduleName,
 		parentModule: parentModule,
+		hooks: {
+			before: [],
+			beforeEach: [],
+			afterEach: [],
+			after: []
+		},
+		testEnvironment: env,
 		tests: [],
 		moduleId: generateHash( moduleName ),
 		testsRun: 0,
 		testsIgnored: 0,
 		childModules: [],
 		suiteReport: new SuiteReport( name, parentSuite ),
+
+		// Initialised by test.js when the module start executing,
+		// i.e. before the first test in this module (or a child).
+		stats: null,
 
 		// Pass along `skip` and `todo` properties from parent module, in case
 		// there is one, to childs. And use own otherwise.
@@ -43,16 +60,33 @@ function createModule( name, testEnvironment, modifiers ) {
 		ignored: modifiers.ignored || false
 	};
 
-	const env = {};
 	if ( parentModule ) {
 		parentModule.childModules.push( module );
-		extend( env, parentModule.testEnvironment );
 	}
-	extend( env, testEnvironment );
-	module.testEnvironment = env;
 
 	config.modules.push( module );
 	return module;
+}
+
+function setHookFromEnvironment( hooks, environment, name ) {
+	const potentialHook = environment[ name ];
+	if ( typeof potentialHook === "function" ) {
+		hooks[ name ].push( potentialHook );
+	}
+	delete environment[ name ];
+}
+
+function makeSetHook( module, hookName ) {
+	return function setHook( callback ) {
+		if ( config.currentModule !== module ) {
+			Logger.warn( "The `" + hookName + "` hook was called inside the wrong module (`" +
+				config.currentModule.name + "`). " +
+				"Instead, use hooks provided by the callback to the containing module (`" +
+				module.name + "`). " +
+				"This will become an error in QUnit 3.0." );
+		}
+		module.hooks[ hookName ].push( callback );
+	};
 }
 
 function processModule( name, options, executeNow, modifiers = {} ) {
@@ -63,9 +97,9 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 
 	const module = createModule( name, options, modifiers );
 
-	// Move any hooks to a 'hooks' object
+	// Transfer any initial hooks from the options object to the 'hooks' object
 	const testEnvironment = module.testEnvironment;
-	const hooks = module.hooks = {};
+	const hooks = module.hooks;
 
 	setHookFromEnvironment( hooks, testEnvironment, "before" );
 	setHookFromEnvironment( hooks, testEnvironment, "beforeEach" );
@@ -73,10 +107,10 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 	setHookFromEnvironment( hooks, testEnvironment, "after" );
 
 	const moduleFns = {
-		before: setHookFunction( module, "before" ),
-		beforeEach: setHookFunction( module, "beforeEach" ),
-		afterEach: setHookFunction( module, "afterEach" ),
-		after: setHookFunction( module, "after" )
+		before: makeSetHook( module, "before" ),
+		beforeEach: makeSetHook( module, "beforeEach" ),
+		afterEach: makeSetHook( module, "afterEach" ),
+		after: makeSetHook( module, "after" )
 	};
 
 	const prevModule = config.currentModule;
@@ -101,25 +135,6 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 			moduleStack.pop();
 			config.currentModule = module.parentModule || prevModule;
 		}
-	}
-
-	function setHookFromEnvironment( hooks, environment, name ) {
-		const potentialHook = environment[ name ];
-		hooks[ name ] = typeof potentialHook === "function" ? [ potentialHook ] : [];
-		delete environment[ name ];
-	}
-
-	function setHookFunction( module, hookName ) {
-		return function setHook( callback ) {
-			if ( config.currentModule !== module ) {
-				Logger.warn( "The `" + hookName + "` hook was called inside the wrong module (`" +
-					config.currentModule.name + "`). " +
-					"Instead, use hooks provided by the callback to the containing module (`" +
-					module.name + "`). " +
-					"This will become an error in QUnit 3.0." );
-			}
-			module.hooks[ hookName ].push( callback );
-		};
 	}
 }
 

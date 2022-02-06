@@ -13,7 +13,7 @@ import {
 	test
 } from "../test";
 import {
-	globalSuite
+	runSuite
 } from "../core";
 import {
 	emit
@@ -201,7 +201,7 @@ function done() {
 
 	ProcessingQueue.finished = true;
 
-	emit( "runEnd", globalSuite.end( true ) );
+	emit( "runEnd", runSuite.end( true ) );
 	runLoggingCallbacks( "done", {
 		passed,
 		failed: config.stats.bad,

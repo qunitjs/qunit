@@ -199,7 +199,7 @@ export default class TapReporter {
 		return new TapReporter( runner, options );
 	}
 
-	onRunStart( _globalSuite ) {
+	onRunStart( _runSuite ) {
 		this.log( "TAP version 13" );
 	}
 
@@ -246,14 +246,14 @@ export default class TapReporter {
 		}
 	}
 
-	onRunEnd( globalSuite ) {
+	onRunEnd( runSuite ) {
 		this.ended = true;
 
-		this.log( `1..${globalSuite.testCounts.total}` );
-		this.log( `# pass ${globalSuite.testCounts.passed}` );
-		this.log( kleur.yellow( `# skip ${globalSuite.testCounts.skipped}` ) );
-		this.log( kleur.cyan( `# todo ${globalSuite.testCounts.todo}` ) );
-		this.log( kleur.red( `# fail ${globalSuite.testCounts.failed}` ) );
+		this.log( `1..${runSuite.testCounts.total}` );
+		this.log( `# pass ${runSuite.testCounts.passed}` );
+		this.log( kleur.yellow( `# skip ${runSuite.testCounts.skipped}` ) );
+		this.log( kleur.cyan( `# todo ${runSuite.testCounts.todo}` ) );
+		this.log( kleur.red( `# fail ${runSuite.testCounts.failed}` ) );
 	}
 
 	logAssertion( error, severity ) {

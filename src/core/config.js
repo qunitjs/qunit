@@ -47,6 +47,38 @@ const config = {
 	modules: [],
 
 	// The first unnamed module
+	//
+	// By being defined as the intial value for currentModule, it is the
+	// receptacle and implied parent for any global tests. It is as if we
+	// called `QUnit.module( "" );` before any other tests were defined.
+	//
+	// If we reach begin() and no tests were put in it, we dequeue it as if it
+	// never existed, and in that case never expose it to the events and
+	// callbacks API.
+	//
+	// When global tests are defined, then this unnamed module will execute
+	// as any other module, including moduleStart/moduleDone events etc.
+	//
+	// Since this module isn't explicitly created by the user, they have no
+	// access to add hooks for it. The hooks object is defined to comply
+	// with internal expectations of test.js, but they will be empty.
+	// To apply hooks, place tests explicitly in a QUnit.module(), and use
+	// its hooks accordingly.
+	//
+	// For global hooks that apply to all tests and all modules, use QUnit.hooks.
+	//
+	// NOTE: This is *not* a "global module". It is not an ancestor of all modules
+	// and tests. It is merely the parent for any tests defined globally,
+	// before the first QUnit.module(). As such, the events for this unnamed
+	// module will fire as normal, right after its last test, and *not* at
+	// the end of the test run.
+	//
+	// NOTE: This also should probably also not become a global module, unless
+	// we keep it out of the public API. For example, it would likely not
+	// improve the user interface and plugin behaviour if all modules became
+	// wrapped between the start and end events of this module, and thus
+	// needlessly add indentation, indirection, or other visible noise.
+	// Unit tests for the callbacks API would detect that as a regression.
 	currentModule: {
 		name: "",
 		tests: [],

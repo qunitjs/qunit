@@ -22,12 +22,15 @@ import onWindowError from "./core/onerror";
 import onUncaughtException from "./core/on-uncaught-exception";
 
 const QUnit = {};
-export const globalSuite = new SuiteReport();
+export const runSuite = new SuiteReport();
 
-// The initial "currentModule" represents the global (or top-level) module that
-// is not explicitly defined by the user, therefore we add the "globalSuite" to
-// it since each module has a suiteReport associated with it.
-config.currentModule.suiteReport = globalSuite;
+// The "currentModule" object would ideally be defined using the createModule()
+// function. Since it isn't, add the missing suiteReport property to it now that
+// we have loaded all source code required to do so.
+//
+// TODO: Consider defining currentModule in core.js or module.js in its entirely
+// rather than partly in config.js and partly here.
+config.currentModule.suiteReport = runSuite;
 
 let globalStartCalled = false;
 let runStarted = false;
@@ -187,7 +190,7 @@ export function begin() {
 	}
 
 	// The test run is officially beginning now
-	emit( "runStart", globalSuite.start( true ) );
+	emit( "runStart", runSuite.start( true ) );
 	runLoggingCallbacks( "begin", {
 		totalTests: Test.count,
 		modules: modulesLog
