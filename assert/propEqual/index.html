@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.propEqual() | QUnit</title>
-<meta property="og:title" content="assert.propEqual()"><meta name="description" content="A strict type and value comparison of an object&#39;s own properties."><meta property="og:description" content="A strict type and value comparison of an object&#39;s own properties."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.propEqual()"><meta name="description" content="Compare an object&#39;s own properties."><meta property="og:description" content="Compare an object&#39;s own properties."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">propEqual( actual, expected, message = "" )</code></p>
 
-<p>A strict type and value comparison of an object’s own properties.</p>
+<p>Compare an object’s own properties using a strict comparison.</p>
 
 <table>
   <thead>
@@ -91,15 +91,22 @@
   </tbody>
 </table>
 
-<p>The <code class="language-plaintext highlighter-rouge">propEqual</code> assertion provides strictly (<code class="language-plaintext highlighter-rouge">===</code>) comparison of Object properties. Unlike <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">assert.deepEqual()</code></a>, this assertion can be used to compare two objects made with different constructors or prototypes.</p>
+<p>The <code class="language-plaintext highlighter-rouge">propEqual</code> assertion compares only an object’s own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype, unlike with <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">assert.deepEqual()</code></a>.</p>
 
-<p><a href="/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a> can be used to test strict equality.</p>
+<p>The assertion fails if values differ, if there are additional properties, or if some properties are missing.</p>
 
-<p><a href="/assert/notPropEqual/"><code class="language-plaintext highlighter-rouge">assert.notPropEqual()</code></a> can be used to explicitly test strict inequality of Object properties.</p>
+<p>This method is recursive and can compare any nested or complex object via a plain object.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li>Use <a href="/assert/propContains/"><code class="language-plaintext highlighter-rouge">assert.propContains()</code></a> to only check a subset of properties.</li>
+  <li>Use <a href="/assert/notPropEqual/"><code class="language-plaintext highlighter-rouge">assert.notPropEqual()</code></a> to test for the inequality of object properties instead.</li>
+</ul>
 
 <h2 id="examples">Examples</h2>
 
-<p>Compare the properties values of two objects.</p>
+<p>Compare the property values of two objects.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">class</span> <span class="nx">Foo</span> <span class="p">{</span>
@@ -114,11 +121,11 @@
   <span class="kd">const</span> <span class="nx">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Foo</span><span class="p">();</span>
 
   <span class="c1">// succeeds, own properties are strictly equal,</span>
-  <span class="c1">// and inherited properties (such as which object constructor) are ignored.</span>
+  <span class="c1">// and inherited properties (such as which constructor) are ignored.</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">propEqual</span><span class="p">(</span> <span class="nx">foo</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">y</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="p">}</span> <span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -133,12 +140,12 @@
   <span class="nx">Foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">run</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
 
   <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Foo</span><span class="p">();</span>
+
+  <span class="c1">// succeeds, own properties are strictly equal.</span>
   <span class="kd">var</span> <span class="nx">expected</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">y</span><span class="p">:</span> <span class="mi">2</span>
   <span class="p">};</span>
-
-  <span class="c1">// succeeds, own properties are strictly equal.</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">propEqual</span><span class="p">(</span> <span class="nx">foo</span><span class="p">,</span> <span class="nx">expected</span> <span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -167,11 +174,15 @@
 	</li><li class="sidebar-item">
 		<a href="/assert/notOk/">assert.notOk()</a>
 	</li><li class="sidebar-item">
+		<a href="/assert/notPropContains/">assert.notPropContains()</a>
+	</li><li class="sidebar-item">
 		<a href="/assert/notPropEqual/">assert.notPropEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/notStrictEqual/">assert.notStrictEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/ok/">assert.ok()</a>
+	</li><li class="sidebar-item">
+		<a href="/assert/propContains/">assert.propContains()</a>
 	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/assert/propEqual/">assert.propEqual()</a>
 	</li><li class="sidebar-item">
@@ -206,7 +217,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>

@@ -5,8 +5,8 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>assert.notOk() | QUnit</title>
-<meta property="og:title" content="assert.notOk()"><meta name="description" content="Check if the first argument is falsy."><meta property="og:description" content="Check if the first argument is falsy."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<title>assert.propContains() | QUnit</title>
+<meta property="og:title" content="assert.propContains()"><meta name="description" content="Check that an object contains certain properties."><meta property="og:description" content="Check that an object contains certain properties."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -62,11 +62,11 @@
     </header>
     <div class="main main--columns wrapper">
 <div class="content" role="main">
-    <h1>assert.notOk()</h1><p class="version-details">version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.18.0">1.18.0</a>
+    <h1>assert.propContains()</h1><p class="version-details note--warning">not yet released
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p><code class="language-plaintext highlighter-rouge">notOk( state, message = "" )</code></p>
+<p><code class="language-plaintext highlighter-rouge">propContains( actual, expected, message = "" )</code></p>
 
-<p>A boolean check, inverse of <a href="/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a>. Passes if the first argument is falsy.</p>
+<p>Check that an object contains certain properties.</p>
 
 <table>
   <thead>
@@ -77,33 +77,77 @@
   </thead>
   <tbody>
     <tr>
-      <td>state</td>
+      <td><code class="language-plaintext highlighter-rouge">actual</code></td>
       <td>Expression being tested</td>
     </tr>
     <tr>
-      <td>message (string)</td>
-      <td>A short description of the assertion</td>
+      <td><code class="language-plaintext highlighter-rouge">expected</code></td>
+      <td>Known comparison value</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
+      <td>Short description of the actual value</td>
     </tr>
   </tbody>
 </table>
 
-<p><code class="language-plaintext highlighter-rouge">notOk()</code> requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.</p>
+<p>The <code class="language-plaintext highlighter-rouge">propContains</code> assertion compares only the <strong>subset</strong> of properties in the expected object,
+and tests that these keys exist as own properties with strictly equal values.</p>
+
+<p>This method is recursive and allows partial comparison of nested objects as well.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li>Use <a href="/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> to compare all properties, considering extra properties as unexpected.</li>
+  <li>Use <a href="/assert/notPropContains/"><code class="language-plaintext highlighter-rouge">assert.notPropContains()</code></a> to test for the absence or inequality of certain properties.</li>
+</ul>
 
 <h2 id="examples">Examples</h2>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="c1">// success</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="kc">false</span><span class="p">,</span> <span class="dl">"</span><span class="s2">boolean false</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="dl">""</span><span class="p">,</span> <span class="dl">"</span><span class="s2">empty string</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">"</span><span class="s2">number zero</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="kc">NaN</span><span class="p">,</span> <span class="dl">"</span><span class="s2">NaN value</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="kc">null</span><span class="p">,</span> <span class="dl">"</span><span class="s2">null value</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="kc">undefined</span><span class="p">,</span> <span class="dl">"</span><span class="s2">undefined value</span><span class="dl">"</span> <span class="p">);</span>
 
-  <span class="c1">// failure</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">non-empty string</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">boolean true</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notOk</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">number one</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">"</span><span class="s2">on</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fluxing</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">engine</span><span class="p">:</span> <span class="dl">"</span><span class="s2">running</span><span class="dl">"</span>
+    <span class="p">},</span>
+    <span class="na">quux</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">};</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span> <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fluxing</span><span class="dl">"</span> <span class="p">}</span>
+  <span class="p">}</span> <span class="p">);</span>
+
+  <span class="kd">function</span> <span class="nx">Point</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">),</span>
+    <span class="p">{</span> <span class="na">y</span><span class="p">:</span> <span class="mi">20</span> <span class="p">}</span>
+  <span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span>
+    <span class="p">[</span> <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span> <span class="p">],</span>
+    <span class="p">{</span> <span class="mi">1</span><span class="p">:</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span> <span class="p">}</span>
+  <span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">nested</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">north</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">],</span>
+    <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">),</span>
+    <span class="na">south</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">],</span>
+    <span class="na">west</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">]</span>
+  <span class="p">};</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span> <span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span> <span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">20</span> <span class="p">}</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">propContains</span><span class="p">(</span> <span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">10</span> <span class="p">}</span> <span class="p">}</span> <span class="p">);</span>
+
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -128,7 +172,7 @@
 		<a href="/assert/notDeepEqual/">assert.notDeepEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/notEqual/">assert.notEqual()</a>
-	</li><li class="sidebar-item sidebar-item-active">
+	</li><li class="sidebar-item">
 		<a href="/assert/notOk/">assert.notOk()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/notPropContains/">assert.notPropContains()</a>
@@ -138,7 +182,7 @@
 		<a href="/assert/notStrictEqual/">assert.notStrictEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/ok/">assert.ok()</a>
-	</li><li class="sidebar-item">
+	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/assert/propContains/">assert.propContains()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/propEqual/">assert.propEqual()</a>
@@ -174,7 +218,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>
@@ -189,7 +233,7 @@
                 
                 <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener noreferrer">Chat</a>
             </p>
-            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener noreferrer">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/assert/notOk.md">Edit this page</a></p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener noreferrer">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/assert/propContains.md">Edit this page</a></p>
         </div>
     </footer><script type="module">
 const loadSearch = () => Promise.all([

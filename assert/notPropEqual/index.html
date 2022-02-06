@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.notPropEqual() | QUnit</title>
-<meta property="og:title" content="assert.notPropEqual()"><meta name="description" content="A strict comparison of an object&#39;s own properties, checking for inequality."><meta property="og:description" content="A strict comparison of an object&#39;s own properties, checking for inequality."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.notPropEqual()"><meta name="description" content="Compare an object&#39;s own properties for inequality."><meta property="og:description" content="Compare an object&#39;s own properties for inequality."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">notPropEqual( actual, expected, message = "" )</code></p>
 
-<p>A strict comparison of an object’s own properties, checking for inequality.</p>
+<p>Compare an object’s own properties using a strict inequality comparison.</p>
 
 <table>
   <thead>
@@ -91,13 +91,16 @@
   </tbody>
 </table>
 
-<p>The <code class="language-plaintext highlighter-rouge">notPropEqual</code> assertion uses the strict inverted comparison operator (<code class="language-plaintext highlighter-rouge">!==</code>) to compare the actual and expected arguments as Objects regarding only their properties but not their constructors.</p>
+<p>The <code class="language-plaintext highlighter-rouge">notPropEqual</code> assertion compares only an object’s own properties, using the strict inquality operator (<code class="language-plaintext highlighter-rouge">!==</code>).</p>
 
-<p>When they aren’t equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.</p>
+<p>The test passes if there are properties with different values, or extra properties, or missing properties.</p>
 
-<p><a href="/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal()</code></a> can be used to test equality.</p>
+<h2 id="see-also">See also</h2>
 
-<p><a href="/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> can be used to test strict equality of an Object properties.</p>
+<ul>
+  <li>Use <a href="/assert/notPropContains/"><code class="language-plaintext highlighter-rouge">assert.notPropContains()</code></a> to only check for the absence or inequality of some properties.</li>
+  <li>Use <a href="/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> to test for equality of properties instead.</li>
+</ul>
 
 <h2 id="examples">Examples</h2>
 
@@ -120,7 +123,7 @@
   <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropEqual</span><span class="p">(</span> <span class="nx">foo</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">y</span><span class="p">:</span> <span class="mi">2</span>
-  <span class="p">}</span> <span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -147,12 +150,16 @@
 		<a href="/assert/notEqual/">assert.notEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/notOk/">assert.notOk()</a>
+	</li><li class="sidebar-item">
+		<a href="/assert/notPropContains/">assert.notPropContains()</a>
 	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/assert/notPropEqual/">assert.notPropEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/notStrictEqual/">assert.notStrictEqual()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/ok/">assert.ok()</a>
+	</li><li class="sidebar-item">
+		<a href="/assert/propContains/">assert.propContains()</a>
 	</li><li class="sidebar-item">
 		<a href="/assert/propEqual/">assert.propEqual()</a>
 	</li><li class="sidebar-item">
@@ -187,7 +194,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>
