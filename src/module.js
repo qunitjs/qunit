@@ -5,9 +5,10 @@ import config from "./core/config";
 import SuiteReport from "./reports/suite";
 
 import { extend, objectType, generateHash } from "./core/utilities";
-import { runSuite } from "./core";
 
 const moduleStack = [];
+
+export const runSuite = new SuiteReport();
 
 function isParentModuleInQueue() {
 	const modulesInQueue = config.modules
@@ -140,7 +141,7 @@ function processModule( name, options, executeNow, modifiers = {} ) {
 
 let focused = false; // indicates that the "only" filter was used
 
-export default function module( name, options, executeNow ) {
+export function module( name, options, executeNow ) {
 
 	const ignored = focused && !isParentModuleInQueue();
 

@@ -1,26 +1,12 @@
 import config from "./config";
-import {
-	extend,
-	generateHash,
-	now
-} from "./utilities";
-import {
-	runLoggingCallbacks
-} from "./logging";
+import { extend, generateHash, now } from "./utilities";
+import { runLoggingCallbacks } from "./logging";
 
 import Promise from "../promise";
-import {
-	test
-} from "../test";
-import {
-	runSuite
-} from "../core";
-import {
-	emit
-} from "../events";
-import {
-	setTimeout
-} from "../globals";
+import { test } from "../test";
+import { runSuite } from "../module";
+import { emit } from "../events";
+import { setTimeout } from "../globals";
 
 let priorityCount = 0;
 let unitSampler;

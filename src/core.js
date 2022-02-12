@@ -2,7 +2,7 @@ import { window, document, setTimeout } from "./globals";
 
 import equiv from "./equiv";
 import dump from "./dump";
-import module from "./module";
+import { runSuite, module } from "./module";
 import Assert from "./assert";
 import Logger from "./logger";
 import Test, { test, pushFailure } from "./test";
@@ -15,14 +15,11 @@ import { registerLoggingCallbacks, runLoggingCallbacks } from "./core/logging";
 import { sourceFromStacktrace } from "./core/stacktrace";
 import ProcessingQueue from "./core/processing-queue";
 
-import SuiteReport from "./reports/suite";
-
 import { on, emit } from "./events";
 import onWindowError from "./core/onerror";
 import onUncaughtException from "./core/on-uncaught-exception";
 
 const QUnit = {};
-export const runSuite = new SuiteReport();
 
 // The "currentModule" object would ideally be defined using the createModule()
 // function. Since it isn't, add the missing suiteReport property to it now that

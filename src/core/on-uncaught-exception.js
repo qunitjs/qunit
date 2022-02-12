@@ -1,5 +1,5 @@
 import config from "./config";
-import { runSuite } from "../core";
+import { runSuite } from "../module";
 import { sourceFromStacktrace } from "./stacktrace";
 import { errorString } from "./utilities";
 import { emit } from "../events";
