@@ -224,6 +224,17 @@ ok 2 timeout > second
 # todo 0
 # fail 1`,
 
+	"qunit hooks-global-context.js":
+`TAP version 13
+ok 1 A > A1
+ok 2 A > AB > AB1
+ok 3 B
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`,
+
 	"qunit zero-assertions.js":
 `TAP version 13
 ok 1 Zero assertions > has a test

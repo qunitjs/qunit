@@ -9,6 +9,7 @@ import Promise from "./promise";
 import config from "./core/config";
 import {
 	diff,
+	errorString,
 	extend,
 	generateHash,
 	hasOwn,
@@ -224,6 +225,34 @@ Test.prototype = {
 		checkPollution();
 	},
 
+	queueGlobalHook( hook, hookName ) {
+		const runHook = () => {
+			config.current = this;
+
+			let promise;
+
+			if ( config.notrycatch ) {
+				promise = hook.call( this.testEnvironment, this.assert );
+
+			} else {
+				try {
+					promise = hook.call( this.testEnvironment, this.assert );
+				} catch ( error ) {
+					this.pushFailure(
+						"Global " + hookName + " failed on " + this.testName +
+							": " + errorString( error ),
+						extractStacktrace( error, 0 )
+					);
+					return;
+				}
+			}
+
+			this.resolvePromise( promise, hookName );
+		};
+
+		return runHook;
+	},
+
 	queueHook( hook, hookName, hookOwner ) {
 		const callHook = () => {
 			const promise = hook.call( this.testEnvironment, this.assert );
@@ -253,6 +282,14 @@ Test.prototype = {
 				return;
 			}
 			try {
+
+				// This try-block includes the indirect call to resolvePromise, which shouldn't
+				// have to be inside try-catch. But, since we support any user-provided thenable
+				// object, the thenable might throw in some unexpected way.
+				// This subtle behaviour is undocumented. To avoid new failures in minor releases
+				// we will not change this until QUnit 3.
+				// TODO: In QUnit 3, reduce this try-block to just hook.call(), matching
+				// the simplicity of queueGlobalHook.
 				callHook();
 			} catch ( error ) {
 				this.pushFailure( hookName + " failed on " + this.testName + ": " +
@@ -266,6 +303,19 @@ Test.prototype = {
 	// Currently only used for module level hooks, can be used to add global level ones
 	hooks( handler ) {
 		const hooks = [];
+
+		function processGlobalhooks( test ) {
+			if (
+				( handler === "beforeEach" || handler === "afterEach" ) &&
+				config.globalHooks[ handler ]
+			) {
+				for ( let i = 0; i < config.globalHooks[ handler ].length; i++ ) {
+					hooks.push(
+						test.queueGlobalHook( config.globalHooks[ handler ][ i ], handler )
+					);
+				}
+			}
+		}
 
 		function processHooks( test, module ) {
 			if ( module.parentModule ) {
@@ -281,6 +331,7 @@ Test.prototype = {
 
 		// Hooks are ignored on skipped tests
 		if ( !this.skip ) {
+			processGlobalhooks( this );
 			processHooks( this, this.module );
 		}
 

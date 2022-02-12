@@ -93,6 +93,10 @@ const config = {
 		}
 	},
 
+	// Exposed to make resets easier
+	// Ref https://github.com/qunitjs/qunit/pull/1598
+	globalHooks: {},
+
 	callbacks: {},
 
 	// The storage module to use for reordering tests

@@ -358,6 +358,73 @@ CALLBACK: done`;
 		assert.equal( execution.code, 0 );
 	} );
 
+	QUnit.test( "global hooks order", async assert => {
+		const expected = `
+HOOK: A1 @ global beforeEach-1
+HOOK: A1 @ global beforeEach-2
+HOOK: A1 @ global afterEach-2
+HOOK: A1 @ global afterEach-1
+HOOK: B1 @ B before
+HOOK: B1 @ global beforeEach-1
+HOOK: B1 @ global beforeEach-2
+HOOK: B1 @ B beforeEach
+HOOK: B1 @ B afterEach
+HOOK: B1 @ global afterEach-2
+HOOK: B1 @ global afterEach-1
+HOOK: B2 @ global beforeEach-1
+HOOK: B2 @ global beforeEach-2
+HOOK: B2 @ B beforeEach
+HOOK: B2 @ B afterEach
+HOOK: B2 @ global afterEach-2
+HOOK: B2 @ global afterEach-1
+HOOK: BC1 @ BC before
+HOOK: BC1 @ global beforeEach-1
+HOOK: BC1 @ global beforeEach-2
+HOOK: BC1 @ B beforeEach
+HOOK: BC1 @ BC beforeEach
+HOOK: BC1 @ BC afterEach
+HOOK: BC1 @ B afterEach
+HOOK: BC1 @ global afterEach-2
+HOOK: BC1 @ global afterEach-1
+HOOK: BC2 @ global beforeEach-1
+HOOK: BC2 @ global beforeEach-2
+HOOK: BC2 @ B beforeEach
+HOOK: BC2 @ BC beforeEach
+HOOK: BC2 @ BC afterEach
+HOOK: BC2 @ B afterEach
+HOOK: BC2 @ global afterEach-2
+HOOK: BC2 @ global afterEach-1
+HOOK: BCD1 @ BCD before
+HOOK: BCD1 @ global beforeEach-1
+HOOK: BCD1 @ global beforeEach-2
+HOOK: BCD1 @ B beforeEach
+HOOK: BCD1 @ BC beforeEach
+HOOK: BCD1 @ BCD beforeEach
+HOOK: BCD1 @ BCD afterEach
+HOOK: BCD1 @ BC afterEach
+HOOK: BCD1 @ B afterEach
+HOOK: BCD1 @ global afterEach-2
+HOOK: BCD1 @ global afterEach-1
+HOOK: BCD1 @ BCD after
+HOOK: BCD1 @ BC after
+HOOK: BCD1 @ B after`;
+
+		const command = "qunit hooks-global-order.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.stderr, expected.trim() );
+		assert.equal( execution.code, 0 );
+	} );
+
+	QUnit.test( "global hooks context", async assert => {
+		const command = "qunit hooks-global-context.js";
+		const execution = await execute( command );
+
+		assert.equal( execution.code, 0 );
+		assert.equal( execution.stderr, "" );
+		assert.equal( execution.stdout, expectedOutput[ command ] );
+	} );
+
 	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
 		QUnit.test( "run ESM test suite with import statement", async assert => {
 			const command = "qunit ../../es2018/esm.mjs";
