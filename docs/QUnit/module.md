@@ -38,11 +38,11 @@ You can use hooks to prepare fixtures, or run other setup and teardown logic. Ho
 * `afterEach`: Run a callback after each test.
 * `after`: Run a callback after the last test.
 
-You can add hooks via the `hooks` parameter of a [scoped module](#nested-scope), or in the module [`options`](#options-object) object.
+You can add hooks via the `hooks` parameter of a [scoped module](#nested-scope), or in the module [`options`](#options-object) object, or globally for all tests via [QUnit.hooks](./hooks.md).
 
 Hooks that are added to a module, will also apply to tests in any nested modules.
 
-Hooks that run _before_ a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run the hooks of parent modules, and then the hooks added to the immediate module the test is a part of. Hooks that run _after_ a test, are ordered from inner-most to outer-most, in the reverse order. In other words, `before` and `beforeEach` callbacks form a [queue][], while `afterEach` and `after` form a [stack][].
+Hooks that run _before_ a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run any global beforeEach hooks, then the hooks of parent modules, and finally the hooks added to the immediate module the test is a part of. Hooks that run _after_ a test, are ordered from inner-most to outer-most, in the reverse order. In other words, `before` and `beforeEach` callbacks form a [queue][], while `afterEach` and `after` form a [stack][].
 
 [queue]: https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29
 [stack]: https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29
