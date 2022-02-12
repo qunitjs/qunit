@@ -18,7 +18,7 @@ Add a test that will be skipped during the run.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `callback` (function) | Function to close over assertions |
+| `callback` (function) | Function that performs the test |
 
 Use this method to disable a [`QUnit.test()`](./test.md), as alternative to commenting out the test.
 

@@ -18,7 +18,7 @@ Add a test which expects at least one failing assertion or exception during its 
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `callback` (function) | Function to close over assertions |
+| `callback` (function) | Function that performs the test |
 
 ### Callback parameters
 

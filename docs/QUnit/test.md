@@ -20,7 +20,7 @@ Define a test using `QUnit.test()`.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit being tested |
-| `callback` (function) | Function to close over assertions |
+| `callback` (function) | Function that performs the test |
 
 ### Callback parameters
 

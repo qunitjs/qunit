@@ -20,21 +20,48 @@ Group related tests under a common label.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Label for this group of tests. |
-| [`options`](#options-object) (object) | Set hook callbacks to run before or after test execution. |
-| [`nested`](#nested-scope) (function) | A scope to create nested modules and/or set hooks functionally. |
+| [`options`](#options-object) (object) | Set hook callbacks. |
+| [`nested`](#nested-scope) (function) | A scope to create nested modules and/or add hooks functionally. |
 
-All tests inside a module will be grouped under that module. The test names will be preceded by the module name in the test results. Tests can be added to a module using the [QUnit.test](./test.md) method.
-
-You can use modules to organize, select, and filter tests to run. See [§ Organizing your tests](#organizing-your-tests).
+All tests inside a module will be grouped under that module. Tests can be added to a module using the [QUnit.test](./test.md) method. Modules help organize, select, and filter tests to run. See [§ Organizing your tests](#organizing-your-tests).
 
 Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grantparent > Parent > Child > my test". See [§ Nested module scope](#nested-module-scope).
 
 The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.todo()`](./test.todo.md) to all a module's tests at once.
 
+### Hooks
+
+You can use hooks to prepare fixtures, or run other setup and teardown logic. Hooks can run around individual tests, or around a whole module.
+
+* `before`: Run a callback before the first test.
+* `beforeEach`: Run a callback before each test.
+* `afterEach`: Run a callback after each test.
+* `after`: Run a callback after the last test.
+
+You can add hooks via the `hooks` parameter of a [scoped module](#nested-scope), or in the module [`options`](#options-object) object.
+
+Hooks that are added to a module, will also apply to tests in any nested modules.
+
+Hooks that run _before_ a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run the hooks of parent modules, and then the hooks added to the immediate module the test is a part of. Hooks that run _after_ a test, are ordered from inner-most to outer-most, in the reverse order. In other words, `before` and `beforeEach` callbacks form a [queue][], while `afterEach` and `after` form a [stack][].
+
+[queue]: https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29
+[stack]: https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29
+
+#### Hook callback
+
+A hook callback may be an async function, and may return a Promise or any other then-able. QUnit will automatically wait for your hook's asynchronous work to finish before continuing to execute the tests.
+
+Each hook has access to the same `assert` object, and test context via `this`, as the [QUnit.test](./test.md) that the hook is running for. Example: [§ Using the test context](#using-the-test-context).
+
+| parameter | description |
+|-----------|-------------|
+| `assert` (object) | An [Assert](../assert/index.md) object. |
+
+<p class="note" markdown="1">It is discouraged to dynamically create a new [QUnit.test](./test.md) from within a hook. In order to satisfy the requirement for the `after` hook to only run once and to be the last hook in a module, QUnit may associate dynamically defined tests with the parent module instead, or as global test. It is recommended to define any dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md).</p>
+
 ### Options object
 
-You can use the options object to set hook callbacks to prepare fixtures, or run other setup and
-teardown logic. These hooks can run around individual tests, or around a whole module.
+You can use the options object to add [hooks](#hooks).
 
 | name | description |
 |-----------|-------------|
@@ -43,27 +70,21 @@ teardown logic. These hooks can run around individual tests, or around a whole m
 | `afterEach` (function) | Runs after each test. |
 | `after` (function) | Runs after the last test. |
 
-`QUnit.module()`'s hooks can automatically handle the asynchronous resolution of a Promise on your behalf if you return a `then`able Promise as the result of your callback function.
+Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Using the test context](#using-the-test-context).
 
-**Note**: If additional tests are defined after the module's queue has emptied, it will not run the `after` hook again.
-
-Each [QUnit.test](./test.md) has its own test context object, accessible via its `this` variable. Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Using the test context](#using-the-test-context).
+Example: [§ Declaring module options](#declaring-module-options).
 
 ### Nested scope
 
-The nested callback can be used to create nested modules to run under a commmon label within the parent module.
+Modules can be nested to group tests under under a commmon label within a parent module.
 
-The scope is also given a `hooks` object which can be used to set hook options procedurally rather than
-declaratively.
+The module scope is given a `hooks` object which can be used to procedurally add [hooks](#hooks).
 
-| name | description |
+| parameter | description |
 |-----------|-------------|
-| `hooks` (object) | An object with methods for adding hook callbacks. |
+| `hooks` (object) | An object for adding hooks. |
 
-QUnit will run tests on the parent module before those of nested ones, even if lexically declared earlier in the code. Additionally, any hook callbacks on a parent module will wrap the hooks on a nested module. In other words, `before` and `beforeEach` callbacks will form a [queue][] while the `afterEach` and `after` callbacks will form a [stack][].
-
-[queue]: https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29
-[stack]: https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29
+Example: [§ Nested module scope](#nested-module-scope).
 
 ## Changelog
 
@@ -122,7 +143,7 @@ test( "basic test example 4", assert => {
 });
 ```
 
-### Declaring hook options
+### Declaring module options
 
 ```js
 QUnit.module( "module A", {
