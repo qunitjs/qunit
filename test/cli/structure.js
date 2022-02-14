@@ -53,11 +53,17 @@ QUnit.module( "structure", () => {
 	QUnit.module( "test/**.html", () => {
 
 		// Get a list of the HTML files, including in subdirectories (e.g. "test/reporter-html/").
-		// Ignore file names containing "--", which are subresources (e.g. iframes).
 		const files = glob( "**/*.html", {
 			cwd: __dirname + "/../",
 			filesOnly: true
 		} )
+
+			// Normalize Windows-style line endings as yielded by glob.
+			// The expected HTML paths use Unix-style line ending, as per HTTP.
+			.map( file => file.replace( /\\/g, "/" ) )
+
+			// Ignore file names containing "--", which are subresources (e.g. iframes).
+			// Ignore integration/grunt-contrib-qunit, which is managed separately.
 			.filter( file => !file.includes( "--" ) && !file.includes( "integration/" ) )
 			.map( file => `test/${file}` );
 

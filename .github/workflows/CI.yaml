@@ -38,7 +38,7 @@ jobs:
           - name: "Windows: Node 14"
             os: windows-latest
             node: 14.x
-            script: npm run test:main
+            script: npm test
 
           - name: "macOS: Node 14"
             os: macos-latest

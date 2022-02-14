@@ -82,7 +82,7 @@ ok 5 Second > 1
 # todo 0
 # fail 0`,
 
-	"qunit --seed 's33d' test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
+	"qunit --seed s33d test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
 TAP version 13
 ok 1 Second > 1
 ok 2 Single > has a test
@@ -179,7 +179,7 @@ not ok 2 Example > bad
 # todo 0
 # fail 1`,
 
-	"NODE_OPTIONS='--enable-source-maps' qunit sourcemap/source.min.js":
+	"qunit sourcemap/source.min.js":
 `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
@@ -244,7 +244,7 @@ ok 1 Zero assertions > has a test
 # todo 0
 # fail 0`,
 
-	"qunit qunit --filter 'no matches' test":
+	"qunit --filter 'no matches' test":
 `TAP version 13
 not ok 1 global failure
   ---
@@ -266,7 +266,7 @@ not ok 1 global failure
 # todo 0
 # fail 1`,
 
-	"qunit single.js --require require-dep --require './node_modules/require-dep/module.js'":
+	"qunit single.js --require require-dep --require ./node_modules/require-dep/module.js":
 `required require-dep/index.js
 required require-dep/module.js
 TAP version 13
@@ -277,7 +277,7 @@ ok 1 Single > has a test
 # todo 0
 # fail 0`,
 
-	"node --expose-gc ../../../bin/qunit.js memory-leak/*.js":
+	"node --expose-gc ../../../bin/qunit.js 'memory-leak/*.js'":
 `TAP version 13
 ok 1 some nested module > can call method on foo
 ok 2 some nested module > child module > child test
@@ -288,7 +288,7 @@ ok 3 later thing > has released all foos
 # todo 0
 # fail 0`,
 
-	"node --expose-gc ../../../bin/qunit.js --filter '!child' memory-leak/*.js":
+	"node --expose-gc ../../../bin/qunit.js --filter !child 'memory-leak/*.js'":
 `TAP version 13
 ok 1 some nested module > can call method on foo
 ok 2 later thing > has released all foos
