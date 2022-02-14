@@ -30,33 +30,36 @@ If you need more or less output, change the value of `QUnit.dump.maxDepth`, repr
 
 ## Examples
 
-The following example is used on [grunt-contrib-qunit][] to send messages from QUnit to PhantomJS.
+The following is an example from [grunt-contrib-qunit][], which sends results from QUnit (running in Headless Chrome) to a CLI tool.
 
-[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/7568f3ba04a5790b2c92f44da3ce5c7bdc1c7491/phantomjs/bridge.js#L24-L33
+[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/188a29af7817e1798fdd95f1ab7d3069231e4859/chrome/bridge.js#L42-L60
 
 ```js
 QUnit.log(function( obj ) {
+  var actual;
+  var expected;
 
-  // Parse some stuff before sending it.
-  var actual = QUnit.dump.parse( obj.actual );
-  var expected = QUnit.dump.parse( obj.expected );
+  if ( !obj.result ) {
+    // Format before sending
+    actual = QUnit.dump.parse( obj.actual );
+    expected = QUnit.dump.parse( obj.expected );
+  }
 
-  // Send it.
-  sendMessage( "qunit.log", obj.result, actual, expected, obj.message, obj.source );
+  // ...
 });
 ```
 
 ---
 
-This example shows the parsed output of a simple JS object with a DOM reference.
+This example shows the formatted representation of a DOM element.
 
 ```js
-var qHeader = document.getElementById( "qunit-header" ),
-  parsed = QUnit.dump.parse( qHeader );
+var qHeader = document.getElementById( "qunit-header" );
+var parsed = QUnit.dump.parse( qHeader );
 
 console.log( parsed );
 
-// Logs: "<h1 id=\"qunit-header\"></h1>"
+// Logs: '<h1 id="qunit-header"></h1>'
 ```
 
 ---
