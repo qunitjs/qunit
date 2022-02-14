@@ -5,8 +5,8 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>QUnit.test.only() | QUnit</title>
-<meta property="og:title" content="QUnit.test.only()"><meta name="description" content="Add a test that is exclusively run."><meta property="og:description" content="Add a test that is exclusively run."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<title>QUnit.hooks | QUnit</title>
+<meta property="og:title" content="QUnit.hooks"><meta name="description" content="Add global callbacks to run before or after each test."><meta property="og:description" content="Add global callbacks to run before or after each test."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -62,33 +62,12 @@
     </header>
     <div class="main main--columns wrapper">
 <div class="content" role="main">
-    <h1>QUnit.test.only()</h1><p class="version-details">version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.20.0">1.20.0</a>
+    <h1>QUnit.hooks</h1><p class="version-details note--warning">not yet released
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p><code class="language-plaintext highlighter-rouge">QUnit.test.only( name, callback )</code><br />
-<code class="language-plaintext highlighter-rouge">QUnit.only( name, callback )</code></p>
+<p><code class="language-plaintext highlighter-rouge">QUnit.hooks.beforeEach( callback )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.hooks.afterEach( callback )</code></p>
 
-<p>Add a test that is exclusively run, preventing other tests from running unless they are defined this way.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>parameter</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">name</code> (string)</td>
-      <td>Title of unit being tested</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
-      <td>Function that performs the test</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="callback-parameters">Callback parameters</h3>
+<p>Register a global callback to run before or after each test.</p>
 
 <table>
   <thead>
@@ -99,58 +78,28 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">assert</code> (object)</td>
-      <td>A new instance object with the <a href="/assert/">assertion methods</a></td>
+      <td>callback (function)</td>
+      <td>Callback to execute. Called with an <a href="/assert/">assert</a> argument.</td>
     </tr>
   </tbody>
 </table>
 
-<p>Use this method to focus your test suite on specific tests. <code class="language-plaintext highlighter-rouge">QUnit.only</code> will cause any other tests in your suite to be ignored.</p>
+<p>This is the equivalent of applying a <code class="language-plaintext highlighter-rouge">QUnit.module()</code> hook to all modules and all tests, including global tests that are not associated with any module.</p>
 
-<p>This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful as it can be done upfront without first running the test suite, e.g. in a codebase with many long-running tests.</p>
+<p>Similar to module hooks, global hooks support async functions or returning a Promise, which will be waited for before QUnit continues executing tests. Each global hook also has access to the same <code class="language-plaintext highlighter-rouge">assert</code> object and test context as the <a href="/QUnit/test/">QUnit.test</a> that the hook is running for.</p>
 
-<p>It can also be used instead of the <code class="language-plaintext highlighter-rouge">--filter</code> CLI option, e.g. if you’re already having the test open in your text editor. Similar to how one might use the <code class="language-plaintext highlighter-rouge">debugger</code> keyword.</p>
-
-<p>When debugging a larger area of code, you may want to <em>only</em> run all tests within a given module. You can also use<a href="/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.only()</code></a> to automatically mark all tests in a module as “only” tests.</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<table>
-  <tbody>
-    <tr>
-      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.12.0">QUnit 2.12</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">QUnit.only()</code> method was renamed to <code class="language-plaintext highlighter-rouge">QUnit.test.only()</code>.<br />Use of <code class="language-plaintext highlighter-rouge">QUnit.only()</code> remains supported as an alias.</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.20.0">QUnit 1.20</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">QUnit.only()</code> method was introduced.</td>
-    </tr>
-  </tbody>
-</table>
+<p>For more details about hooks, refer to <a href="/QUnit/module/#hooks">QUnit.module § Hooks</a>.</p>
 
 <h2 id="examples">Examples</h2>
 
-<p>How to use <code class="language-plaintext highlighter-rouge">QUnit.test.only</code> to filter which tests are run.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyApp</span><span class="p">();</span>
+<span class="p">});</span>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">robot</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">robot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">();</span>
-  <span class="p">});</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="k">async</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="p">[],</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getErrors</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">MyApp errors</span><span class="dl">"</span> <span class="p">);</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">say()</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">say</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="c1">// Run only this test</span>
-  <span class="c1">// For example, you are working on changing this method.</span>
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span> <span class="dl">"</span><span class="s2">laser()</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">laser</span><span class="p">()</span> <span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">take()</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">take</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="p">});</span>
+  <span class="nx">MyApp</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -158,7 +107,7 @@
 <aside class="sidebar" role="complementary">
 
 	<h4 class="sidebar-title-open"><a href="/QUnit/">Main methods</a></h4>
-	<ul class="sidebar-list"><li class="sidebar-item">
+	<ul class="sidebar-list"><li class="sidebar-item sidebar-item-active">
 		<a href="/QUnit/hooks/">QUnit.hooks</a>
 	</li><li class="sidebar-item">
 		<a href="/QUnit/module/">QUnit.module()</a>
@@ -168,7 +117,7 @@
 		<a href="/QUnit/test/">QUnit.test()</a>
 	</li><li class="sidebar-item">
 		<a href="/QUnit/test.each/">QUnit.test.each()</a>
-	</li><li class="sidebar-item sidebar-item-active">
+	</li><li class="sidebar-item">
 		<a href="/QUnit/test.only/">QUnit.test.only()</a>
 	</li><li class="sidebar-item">
 		<a href="/QUnit/test.skip/">QUnit.test.skip()</a>
@@ -193,7 +142,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>
@@ -208,7 +157,7 @@
                 
                 <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener noreferrer">Chat</a>
             </p>
-            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener noreferrer">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/QUnit/test.only.md">Edit this page</a></p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener noreferrer">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/QUnit/hooks.md">Edit this page</a></p>
         </div>
     </footer><script type="module">
 const loadSearch = () => Promise.all([

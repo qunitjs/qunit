@@ -111,11 +111,11 @@
   <li><code class="language-plaintext highlighter-rouge">after</code>: Run a callback after the last test.</li>
 </ul>
 
-<p>You can add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter of a <a href="#nested-scope">scoped module</a>, or in the module <a href="#options-object"><code class="language-plaintext highlighter-rouge">options</code></a> object.</p>
+<p>You can add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter of a <a href="#nested-scope">scoped module</a>, or in the module <a href="#options-object"><code class="language-plaintext highlighter-rouge">options</code></a> object, or globally for all tests via <a href="/QUnit/hooks/">QUnit.hooks</a>.</p>
 
 <p>Hooks that are added to a module, will also apply to tests in any nested modules.</p>
 
-<p>Hooks that run <em>before</em> a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run the hooks of parent modules, and then the hooks added to the immediate module the test is a part of. Hooks that run <em>after</em> a test, are ordered from inner-most to outer-most, in the reverse order. In other words, <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">beforeEach</code> callbacks form a <a href="https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29">queue</a>, while <code class="language-plaintext highlighter-rouge">afterEach</code> and <code class="language-plaintext highlighter-rouge">after</code> form a <a href="https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29">stack</a>.</p>
+<p>Hooks that run <em>before</em> a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run any global beforeEach hooks, then the hooks of parent modules, and finally the hooks added to the immediate module the test is a part of. Hooks that run <em>after</em> a test, are ordered from inner-most to outer-most, in the reverse order. In other words, <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">beforeEach</code> callbacks form a <a href="https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29">queue</a>, while <code class="language-plaintext highlighter-rouge">afterEach</code> and <code class="language-plaintext highlighter-rouge">after</code> form a <a href="https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29">stack</a>.</p>
 
 <h4 id="hook-callback">Hook callback</h4>
 
@@ -558,7 +558,9 @@ in arrow functions.</p>
 <aside class="sidebar" role="complementary">
 
 	<h4 class="sidebar-title-open"><a href="/QUnit/">Main methods</a></h4>
-	<ul class="sidebar-list"><li class="sidebar-item sidebar-item-active">
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/QUnit/hooks/">QUnit.hooks</a>
+	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/QUnit/module/">QUnit.module()</a>
 	</li><li class="sidebar-item">
 		<a href="/QUnit/start/">QUnit.start()</a>
