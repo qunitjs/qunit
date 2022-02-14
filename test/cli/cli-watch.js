@@ -6,11 +6,11 @@ const fixturify = require( "fixturify" );
 const rimraf = require( "rimraf" );
 
 const expectedWatchOutput = require( "./fixtures/expected/watch-tap-outputs" );
-const executeHelper = require( "./helpers/execute" );
+const { execute } = require( "./helpers/execute" );
 
 // Executes the provided command from within the fixtures directory
-function execute( command, hook ) {
-	return executeHelper( command, { stdio: [ null, null, null, "ipc" ] }, hook );
+function executeIpc( command, hook ) {
+	return execute( command, { stdio: [ null, null, null, "ipc" ] }, hook );
 }
 
 const fixturePath = path.join( __dirname, "fixtures", "watching" );
@@ -19,12 +19,12 @@ const fixturePath = path.join( __dirname, "fixtures", "watching" );
 function kill( execution, signal ) {
 	const sig = signal || "SIGINT";
 
-	// Linux increments the pid by 1 due to creating a new shell instance
-	if ( process.platform === "linux" ) {
-		process.kill( execution.pid + 1, sig );
-	} else {
-		process.kill( execution.pid, sig );
-	}
+	process.kill( execution.pid, sig );
+}
+
+// TODO: Make watch tests work on Windows. https://github.com/qunitjs/qunit/issues/1359
+if ( process.platform === "win32" ) {
+	return;
 }
 
 QUnit.module( "CLI Watch", function( hooks ) {
@@ -44,9 +44,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
-		const command = "qunit watching";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.on( "message", data => {
 					assert.step( data );
@@ -66,9 +66,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
-		const command = "qunit watching";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.on( "message", data => {
 					assert.step( data );
@@ -88,9 +88,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
-		const command = "qunit watching";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.once( "message", data => {
 					assert.step( data );
@@ -117,9 +117,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
 		} );
 
-		const command = "qunit watching";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.once( "message", data => {
 					assert.step( data );
@@ -147,9 +147,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"bar.js": "QUnit.test('bar', function(assert) { assert.true(true); });"
 		} );
 
-		const command = "qunit watching";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.once( "message", data => {
 					assert.step( data );
@@ -200,9 +200,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 			"bar.js": "module.exports = 'bar export first';"
 		} );
 
-		const command = "qunit watching/tests";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching/tests" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.on( "message", function handle( data ) {
 					if ( data === "testRunning" ) {
@@ -264,9 +264,9 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		} );
 
 		let count = 0;
-		const command = "qunit watching/tests";
-		const result = await execute(
-			`${command} --watch`,
+		const command = [ "qunit", "--watch", "watching/tests" ];
+		const result = await executeIpc(
+			command,
 			execution => {
 				execution.on( "message", data => {
 					assert.step( data );
