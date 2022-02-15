@@ -110,7 +110,7 @@ module.exports.execute = async function execute( command, options = {}, hook ) {
 			result.code = exitCode;
 			const stderr = normalize( String( result.stderr ).trimEnd() );
 			if ( exitCode !== 0 ) {
-				reject( new Error( "Error code " + exitCode + "\n" + stderr ) );
+				reject( new Error( "Error code " + exitCode + "\n" + ( stderr || result.stdout ) ) );
 			} else {
 				resolve();
 			}

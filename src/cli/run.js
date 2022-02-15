@@ -184,13 +184,17 @@ run.watch = function watch() {
 	const args = Array.prototype.slice.call( arguments );
 	const baseDir = process.cwd();
 
+	// Include ".json" for test suites that use a data files,
+	// and for changes to package.json that may affect how a file is parsed (e.g. type=module).
+	const includeExts = [ ".js", ".json", ".cjs", ".mjs" ];
+
 	const watcher = watch( baseDir, {
 		persistent: true,
 		recursive: true,
 		delay: 0,
 		filter: ( fullpath ) => {
 			return !/\/node_modules\//.test( fullpath ) &&
-				/\.js$/.test( fullpath );
+				includeExts.includes( path.extname( fullpath ) );
 		}
 	}, ( event, fullpath ) => {
 		console.log( `File ${event}: ${path.relative( baseDir, fullpath )}` );
