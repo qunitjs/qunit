@@ -187,7 +187,7 @@ run.watch = function watch() {
 	// Include ".json" for test suites that use a data files,
 	// and for changes to package.json that may affect how a file is parsed (e.g. type=module).
 	const includeExts = [ ".js", ".json", ".cjs", ".mjs" ];
-	const ignoreDirs = [ "node_modules" ];
+	const ignoreDirs = [ ".git", "node_modules" ];
 
 	const watcher = watch( baseDir, {
 		persistent: true,
