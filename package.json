@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "commander": "7.2.0",
-    "node-watch": "0.7.2",
+    "node-watch": "0.7.3",
     "tiny-glob": "0.2.9"
   },
   "devDependencies": {
