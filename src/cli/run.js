@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require( "path" );
+const url = require( "url" );
 
 const requireFromCWD = require( "./require-from-cwd" );
 const requireQUnit = require( "./require-qunit" );
@@ -83,7 +84,11 @@ async function run( args, options ) {
 					( e instanceof SyntaxError &&
 						e.message === "Cannot use import statement outside a module" ) ) &&
 					( !nodeVint || nodeVint >= 72 ) ) {
-					await import( filePath ); // eslint-disable-line node/no-unsupported-features/es-syntax
+
+					// filePath is an absolute file path here (per path.resolve above).
+					// On Windows, Node.js enforces that absolute paths via ESM use valid URLs,
+					// e.g. file-protocol) https://github.com/qunitjs/qunit/issues/1667
+					await import( url.pathToFileURL( filePath ) ); // eslint-disable-line node/no-unsupported-features/es-syntax
 				} else {
 					throw e;
 				}
