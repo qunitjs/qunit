@@ -4,7 +4,7 @@ title: assert.notPropContains()
 excerpt: Check that an object does not contain certain properties.
 groups:
   - assert
-version_added: "unreleased"
+version_added: "2.18.0"
 ---
 
 `notPropContains( actual, expected, message = "" )`

@@ -32,7 +32,7 @@ Wesley Walser <waw325@gmail.com>
 Rob Kinninmont <robk@twitter.com>
 Marc Portier <marc.portier@gmail.com>
 Michael Righi <michael@righi.me>
-Timo Tijhof <krinklemail@gmail.com>
+Timo Tijhof <krinkle@fastmail.com>
 Jan Alonzo <jmalonzo@taguchimail.com>
 Daniel Trebbien <dtrebbien@gmail.com>
 Bob Fanger <bfanger@gmail.com>
@@ -179,3 +179,5 @@ Ryuta Kamizono <kamipo@gmail.com>
 Chris Krycho <hello@chriskrycho.com>
 Ben Demboski <demboskb@gmail.com>
 Jan Buschtöns <jan@buschtoens.me>
+Jarek Radosz <jradosz@gmail.com>
+Izel Nakri <contact@izelnakri.com>

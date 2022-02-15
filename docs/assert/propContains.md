@@ -4,7 +4,7 @@ title: assert.propContains()
 excerpt: Check that an object contains certain properties.
 groups:
   - assert
-version_added: "unreleased"
+version_added: "2.18.0"
 ---
 
 `propContains( actual, expected, message = "" )`

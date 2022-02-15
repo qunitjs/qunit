@@ -4,7 +4,7 @@ title: QUnit.hooks
 excerpt: Add global callbacks to run before or after each test.
 groups:
   - main
-version_added: "unreleased"
+version_added: "2.18.0"
 ---
 
 `QUnit.hooks.beforeEach( callback )`<br>

@@ -1,4 +1,19 @@
 
+2.18.0 / 2022-02-15
+==================
+
+### Added
+
+* Assert: New `assert.propContains()` for partial object comparison. (Izel Nakri) [#1668](https://github.com/qunitjs/qunit/pull/1668)
+* Core: Add `QUnit.hooks` to globally add beforeEach and afterEach. (Timo Tijhof) [#1475](https://github.com/qunitjs/qunit/issues/1475)
+* CLI: Add support for watching `.ts` files when TypeScript is used. (Timo Tijhof) [#1669](https://github.com/qunitjs/qunit/issues/1669)
+* CLI: Add support for watching `.json`, `.cjs`, and `.mjs` files. [#1676](https://github.com/qunitjs/qunit/pull/1676)
+
+### Fixed
+
+* CLI: Fix ESM file imports on Windows to use file-protocol URLs. (Timo Tijhof) [#1667](https://github.com/qunitjs/qunit/issues/1667)
+* CLI: Improve performance of watch mode by recursively ignoring directories. (Timo Tijhof) [#1676](https://github.com/qunitjs/qunit/pull/1676)
+
 2.17.2 / 2021-09-19
 ==================
 
