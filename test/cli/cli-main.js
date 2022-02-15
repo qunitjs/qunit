@@ -433,9 +433,7 @@ HOOK: BCD1 @ B after`;
 	} );
 
 	if ( semver.gte( process.versions.node, "12.0.0" ) ) {
-
-		// TODO: Import paths broken on Windows. https://github.com/qunitjs/qunit/issues/1667
-		QUnit[ skipOnWinTest ]( "run ESM test suite with import statement", async assert => {
+		QUnit.test( "run ESM test suite with import statement", async assert => {
 			const command = [ "qunit", "../../es2018/esm.mjs" ];
 			const execution = await execute( command );
 
