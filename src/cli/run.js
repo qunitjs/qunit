@@ -8,7 +8,8 @@ const requireQUnit = require( "./require-qunit" );
 const utils = require( "./utils" );
 const { findReporter } = require( "./find-reporter" );
 
-const RESTART_DEBOUNCE_LENGTH = 200;
+const DEBOUNCE_WATCH_LENGTH = 60;
+const DEBOUNCE_RESTART_LENGTH = 200 - DEBOUNCE_WATCH_LENGTH;
 
 const changedPendingPurge = [];
 
@@ -158,7 +159,7 @@ run.restart = function( args ) {
 		}
 
 		run.abort( () => run.apply( null, args ) );
-	}, RESTART_DEBOUNCE_LENGTH );
+	}, DEBOUNCE_RESTART_LENGTH );
 };
 
 run.abort = function( callback ) {
@@ -179,14 +180,25 @@ run.abort = function( callback ) {
 	}
 };
 
-run.watch = function watch() {
+run.watch = function watch( _, options ) {
 	const watch = require( "node-watch" );
 	const args = Array.prototype.slice.call( arguments );
 	const baseDir = process.cwd();
 
-	// Include ".json" for test suites that use a data files,
+	QUnit = requireQUnit();
+	global.QUnit = QUnit;
+	options.requires.forEach( requireFromCWD );
+
+	// Include TypeScript when in use (automatically via require.extensions),
+	// https://github.com/qunitjs/qunit/issues/1669.
+	//
+	// Include ".json" (part of require.extensions) for test suites that use a data files,
 	// and for changes to package.json that may affect how a file is parsed (e.g. type=module).
-	const includeExts = [ ".js", ".json", ".cjs", ".mjs" ];
+	//
+	// Include ".cjs" and ".mjs", which Node.js doesn't expose via require.extensions by default.
+	//
+	// eslint-disable-next-line node/no-deprecated-api
+	const includeExts = Object.keys( require.extensions ).concat( [ ".cjs", ".mjs" ] );
 	const ignoreDirs = [ ".git", "node_modules" ];
 
 	const watcher = watch( baseDir, {
@@ -194,7 +206,7 @@ run.watch = function watch() {
 		recursive: true,
 
 		// Bare minimum delay, we have another debounce in run.restart().
-		delay: 10,
+		delay: DEBOUNCE_WATCH_LENGTH,
 		filter: ( fullpath, skip ) => {
 			if ( /\/node_modules\//.test( fullpath ) ||
 				ignoreDirs.includes( path.basename( fullpath ) )
