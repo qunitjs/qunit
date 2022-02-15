@@ -187,14 +187,21 @@ run.watch = function watch() {
 	// Include ".json" for test suites that use a data files,
 	// and for changes to package.json that may affect how a file is parsed (e.g. type=module).
 	const includeExts = [ ".js", ".json", ".cjs", ".mjs" ];
+	const ignoreDirs = [ "node_modules" ];
 
 	const watcher = watch( baseDir, {
 		persistent: true,
 		recursive: true,
-		delay: 0,
-		filter: ( fullpath ) => {
-			return !/\/node_modules\//.test( fullpath ) &&
-				includeExts.includes( path.extname( fullpath ) );
+
+		// Bare minimum delay, we have another debounce in run.restart().
+		delay: 10,
+		filter: ( fullpath, skip ) => {
+			if ( /\/node_modules\//.test( fullpath ) ||
+				ignoreDirs.includes( path.basename( fullpath ) )
+			) {
+				return skip;
+			}
+			return includeExts.includes( path.extname( fullpath ) );
 		}
 	}, ( event, fullpath ) => {
 		console.log( `File ${event}: ${path.relative( baseDir, fullpath )}` );
