@@ -64,6 +64,29 @@ ok 1 foo
 # fail 0
 Stopping QUnit...`,
 
+	"file-extensions": `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/x.cjs
+File update: watching/x.js
+File update: watching/x.json
+File update: watching/x.mjs
+File update: watching/tests/foo.js
+File update: watching/tests/setup.js
+Restarting...
+TAP version 13
+ok 1 foo2
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`,
+
 	"change-file-mid-run": `TAP version 13
 File update: watching/bar.js
 Finishing current test and restarting...

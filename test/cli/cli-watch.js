@@ -28,6 +28,10 @@ if ( process.platform === "win32" ) {
 }
 
 QUnit.module( "CLI Watch", function( hooks ) {
+	hooks.before( function() {
+		rimraf.sync( fixturePath );
+	} );
+
 	hooks.beforeEach( function() {
 		fs.mkdirSync( path.dirname( fixturePath ), { recursive: true } );
 		fixturify.writeSync( fixturePath, {
@@ -169,6 +173,56 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.code, 0 );
 		assert.equal( result.stderr, "" );
 		assert.equal( result.stdout, expectedWatchOutput[ "remove-file" ] );
+	} );
+
+	// Skip in coverage mode since NYC adds non-default extensions
+	QUnit[ process.env.NYC_PROCESS_ID ? "skip" : "test" ]( "default file extensions", async assert => {
+		fixturify.writeSync( fixturePath, {
+			"tests": {
+				"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });",
+				"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
+			}
+		} );
+
+		const command = [ "qunit", "--watch", "watching/tests" ];
+		const result = await executeIpc(
+			command,
+			execution => {
+				execution.once( "message", () => {
+					fixturify.writeSync( fixturePath, {
+						"x.cjs": "-",
+						"x.js": "-",
+						"x.json": "-",
+						"x.mjs": "-",
+						"x.ts": "-",
+						"x.txt": "-",
+
+						"node_modules": {
+							"x": {
+								"y.js": "-"
+							}
+						},
+
+						"tests": {
+							"foo.js": "QUnit.test('foo2', function(assert) { assert.true(true); });",
+							"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd2'); });"
+						}
+					} );
+
+					execution.once( "message", data => {
+
+						// Ignore other re-runs
+						if ( data === "runEnd2" ) {
+							kill( execution );
+						}
+					} );
+				} );
+			}
+		);
+
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "file-extensions" ] );
 	} );
 
 	QUnit.test( "aborts and restarts when in middle of run", async assert => {
