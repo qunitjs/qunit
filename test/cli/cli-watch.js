@@ -225,6 +225,42 @@ QUnit.module( "CLI Watch", function( hooks ) {
 		assert.equal( result.stdout, expectedWatchOutput[ "file-extensions" ] );
 	} );
 
+	// Skip in coverage mode since NYC adds non-default extensions
+	QUnit[ process.env.NYC_PROCESS_ID ? "skip" : "test" ]( "TypeScript file extension", async assert => {
+		fixturify.writeSync( fixturePath, {
+			"register.js": "require.extensions['.ts'] = function() {};",
+			"tests": {
+				"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd'); });",
+				"foo.js": "QUnit.test('foo', function(assert) { assert.true(true); });"
+			}
+		} );
+
+		const command = [ "qunit", "--watch", "--require", "./watching/register", "watching/tests" ];
+		const result = await executeIpc(
+			command,
+			execution => {
+				execution.once( "message", () => {
+					fixturify.writeSync( fixturePath, {
+						"x.js": "-",
+						"x.ts": "-",
+						"tests": {
+							"foo.js": "QUnit.test('foo2', function(assert) { assert.true(true); });",
+							"setup.js": "QUnit.on('runEnd', function() { process.send('runEnd2'); });"
+						}
+					} );
+
+					execution.once( "message", () => {
+						kill( execution );
+					} );
+				} );
+			}
+		);
+
+		assert.equal( result.code, 0 );
+		assert.equal( result.stderr, "" );
+		assert.equal( result.stdout, expectedWatchOutput[ "file-extension-ts" ] );
+	} );
+
 	QUnit.test( "aborts and restarts when in middle of run", async assert => {
 
 		// A proper abort finishes the currently running test and runs any remaining
