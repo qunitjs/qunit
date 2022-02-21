@@ -4,7 +4,7 @@ const fs = require( "fs" );
 const path = require( "path" );
 const { preprocess } = require( "./build/dist-replace.js" );
 
-var isCI = process.env.CI || process.env.JENKINS_HOME;
+var isCI = process.env.CI;
 
 module.exports = function( grunt ) {
 	var connectPort = Number( grunt.option( "connect-port" ) ) || 4000;
