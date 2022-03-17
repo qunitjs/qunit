@@ -25,6 +25,7 @@ program
   .usage('[options] [files]')
   .description(description)
   .option('-f, --filter <filter>', 'filter which tests run')
+  .option('-m, --module <name>', 'run a specific module')
   .option('-r, --reporter [name]', 'specify the reporter to use; ' +
     'if no match is found or no name is provided, a list of available ' +
     'reporters will be displayed')
@@ -44,6 +45,7 @@ if (opts.reporter === true) {
 
 const options = {
   filter: opts.filter,
+  module: opts.module,
   reporter: opts.reporter,
   requires: opts.require,
   seed: opts.seed

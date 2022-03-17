@@ -554,6 +554,17 @@ HOOK: BCD1 @ B after`;
     });
   });
 
+  QUnit.module('module', () => {
+    QUnit.test('can select a module (case-insensitive)', async assert => {
+      const command = ['qunit', '--module', 'seconD', 'test/'];
+      const execution = await execute(command);
+
+      assert.equal(execution.code, 0);
+      assert.equal(execution.stderr, '');
+      assert.equal(execution.stdout, getExpected(command));
+    });
+  });
+
   QUnit.module('require', () => {
     QUnit.test('can properly require dependencies and modules', async assert => {
       const command = ['qunit', 'single.js',

@@ -259,6 +259,15 @@ not ok 1 global failure
 # todo 0
 # fail 1`,
 
+  'qunit --module seconD test/':
+`TAP version 13
+ok 1 Second > 1
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
   'qunit single.js --require require-dep --require ./node_modules/require-dep/module.js':
 `required require-dep/index.js
 required require-dep/module.js
