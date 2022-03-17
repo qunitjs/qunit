@@ -36,6 +36,7 @@ program
 	.option("-w, --watch", "watch files for changes and re-run the test suite")
 	//	allow passing options to handle in setup files
 	.allowUnknownOption()
+	.allowExcessArguments()
 	.parse( process.argv );
 
 const opts = program.opts();
