@@ -32,7 +32,7 @@ program
 		"any tests.", collect, [] )
 	.option( "--seed [value]", "specify a seed to re-order your tests; " +
 		"if specified without a value, a seed will be generated" )
-	.option("-m, --module", "run a specific module")
+	.option("-m, --module <module_name>", "run a specific module")
 	.option("-w, --watch", "watch files for changes and re-run the test suite")
 	//	allow passing options to handle in setup files
 	.allowUnknownOption()
