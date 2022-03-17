@@ -27,6 +27,9 @@ async function run( args, options ) {
 	if ( options.filter ) {
 		QUnit.config.filter = options.filter;
 	}
+	if ( options.module ) {
+		QUnit.config.module = options.module;
+	}
 
 	const seed = options.seed;
 	if ( seed ) {

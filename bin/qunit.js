@@ -32,7 +32,10 @@ program
 		"any tests.", collect, [] )
 	.option( "--seed [value]", "specify a seed to re-order your tests; " +
 		"if specified without a value, a seed will be generated" )
-	.option( "-w, --watch", "watch files for changes and re-run the test suite" )
+	.option("-m, --module", "run a specific module")
+	.option("-w, --watch", "watch files for changes and re-run the test suite")
+	//	allow passing options to handle in setup files
+	.allowUnknownOption()
 	.parse( process.argv );
 
 const opts = program.opts();
@@ -46,7 +49,8 @@ const options = {
 	filter: opts.filter,
 	reporter: opts.reporter,
 	requires: opts.require,
-	seed: opts.seed
+	seed: opts.seed,
+	module: opts.module
 };
 
 if ( opts.watch ) {
