@@ -7,6 +7,7 @@ import { extend } from "./utilities";
  * `config` initialized at top of scope
  */
 const config = {
+	autostart: false,
 
 	// The queue of tests to run
 	queue: [],
@@ -100,7 +101,12 @@ const config = {
 	callbacks: {},
 
 	// The storage module to use for reordering tests
-	storage: localSessionStorage
+	storage: localSessionStorage,
+
+	// determines if this is a worker or not
+	isWorker: false,
+
+	files: []
 };
 
 // take a predefined QUnit.config and extend the defaults

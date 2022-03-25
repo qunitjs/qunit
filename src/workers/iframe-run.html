@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="qunit-fixture"></div>
+    <script type="module">
+      import workerRun from './worker-run.mjs';
+
+      window.QUnit = {config: {autostart: false, isWorker: true}};
+
+      workerRun({
+        parentPort: null,
+        handleInitData: (initData) => {
+          return import('/node_modules/qunit/qunit/qunit.js').then(function() {
+            return Promise.all(initData.imports.map((importFile) => Promise.resolve(import(importFile))))
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

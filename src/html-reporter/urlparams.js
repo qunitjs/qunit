@@ -32,6 +32,13 @@ import { window } from "../globals";
 		QUnit.config.seed = urlParams.seed;
 	}
 
+	const maxThreadsValue = [];
+	const hardwareConcurrency = window.navigator && window.navigator.hardwareConcurrency || 4;
+
+	for (let i = 0; i < hardwareConcurrency; i++) {
+		maxThreadsValue.push(`${i + 1}`);
+	}
+
 	// Add URL-parameter-mapped config values with UI form rendering data
 	QUnit.config.urlConfig.push(
 		{
@@ -50,10 +57,23 @@ import { window } from "../globals";
 			label: "No try-catch",
 			tooltip: "Enabling this will run tests outside of a try-catch block. Makes debugging " +
 			"exceptions in IE reasonable. Stored as query-strings."
+		},
+		{
+			id: "workerType",
+			label: "Worker type",
+			value: [ "IframeWorker", "WebWorker" ],
+			tooltip: "The type of worker to run tests in. Default is IframeWorker."
+		},
+		{
+			id: "maxThreads",
+			label: "Max Worker threads",
+			value: maxThreadsValue,
+			tooltip: "The max number of workers to use. Zero to run only on the main thread. " +
+			"default is navigator.hardwareConcurrency"
 		}
 	);
 
-	QUnit.begin( function() {
+	QUnit.parseUrlParams = function() {
 		var i, option,
 			urlConfig = QUnit.config.urlConfig;
 
@@ -69,7 +89,9 @@ import { window } from "../globals";
 				QUnit.config[ option ] = urlParams[ option ];
 			}
 		}
-	} );
+	};
+
+	QUnit.begin( QUnit.parseUrlParams );
 
 	function getUrlParams() {
 		var i, param, name, value;

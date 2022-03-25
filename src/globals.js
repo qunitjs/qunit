@@ -5,6 +5,7 @@ export const self = globalThis.self;
 export const console = globalThis.console;
 export const setTimeout = globalThis.setTimeout;
 export const clearTimeout = globalThis.clearTimeout;
+export const performance = globalThis.performance;
 
 export const document = window && window.document;
 export const navigator = window && window.navigator;

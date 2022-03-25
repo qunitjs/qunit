@@ -499,6 +499,13 @@ Test.prototype = {
 		}
 
 		function runTest() {
+			if ( !test.valid() ) {
+				test.skip = true;
+				test.testReport.valid = false;
+				incrementTestsIgnored( test.module );
+				return [];
+			}
+
 			return [
 				function() {
 					return test.before();
@@ -528,6 +535,8 @@ Test.prototype = {
 				}
 			];
 		}
+
+		runTest.test = test;
 
 		const previousFailCount = config.storage &&
 				+config.storage.getItem( "qunit-test-" + this.module.name + "-" + this.testName );
