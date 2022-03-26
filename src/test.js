@@ -1,5 +1,4 @@
 import globalThis from "../lib/global-this-polyfill";
-import { begin } from "./core";
 import { setTimeout, clearTimeout } from "./globals";
 import { emit } from "./events";
 import Assert from "./assert";
@@ -1043,10 +1042,12 @@ function internalStart( test ) {
 			clearTimeout( config.timeout );
 			config.timeout = null;
 
-			begin();
+			config.blocking = false;
+			ProcessingQueue.advance();
 		} );
 	} else {
-		begin();
+		config.blocking = false;
+		ProcessingQueue.advance();
 	}
 }
 
