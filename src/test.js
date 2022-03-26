@@ -619,12 +619,152 @@ Test.prototype = {
 		emit( "assertion", assertion );
 	},
 
+	/**
+	 * Reset config.timeout with a new timeout duration.
+	 *
+	 * @param {number} timeoutDuration
+	 */
+	internalResetTimeout( timeoutDuration ) {
+		clearTimeout( config.timeout );
+		config.timeout = setTimeout( config.timeoutHandler( timeoutDuration ), timeoutDuration );
+	},
+
+	/**
+	 * Create a new async pause and return a new function that can release the pause.
+	 *
+	 * This mechanism is internally used by:
+	 *
+	 * - explicit async pauses, created by calling `assert.async()`,
+	 * - implicit async pauses, created when `QUnit.test()` or module hook callbacks
+	 *   use async-await or otherwise return a Promise.
+	 *
+	 * Happy scenario:
+	 *
+	 * - Pause is created by calling internalStop().
+	 *
+	 *   Pause is released normally by invoking release() during the same test.
+	 *
+	 *   The release() callback lets internal processing resume.
+	 *
+	 * Failure scenarios:
+	 *
+	 * - The test fails due to an uncaught exception.
+	 *
+	 *   In this case, Test.run() will call internalRecover() which empties the clears all
+	 *   async pauses and sets the cancelled flag, which means we silently ignore any
+	 *   late calls to the resume() callback, as we will have moved on to a different
+	 *   test by then, and we don't want to cause an extra "release during a different test"
+	 *   errors that the developer isn't really responsible for. This can happen when a test
+	 *   correctly schedules a call to release(), but also causes an uncaught error. The
+	 *   uncaught error means we will no longer wait for the release (as it might not arrive).
+	 *
+	 * - Pause is never released, or called an insufficient number of times.
+	 *
+	 *   Our timeout handler will kill the pause and resume test processing, basically
+	 *   like internalRecover(), but for one pause instead of any/all.
+	 *
+	 *   Here, too, any late calls to resume() will be silently ignored to avoid
+	 *   extra errors. We tolerate this since the original test will have already been
+	 *   marked as failure.
+	 *
+	 *   TODO: QUnit 3 will enable timeouts by default <https://github.com/qunitjs/qunit/issues/1483>,
+	 *   but right now a test will hang indefinitely if async pauses are not released,
+	 *   unless QUnit.config.testTimeout or assert.timeout() is used.
+	 *
+	 * - Pause is spontaneously released during a different test,
+	 *   or when no test is currently running.
+	 *
+	 *   This is close to impossible because this error only happens if the original test
+	 *   succesfully finished first (since other failure scenarios kill pauses and ignore
+	 *   late calls). It can happen if a test ended exactly as expected, but has some
+	 *   external or shared state continuing to hold a reference to the release callback,
+	 *   and either the same test scheduled another call to it in the future, or a later test
+	 *   causes it to be called through some shared state.
+	 *
+	 * - Pause release() is called too often, during the same test.
+	 *
+	 *   This simply throws an error, after which uncaught error handling picks it up
+	 *   and processing resumes.
+	 *
+	 * @param {number} [requiredCalls=1]
+	 */
+	internalStop( requiredCalls = 1 ) {
+		config.blocking = true;
+
+		const test = this;
+		const pauseId = this.nextPauseId++;
+		const pause = {
+			cancelled: false,
+			remaining: requiredCalls
+		};
+		test.pauses.set( pauseId, pause );
+
+		function release() {
+			if ( pause.cancelled ) {
+				return;
+			}
+			if ( config.current === undefined ) {
+				throw new Error( "Unexpected release of async pause after tests finished.\n" +
+					`> Test: ${test.testName} [async #${pauseId}]` );
+			}
+			if ( config.current !== test ) {
+				throw new Error( "Unexpected release of async pause during a different test.\n" +
+					`> Test: ${test.testName} [async #${pauseId}]` );
+			}
+			if ( pause.remaining <= 0 ) {
+				throw new Error( "Tried to release async pause that was already released.\n" +
+					`> Test: ${test.testName} [async #${pauseId}]` );
+			}
+
+			// The `requiredCalls` parameter exists to support `assert.async(count)`
+			pause.remaining--;
+			if ( pause.remaining === 0 ) {
+				test.pauses.delete( pauseId );
+			}
+
+			internalStart( test );
+		}
+
+		// Set a recovery timeout, if so configured.
+		if ( setTimeout ) {
+			let timeoutDuration;
+			if ( typeof test.timeout === "number" ) {
+				timeoutDuration = test.timeout;
+			} else if ( typeof config.testTimeout === "number" ) {
+				timeoutDuration = config.testTimeout;
+			}
+
+			if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
+				config.timeoutHandler = function( timeout ) {
+					return function() {
+						config.timeout = null;
+						pause.cancelled = true;
+						test.pauses.delete( pauseId );
+
+						test.pushFailure(
+							`Test took longer than ${timeout}ms; test timed out.`,
+							sourceFromStacktrace( 2 )
+						);
+						internalStart( test );
+					};
+				};
+				clearTimeout( config.timeout );
+				config.timeout = setTimeout(
+					config.timeoutHandler( timeoutDuration ),
+					timeoutDuration
+				);
+			}
+		}
+
+		return release;
+	},
+
 	resolvePromise: function( promise, phase ) {
 		if ( promise != null ) {
 			const test = this;
 			const then = promise.then;
 			if ( objectType( then ) === "function" ) {
-				const resume = internalStop( test );
+				const resume = test.internalStop();
 				const resolve = function() { resume(); };
 				if ( config.notrycatch ) {
 					then.call( promise, resolve );
@@ -874,137 +1014,6 @@ test.only.each = function( testName, dataset, callback ) {
 		} );
 	} );
 };
-
-// Resets config.timeout with a new timeout duration.
-export function resetTestTimeout( timeoutDuration ) {
-	clearTimeout( config.timeout );
-	config.timeout = setTimeout( config.timeoutHandler( timeoutDuration ), timeoutDuration );
-}
-
-// Create a new async pause and return a new function that can release the pause.
-//
-// This mechanism is internally used by:
-//
-// * explicit async pauses, created by calling `assert.async()`,
-// * implicit async pauses, created when `QUnit.test()` or module hook callbacks
-//   use async-await or otherwise return a Promise.
-//
-// Happy scenario:
-//
-// * Pause is created by calling internalStop().
-//
-//   Pause is released normally by invoking release() during the same test.
-//
-//   The release() callback lets internal processing resume.
-//
-// Failure scenarios:
-//
-// * The test fails due to an uncaught exception.
-//
-//   In this case, Test.run() will call internalRecover() which empties the clears all
-//   async pauses and sets the cancelled flag, which means we silently ignore any
-//   late calls to the resume() callback, as we will have moved on to a different
-//   test by then, and we don't want to cause an extra "release during a different test"
-//   errors that the developer isn't really responsible for. This can happen when a test
-//   correctly schedules a call to release(), but also causes an uncaught error. The
-//   uncaught error means we will no longer wait for the release (as it might not arrive).
-//
-// * Pause is never released, or called an insufficient number of times.
-//
-//   Our timeout handler will kill the pause and resume test processing, basically
-//   like internalRecover(), but for one pause instead of any/all.
-//
-//   Here, too, any late calls to resume() will be silently ignored to avoid
-//   extra errors. We tolerate this since the original test will have already been
-//   marked as failure.
-//
-//   TODO: QUnit 3 will enable timeouts by default <https://github.com/qunitjs/qunit/issues/1483>,
-//   but right now a test will hang indefinitely if async pauses are not released,
-//   unless QUnit.config.testTimeout or assert.timeout() is used.
-//
-// * Pause is spontaneously released during a different test,
-//   or when no test is currently running.
-//
-//   This is close to impossible because this error only happens if the original test
-//   succesfully finished first (since other failure scenarios kill pauses and ignore
-//   late calls). It can happen if a test ended exactly as expected, but has some
-//   external or shared state continuing to hold a reference to the release callback,
-//   and either the same test scheduled another call to it in the future, or a later test
-//   causes it to be called through some shared state.
-//
-// * Pause release() is called too often, during the same test.
-//
-//   This simply throws an error, after which uncaught error handling picks it up
-//   and processing resumes.
-export function internalStop( test, requiredCalls = 1 ) {
-	config.blocking = true;
-
-	const pauseId = test.nextPauseId++;
-	const pause = {
-		cancelled: false,
-		remaining: requiredCalls
-	};
-	test.pauses.set( pauseId, pause );
-
-	function release() {
-		if ( pause.cancelled ) {
-			return;
-		}
-		if ( config.current === undefined ) {
-			throw new Error( "Unexpected release of async pause after tests finished.\n" +
-				`> Test: ${test.testName} [async #${pauseId}]` );
-		}
-		if ( config.current !== test ) {
-			throw new Error( "Unexpected release of async pause during a different test.\n" +
-				`> Test: ${test.testName} [async #${pauseId}]` );
-		}
-		if ( pause.remaining <= 0 ) {
-			throw new Error( "Tried to release async pause that was already released.\n" +
-				`> Test: ${test.testName} [async #${pauseId}]` );
-		}
-
-		// The `requiredCalls` parameter exists to support `assert.async(count)`
-		pause.remaining--;
-		if ( pause.remaining === 0 ) {
-			test.pauses.delete( pauseId );
-		}
-
-		internalStart( test );
-	}
-
-	// Set a recovery timeout, if so configured.
-	if ( setTimeout ) {
-		let timeoutDuration;
-		if ( typeof test.timeout === "number" ) {
-			timeoutDuration = test.timeout;
-		} else if ( typeof config.testTimeout === "number" ) {
-			timeoutDuration = config.testTimeout;
-		}
-
-		if ( typeof timeoutDuration === "number" && timeoutDuration > 0 ) {
-			config.timeoutHandler = function( timeout ) {
-				return function() {
-					config.timeout = null;
-					pause.cancelled = true;
-					test.pauses.delete( pauseId );
-
-					test.pushFailure(
-						`Test took longer than ${timeout}ms; test timed out.`,
-						sourceFromStacktrace( 2 )
-					);
-					internalStart( test );
-				};
-			};
-			clearTimeout( config.timeout );
-			config.timeout = setTimeout(
-				config.timeoutHandler( timeoutDuration ),
-				timeoutDuration
-			);
-		}
-	}
-
-	return release;
-}
 
 // Forcefully release all processing holds.
 function internalRecover( test ) {

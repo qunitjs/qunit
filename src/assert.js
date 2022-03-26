@@ -1,6 +1,5 @@
 import dump from "./dump";
 import equiv from "./equiv";
-import { internalStop, resetTestTimeout } from "./test";
 import Logger from "./logger";
 
 import config from "./core/config";
@@ -28,7 +27,7 @@ class Assert {
 			config.timeout = null;
 
 			if ( config.timeoutHandler && this.test.timeout > 0 ) {
-				resetTestTimeout( this.test.timeout );
+				this.test.internalResetTimeout( this.test.timeout );
 			}
 		}
 	}
@@ -75,7 +74,7 @@ class Assert {
 	// Create a new async pause and return a new function that can release the pause.
 	async( count ) {
 		const requiredCalls = count === undefined ? 1 : count;
-		return internalStop( this.test, requiredCalls );
+		return this.test.internalStop( requiredCalls );
 	}
 
 	// Exports test.push() to the user API
