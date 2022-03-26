@@ -2,6 +2,9 @@
 
 This guide walks you through the QUnit release.
 
+QUnit aims for its releases to be reproducible. Recent releases are automatically verified on a regular basis ([reproducible builds status](https://github.com/qunitjs/qunit/actions/workflows/reproducible.yaml)). Read more on [Wikipedia](https://en.wikipedia.org/wiki/Reproducible_builds), and [reproducible-builds.org](https://reproducible-builds.org/).
+
+
 ⚠️ **WARNING** ⚠️
 
 > Before starting, make sure you have:

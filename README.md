@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[![Build Status](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml)
-[![Test Coverage](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
+[![Continuous integration](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml)
+[![Test coverage](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
 [![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![npm](https://img.shields.io/npm/v/qunit.svg?style=flat)](https://www.npmjs.com/package/qunit)
-[![Reproducible Builds](https://img.shields.io/badge/Reproducible_Builds-ok-success?labelColor=1e5b96)](https://reproducible-builds.org/)
+[![Reproducible build status](https://img.shields.io/badge/Reproducible_Builds-ok-success?labelColor=1e5b96)](https://github.com/qunitjs/qunit/actions/workflows/reproducible.yaml)
 
 </div>
 
