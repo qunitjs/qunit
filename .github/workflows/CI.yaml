@@ -16,34 +16,37 @@ jobs:
             # https://github.com/actions/virtual-environments/blob/ubuntu20/20210302.0/images/linux/Ubuntu2004-README.md
             os: ubuntu-20.04
             node: 14.x
+            # Run the lint step only once because, in March 2022, GitHub began
+            # automatically extracting ESLint warnings from build logs and turning them into
+            # checks shown inline in PR diffs, but doesn't de-duplicate these.
             script: npm test
 
           - name: "Linux: Node 12"
             os: ubuntu-20.04
             node: 12.x
-            script: npm test
+            script: npm run test-nolint
 
           - name: "Linux: Node 10"
             os: ubuntu-20.04
             node: 10.x
-            script: npm test
+            script: npm run test-nolint
 
           - name: "Integration"
             os: ubuntu-20.04
             node: 12.x
-            script: npm run test:integration
+            script: npm run test-integration
 
           # On Windows, cannot test CLI yet.
           # https://github.com/qunitjs/qunit/issues/1359
           - name: "Windows: Node 14"
             os: windows-latest
             node: 14.x
-            script: npm test
+            script: npm run test-nolint
 
           - name: "macOS: Node 14"
             os: macos-latest
             node: 14.x
-            script: npm test
+            script: npm run test-nolint
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
