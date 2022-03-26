@@ -70,6 +70,10 @@ function normalize( actual ) {
 module.exports.execute = async function execute( command, options = {}, hook ) {
 	options.cwd = path.join( __dirname, "..", "fixtures" );
 
+	// Inherit no environment by default
+	// Without this, tests may fail from inheriting FORCE_COLOR=1
+	options.env = options.env || {};
+
 	// Avoid Windows-specific issue where otherwise 'foo/bar' is seen as a directory
 	// named "'foo/" (including the single quote).
 	options.windowsVerbatimArguments = true;

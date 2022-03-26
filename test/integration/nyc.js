@@ -29,6 +29,6 @@ All files     |   85.71 |      100 |      50 |   85.71 |
 --------------|---------|----------|---------|---------|-------------------
 `.trim();
 
-	const actual = cp.execSync( "npm test", { cwd: DIR, encoding: "utf8" } );
+	const actual = cp.execSync( "npm test", { cwd: DIR, env: { PATH: process.env.PATH }, encoding: "utf8" } );
 	assert.pushResult( { result: actual.includes( expected ), actual, expected } );
 } );

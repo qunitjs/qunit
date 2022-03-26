@@ -32,6 +32,12 @@ QUnit.test.each( "failing tests", {
 	try {
 		const ret = cp.execSync( "node_modules/.bin/grunt qunit:" + command, {
 			cwd: DIR,
+			env: {
+				CHROMIUM_FLAGS: process.env.CHROMIUM_FLAGS,
+				CI: process.env.CI,
+				PATH: process.env.PATH,
+				PUPPETEER_DOWNLOAD_PATH: process.env.PUPPETEER_DOWNLOAD_PATH
+			},
 			encoding: "utf8"
 		} );
 		assert.equal( ret, null );

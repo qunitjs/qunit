@@ -52,6 +52,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+      FORCE_COLOR: "1"
     steps:
       - uses: actions/checkout@v2
 
