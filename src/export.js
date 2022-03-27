@@ -1,6 +1,5 @@
 /* global module, exports, define */
-import { window, document, self } from "./globals";
-import globalThis from "../lib/global-this-polyfill";
+import { window, document, globalThis } from "./globals";
 
 export default function exportQUnit( QUnit ) {
 	let exportedModule = false;
@@ -44,15 +43,8 @@ export default function exportQUnit( QUnit ) {
 		exportedModule = true;
 	}
 
-	// For Web/Service Workers
-	if ( self && self.WorkerGlobalScope && self instanceof self.WorkerGlobalScope ) {
-		self.QUnit = QUnit;
-
-		exportedModule = true;
-	}
-
-	// For other environments, such as SpiderMonkey (mozjs) and other
-	// embedded JavaScript engines
+	// For other environments, including Web Workers (globalThis === self),
+	// SpiderMonkey (mozjs), and other embedded JavaScript engines
 	if ( !exportedModule ) {
 		globalThis.QUnit = QUnit;
 	}

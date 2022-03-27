@@ -1,5 +1,4 @@
-import globalThis from "../lib/global-this-polyfill";
-import { setTimeout, clearTimeout } from "./globals";
+import { globalThis, setTimeout, clearTimeout, StringMap } from "./globals";
 import { emit } from "./events";
 import Assert from "./assert";
 import Logger from "./logger";
@@ -30,7 +29,7 @@ export default function Test( settings ) {
 	this.timeout = undefined;
 	this.data = undefined;
 	this.withData = false;
-	this.pauses = new Map();
+	this.pauses = new StringMap();
 	this.nextPauseId = 1;
 	extend( this, settings );
 

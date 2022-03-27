@@ -1,6 +1,5 @@
 /* eslint-env node */
 
-const fs = require( "fs" );
 const { babel } = require( "@rollup/plugin-babel" );
 const { nodeResolve } = require( "@rollup/plugin-node-resolve" );
 const commonjs = require( "@rollup/plugin-commonjs" );
@@ -25,20 +24,7 @@ module.exports = {
  * Copyright OpenJS Foundation and other contributors\n\
  * Released under the MIT license\n\
  * https://jquery.org/license\n\
- */",
-
-		intro: function() {
-
-			// Define the (partial) ES6 Map polyfill for "fuzzysort".
-			// Per https://github.com/qunitjs/qunit/issues/1508:
-			// 1. Must not leak as global variable, since it's not full Map implementation.
-			// 2. Must be seen by fuzzysort as-is (e.g. not get renamed as normal
-			//    variables in an imported file would be).
-			return fs.readFileSync(
-				__dirname + "/src/html-reporter/es6-map.js",
-				"utf8"
-			).toString().trim();
-		}
+ */"
 	},
 	plugins: [
 		replace( {
