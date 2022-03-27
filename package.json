@@ -61,7 +61,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-qunit": "^6.2.0",
     "fixturify": "^2.1.1",
-    "fuzzysort": "^1.1.4",
+    "fuzzysort": "1.2.1",
     "grunt": "^1.4.1",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
