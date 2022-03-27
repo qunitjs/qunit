@@ -18,11 +18,12 @@ function normalize( actual ) {
 		// Replace backslashes (\) in stack traces on Windows to POSIX
 		.replace( reSep, "/" )
 
-		// Convert "at processModule (/qunit/qunit/qunit.js:1:2)" to "at processModule (/qunit/qunit/qunit.js)"
-		.replace( /(\/qunit\/qunit\/qunit\.js):\d+:\d+\)/g, "$1)" )
+		// Convert "at processModule (/qunit/qunit/qunit.js:1:2)" to "at qunit.js"
+		// Convert "at /qunit/qunit/qunit.js:1:2" to "at qunit.js"
+		.replace( /^(\s+at ).*\/qunit\/qunit\/qunit\.js.*$/gm, "$1qunit.js" )
 
-		// Convert "at /qunit/qunit/qunit.js:1:2" to "at /qunit/qunit/qunit.js"
-		.replace( /( {2}at \/qunit\/qunit\/qunit\.js):\d+:\d+/g, "$1" )
+		// Convert any "/qunit/qunit/qunit.js:1:2" to "/qunit/qunit/qunit.js"
+		.replace( /(\/qunit\/qunit\/qunit\.js):\d+:\d+/g, "$1" )
 
 		// Strip inferred names for anonymous test closures (as Node 10 did),
 		// to match the output of Node 12+.
@@ -48,11 +49,11 @@ function normalize( actual ) {
 		// Convert "at load (/qunit/node_modules/append-transform/index.js:6" to "at internal"
 		.replace( / {2}at .+\/.*node_modules\/append-transform\/.*\)/g, "  at internal" )
 
-		// merge successive lines after initial frame
-		.replace( /(\n\s+at internal)+/g, "$1" )
+		// Consolidate subsequent qunit.js frames
+		.replace( /^(\s+at qunit\.js$)(\n\s+at qunit\.js$)+/gm, "$1" )
 
-		// merge successive line with initial frame
-		.replace( /(at internal)\n\s+at internal/g, "$1" );
+		// Consolidate subsequent internal frames
+		.replace( /^(\s+at internal$)(\n\s+at internal$)+/gm, "$1" );
 }
 
 /**

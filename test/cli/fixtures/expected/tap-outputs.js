@@ -114,8 +114,7 @@ Last test to run (hanging) has an async hold. Ensure all assert.async() callback
   stack: |
     Error: outside of a test context
         at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
-        at processModule (/qunit/qunit/qunit.js)
-        at Object.module$1 [as module] (/qunit/qunit/qunit.js)
+        at qunit.js
         at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
         at internal
   ...
@@ -149,10 +148,7 @@ not ok 1 global failure
   expected: undefined
   stack: |
     Error: No tests were run.
-        at done (/qunit/qunit/qunit.js)
-        at advanceTestQueue (/qunit/qunit/qunit.js)
-        at Object.advance (/qunit/qunit/qunit.js)
-        at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+        at qunit.js
         at internal
   ...
 1..1
@@ -254,10 +250,7 @@ not ok 1 global failure
   expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".
-        at done (/qunit/qunit/qunit.js)
-        at advanceTestQueue (/qunit/qunit/qunit.js)
-        at Object.advance (/qunit/qunit/qunit.js)
-        at unblockAndAdvanceQueue (/qunit/qunit/qunit.js)
+        at qunit.js
         at internal
   ...
 1..1
@@ -487,7 +480,7 @@ not ok 1 global failure
   stack: |
     Error: No dice
         at /qunit/test/cli/fixtures/bad-callbacks/begin-throw.js:2:8
-        at /qunit/qunit/qunit.js
+        at qunit.js
         at internal
   ...
 Bail out! Error: No dice`,
@@ -507,7 +500,7 @@ Bail out! Error: No dice
   stack: |
     Error: No dice
         at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:8
-        at /qunit/qunit/qunit.js
+        at qunit.js
         at internal
   ...`,
 
@@ -585,7 +578,7 @@ Bail out! Error: Unexpected release of async pause after tests finished.
   stack: |
     Error: Unexpected release of async pause after tests finished.
     > Test: extra done scheduled outside any test [async #1]
-        at Timeout.release [as _onTimeout] (/qunit/qunit/qunit.js)
+        at qunit.js
         at internal
   ...`,
 
