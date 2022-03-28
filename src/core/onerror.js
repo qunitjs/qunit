@@ -1,6 +1,6 @@
-import Logger from "../logger";
-import config from "./config";
-import onUncaughtException from "./on-uncaught-exception";
+import Logger from '../logger';
+import config from './config';
+import onUncaughtException from './on-uncaught-exception';
 
 /**
  * Handle a window.onerror error.
@@ -22,17 +22,17 @@ import onUncaughtException from "./on-uncaught-exception";
  * @param {string|undefined} [details.stacktrace]
  * @return {bool} True if native error reporting should be suppressed.
  */
-export default function onWindowError( details ) {
-	Logger.warn( "QUnit.onError is deprecated and will be removed in QUnit 3.0." +
-			" Please use QUnit.onUncaughtException instead." );
+export default function onWindowError (details) {
+  Logger.warn('QUnit.onError is deprecated and will be removed in QUnit 3.0.' +
+    ' Please use QUnit.onUncaughtException instead.');
 
-	if ( config.current && config.current.ignoreGlobalErrors ) {
-		return true;
-	}
+  if (config.current && config.current.ignoreGlobalErrors) {
+    return true;
+  }
 
-	const err = new Error( details.message );
-	err.stack = details.stacktrace || details.fileName + ":" + details.lineNumber;
-	onUncaughtException( err );
+  const err = new Error(details.message);
+  err.stack = details.stacktrace || details.fileName + ':' + details.lineNumber;
+  onUncaughtException(err);
 
-	return false;
+  return false;
 }

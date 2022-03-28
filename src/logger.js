@@ -1,4 +1,4 @@
-import { console } from "./globals";
+import { console } from './globals';
 
 // Support: IE 9
 // Detect if the console object exists and no-op otherwise.
@@ -12,7 +12,7 @@ import { console } from "./globals";
 // The console object has a log method, but no warn method.
 
 export default {
-	warn: console ?
-		Function.prototype.bind.call( console.warn || console.log, console ) :
-		function() {}
+  warn: console
+    ? Function.prototype.bind.call(console.warn || console.log, console)
+    : function () {}
 };

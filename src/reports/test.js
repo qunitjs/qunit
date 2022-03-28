@@ -1,100 +1,100 @@
-import { extend, performance } from "../core/utilities";
+import { extend, performance } from '../core/utilities';
 
 export default class TestReport {
-	constructor( name, suite, options ) {
-		this.name = name;
-		this.suiteName = suite.name;
-		this.fullName = suite.fullName.concat( name );
-		this.runtime = 0;
-		this.assertions = [];
+  constructor (name, suite, options) {
+    this.name = name;
+    this.suiteName = suite.name;
+    this.fullName = suite.fullName.concat(name);
+    this.runtime = 0;
+    this.assertions = [];
 
-		this.skipped = !!options.skip;
-		this.todo = !!options.todo;
+    this.skipped = !!options.skip;
+    this.todo = !!options.todo;
 
-		this.valid = options.valid;
+    this.valid = options.valid;
 
-		this._startTime = 0;
-		this._endTime = 0;
+    this._startTime = 0;
+    this._endTime = 0;
 
-		suite.pushTest( this );
-	}
+    suite.pushTest(this);
+  }
 
-	start( recordTime ) {
-		if ( recordTime ) {
-			this._startTime = performance.now();
-			performance.mark( "qunit_test_start" );
-		}
+  start (recordTime) {
+    if (recordTime) {
+      this._startTime = performance.now();
+      performance.mark('qunit_test_start');
+    }
 
-		return {
-			name: this.name,
-			suiteName: this.suiteName,
-			fullName: this.fullName.slice()
-		};
-	}
+    return {
+      name: this.name,
+      suiteName: this.suiteName,
+      fullName: this.fullName.slice()
+    };
+  }
 
-	end( recordTime ) {
-		if ( recordTime ) {
-			this._endTime = performance.now();
-			if ( performance ) {
-				performance.mark( "qunit_test_end" );
+  end (recordTime) {
+    if (recordTime) {
+      this._endTime = performance.now();
+      if (performance) {
+        performance.mark('qunit_test_end');
 
-				const testName = this.fullName.join( " – " );
+        const testName = this.fullName.join(' – ');
 
-				performance.measure(
-					`QUnit Test: ${testName}`,
-					"qunit_test_start",
-					"qunit_test_end"
-				);
-			}
-		}
+        performance.measure(
+          `QUnit Test: ${testName}`,
+          'qunit_test_start',
+          'qunit_test_end'
+        );
+      }
+    }
 
-		return extend( this.start(), {
-			runtime: this.getRuntime(),
-			status: this.getStatus(),
-			errors: this.getFailedAssertions(),
-			assertions: this.getAssertions()
-		} );
-	}
+    return extend(this.start(), {
+      runtime: this.getRuntime(),
+      status: this.getStatus(),
+      errors: this.getFailedAssertions(),
+      assertions: this.getAssertions()
+    });
+  }
 
-	pushAssertion( assertion ) {
-		this.assertions.push( assertion );
-	}
+  pushAssertion (assertion) {
+    this.assertions.push(assertion);
+  }
 
-	getRuntime() {
-		return this._endTime - this._startTime;
-	}
+  getRuntime () {
+    return this._endTime - this._startTime;
+  }
 
-	getStatus() {
-		if ( this.skipped ) {
-			return "skipped";
-		}
+  getStatus () {
+    if (this.skipped) {
+      return 'skipped';
+    }
 
-		const testPassed = this.getFailedAssertions().length > 0 ? this.todo : !this.todo;
+    const testPassed = this.getFailedAssertions().length > 0 ? this.todo : !this.todo;
 
-		if ( !testPassed ) {
-			return "failed";
-		} else if ( this.todo ) {
-			return "todo";
-		} else {
-			return "passed";
-		}
-	}
+    if (!testPassed) {
+      return 'failed';
+    } else if (this.todo) {
+      return 'todo';
+    } else {
+      return 'passed';
+    }
+  }
 
-	getFailedAssertions() {
-		return this.assertions.filter( assertion => !assertion.passed );
-	}
+  getFailedAssertions () {
+    return this.assertions.filter(assertion => !assertion.passed);
+  }
 
-	getAssertions() {
-		return this.assertions.slice();
-	}
+  getAssertions () {
+    return this.assertions.slice();
+  }
 
-	// Remove actual and expected values from assertions. This is to prevent
-	// leaking memory throughout a test suite.
-	slimAssertions() {
-		this.assertions = this.assertions.map( assertion => {
-			delete assertion.actual;
-			delete assertion.expected;
-			return assertion;
-		} );
-	}
+  // Remove actual and expected values from assertions. This is to prevent
+  // leaking memory throughout a test suite.
+  slimAssertions () {
+    this.assertions = this.assertions.map(assertion => {
+      delete assertion.actual;
+      delete assertion.expected;
+      return assertion;
+    });
+  }
 }

@@ -25,18 +25,18 @@ This method is similar to the `assertTrue()` method found in xUnit-style framewo
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   // success
-  assert.true( true, "boolean true" );
+  assert.true(true, 'boolean true');
 
   // failure
-  assert.true( "foo", "non-empty string" );
-  assert.true( "", "empty string" );
-  assert.true( 0, "number zero" );
-  assert.true( false, "boolean false" );
-  assert.true( NaN, "NaN value" );
-  assert.true( null, "null value" );
-  assert.true( undefined, "undefined value" );
+  assert.true('foo', 'non-empty string');
+  assert.true('', 'empty string');
+  assert.true(0, 'number zero');
+  assert.true(false, 'boolean false');
+  assert.true(NaN, 'NaN value');
+  assert.true(null, 'null value');
+  assert.true(undefined, 'undefined value');
 });
 ```
 

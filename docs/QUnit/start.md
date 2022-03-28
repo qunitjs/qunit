@@ -24,7 +24,7 @@ A test run that does not begin when the page is done loading. This example uses 
 QUnit.config.autostart = false;
 
 require(
-  [ "test/tests1.js", "test/tests2.js" ],
+  ['test/tests1.js', 'test/tests2.js'],
   QUnit.start
 );
 ```

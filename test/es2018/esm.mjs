@@ -1,9 +1,7 @@
-import sum from "./sum.mjs";
+import sum from './sum.mjs';
 
-QUnit.module( "ESM test suite", () => {
-
-	QUnit.test( "sum()", assert => {
-		assert.equal( 5, sum( 2, 3 ) );
-	} );
-
-} );
+QUnit.module('ESM test suite', () => {
+  QUnit.test('sum()', assert => {
+    assert.equal(5, sum(2, 3));
+  });
+});

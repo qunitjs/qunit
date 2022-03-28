@@ -1,334 +1,326 @@
-QUnit.module( "assert.async", function() {
+/* global setTimeout */
+QUnit.module('assert.async', function () {
+  QUnit.test('single call synchronously', function (assert) {
+    var done;
 
-	QUnit.test( "single call synchronously", function( assert ) {
-		var done;
+    assert.expect(1);
+    done = assert.async();
 
-		assert.expect( 1 );
-		done = assert.async();
+    assert.true(true);
+    done();
+  });
 
-		assert.true( true );
-		done();
-	} );
+  QUnit.test('single call', function (assert) {
+    var done = assert.async();
 
-	QUnit.test( "single call", function( assert ) {
-		var done = assert.async();
+    assert.expect(1);
+    setTimeout(function () {
+      assert.true(true);
+      done();
+    });
+  });
 
-		assert.expect( 1 );
-		setTimeout( function() {
-			assert.true( true );
-			done();
-		} );
-	} );
+  QUnit.test('multiple calls', function (assert) {
+    var done = assert.async(4);
 
-	QUnit.test( "multiple calls", function( assert ) {
-		var done = assert.async( 4 );
+    assert.expect(4);
+    setTimeout(function () {
+      assert.true(true);
+      done();
+    });
+    setTimeout(function () {
+      assert.true(true);
+      done();
+    });
+    setTimeout(function () {
+      assert.true(true);
+      done();
+    });
+    setTimeout(function () {
+      assert.true(true);
+      done();
+    });
+  });
 
-		assert.expect( 4 );
-		setTimeout( function() {
-			assert.true( true );
-			done();
-		} );
-		setTimeout( function() {
-			assert.true( true );
-			done();
-		} );
-		setTimeout( function() {
-			assert.true( true );
-			done();
-		} );
-		setTimeout( function() {
-			assert.true( true );
-			done();
-		} );
+  QUnit.test('parallel calls', function (assert) {
+    var done1 = assert.async();
+    var done2 = assert.async();
 
-	} );
+    assert.expect(2);
+    setTimeout(function () {
+      assert.true(true);
+      done1();
+    });
+    setTimeout(function () {
+      assert.true(true);
+      done2();
+    });
+  });
 
-	QUnit.test( "parallel calls", function( assert ) {
-		var done1 = assert.async(),
-			done2 = assert.async();
+  QUnit.test('parallel calls of differing speeds', function (assert) {
+    var done1 = assert.async();
+    var done2 = assert.async();
 
-		assert.expect( 2 );
-		setTimeout( function() {
-			assert.true( true );
-			done1();
-		} );
-		setTimeout( function() {
-			assert.true( true );
-			done2();
-		} );
-	} );
+    assert.expect(2);
+    setTimeout(function () {
+      assert.true(true);
+      done1();
+    });
+    setTimeout(function () {
+      assert.true(true);
+      done2();
+    }, 100);
+  });
 
-	QUnit.test( "parallel calls of differing speeds", function( assert ) {
-		var done1 = assert.async(),
-			done2 = assert.async();
+  QUnit.test('waterfall calls', function (assert) {
+    var done2;
+    var done1 = assert.async();
 
-		assert.expect( 2 );
-		setTimeout( function() {
-			assert.true( true );
-			done1();
-		} );
-		setTimeout( function() {
-			assert.true( true );
-			done2();
-		}, 100 );
-	} );
+    assert.expect(2);
+    setTimeout(function () {
+      assert.true(true, 'first');
+      done1();
+      done2 = assert.async();
+      setTimeout(function () {
+        assert.true(true, 'second');
+        done2();
+      });
+    });
+  });
 
-	QUnit.test( "waterfall calls", function( assert ) {
-		var done2,
-			done1 = assert.async();
+  QUnit.test('waterfall calls of differing speeds', function (assert) {
+    var done2;
+    var done1 = assert.async();
 
-		assert.expect( 2 );
-		setTimeout( function() {
-			assert.true( true, "first" );
-			done1();
-			done2 = assert.async();
-			setTimeout( function() {
-				assert.true( true, "second" );
-				done2();
-			} );
-		} );
-	} );
+    assert.expect(2);
+    setTimeout(function () {
+      assert.true(true, 'first');
+      done1();
+      done2 = assert.async();
+      setTimeout(function () {
+        assert.true(true, 'second');
+        done2();
+      }, 100);
+    });
+  });
 
-	QUnit.test( "waterfall calls of differing speeds", function( assert ) {
-		var done2,
-			done1 = assert.async();
+  QUnit.test('fails if called more than once', function (assert) {
+    // Having an outer async flow in this test avoids the need to manually modify QUnit internals
+    // in order to avoid post-`done` assertions causing additional failures
+    var done = assert.async();
 
-		assert.expect( 2 );
-		setTimeout( function() {
-			assert.true( true, "first" );
-			done1();
-			done2 = assert.async();
-			setTimeout( function() {
-				assert.true( true, "second" );
-				done2();
-			}, 100 );
-		} );
-	} );
+    assert.expect(1);
 
-	QUnit.test( "fails if called more than once", function( assert ) {
+    var overDone = assert.async();
+    overDone();
 
-		// Having an outer async flow in this test avoids the need to manually modify QUnit internals
-		// in order to avoid post-`done` assertions causing additional failures
-		var done = assert.async();
+    assert.throws(function () {
+      overDone();
+    }, /Tried to release async pause that was already released/);
 
-		assert.expect( 1 );
+    done();
+  });
 
-		var overDone = assert.async();
-		overDone();
+  QUnit.test('fails if called more than specified count', function (assert) {
+    // Having an outer async flow in this test avoids the need to manually modify QUnit internals
+    // in order to avoid post-`done` assertions causing additional failures
+    var done = assert.async();
 
-		assert.throws( function() {
-			overDone();
-		}, /Tried to release async pause that was already released/ );
+    assert.expect(1);
 
-		done();
-	} );
+    var overDone = assert.async(3);
+    overDone();
+    overDone();
+    overDone();
 
-	QUnit.test( "fails if called more than specified count", function( assert ) {
+    assert.throws(function () {
+      overDone();
+    }, /Tried to release async pause that was already released/);
 
-		// Having an outer async flow in this test avoids the need to manually modify QUnit internals
-		// in order to avoid post-`done` assertions causing additional failures
-		var done = assert.async();
+    done();
+  });
 
-		assert.expect( 1 );
+  (function () {
+    var previousTestDone;
 
-		var overDone = assert.async( 3 );
-		overDone();
-		overDone();
-		overDone();
+    QUnit.test('errors if called after test finishes - part 1', function (assert) {
+      assert.expect(0);
+      previousTestDone = assert.async();
+      previousTestDone();
+    });
 
-		assert.throws( function() {
-			overDone();
-		}, /Tried to release async pause that was already released/ );
+    QUnit.test('errors if called after test finishes - part 2', function (assert) {
+      assert.throws(
+        previousTestDone,
+        /Unexpected release of async pause during a different test.\n> Test: errors if called after test finishes - part 1/
+      );
+    });
+  }());
 
-		done();
-	} );
+  QUnit.module('overcalled in before hook', {
+    before: function (assert) {
+      // Having an outer async flow in this test avoids the need to manually modify QUnit
+      // internals in order to avoid post-`done` assertions causing additional failures
+      var done = assert.async();
 
-	( function() {
-		var previousTestDone;
+      var overDone = assert.async();
+      overDone();
 
-		QUnit.test( "errors if called after test finishes - part 1", function( assert ) {
-			assert.expect( 0 );
-			previousTestDone = assert.async();
-			previousTestDone();
-		} );
+      assert.throws(function () {
+        overDone();
+      }, /Tried to release async pause that was already released/);
 
-		QUnit.test( "errors if called after test finishes - part 2", function( assert ) {
-			assert.throws(
-				previousTestDone,
-				/Unexpected release of async pause during a different test.\n> Test: errors if called after test finishes - part 1/
-			);
-		} );
-	}() );
+      done();
+    }
+  }, function () {
+    QUnit.test('test', function () {});
+  });
 
-	QUnit.module( "overcalled in before hook", {
-		before: function( assert ) {
+  QUnit.module('overcalled in beforeEach hook', {
+    beforeEach: function (assert) {
+      // Having an outer async flow in this test avoids the need to manually modify QUnit
+      // internals in order to avoid post-`done` assertions causing additional failures
+      var done = assert.async();
 
-			// Having an outer async flow in this test avoids the need to manually modify QUnit
-			// internals in order to avoid post-`done` assertions causing additional failures
-			var done = assert.async();
+      var overDone = assert.async();
+      overDone();
 
-			var overDone = assert.async();
-			overDone();
+      assert.throws(function () {
+        overDone();
+      }, /Tried to release async pause that was already released/);
 
-			assert.throws( function() {
-				overDone();
-			}, /Tried to release async pause that was already released/ );
+      done();
+    }
+  }, function () {
+    QUnit.test('test', function () {});
+  });
 
-			done();
-		}
-	}, function() {
-		QUnit.test( "test", function() {} );
-	} );
+  QUnit.module('overcalled in afterEach hook', {
+    afterEach: function (assert) {
+      // Having an outer async flow in this test avoids the need to manually modify QUnit
+      // internals in order to avoid post-`done` assertions causing additional failures
+      var done = assert.async();
 
-	QUnit.module( "overcalled in beforeEach hook", {
-		beforeEach: function( assert ) {
+      var overDone = assert.async();
+      overDone();
 
-			// Having an outer async flow in this test avoids the need to manually modify QUnit
-			// internals in order to avoid post-`done` assertions causing additional failures
-			var done = assert.async();
+      assert.throws(function () {
+        overDone();
+      }, /Tried to release async pause that was already released/);
 
-			var overDone = assert.async();
-			overDone();
+      done();
+    }
+  }, function () {
+    QUnit.test('test', function () {});
+  });
 
-			assert.throws( function() {
-				overDone();
-			}, /Tried to release async pause that was already released/ );
+  QUnit.module('overcalled in after hook', {
+    after: function (assert) {
+      // Having an outer async flow in this test avoids the need to manually modify QUnit
+      // internals in order to avoid post-`done` assertions causing additional failures
+      var done = assert.async();
 
-			done();
-		}
-	}, function() {
-		QUnit.test( "test", function() {} );
-	} );
+      var overDone = assert.async();
+      overDone();
 
-	QUnit.module( "overcalled in afterEach hook", {
-		afterEach: function( assert ) {
+      assert.throws(function () {
+        overDone();
+      }, /Tried to release async pause that was already released/);
 
-			// Having an outer async flow in this test avoids the need to manually modify QUnit
-			// internals in order to avoid post-`done` assertions causing additional failures
-			var done = assert.async();
+      done();
+    }
+  }, function () {
+    QUnit.test('test', function () {});
+  });
 
-			var overDone = assert.async();
-			overDone();
+  QUnit.module('in before hook', {
+    before: function (assert) {
+      var done = assert.async();
+      var testContext = this;
+      setTimeout(function () {
+        testContext.state = 'before';
+        done();
+      });
+    }
+  }, function () {
+    QUnit.test('call order', function (assert) {
+      assert.equal(this.state, 'before', 'called before test callback');
+    });
+  });
 
-			assert.throws( function() {
-				overDone();
-			}, /Tried to release async pause that was already released/ );
+  QUnit.module('in beforeEach hook', {
+    beforeEach: function (assert) {
+      var done = assert.async();
+      var testContext = this;
+      setTimeout(function () {
+        testContext.state = 'beforeEach';
+        done();
+      });
+    }
+  }, function () {
+    QUnit.test('call order', function (assert) {
+      assert.equal(this.state, 'beforeEach', 'called before test callback');
+    });
+  });
 
-			done();
-		}
-	}, function() {
-		QUnit.test( "test", function() {} );
-	} );
+  QUnit.module('in afterEach hook', {
+    afterEach: function (assert) {
+      assert.equal(this.state, 'done', 'called after test callback');
+      assert.true(true, 'called before expected assert count is validated');
+    }
+  }, function () {
+    QUnit.test('call order', function (assert) {
+      assert.expect(2);
+      var done = assert.async();
+      var testContext = this;
+      setTimeout(function () {
+        testContext.state = 'done';
+        done();
+      });
+    });
+  });
 
-	QUnit.module( "overcalled in after hook", {
-		after: function( assert ) {
+  QUnit.module('in after hook', {
+    after: function (assert) {
+      assert.equal(this.state, 'done', 'called after test callback');
+      assert.true(true, 'called before expected assert count is validated');
+    }
+  }, function () {
+    QUnit.test('call order', function (assert) {
+      assert.expect(2);
+      var done = assert.async();
+      var testContext = this;
+      setTimeout(function () {
+        testContext.state = 'done';
+        done();
+      });
+    });
+  });
 
-			// Having an outer async flow in this test avoids the need to manually modify QUnit
-			// internals in order to avoid post-`done` assertions causing additional failures
-			var done = assert.async();
+  QUnit.module('assertions after final assert.async callback', {
+    before: function (assert) {
+      assert.async()();
+      assert.true(true, 'before');
+    },
 
-			var overDone = assert.async();
-			overDone();
+    beforeEach: function (assert) {
+      assert.async()();
+      assert.true(true, 'beforeEach');
+    },
 
-			assert.throws( function() {
-				overDone();
-			}, /Tried to release async pause that was already released/ );
+    afterEach: function (assert) {
+      assert.async()();
+      assert.true(true, 'afterEach');
+    },
 
-			done();
-		}
-	}, function() {
-		QUnit.test( "test", function() {} );
-	} );
+    after: function (assert) {
+      assert.async()();
+      assert.true(true, 'after');
+    }
+  });
 
-	QUnit.module( "in before hook", {
-		before: function( assert ) {
-			var done = assert.async(),
-				testContext = this;
-			setTimeout( function() {
-				testContext.state = "before";
-				done();
-			} );
-		}
-	}, function() {
-		QUnit.test( "call order", function( assert ) {
-			assert.equal( this.state, "before", "called before test callback" );
-		} );
-	} );
-
-	QUnit.module( "in beforeEach hook", {
-		beforeEach: function( assert ) {
-			var done = assert.async(),
-				testContext = this;
-			setTimeout( function() {
-				testContext.state = "beforeEach";
-				done();
-			} );
-		}
-	}, function() {
-		QUnit.test( "call order", function( assert ) {
-			assert.equal( this.state, "beforeEach", "called before test callback" );
-		} );
-	} );
-
-	QUnit.module( "in afterEach hook", {
-		afterEach: function( assert ) {
-			assert.equal( this.state, "done", "called after test callback" );
-			assert.true( true, "called before expected assert count is validated" );
-		}
-	}, function() {
-		QUnit.test( "call order", function( assert ) {
-			assert.expect( 2 );
-			var done = assert.async(),
-				testContext = this;
-			setTimeout( function() {
-				testContext.state = "done";
-				done();
-			} );
-		} );
-	} );
-
-	QUnit.module( "in after hook", {
-		after: function( assert ) {
-			assert.equal( this.state, "done", "called after test callback" );
-			assert.true( true, "called before expected assert count is validated" );
-		}
-	}, function() {
-		QUnit.test( "call order", function( assert ) {
-			assert.expect( 2 );
-			var done = assert.async(),
-				testContext = this;
-			setTimeout( function() {
-				testContext.state = "done";
-				done();
-			} );
-		} );
-	} );
-
-	QUnit.module( "assertions after final assert.async callback", {
-		before: function( assert ) {
-			assert.async()();
-			assert.true( true, "before" );
-		},
-
-		beforeEach: function( assert ) {
-			assert.async()();
-			assert.true( true, "beforeEach" );
-		},
-
-		afterEach: function( assert ) {
-			assert.async()();
-			assert.true( true, "afterEach" );
-		},
-
-		after: function( assert ) {
-			assert.async()();
-			assert.true( true, "after" );
-		}
-	} );
-
-	QUnit.test( "in any hook still pass", function( assert ) {
-		assert.expect( 5 );
-		assert.true( true, "test callback" );
-	} );
-
-} );
+  QUnit.test('in any hook still pass', function (assert) {
+    assert.expect(5);
+    assert.true(true, 'test callback');
+  });
+});

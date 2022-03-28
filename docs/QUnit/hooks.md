@@ -25,12 +25,12 @@ For more details about hooks, refer to [QUnit.module § Hooks](./module.md#hooks
 ## Examples
 
 ```js
-QUnit.hooks.beforeEach( function() {
+QUnit.hooks.beforeEach(function () {
   this.app = new MyApp();
 });
 
-QUnit.hooks.afterEach( async function( assert ) {
-  assert.deepEqual( [], await this.app.getErrors(), "MyApp errors" );
+QUnit.hooks.afterEach(async function (assert) {
+  assert.deepEqual([], await this.app.getErrors(), 'MyApp errors');
 
   MyApp.reset();
 });

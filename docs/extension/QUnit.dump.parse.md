@@ -35,14 +35,14 @@ The following is an example from [grunt-contrib-qunit][], which sends results fr
 [grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/188a29af7817e1798fdd95f1ab7d3069231e4859/chrome/bridge.js#L42-L60
 
 ```js
-QUnit.log(function( obj ) {
+QUnit.log(function (obj) {
   var actual;
   var expected;
 
-  if ( !obj.result ) {
+  if (!obj.result) {
     // Format before sending
-    actual = QUnit.dump.parse( obj.actual );
-    expected = QUnit.dump.parse( obj.expected );
+    actual = QUnit.dump.parse(obj.actual);
+    expected = QUnit.dump.parse(obj.expected);
   }
 
   // ...
@@ -54,10 +54,10 @@ QUnit.log(function( obj ) {
 This example shows the formatted representation of a DOM element.
 
 ```js
-var qHeader = document.getElementById( "qunit-header" );
-var parsed = QUnit.dump.parse( qHeader );
+var qHeader = document.getElementById('qunit-header');
+var parsed = QUnit.dump.parse(qHeader);
 
-console.log( parsed );
+console.log(parsed);
 
 // Logs: '<h1 id="qunit-header"></h1>'
 ```
@@ -74,10 +74,10 @@ var input = {
   }
 };
 QUnit.dump.maxDepth = 1;
-console.log( QUnit.dump.parse( input ) );
+console.log(QUnit.dump.parse(input));
 // Logs: { "parts": [object Object] }
 
 QUnit.dump.maxDepth = 2;
-console.log( QUnit.dump.parse( input ) );
+console.log(QUnit.dump.parse(input));
 // Logs: { "parts": { "back": [object Array], "front": [object Array] } }
 ```

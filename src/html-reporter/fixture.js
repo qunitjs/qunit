@@ -1,52 +1,48 @@
-import QUnit from "../core";
-import { window, document } from "../globals";
+import QUnit from '../core';
+import { window, document } from '../globals';
 
-( function() {
+(function () {
+  if (!window || !document) {
+    return;
+  }
 
-	if ( !window || !document ) {
-		return;
-	}
+  const config = QUnit.config;
+  const hasOwn = Object.prototype.hasOwnProperty;
 
-	var config = QUnit.config,
-		hasOwn = Object.prototype.hasOwnProperty;
+  // Stores fixture HTML for resetting later
+  function storeFixture () {
+    // Avoid overwriting user-defined values
+    if (hasOwn.call(config, 'fixture')) {
+      return;
+    }
 
-	// Stores fixture HTML for resetting later
-	function storeFixture() {
+    const fixture = document.getElementById('qunit-fixture');
+    if (fixture) {
+      config.fixture = fixture.cloneNode(true);
+    }
+  }
 
-		// Avoid overwriting user-defined values
-		if ( hasOwn.call( config, "fixture" ) ) {
-			return;
-		}
+  QUnit.begin(storeFixture);
 
-		var fixture = document.getElementById( "qunit-fixture" );
-		if ( fixture ) {
-			config.fixture = fixture.cloneNode( true );
-		}
-	}
+  // Resets the fixture DOM element if available.
+  function resetFixture () {
+    if (config.fixture == null) {
+      return;
+    }
 
-	QUnit.begin( storeFixture );
+    const fixture = document.getElementById('qunit-fixture');
+    const resetFixtureType = typeof config.fixture;
+    if (resetFixtureType === 'string') {
+      // support user defined values for `config.fixture`
+      const newFixture = document.createElement('div');
+      newFixture.setAttribute('id', 'qunit-fixture');
+      newFixture.innerHTML = config.fixture;
+      fixture.parentNode.replaceChild(newFixture, fixture);
+    } else {
+      const clonedFixture = config.fixture.cloneNode(true);
+      fixture.parentNode.replaceChild(clonedFixture, fixture);
+    }
+  }
 
-	// Resets the fixture DOM element if available.
-	function resetFixture() {
-		if ( config.fixture == null ) {
-			return;
-		}
-
-		var fixture = document.getElementById( "qunit-fixture" );
-		var resetFixtureType = typeof config.fixture;
-		if ( resetFixtureType === "string" ) {
-
-			// support user defined values for `config.fixture`
-			var newFixture = document.createElement( "div" );
-			newFixture.setAttribute( "id", "qunit-fixture" );
-			newFixture.innerHTML = config.fixture;
-			fixture.parentNode.replaceChild( newFixture, fixture );
-		} else {
-			const clonedFixture = config.fixture.cloneNode( true );
-			fixture.parentNode.replaceChild( clonedFixture, fixture );
-		}
-	}
-
-	QUnit.testStart( resetFixture );
-
-} )();
+  QUnit.testStart(resetFixture);
+})();

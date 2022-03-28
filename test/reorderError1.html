@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>QUnit - Asserts it does not skip tests after reordering</title>
-	<link rel="stylesheet" href="../qunit/qunit.css">
-	<script src="../qunit/qunit.js"></script>
-	<script>
+  <meta charset="UTF-8">
+  <title>reorderError1</title>
+  <link rel="stylesheet" href="../qunit/qunit.css">
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  // Asserts it does not skip tests after reordering.
+  // Ref #907
+  // First Case.
+  // 1. First test failed and second test passed in first module.
+  // 2. First test failed in second module.
+  // 3. Test count should be 3.
+  if (window.sessionStorage) {
+    window.totalCount = 0;
+    sessionStorage['qunit-test-First fail module-1-should be fail'] = 1;
+    sessionStorage['qunit-test-Second fail module-1-should be fail'] = 1;
+    QUnit.done(function (details) {
+      window.totalCount = details.total;
+      delete sessionStorage['qunit-test-First fail module-1-should be fail'];
+      delete sessionStorage['qunit-test-Second fail module-1-should be fail'];
+    });
 
-	// Ref #907
-	// First Case.
-	// 1. First test failed and second test passed in first module.
-	// 2. First test failed in second module.
-	// 3. Test count should be 3.
-	if ( window.sessionStorage ) {
-		window.totalCount = 0;
-		sessionStorage[ "qunit-test-First fail module-1-should be fail" ] = 1;
-		sessionStorage[ "qunit-test-Second fail module-1-should be fail" ] = 1;
-		QUnit.done( function( details ) {
-			window.totalCount = details.total;
-			delete sessionStorage[ "qunit-test-First fail module-1-should be fail" ];
-			delete sessionStorage[ "qunit-test-Second fail module-1-should be fail" ];
-		} );
+    QUnit.module('First fail module-1');
+    QUnit.test('should pass', function (assert) {
+      assert.true(true);
+    });
+    QUnit.test('should be fail', function (assert) {
+      assert.true(false);
+    });
 
-		QUnit.module( "First fail module-1" );
-		QUnit.test( "should pass", function( assert ) {
-			assert.true( true );
-		} );
-		QUnit.test( "should be fail", function( assert ) {
-			assert.true( false );
-		} );
+    QUnit.module('Second fail module-1');
+    QUnit.test('should be fail', function (assert) {
+      assert.true(false);
+    });
+  }
 
-		QUnit.module( "Second fail module-1" );
-		QUnit.test( "should be fail", function( assert ) {
-			assert.true( false );
-		} );
-	}
+  // Delete QUnit global so we can reload it
+  delete window.QUnit;
+  </script>
 
-	// Delete QUnit global so we can reload it
-	delete window.QUnit;
-	</script>
-
-	<!--
-		The actual tests will run after reloading QUnit and will catch the value
-		of the global `totalCount` set on the previous QUnit.done.
-		This new QUnit load could be replaced by an async call, but the grunt qunit
-		relies on QUnit loaded below and ignores the previously failed results.
-	-->
-	<script src="../qunit/qunit.js"></script>
-	<script src="reorderError1.js"></script>
+  <!--
+    The actual tests will run after reloading QUnit and will catch the value
+    of the global `totalCount` set on the previous QUnit.done.
+    This new QUnit load could be replaced by an async call, but the grunt qunit
+    relies on QUnit loaded below and ignores the previously failed results.
+  -->
+  <script src="../qunit/qunit.js"></script>
+  <script src="reorderError1.js"></script>
 </head>
 <body>
-	<div id="qunit"></div>
+  <div id="qunit"></div>
 </body>
 </html>

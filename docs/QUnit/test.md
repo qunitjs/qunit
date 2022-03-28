@@ -48,13 +48,13 @@ See also:
 A practical example, using the assert argument.
 
 ```js
-function square( x ) {
+function square (x) {
   return x * x;
 }
 
-QUnit.test( "square()", assert => {
-  assert.equal( square( 2 ), 4, "square(2)" );
-  assert.equal( square( 3 ), 9, "square(3)" );
+QUnit.test('square()', assert => {
+  assert.equal(square(2), 4, 'square(2)');
+  assert.equal(square(3), 9, 'square(3)');
 });
 ```
 
@@ -65,13 +65,13 @@ Following the example above, `QUnit.test` also supports JS [async functions][] s
 [async functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 ```js
-QUnit.test( "Test with async-await", async assert => {
+QUnit.test('Test with async-await', async assert => {
   const a = await fetchSquare(2);
   const b = await fetchSquare(3);
 
-  assert.equal( a, 4 );
-  assert.equal( b, 9 );
-  assert.equal( await fetchSquare(5), 25 );
+  assert.equal(a, 4);
+  assert.equal(b, 9);
+  assert.equal(await fetchSquare(5), 25);
 });
 ```
 
@@ -85,17 +85,17 @@ This example returns a Promise that is resolved after waiting for 1 second.
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 ```js
-function fetchSquare( x ) {
-  return new Promise( function ( resolve ) {
-    setTimeout( function () {
-      resolve( x * x );
-    }, 1000 );
+function fetchSquare (x) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve(x * x);
+    }, 1000);
   });
 }
 
-QUnit.test( "Test with Promise", assert => {
-  return fetchSquare( 3 ).then( result => {
-    assert.equal( result, 9 );
+QUnit.test('Test with Promise', assert => {
+  return fetchSquare(3).then(result => {
+    assert.equal(result, 9);
   });
 });
 ```

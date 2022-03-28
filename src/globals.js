@@ -13,33 +13,28 @@
 //
 // Instead, simply check the four options that already exist
 // in all supported environments.
-function getGlobalThis() {
-	if ( typeof globalThis !== "undefined" ) {
-
-		// For SpiderMonkey, modern browsers, and recent Node.js
-		// eslint-disable-next-line no-undef
-		return globalThis;
-	}
-	if ( typeof self !== "undefined" ) {
-
-		// For web workers
-		// eslint-disable-next-line no-undef
-		return self;
-	}
-	if ( typeof window !== "undefined" ) {
-
-		// For document context in browsers
-		return window;
-	}
-	if ( typeof global !== "undefined" ) {
-
-		// For Node.js
-		// eslint-disable-next-line no-undef
-		return global;
-	}
-	throw new Error( "Unable to locate global object" );
+function getGlobalThis () {
+  if (typeof globalThis !== 'undefined') {
+    // For SpiderMonkey, modern browsers, and recent Node.js
+    // eslint-disable-next-line no-undef
+    return globalThis;
+  }
+  if (typeof self !== 'undefined') {
+    // For web workers
+    // eslint-disable-next-line no-undef
+    return self;
+  }
+  if (typeof window !== 'undefined') {
+    // For document context in browsers
+    return window;
+  }
+  if (typeof global !== 'undefined') {
+    // For Node.js
+    // eslint-disable-next-line no-undef
+    return global;
+  }
+  throw new Error('Unable to locate global object');
 }
-
 
 // This avoids a simple `export const` assignment as that would lead Rollup
 // to change getGlobalThis and use the same (generated) variable name there.
@@ -53,46 +48,48 @@ export const clearTimeout = g.clearTimeout;
 export const document = window && window.document;
 export const navigator = window && window.navigator;
 
-export const localSessionStorage = ( function() {
-	const x = "qunit-test-string";
-	try {
-		g.sessionStorage.setItem( x, x );
-		g.sessionStorage.removeItem( x );
-		return g.sessionStorage;
-	} catch ( e ) {
-		return undefined;
-	}
-}() );
+export const localSessionStorage = (function () {
+  const x = 'qunit-test-string';
+  try {
+    g.sessionStorage.setItem(x, x);
+    g.sessionStorage.removeItem(x);
+    return g.sessionStorage;
+  } catch (e) {
+    return undefined;
+  }
+}());
 
 // Basic fallback for ES6 Map
 // Support: IE 9-10, Safari 7, PhantomJS
-export const StringMap = typeof g.Map === "function" ? g.Map : function StringMap() {
-	var store = Object.create( null );
-	var hasOwn = Object.prototype.hasOwnProperty;
-	this.get = function( strKey ) {
-		return store[ strKey ];
-	};
-	this.set = function( strKey, val ) {
-		if ( !hasOwn.call( store, strKey ) ) {
-			this.size++;
-		}
-		store[ strKey ] = val;
-		return this;
-	};
-	this.delete = function( strKey ) {
-		if ( hasOwn.call( store, strKey ) ) {
-			delete store[ strKey ];
-			this.size--;
-		}
-	};
-	this.forEach = function( callback ) {
-		for ( var strKey in store ) {
-			callback( store[ strKey ], strKey );
-		}
-	};
-	this.clear = function() {
-		store = Object.create( null );
-		this.size = 0;
-	};
-	this.size = 0;
-};
+export const StringMap = typeof g.Map === 'function'
+  ? g.Map
+  : function StringMap () {
+    let store = Object.create(null);
+    let hasOwn = Object.prototype.hasOwnProperty;
+    this.get = function (strKey) {
+      return store[strKey];
+    };
+    this.set = function (strKey, val) {
+      if (!hasOwn.call(store, strKey)) {
+        this.size++;
+      }
+      store[strKey] = val;
+      return this;
+    };
+    this.delete = function (strKey) {
+      if (hasOwn.call(store, strKey)) {
+        delete store[strKey];
+        this.size--;
+      }
+    };
+    this.forEach = function (callback) {
+      for (let strKey in store) {
+        callback(store[strKey], strKey);
+      }
+    };
+    this.clear = function () {
+      store = Object.create(null);
+      this.size = 0;
+    };
+    this.size = 0;
+  };

@@ -42,16 +42,16 @@ You can also use [`QUnit.module.todo()`](./module.md) to manage the "todo" state
 How to use `QUnit.test.todo` to denote code that is still under development.
 
 ```js
-QUnit.module( "Robot", hooks => {
+QUnit.module('Robot', hooks => {
   let robot;
-  hooks.beforeEach( () => {
+  hooks.beforeEach(() => {
     robot = new Robot();
   });
 
   // Robot is not yet finished, expect this is a todo test
-  QUnit.test.todo( "fireLazer", assert => {
+  QUnit.test.todo('fireLazer', assert => {
     const result = robot.fireLazer();
-    assert.equal( result, "I'm firing my lazer!" );
+    assert.equal(result, "I'm firing my lazer!");
   });
 });
 ```

@@ -25,13 +25,13 @@ If `assert.timeout()` is called after a timeout has already been set, the old ti
 ## Examples
 
 ```js
-QUnit.test( "wait for an event", assert => {
-  assert.timeout( 1000 ); // Timeout after 1 second
+QUnit.test('wait for an event', assert => {
+  assert.timeout(1000); // Timeout after 1 second
   const done = assert.async();
 
   const adder = new NumberAdder();
-  adder.on( "ready", res => {
-    assert.strictEqual( res, 12 );
+  adder.on('ready', res => {
+    assert.strictEqual(res, 12);
     done();
   });
   adder.run([ 1, 1, 2, 3, 5 ]);
@@ -39,24 +39,24 @@ QUnit.test( "wait for an event", assert => {
 ```
 
 ```js
-QUnit.test( "wait for an async function", async assert => {
-  assert.timeout( 500 ); // Timeout after 0.5 seconds
+QUnit.test('wait for an async function', async assert => {
+  assert.timeout(500); // Timeout after 0.5 seconds
 
-  const result = await asyncAdder( 5, 7 );
-  assert.strictEqual( result, 12 );
+  const result = await asyncAdder(5, 7);
+  assert.strictEqual(result, 12);
 });
 ```
 
 Using classic ES5 syntax:
 
 ```js
-QUnit.test( "wait for a returned promise", function( assert ) {
-  assert.timeout( 500 ); // Timeout after 0.5 seconds
+QUnit.test('wait for a returned promise', function (assert) {
+  assert.timeout(500); // Timeout after 0.5 seconds
 
-  var promise = asyncAdder( 5, 7 );
+  var promise = asyncAdder(5, 7);
 
-  return promise.then( function( result ) {
-    assert.strictEqual( result, 12 );
-  } );
+  return promise.then(function (result) {
+    assert.strictEqual(result, 12);
+  });
 });
 ```

@@ -30,7 +30,7 @@ Passed to the callback:
 Register a callback that logs the module name
 
 ```js
-QUnit.moduleStart( details => {
-  console.log( `Now running: ${details.name}` );
+QUnit.moduleStart(details => {
+  console.log(`Now running: ${details.name}`);
 });
 ```

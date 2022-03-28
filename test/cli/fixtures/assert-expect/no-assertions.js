@@ -1,2 +1,2 @@
-QUnit.test( "test with no assertions", () => {
-} );
+QUnit.test('test with no assertions', () => {
+});

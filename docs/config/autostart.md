@@ -33,10 +33,10 @@ QUnit.config.autostart = false;
 
 require(
   [
-    "tests/testModule1",
-    "tests/testModule2"
+    'tests/testModule1',
+    'tests/testModule2'
   ],
-  function() {
+  function () {
     QUnit.start();
   }
 );

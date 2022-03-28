@@ -1,15 +1,15 @@
-import { objectType, inArray } from "./core/utilities";
+import { objectType, inArray } from './core/utilities';
 
-const LISTENERS = Object.create( null );
+const LISTENERS = Object.create(null);
 const SUPPORTED_EVENTS = [
-	"error",
-	"runStart",
-	"suiteStart",
-	"testStart",
-	"assertion",
-	"testEnd",
-	"suiteEnd",
-	"runEnd"
+  'error',
+  'runStart',
+  'suiteStart',
+  'testStart',
+  'assertion',
+  'testEnd',
+  'suiteEnd',
+  'runEnd'
 ];
 
 /**
@@ -24,18 +24,18 @@ const SUPPORTED_EVENTS = [
  * @param {Object} data
  * @return {void}
  */
-export function emit( eventName, data ) {
-	if ( objectType( eventName ) !== "string" ) {
-		throw new TypeError( "eventName must be a string when emitting an event" );
-	}
+export function emit (eventName, data) {
+  if (objectType(eventName) !== 'string') {
+    throw new TypeError('eventName must be a string when emitting an event');
+  }
 
-	// Clone the callbacks in case one of them registers a new callback
-	const originalCallbacks = LISTENERS[ eventName ];
-	const callbacks = originalCallbacks ? [ ...originalCallbacks ] : [];
+  // Clone the callbacks in case one of them registers a new callback
+  const originalCallbacks = LISTENERS[eventName];
+  const callbacks = originalCallbacks ? [...originalCallbacks] : [];
 
-	for ( let i = 0; i < callbacks.length; i++ ) {
-		callbacks[ i ]( data );
-	}
+  for (let i = 0; i < callbacks.length; i++) {
+    callbacks[i](data);
+  }
 }
 
 /**
@@ -47,22 +47,22 @@ export function emit( eventName, data ) {
  * @param {Function} callback
  * @return {void}
  */
-export function on( eventName, callback ) {
-	if ( objectType( eventName ) !== "string" ) {
-		throw new TypeError( "eventName must be a string when registering a listener" );
-	} else if ( !inArray( eventName, SUPPORTED_EVENTS ) ) {
-		const events = SUPPORTED_EVENTS.join( ", " );
-		throw new Error( `"${eventName}" is not a valid event; must be one of: ${events}.` );
-	} else if ( objectType( callback ) !== "function" ) {
-		throw new TypeError( "callback must be a function when registering a listener" );
-	}
+export function on (eventName, callback) {
+  if (objectType(eventName) !== 'string') {
+    throw new TypeError('eventName must be a string when registering a listener');
+  } else if (!inArray(eventName, SUPPORTED_EVENTS)) {
+    const events = SUPPORTED_EVENTS.join(', ');
+    throw new Error(`"${eventName}" is not a valid event; must be one of: ${events}.`);
+  } else if (objectType(callback) !== 'function') {
+    throw new TypeError('callback must be a function when registering a listener');
+  }
 
-	if ( !LISTENERS[ eventName ] ) {
-		LISTENERS[ eventName ] = [];
-	}
+  if (!LISTENERS[eventName]) {
+    LISTENERS[eventName] = [];
+  }
 
-	// Don't register the same callback more than once
-	if ( !inArray( callback, LISTENERS[ eventName ] ) ) {
-		LISTENERS[ eventName ].push( callback );
-	}
+  // Don't register the same callback more than once
+  if (!inArray(callback, LISTENERS[eventName])) {
+    LISTENERS[eventName].push(callback);
+  }
 }

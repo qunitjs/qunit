@@ -18,7 +18,7 @@ If you load QUnit asynchronously or otherwise need to configure QUnit before it 
 window.QUnit = {
   config: {
     autostart: false,
-    noglobals: true,
+    noglobals: true
   }
 };
 ```

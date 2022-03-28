@@ -26,13 +26,13 @@ Internals may change without notice. When possible, use [QUnit.on](../callbacks/
 Access `QUnit.config.current.testName` to observe the currently running test's name.
 
 ```js
-function whatsUp() {
-  console.log( QUnit.config.current.testName );
+function whatsUp () {
+  console.log(QUnit.config.current.testName);
 }
 
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   whatsUp();
 
-  assert.true( true );
+  assert.true(true);
 });
 ```

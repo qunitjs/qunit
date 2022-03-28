@@ -1,8 +1,8 @@
-import config from "./config";
-import { runSuite } from "../module";
-import { sourceFromStacktrace } from "./stacktrace";
-import { errorString } from "./utilities";
-import { emit } from "../events";
+import config from './config';
+import { runSuite } from '../module';
+import { sourceFromStacktrace } from './stacktrace';
+import { errorString } from './utilities';
+import { emit } from '../events';
 
 /**
  * Handle a global error that should result in a failed test run.
@@ -23,29 +23,28 @@ import { emit } from "../events";
  * @since 2.17.0
  * @param {Error|any} error
  */
-export default function onUncaughtException( error ) {
-	if ( config.current ) {
-		config.current.assert.pushResult( {
-			result: false,
-			message: `global failure: ${errorString( error )}`,
+export default function onUncaughtException (error) {
+  if (config.current) {
+    config.current.assert.pushResult({
+      result: false,
+      message: `global failure: ${errorString(error)}`,
 
-			// We could let callers specify an offset to subtract a number of frames via
-			// sourceFromStacktrace, in case they are a wrapper further away from the error
-			// handler, and thus reduce some noise in the stack trace. However, we're not
-			// doing this right now because it would almost never be used in practice given
-			// the vast majority of error values will be Error objects, and thus have their
-			// own stack trace already.
-			source: ( error && error.stack ) || sourceFromStacktrace( 2 )
-		} );
-	} else {
-
-		// The "error" event was added in QUnit 2.17.
-		// Increase "bad assertion" stats despite no longer pushing an assertion in this case.
-		// This ensures "runEnd" and "QUnit.done()" handlers behave as expected, since the "bad"
-		// count is typically how reporters decide on the boolean outcome of the test run.
-		runSuite.globalFailureCount++;
-		config.stats.bad++;
-		config.stats.all++;
-		emit( "error", error );
-	}
+      // We could let callers specify an offset to subtract a number of frames via
+      // sourceFromStacktrace, in case they are a wrapper further away from the error
+      // handler, and thus reduce some noise in the stack trace. However, we're not
+      // doing this right now because it would almost never be used in practice given
+      // the vast majority of error values will be Error objects, and thus have their
+      // own stack trace already.
+      source: (error && error.stack) || sourceFromStacktrace(2)
+    });
+  } else {
+    // The "error" event was added in QUnit 2.17.
+    // Increase "bad assertion" stats despite no longer pushing an assertion in this case.
+    // This ensures "runEnd" and "QUnit.done()" handlers behave as expected, since the "bad"
+    // count is typically how reporters decide on the boolean outcome of the test run.
+    runSuite.globalFailureCount++;
+    config.stats.bad++;
+    config.stats.all++;
+    emit('error', error);
+  }
 }

@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>QUnit Autostart Test Suite</title>
-	<link rel="stylesheet" href="../qunit/qunit.css">
+  <meta charset="UTF-8">
+  <title>autostart</title>
+  <link rel="stylesheet" href="../qunit/qunit.css">
 </head>
 <body>
-	<div id="qunit"></div>
-	<script src="../qunit/qunit.js"></script>
-	<script>
-	window.times = {};
+  <div id="qunit"></div>
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  window.times = {};
 
-	( function() {
-		var now = Date.now || function() {
-			return new Date().getTime();
-		};
-		var asyncDelay = 1000;
+  (function () {
+    var now = Date.now || function () {
+      return new Date().getTime();
+    };
+    var asyncDelay = 1000;
 
-		QUnit.config.autostart = false;
+    QUnit.config.autostart = false;
 
-		// Mark the current time
-		window.times.autostartOff = now() + asyncDelay;
+    // Mark the current time
+    window.times.autostartOff = now();
 
-		// Simulate a delay in loading the tests, as when they are loaded
-		// asynchronously using requirejs, steal, etc.
-		setTimeout( function() {
-			var script = document.createElement( "script" );
-			script.src = "autostart.js";
-			document.getElementsByTagName( "head" )[ 0 ].appendChild( script );
-		}, asyncDelay );
+    // Simulate a delay in loading the tests, as when they are loaded
+    // asynchronously using requirejs, steal, etc.
+    setTimeout(function () {
+      var script = document.createElement('script');
+      script.src = 'autostart.js';
+      document.getElementsByTagName('head')[0].appendChild(script);
+    }, asyncDelay);
 
-		QUnit.begin( function( data ) {
-			window.beginData = data;
-			window.times.runStarted = now();
-		} );
-	}() );
-	</script>
+    QUnit.begin(function (data) {
+      window.beginData = data;
+      window.times.runStarted = now();
+    });
+  }());
+  </script>
 </body>
 </html>

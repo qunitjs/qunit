@@ -31,48 +31,46 @@ This method is recursive and allows partial comparison of nested objects as well
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
-
+QUnit.test('example', assert => {
   const result = {
     foo: 0,
     vehicle: {
-      timeCircuits: "on",
-      fluxCapacitor: "fluxing",
-      engine: "running"
+      timeCircuits: 'on',
+      fluxCapacitor: 'fluxing',
+      engine: 'running'
     },
     quux: 1
   };
 
-  assert.propContains( result, {
+  assert.propContains(result, {
     foo: 0,
-    vehicle: { fluxCapacitor: "fluxing" }
-  } );
+    vehicle: { fluxCapacitor: 'fluxing' }
+  });
 
-  function Point( x, y ) {
+  function Point (x, y) {
     this.x = x;
     this.y = y;
   }
 
   assert.propContains(
-    new Point( 10, 20 ),
+    new Point(10, 20),
     { y: 20 }
   );
 
   assert.propContains(
-    [ "a", "b" ],
-    { 1: "b" }
+    [ 'a', 'b' ],
+    { 1: 'b' }
   );
 
   const nested = {
     north: [ /* ... */ ],
-    east: new Point( 10, 20 ),
+    east: new Point(10, 20),
     south: [ /* ... */ ],
     west: [ /* ... */ ]
   };
 
-  assert.propContains( nested, { east: new Point( 10, 20 ) } );
-  assert.propContains( nested, { east: { x: 10, y: 20 } } );
-  assert.propContains( nested, { east: { x: 10 } } );
-
+  assert.propContains(nested, { east: new Point(10, 20) });
+  assert.propContains(nested, { east: { x: 10, y: 20 } });
+  assert.propContains(nested, { east: { x: 10 } });
 });
 ```

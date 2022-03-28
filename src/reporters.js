@@ -1,7 +1,7 @@
-import ConsoleReporter from "./reporters/ConsoleReporter.js";
-import TapReporter from "./reporters/TapReporter.js";
+import ConsoleReporter from './reporters/ConsoleReporter.js';
+import TapReporter from './reporters/TapReporter.js';
 
 export default {
-	console: ConsoleReporter,
-	tap: TapReporter
+  console: ConsoleReporter,
+  tap: TapReporter
 };

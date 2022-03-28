@@ -21,18 +21,18 @@ A boolean check, inverse of [`assert.ok()`](./ok.md). Passes if the first argume
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   // success
-  assert.notOk( false, "boolean false" );
-  assert.notOk( "", "empty string" );
-  assert.notOk( 0, "number zero" );
-  assert.notOk( NaN, "NaN value" );
-  assert.notOk( null, "null value" );
-  assert.notOk( undefined, "undefined value" );
+  assert.notOk(false, 'boolean false');
+  assert.notOk('', 'empty string');
+  assert.notOk(0, 'number zero');
+  assert.notOk(NaN, 'NaN value');
+  assert.notOk(null, 'null value');
+  assert.notOk(undefined, 'undefined value');
 
   // failure
-  assert.notOk( "foo", "non-empty string" );
-  assert.notOk( true, "boolean true" );
-  assert.notOk( 1, "number one" );
+  assert.notOk('foo', 'non-empty string');
+  assert.notOk(true, 'boolean true');
+  assert.notOk(1, 'number one');
 });
 ```

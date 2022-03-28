@@ -1,5 +1,5 @@
 module.exports = {
-	"no-change": `TAP version 13
+  'no-change': `TAP version 13
 ok 1 foo
 1..1
 # pass 1
@@ -8,7 +8,7 @@ ok 1 foo
 # fail 0
 Stopping QUnit...`,
 
-	"change-file": `TAP version 13
+  'change-file': `TAP version 13
 ok 1 foo
 1..1
 # pass 1
@@ -26,7 +26,7 @@ ok 1 bar
 # fail 0
 Stopping QUnit...`,
 
-	"add-file": `TAP version 13
+  'add-file': `TAP version 13
 ok 1 foo
 1..1
 # pass 1
@@ -45,7 +45,7 @@ ok 2 foo
 # fail 0
 Stopping QUnit...`,
 
-	"remove-file": `TAP version 13
+  'remove-file': `TAP version 13
 ok 1 bar
 ok 2 foo
 1..2
@@ -64,7 +64,7 @@ ok 1 foo
 # fail 0
 Stopping QUnit...`,
 
-	"file-extensions": `TAP version 13
+  'file-extensions': `TAP version 13
 ok 1 foo
 1..1
 # pass 1
@@ -87,7 +87,7 @@ ok 1 foo2
 # fail 0
 Stopping QUnit...`,
 
-	"file-extension-ts": `TAP version 13
+  'file-extension-ts': `TAP version 13
 ok 1 foo
 1..1
 # pass 1
@@ -108,7 +108,7 @@ ok 1 foo2
 # fail 0
 Stopping QUnit...`,
 
-	"change-file-mid-run": `TAP version 13
+  'change-file-mid-run': `TAP version 13
 File update: watching/bar.js
 Finishing current test and restarting...
 ok 1 Foo > one
@@ -127,7 +127,7 @@ ok 2 Foo > two
 # fail 0
 Stopping QUnit...`,
 
-	"add-file-after-run": `TAP version 13
+  'add-file-after-run': `TAP version 13
 ok 1 Module > Test
 1..1
 # pass 1

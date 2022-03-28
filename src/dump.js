@@ -28,289 +28,287 @@
 // POSSIBILITY OF SUCH DAMAGE.
 // -------
 
-import config from "./core/config";
-import { inArray, toString, is } from "./core/utilities";
+import config from './core/config';
+import { inArray, toString, is } from './core/utilities';
 
-export default ( function() {
-	function quote( str ) {
-		return "\"" + str.toString().replace( /\\/g, "\\\\" ).replace( /"/g, "\\\"" ) + "\"";
-	}
-	function literal( o ) {
-		return o + "";
-	}
-	function join( pre, arr, post ) {
-		const s = dump.separator();
-		const inner = dump.indent( 1 );
-		if ( arr.join ) {
-			arr = arr.join( "," + s + inner );
-		}
-		if ( !arr ) {
-			return pre + post;
-		}
-		const base = dump.indent();
-		return [ pre, inner + arr, base + post ].join( s );
-	}
-	function array( arr, stack ) {
+export default (function () {
+  function quote (str) {
+    return '"' + str.toString().replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+  }
+  function literal (o) {
+    return o + '';
+  }
+  function join (pre, arr, post) {
+    const s = dump.separator();
+    const inner = dump.indent(1);
+    if (arr.join) {
+      arr = arr.join(',' + s + inner);
+    }
+    if (!arr) {
+      return pre + post;
+    }
+    const base = dump.indent();
+    return [pre, inner + arr, base + post].join(s);
+  }
+  function array (arr, stack) {
+    if (dump.maxDepth && dump.depth > dump.maxDepth) {
+      return '[object Array]';
+    }
 
-		if ( dump.maxDepth && dump.depth > dump.maxDepth ) {
-			return "[object Array]";
-		}
+    this.up();
 
-		this.up();
+    let i = arr.length;
+    const ret = new Array(i);
+    while (i--) {
+      ret[i] = this.parse(arr[i], undefined, stack);
+    }
+    this.down();
+    return join('[', ret, ']');
+  }
 
-		let i = arr.length;
-		const ret = new Array( i );
-		while ( i-- ) {
-			ret[ i ] = this.parse( arr[ i ], undefined, stack );
-		}
-		this.down();
-		return join( "[", ret, "]" );
-	}
+  function isArray (obj) {
+    return (
+      // Native Arrays
+      toString.call(obj) === '[object Array]' ||
 
-	function isArray( obj ) {
-		return (
+      // NodeList objects
+      (typeof obj.length === 'number' && obj.item !== undefined &&
+        (obj.length
+          ? obj.item(0) === obj[0]
+          : (obj.item(0) === null && obj[0] === undefined)
+        )
+      )
+    );
+  }
 
-			//Native Arrays
-			toString.call( obj ) === "[object Array]" ||
+  const reName = /^function (\w+)/;
+  const dump = {
 
-			// NodeList objects
-			( typeof obj.length === "number" && obj.item !== undefined ) &&
-			( obj.length ?
-				obj.item( 0 ) === obj[ 0 ] :
-				( obj.item( 0 ) === null && obj[ 0 ] === undefined )
-			)
-		);
-	}
+    // The objType is used mostly internally, you can fix a (custom) type in advance
+    parse: function (obj, objType, stack) {
+      stack = stack || [];
+      const objIndex = stack.indexOf(obj);
 
-	const reName = /^function (\w+)/;
-	const dump = {
+      if (objIndex !== -1) {
+        return `recursion(${objIndex - stack.length})`;
+      }
 
-		// The objType is used mostly internally, you can fix a (custom) type in advance
-		parse: function( obj, objType, stack ) {
-			stack = stack || [];
-			const objIndex = stack.indexOf( obj );
+      objType = objType || this.typeOf(obj);
+      const parser = this.parsers[objType];
+      const parserType = typeof parser;
 
-			if ( objIndex !== -1 ) {
-				return `recursion(${objIndex - stack.length})`;
-			}
+      if (parserType === 'function') {
+        stack.push(obj);
+        const res = parser.call(this, obj, stack);
+        stack.pop();
+        return res;
+      }
+      if (parserType === 'string') {
+        return parser;
+      }
+      return '[ERROR: Missing QUnit.dump formatter for type ' + objType + ']';
+    },
+    typeOf: function (obj) {
+      let type;
 
-			objType = objType || this.typeOf( obj );
-			const parser = this.parsers[ objType ];
-			const parserType = typeof parser;
+      if (obj === null) {
+        type = 'null';
+      } else if (typeof obj === 'undefined') {
+        type = 'undefined';
+      } else if (is('regexp', obj)) {
+        type = 'regexp';
+      } else if (is('date', obj)) {
+        type = 'date';
+      } else if (is('function', obj)) {
+        type = 'function';
+      } else if (obj.setInterval !== undefined &&
+          obj.document !== undefined &&
+          obj.nodeType === undefined) {
+        type = 'window';
+      } else if (obj.nodeType === 9) {
+        type = 'document';
+      } else if (obj.nodeType) {
+        type = 'node';
+      } else if (isArray(obj)) {
+        type = 'array';
+      } else if (obj.constructor === Error.prototype.constructor) {
+        type = 'error';
+      } else {
+        type = typeof obj;
+      }
+      return type;
+    },
 
-			if ( parserType === "function" ) {
-				stack.push( obj );
-				const res = parser.call( this, obj, stack );
-				stack.pop();
-				return res;
-			}
-			if ( parserType === "string" ) {
-				return parser;
-			}
-			return "[ERROR: Missing QUnit.dump formatter for type " + objType + "]";
-		},
-		typeOf: function( obj ) {
-			let type;
+    separator: function () {
+      if (this.multiline) {
+        return this.HTML ? '<br />' : '\n';
+      } else {
+        return this.HTML ? '&#160;' : ' ';
+      }
+    },
 
-			if ( obj === null ) {
-				type = "null";
-			} else if ( typeof obj === "undefined" ) {
-				type = "undefined";
-			} else if ( is( "regexp", obj ) ) {
-				type = "regexp";
-			} else if ( is( "date", obj ) ) {
-				type = "date";
-			} else if ( is( "function", obj ) ) {
-				type = "function";
-			} else if ( obj.setInterval !== undefined &&
-					obj.document !== undefined &&
-					obj.nodeType === undefined ) {
-				type = "window";
-			} else if ( obj.nodeType === 9 ) {
-				type = "document";
-			} else if ( obj.nodeType ) {
-				type = "node";
-			} else if ( isArray( obj ) ) {
-				type = "array";
-			} else if ( obj.constructor === Error.prototype.constructor ) {
-				type = "error";
-			} else {
-				type = typeof obj;
-			}
-			return type;
-		},
+    // Extra can be a number, shortcut for increasing-calling-decreasing
+    indent: function (extra) {
+      if (!this.multiline) {
+        return '';
+      }
+      let chr = this.indentChar;
+      if (this.HTML) {
+        chr = chr.replace(/\t/g, '   ').replace(/ /g, '&#160;');
+      }
+      return new Array(this.depth + (extra || 0)).join(chr);
+    },
+    up: function (a) {
+      this.depth += a || 1;
+    },
+    down: function (a) {
+      this.depth -= a || 1;
+    },
+    setParser: function (name, parser) {
+      this.parsers[name] = parser;
+    },
 
-		separator: function() {
-			if ( this.multiline ) {
-				return this.HTML ? "<br />" : "\n";
-			} else {
-				return this.HTML ? "&#160;" : " ";
-			}
-		},
+    // The next 3 are exposed so you can use them
+    quote: quote,
+    literal: literal,
+    join: join,
+    depth: 1,
+    maxDepth: config.maxDepth,
 
-		// Extra can be a number, shortcut for increasing-calling-decreasing
-		indent: function( extra ) {
-			if ( !this.multiline ) {
-				return "";
-			}
-			let chr = this.indentChar;
-			if ( this.HTML ) {
-				chr = chr.replace( /\t/g, "   " ).replace( / /g, "&#160;" );
-			}
-			return new Array( this.depth + ( extra || 0 ) ).join( chr );
-		},
-		up: function( a ) {
-			this.depth += a || 1;
-		},
-		down: function( a ) {
-			this.depth -= a || 1;
-		},
-		setParser: function( name, parser ) {
-			this.parsers[ name ] = parser;
-		},
+    // This is the list of parsers, to modify them, use dump.setParser
+    parsers: {
+      window: '[Window]',
+      document: '[Document]',
+      error: function (error) {
+        return 'Error("' + error.message + '")';
+      },
 
-		// The next 3 are exposed so you can use them
-		quote: quote,
-		literal: literal,
-		join: join,
-		depth: 1,
-		maxDepth: config.maxDepth,
+      // This has been unused since QUnit 1.0.0.
+      // @todo Deprecate and remove.
+      unknown: '[Unknown]',
+      null: 'null',
+      undefined: 'undefined',
+      function: function (fn) {
+        let ret = 'function';
 
-		// This is the list of parsers, to modify them, use dump.setParser
-		parsers: {
-			window: "[Window]",
-			document: "[Document]",
-			error: function( error ) {
-				return "Error(\"" + error.message + "\")";
-			},
+        // Functions never have name in IE
+        const name = 'name' in fn ? fn.name : (reName.exec(fn) || [])[1];
 
-			// This has been unused since QUnit 1.0.0.
-			// @todo Deprecate and remove.
-			unknown: "[Unknown]",
-			"null": "null",
-			"undefined": "undefined",
-			"function": function( fn ) {
-				let ret = "function";
+        if (name) {
+          ret += ' ' + name;
+        }
+        ret += '(';
 
-				// Functions never have name in IE
-				const name = "name" in fn ? fn.name : ( reName.exec( fn ) || [] )[ 1 ];
+        ret = [ret, dump.parse(fn, 'functionArgs'), '){'].join('');
+        return join(ret, dump.parse(fn, 'functionCode'), '}');
+      },
+      array: array,
+      nodelist: array,
+      arguments: array,
+      object: function (map, stack) {
+        const ret = [];
 
-				if ( name ) {
-					ret += " " + name;
-				}
-				ret += "(";
+        if (dump.maxDepth && dump.depth > dump.maxDepth) {
+          return '[object Object]';
+        }
 
-				ret = [ ret, dump.parse( fn, "functionArgs" ), "){" ].join( "" );
-				return join( ret, dump.parse( fn, "functionCode" ), "}" );
-			},
-			array: array,
-			nodelist: array,
-			"arguments": array,
-			object: function( map, stack ) {
-				const ret = [];
+        dump.up();
+        const keys = [];
+        for (const key in map) {
+          keys.push(key);
+        }
 
-				if ( dump.maxDepth && dump.depth > dump.maxDepth ) {
-					return "[object Object]";
-				}
+        // Some properties are not always enumerable on Error objects.
+        const nonEnumerableProperties = ['message', 'name'];
+        for (const i in nonEnumerableProperties) {
+          const key = nonEnumerableProperties[i];
+          if (key in map && !inArray(key, keys)) {
+            keys.push(key);
+          }
+        }
+        keys.sort();
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const val = map[key];
+          ret.push(dump.parse(key, 'key') + ': ' +
+            dump.parse(val, undefined, stack));
+        }
+        dump.down();
+        return join('{', ret, '}');
+      },
+      node: function (node) {
+        const open = dump.HTML ? '&lt;' : '<';
+        const close = dump.HTML ? '&gt;' : '>';
+        const tag = node.nodeName.toLowerCase();
+        let ret = open + tag;
+        const attrs = node.attributes;
 
-				dump.up();
-				const keys = [];
-				for ( const key in map ) {
-					keys.push( key );
-				}
+        if (attrs) {
+          for (let i = 0, len = attrs.length; i < len; i++) {
+            const val = attrs[i].nodeValue;
 
-				// Some properties are not always enumerable on Error objects.
-				const nonEnumerableProperties = [ "message", "name" ];
-				for ( const i in nonEnumerableProperties ) {
-					const key = nonEnumerableProperties[ i ];
-					if ( key in map && !inArray( key, keys ) ) {
-						keys.push( key );
-					}
-				}
-				keys.sort();
-				for ( let i = 0; i < keys.length; i++ ) {
-					const key = keys[ i ];
-					const val = map[ key ];
-					ret.push( dump.parse( key, "key" ) + ": " +
-						dump.parse( val, undefined, stack ) );
-				}
-				dump.down();
-				return join( "{", ret, "}" );
-			},
-			node: function( node ) {
-				const open = dump.HTML ? "&lt;" : "<";
-				const close = dump.HTML ? "&gt;" : ">";
-				const tag = node.nodeName.toLowerCase();
-				let ret = open + tag;
-				const attrs = node.attributes;
+            // IE6 includes all attributes in .attributes, even ones not explicitly
+            // set. Those have values like undefined, null, 0, false, "" or
+            // "inherit".
+            if (val && val !== 'inherit') {
+              ret += ' ' + attrs[i].nodeName + '=' +
+                dump.parse(val, 'attribute');
+            }
+          }
+        }
+        ret += close;
 
-				if ( attrs ) {
-					for ( let i = 0, len = attrs.length; i < len; i++ ) {
-						const val = attrs[ i ].nodeValue;
+        // Show content of TextNode or CDATASection
+        if (node.nodeType === 3 || node.nodeType === 4) {
+          ret += node.nodeValue;
+        }
 
-						// IE6 includes all attributes in .attributes, even ones not explicitly
-						// set. Those have values like undefined, null, 0, false, "" or
-						// "inherit".
-						if ( val && val !== "inherit" ) {
-							ret += " " + attrs[ i ].nodeName + "=" +
-								dump.parse( val, "attribute" );
-						}
-					}
-				}
-				ret += close;
+        return ret + open + '/' + tag + close;
+      },
 
-				// Show content of TextNode or CDATASection
-				if ( node.nodeType === 3 || node.nodeType === 4 ) {
-					ret += node.nodeValue;
-				}
+      // Function calls it internally, it's the arguments part of the function
+      functionArgs: function (fn) {
+        let l = fn.length;
 
-				return ret + open + "/" + tag + close;
-			},
+        if (!l) {
+          return '';
+        }
 
-			// Function calls it internally, it's the arguments part of the function
-			functionArgs: function( fn ) {
-				let l = fn.length;
+        const args = new Array(l);
+        while (l--) {
+          // 97 is 'a'
+          args[l] = String.fromCharCode(97 + l);
+        }
+        return ' ' + args.join(', ') + ' ';
+      },
 
-				if ( !l ) {
-					return "";
-				}
+      // Object calls it internally, the key part of an item in a map
+      key: quote,
 
-				const args = new Array( l );
-				while ( l-- ) {
+      // Function calls it internally, it's the content of the function
+      functionCode: '[code]',
 
-					// 97 is 'a'
-					args[ l ] = String.fromCharCode( 97 + l );
-				}
-				return " " + args.join( ", " ) + " ";
-			},
+      // Node calls it internally, it's a html attribute value
+      attribute: quote,
+      string: quote,
+      date: quote,
+      regexp: literal,
+      number: literal,
+      boolean: literal,
+      symbol: function (sym) {
+        return sym.toString();
+      }
+    },
 
-			// Object calls it internally, the key part of an item in a map
-			key: quote,
+    // If true, entities are escaped ( <, >, \t, space and \n )
+    HTML: false,
 
-			// Function calls it internally, it's the content of the function
-			functionCode: "[code]",
+    // Indentation unit
+    indentChar: '  ',
 
-			// Node calls it internally, it's a html attribute value
-			attribute: quote,
-			string: quote,
-			date: quote,
-			regexp: literal,
-			number: literal,
-			"boolean": literal,
-			symbol: function( sym ) {
-				return sym.toString();
-			}
-		},
+    // If true, items in a collection, are separated by a \n, else just a space.
+    multiline: true
+  };
 
-		// If true, entities are escaped ( <, >, \t, space and \n )
-		HTML: false,
-
-		// Indentation unit
-		indentChar: "  ",
-
-		// If true, items in a collection, are separated by a \n, else just a space.
-		multiline: true
-	};
-
-	return dump;
-} )();
+  return dump;
+})();

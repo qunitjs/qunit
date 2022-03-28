@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>QUnit HTML Reporter - No Markup</title>
-	<link rel="stylesheet" href="../../qunit/qunit.css">
-	<script src="../../qunit/qunit.js"></script>
-	<script>
-		var time = setTimeout( function() {
-			console.error( "timeout error with no QUnit markup" );
-		}, 50 );
+  <meta charset="UTF-8">
+  <title>no-qunit-element</title>
+  <link rel="stylesheet" href="../../qunit/qunit.css">
+  <script src="../../qunit/qunit.js"></script>
+  <script>
+  var time = setTimeout(function () {
+    console.error('timeout error with no QUnit markup');
+  }, 50);
 
-		QUnit.module( "reporter-html-no-qunit-element" );
+  QUnit.module('reporter-html-no-qunit-element');
 
-		QUnit.test( "no qunit markup", function( assert ) {
-			assert.expect( 1 );
-			assert.true( true );
-		} );
+  QUnit.test('no qunit markup', function (assert) {
+    assert.expect(1);
+    assert.true(true);
+  });
 
-		QUnit.done( function() {
-			clearTimeout( time );
-		} );
-	</script>
+  QUnit.done(function () {
+    clearTimeout(time);
+  });
+  </script>
 </head>
 <body></body>
 </html>

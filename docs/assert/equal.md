@@ -38,20 +38,20 @@ This method is similar to the `assertEquals()` method found in xUnit-style frame
 The simplest assertion example:
 
 ```js
-QUnit.test( "a test", function( assert ) {
-  assert.equal( 1, "1", "String '1' and number 1 have the same value" );
+QUnit.test('a test', function (assert) {
+  assert.equal(1, '1', "String '1' and number 1 have the same value");
 });
 ```
 
 A slightly more thorough set of assertions:
 
 ```js
-QUnit.test( "equal test", function( assert ) {
-  assert.equal( 0, 0, "Zero, Zero; equal succeeds" );
-  assert.equal( "", 0, "Empty, Zero; equal succeeds" );
-  assert.equal( "", "", "Empty, Empty; equal succeeds" );
+QUnit.test('equal test', function (assert) {
+  assert.equal(0, 0, 'Zero, Zero; equal succeeds');
+  assert.equal('', 0, 'Empty, Zero; equal succeeds');
+  assert.equal('', '', 'Empty, Empty; equal succeeds');
 
-  assert.equal( "three", 3, "Three, 3; equal fails" );
-  assert.equal( null, false, "null, false; equal fails" );
+  assert.equal('three', 3, 'Three, 3; equal fails');
+  assert.equal(null, false, 'null, false; equal fails');
 });
 ```

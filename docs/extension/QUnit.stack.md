@@ -30,17 +30,15 @@ Not all [browsers support retrieving stracktraces][browsers]. In those, `QUnit.s
 The stacktrace line can be used on custom assertions and reporters. The following example [logs](../callbacks/QUnit.log.md) the line of each passing assertion.
 
 ```js
-QUnit.log( function( details ) {
-  if ( details.result ) {
-
+QUnit.log(function (details) {
+  if (details.result) {
     // 5 is the line reference for the assertion method, not the following line.
-    console.log( QUnit.stack( 5 ) );
+    console.log(QUnit.stack(5));
   }
-} );
+});
 
-QUnit.test( "foo", assert => {
-
+QUnit.test('foo', assert => {
   // the log callback will report the position of the following line.
-  assert.true( true );
-} );
+  assert.true(true);
+});
 ```

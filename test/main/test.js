@@ -1,281 +1,275 @@
-QUnit.module( "test", function() {
+QUnit.module('test', function () {
+  QUnit.test('read and change assert.expect() count', function (assert) {
+    assert.expect(2);
+    assert.true(true);
+    var expected = assert.expect();
+    assert.equal(expected, 2);
+    assert.expect(expected + 1);
+    assert.true(true);
+  });
 
-	QUnit.test( "read and change assert.expect() count", function( assert ) {
-		assert.expect( 2 );
-		assert.true( true );
-		var expected = assert.expect();
-		assert.equal( expected, 2 );
-		assert.expect( expected + 1 );
-		assert.true( true );
-	} );
+  (typeof document !== 'undefined' ? QUnit.module : QUnit.module.skip)('fixture management', function (hooks) {
+    /* global document */
+    var failure = false;
+    var values = [
+      // initial value (see unshift below)
+      // initial value (see unshift below)
+      '<b>ar</b>',
+      '<p>bc</p>',
+      undefined
+    ];
+    var originalValue;
 
-	( typeof document !== "undefined" ? QUnit.module : QUnit.module.skip )( "fixture management", function( hooks ) {
-		var failure = false,
-			values = [
+    hooks.before(function () {
+      originalValue = QUnit.config.fixture;
+      values.unshift(originalValue);
+      values.unshift(originalValue);
 
-				/* initial value (see unshift below), */
-				/* initial value (see unshift below), */
-				"<b>ar</b>",
-				"<p>bc</p>",
-				undefined
-			],
-			originalValue;
+      var customFixtureNode = document.createElement('span');
+      customFixtureNode.setAttribute('id', 'qunit-fixture');
+      customFixtureNode.setAttribute('data-baz', 'huzzah!');
+      values.push(customFixtureNode);
+    });
 
-		hooks.before( function() {
-			originalValue = QUnit.config.fixture;
-			values.unshift( originalValue );
-			values.unshift( originalValue );
+    hooks.beforeEach(function (assert) {
+      assert.fixtureEquals = function fixtureEquals (options) {
+        var expectedTagName = options.tagName || 'div';
+        var expectedAttributes = options.attributes || {};
+        var expectedContent = options.content || '';
 
-			var customFixtureNode = document.createElement( "span" );
-			customFixtureNode.setAttribute( "id", "qunit-fixture" );
-			customFixtureNode.setAttribute( "data-baz", "huzzah!" );
-			values.push( customFixtureNode );
-		} );
+        var element = document.getElementById('qunit-fixture');
 
-		hooks.beforeEach( function( assert ) {
-			assert.fixtureEquals = function fixtureEquals( options ) {
-				var expectedTagName = options.tagName || "div";
-				var expectedAttributes = options.attributes || {};
-				var expectedContent = options.content || "";
+        this.pushResult({
+          result: element.tagName === expectedTagName.toUpperCase(),
+          actual: element.tagName.toLowerCase(),
+          expected: expectedTagName,
+          message: 'tagName'
+        });
 
-				var element = document.getElementById( "qunit-fixture" );
+        var actualAttributes = {};
 
-				this.pushResult( {
-					result: element.tagName === expectedTagName.toUpperCase(),
-					actual: element.tagName.toLowerCase(),
-					expected: expectedTagName,
-					message: "tagName"
-				} );
+        for (var i = 0, l = element.attributes.length; i < l; i++) {
+          actualAttributes[element.attributes[i].name] = element.attributes[i].value;
+        }
 
-				var actualAttributes = {};
+        this.deepEqual(actualAttributes, expectedAttributes, 'attributes');
+        this.strictEqual(element.innerHTML, expectedContent, 'contents');
+      };
 
-				for ( var i = 0, l = element.attributes.length; i < l; i++ ) {
-					actualAttributes[ element.attributes[ i ].name ] = element.attributes[ i ].value;
-				}
+      assert.hasFailingAssertions = function () {
+        for (var i = 0; i < this.test.assertions.length; i++) {
+          if (!this.test.assertions[i].result) {
+            return true;
+          }
+        }
 
-				this.deepEqual( actualAttributes, expectedAttributes, "attributes" );
-				this.strictEqual( element.innerHTML, expectedContent, "contents" );
-			};
+        return false;
+      };
+    });
 
-			assert.hasFailingAssertions = function() {
-				for ( var i = 0; i < this.test.assertions.length; i++ ) {
-					if ( !this.test.assertions[ i ].result ) {
-						return true;
-					}
-				}
+    // Set QUnit.config.fixture for the next test, propagating failures to recover the sequence
+    hooks.afterEach(function (assert) {
+      failure = failure || assert.hasFailingAssertions();
+      if (failure) {
+        assert.true(false, 'prior failure');
+        QUnit.config.fixture = originalValue;
+      } else {
+        QUnit.config.fixture = values.shift();
+      }
+    });
 
-				return false;
-			};
-		} );
+    QUnit.test('setup', function (assert) {
+      assert.equal(values.length, 6, 'proper sequence');
 
-		// Set QUnit.config.fixture for the next test, propagating failures to recover the sequence
-		hooks.afterEach( function( assert ) {
-			failure = failure || assert.hasFailingAssertions();
-			if ( failure ) {
-				assert.true( false, "prior failure" );
-				QUnit.config.fixture = originalValue;
-			} else {
-				QUnit.config.fixture = values.shift();
-			}
-		} );
+      // setup for next test
+      document.getElementById('qunit-fixture').innerHTML = 'foo';
+    });
 
-		QUnit.test( "setup", function( assert ) {
-			assert.equal( values.length, 6, "proper sequence" );
+    QUnit.test('automatically reset', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'div',
+        attributes: { id: 'qunit-fixture' },
+        content: originalValue.innerHTML
+      });
+      assert.equal(values.length, 5, 'proper sequence');
 
-			// setup for next test
-			document.getElementById( "qunit-fixture" ).innerHTML = "foo";
-		} );
+      // setup for next test
+      document.getElementById('qunit-fixture').setAttribute('data-foo', 'blah');
+    });
 
-		QUnit.test( "automatically reset", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "div",
-				attributes: { id: "qunit-fixture" },
-				content: originalValue.innerHTML
-			} );
-			assert.equal( values.length, 5, "proper sequence" );
+    QUnit.test('automatically reset after attribute value mutation', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'div',
+        attributes: { id: 'qunit-fixture' },
+        content: originalValue.innerHTML
+      });
+      assert.equal(values.length, 4, 'proper sequence');
+    });
 
-			// setup for next test
-			document.getElementById( "qunit-fixture" ).setAttribute( "data-foo", "blah" );
-		} );
+    QUnit.test('user-specified string', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'div',
+        attributes: { id: 'qunit-fixture' },
+        content: '<b>ar</b>'
+      });
+      assert.equal(values.length, 3, 'proper sequence');
 
-		QUnit.test( "automatically reset after attribute value mutation", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "div",
-				attributes: { id: "qunit-fixture" },
-				content: originalValue.innerHTML
-			} );
-			assert.equal( values.length, 4, "proper sequence" );
-		} );
+      // setup for next test
+      document.getElementById('qunit-fixture').setAttribute('data-foo', 'blah');
+    });
 
-		QUnit.test( "user-specified string", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "div",
-				attributes: { id: "qunit-fixture" },
-				content: "<b>ar</b>"
-			} );
-			assert.equal( values.length, 3, "proper sequence" );
+    QUnit.test('user-specified string automatically resets attribute value mutation', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'div',
+        attributes: { id: 'qunit-fixture' },
+        content: '<p>bc</p>'
+      });
+      assert.equal(values.length, 2, 'proper sequence');
 
-			// setup for next test
-			document.getElementById( "qunit-fixture" ).setAttribute( "data-foo", "blah" );
-		} );
+      // setup for next test
+      document.getElementById('qunit-fixture').innerHTML = 'baz';
+    });
 
-		QUnit.test( "user-specified string automatically resets attribute value mutation", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "div",
-				attributes: { id: "qunit-fixture" },
-				content: "<p>bc</p>"
-			} );
-			assert.equal( values.length, 2, "proper sequence" );
+    QUnit.test('disabled', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'div',
+        attributes: { id: 'qunit-fixture' },
+        content: 'baz'
+      });
+      assert.equal(values.length, 1, 'proper sequence');
+    });
 
-			// setup for next test
-			document.getElementById( "qunit-fixture" ).innerHTML = "baz";
-		} );
+    QUnit.test('user-specified DOM node', function (assert) {
+      assert.fixtureEquals({
+        tagName: 'span',
+        attributes: {
+          id: 'qunit-fixture',
+          'data-baz': 'huzzah!'
+        },
+        content: ''
+      });
+      assert.equal(values.length, 0, 'proper sequence');
+    });
+  });
 
-		QUnit.test( "disabled", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "div",
-				attributes: { id: "qunit-fixture" },
-				content: "baz"
-			} );
-			assert.equal( values.length, 1, "proper sequence" );
-		} );
+  QUnit.module('arguments', function (hooks) {
+    var testArgs;
+    var todoArgs;
+    hooks.after(function (assert) {
+      assert.strictEqual(testArgs, 1, 'test() callback args');
+      assert.strictEqual(todoArgs, 1, 'test.todo() callback args');
+    });
 
-		QUnit.test( "user-specified DOM node", function( assert ) {
-			assert.fixtureEquals( {
-				tagName: "span",
-				attributes: {
-					id: "qunit-fixture",
-					"data-baz": "huzzah!"
-				},
-				content: ""
-			} );
-			assert.equal( values.length, 0, "proper sequence" );
-		} );
-	} );
+    QUnit.test('test() callback', function (assert) {
+      testArgs = arguments.length;
+      assert.true(true);
+    });
+    QUnit.test.todo('test.todo() callback', function (assert) {
+      // Captured and asserted later since todo() is expected to fail
+      todoArgs = arguments.length;
+      assert.true(false);
+    });
+  });
 
-	QUnit.module( "arguments", function( hooks ) {
-		var testArgs;
-		var todoArgs;
-		hooks.after( function( assert ) {
-			assert.strictEqual( testArgs, 1, "test() callback args" );
-			assert.strictEqual( todoArgs, 1, "test.todo() callback args" );
-		} );
+  QUnit.module('custom assertions');
 
-		QUnit.test( "test() callback", function( assert ) {
-			testArgs = arguments.length;
-			assert.true( true );
-		} );
-		QUnit.test.todo( "test.todo() callback", function( assert ) {
+  QUnit.assert.mod2 = function (value, expected, message) {
+    var actual = value % 2;
+    this.pushResult({
+      result: actual === expected,
+      actual: actual,
+      expected: expected,
+      message: message
+    });
+  };
 
-			// Captured and asserted later since todo() is expected to fail
-			todoArgs = arguments.length;
-			assert.true( false );
-		} );
-	} );
+  QUnit.assert.testForPush = function (value, expected, message) {
+    this.push(true, value, expected, message, false);
+  };
 
-	QUnit.module( "custom assertions" );
+  QUnit.test('mod2', function (assert) {
+    assert.mod2(2, 0, '2 % 2 == 0');
+    assert.mod2(3, 1, '3 % 2 == 1');
+  });
 
-	QUnit.assert.mod2 = function( value, expected, message ) {
-		var actual = value % 2;
-		this.pushResult( {
-			result: actual === expected,
-			actual: actual,
-			expected: expected,
-			message: message
-		} );
-	};
+  QUnit.test('testForPush', function (assert) {
+    QUnit.log(function (detail) {
+      if (detail.message === 'should be call pushResult') {
+        /* eslint-disable qunit/no-conditional-assertions */
+        assert.equal(detail.result, true);
+        assert.equal(detail.actual, 1);
+        assert.equal(detail.expected, 1);
+        assert.equal(detail.message, 'should be call pushResult');
+        assert.equal(detail.negative, false);
+        /* eslint-enable */
+      }
+    });
+    assert.testForPush(1, 1, 'should be call pushResult');
+  });
 
-	QUnit.assert.testForPush = function( value, expected, message ) {
-		this.push( true, value, expected, message, false );
-	};
+  QUnit.module('aliases');
 
-	QUnit.test( "mod2", function( assert ) {
-		assert.mod2( 2, 0, "2 % 2 == 0" );
-		assert.mod2( 3, 1, "3 % 2 == 1" );
-	} );
+  ['todo', 'skip', 'only'].forEach(function (flavor) {
+    QUnit.test('test.' + flavor, function (assert) {
+      assert.strictEqual(typeof QUnit.test[flavor], 'function');
+      assert.strictEqual(QUnit[flavor], QUnit.test[flavor]);
+    });
+  });
 
-	QUnit.test( "testForPush", function( assert ) {
-		QUnit.log( function( detail ) {
-			if ( detail.message === "should be call pushResult" ) {
-				/* eslint-disable qunit/no-conditional-assertions */
-				assert.equal( detail.result, true );
-				assert.equal( detail.actual, 1 );
-				assert.equal( detail.expected, 1 );
-				assert.equal( detail.message, "should be call pushResult" );
-				assert.equal( detail.negative, false );
-				/* eslint-enable */
-			}
-		} );
-		assert.testForPush( 1, 1, "should be call pushResult" );
-	} );
+  QUnit.module('test.skip', {
+    beforeEach: function (assert) {
+      // Skip test hooks for skipped tests
+      assert.true(false, 'skipped function');
+      throw 'Error';
+    },
+    afterEach: function (assert) {
+      assert.true(false, 'skipped function');
+      throw 'Error';
+    }
+  });
 
-	QUnit.module( "aliases" );
+  QUnit.skip('skip blocks are skipped', function (assert) {
+    // This test callback won't run, even with broken code
+    assert.expect(1000);
+    throw 'Error';
+  });
 
-	[ "todo", "skip", "only" ].forEach( function( flavor ) {
-		QUnit.test( "test." + flavor, function( assert ) {
-			assert.strictEqual( typeof QUnit.test[ flavor ], "function" );
-			assert.strictEqual( QUnit[ flavor ], QUnit.test[ flavor ] );
-		} );
-	} );
+  QUnit.skip('skip without function');
 
-	QUnit.module( "test.skip", {
-		beforeEach: function( assert ) {
+  QUnit.module('missing callbacks');
 
-			// Skip test hooks for skipped tests
-			assert.true( false, "skipped function" );
-			throw "Error";
-		},
-		afterEach: function( assert ) {
-			assert.true( false, "skipped function" );
-			throw "Error";
-		}
-	} );
+  QUnit.test('QUnit.test without a callback logs a descriptive error', function (assert) {
+    assert.throws(function () {
+      // eslint-disable-next-line qunit/no-nested-tests
+      QUnit.test('should throw an error');
+    }, /You must provide a callback to QUnit.test\("should throw an error"\)/);
+  });
 
-	QUnit.skip( "skip blocks are skipped", function( assert ) {
+  QUnit.test('QUnit.todo without a callback logs a descriptive error', function (assert) {
+    assert.throws(function () {
+      QUnit.todo('should throw an error');
+    }, /You must provide a callback to QUnit.todo\("should throw an error"\)/);
+  });
 
-		// This test callback won't run, even with broken code
-		assert.expect( 1000 );
-		throw "Error";
-	} );
+  (function () {
+    var previousTestAssert;
+    var firstTestName = 'assertions after test finishes throws an error - part 1';
 
-	QUnit.skip( "skip without function" );
+    QUnit.module('bad assertion context');
 
-	QUnit.module( "missing callbacks" );
+    QUnit.test(firstTestName, function (assert) {
+      assert.expect(0);
+      previousTestAssert = assert;
+    });
 
-	QUnit.test( "QUnit.test without a callback logs a descriptive error", function( assert ) {
-		assert.throws( function() {
+    QUnit.test('assertions after test finishes throws an error - part 2', function (assert) {
+      var error = 'Assertion occurred after test finished.\n' +
+        '> Test: ' + firstTestName + '\n' +
+        '> Message: message here\n';
 
-			// eslint-disable-next-line qunit/no-nested-tests
-			QUnit.test( "should throw an error" );
-		}, /You must provide a callback to QUnit.test\("should throw an error"\)/ );
-	} );
-
-	QUnit.test( "QUnit.todo without a callback logs a descriptive error", function( assert ) {
-		assert.throws( function() {
-			QUnit.todo( "should throw an error" );
-		}, /You must provide a callback to QUnit.todo\("should throw an error"\)/ );
-	} );
-
-	( function() {
-		var previousTestAssert;
-		var firstTestName = "assertions after test finishes throws an error - part 1";
-
-		QUnit.module( "bad assertion context" );
-
-		QUnit.test( firstTestName, function( assert ) {
-			assert.expect( 0 );
-			previousTestAssert = assert;
-		} );
-
-		QUnit.test( "assertions after test finishes throws an error - part 2", function( assert ) {
-			var error = "Assertion occurred after test finished.\n" +
-				"> Test: " + firstTestName + "\n" +
-				"> Message: message here\n";
-
-			assert.throws( function() {
-				previousTestAssert.true( true, "message here" );
-			}, new Error( error ), "error contains test name and assertion message" );
-		} );
-	}() );
-
-} );
+      assert.throws(function () {
+        previousTestAssert.true(true, 'message here');
+      }, new Error(error), 'error contains test name and assertion message');
+    });
+  }());
+});

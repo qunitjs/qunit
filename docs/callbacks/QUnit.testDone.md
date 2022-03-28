@@ -37,20 +37,20 @@ Passed to the callback:
 Register a callback that logs results of a single test:
 
 ```js
-QUnit.testDone( details => {
+QUnit.testDone(details => {
   const result = {
-    "Module name": details.module,
-    "Test name": details.name,
-    "Assertions": {
-      "Total": details.total,
-      "Passed": details.passed,
-      "Failed": details.failed
+    'Module name': details.module,
+    'Test name': details.name,
+    Assertions: {
+      Total: details.total,
+      Passed: details.passed,
+      Failed: details.failed
     },
-    "Skipped": details.skipped,
-    "Todo": details.todo,
-    "Runtime": details.runtime
+    Skipped: details.skipped,
+    Todo: details.todo,
+    Runtime: details.runtime
   };
 
-  console.log( JSON.stringify( result, null, 2 ) );
-} );
+  console.log(JSON.stringify(result, null, 2));
+});
 ```

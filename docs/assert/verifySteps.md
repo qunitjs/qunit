@@ -31,24 +31,24 @@ The **Step API** strictly validates the order and frequency of observed values. 
 This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one provided by Node.js and other environments:
 
 ```js
-QUnit.test( "good example", async assert => {
+QUnit.test('good example', async assert => {
   const thing = new MyThing();
-  thing.on( "start", () => {
-    assert.step( "start" );
+  thing.on('start', () => {
+    assert.step('start');
   });
-  thing.on( "middle", () => {
-    assert.step( "middle" );
+  thing.on('middle', () => {
+    assert.step('middle');
   });
-  thing.on( "end", () => {
-    assert.step( "end" );
+  thing.on('end', () => {
+    assert.step('end');
   });
-  thing.on( "error", message => {
-    assert.step( { error: message } );
+  thing.on('error', message => {
+    assert.step({ error: message });
   });
 
   await thing.process();
 
-  assert.verifySteps( [ "start", "middle", "end" ] );
+  assert.verifySteps([ 'start', 'middle', 'end' ]);
 });
 ```
 
@@ -56,19 +56,19 @@ When approaching this scenario **without the Step API** one might be tempted to 
 
 ```js
 // WARNING: This is a BAD example
-QUnit.test( "bad example 1", assert => {
+QUnit.test('bad example 1', assert => {
   const thing = new MyThing();
-  thing.on( "start", () => {
-    assert.true( true, "start" );
+  thing.on('start', () => {
+    assert.true(true, 'start');
   });
-  thing.on( "middle", () => {
-    assert.true( true, "middle" );
+  thing.on('middle', () => {
+    assert.true(true, 'middle');
   });
-  thing.on( "end", () => {
-    assert.true( true, "end" );
+  thing.on('end', () => {
+    assert.true(true, 'end');
   });
-  thing.on( "error", () => {
-    assert.true( false, "error" );
+  thing.on('error', () => {
+    assert.true(false, 'error');
   });
 
   return thing.process();
@@ -78,26 +78,25 @@ QUnit.test( "bad example 1", assert => {
 A less fragile approach could involve a local counter variable with an array that we check with [`deepEqual`](./deepEqual.md). This catches out-of-order issues, unexpected values, duplicate values, and provides detailed debugging information in case of problems. This is basically how the Step API works:
 
 ```js
-QUnit.test( "manual example without Step API", assert => {
+QUnit.test('manual example without Step API', assert => {
   const values = [];
 
   const thing = new MyThing();
-  thing.on( "start", () => {
-    values.push( "start" );
+  thing.on('start', () => {
+    values.push('start');
   });
-  thing.on( "middle", () => {
-    values.push( "middle" );
+  thing.on('middle', () => {
+    values.push('middle');
   });
-  thing.on( "end", () => {
-    values.push( "end" );
+  thing.on('end', () => {
+    values.push('end');
   });
-  thing.on( "error", () => {
-    values.push( "error" );
+  thing.on('error', () => {
+    values.push('error');
   });
-
 
   return thing.process().then(() => {
-    assert.deepEqual( values, [ "start", "middle", "end" ] );
+    assert.deepEqual(values, [ 'start', 'middle', 'end' ]);
   });
 });
 ```
@@ -107,7 +106,7 @@ QUnit.test( "manual example without Step API", assert => {
 Use the **Step API** to verify messages received in a Pub-Sub channel or topic.
 
 ```js
-QUnit.test( "good example", assert => {
+QUnit.test('good example', assert => {
   const publisher = new Publisher();
 
   const subscriber1 = (message) => assert.step(`Sub 1: ${message}`);
@@ -115,15 +114,15 @@ QUnit.test( "good example", assert => {
 
   publisher.subscribe(subscriber1);
   publisher.subscribe(subscriber2);
-  publisher.publish( "Hello!" );
+  publisher.publish('Hello!');
 
   publisher.unsubscribe(subscriber1);
-  publisher.publish( "World!" );
+  publisher.publish('World!');
 
   assert.verifySteps([
-    "Sub 1: Hello!",
-    "Sub 2: Hello!",
-    "Sub 2: World!"
+    'Sub 1: Hello!',
+    'Sub 2: Hello!',
+    'Sub 2: World!'
   ]);
 });
 ```
@@ -133,13 +132,13 @@ QUnit.test( "good example", assert => {
 The internal buffer of observed steps is automatically reset when calling `verifySteps()`.
 
 ```js
-QUnit.test( "multiple verifications example", assert => {
-  assert.step( "one" );
-  assert.step( "two" );
-  assert.verifySteps([ "one", "two" ]);
+QUnit.test('multiple verifications example', assert => {
+  assert.step('one');
+  assert.step('two');
+  assert.verifySteps([ 'one', 'two' ]);
 
-  assert.step( "three" );
-  assert.step( "four" );
-  assert.verifySteps([ "three", "four" ]);
+  assert.step('three');
+  assert.step('four');
+  assert.verifySteps([ 'three', 'four' ]);
 });
  ```

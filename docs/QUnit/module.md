@@ -100,22 +100,22 @@ Example: [§ Nested module scope](#nested-module-scope).
 If `QUnit.module` is defined without a `nested` callback argument, all subsequently defined tests will be grouped into the module until another module is defined.
 
 ```js
-QUnit.module( "Group A" );
+QUnit.module('Group A');
 
-QUnit.test( "basic test example 1", function( assert ) {
-  assert.true( true, "this is fine" );
+QUnit.test('basic test example 1', function (assert) {
+  assert.true(true, 'this is fine');
 });
-QUnit.test( "basic test example 2", function( assert ) {
-  assert.true( true, "this is also fine" );
+QUnit.test('basic test example 2', function (assert) {
+  assert.true(true, 'this is also fine');
 });
 
-QUnit.module( "Group B" );
+QUnit.module('Group B');
 
-QUnit.test( "basic test example 3", function( assert ) {
-  assert.true( true, "this is fine" );
+QUnit.test('basic test example 3', function (assert) {
+  assert.true(true, 'this is fine');
 });
-QUnit.test( "basic test example 4", function( assert ) {
-  assert.true( true, "this is also fine" );
+QUnit.test('basic test example 4', function (assert) {
+  assert.true(true, 'this is also fine');
 });
 ```
 
@@ -124,39 +124,39 @@ Using modern syntax:
 ```js
 const { test } = QUnit;
 
-QUnit.module( "Group A" );
+QUnit.module('Group A');
 
-test( "basic test example", assert => {
-  assert.true( true, "this is fine" );
+test('basic test example', assert => {
+  assert.true(true, 'this is fine');
 });
-test( "basic test example 2", assert => {
-  assert.true( true, "this is also fine" );
+test('basic test example 2', assert => {
+  assert.true(true, 'this is also fine');
 });
 
-QUnit.module( "Group B" );
+QUnit.module('Group B');
 
-test( "basic test example 3", assert => {
-  assert.true( true, "this is fine" );
+test('basic test example 3', assert => {
+  assert.true(true, 'this is fine');
 });
-test( "basic test example 4", assert => {
-  assert.true( true, "this is also fine" );
+test('basic test example 4', assert => {
+  assert.true(true, 'this is also fine');
 });
 ```
 
 ### Declaring module options
 
 ```js
-QUnit.module( "module A", {
-  before: function() {
+QUnit.module('module A', {
+  before: function () {
     // prepare something once for all tests
   },
-  beforeEach: function() {
+  beforeEach: function () {
     // prepare something before each test
   },
-  afterEach: function() {
+  afterEach: function () {
     // clean up after each test
   },
-  after: function() {
+  after: function () {
     // clean up once after all tests are done
   }
 });
@@ -167,25 +167,23 @@ QUnit.module( "module A", {
 ```js
 const { test } = QUnit;
 
-QUnit.module( "Group A", hooks => {
-
-  test( "basic test example", assert => {
-    assert.true( true, "this is fine" );
+QUnit.module('Group A', hooks => {
+  test('basic test example', assert => {
+    assert.true(true, 'this is fine');
   });
 
-  test( "basic test example 2", assert => {
-    assert.true( true, "this is also fine" );
+  test('basic test example 2', assert => {
+    assert.true(true, 'this is also fine');
   });
 });
 
-QUnit.module( "Group B", hooks => {
-
-  test( "basic test example 3", assert => {
-    assert.true( true, "this is fine" );
+QUnit.module('Group B', hooks => {
+  test('basic test example 3', assert => {
+    assert.true(true, 'this is fine');
   });
 
-  test( "basic test example 4", assert => {
-    assert.true( true, "this is also fine" );
+  test('basic test example 4', assert => {
+    assert.true(true, 'this is also fine');
   });
 });
 ```
@@ -197,39 +195,37 @@ Use `before`/`beforeEach` hooks are queued for nested modules. `after`/`afterEac
 ```js
 const { test } = QUnit;
 
-QUnit.module( "My Group", hooks => {
-
+QUnit.module('My Group', hooks => {
   // It is valid to call the same hook methods more than once.
-  hooks.beforeEach( assert => {
-    assert.ok( true, "beforeEach called" );
+  hooks.beforeEach(assert => {
+    assert.ok(true, 'beforeEach called');
   });
 
-  hooks.afterEach( assert => {
-    assert.ok( true, "afterEach called" );
+  hooks.afterEach(assert => {
+    assert.ok(true, 'afterEach called');
   });
 
-  test( "with hooks", assert => {
+  test('with hooks', assert => {
     // 1 x beforeEach
     // 1 x afterEach
-    assert.expect( 2 );
+    assert.expect(2);
   });
 
-  QUnit.module( "Nested Group", hooks => {
-
+  QUnit.module('Nested Group', hooks => {
     // This will run after the parent module's beforeEach hook
-    hooks.beforeEach( assert => {
-      assert.ok( true, "nested beforeEach called" );
+    hooks.beforeEach(assert => {
+      assert.ok(true, 'nested beforeEach called');
     });
 
     // This will run before the parent module's afterEach
-    hooks.afterEach( assert => {
-      assert.ok( true, "nested afterEach called" );
+    hooks.afterEach(assert => {
+      assert.ok(true, 'nested afterEach called');
     });
 
-    test( "with nested hooks", assert => {
+    test('with nested hooks', assert => {
       // 2 x beforeEach (parent, current)
       // 2 x afterEach (current, parent)
-      assert.expect( 4 );
+      assert.expect(4);
     });
   });
 });
@@ -240,23 +236,23 @@ QUnit.module( "My Group", hooks => {
 The test context object is exposed to hook callbacks.
 
 ```js
-QUnit.module( "Machine Maker", {
-  beforeEach: function() {
+QUnit.module('Machine Maker', {
+  beforeEach: function () {
     this.maker = new Maker();
-    this.parts = [ "wheels", "motor", "chassis" ];
+    this.parts = ['wheels', 'motor', 'chassis'];
   }
 });
 
-QUnit.test( "makes a robot", function( assert ) {
-  this.parts.push( "arduino" );
-  assert.equal( this.maker.build( this.parts ), "robot" );
-  assert.deepEqual( this.maker.log, [ "robot" ] );
+QUnit.test('makes a robot', function (assert) {
+  this.parts.push('arduino');
+  assert.equal(this.maker.build(this.parts), 'robot');
+  assert.deepEqual(this.maker.log, ['robot']);
 });
 
-QUnit.test( "makes a car", function( assert ) {
-  assert.equal( this.maker.build( this.parts ), "car" );
+QUnit.test('makes a car', function (assert) {
+  assert.equal(this.maker.build(this.parts), 'car');
   this.maker.duplicate();
-  assert.deepEqual( this.maker.log, [ "car", "car" ] );
+  assert.deepEqual(this.maker.log, ['car', 'car']);
 });
 ```
 
@@ -266,22 +262,22 @@ in arrow functions.
 ```js
 const { test } = QUnit;
 
-QUnit.module( "Machine Maker", hooks => {
-  hooks.beforeEach( function() {
+QUnit.module('Machine Maker', hooks => {
+  hooks.beforeEach(function () {
     this.maker = new Maker();
-    this.parts = [ "wheels", "motor", "chassis" ];
+    this.parts = ['wheels', 'motor', 'chassis'];
   });
 
-  test( "makes a robot", function( assert ) {
-    this.parts.push( "arduino" );
-    assert.equal( this.maker.build( this.parts ), "robot" );
-    assert.deepEqual( this.maker.log, [ "robot" ] );
+  test('makes a robot', function (assert) {
+    this.parts.push('arduino');
+    assert.equal(this.maker.build(this.parts), 'robot');
+    assert.deepEqual(this.maker.log, ['robot']);
   });
 
-  test( "makes a car", function( assert ) {
-    assert.equal( this.maker.build( this.parts ), "car" );
+  test('makes a car', function (assert) {
+    assert.equal(this.maker.build(this.parts), 'car');
     this.maker.duplicate();
-    assert.deepEqual( this.maker.log, [ "car", "car" ] );
+    assert.deepEqual(this.maker.log, ['car', 'car']);
   });
 });
 ```
@@ -291,24 +287,24 @@ It might be more convenient to use JavaScript's own lexical scope instead:
 ```js
 const { test } = QUnit;
 
-QUnit.module( "Machine Maker", hooks => {
+QUnit.module('Machine Maker', hooks => {
   let maker;
   let parts;
-  hooks.beforeEach( () => {
+  hooks.beforeEach(() => {
     maker = new Maker();
-    parts = [ "wheels", "motor", "chassis" ];
+    parts = ['wheels', 'motor', 'chassis'];
   });
 
-  test( "makes a robot", assert => {
-    parts.push( "arduino" );
-    assert.equal( maker.build( parts ), "robot" );
-    assert.deepEqual( maker.log, [ "robot" ] );
+  test('makes a robot', assert => {
+    parts.push('arduino');
+    assert.equal(maker.build(parts), 'robot');
+    assert.deepEqual(maker.log, ['robot']);
   });
 
-  test( "makes a car", assert => {
-    assert.equal( maker.build( parts ), "car" );
+  test('makes a car', assert => {
+    assert.equal(maker.build(parts), 'car');
     maker.duplicate();
-    assert.deepEqual( maker.log, [ "car", "car" ] );
+    assert.deepEqual(maker.log, ['car', 'car']);
   });
 });
 ```
@@ -320,23 +316,23 @@ An example of handling an asynchronous `then`able Promise result in hooks. This 
 [ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 ```js
-QUnit.module( "Database connection", {
-  before: function() {
-    return new Promise( function( resolve, reject ) {
-      DB.connect( function( err ) {
-        if ( err ) {
-          reject( err );
+QUnit.module('Database connection', {
+  before: function () {
+    return new Promise(function (resolve, reject) {
+      DB.connect(function (err) {
+        if (err) {
+          reject(err);
         } else {
           resolve();
         }
       });
     });
   },
-  after: function() {
-    return new Promise( function( resolve, reject ) {
-      DB.disconnect( function( err ) {
-        if ( err ) {
-          reject( err );
+  after: function () {
+    return new Promise(function (resolve, reject) {
+      DB.disconnect(function (err) {
+        if (err) {
+          reject(err);
         } else {
           resolve();
         }
@@ -351,33 +347,33 @@ QUnit.module( "Database connection", {
 Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.test.only`](./test.only.md) instead of [`QUnit.test`](./test.md).
 
 ```js
-QUnit.module( "Robot", hooks => {
+QUnit.module('Robot', hooks => {
   // ...
 });
 
 // Only execute this module when developing the feature,
 // skipping tests from other modules.
-QUnit.module.only( "Android", hooks => {
+QUnit.module.only('Android', hooks => {
   let android;
-  hooks.beforeEach( () => {
+  hooks.beforeEach(() => {
     android = new Android();
   });
 
-  QUnit.test( "Say hello", assert => {
-    assert.strictEqual( android.hello(), "Hello, my name is AN-2178!" );
+  QUnit.test('Say hello', assert => {
+    assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 
-  QUnit.test( "Basic conversation", assert => {
-    android.loadConversationData( {
-      "Hi": "Hello",
-      "What's your name?": "My name is AN-2178.",
-      "Nice to meet you!": "Nice to meet you too!",
-      "...": "..."
+  QUnit.test('Basic conversation', assert => {
+    android.loadConversationData({
+      Hi: 'Hello',
+      "What's your name?": 'My name is AN-2178.',
+      'Nice to meet you!': 'Nice to meet you too!',
+      '...': '...'
     });
 
     assert.strictEqual(
-      android.answer( "What's your name?" ),
-      "My name is AN-2178."
+      android.answer("What's your name?"),
+      'My name is AN-2178.'
     );
   });
 
@@ -388,27 +384,27 @@ QUnit.module.only( "Android", hooks => {
 Use `QUnit.module.skip()` to treat an entire module's tests as if they used [`QUnit.test.skip`](./test.skip.md) instead of [`QUnit.test`](./test.md).
 
 ```js
-QUnit.module( "Robot", hooks => {
+QUnit.module('Robot', hooks => {
   // ...
 });
 
 // Skip this module's tests.
 // For example if the android tests are failing due to unsolved problems.
-QUnit.module.skip( "Android", hooks => {
+QUnit.module.skip('Android', hooks => {
   let android;
-  hooks.beforeEach( () => {
+  hooks.beforeEach(() => {
     android = new Android();
   });
 
-  QUnit.test( "Say hello", assert => {
-    assert.strictEqual( android.hello(), "Hello, my name is AN-2178!" );
+  QUnit.test('Say hello', assert => {
+    assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 
-  QUnit.test( "Basic conversation", assert => {
+  QUnit.test('Basic conversation', assert => {
     // ...
     assert.strictEqual(
-      android.answer( "Nice to meet you!" ),
-      "Nice to meet you too!"
+      android.answer('Nice to meet you!'),
+      'Nice to meet you too!'
     );
   });
 
@@ -419,21 +415,21 @@ QUnit.module.skip( "Android", hooks => {
 Use `QUnit.module.todo()` to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
 
 ```js
-QUnit.module.todo( "Robot", hooks => {
+QUnit.module.todo('Robot', hooks => {
   let robot;
-  hooks.beforeEach( () => {
+  hooks.beforeEach(() => {
     robot = new Robot();
   });
 
-  QUnit.test( "Say", assert => {
+  QUnit.test('Say', assert => {
     // Currently, it returns undefined
-    assert.strictEqual( robot.say(), "I'm Robot FN-2187" );
+    assert.strictEqual(robot.say(), "I'm Robot FN-2187");
   });
 
-  QUnit.test( "Move arm", assert => {
+  QUnit.test('Move arm', assert => {
     // Move the arm to point (75, 80). Currently, each throws a NotImplementedError
-    robot.moveArmTo( 75, 80 );
-    assert.deepEqual( robot.getPosition(), { x: 75, y: 80 } );
+    robot.moveArmTo(75, 80);
+    assert.deepEqual(robot.getPosition(), { x: 75, y: 80 });
   });
 
   // ...

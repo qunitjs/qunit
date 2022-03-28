@@ -1,79 +1,199 @@
 {
-    "root": true,
-    "env": {
-        "es6": true
-    },
-    "extends": ["eslint:recommended", "jquery"],
-    "parserOptions": {
+  "root": true,
+  "extends": ".eslintrc.base.js",
+  "plugins": [
+    "compat",
+    "html",
+    "json-es",
+    "markdown",
+    "qunit"
+  ],
+  "reportUnusedDisableDirectives": true,
+  "ignorePatterns": [
+    "__codeorigin/**",
+    "coverage/**",
+    "docs/.jekyll-cache/**",
+    "docs/_site/**",
+    "lib/**",
+    "qunit/**",
+    "test/cli/fixtures/sourcemap/*.min.js",
+    "test/integration/*/**",
+    "temp/**"
+  ],
+  "overrides": [
+    // Universal source code
+    // Written for compat with ES5 runtimes,
+    // ES6+ syntax is transpiled via Rollup. ES6+ APIs may not be used.
+    {
+      "files": ["src/**"],
+      "extends": ".eslintrc.base.js",
+      "parserOptions": {
+        "ecmaVersion": 6,
         "sourceType": "module"
+      },
+      "globals": {
+        "clearTimeout": "off",
+        "setTimeout": "off"
+      },
+      "rules": {
+        "no-console": "error",
+        "compat/compat": [
+          "error",
+          "android >= 4.3, firefox >= 45, ie >= 9, safari >= 9.1, chrome >= 58"
+        ]
+      }
     },
-    "rules": {
-        "arrow-spacing": ["error", { "before": true, "after": true }],
-        "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
-        "constructor-super": "error",
-        "indent": ["error", "tab", {
-                "CallExpression": {
-                    "arguments": 1
-                },
-                "MemberExpression": 1,
-                "SwitchCase": 0,
-                "outerIIFEBody": 1
-        }],
+    // Universal test suites
+    // Strictly ES5 syntax for ES5 runtimes.
+    {
+      "files": ["test/**"],
+      "extends": [".eslintrc.base.js", "plugin:qunit/recommended"],
+      "parserOptions": {
+        "ecmaVersion": 5,
+        "sourceType": "script"
+      },
+      "globals": {
+        "QUnit": "readonly"
+      },
+      "rules": {
+        "compat/compat": [
+          "error",
+          "android >= 4.3, firefox >= 45, ie >= 9, safari >= 9.1, chrome >= 58"
+        ],
+        "max-len": "off",
+        "no-throw-literal": "off",
+        "no-var": "off",
+        "prefer-regex-literals": "off",
+        "qunit/literal-compare-order": "off",
+        "qunit/no-arrow-tests": "off",
+        "qunit/no-assert-equal-boolean": "off",
+        "qunit/no-assert-logical-expression": "off",
+        "qunit/no-only": "off",
+        "qunit/require-expect": "off",
+        "qunit/resolve-async": "off"
+      }
+    },
+    // Node.js-specific source code
+    {
+      "files": [
+        "bin/**",
+        "build/**",
+        "src/cli/**",
+        "Gruntfile.js",
+        "rollup.config.js"
+      ],
+      "excludedFiles": [
+        "build/coverage-bridge.js"
+      ],
+      "extends": [".eslintrc.base.js", "plugin:node/recommended"],
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "script"
+      },
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "compat/compat": "off",
         "no-console": "off",
-        "no-const-assign": "error",
-        "no-constant-condition": ["error", { "checkLoops": false }],
-        "no-dupe-class-members": "error",
-        "no-duplicate-imports": "error",
-        "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
-        "no-this-before-super": "error",
-        "no-useless-constructor": "error",
-        "no-useless-rename": "error",
-        "prefer-const": "error",
-        "rest-spread-spacing": ["error", "never"],
-        "wrap-iife": ["error", "any"]
+        "no-process-exit": "off",
+        "node/no-missing-require": "off",
+        "node/no-unpublished-require": "off"
+      }
     },
-    "ignorePatterns": [
-        "__codeorigin/**",
-        "coverage/**",
-        "docs/_site/**",
-        "lib/**",
-        "qunit/**",
-        "test/integration/*/**",
-        "temp/**"
-    ],
-    "overrides": [
-        {
-            "files": [
-                "bin/*.js",
-                "build/**/*.js",
-                "src/cli/*.js",
-                "Gruntfile.js",
-                "rollup.config.js"
-            ],
-            "excludedFiles": [
-                "build/coverage-bridge.js"
-            ],
-            "parserOptions": {
-                "sourceType": "script",
-                "ecmaVersion": 2020
-            },
-            "env": {
-                "node": true
-            },
-            "extends": ["plugin:node/recommended"],
-            "rules": {
-                "no-process-exit": "off"
-            }
-        },
-        {
-            "files": [
-                "test/**/*.html"
-            ],
-            "extends": ["eslint:recommended", "jquery"],
-            "rules": {
-                "wrap-iife": ["error", "any"],
-                "indent": "off"
-            }
-        }
-    ]
+    // Misc overrides
+    {
+      "files": ["test/cli/**"],
+      "env": {
+        "es2017": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2018
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
+      "files": ["test/mozjs.js"],
+      "parserOptions": {
+        "ecmaVersion": 6
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
+      "files": ["test/es2018/**"],
+      "env": {
+        "es2017": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2018
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
+      "files": ["test/node/**"],
+      "env": {
+        "es2017": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2018
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
+      "files": ["test/**/*.html"],
+      "env": {
+        "browser": true
+      }
+    },
+    {
+      "files": ["**/*.mjs"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    },
+    {
+      "files": ["**/*.md"],
+      "processor": "markdown/markdown"
+    },
+    {
+      "files": ["**/*.md/**"],
+      "parserOptions": {
+          "ecmaFeatures": {
+              "impliedStrict": true
+          }
+      },
+      "rules": {
+        // https://github.com/eslint/eslint/issues/15732
+        "array-bracket-spacing": "off",
+        "no-labels": "off",
+        "no-undef": "off",
+        "no-unused-expressions": "off",
+        "no-unused-vars": "off",
+        "no-var": "off",
+        "strict": "off"
+      }
+    },
+    {
+      "files": ["**/*.json"],
+      "extends": [
+        "plugin:json-es/recommended"
+      ],
+      "parser": "eslint-plugin-json-es",
+      "rules": {
+        // https://github.com/zeitport/eslint-plugin-json-es/issues/35
+        // "indent": ["error", 2]
+        "indent": "off"
+      }
+    }
+  ]
 }

@@ -25,17 +25,17 @@ This method is similar to the `assertFalse()` method found in xUnit-style framew
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   // success
-  assert.false( false, "boolean false" );
+  assert.false(false, 'boolean false');
 
   // failure
-  assert.false( "foo", "non-empty string" );
-  assert.false( "", "empty string" );
-  assert.false( 0, "number zero" );
-  assert.false( true, "boolean true" );
-  assert.false( NaN, "NaN value" );
-  assert.false( null, "null value" );
-  assert.false( undefined, "undefined value" );
+  assert.false('foo', 'non-empty string');
+  assert.false('', 'empty string');
+  assert.false(0, 'number zero');
+  assert.false(true, 'boolean true');
+  assert.false(NaN, 'NaN value');
+  assert.false(null, 'null value');
+  assert.false(undefined, 'undefined value');
 });
 ```

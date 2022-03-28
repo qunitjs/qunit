@@ -1,3 +1,3 @@
-import "./fixture";
-import "./diff";
-import "./html";
+import './fixture';
+import './diff';
+import './html';

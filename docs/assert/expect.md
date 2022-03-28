@@ -24,18 +24,18 @@ To ensure that an explicit number of assertions are run within any test, use `as
 Establish an expected assertion count
 
 ```js
-QUnit.test( "a test", function( assert ) {
-  assert.expect( 2 );
+QUnit.test('a test', function (assert) {
+  assert.expect(2);
 
-  function calc( x, operation ) {
-    return operation( x );
+  function calc (x, operation) {
+    return operation(x);
   }
 
-  var result = calc( 2, function( x ) {
-    assert.true( true, "calc() calls operation function" );
+  let result = calc(2, function (x) {
+    assert.true(true, 'calc() calls operation function');
     return x * x;
   });
 
-  assert.strictEqual( result, 4, "2 squared equals 4" );
+  assert.strictEqual(result, 4, '2 squared equals 4');
 });
 ```

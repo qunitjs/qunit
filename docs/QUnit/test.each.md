@@ -40,12 +40,12 @@ The [`only`](./test.only.md), [`skip`](./test.skip.md), and [`todo`](./test.todo
 ### Basic data provider
 
 ```js
-function isEven( x ) {
+function isEven (x) {
   return x % 2 === 0;
 }
 
-QUnit.test.each( "isEven()", [ 2, 4, 6 ], ( assert, data ) => {
-  assert.true( isEven( data ), `${data} is even` );
+QUnit.test.each('isEven()', [2, 4, 6], (assert, data) => {
+  assert.true(isEven(data), `${data} is even`);
 });
 ```
 
@@ -55,63 +55,63 @@ The original array is passed to your callback. [Array destructuring](https://dev
 
 
 ```js
-function square( x ) {
+function square (x) {
   return x * x;
 }
 
-QUnit.test.each( "square()", [
-  [ 2, 4 ],
-  [ 3, 9 ]
-], ( assert, [ value, expected ] ) => {
-  assert.equal( square( value ), expected, `${value} squared` );
+QUnit.test.each('square()', [
+  [2, 4],
+  [3, 9]
+], (assert, [value, expected]) => {
+  assert.equal(square(value), expected, `${value} squared`);
 });
 ```
 
 ### Object data provider
 
 ```js
-QUnit.test.each( "isEven()", {
-  caseEven: [ 2, true ],
-  caseNotEven: [ 3, false ]
-}, ( assert, [ value, expected ] ) => {
-  assert.strictEqual( isEven( value ), expected );
+QUnit.test.each('isEven()', {
+  caseEven: [2, true],
+  caseNotEven: [3, false]
+}, (assert, [value, expected]) => {
+  assert.strictEqual(isEven(value), expected);
 });
 ```
 
 ### Async functions with `each()`
 
 ```js
-function isEven( x ) {
+function isEven (x) {
   return x % 2 === 0;
 }
 
-async function isAsyncEven( x ) {
-  return new Promise( resolve => {
-    resolve( isEven( x ) );
-  } );
+async function isAsyncEven (x) {
+  return new Promise(resolve => {
+    resolve(isEven(x));
+  });
 }
 
-QUnit.test.each( "isAsyncEven()", [ 2, 4 ], async ( assert, data ) => {
-  assert.true( await isAsyncEven( data ), `${data} is even` );
+QUnit.test.each('isAsyncEven()', [2, 4], async (assert, data) => {
+  assert.true(await isAsyncEven(data), `${data} is even`);
 });
 ```
 
 Return a Promise from each callback, using classic ES5 syntax:
 
 ```js
-function isEven( x ) {
+function isEven (x) {
   return x % 2 === 0;
 }
 
-function isAsyncEven( x ) {
-  return new Promise( function ( resolve ) {
-    resolve( isEven( x ) );
-  } );
+function isAsyncEven (x) {
+  return new Promise(function (resolve) {
+    resolve(isEven(x));
+  });
 }
 
-QUnit.test.each( "isAsyncEven()", [ 2, 4 ], ( assert, value ) => {
-  return isAsyncEven( value ).then( ( result ) => {
-    assert.true( result, `${value} is even` );
-  } );
+QUnit.test.each('isAsyncEven()', [2, 4], (assert, value) => {
+  return isAsyncEven(value).then((result) => {
+    assert.true(result, `${value} is even`);
+  });
 });
 ```

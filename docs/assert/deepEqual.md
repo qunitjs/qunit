@@ -30,26 +30,26 @@ The `deepEqual` assertion can be used to compare the property values of objects,
 Validate the properties and values of a given object.
 
 ```js
-QUnit.test( "good example", assert => {
-  const result = { foo: "bar" };
+QUnit.test('good example', assert => {
+  const result = { foo: 'bar' };
 
-  assert.deepEqual( result, { foo: "bar" }, "result object" );
+  assert.deepEqual(result, { foo: 'bar' }, 'result object');
 });
 ```
 
 ```js
-QUnit.test( "bad example", assert => {
+QUnit.test('bad example', assert => {
   const result = {
-    a: "Albert",
-    b: "Berta",
+    a: 'Albert',
+    b: 'Berta',
     num: 123
   };
 
   // fails because the number 123 is not strictly equal to the string "123".
-  assert.deepEqual( result, {
-    a: "Albert",
-    b: "Berta",
-    num: "123"
-  } );
-} );
+  assert.deepEqual(result, {
+    a: 'Albert',
+    b: 'Berta',
+    num: '123'
+  });
+});
 ```

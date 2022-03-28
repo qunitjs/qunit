@@ -1,3 +1,3 @@
-QUnit.test( "hanging", function( assert ) {
-	assert.async();
-} );
+QUnit.test('hanging', function (assert) {
+  assert.async();
+});

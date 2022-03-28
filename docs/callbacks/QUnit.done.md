@@ -33,10 +33,10 @@ Passed to the callback:
 Register a callback that logs test results to the console.
 
 ```js
-QUnit.done( details => {
+QUnit.done(details => {
   console.log(
-    `Total: ${details.total} Failed: ${details.failed} `
-      + `Passed: ${details.passed} Runtime: ${details.runtime}`
+    `Total: ${details.total} Failed: ${details.failed} ` +
+      `Passed: ${details.passed} Runtime: ${details.runtime}`
   );
 });
 ```
@@ -44,10 +44,10 @@ QUnit.done( details => {
 Using classic ES5 syntax:
 
 ```js
-QUnit.done( function( details ) {
+QUnit.done(function (details) {
   console.log(
-    "Total: " + details.total + " Failed: " + details.failed
-    + " Passed: " + details.passed + " Runtime: " + details.runtime
+    'Total: ' + details.total + ' Failed: ' + details.failed +
+    ' Passed: ' + details.passed + ' Runtime: ' + details.runtime
   );
 });
 ```

@@ -33,21 +33,22 @@ The test passes if there are properties with different values, or extra properti
 Compare the values of two objects properties.
 
 ```js
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   class Foo {
-    constructor() {
-      this.x = "1";
+    constructor () {
+      this.x = '1';
       this.y = 2;
     }
-    walk() {}
-    run() {}
+
+    walk () {}
+    run () {}
   }
 
   const foo = new Foo();
 
   // succeeds, only own property values are compared (using strict equality),
   // and propery "x" is indeed not equal (string instead of number).
-  assert.notPropEqual( foo, {
+  assert.notPropEqual(foo, {
     x: 1,
     y: 2
   });

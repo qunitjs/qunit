@@ -26,10 +26,10 @@ This is the inverse of [`assert.deepEqual()`](./deepEqual.md).
 Compare the value of two objects.
 
 ```js
-QUnit.test( "example", assert => {
-  const result = { foo: "yep" };
+QUnit.test('example', assert => {
+  const result = { foo: 'yep' };
 
   // succeeds, objects are similar but have a different foo value.
-  assert.notDeepEqual( result, { foo: "nope" } );
+  assert.notDeepEqual(result, { foo: 'nope' });
 });
 ```

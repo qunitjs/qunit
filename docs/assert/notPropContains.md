@@ -29,51 +29,49 @@ This method is recursive and allows partial comparison of nested objects as well
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
-
+QUnit.test('example', assert => {
   const result = {
     foo: 0,
     vehicle: {
-      timeCircuits: "on",
-      fluxCapacitor: "fluxing",
-      engine: "running"
+      timeCircuits: 'on',
+      fluxCapacitor: 'fluxing',
+      engine: 'running'
     },
     quux: 1
   };
 
   // succeeds, property "timeCircuits" is actually "on"
-  assert.notPropContains( result, {
+  assert.notPropContains(result, {
     vehicle: {
-      timeCircuits: "off"
+      timeCircuits: 'off'
     }
-  } );
+  });
 
   // succeeds, property "wings" is not in the object
-  assert.notPropContains( result, {
+  assert.notPropContains(result, {
     vehicle: {
-      wings: "flapping"
+      wings: 'flapping'
     }
-  } );
+  });
 
-  function Point( x, y ) {
+  function Point (x, y) {
     this.x = x;
     this.y = y;
   }
 
   assert.notPropContains(
-    new Point( 10, 20 ),
+    new Point(10, 20),
     { z: 30 }
   );
 
   const nested = {
     north: [ /* ... */ ],
-    east: new Point( 10, 20 ),
+    east: new Point(10, 20),
     south: [ /* ... */ ],
     west: [ /* ... */ ]
   };
 
-  assert.notPropContains( nested, { east: new Point( 88, 42 ) } );
-  assert.notPropContains( nested, { east: { x: 88 } } );
-
+  assert.notPropContains(nested, { east: new Point(88, 42) });
+  assert.notPropContains(nested, { east: { x: 88 } });
 });
 ```

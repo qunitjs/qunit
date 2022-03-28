@@ -33,7 +33,7 @@ Passed to the callback:
 Register a callback that logs the module and test name:
 
 ```js
-QUnit.testStart( details => {
-  console.log( `Now running: ${details.module} ${details.name}` );
+QUnit.testStart(details => {
+  console.log(`Now running: ${details.module} ${details.name}`);
 });
 ```

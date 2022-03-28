@@ -1,2 +1,2 @@
-import "./core";
-import "./html-reporter/reporter";
+import './core';
+import './html-reporter/reporter';

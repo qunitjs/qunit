@@ -42,8 +42,8 @@ Passed to the callback:
 Register a callback that logs the assertion result and its message:
 
 ```js
-QUnit.log( details => {
-  console.log( `Log: ${details.result}, ${details.message}` );
+QUnit.log(details => {
+  console.log(`Log: ${details.result}, ${details.message}`);
 });
 ```
 
@@ -52,23 +52,23 @@ QUnit.log( details => {
 Log the module name and test result whenever an assertion fails:
 
 ```js
-QUnit.log( details ) => {
-  if ( details.result ) {
+QUnit.log(details => {
+  if (details.result) {
     return;
   }
 
   let output = `[FAILED] ${details.module} > ${details.name}`;
 
-  if ( details.message ) {
+  if (details.message) {
     output += `: ${details.message}`;
   }
-  if ( details.actual ) {
+  if (details.actual) {
     output += `\nexpected: ${details.expected}\nactual: ${details.actual}`;
   }
-  if ( details.source ) {
+  if (details.source) {
     output += `\n${details.source}`;
   }
 
-  console.log( output );
+  console.log(output);
 });
 ```

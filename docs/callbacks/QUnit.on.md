@@ -25,11 +25,11 @@ Use this to listen for events related to the test suite's execution. Available e
 Printing results of a test suite.
 
 ```js
-QUnit.on( "runEnd", runEnd => {
-  console.log( `Passed: ${runEnd.passed}` );
-  console.log( `Failed: ${runEnd.failed}` );
-  console.log( `Skipped: ${runEnd.skipped}` );
-  console.log( `Todo: ${runEnd.todo}` );
-  console.log( `Total: ${runEnd.total}` );
-} );
+QUnit.on('runEnd', runEnd => {
+  console.log(`Passed: ${runEnd.passed}`);
+  console.log(`Failed: ${runEnd.failed}`);
+  console.log(`Skipped: ${runEnd.skipped}`);
+  console.log(`Todo: ${runEnd.todo}`);
+  console.log(`Total: ${runEnd.total}`);
+});
 ```

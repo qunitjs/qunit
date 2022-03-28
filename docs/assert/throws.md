@@ -40,42 +40,41 @@ The `expectedMatcher` argument can be:
 ## Examples
 
 ```js
-QUnit.test( "throws example", assert => {
-
+QUnit.test('throws example', assert => {
   // simple check
-  assert.throws( function() {
-    throw new Error( "boo" );
+  assert.throws(function () {
+    throw new Error('boo');
   });
 
   // simple check
   assert.throws(
-    function() {
-      throw new Error( "boo" );
+    function () {
+      throw new Error('boo');
     },
-    "optional description here"
+    'optional description here'
   );
 
   // match pattern on actual error
   assert.throws(
-    function() {
-      throw new Error( "some error" );
+    function () {
+      throw new Error('some error');
     },
     /some error/,
-    "optional description here"
+    'optional description here'
   );
 
   // using a custom error constructor
-  function CustomError( message ) {
+  function CustomError (message) {
     this.message = message;
   }
-  CustomError.prototype.toString = function() {
+  CustomError.prototype.toString = function () {
     return this.message;
   };
 
   // actual error is an instance of the expected constructor
   assert.throws(
-    function() {
-      throw new CustomError( "some error" );
+    function () {
+      throw new CustomError('some error');
     },
     CustomError
   );
@@ -83,27 +82,27 @@ QUnit.test( "throws example", assert => {
   // actual error has strictly equal `constructor`, `name` and `message` properties
   // of the expected error object
   assert.throws(
-    function() {
-      throw new CustomError( "some error" );
+    function () {
+      throw new CustomError('some error');
     },
-    new CustomError( "some error" )
+    new CustomError('some error')
   );
 
   // custom validation arrow function
   assert.throws(
-    function() {
-      throw new CustomError( "some error" );
+    function () {
+      throw new CustomError('some error');
     },
-    ( err ) => err.toString() === "some error"
+    (err) => err.toString() === 'some error'
   );
 
   // custom validation function
   assert.throws(
-    function() {
-      throw new CustomError( "some error" );
+    function () {
+      throw new CustomError('some error');
     },
-    function( err ) {
-      return err.toString() === "some error";
+    function (err) {
+      return err.toString() === 'some error';
     }
   );
 });

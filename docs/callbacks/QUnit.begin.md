@@ -32,41 +32,40 @@ Passed to the callback:
 Get total number of tests known at the start.
 
 ```js
-QUnit.begin( details => {
-  console.log( `Test amount: ${details.totalTests}` );
+QUnit.begin(details => {
+  console.log(`Test amount: ${details.totalTests}`);
 });
 ```
 
 Use async-await to wait for some asynchronous work:
 
 ```js
-QUnit.begin( async details => {
+QUnit.begin(async details => {
   await someAsyncWork();
 
-  console.log( `Test amount: ${details.totalTests}` );
+  console.log(`Test amount: ${details.totalTests}`);
 });
 ```
 
 Using classic ES5 syntax:
 
 ```js
-QUnit.begin( function( details ) {
-  console.log( "Test amount:" + details.totalTests );
+QUnit.begin(function (details) {
+  console.log('Test amount:' + details.totalTests);
 });
 ```
 
 ```js
-function someAsyncWork() {
-  return new Promise( function( resolve, reject ) {
+function someAsyncWork () {
+  return new Promise(function (resolve, reject) {
     // do some async work
     resolve();
   });
 }
 
-QUnit.begin( function( details ) {
-  return someAsyncWork().then( function () {
-
-    console.log( "Test amount:" + details.totalTests );
+QUnit.begin(function (details) {
+  return someAsyncWork().then(function () {
+    console.log('Test amount:' + details.totalTests);
   });
 });
 ```

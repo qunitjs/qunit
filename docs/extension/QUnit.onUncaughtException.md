@@ -20,16 +20,16 @@ Handle a global error that should result in a failed test run.
 ## Examples
 
 ```js
-const error = new Error( "Failed to reverse the polarity of the neutron flow" );
-QUnit.onUncaughtException( error );
+const error = new Error('Failed to reverse the polarity of the neutron flow');
+QUnit.onUncaughtException(error);
 ```
 
 ```js
-process.on( "uncaughtException", QUnit.onUncaughtException );
+process.on('uncaughtException', QUnit.onUncaughtException);
 ```
 
 ```js
-window.addEventListener( "unhandledrejection", function( event ) {
-  QUnit.onUncaughtException( event.reason );
-} );
+window.addEventListener('unhandledrejection', function (event) {
+  QUnit.onUncaughtException(event.reason);
+});
 ```

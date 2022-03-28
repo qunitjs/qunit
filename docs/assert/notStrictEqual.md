@@ -28,10 +28,10 @@ The `notStrictEqual` assertion uses the strict inverted comparison operator (`!=
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
-  const result = "2";
+QUnit.test('example', assert => {
+  const result = '2';
 
   // succeeds, while the number 2 and string 2 are similar, they are strictly different.
-  assert.notStrictEqual( result, 2 );
+  assert.notStrictEqual(result, 2);
 });
 ```

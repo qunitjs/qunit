@@ -22,14 +22,14 @@ Together with the [`assert.verifySteps`](./verifySteps.md) method, `step()` asse
 ## Examples
 
 ```js
-QUnit.test( "step example", assert => {
+QUnit.test('step example', assert => {
   const thing = new MyThing();
-  thing.on( "something", () => {
-    assert.step( "something happened" );
+  thing.on('something', () => {
+    assert.step('something happened');
   });
   thing.run();
 
-  assert.verifySteps([ "something happened" ]);
+  assert.verifySteps([ 'something happened' ]);
 });
 ```
 

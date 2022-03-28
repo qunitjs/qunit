@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
 // Expected outputs from the TapReporter for the commands run in CLI tests
 module.exports = {
-	"qunit":
+  qunit:
 `TAP version 13
 ok 1 First > 1
 ok 2 Second > 1
@@ -12,7 +12,7 @@ ok 2 Second > 1
 # todo 0
 # fail 0`,
 
-	"qunit 'glob/**/*-test.js'":
+  "qunit 'glob/**/*-test.js'":
 `TAP version 13
 ok 1 A-Test > derp
 ok 2 Nested-Test > herp
@@ -22,7 +22,7 @@ ok 2 Nested-Test > herp
 # todo 0
 # fail 0`,
 
-	"qunit single.js":
+  'qunit single.js':
 `TAP version 13
 ok 1 Single > has a test
 1..1
@@ -31,7 +31,7 @@ ok 1 Single > has a test
 # todo 0
 # fail 0`,
 
-	"qunit single.js double.js":
+  'qunit single.js double.js':
 `TAP version 13
 ok 1 Double > has a test
 ok 2 Double > has another test
@@ -42,7 +42,7 @@ ok 3 Single > has a test
 # todo 0
 # fail 0`,
 
-	"qunit test":
+  'qunit test':
 `TAP version 13
 ok 1 First > 1
 ok 2 Second > 1
@@ -52,7 +52,7 @@ ok 2 Second > 1
 # todo 0
 # fail 0`,
 
-	"qunit fail/throws-match.js":
+  'qunit fail/throws-match.js':
 `TAP version 13
 not ok 1 Throws match > bad
   ---
@@ -61,7 +61,7 @@ not ok 1 Throws match > bad
   actual  : Error: Match me with a pattern
   expected: "/incorrect pattern/"
   stack: |
-        at /qunit/test/cli/fixtures/fail/throws-match.js:3:10
+        at /qunit/test/cli/fixtures/fail/throws-match.js:3:12
   ...
 1..1
 # pass 0
@@ -69,7 +69,7 @@ not ok 1 Throws match > bad
 # todo 0
 # fail 1`,
 
-	"qunit test single.js 'glob/**/*-test.js'":
+  "qunit test single.js 'glob/**/*-test.js'":
 `TAP version 13
 ok 1 A-Test > derp
 ok 2 Nested-Test > herp
@@ -82,7 +82,7 @@ ok 5 Second > 1
 # todo 0
 # fail 0`,
 
-	"qunit --seed s33d test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
+  "qunit --seed s33d test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
 TAP version 13
 ok 1 Second > 1
 ok 2 Single > has a test
@@ -95,18 +95,18 @@ ok 5 A-Test > derp
 # todo 0
 # fail 0`,
 
-	"qunit --reporter npm-reporter": "Run ended!",
-	"qunit --reporter does-not-exist": `No reporter found matching "does-not-exist".
+  'qunit --reporter npm-reporter': 'Run ended!',
+  'qunit --reporter does-not-exist': `No reporter found matching "does-not-exist".
 Built-in reporters: console, tap
 Extra reporters found among package dependencies: npm-reporter`,
 
-	"qunit --reporter": `Built-in reporters: console, tap
+  'qunit --reporter': `Built-in reporters: console, tap
 Extra reporters found among package dependencies: npm-reporter`,
 
-	"qunit hanging-test": `Error: Process exited before tests finished running
+  'qunit hanging-test': `Error: Process exited before tests finished running
 Last test to run (hanging) has an async hold. Ensure all assert.async() callbacks are invoked and Promises resolve. You should also set a standard timeout via QUnit.config.testTimeout.`,
-	/* eslint-enable max-len */
-	"qunit unhandled-rejection.js":
+  /* eslint-enable max-len */
+  'qunit unhandled-rejection.js':
 `not ok 1 global failure
   ---
   message: Error: outside of a test context
@@ -128,7 +128,7 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
   expected: undefined
   stack: |
     Error: Error thrown in non-returned promise!
-        at /qunit/test/cli/fixtures/unhandled-rejection.js:10:10
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13
         at internal
   ...
 1..2
@@ -137,8 +137,8 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
 # todo 0
 # fail 2`,
 
-	// The last frame differs between Node 10 and 12+ (changes in processing of ticks)
-	"qunit no-tests":
+  // The last frame differs between Node 10 and 12+ (changes in processing of ticks)
+  'qunit no-tests':
 `TAP version 13
 not ok 1 global failure
   ---
@@ -157,7 +157,7 @@ not ok 1 global failure
 # todo 0
 # fail 1`,
 
-	"qunit sourcemap/source.js":
+  'qunit sourcemap/source.js':
 `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
@@ -167,7 +167,7 @@ not ok 2 Example > bad
   actual  : false
   expected: true
   stack: |
-        at /qunit/test/cli/fixtures/sourcemap/source.js:7:14
+        at /qunit/test/cli/fixtures/sourcemap/source.js:7:16
   ...
 1..2
 # pass 1
@@ -175,7 +175,7 @@ not ok 2 Example > bad
 # todo 0
 # fail 1`,
 
-	"qunit sourcemap/source.min.js":
+  'qunit sourcemap/source.min.js':
 `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
@@ -193,7 +193,7 @@ not ok 2 Example > bad
 # todo 0
 # fail 1`,
 
-	"qunit ../../es2018/esm.mjs":
+  'qunit ../../es2018/esm.mjs':
 `TAP version 13
 ok 1 ESM test suite > sum()
 1..1
@@ -202,7 +202,7 @@ ok 1 ESM test suite > sum()
 # todo 0
 # fail 0`,
 
-	"qunit timeout":
+  'qunit timeout':
 `TAP version 13
 not ok 1 timeout > first
   ---
@@ -220,7 +220,7 @@ ok 2 timeout > second
 # todo 0
 # fail 1`,
 
-	"qunit hooks-global-context.js":
+  'qunit hooks-global-context.js':
 `TAP version 13
 ok 1 A > A1
 ok 2 A > AB > AB1
@@ -231,7 +231,7 @@ ok 3 B
 # todo 0
 # fail 0`,
 
-	"qunit zero-assertions.js":
+  'qunit zero-assertions.js':
 `TAP version 13
 ok 1 Zero assertions > has a test
 1..1
@@ -240,7 +240,7 @@ ok 1 Zero assertions > has a test
 # todo 0
 # fail 0`,
 
-	"qunit --filter 'no matches' test":
+  "qunit --filter 'no matches' test":
 `TAP version 13
 not ok 1 global failure
   ---
@@ -259,7 +259,7 @@ not ok 1 global failure
 # todo 0
 # fail 1`,
 
-	"qunit single.js --require require-dep --require ./node_modules/require-dep/module.js":
+  'qunit single.js --require require-dep --require ./node_modules/require-dep/module.js':
 `required require-dep/index.js
 required require-dep/module.js
 TAP version 13
@@ -270,7 +270,7 @@ ok 1 Single > has a test
 # todo 0
 # fail 0`,
 
-	"node --expose-gc ../../../bin/qunit.js 'memory-leak/*.js'":
+  "node --expose-gc ../../../bin/qunit.js 'memory-leak/*.js'":
 `TAP version 13
 ok 1 some nested module > can call method on foo
 ok 2 some nested module > child module > child test
@@ -281,7 +281,7 @@ ok 3 later thing > has released all foos
 # todo 0
 # fail 0`,
 
-	"node --expose-gc ../../../bin/qunit.js --filter !child 'memory-leak/*.js'":
+  "node --expose-gc ../../../bin/qunit.js --filter !child 'memory-leak/*.js'":
 `TAP version 13
 ok 1 some nested module > can call method on foo
 ok 2 later thing > has released all foos
@@ -291,7 +291,7 @@ ok 2 later thing > has released all foos
 # todo 0
 # fail 0`,
 
-	"qunit only/test.js":
+  'qunit only/test.js':
 `TAP version 13
 ok 1 run this test
 ok 2 all tests with only run
@@ -301,7 +301,7 @@ ok 2 all tests with only run
 # todo 0
 # fail 0`,
 
-	"qunit only/module.js":
+  'qunit only/module.js':
 `TAP version 13
 not ok 1 # TODO module B > Only this module should run > a todo test
   ---
@@ -310,7 +310,7 @@ not ok 1 # TODO module B > Only this module should run > a todo test
   actual  : false
   expected: true
   stack: |
-        at /qunit/test/cli/fixtures/only/module.js:17:15
+        at /qunit/test/cli/fixtures/only/module.js:17:18
   ...
 ok 2 # SKIP module B > Only this module should run > implicitly skipped test
 ok 3 module B > Only this module should run > normal test
@@ -323,7 +323,7 @@ ok 6 module E > test E
 # todo 1
 # fail 0`,
 
-	"qunit only/module-then-test.js":
+  'qunit only/module-then-test.js':
 `TAP version 13
 ok 1 module A > module B > test B
 1..2
@@ -332,8 +332,7 @@ ok 1 module A > module B > test B
 # todo 0
 # fail 0`,
 
-
-	"qunit only/module-flat.js":
+  'qunit only/module-flat.js':
 `TAP version 13
 not ok 1 # TODO module B > test B
   ---
@@ -342,7 +341,7 @@ not ok 1 # TODO module B > test B
   actual  : false
   expected: true
   stack: |
-        at /qunit/test/cli/fixtures/only/module-flat.js:9:13
+        at /qunit/test/cli/fixtures/only/module-flat.js:8:14
   ...
 ok 2 # SKIP module B > test C
 ok 3 module B > test D
@@ -352,7 +351,7 @@ ok 3 module B > test D
 # todo 1
 # fail 0`,
 
-	"qunit module-nested.js":
+  'qunit module-nested.js':
 `TAP version 13
 ok 1 module 1 > test in module 1
 ok 2 module 3 > test in module 3
@@ -362,7 +361,7 @@ ok 2 module 3 > test in module 3
 # todo 0
 # fail 0`,
 
-	"qunit incorrect-hooks-warning/test.js":
+  'qunit incorrect-hooks-warning/test.js':
 `TAP version 13
 ok 1 module providing hooks > module not providing hooks > has a test
 1..1
@@ -371,7 +370,7 @@ ok 1 module providing hooks > module not providing hooks > has a test
 # todo 0
 # fail 0`,
 
-	"qunit async-module-warning/test.js":
+  'qunit async-module-warning/test.js':
 `TAP version 13
 ok 1 resulting parent module > has a test
 1..1
@@ -380,7 +379,7 @@ ok 1 resulting parent module > has a test
 # todo 0
 # fail 0`,
 
-	"qunit async-module-warning/promise-test.js":
+  'qunit async-module-warning/promise-test.js':
 `TAP version 13
 ok 1 module manually returning a promise > has a test
 1..1
@@ -389,7 +388,7 @@ ok 1 module manually returning a promise > has a test
 # todo 0
 # fail 0`,
 
-	"qunit config-filter-string.js":
+  'qunit config-filter-string.js':
 `TAP version 13
 ok 1 filter > foo test
 ok 2 filter > bar test
@@ -399,7 +398,7 @@ ok 2 filter > bar test
 # todo 0
 # fail 0`,
 
-	"qunit config-filter-regex.js":
+  'qunit config-filter-regex.js':
 `TAP version 13
 ok 1 filter > foo test
 ok 2 filter > FOO test
@@ -410,7 +409,7 @@ ok 3 filter > bar test
 # todo 0
 # fail 0`,
 
-	"qunit config-filter-regex-exclude.js":
+  'qunit config-filter-regex-exclude.js':
 `TAP version 13
 ok 1 filter > foo test
 ok 2 filter > Bar test
@@ -420,7 +419,7 @@ ok 2 filter > Bar test
 # todo 0
 # fail 0`,
 
-	"qunit config-module.js":
+  'qunit config-module.js':
 `TAP version 13
 ok 1 Module B > Test B
 1..1
@@ -429,7 +428,7 @@ ok 1 Module B > Test B
 # todo 0
 # fail 0`,
 
-	"qunit config-moduleId.js":
+  'qunit config-moduleId.js':
 `TAP version 13
 ok 1 module A scoped > module C nested > test C1
 ok 2 module D scoped > test D1
@@ -442,7 +441,7 @@ ok 5 module F flat > test F1
 # todo 0
 # fail 0`,
 
-	"qunit config-testId.js":
+  'qunit config-testId.js':
 `TAP version 13
 ok 1 test 2
 ok 2 module A > module B > test 1
@@ -454,7 +453,7 @@ ok 4 module D > test 1
 # todo 0
 # fail 0`,
 
-	"qunit config-testTimeout.js":
+  'qunit config-testTimeout.js':
 `TAP version 13
 not ok 1 slow
   ---
@@ -471,7 +470,7 @@ not ok 1 slow
 # todo 0
 # fail 1`,
 
-	"qunit bad-callbacks/begin-throw.js":
+  'qunit bad-callbacks/begin-throw.js':
 `TAP version 13
 not ok 1 global failure
   ---
@@ -479,13 +478,13 @@ not ok 1 global failure
   severity: failed
   stack: |
     Error: No dice
-        at /qunit/test/cli/fixtures/bad-callbacks/begin-throw.js:2:8
+        at /qunit/test/cli/fixtures/bad-callbacks/begin-throw.js:2:9
         at qunit.js
         at internal
   ...
 Bail out! Error: No dice`,
 
-	"qunit bad-callbacks/done-throw.js":
+  'qunit bad-callbacks/done-throw.js':
 `TAP version 13
 ok 1 module1 > test1
 1..1
@@ -499,12 +498,12 @@ Bail out! Error: No dice
   severity: failed
   stack: |
     Error: No dice
-        at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:8
+        at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:9
         at qunit.js
         at internal
   ...`,
 
-	"qunit done-after-timeout.js":
+  'qunit done-after-timeout.js':
 `TAP version 13
 not ok 1 times out before scheduled done is called
   ---
@@ -521,7 +520,7 @@ not ok 1 times out before scheduled done is called
 # todo 0
 # fail 1`,
 
-	"qunit drooling-done.js":
+  'qunit drooling-done.js':
 `TAP version 13
 not ok 1 Test A
   ---
@@ -531,7 +530,7 @@ not ok 1 Test A
   expected: undefined
   stack: |
     Error: this is an intentional error
-        at /qunit/test/cli/fixtures/drooling-done.js:8:8
+        at /qunit/test/cli/fixtures/drooling-done.js:8:9
   ...
 ok 2 Test B
 1..2
@@ -540,7 +539,7 @@ ok 2 Test B
 # todo 0
 # fail 1`,
 
-	"qunit drooling-extra-done.js":
+  'qunit drooling-extra-done.js':
 `TAP version 13
 ok 1 Test A
 not ok 2 Test B
@@ -561,7 +560,7 @@ not ok 2 Test B
 # todo 0
 # fail 1`,
 
-	"qunit drooling-extra-done-outside.js":
+  'qunit drooling-extra-done-outside.js':
 `TAP version 13
 ok 1 extra done scheduled outside any test
 1..1
@@ -582,7 +581,7 @@ Bail out! Error: Unexpected release of async pause after tests finished.
         at internal
   ...`,
 
-	"qunit too-many-done-calls.js":
+  'qunit too-many-done-calls.js':
 `TAP version 13
 not ok 1 Test A
   ---
@@ -602,7 +601,7 @@ not ok 1 Test A
 # todo 0
 # fail 1`,
 
-	"qunit assert-expect/no-tests.js":
+  'qunit assert-expect/no-tests.js':
 `TAP version 13
 1..0
 # pass 0

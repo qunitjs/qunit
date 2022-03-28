@@ -1,90 +1,89 @@
 /* globals Map, Set, Symbol */
 
-QUnit.module( "utilities", function() {
+QUnit.module('utilities', function () {
+  QUnit.module('QUnit.objectType');
 
-	QUnit.module( "QUnit.objectType" );
+  function Foo () { }
 
-	function Foo() { }
+  function validateObjectType (item, expected) {
+    QUnit.test('should properly detect ' + expected, function (assert) {
+      var actual = QUnit.objectType(item);
+      assert.equal(actual, expected);
+    });
+  }
 
-	function validateObjectType( item, expected ) {
-		QUnit.test( "should properly detect " + expected, function( assert ) {
-			var actual = QUnit.objectType( item );
-			assert.equal( actual, expected );
-		} );
-	}
+  function maybeValidateObjectType (string, expected) {
+    try {
+      // eslint-disable-next-line no-new-func
+      var value = new Function('return ' + string + ';')();
+      validateObjectType(value, expected);
+    } catch (e) {
+      // do nothing if parsing failed
+      if (e.name === 'SyntaxError') {
+        return;
+      }
 
-	function maybeValidateObjectType( string, expected ) {
-		try {
-			var value = new Function( "return " + string + ";" )( );
-			validateObjectType( value, expected );
-		} catch ( e ) {
+      // do not hide other errors
+      throw e;
+    }
+  }
 
-			// do nothing if parsing failed
-			if ( e.name === "SyntaxError" ) {
-				return;
-			}
+  validateObjectType(1, 'number');
+  validateObjectType('', 'string');
+  validateObjectType('foo', 'string');
+  validateObjectType(null, 'null');
+  validateObjectType(true, 'boolean');
+  validateObjectType(false, 'boolean');
+  validateObjectType([], 'array');
+  validateObjectType(new Date(), 'date');
+  validateObjectType(/foo/, 'regexp');
+  validateObjectType(NaN, 'nan');
+  validateObjectType(undefined, 'undefined');
+  validateObjectType({ }, 'object');
+  validateObjectType(new Foo(), 'object');
 
-			// do not hide other errors
-			throw e;
-		}
-	}
+  if (typeof Symbol === 'function') {
+    validateObjectType(Symbol('HI!'), 'symbol');
+  }
 
-	validateObjectType( 1, "number" );
-	validateObjectType( "", "string" );
-	validateObjectType( "foo", "string" );
-	validateObjectType( null, "null" );
-	validateObjectType( true, "boolean" );
-	validateObjectType( false, "boolean" );
-	validateObjectType( [ ], "array" );
-	validateObjectType( new Date( ), "date" );
-	validateObjectType( /foo/, "regexp" );
-	validateObjectType( NaN, "nan" );
-	validateObjectType( undefined, "undefined" );
-	validateObjectType( { }, "object" );
-	validateObjectType( new Foo( ), "object" );
+  // Support IE 11: Skip on IE11's non-compliant implementation
+  if (typeof Map === 'function' && (new Map()).toString() !== '[object Object]') {
+    validateObjectType(new Map(), 'map');
+  }
 
-	if ( typeof Symbol === "function" ) {
-		validateObjectType( Symbol( "HI!" ), "symbol" );
-	}
+  // Support IE 11: Skip on IE11's non-compliant implementation
+  if (typeof Set === 'function' && (new Set()).toString() !== '[object Object]') {
+    validateObjectType(new Set(), 'set');
+  }
 
-	// Support IE 11: Skip on IE11's non-compliant implementation
-	if ( typeof Map === "function" && ( new Map ).toString() !== "[object Object]" ) {
-		validateObjectType( new Map( ), "map" );
-	}
+  maybeValidateObjectType('async function() { }', 'function');
+  maybeValidateObjectType('async () => { }', 'function');
+  maybeValidateObjectType('() => { }', 'function');
+  maybeValidateObjectType('function* { }', 'function');
 
-	// Support IE 11: Skip on IE11's non-compliant implementation
-	if ( typeof Set === "function" && ( new Set ).toString() !== "[object Object]" ) {
-		validateObjectType( new Set( ), "set" );
-	}
+  QUnit.module('QUnit.extend');
 
-	maybeValidateObjectType( "async function() { }", "function" );
-	maybeValidateObjectType( "async () => { }", "function" );
-	maybeValidateObjectType( "() => { }", "function" );
-	maybeValidateObjectType( "function* { }", "function" );
+  QUnit.test('appends to object', function (assert) {
+    var base = { foo: 1 };
+    var copy = QUnit.extend(base, { bar: 2 });
 
-	QUnit.module( "QUnit.extend" );
+    assert.deepEqual(base, { foo: 1, bar: 2 });
+    assert.equal(copy, base, 'returns mutated object');
+  });
 
-	QUnit.test( "appends to object", function( assert ) {
-		var base = { foo: 1 };
-		var copy = QUnit.extend( base, { bar: 2 } );
+  QUnit.test('overwrites duplicate fields', function (assert) {
+    var base = { foo: 1 };
+    var copy = QUnit.extend(base, { foo: 2 });
 
-		assert.deepEqual( base, { foo: 1, bar: 2 } );
-		assert.equal( copy, base, "returns mutated object" );
-	} );
+    assert.deepEqual(base, { foo: 2 });
+    assert.equal(copy, base, 'returns mutated object');
+  });
 
-	QUnit.test( "overwrites duplicate fields", function( assert ) {
-		var base = { foo: 1 };
-		var copy = QUnit.extend( base, { foo: 2 } );
+  QUnit.test('removes undefined fields', function (assert) {
+    var base = { foo: 1, bar: 2 };
+    var copy = QUnit.extend(base, { bar: undefined });
 
-		assert.deepEqual( base, { foo: 2 } );
-		assert.equal( copy, base, "returns mutated object" );
-	} );
-
-	QUnit.test( "removes undefined fields", function( assert ) {
-		var base = { foo: 1, bar: 2 };
-		var copy = QUnit.extend( base, { bar: undefined } );
-
-		assert.false( "bar" in base, "Values specified as `undefined` are removed" );
-		assert.equal( copy, base, "returns mutated object" );
-	} );
-} );
+    assert.false('bar' in base, 'Values specified as `undefined` are removed');
+    assert.equal(copy, base, 'returns mutated object');
+  });
+});

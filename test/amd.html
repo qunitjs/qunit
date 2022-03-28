@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>QUnit AMD Test Suite</title>
-	<link rel="stylesheet" href="../qunit/qunit.css">
-	<script src="../node_modules/requirejs/require.js"></script>
+  <meta charset="UTF-8">
+  <title>QUnit AMD Test Suite</title>
+  <link rel="stylesheet" href="../qunit/qunit.css">
+  <script src="../node_modules/requirejs/require.js"></script>
 </head>
 <body>
-	<div id="qunit"></div>
-	<script>
-	/* eslint-env amd */
+  <div id="qunit"></div>
+  <script>
+  /* eslint-env amd */
 
-	require.config( {
-		paths: {
-			qunit: "../qunit/qunit"
-		}
-	} );
+  require.config({
+    paths: {
+      qunit: '../qunit/qunit'
+    }
+  });
 
-	require( [ "qunit", "./amd" ], function( QUnit, tests ) {
-		QUnit.begin( function( data ) {
-			window.beginData = data;
-		} );
-		tests();
-		QUnit.start();
-	} );
-	</script>
+  require(['qunit', './amd'], function (QUnit, tests) {
+    QUnit.begin(function (data) {
+      window.beginData = data;
+    });
+    tests();
+    QUnit.start();
+  });
+  </script>
 </body>
 </html>

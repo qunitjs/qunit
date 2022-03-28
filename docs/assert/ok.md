@@ -25,18 +25,18 @@ The most basic assertion in QUnit, `ok()` requires just one argument. If the arg
 ## Examples
 
 ```js
-QUnit.test( "example", assert => {
+QUnit.test('example', assert => {
   // success
-  assert.ok( true, "boolean true" );
-  assert.ok( "foo", "non-empty string" );
-  assert.ok( 1, "number one" );
+  assert.ok(true, 'boolean true');
+  assert.ok('foo', 'non-empty string');
+  assert.ok(1, 'number one');
 
   // failure
-  assert.ok( false, "boolean false" );
-  assert.ok( "", "empty string" );
-  assert.ok( 0, "number zero" );
-  assert.ok( NaN, "NaN value" );
-  assert.ok( null, "null value" );
-  assert.ok( undefined, "undefined value" );
+  assert.ok(false, 'boolean false');
+  assert.ok('', 'empty string');
+  assert.ok(0, 'number zero');
+  assert.ok(NaN, 'NaN value');
+  assert.ok(null, 'null value');
+  assert.ok(undefined, 'undefined value');
 });
 ```

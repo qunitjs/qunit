@@ -9,11 +9,10 @@
 		var onerrorReturnValue, onerrorCallingContext;
 
 		// Create pre-existing window.onerror handler
-		window.onerror = function() {
-			onerrorCallingContext = this;
-			return onerrorReturnValue;
+		window.onerror = function () {
+		  onerrorCallingContext = this;
+		  return onerrorReturnValue;
 		};
-
 	</script>
 	<script src="../../qunit/qunit.js"></script>
 	<script src="./window-onerror-preexisting-handler.js"></script>
