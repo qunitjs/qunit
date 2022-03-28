@@ -19,23 +19,30 @@ function versionAddedString (version) {
   return `version_added: "${version}"`;
 }
 
+function formatChangelogColumn (version) {
+  return `| [QUnit ${version}](https://github.com/qunitjs/qunit/releases/tag/${version}) |`;
+}
+
 const Repo = {
   async prep (version) {
     if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
       throw new Error('Invalid or missing version argument');
     }
     {
-      const UNRELEASED_VERSION = versionAddedString('unreleased');
+      const UNRELEASED_ADDED = versionAddedString('unreleased');
+      const UNRELEASED_CHANGELOG = '| UNRELEASED |';
 
-      // grep exits non-zero if no results
+      // Silence error from grep, which exits non-zero if no results.
       const results = parseLineResults(cp.execSync(
-        `grep -l '${UNRELEASED_VERSION}' docs/**/*.md || echo`,
+        'grep -F -i -l unreleased docs/**/*.md || echo',
         { encoding: 'utf8' }
       ));
       results.forEach(filePath => {
         const doc = fs.readFileSync(filePath, 'utf8');
         fs.writeFileSync(filePath,
-          doc.replace(UNRELEASED_VERSION, versionAddedString(version))
+          doc
+            .replace(UNRELEASED_ADDED, versionAddedString(version))
+            .replace(UNRELEASED_CHANGELOG, formatChangelogColumn(version))
         );
       });
     }
