@@ -1,4 +1,4 @@
-import { window, localSessionStorage } from '../globals';
+import { globalThis, localSessionStorage } from '../globals';
 import { extend } from './utilities';
 
 /**
@@ -103,12 +103,13 @@ const config = {
   storage: localSessionStorage
 };
 
-// take a predefined QUnit.config and extend the defaults
-const globalConfig = window && window.QUnit && window.QUnit.config;
-
-// only extend the global config if there is no QUnit overload
-if (window && window.QUnit && !window.QUnit.version) {
-  extend(config, globalConfig);
+// Apply a predefined QUnit.config object
+//
+// Ignore QUnit.config if it is a QUnit distribution instead of preconfig.
+// That means QUnit was loaded twice! (Use the same approach as export.js)
+const preConfig = globalThis && globalThis.QUnit && !globalThis.QUnit.version && globalThis.QUnit.config;
+if (preConfig) {
+  extend(config, preConfig);
 }
 
 // Push a loose unnamed module to the modules collection

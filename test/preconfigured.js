@@ -1,21 +1,14 @@
 /* eslint-env browser */
-window.addEventListener('load', function () {
-  // make sure QUnit has started if autostart would be true
-  setTimeout(function () {
-    QUnit.module('QUnit.preconfigured.asyncTests');
-    QUnit.test('QUnit.config should have an expected default', function (assert) {
-      assert.true(QUnit.config.scrolltop, 'The scrolltop default is true');
-    });
+QUnit.module('QUnit.config [preconfigured]');
 
-    QUnit.test('Qunit.config.reorder default was overwritten', function (assert) {
-      assert.false(QUnit.config.reorder, 'reorder was overwritten');
-    });
-
-    QUnit.start();
-  }, 100);
+QUnit.test('config', function (assert) {
+  assert.strictEqual(QUnit.config.maxDepth, 5, 'maxDepth default');
+  assert.false(QUnit.config.autostart, 'autostart override');
+  assert.false(QUnit.config.reorder, 'reorder override');
 });
 
-QUnit.module('QUnit.preconfigured');
-QUnit.test('Autostart is false', function (assert) {
-  assert.false(QUnit.config.autostart, 'The global autostart setting is applied');
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    QUnit.start();
+  }, 1);
 });
