@@ -85,8 +85,8 @@
   <span class="na">id</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
   <span class="na">label</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
   <span class="na">tooltip</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="c1">// optional</span>
-  <span class="na">value</span><span class="p">:</span> <span class="nx">string</span><span class="o">|</span><span class="nx">array</span><span class="o">|</span><span class="nx">object</span><span class="p">,</span> <span class="c1">// optional</span>
-<span class="p">})</span>
+  <span class="na">value</span><span class="p">:</span> <span class="nx">string</span> <span class="o">|</span> <span class="nx">array</span> <span class="o">|</span> <span class="nx">object</span> <span class="c1">// optional</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 <ul>
@@ -103,15 +103,15 @@
 
 <p>If <code class="language-plaintext highlighter-rouge">value</code> is an array, the option will render as a “select one” menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span><span class="p">:</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">foobar</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">baz</span><span class="dl">"</span> <span class="p">]</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span> <span class="o">=</span> <span class="p">[</span> <span class="dl">'</span><span class="s1">foobar</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">baz</span><span class="dl">'</span> <span class="p">];</span>
 </code></pre></div></div>
 
 <p>If <code class="language-plaintext highlighter-rouge">value</code> is an object, the option will render as a “select one” menu as for an array. The keys will be used as option values, and the values will be used as option display labels. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the object key of the selected property.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span><span class="p">:</span> <span class="p">{</span>
-  <span class="dl">"</span><span class="s2">foobar</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Foo with bar</span><span class="dl">"</span>
-  <span class="dl">"</span><span class="s2">baz</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Baz</span><span class="dl">"</span>
-<span class="p">}</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">foobar</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo with bar</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">baz</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Baz</span><span class="dl">'</span>
+<span class="p">};</span>
 </code></pre></div></div>
 
 <h2 id="examples">Examples</h2>
@@ -121,9 +121,9 @@
 <p>Add a new checkbox to the toolbar. You can then use the <code class="language-plaintext highlighter-rouge">QUnit.config.min</code> property in your code to implement a behaviour based on it.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-  <span class="na">id</span><span class="p">:</span> <span class="dl">"</span><span class="s2">min</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">label</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Minified source</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Load minified source files instead of the regular unminified ones.</span><span class="dl">"</span>
+  <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">min</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Minified source</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Load minified source files instead of the regular unminified ones.</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -132,10 +132,10 @@
 <p>Add a dropdown to the toolbar.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-  <span class="na">id</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jquery</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">label</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jQuery version</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">value</span><span class="p">:</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">1.7.2</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">1.8.3</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">1.9.1</span><span class="dl">"</span> <span class="p">],</span>
-  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Which jQuery version to test against.</span><span class="dl">"</span>
+  <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jquery</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jQuery version</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">value</span><span class="p">:</span> <span class="p">[</span> <span class="dl">'</span><span class="s1">1.7.2</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1.8.3</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1.9.1</span><span class="dl">'</span> <span class="p">],</span>
+  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Which jQuery version to test against.</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

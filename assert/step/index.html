@@ -89,14 +89,14 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">step example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">step example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">thing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyThing</span><span class="p">();</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">something</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">something happened</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">something</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">something happened</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
   <span class="nx">thing</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">"</span><span class="s2">something happened</span><span class="dl">"</span> <span class="p">]);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">something happened</span><span class="dl">'</span> <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

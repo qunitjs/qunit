@@ -89,19 +89,19 @@
 
 <p>Establish an expected assertion count</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">a test</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span> <span class="mi">2</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">a test</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
-  <span class="kd">function</span> <span class="nx">calc</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">operation</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">operation</span><span class="p">(</span> <span class="nx">x</span> <span class="p">);</span>
+  <span class="kd">function</span> <span class="nx">calc</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">operation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">operation</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
   <span class="p">}</span>
 
-  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calc</span><span class="p">(</span> <span class="mi">2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">calc() calls operation function</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calc</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">calc() calls operation function</span><span class="dl">'</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
   <span class="p">});</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="dl">"</span><span class="s2">2 squared equals 4</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2 squared equals 4</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

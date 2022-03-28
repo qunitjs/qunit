@@ -122,42 +122,41 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">throws example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">throws example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// simple check</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="dl">"</span><span class="s2">boo</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
   <span class="c1">// simple check</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="dl">"</span><span class="s2">boo</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="dl">"</span><span class="s2">optional description here</span><span class="dl">"</span>
+    <span class="dl">'</span><span class="s1">optional description here</span><span class="dl">'</span>
   <span class="p">);</span>
 
   <span class="c1">// match pattern on actual error</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
     <span class="sr">/some error/</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">optional description here</span><span class="dl">"</span>
+    <span class="dl">'</span><span class="s1">optional description here</span><span class="dl">'</span>
   <span class="p">);</span>
 
   <span class="c1">// using a custom error constructor</span>
-  <span class="kd">function</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="nx">message</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">CustomError</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="nx">CustomError</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">CustomError</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
   <span class="p">};</span>
 
   <span class="c1">// actual error is an instance of the expected constructor</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
     <span class="nx">CustomError</span>
   <span class="p">);</span>
@@ -165,27 +164,27 @@
   <span class="c1">// actual error has strictly equal `constructor`, `name` and `message` properties</span>
   <span class="c1">// of the expected error object</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">)</span>
+    <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">)</span>
   <span class="p">);</span>
 
   <span class="c1">// custom validation arrow function</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span>
+    <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span>
   <span class="p">);</span>
 
   <span class="c1">// custom validation function</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">throws</span><span class="p">(</span>
-    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="kd">function</span><span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">some error</span><span class="dl">"</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">);</span>
 <span class="p">});</span>

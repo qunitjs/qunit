@@ -118,20 +118,20 @@
 
 <p>Register a callback that logs test results to the console.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span> <span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-    <span class="s2">`Total: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2"> Failed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">failed</span><span class="p">}</span><span class="s2"> `</span>
-      <span class="o">+</span> <span class="s2">`Passed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2"> Runtime: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span><span class="p">}</span><span class="s2">`</span>
+    <span class="s2">`Total: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2"> Failed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">failed</span><span class="p">}</span><span class="s2"> `</span> <span class="o">+</span>
+      <span class="s2">`Passed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2"> Runtime: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span><span class="p">}</span><span class="s2">`</span>
   <span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Using classic ES5 syntax:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">details</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-    <span class="dl">"</span><span class="s2">Total: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">total</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> Failed: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">failed</span>
-    <span class="o">+</span> <span class="dl">"</span><span class="s2"> Passed: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">passed</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> Runtime: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span>
+    <span class="dl">'</span><span class="s1">Total: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">total</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> Failed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">failed</span> <span class="o">+</span>
+    <span class="dl">'</span><span class="s1"> Passed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">passed</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> Runtime: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span>
   <span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>

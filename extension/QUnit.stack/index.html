@@ -93,19 +93,17 @@
 
 <p>The stacktrace line can be used on custom assertions and reporters. The following example <a href="/callbacks/QUnit.log/">logs</a> the line of each passing assertion.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">details</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span> <span class="nx">details</span><span class="p">.</span><span class="nx">result</span> <span class="p">)</span> <span class="p">{</span>
-
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// 5 is the line reference for the assertion method, not the following line.</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">stack</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">stack</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
   <span class="p">}</span>
-<span class="p">}</span> <span class="p">);</span>
+<span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">foo</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// the log callback will report the position of the following line.</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span> <span class="p">);</span>
-<span class="p">}</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 </div>

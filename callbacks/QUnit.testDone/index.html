@@ -134,22 +134,22 @@
 
 <p>Register a callback that logs results of a single test:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">testDone</span><span class="p">(</span> <span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">testDone</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="dl">"</span><span class="s2">Module name</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">module</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Test name</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Assertions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">Total</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">Passed</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">passed</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">Failed</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">failed</span>
+    <span class="dl">'</span><span class="s1">Module name</span><span class="dl">'</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">module</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">Test name</span><span class="dl">'</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+    <span class="na">Assertions</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">Total</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">total</span><span class="p">,</span>
+      <span class="na">Passed</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">passed</span><span class="p">,</span>
+      <span class="na">Failed</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">failed</span>
     <span class="p">},</span>
-    <span class="dl">"</span><span class="s2">Skipped</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">skipped</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Todo</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">todo</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Runtime</span><span class="dl">"</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span>
+    <span class="na">Skipped</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">skipped</span><span class="p">,</span>
+    <span class="na">Todo</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">todo</span><span class="p">,</span>
+    <span class="na">Runtime</span><span class="p">:</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span>
   <span class="p">};</span>
 
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">);</span>
-<span class="p">}</span> <span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 </div>

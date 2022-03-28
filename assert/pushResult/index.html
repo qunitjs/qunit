@@ -99,24 +99,23 @@
 
 <p>If you need to express an expectation that is not abstracted by QUnit’s built-in assertions, you can perform your own logic ad-hoc, and then pass two directly comparable values to <a href="/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass your own representative boolean result to <a href="/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">bad example with remainder</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example with remainder</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">result</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">===</span> <span class="mi">1</span><span class="p">;</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">actual</span><span class="p">,</span> <span class="dl">"</span><span class="s2">remainder of mod 2 is 1</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="p">(</span><span class="nx">result</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">===</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="nx">actual</span><span class="p">,</span> <span class="dl">'</span><span class="s1">remainder of mod 2 is 1</span><span class="dl">'</span><span class="p">);</span>
   <span class="c1">// In case of failure, there is no information about the</span>
   <span class="c1">// actually observed remainder or the expected value</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">good example with remainder</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example with remainder</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">result</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">remainder of mod 2</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">result</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">remainder of mod 2</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example with value in range</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example with value in range</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">actual</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">isBetween</span><span class="p">,</span> <span class="dl">"</span><span class="s2">result between 1 and 10</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="nx">isBetween</span><span class="p">,</span> <span class="dl">'</span><span class="s1">result between 1 and 10</span><span class="dl">'</span><span class="p">);</span>
   <span class="c1">// No information in case of failure.</span>
   <span class="c1">// Cannot be expressed in a useful way using strictEqual()</span>
   <span class="c1">//</span>
@@ -132,20 +131,20 @@
 
 <p>For example:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">assert</span><span class="p">.</span><span class="nx">between</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">actual</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">message</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">actual</span> <span class="o">&gt;=</span> <span class="k">from</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="nx">to</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">assert</span><span class="p">.</span><span class="nx">between</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">actual</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">&gt;=</span> <span class="k">from</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="nx">to</span><span class="p">);</span>
 
-  <span class="k">this</span><span class="p">.</span><span class="nx">pushResult</span><span class="p">(</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">pushResult</span><span class="p">({</span>
     <span class="na">result</span><span class="p">:</span> <span class="nx">isBetween</span><span class="p">,</span>
     <span class="na">actual</span><span class="p">:</span> <span class="nx">actual</span><span class="p">,</span>
     <span class="na">expected</span><span class="p">:</span> <span class="s2">`between </span><span class="p">${</span><span class="k">from</span><span class="p">}</span><span class="s2"> and </span><span class="p">${</span><span class="nx">to</span><span class="p">}</span><span class="s2"> inclusive`</span><span class="p">,</span>
     <span class="na">message</span><span class="p">:</span> <span class="nx">message</span>
-  <span class="p">}</span> <span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">custom assertion example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">custom assertion example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">"</span><span class="s2">result</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">between</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">'</span><span class="s1">result</span><span class="dl">'</span><span class="p">);</span>
   <span class="c1">// Example of failure if result is out of range</span>
   <span class="c1">// &gt; actual: 42</span>
   <span class="c1">// &gt; expected: between 1 and 10</span>

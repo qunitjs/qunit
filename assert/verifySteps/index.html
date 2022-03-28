@@ -101,43 +101,43 @@
 
 <p>This example uses a class based on an <a href="https://nodejs.org/api/events.html"><code class="language-plaintext highlighter-rouge">EventEmitter</code></a>, such as the one provided by Node.js and other environments:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">good example</span><span class="dl">"</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">thing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyThing</span><span class="p">();</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="p">,</span> <span class="nx">message</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="p">{</span> <span class="na">error</span><span class="p">:</span> <span class="nx">message</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">message</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">({</span> <span class="na">error</span><span class="p">:</span> <span class="nx">message</span> <span class="p">});</span>
   <span class="p">});</span>
 
   <span class="k">await</span> <span class="nx">thing</span><span class="p">.</span><span class="nx">process</span><span class="p">();</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">(</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span> <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>When approaching this scenario <strong>without the Step API</strong> one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over, because that would provide loose assurances and can easily cause false positives (a callback might not run, run out of order, or run multipe times). It also offers rather limited debugging information in case of problems.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// WARNING: This is a BAD example</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">bad example 1</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example 1</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">thing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyThing</span><span class="p">();</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">false</span><span class="p">,</span> <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
   <span class="k">return</span> <span class="nx">thing</span><span class="p">.</span><span class="nx">process</span><span class="p">();</span>
@@ -146,26 +146,25 @@
 
 <p>A less fragile approach could involve a local counter variable with an array that we check with <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">deepEqual</code></a>. This catches out-of-order issues, unexpected values, duplicate values, and provides detailed debugging information in case of problems. This is basically how the Step API works:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">manual example without Step API</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">manual example without Step API</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">[];</span>
 
   <span class="kd">const</span> <span class="nx">thing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyThing</span><span class="p">();</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">error</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-
 
   <span class="k">return</span> <span class="nx">thing</span><span class="p">.</span><span class="nx">process</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="nx">values</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">middle</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">end</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="p">[</span> <span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span> <span class="p">]);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -174,7 +173,7 @@
 
 <p>Use the <strong>Step API</strong> to verify messages received in a Pub-Sub channel or topic.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">good example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">publisher</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Publisher</span><span class="p">();</span>
 
   <span class="kd">const</span> <span class="nx">subscriber1</span> <span class="o">=</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s2">`Sub 1: </span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
@@ -182,15 +181,15 @@
 
   <span class="nx">publisher</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">subscriber1</span><span class="p">);</span>
   <span class="nx">publisher</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">subscriber2</span><span class="p">);</span>
-  <span class="nx">publisher</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Hello!</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">publisher</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello!</span><span class="dl">'</span><span class="p">);</span>
 
   <span class="nx">publisher</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="nx">subscriber1</span><span class="p">);</span>
-  <span class="nx">publisher</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span> <span class="dl">"</span><span class="s2">World!</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">publisher</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="dl">'</span><span class="s1">World!</span><span class="dl">'</span><span class="p">);</span>
 
   <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span>
-    <span class="dl">"</span><span class="s2">Sub 1: Hello!</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Sub 2: Hello!</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">Sub 2: World!</span><span class="dl">"</span>
+    <span class="dl">'</span><span class="s1">Sub 1: Hello!</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">Sub 2: Hello!</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">Sub 2: World!</span><span class="dl">'</span>
   <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -199,14 +198,14 @@
 
 <p>The internal buffer of observed steps is automatically reset when calling <code class="language-plaintext highlighter-rouge">verifySteps()</code>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">multiple verifications example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">one</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">two</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">"</span><span class="s2">one</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">two</span><span class="dl">"</span> <span class="p">]);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">multiple verifications example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">one</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">two</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">one</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">two</span><span class="dl">'</span> <span class="p">]);</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">three</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span> <span class="dl">"</span><span class="s2">four</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">"</span><span class="s2">three</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">four</span><span class="dl">"</span> <span class="p">]);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">three</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">four</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">three</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">four</span><span class="dl">'</span> <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

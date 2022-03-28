@@ -97,11 +97,11 @@
 
 <p>Compare the value of two objects.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">yep</span><span class="dl">"</span> <span class="p">};</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">yep</span><span class="dl">'</span> <span class="p">};</span>
 
   <span class="c1">// succeeds, objects are similar but have a different foo value.</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notDeepEqual</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">nope</span><span class="dl">"</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notDeepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">nope</span><span class="dl">'</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

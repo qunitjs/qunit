@@ -132,13 +132,13 @@
 
 <p>A practical example, using the assert argument.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">square</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">square</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">square()</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">square</span><span class="p">(</span> <span class="mi">2</span> <span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="dl">"</span><span class="s2">square(2)</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">square</span><span class="p">(</span> <span class="mi">3</span> <span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="dl">"</span><span class="s2">square(3)</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">square()</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="dl">'</span><span class="s1">square(2)</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">9</span><span class="p">,</span> <span class="dl">'</span><span class="s1">square(3)</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -146,13 +146,13 @@
 
 <p>Following the example above, <code class="language-plaintext highlighter-rouge">QUnit.test</code> also supports JS <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">async functions</a> syntax out of the box.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Test with async-await</span><span class="dl">"</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test with async-await</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetchSquare</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
   <span class="kd">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetchSquare</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">a</span><span class="p">,</span> <span class="mi">4</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">b</span><span class="p">,</span> <span class="mi">9</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="k">await</span> <span class="nx">fetchSquare</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">25</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">await</span> <span class="nx">fetchSquare</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">25</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -162,17 +162,17 @@
 
 <p>This example returns a Promise that is resolved after waiting for 1 second.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">fetchSquare</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">resolve</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="nx">setTimeout</span><span class="p">(</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="nx">resolve</span><span class="p">(</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span> <span class="p">);</span>
-    <span class="p">},</span> <span class="mi">1000</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">fetchSquare</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">resolve</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Test with Promise</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">fetchSquare</span><span class="p">(</span> <span class="mi">3</span> <span class="p">).</span><span class="nx">then</span><span class="p">(</span> <span class="nx">result</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="mi">9</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test with Promise</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fetchSquare</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>

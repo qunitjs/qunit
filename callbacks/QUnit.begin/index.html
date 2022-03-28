@@ -108,38 +108,37 @@
 
 <p>Get total number of tests known at the start.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span> <span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s2">`Test amount: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">}</span><span class="s2">`</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Test amount: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Use async-await to wait for some asynchronous work:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span> <span class="k">async</span> <span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span><span class="k">async</span> <span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="k">await</span> <span class="nx">someAsyncWork</span><span class="p">();</span>
 
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s2">`Test amount: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">}</span><span class="s2">`</span> <span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Test amount: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Using classic ES5 syntax:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">details</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Test amount:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test amount:</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">someAsyncWork</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">someAsyncWork</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// do some async work</span>
     <span class="nx">resolve</span><span class="p">();</span>
   <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">details</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">someAsyncWork</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Test amount:</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">begin</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">someAsyncWork</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test amount:</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">totalTests</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>

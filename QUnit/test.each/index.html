@@ -127,12 +127,12 @@
 
 <h3 id="basic-data-provider">Basic data provider</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span> <span class="dl">"</span><span class="s2">isEven()</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span> <span class="p">],</span> <span class="p">(</span> <span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">data</span> <span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="nx">isEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -140,61 +140,61 @@
 
 <p>The original array is passed to your callback. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">Array destructuring</a> can be used to unpack the data array, directly from the callback signature.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">square</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">square</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span> <span class="dl">"</span><span class="s2">square()</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
-  <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span> <span class="p">]</span>
-<span class="p">],</span> <span class="p">(</span> <span class="nx">assert</span><span class="p">,</span> <span class="p">[</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span> <span class="p">]</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">square</span><span class="p">(</span> <span class="nx">value</span> <span class="p">),</span> <span class="nx">expected</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">value</span><span class="p">}</span><span class="s2"> squared`</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="nx">expected</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">value</span><span class="p">}</span><span class="s2"> squared`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <h3 id="object-data-provider">Object data provider</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span> <span class="dl">"</span><span class="s2">isEven()</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">caseEven</span><span class="p">:</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">true</span> <span class="p">],</span>
-  <span class="na">caseNotEven</span><span class="p">:</span> <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">false</span> <span class="p">]</span>
-<span class="p">},</span> <span class="p">(</span> <span class="nx">assert</span><span class="p">,</span> <span class="p">[</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span> <span class="p">]</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">value</span> <span class="p">),</span> <span class="nx">expected</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">caseEven</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">],</span>
+  <span class="na">caseNotEven</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="kc">false</span><span class="p">]</span>
+<span class="p">},</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">isEven</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="nx">expected</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <h3 id="async-functions-with-each">Async functions with <code class="language-plaintext highlighter-rouge">each()</code></h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">async</span> <span class="kd">function</span> <span class="nx">isAsyncEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">resolve</span><span class="p">(</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="p">}</span> <span class="p">);</span>
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">isAsyncEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">resolve</span><span class="p">(</span><span class="nx">isEven</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
+  <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span> <span class="dl">"</span><span class="s2">isAsyncEven()</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> <span class="p">],</span> <span class="k">async</span> <span class="p">(</span> <span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="k">await</span> <span class="nx">isAsyncEven</span><span class="p">(</span> <span class="nx">data</span> <span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="k">async</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="k">await</span> <span class="nx">isAsyncEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Return a Promise from each callback, using classic ES5 syntax:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">isEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">isAsyncEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">resolve</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="nx">resolve</span><span class="p">(</span> <span class="nx">isEven</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="p">}</span> <span class="p">);</span>
+<span class="kd">function</span> <span class="nx">isAsyncEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">resolve</span><span class="p">(</span><span class="nx">isEven</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
+  <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span> <span class="dl">"</span><span class="s2">isAsyncEven()</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> <span class="p">],</span> <span class="p">(</span> <span class="nx">assert</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">isAsyncEven</span><span class="p">(</span> <span class="nx">value</span> <span class="p">).</span><span class="nx">then</span><span class="p">(</span> <span class="p">(</span> <span class="nx">result</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">value</span><span class="p">}</span><span class="s2"> is even`</span> <span class="p">);</span>
-  <span class="p">}</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">isAsyncEven</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">value</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

@@ -106,21 +106,22 @@
 
 <p>Compare the values of two objects properties.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">class</span> <span class="nx">Foo</span> <span class="p">{</span>
-    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">1</span><span class="dl">"</span><span class="p">;</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="nx">walk</span><span class="p">()</span> <span class="p">{}</span>
-    <span class="nx">run</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="nx">walk</span> <span class="p">()</span> <span class="p">{}</span>
+    <span class="nx">run</span> <span class="p">()</span> <span class="p">{}</span>
   <span class="p">}</span>
 
   <span class="kd">const</span> <span class="nx">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Foo</span><span class="p">();</span>
 
   <span class="c1">// succeeds, only own property values are compared (using strict equality),</span>
   <span class="c1">// and propery "x" is indeed not equal (string instead of number).</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropEqual</span><span class="p">(</span> <span class="nx">foo</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropEqual</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">y</span><span class="p">:</span> <span class="mi">2</span>
   <span class="p">});</span>

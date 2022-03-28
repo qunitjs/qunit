@@ -92,12 +92,12 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyApp</span><span class="p">();</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="k">async</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="p">[],</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getErrors</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">MyApp errors</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span><span class="k">async</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">([],</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">getErrors</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">MyApp errors</span><span class="dl">'</span><span class="p">);</span>
 
   <span class="nx">MyApp</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
 <span class="p">});</span>

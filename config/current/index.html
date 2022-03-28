@@ -81,14 +81,14 @@
 
 <p>Access <code class="language-plaintext highlighter-rouge">QUnit.config.current.testName</code> to observe the currently running test’s name.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">whatsUp</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">testName</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">whatsUp</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">testName</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">whatsUp</span><span class="p">();</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

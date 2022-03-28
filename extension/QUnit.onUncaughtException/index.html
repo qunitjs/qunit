@@ -85,16 +85,16 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Failed to reverse the polarity of the neutron flow</span><span class="dl">"</span> <span class="p">);</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span><span class="p">(</span> <span class="nx">error</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Failed to reverse the polarity of the neutron flow</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
 </code></pre></div></div>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="dl">"</span><span class="s2">uncaughtException</span><span class="dl">"</span><span class="p">,</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">uncaughtException</span><span class="dl">'</span><span class="p">,</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span><span class="p">);</span>
 </code></pre></div></div>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="dl">"</span><span class="s2">unhandledrejection</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">event</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span><span class="p">(</span> <span class="nx">event</span><span class="p">.</span><span class="nx">reason</span> <span class="p">);</span>
-<span class="p">}</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">unhandledrejection</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">onUncaughtException</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">reason</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre></div></div>
 
 </div>

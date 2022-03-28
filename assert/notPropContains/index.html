@@ -103,52 +103,50 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">"</span><span class="s2">on</span><span class="dl">"</span><span class="p">,</span>
-      <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fluxing</span><span class="dl">"</span><span class="p">,</span>
-      <span class="na">engine</span><span class="p">:</span> <span class="dl">"</span><span class="s2">running</span><span class="dl">"</span>
+      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">'</span><span class="s1">on</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">fluxing</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">engine</span><span class="p">:</span> <span class="dl">'</span><span class="s1">running</span><span class="dl">'</span>
     <span class="p">},</span>
     <span class="na">quux</span><span class="p">:</span> <span class="mi">1</span>
   <span class="p">};</span>
 
   <span class="c1">// succeeds, property "timeCircuits" is actually "on"</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">"</span><span class="s2">off</span><span class="dl">"</span>
+      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">'</span><span class="s1">off</span><span class="dl">'</span>
     <span class="p">}</span>
-  <span class="p">}</span> <span class="p">);</span>
+  <span class="p">});</span>
 
   <span class="c1">// succeeds, property "wings" is not in the object</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span> <span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">wings</span><span class="p">:</span> <span class="dl">"</span><span class="s2">flapping</span><span class="dl">"</span>
+      <span class="na">wings</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flapping</span><span class="dl">'</span>
     <span class="p">}</span>
-  <span class="p">}</span> <span class="p">);</span>
+  <span class="p">});</span>
 
-  <span class="kd">function</span> <span class="nx">Point</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">Point</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span>
-    <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">),</span>
+    <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
     <span class="p">{</span> <span class="na">z</span><span class="p">:</span> <span class="mi">30</span> <span class="p">}</span>
   <span class="p">);</span>
 
   <span class="kd">const</span> <span class="nx">nested</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">north</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">],</span>
-    <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">),</span>
+    <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
     <span class="na">south</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">],</span>
     <span class="na">west</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* ... */</span> <span class="p">]</span>
   <span class="p">};</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span> <span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">42</span> <span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span> <span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">88</span> <span class="p">}</span> <span class="p">}</span> <span class="p">);</span>
-
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span><span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span> <span class="p">});</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notPropContains</span><span class="p">(</span><span class="nx">nested</span><span class="p">,</span> <span class="p">{</span> <span class="na">east</span><span class="p">:</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">88</span> <span class="p">}</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

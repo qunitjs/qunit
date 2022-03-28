@@ -227,22 +227,22 @@
 
 <p>If <code class="language-plaintext highlighter-rouge">QUnit.module</code> is defined without a <code class="language-plaintext highlighter-rouge">nested</code> callback argument, all subsequently defined tests will be grouped into the module until another module is defined.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group A</span><span class="dl">"</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group A</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 1</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 1</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 2</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 2</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group B</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group B</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 3</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 3</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 4</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 4</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -250,38 +250,38 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group A</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group A</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-<span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 2</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 2</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group B</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group B</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 3</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 3</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-<span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 4</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 4</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <h3 id="declaring-module-options">Declaring module options</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">module A</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">before</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">module A</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">before</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="c1">// prepare something once for all tests</span>
   <span class="p">},</span>
-  <span class="na">beforeEach</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="na">beforeEach</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="c1">// prepare something before each test</span>
   <span class="p">},</span>
-  <span class="na">afterEach</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="na">afterEach</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="c1">// clean up after each test</span>
   <span class="p">},</span>
-  <span class="na">after</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="na">after</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="c1">// clean up once after all tests are done</span>
   <span class="p">}</span>
 <span class="p">});</span>
@@ -291,25 +291,23 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group A</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group A</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 2</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 2</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Group B</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 3</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is fine</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Group B</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 3</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is fine</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">basic test example 4</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">this is also fine</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">basic test example 4</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="kc">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">this is also fine</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -320,39 +318,37 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">My Group</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Group</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// It is valid to call the same hook methods more than once.</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">beforeEach called</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">beforeEach called</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">afterEach called</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">afterEach called</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">with hooks</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">with hooks</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// 1 x beforeEach</span>
     <span class="c1">// 1 x afterEach</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span> <span class="mi">2</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Nested Group</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Nested Group</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// This will run after the parent module's beforeEach hook</span>
-    <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">nested beforeEach called</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">nested beforeEach called</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">});</span>
 
     <span class="c1">// This will run before the parent module's afterEach</span>
-    <span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">nested afterEach called</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="nx">hooks</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">nested afterEach called</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">});</span>
 
-    <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">with nested hooks</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">with nested hooks</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
       <span class="c1">// 2 x beforeEach (parent, current)</span>
       <span class="c1">// 2 x afterEach (current, parent)</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span> <span class="mi">4</span> <span class="p">);</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
@@ -362,23 +358,23 @@
 
 <p>The test context object is exposed to hook callbacks.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Machine Maker</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">beforeEach</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">beforeEach</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">wheels</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">motor</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">chassis</span><span class="dl">"</span> <span class="p">];</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">wheels</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">motor</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chassis</span><span class="dl">'</span><span class="p">];</span>
   <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a robot</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">arduino</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a robot</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">arduino</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">]);</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a car</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">);</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a car</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">);</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">duplicate</span><span class="p">();</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -387,22 +383,22 @@ in arrow functions.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Machine Maker</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">wheels</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">motor</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">chassis</span><span class="dl">"</span> <span class="p">];</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">wheels</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">motor</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chassis</span><span class="dl">'</span><span class="p">];</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a robot</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">arduino</span><span class="dl">"</span> <span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a robot</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">arduino</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">]);</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a car</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">assert</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a car</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">duplicate</span><span class="p">();</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">]);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -411,24 +407,24 @@ in arrow functions.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{</span> <span class="nx">test</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">;</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Machine Maker</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">maker</span><span class="p">;</span>
   <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">();</span>
-    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">wheels</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">motor</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">chassis</span><span class="dl">"</span> <span class="p">];</span>
+    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">wheels</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">motor</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chassis</span><span class="dl">'</span><span class="p">];</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="dl">"</span><span class="s2">arduino</span><span class="dl">"</span> <span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">robot</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">arduino</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">]);</span>
   <span class="p">});</span>
 
-  <span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">makes a car</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span> <span class="nx">parts</span> <span class="p">),</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a car</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">);</span>
     <span class="nx">maker</span><span class="p">.</span><span class="nx">duplicate</span><span class="p">();</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">car</span><span class="dl">"</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">]);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -437,23 +433,23 @@ in arrow functions.</p>
 
 <p>An example of handling an asynchronous <code class="language-plaintext highlighter-rouge">then</code>able Promise result in hooks. This example uses an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">ES6 Promise</a> interface that is fulfilled after connecting to or disconnecting from database.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Database connection</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">before</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="nx">DB</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="p">{</span>
-          <span class="nx">reject</span><span class="p">(</span> <span class="nx">err</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">before</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">DB</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
           <span class="nx">resolve</span><span class="p">();</span>
         <span class="p">}</span>
       <span class="p">});</span>
     <span class="p">});</span>
   <span class="p">},</span>
-  <span class="na">after</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="nx">DB</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="nx">err</span> <span class="p">)</span> <span class="p">{</span>
-          <span class="nx">reject</span><span class="p">(</span> <span class="nx">err</span> <span class="p">);</span>
+  <span class="na">after</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">DB</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
           <span class="nx">resolve</span><span class="p">();</span>
         <span class="p">}</span>
@@ -467,33 +463,33 @@ in arrow functions.</p>
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code> to treat an entire module’s tests as if they used <a href="/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only</code></a> instead of <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// ...</span>
 <span class="p">});</span>
 
 <span class="c1">// Only execute this module when developing the feature,</span>
 <span class="c1">// skipping tests from other modules.</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Android</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="dl">'</span><span class="s1">Android</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Android</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Say hello</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">android</span><span class="p">.</span><span class="nx">hello</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">Hello, my name is AN-2178!</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Say hello</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nx">hello</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello, my name is AN-2178!</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Basic conversation</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">android</span><span class="p">.</span><span class="nx">loadConversationData</span><span class="p">(</span> <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">Hi</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">What's your name?</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">My name is AN-2178.</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">Nice to meet you!</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nice to meet you too!</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">...</span><span class="dl">"</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Basic conversation</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">android</span><span class="p">.</span><span class="nx">loadConversationData</span><span class="p">({</span>
+      <span class="na">Hi</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">What's your name?</span><span class="dl">"</span><span class="p">:</span> <span class="dl">'</span><span class="s1">My name is AN-2178.</span><span class="dl">'</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">Nice to meet you!</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Nice to meet you too!</span><span class="dl">'</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">...</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">...</span><span class="dl">'</span>
     <span class="p">});</span>
 
     <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span>
-      <span class="nx">android</span><span class="p">.</span><span class="nx">answer</span><span class="p">(</span> <span class="dl">"</span><span class="s2">What's your name?</span><span class="dl">"</span> <span class="p">),</span>
-      <span class="dl">"</span><span class="s2">My name is AN-2178.</span><span class="dl">"</span>
+      <span class="nx">android</span><span class="p">.</span><span class="nx">answer</span><span class="p">(</span><span class="dl">"</span><span class="s2">What's your name?</span><span class="dl">"</span><span class="p">),</span>
+      <span class="dl">'</span><span class="s1">My name is AN-2178.</span><span class="dl">'</span>
     <span class="p">);</span>
   <span class="p">});</span>
 
@@ -503,27 +499,27 @@ in arrow functions.</p>
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code> to treat an entire module’s tests as if they used <a href="/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip</code></a> instead of <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// ...</span>
 <span class="p">});</span>
 
 <span class="c1">// Skip this module's tests.</span>
 <span class="c1">// For example if the android tests are failing due to unsolved problems.</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Android</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">Android</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Android</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Say hello</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">android</span><span class="p">.</span><span class="nx">hello</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">Hello, my name is AN-2178!</span><span class="dl">"</span> <span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Say hello</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nx">hello</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello, my name is AN-2178!</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Basic conversation</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Basic conversation</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span>
-      <span class="nx">android</span><span class="p">.</span><span class="nx">answer</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Nice to meet you!</span><span class="dl">"</span> <span class="p">),</span>
-      <span class="dl">"</span><span class="s2">Nice to meet you too!</span><span class="dl">"</span>
+      <span class="nx">android</span><span class="p">.</span><span class="nx">answer</span><span class="p">(</span><span class="dl">'</span><span class="s1">Nice to meet you!</span><span class="dl">'</span><span class="p">),</span>
+      <span class="dl">'</span><span class="s1">Nice to meet you too!</span><span class="dl">'</span>
     <span class="p">);</span>
   <span class="p">});</span>
 
@@ -533,21 +529,21 @@ in arrow functions.</p>
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module’s tests as if they used <a href="/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo</code></a> instead of <a href="/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">todo</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Robot</span><span class="dl">"</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">robot</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nx">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">robot</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Say</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Say</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Currently, it returns undefined</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">say</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">I'm Robot FN-2187</span><span class="dl">"</span> <span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">strictEqual</span><span class="p">(</span><span class="nx">robot</span><span class="p">.</span><span class="nx">say</span><span class="p">(),</span> <span class="dl">"</span><span class="s2">I'm Robot FN-2187</span><span class="dl">"</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span> <span class="dl">"</span><span class="s2">Move arm</span><span class="dl">"</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Move arm</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Move the arm to point (75, 80). Currently, each throws a NotImplementedError</span>
-    <span class="nx">robot</span><span class="p">.</span><span class="nx">moveArmTo</span><span class="p">(</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">80</span> <span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span> <span class="nx">robot</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">(),</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span> <span class="p">}</span> <span class="p">);</span>
+    <span class="nx">robot</span><span class="p">.</span><span class="nx">moveArmTo</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">deepEqual</span><span class="p">(</span><span class="nx">robot</span><span class="p">.</span><span class="nx">getPosition</span><span class="p">(),</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span> <span class="p">});</span>
   <span class="p">});</span>
 
   <span class="c1">// ...</span>

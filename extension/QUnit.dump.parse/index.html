@@ -106,14 +106,14 @@
 
 <p>The following is an example from <a href="https://github.com/gruntjs/grunt-contrib-qunit/blob/188a29af7817e1798fdd95f1ab7d3069231e4859/chrome/bridge.js#L42-L60">grunt-contrib-qunit</a>, which sends results from QUnit (running in Headless Chrome) to a CLI tool.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">obj</span> <span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">actual</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">expected</span><span class="p">;</span>
 
-  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">obj</span><span class="p">.</span><span class="nx">result</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Format before sending</span>
-    <span class="nx">actual</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">actual</span> <span class="p">);</span>
-    <span class="nx">expected</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">expected</span> <span class="p">);</span>
+    <span class="nx">actual</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">actual</span><span class="p">);</span>
+    <span class="nx">expected</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">expected</span><span class="p">);</span>
   <span class="p">}</span>
 
   <span class="c1">// ...</span>
@@ -124,10 +124,10 @@
 
 <p>This example shows the formatted representation of a DOM element.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">qHeader</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span> <span class="dl">"</span><span class="s2">qunit-header</span><span class="dl">"</span> <span class="p">);</span>
-<span class="kd">var</span> <span class="nx">parsed</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="nx">qHeader</span> <span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">qHeader</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">qunit-header</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">parsed</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">qHeader</span><span class="p">);</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">parsed</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">parsed</span><span class="p">);</span>
 
 <span class="c1">// Logs: '&lt;h1 id="qunit-header"&gt;&lt;/h1&gt;'</span>
 </code></pre></div></div>
@@ -143,11 +143,11 @@
   <span class="p">}</span>
 <span class="p">};</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="nx">input</span> <span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">input</span><span class="p">));</span>
 <span class="c1">// Logs: { "parts": [object Object] }</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="nx">input</span> <span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">input</span><span class="p">));</span>
 <span class="c1">// Logs: { "parts": { "back": [object Array], "front": [object Array] } }</span>
 </code></pre></div></div>
 
