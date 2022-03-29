@@ -1,4 +1,4 @@
-// Skip on browsers that doesn't support stack trace
+// Skip in environments without Error#stack support
 (QUnit.stack() ? QUnit.module : QUnit.module.skip)('stacktrace', function () {
   function fooCurrent () {
     return QUnit.stack();
@@ -64,36 +64,42 @@
     });
   });
 
-  QUnit.test('QUnit.test() source details', function (assert) {
-    var stack = norm(QUnit.config.current.stack);
-    var line = stack.split('\n')[0];
-    assert.pushResult({
-      result: line.indexOf('/main/stacktrace.js') !== -1,
-      expected: '/main/stacktrace.js',
-      actual: stack,
-      message: 'start at current file'
+  // Some browsers support 'stack' only when caught (see sourceFromStacktrace).
+  // We do that for failed assertions, but for passing tests we omit
+  // source details in these older browsers.
+  var supportsUnthrownStack = !!(new Error().stack);
+  (supportsUnthrownStack ? QUnit.module : QUnit.module.skip)('source details', function () {
+    QUnit.test('QUnit.test()', function (assert) {
+      var stack = norm(QUnit.config.current.stack);
+      var line = stack.split('\n')[0];
+      assert.pushResult({
+        result: line.indexOf('/main/stacktrace.js') !== -1,
+        expected: '/main/stacktrace.js',
+        actual: stack,
+        message: 'start at current file'
+      });
     });
-  });
 
-  QUnit.test.each('QUnit.test.each(list) source details', [0], function (assert) {
-    var stack = norm(QUnit.config.current.stack);
-    var line = stack.split('\n')[0];
-    assert.pushResult({
-      result: line.indexOf('/main/stacktrace.js') !== -1,
-      expected: '/main/stacktrace.js',
-      actual: stack,
-      message: 'start at current file'
+    QUnit.test.each('QUnit.test.each(list)', [0], function (assert) {
+      var stack = norm(QUnit.config.current.stack);
+      var line = stack.split('\n')[0];
+      assert.pushResult({
+        result: line.indexOf('/main/stacktrace.js') !== -1,
+        expected: '/main/stacktrace.js',
+        actual: stack,
+        message: 'start at current file'
+      });
     });
-  });
 
-  QUnit.test.each('QUnit.test.each(object) source details', { a: 0 }, function (assert) {
-    var stack = norm(QUnit.config.current.stack);
-    var line = stack.split('\n')[0];
-    assert.pushResult({
-      result: line.indexOf('/main/stacktrace.js') !== -1,
-      expected: '/main/stacktrace.js',
-      actual: stack,
-      message: 'start at current file'
+    QUnit.test.each('QUnit.test.each(object)', { a: 0 }, function (assert) {
+      var stack = norm(QUnit.config.current.stack);
+      var line = stack.split('\n')[0];
+      assert.pushResult({
+        result: line.indexOf('/main/stacktrace.js') !== -1,
+        expected: '/main/stacktrace.js',
+        actual: stack,
+        message: 'start at current file'
+      });
     });
   });
 });
