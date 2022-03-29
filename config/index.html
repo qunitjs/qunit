@@ -66,16 +66,42 @@
 
 <h2 id="preconfiguring-qunit">Preconfiguring QUnit</h2>
 
-<p>If you load QUnit asynchronously or otherwise need to configure QUnit before it is loaded, you can define the global variable <code class="language-plaintext highlighter-rouge">QUnit</code> with a <code class="language-plaintext highlighter-rouge">config</code> property. Any other properties of the QUnit object will be ignored. The config values specified here will be carried over to the real <code class="language-plaintext highlighter-rouge">QUnit.config</code> object.</p>
+<p>If you load QUnit asynchronously or otherwise need to configure QUnit before it is loaded, you can predefine the configuration by creating a global variable <code class="language-plaintext highlighter-rouge">QUnit</code> with a <code class="language-plaintext highlighter-rouge">config</code> property.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Before QUnit is loaded</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span>
+<p>The config values specified here will be carried over to the real <code class="language-plaintext highlighter-rouge">QUnit.config</code> object. Any other properties of this object will be ignored.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Implicit global</span>
+<span class="c1">// Supported everywhere, including old browsers. (But not ES strict mode.)</span>
+<span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">config</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">autostart</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="na">noglobals</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="na">maxDepth</span><span class="p">:</span> <span class="mi">12</span>
   <span class="p">}</span>
 <span class="p">};</span>
+
+<span class="c1">// Browser global</span>
+<span class="c1">// For all browsers (including strict mode and old browsers)</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">};</span>
+
+<span class="c1">// Isomorphic global</span>
+<span class="c1">// For modern browsers, SpiderMonkey, and Node.js (incl. strict mode).</span>
+<span class="nx">globalThis</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">};</span>
 </code></pre></div></div>
+
+<h3 id="changelog">Changelog</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td>Preconfig support added for SpiderMonkey and other environments.<br />Previously, it was limited to the browser environment.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">QUnit 2.1.0</a></td>
+      <td>Preconfig feature introduced.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="qunit-config-altertitle"><a href="/config/altertitle/">QUnit.config.altertitle</a></h2>
 <p>Insert a success or failure symbol in the document title (HTML Reporter).</p>
