@@ -8,7 +8,7 @@ const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const { getDiff, downloadFile } = require('./utils.js');
+const { getDiff, downloadFile, cleanDir } = require('./utils.js');
 
 async function confirm (text) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -28,6 +28,9 @@ const ReleaseAssets = {
   async audit (prevVersion) {
     if (typeof prevVersion !== 'string' || !/^\d+\.\d+\.\d+$/.test(prevVersion)) {
       throw new Error('Invalid or missing version argument');
+    }
+    {
+      cleanDir(path.join(__dirname, '../temp'));
     }
     {
       const file = 'package.json';
