@@ -1,4 +1,13 @@
 
+2.18.1 / 2022-03-29
+==================
+
+### Fixed
+
+* HTML Reporter: Fix source attribution for test definitions. [#1679](https://github.com/qunitjs/qunit/issues/1679)
+* Core: Fix preconfig support in SpiderMonkey and other environments. [0befe2aafe](https://github.com/qunitjs/qunit/commit/0befe2aafe913704db958c472ed6f2a37ec8caaf)
+* Core: Improve performance of async pauses with native Map when available. [aa7314b431](https://github.com/qunitjs/qunit/commit/aa7314b431db10d321109c78041747b681e1521c)
+
 2.18.0 / 2022-02-15
 ==================
 

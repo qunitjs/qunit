@@ -36,5 +36,5 @@ globalThis.QUnit = { /* .. */ };
 
 ### Changelog
 
-| UNRELEASED | Preconfig support added for SpiderMonkey and other environments.<br/>Previously, it was limited to the browser environment.
+| [QUnit 2.18.1](https://github.com/qunitjs/qunit/releases/tag/2.18.1) | Preconfig support added for SpiderMonkey and other environments.<br/>Previously, it was limited to the browser environment.
 | [QUnit 2.1.0](https://github.com/qunitjs/qunit/releases/tag/2.1.0) | Preconfig feature introduced.
