@@ -18,7 +18,7 @@ importScripts(
   'main/onUncaughtException.js',
   'main/promise.js',
   'main/setTimeout.js',
-  'main/stack.js',
+  'main/stacktrace.js',
   'main/test.js',
   'main/utilities.js'
 );

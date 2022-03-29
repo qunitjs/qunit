@@ -524,7 +524,10 @@ not ok 1 times out before scheduled done is called
 `TAP version 13
 not ok 1 Test A
   ---
-  message: "Died on test #2     at Object.test (/qunit/qunit/qunit.js): this is an intentional error"
+  message: |+
+    Died on test #2: this is an intentional error
+        at /qunit/test/cli/fixtures/drooling-done.js:5:7
+        at internal
   severity: failed
   actual  : null
   expected: undefined
@@ -545,8 +548,10 @@ ok 1 Test A
 not ok 2 Test B
   ---
   message: |+
-    Died on test #2     at Object.test (/qunit/qunit/qunit.js): Unexpected release of async pause during a different test.
+    Died on test #2: Unexpected release of async pause during a different test.
     > Test: Test A [async #1]
+        at /qunit/test/cli/fixtures/drooling-extra-done.js:13:7
+        at internal
   severity: failed
   actual  : null
   expected: undefined
@@ -586,8 +591,10 @@ Bail out! Error: Unexpected release of async pause after tests finished.
 not ok 1 Test A
   ---
   message: |+
-    Died on test #2     at Object.test (/qunit/qunit/qunit.js): Tried to release async pause that was already released.
+    Died on test #2: Tried to release async pause that was already released.
     > Test: Test A [async #1]
+        at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
+        at internal
   severity: failed
   actual  : null
   expected: undefined

@@ -31,6 +31,15 @@ export default function Test (settings) {
   this.withData = false;
   this.pauses = new StringMap();
   this.nextPauseId = 1;
+
+  // For the most common case, we have:
+  // - 0: new Test
+  // - 1: addTest
+  // - 2: QUnit.test
+  // - 3: user file
+  //
+  // This needs is customised by test.each()
+  this.stackOffset = 3;
   extend(this, settings);
 
   // If a module is skipped, all its tests and the tests of the child suites
@@ -129,9 +138,11 @@ function getNotStartedModules (startModule) {
 
 Test.prototype = {
 
-  // generating a stack trace can be expensive, so using a getter defers this until we need it
+  // Use a getter to avoid computing a stack trace (which can be expensive),
+  // This is displayed by the HTML Reporter, but most other integrations do
+  // not access it.
   get stack () {
-    return extractStacktrace(this.errorForStack, 2);
+    return extractStacktrace(this.errorForStack, this.stackOffset);
   },
 
   before: function () {
@@ -183,8 +194,8 @@ Test.prototype = {
     try {
       runTest(this);
     } catch (e) {
-      this.pushFailure('Died on test #' + (this.assertions.length + 1) + ' ' +
-        this.stack + ': ' + (e.message || e), extractStacktrace(e, 0));
+      this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': ' +
+        (e.message || e) + '\n' + this.stack, extractStacktrace(e, 0));
 
       // Else next test will carry the responsibility
       saveGlobal();
@@ -935,12 +946,13 @@ function makeEachTestName (testName, argument) {
 
 function runEach (data, eachFn) {
   if (Array.isArray(data)) {
-    data.forEach(eachFn);
+    for (let i = 0; i < data.length; i++) {
+      eachFn(data[i], i);
+    }
   } else if (typeof data === 'object' && data !== null) {
-    const keys = Object.keys(data);
-    keys.forEach((key) => {
+    for (let key in data) {
       eachFn(data[key], key);
-    });
+    }
   } else {
     throw new Error(
       `test.each() expects an array or object as input, but
@@ -965,6 +977,7 @@ extend(test, {
         testName: makeEachTestName(testName, testKey),
         callback,
         withData: true,
+        stackOffset: 5,
         data
       });
     });
@@ -978,6 +991,7 @@ test.todo.each = function (testName, dataset, callback) {
       callback,
       todo: true,
       withData: true,
+      stackOffset: 5,
       data
     });
   });
@@ -986,6 +1000,7 @@ test.skip.each = function (testName, dataset) {
   runEach(dataset, (_, testKey) => {
     addTest({
       testName: makeEachTestName(testName, testKey),
+      stackOffset: 5,
       skip: true
     });
   });
@@ -997,6 +1012,7 @@ test.only.each = function (testName, dataset, callback) {
       testName: makeEachTestName(testName, testKey),
       callback,
       withData: true,
+      stackOffset: 5,
       data
     });
   });

@@ -47,7 +47,7 @@ loadRelativeToScript('../test/main/onError.js');
 loadRelativeToScript('../test/main/onUncaughtException.js');
 loadRelativeToScript('../test/main/promise.js');
 loadRelativeToScript('../test/main/setTimeout.js');
-loadRelativeToScript('../test/main/stack.js');
+loadRelativeToScript('../test/main/stacktrace.js');
 loadRelativeToScript('../test/main/test.js');
 loadRelativeToScript('../test/main/utilities.js');
 

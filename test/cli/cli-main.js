@@ -162,8 +162,11 @@ QUnit.module('CLI Main', () => {
     } catch (e) {
       assert.equal(e.code, 1);
       assert.equal(e.stderr, '');
-      assert.true(e.stdout.includes('Died on test #2     at '));
-      assert.true(e.stdout.includes('Error: expected error thrown in test'));
+      assert.pushResult({
+        result: e.stdout.includes('Died on test #2: expected error thrown in test') &&
+          e.stdout.includes('Error: expected error thrown in test'),
+        actual: e.stdout
+      });
     }
   });
 
