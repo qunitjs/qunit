@@ -184,8 +184,6 @@ Test.prototype = {
   run: function () {
     config.current = this;
 
-    this.callbackStarted = now();
-
     if (config.notrycatch) {
       runTest(this);
       return;
