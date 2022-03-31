@@ -9,7 +9,7 @@ function makeAddGlobalHook (hookName) {
   };
 }
 
-export const hooks = {
+export default {
   beforeEach: makeAddGlobalHook('beforeEach'),
   afterEach: makeAddGlobalHook('afterEach')
 };

@@ -10,7 +10,7 @@ import exportQUnit from './export';
 import reporters from './reporters';
 
 import config from './core/config';
-import { hooks } from './core/hooks';
+import hooks from './core/hooks';
 import { extend, objectType, is, now } from './core/utilities';
 import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging';
 import { sourceFromStacktrace } from './core/stacktrace';
