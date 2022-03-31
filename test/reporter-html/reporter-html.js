@@ -85,9 +85,9 @@ QUnit.module('HTML Reporter', function () {
   QUnit.test('basics', function (assert) {
     assert.expect(1);
     var previous = this.getPreviousTest(assert);
-    var runtime = this.filterClass(previous.getElementsByTagName('span'));
+    var runtime = this.filterClass(previous.getElementsByTagName('span')).innerHTML;
 
-    assert.true(/^\d+ ms$/.test(runtime.innerHTML), 'Runtime reported in ms');
+    assert.true(/^\d+ ms$/.test(runtime), 'Runtime reported in ms: ' + runtime);
   });
 
   QUnit.test('values', function (assert) {
@@ -96,14 +96,14 @@ QUnit.module('HTML Reporter', function () {
     var basics = this.getPreviousTest(assert);
     var setup = basics.previousSibling;
 
-    basics = this.filterClass(basics.getElementsByTagName('span'));
-    setup = this.filterClass(setup.getElementsByTagName('span'));
+    basics = this.filterClass(basics.getElementsByTagName('span')).innerHTML;
+    setup = this.filterClass(setup.getElementsByTagName('span')).innerHTML;
 
-    assert.true(parseInt(basics.innerHTML, 10) < 100,
-      'Fast runtime for trivial test'
+    assert.true(parseInt(basics, 10) < 100,
+      'Fast runtime for trivial test: ' + basics
     );
-    assert.true(parseInt(setup.innerHTML, 10) > 100,
-      'Runtime includes beforeEach'
+    assert.true(parseInt(setup, 10) > 100,
+      'Runtime includes beforeEach: ' + setup
     );
   });
 

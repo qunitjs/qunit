@@ -12,7 +12,7 @@ import {
   generateHash,
   hasOwn,
   inArray,
-  now,
+  performance,
   objectType
 } from './core/utilities';
 import { runLoggingCallbacks } from './core/logging';
@@ -152,7 +152,7 @@ Test.prototype = {
     // ensure the callbacks are executed serially for each module
     const callbackPromises = notStartedModules.reduce((promiseChain, startModule) => {
       return promiseChain.then(() => {
-        startModule.stats = { all: 0, bad: 0, started: now() };
+        startModule.stats = { all: 0, bad: 0, started: performance.now() };
         emit('suiteStart', startModule.suiteReport.start(true));
         return runLoggingCallbacks('moduleStart', {
           name: startModule.name,
@@ -166,7 +166,7 @@ Test.prototype = {
 
       this.testEnvironment = extend({}, module.testEnvironment);
 
-      this.started = now();
+      this.started = performance.now();
       emit('testStart', this.testReport.start(true));
       return runLoggingCallbacks('testStart', {
         name: this.testName,
@@ -371,7 +371,7 @@ Test.prototype = {
     let bad = 0;
     const storage = config.storage;
 
-    this.runtime = now() - this.started;
+    this.runtime = performance.now() - this.started;
 
     config.stats.all += this.assertions.length;
     config.stats.testCount += 1;
@@ -477,7 +477,7 @@ Test.prototype = {
         failed: module.stats.bad,
         passed: module.stats.all - module.stats.bad,
         total: module.stats.all,
-        runtime: now() - module.stats.started
+        runtime: performance.now() - module.stats.started
       });
     }
   },
@@ -559,7 +559,7 @@ Test.prototype = {
       actual: resultInfo.actual,
       testId: this.testId,
       negative: resultInfo.negative || false,
-      runtime: now() - this.started,
+      runtime: performance.now() - this.started,
       todo: !!this.todo
     };
 

@@ -3,12 +3,14 @@ import Logger from '../logger';
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;
-export const now = Date.now || function () {
-  return new Date().getTime();
-};
 
 const nativePerf = getNativePerf();
 
+// TODO: Consider using globalThis instead so that perf marks work
+// in Node.js as well. As they can have overhead, we should also
+// have a way to disable these, and/or make them an opt-in reporter
+// in QUnit 3 and then support globalThis.
+// For example: `QUnit.addReporter(QUnit.reporters.perf)`.
 function getNativePerf () {
   if (window &&
     typeof window.performance !== 'undefined' &&
@@ -24,7 +26,7 @@ function getNativePerf () {
 export const performance = {
   now: nativePerf
     ? nativePerf.now.bind(nativePerf)
-    : now,
+    : Date.now,
   measure: nativePerf
     ? function (comment, startMark, endMark) {
       // `performance.measure` may fail if the mark could not be found.

@@ -1,5 +1,5 @@
 import config from './config';
-import { extend, generateHash, now } from './utilities';
+import { extend, generateHash, performance } from './utilities';
 import { runLoggingCallbacks } from './logging';
 
 import Promise from '../promise';
@@ -32,7 +32,7 @@ function advance () {
  * Advances the taskQueue with an increased depth
  */
 function advanceTaskQueue () {
-  const start = now();
+  const start = performance.now();
   config.depth = (config.depth || 0) + 1;
 
   processTaskQueue(start);
@@ -46,8 +46,11 @@ function advanceTaskQueue () {
  */
 function processTaskQueue (start) {
   if (taskQueue.length && !config.blocking) {
-    const elapsedTime = now() - start;
+    const elapsedTime = performance.now() - start;
 
+    // The updateRate ensures that a user interface (HTML Reporter) can be updated
+    // at least once every second. This can also prevent browsers from prompting
+    // a warning about long running scripts.
     if (!setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate) {
       const task = taskQueue.shift();
       Promise.resolve(task()).then(function () {
@@ -180,7 +183,7 @@ function done () {
 
   const storage = config.storage;
 
-  const runtime = now() - config.started;
+  const runtime = performance.now() - config.started;
   const passed = config.stats.all - config.stats.bad;
 
   ProcessingQueue.finished = true;

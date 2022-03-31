@@ -12,15 +12,12 @@
   window.times = {};
 
   (function () {
-    var now = Date.now || function () {
-      return new Date().getTime();
-    };
     var asyncDelay = 1000;
 
     QUnit.config.autostart = false;
 
     // Mark the current time
-    window.times.autostartOff = now();
+    window.times.autostartOff = Date.now();
 
     // Simulate a delay in loading the tests, as when they are loaded
     // asynchronously using requirejs, steal, etc.
@@ -32,7 +29,7 @@
 
     QUnit.begin(function (data) {
       window.beginData = data;
-      window.times.runStarted = now();
+      window.times.runStarted = Date.now();
     });
   }());
   </script>

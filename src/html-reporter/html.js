@@ -706,7 +706,7 @@ export function escapeText (s) {
     let html = [
       runEnd.testCounts.total,
       ' tests completed in ',
-      runEnd.runtime,
+      Math.round(runEnd.runtime),
       ' milliseconds, with ',
       runEnd.testCounts.failed,
       ' failed, ',
@@ -729,7 +729,7 @@ export function escapeText (s) {
 
     // Update remaining tests to aborted
     if (abortButton && abortButton.disabled) {
-      html = 'Tests aborted after ' + runEnd.runtime + ' milliseconds.';
+      html = 'Tests aborted after ' + Math.round(runEnd.runtime) + ' milliseconds.';
 
       for (let i = 0; i < tests.children.length; i++) {
         test = tests.children[i];
@@ -832,7 +832,7 @@ export function escapeText (s) {
 
     let message = escapeText(details.message) || (details.result ? 'okay' : 'failed');
     message = "<span class='test-message'>" + message + '</span>';
-    message += "<span class='runtime'>@ " + details.runtime + ' ms</span>';
+    message += "<span class='runtime'>@ " + Math.round(details.runtime) + ' ms</span>';
 
     let expected;
     let actual;
@@ -993,7 +993,7 @@ export function escapeText (s) {
 
       let time = document.createElement('span');
       time.className = 'runtime';
-      time.innerHTML = details.runtime + ' ms';
+      time.innerHTML = Math.round(details.runtime) + ' ms';
       testItem.insertBefore(time, assertList);
     }
 

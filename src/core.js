@@ -11,7 +11,7 @@ import reporters from './reporters';
 
 import config from './core/config';
 import hooks from './core/hooks';
-import { extend, objectType, is, now } from './core/utilities';
+import { extend, objectType, is, performance } from './core/utilities';
 import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging';
 import { sourceFromStacktrace } from './core/stacktrace';
 import ProcessingQueue from './core/processing-queue';
@@ -166,7 +166,7 @@ export function begin () {
 
   // The test run hasn't officially begun yet
   // Record the time of the test run's beginning
-  config.started = now();
+  config.started = performance.now();
 
   // Delete the loose unnamed module if unused.
   if (config.modules[0].name === '' && config.modules[0].tests.length === 0) {
