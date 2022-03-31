@@ -106,7 +106,7 @@ QUnit aims for its releases to be reproducible. Recent releases are automaticall
    git push --tags
    ```
 
-8. Verify that Bower sees the release, by running `bower info qunit` and checking that the latest
+8. Verify that Bower sees the release, by running `npx bower info qunit` and checking that the latest
    version is indeed the version we just published.
 
 9. Publish the release to npm:
