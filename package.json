@@ -54,7 +54,6 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-replace": "^3.0.0",
-    "coveralls": "^3.1.1",
     "eslint": "7.32.0",
     "eslint-config-semistandard": "^16.0.0",
     "eslint-config-standard": "^16.0.3",
@@ -98,8 +97,7 @@
     "authors": "grunt authors",
     "coverage": "npm run build-coverage && npm run coverage-cli && npm run coverage-main && nyc report",
     "coverage-cli": "nyc --use-spawn-wrap --silent bin/qunit.js test/cli/*.js",
-    "coverage-main": "nyc instrument --in-place qunit/ && grunt connect:base qunit",
-    "coveralls-upload": "cat coverage/lcov.info | coveralls"
+    "coverage-main": "nyc instrument --in-place qunit/ && grunt connect:base qunit"
   },
   "nyc": {
     "include": [
@@ -110,7 +108,7 @@
     "reporter": [
       "text",
       "html",
-      "lcovonly"
+      "clover"
     ],
     "report-dir": "coverage"
   }

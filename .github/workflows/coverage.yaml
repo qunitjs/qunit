@@ -29,9 +29,10 @@ jobs:
       - name: Tests
         run: npm run coverage
 
-      - run: npm run coveralls-upload
+      - name: Upload to coveralls.io
         env:
-          COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
-          COVERALLS_GIT_BRANCH: "${{ github.ref }}"
-          COVERALLS_SERVICE_NAME: github-actions
-          COVERALLS_SERVICE_JOB_ID: "${{ github.run_id }}"
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.5.2/php-coveralls.phar
+          chmod +x php-coveralls.phar
+          ./php-coveralls.phar -v --coverage_clover coverage/clover.xml --json_path coverage/coveralls.json
