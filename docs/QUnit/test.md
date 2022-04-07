@@ -93,8 +93,8 @@ function fetchSquare (x) {
   });
 }
 
-QUnit.test('Test with Promise', assert => {
-  return fetchSquare(3).then(result => {
+QUnit.test('Test with Promise', function (assert) {
+  return fetchSquare(3).then(function (result) {
     assert.equal(result, 9);
   });
 });
