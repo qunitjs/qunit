@@ -50,6 +50,7 @@ export function escapeText (s) {
     moduleId: undefined,
     testId: undefined
   });
+  const moduleSearchCache = [];
 
   function trim (string) {
     if (typeof string.trim === 'function') {
@@ -275,14 +276,12 @@ export function escapeText (s) {
   }
 
   function applyUrlParams () {
-    let i;
-    const selectedModules = [];
-    const modulesList = id('qunit-modulefilter-dropdown-list').getElementsByTagName('input');
     const filter = id('qunit-filter-input').value;
 
-    for (i = 0; i < modulesList.length; i++) {
-      if (modulesList[i].checked) {
-        selectedModules.push(modulesList[i].value);
+    const selectedModules = [];
+    for (let i = 0; i < moduleSearchCache.length; i++) {
+      if (moduleSearchCache[i].checkbox.checked) {
+        selectedModules.push(moduleSearchCache[i].checkbox.value);
       }
     }
 
@@ -343,20 +342,28 @@ export function escapeText (s) {
     return filter;
   }
 
-  function moduleListHtml (modules) {
-    let html = '';
+  function moduleListHtml () {
+    const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < modules.length; i++) {
-      if (modules[i].name !== '') {
-        let checked = config.moduleId.indexOf(modules[i].moduleId) > -1;
-        html += "<li><label class='clickable" + (checked ? ' checked' : '') +
-          "'><input type='checkbox' " + "value='" + modules[i].moduleId + "'" +
+    for (let i = 0; i < config.modules.length; i++) {
+      const mod = config.modules[i];
+      if (mod.name !== '') {
+        const checked = config.moduleId.indexOf(mod.moduleId) > -1;
+        const item = document.createElement('li');
+        item.innerHTML = "<label class='clickable" + (checked ? ' checked' : '') +
+          "'><input type='checkbox' " + "value='" + mod.moduleId + "'" +
           (checked ? " checked='checked'" : '') + ' />' +
-          escapeText(modules[i].name) + '</label></li>';
+          escapeText(mod.name) + '</label>';
+
+        moduleSearchCache.push({
+          name: mod.name,
+          item: item,
+          checkbox: item.firstChild.firstChild
+        });
+        fragment.appendChild(item);
       }
     }
-
-    return html;
+    return fragment;
   }
 
   function toolbarModuleFilter () {
@@ -369,10 +376,6 @@ export function escapeText (s) {
     addEvent(moduleSearch, 'input', searchFocus);
     addEvent(moduleSearch, 'focus', searchFocus);
     addEvent(moduleSearch, 'click', searchFocus);
-
-    config.modules.forEach(module => {
-      module.namePrepared = fuzzysort.prepare(module.name);
-    });
 
     const label = document.createElement('label');
     label.id = 'qunit-modulefilter-search-container';
@@ -411,7 +414,7 @@ export function escapeText (s) {
 
     const dropDownList = document.createElement('ul');
     dropDownList.id = 'qunit-modulefilter-dropdown-list';
-    dropDownList.innerHTML = moduleListHtml(config.modules);
+    dropDownList.appendChild(moduleListHtml());
 
     const dropDown = document.createElement('div');
     dropDown.id = 'qunit-modulefilter-dropdown';
@@ -459,12 +462,18 @@ export function escapeText (s) {
     }
 
     function filterModules (searchText) {
+      let items;
       if (searchText === '') {
-        return config.modules;
+        items = moduleSearchCache.map(obj => obj.item);
+      } else {
+        items = fuzzysort.go(searchText, moduleSearchCache, { key: 'name', threshold: -10000 })
+          .map(result => result.obj.item);
       }
-      return fuzzysort
-        .go(searchText, config.modules, { key: 'namePrepared', threshold: -10000 })
-        .map(module => module.obj);
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < items.length; i++) {
+        fragment.appendChild(items[i]);
+      }
+      return fragment;
     }
 
     // Processes module search box input
@@ -472,16 +481,14 @@ export function escapeText (s) {
     function searchInput () {
       window.clearTimeout(searchInputTimeout);
       searchInputTimeout = window.setTimeout(() => {
-        const searchText = moduleSearch.value.toLowerCase();
-        const filteredModules = filterModules(searchText);
-        dropDownList.innerHTML = moduleListHtml(filteredModules);
+        dropDownList.innerHTML = '';
+        dropDownList.appendChild(filterModules(moduleSearch.value));
       }, 200);
     }
 
     // Processes selection changes
     function selectionChange (evt) {
       const checkbox = (evt && evt.target) || allCheckbox;
-      const modulesList = dropDownList.getElementsByTagName('input');
       const selectedNames = [];
 
       toggleClass(checkbox.parentNode, 'checked', checkbox.checked);
@@ -491,8 +498,8 @@ export function escapeText (s) {
         allCheckbox.checked = false;
         removeClass(allCheckbox.parentNode, 'checked');
       }
-      for (let i = 0; i < modulesList.length; i++) {
-        let item = modulesList[i];
+      for (let i = 0; i < moduleSearchCache.length; i++) {
+        const item = moduleSearchCache[i].checkbox;
         if (!evt) {
           toggleClass(item.parentNode, 'checked', item.checked);
         } else if (checkbox === allCheckbox && checkbox.checked) {
