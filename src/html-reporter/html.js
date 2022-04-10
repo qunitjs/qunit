@@ -466,7 +466,7 @@ export function escapeText (s) {
       if (searchText === '') {
         items = moduleSearchCache.map(obj => obj.item);
       } else {
-        items = fuzzysort.go(searchText, moduleSearchCache, { key: 'name', threshold: -10000 })
+        items = fuzzysort.go(searchText, moduleSearchCache, { key: 'name', allowTypo: true })
           .map(result => result.obj.item);
       }
       const fragment = document.createDocumentFragment();
@@ -479,11 +479,15 @@ export function escapeText (s) {
     // Processes module search box input
     let searchInputTimeout;
     function searchInput () {
+      // Use a debounce with a ~0ms timeout. This is effectively instantaneous,
+      // but is better than undebounced because it avoids an ever-growing
+      // backlog of unprocessed now-outdated input events if fuzzysearch or
+      // drodown DOM is slow (e.g. very large test suite).
       window.clearTimeout(searchInputTimeout);
       searchInputTimeout = window.setTimeout(() => {
         dropDownList.innerHTML = '';
         dropDownList.appendChild(filterModules(moduleSearch.value));
-      }, 200);
+      });
     }
 
     // Processes selection changes
