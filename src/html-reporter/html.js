@@ -360,18 +360,9 @@ export function escapeText (s) {
   }
 
   function toolbarModuleFilter () {
-    const moduleFilter = document.createElement('form');
-    const label = document.createElement('label');
-    const moduleSearch = document.createElement('input');
-    const dropDown = document.createElement('div');
-    const actions = document.createElement('span');
-    const applyButton = document.createElement('button');
-    const resetButton = document.createElement('button');
-    const allModulesLabel = document.createElement('label');
-    const allCheckbox = document.createElement('input');
-    const dropDownList = document.createElement('ul');
     let dirty = false;
 
+    const moduleSearch = document.createElement('input');
     moduleSearch.id = 'qunit-modulefilter-search';
     moduleSearch.autocomplete = 'off';
     addEvent(moduleSearch, 'input', searchInput);
@@ -383,20 +374,25 @@ export function escapeText (s) {
       module.namePrepared = fuzzysort.prepare(module.name);
     });
 
+    const label = document.createElement('label');
     label.id = 'qunit-modulefilter-search-container';
     label.innerHTML = 'Module: ';
     label.appendChild(moduleSearch);
 
+    const applyButton = document.createElement('button');
     applyButton.textContent = 'Apply';
     applyButton.style.display = 'none';
 
+    const resetButton = document.createElement('button');
     resetButton.textContent = 'Reset';
     resetButton.type = 'reset';
     resetButton.style.display = 'none';
 
+    const allCheckbox = document.createElement('input');
     allCheckbox.type = 'checkbox';
     allCheckbox.checked = config.moduleId.length === 0;
 
+    const allModulesLabel = document.createElement('label');
     allModulesLabel.className = 'clickable';
     if (config.moduleId.length) {
       allModulesLabel.className = 'checked';
@@ -404,6 +400,7 @@ export function escapeText (s) {
     allModulesLabel.appendChild(allCheckbox);
     allModulesLabel.appendChild(document.createTextNode('All modules'));
 
+    const actions = document.createElement('span');
     actions.id = 'qunit-modulefilter-actions';
     actions.appendChild(applyButton);
     actions.appendChild(resetButton);
@@ -412,9 +409,11 @@ export function escapeText (s) {
     let reset = commit.nextSibling;
     addEvent(commit, 'click', applyUrlParams);
 
+    const dropDownList = document.createElement('ul');
     dropDownList.id = 'qunit-modulefilter-dropdown-list';
     dropDownList.innerHTML = moduleListHtml(config.modules);
 
+    const dropDown = document.createElement('div');
     dropDown.id = 'qunit-modulefilter-dropdown';
     dropDown.style.display = 'none';
     dropDown.appendChild(actions);
@@ -422,6 +421,7 @@ export function escapeText (s) {
     addEvent(dropDown, 'change', selectionChange);
     selectionChange();
 
+    const moduleFilter = document.createElement('form');
     moduleFilter.id = 'qunit-modulefilter';
     moduleFilter.appendChild(label);
     moduleFilter.appendChild(dropDown);
