@@ -97,6 +97,7 @@ module.exports = function (grunt) {
             'test/urlparams-testId.html',
             'test/webWorker.html',
 
+            'test/reporter-html/dropdown-many.html',
             'test/reporter-html/hidepassed.html?hidepassed=true',
             'test/reporter-html/legacy-markup.html',
             'test/reporter-html/no-qunit-element.html',
