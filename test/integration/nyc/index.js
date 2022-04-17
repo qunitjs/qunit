@@ -1,7 +1,7 @@
-const add = require( "./src/add.js" );
-const subtract = require( "./src/subtract.js" );
+const add = require('./src/add.js');
+const subtract = require('./src/subtract.js');
 
 module.exports = {
-	add,
-	subtract
+  add,
+  subtract
 };
