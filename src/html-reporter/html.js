@@ -11,14 +11,13 @@ const stats = {
 };
 
 // Escape text for attribute or text content.
-export function escapeText (s) {
-  if (!s) {
+export function escapeText (str) {
+  if (!str) {
     return '';
   }
-  s = s + '';
 
   // Both single quotes and double quotes (for attributes)
-  return s.replace(/['"<>&]/g, function (s) {
+  return ('' + str).replace(/['"<>&]/g, function (s) {
     switch (s) {
       case "'":
         return '&#039;';
@@ -336,34 +335,32 @@ export function escapeText (s) {
   }
 
   function createModuleListItem (moduleId, name, checked) {
-    const item = document.createElement('li');
-    item.innerHTML = '<label class="clickable' + (checked ? ' checked' : '') +
+    return '<li><label class="clickable' + (checked ? ' checked' : '') +
       '"><input type="checkbox" ' + 'value="' + escapeText(moduleId) + '"' +
       (checked ? ' checked="checked"' : '') + ' />' +
-      escapeText(name) + '</label>';
-    return item;
+      escapeText(name) + '</label></li>';
   }
 
   /**
    * @param {Array} Results from fuzzysort
-   * @return {DocumentFragment}
+   * @return {string} HTML
    */
   function moduleListHtml (results) {
-    const fragment = document.createDocumentFragment();
+    let html = '';
 
     // Hoist the already selected items, and show them always
     // even if not matched by the current search.
     dropdownData.selectedMap.forEach((name, moduleId) => {
-      fragment.appendChild(createModuleListItem(moduleId, name, true));
+      html += createModuleListItem(moduleId, name, true);
     });
 
     for (let i = 0; i < results.length; i++) {
       const mod = results[i].obj;
       if (!dropdownData.selectedMap.has(mod.moduleId)) {
-        fragment.appendChild(createModuleListItem(mod.moduleId, mod.name, false));
+        html += createModuleListItem(mod.moduleId, mod.name, false);
       }
     }
-    return fragment;
+    return html;
   }
 
   function toolbarModuleFilter () {
@@ -444,7 +441,6 @@ export function escapeText (s) {
 
     const dropDownList = document.createElement('ul');
     dropDownList.id = 'qunit-modulefilter-dropdown-list';
-    dropDownList.appendChild(filterModules(moduleSearch.value));
 
     const dropDown = document.createElement('div');
     dropDown.id = 'qunit-modulefilter-dropdown';
@@ -475,6 +471,9 @@ export function escapeText (s) {
         return;
       }
 
+      // Optimization: Defer rendering options until focussed.
+      // https://github.com/qunitjs/qunit/issues/1664
+      searchInput();
       dropDown.style.display = 'block';
 
       // Hide on Escape keydown or on click outside the container
@@ -499,7 +498,7 @@ export function escapeText (s) {
 
     /**
      * @param {string} searchText
-     * @return {DocumentFragment}
+     * @return {string} HTML
      */
     function filterModules (searchText) {
       let results;
@@ -508,12 +507,13 @@ export function escapeText (s) {
         // module names, indicating how the interface works. This also makes
         // for a quicker interaction in the common case of small projects.
         // Don't mandate typing just to get the menu.
-        results = dropdownData.options.map(obj => {
+        results = dropdownData.options.slice(0, 20).map(obj => {
           // Fake empty results. https://github.com/farzher/fuzzysort/issues/41
           return { obj: obj };
         });
       } else {
         results = fuzzysort.go(searchText, dropdownData.options, {
+          limit: 20,
           key: 'name',
           allowTypo: true
         });
@@ -531,8 +531,7 @@ export function escapeText (s) {
       // drodown DOM is slow (e.g. very large test suite).
       window.clearTimeout(searchInputTimeout);
       searchInputTimeout = window.setTimeout(() => {
-        dropDownList.innerHTML = '';
-        dropDownList.appendChild(filterModules(moduleSearch.value));
+        dropDownList.innerHTML = filterModules(moduleSearch.value);
       });
     }
 

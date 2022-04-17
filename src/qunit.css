@@ -254,8 +254,6 @@
 }
 
 #qunit-modulefilter-dropdown-list {
-	max-height: 200px;
-	overflow-y: auto;
 	margin: 0;
 	padding: 0;
 	font: smaller/1.5em sans-serif;
