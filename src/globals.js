@@ -63,9 +63,12 @@ export const localSessionStorage = (function () {
 // Support: IE 9-10, Safari 7, PhantomJS
 export const StringMap = typeof g.Map === 'function'
   ? g.Map
-  : function StringMap () {
+  : function StringMap (input) {
     let store = Object.create(null);
     let hasOwn = Object.prototype.hasOwnProperty;
+    this.has = function (strKey) {
+      return hasOwn.call(store, strKey);
+    };
     this.get = function (strKey) {
       return store[strKey];
     };
@@ -87,9 +90,18 @@ export const StringMap = typeof g.Map === 'function'
         callback(store[strKey], strKey);
       }
     };
+    this.keys = function () {
+      return Object.keys(store);
+    };
     this.clear = function () {
       store = Object.create(null);
       this.size = 0;
     };
     this.size = 0;
+
+    if (input) {
+      input.forEach((val, strKey) => {
+        this.set(strKey, val);
+      });
+    }
   };

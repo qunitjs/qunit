@@ -1,6 +1,6 @@
 import QUnit from '../core';
 import { extend, errorString } from '../core/utilities';
-import { window, document, navigator, console } from '../globals';
+import { window, document, navigator, console, StringMap } from '../globals';
 import './urlparams';
 import fuzzysort from 'fuzzysort';
 
@@ -50,7 +50,7 @@ export function escapeText (s) {
     moduleId: undefined,
     testId: undefined
   });
-  const moduleSearchCache = [];
+  let dropdownData = null;
 
   function trim (string) {
     if (typeof string.trim === 'function') {
@@ -278,16 +278,9 @@ export function escapeText (s) {
   function applyUrlParams () {
     const filter = id('qunit-filter-input').value;
 
-    const selectedModules = [];
-    for (let i = 0; i < moduleSearchCache.length; i++) {
-      if (moduleSearchCache[i].checkbox.checked) {
-        selectedModules.push(moduleSearchCache[i].checkbox.value);
-      }
-    }
-
     window.location = setUrl({
       filter: (filter === '') ? undefined : filter,
-      moduleId: (selectedModules.length === 0) ? undefined : selectedModules,
+      moduleId: [...dropdownData.selectedMap.keys()],
 
       // Remove module and testId filter
       module: undefined,
@@ -342,32 +335,68 @@ export function escapeText (s) {
     return filter;
   }
 
-  function moduleListHtml () {
+  function createModuleListItem (moduleId, name, checked) {
+    const item = document.createElement('li');
+    item.innerHTML = '<label class="clickable' + (checked ? ' checked' : '') +
+      '"><input type="checkbox" ' + 'value="' + escapeText(moduleId) + '"' +
+      (checked ? ' checked="checked"' : '') + ' />' +
+      escapeText(name) + '</label>';
+    return item;
+  }
+
+  /**
+   * @param {Array} Results from fuzzysort
+   * @return {DocumentFragment}
+   */
+  function moduleListHtml (results) {
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < config.modules.length; i++) {
-      const mod = config.modules[i];
-      if (mod.name !== '') {
-        const checked = config.moduleId.indexOf(mod.moduleId) > -1;
-        const item = document.createElement('li');
-        item.innerHTML = "<label class='clickable" + (checked ? ' checked' : '') +
-          "'><input type='checkbox' " + "value='" + mod.moduleId + "'" +
-          (checked ? " checked='checked'" : '') + ' />' +
-          escapeText(mod.name) + '</label>';
+    // Hoist the already selected items, and show them always
+    // even if not matched by the current search.
+    dropdownData.selectedMap.forEach((name, moduleId) => {
+      fragment.appendChild(createModuleListItem(moduleId, name, true));
+    });
 
-        moduleSearchCache.push({
-          name: mod.name,
-          item: item,
-          checkbox: item.firstChild.firstChild
-        });
-        fragment.appendChild(item);
+    for (let i = 0; i < results.length; i++) {
+      const mod = results[i].obj;
+      if (!dropdownData.selectedMap.has(mod.moduleId)) {
+        fragment.appendChild(createModuleListItem(mod.moduleId, mod.name, false));
       }
     }
     return fragment;
   }
 
   function toolbarModuleFilter () {
-    let dirty = false;
+    let initialSelected = null;
+    dropdownData = {
+      options: [],
+      selectedMap: new StringMap(),
+      isDirty: function () {
+        return [...dropdownData.selectedMap.keys()].sort().join(',') !==
+          [...initialSelected.keys()].sort().join(',');
+      }
+    };
+    for (let i = 0; i < config.modules.length; i++) {
+      const mod = config.modules[i];
+      if (mod.name === '') {
+        // Ignore the implicit and unnamed "global" test module.
+        continue;
+      }
+      dropdownData.options.push({
+        moduleId: mod.moduleId,
+        name: mod.name
+      });
+
+      // The module dropdown is seeded with the runtime configuration of the last run.
+      //
+      // We keep our own copy, because:
+      // 1. This naturaly filters out unknown moduleIds.
+      // 2. Gives us a place to manage and remember unsubmitted checkbox changes.
+      if (config.moduleId.indexOf(mod.moduleId) !== -1) {
+        dropdownData.selectedMap.set(mod.moduleId, mod.name);
+      }
+    }
+    initialSelected = new StringMap(dropdownData.selectedMap);
 
     const moduleSearch = document.createElement('input');
     moduleSearch.id = 'qunit-modulefilter-search';
@@ -378,43 +407,44 @@ export function escapeText (s) {
     addEvent(moduleSearch, 'click', searchFocus);
 
     const label = document.createElement('label');
-    label.id = 'qunit-modulefilter-search-container';
-    label.innerHTML = 'Module: ';
-    label.appendChild(moduleSearch);
+    label.htmlFor = 'qunit-modulefilter-search';
+    label.textContent = 'Module:';
+    const searchContainer = document.createElement('span');
+    searchContainer.id = 'qunit-modulefilter-search-container';
+    searchContainer.appendChild(moduleSearch);
 
     const applyButton = document.createElement('button');
     applyButton.textContent = 'Apply';
-    applyButton.style.display = 'none';
+    applyButton.title = 'Re-run the selected test modules';
+    addEvent(applyButton, 'click', applyUrlParams);
 
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Reset';
     resetButton.type = 'reset';
-    resetButton.style.display = 'none';
+    resetButton.title = 'Restore the previous module selection';
 
-    const allCheckbox = document.createElement('input');
-    allCheckbox.type = 'checkbox';
-    allCheckbox.checked = config.moduleId.length === 0;
-
-    const allModulesLabel = document.createElement('label');
-    allModulesLabel.className = 'clickable';
-    if (config.moduleId.length) {
-      allModulesLabel.className = 'checked';
-    }
-    allModulesLabel.appendChild(allCheckbox);
-    allModulesLabel.appendChild(document.createTextNode('All modules'));
+    const clearButton = document.createElement('button');
+    clearButton.textContent = 'Select none';
+    clearButton.type = 'button';
+    clearButton.title = 'Clear the current module selection';
+    addEvent(clearButton, 'click', function () {
+      dropdownData.selectedMap.clear();
+      selectionChange();
+      searchInput();
+    });
 
     const actions = document.createElement('span');
     actions.id = 'qunit-modulefilter-actions';
     actions.appendChild(applyButton);
     actions.appendChild(resetButton);
-    actions.appendChild(allModulesLabel);
-    let commit = actions.firstChild;
-    let reset = commit.nextSibling;
-    addEvent(commit, 'click', applyUrlParams);
+    if (initialSelected.size) {
+      // Only show clear button if functionally different from reset
+      actions.appendChild(clearButton);
+    }
 
     const dropDownList = document.createElement('ul');
     dropDownList.id = 'qunit-modulefilter-dropdown-list';
-    dropDownList.appendChild(moduleListHtml());
+    dropDownList.appendChild(filterModules(moduleSearch.value));
 
     const dropDown = document.createElement('div');
     dropDown.id = 'qunit-modulefilter-dropdown';
@@ -422,16 +452,21 @@ export function escapeText (s) {
     dropDown.appendChild(actions);
     dropDown.appendChild(dropDownList);
     addEvent(dropDown, 'change', selectionChange);
+    searchContainer.appendChild(dropDown);
+    // Set initial moduleSearch.placeholder and clearButton/resetButton.
     selectionChange();
 
     const moduleFilter = document.createElement('form');
     moduleFilter.id = 'qunit-modulefilter';
     moduleFilter.appendChild(label);
-    moduleFilter.appendChild(dropDown);
+    moduleFilter.appendChild(document.createTextNode(' '));
+    moduleFilter.appendChild(searchContainer);
     addEvent(moduleFilter, 'submit', interceptNavigation);
     addEvent(moduleFilter, 'reset', function () {
-      // Let the reset happen, then update styles
-      window.setTimeout(selectionChange);
+      dropdownData.selectedMap = new StringMap(initialSelected);
+      // Set moduleSearch.placeholder and reflect non-dirty state
+      selectionChange();
+      searchInput();
     });
 
     // Enables show/hide for the dropdown
@@ -441,10 +476,11 @@ export function escapeText (s) {
       }
 
       dropDown.style.display = 'block';
+
+      // Hide on Escape keydown or on click outside the container
       addEvent(document, 'click', hideHandler);
       addEvent(document, 'keydown', hideHandler);
 
-      // Hide on Escape keydown or outside-container click
       function hideHandler (e) {
         const inContainer = moduleFilter.contains(e.target);
 
@@ -461,19 +497,29 @@ export function escapeText (s) {
       }
     }
 
+    /**
+     * @param {string} searchText
+     * @return {DocumentFragment}
+     */
     function filterModules (searchText) {
-      let items;
+      let results;
       if (searchText === '') {
-        items = moduleSearchCache.map(obj => obj.item);
+        // Improve on-boarding experience by having an immediate display of
+        // module names, indicating how the interface works. This also makes
+        // for a quicker interaction in the common case of small projects.
+        // Don't mandate typing just to get the menu.
+        results = dropdownData.options.map(obj => {
+          // Fake empty results. https://github.com/farzher/fuzzysort/issues/41
+          return { obj: obj };
+        });
       } else {
-        items = fuzzysort.go(searchText, moduleSearchCache, { key: 'name', allowTypo: true })
-          .map(result => result.obj.item);
+        results = fuzzysort.go(searchText, dropdownData.options, {
+          key: 'name',
+          allowTypo: true
+        });
       }
-      const fragment = document.createDocumentFragment();
-      for (let i = 0; i < items.length; i++) {
-        fragment.appendChild(items[i]);
-      }
-      return fragment;
+
+      return moduleListHtml(results);
     }
 
     // Processes module search box input
@@ -490,37 +536,31 @@ export function escapeText (s) {
       });
     }
 
-    // Processes selection changes
+    // Processes checkbox change, or a generic render (initial render, or after reset event)
+    // Avoid any dropdown rendering here as this is used by toolbarModuleFilter()
+    // during the initial render, which should not delay test execution.
     function selectionChange (evt) {
-      const checkbox = (evt && evt.target) || allCheckbox;
-      const selectedNames = [];
+      const checkbox = (evt && evt.target) || null;
 
-      toggleClass(checkbox.parentNode, 'checked', checkbox.checked);
+      if (checkbox) {
+        // Update internal state
+        if (checkbox.checked) {
+          dropdownData.selectedMap.set(checkbox.value, checkbox.parentNode.textContent);
+        } else {
+          dropdownData.selectedMap.delete(checkbox.value);
+        }
 
-      dirty = false;
-      if (checkbox.checked && checkbox !== allCheckbox) {
-        allCheckbox.checked = false;
-        removeClass(allCheckbox.parentNode, 'checked');
-      }
-      for (let i = 0; i < moduleSearchCache.length; i++) {
-        const item = moduleSearchCache[i].checkbox;
-        if (!evt) {
-          toggleClass(item.parentNode, 'checked', item.checked);
-        } else if (checkbox === allCheckbox && checkbox.checked) {
-          item.checked = false;
-          removeClass(item.parentNode, 'checked');
-        }
-        dirty = dirty || (item.checked !== item.defaultChecked);
-        if (item.checked) {
-          selectedNames.push(item.parentNode.textContent);
-        }
+        // Update UI state
+        toggleClass(checkbox.parentNode, 'checked', checkbox.checked);
       }
 
-      commit.style.display = reset.style.display = dirty ? '' : 'none';
-      moduleSearch.placeholder = selectedNames.join(', ') ||
-        allCheckbox.parentNode.textContent;
-      moduleSearch.title = 'Type to filter list. Current selection:\n' +
-      (selectedNames.join('\n') || allCheckbox.parentNode.textContent);
+      const textForm = dropdownData.selectedMap.size
+        ? (dropdownData.selectedMap.size + ' ' + (dropdownData.selectedMap.size === 1 ? 'module' : 'modules'))
+        : 'All modules';
+      moduleSearch.placeholder = textForm;
+      moduleSearch.title = 'Type to search through and reduce the list.';
+      resetButton.disabled = !dropdownData.isDirty();
+      clearButton.style.display = dropdownData.selectedMap.size ? '' : 'none';
     }
 
     return moduleFilter;
