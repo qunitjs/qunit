@@ -17,7 +17,9 @@
     "lib/**",
     "qunit/**",
     "test/cli/fixtures/sourcemap/*.min.js",
-    "test/integration/*/**",
+    "test/integration/*/qunit/**",
+    "test/integration/*/coverage/**",
+    "test/integration/*/package-lock.json",
     "temp/**"
   ],
   "overrides": [
@@ -139,6 +141,20 @@
     {
       "files": ["test/node/**"],
       "env": {
+        "es2017": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2018
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
+      "files": ["test/integration/**/*.js"],
+      "env": {
+        "browser": true,
         "es2017": true,
         "node": true
       },

@@ -1,15 +1,15 @@
-const cp = require( "child_process" );
-const path = require( "path" );
-const DIR = path.join( __dirname, "nyc" );
+const cp = require('child_process');
+const path = require('path');
+const DIR = path.join(__dirname, 'nyc');
 
-QUnit.module( "nyc", {
-	before: () => {
-		cp.execSync( "npm install --prefer-offline --no-audit", { cwd: DIR, encoding: "utf8" } );
-	}
-} );
+QUnit.module('nyc', {
+  before: () => {
+    cp.execSync('npm install --prefer-offline --no-audit', { cwd: DIR, encoding: 'utf8' });
+  }
+});
 
-QUnit.test( "test", assert => {
-	const expected = `
+QUnit.test('test', assert => {
+  const expected = `
 TAP version 13
 ok 1 add > two numbers
 1..1
@@ -29,6 +29,6 @@ All files     |   85.71 |      100 |      50 |   85.71 |
 --------------|---------|----------|---------|---------|-------------------
 `.trim();
 
-	const actual = cp.execSync( "npm test", { cwd: DIR, env: { PATH: process.env.PATH }, encoding: "utf8" } );
-	assert.pushResult( { result: actual.includes( expected ), actual, expected } );
-} );
+  const actual = cp.execSync('npm test', { cwd: DIR, env: { PATH: process.env.PATH }, encoding: 'utf8' });
+  assert.pushResult({ result: actual.includes(expected), actual, expected });
+});
