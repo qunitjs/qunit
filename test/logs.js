@@ -10,6 +10,10 @@ var moduleDone = 0;
 var testStart = 0;
 var testDone = 0;
 var log = 0;
+var module1begin = {
+  name: 'logs1',
+  moduleId: '3d2e1e96'
+};
 var module1Context = {
   name: 'logs1',
   tests: [
@@ -24,6 +28,10 @@ var module1Context = {
       skip: false
     })
   ]
+};
+var module2begin = {
+  name: 'logs2',
+  moduleId: 'd212d157'
 };
 var module2Context = {
   name: 'logs2',
@@ -107,9 +115,9 @@ QUnit.test(module1Test1.name, function (assert) {
     beginModules.pop();
   }
 
-  assert.deepEqual(
+  assert.propContains(
     beginModules,
-    [module1Context, module2Context],
+    [module1begin, module2begin],
     'QUnit.begin details registered modules and their respective tests'
   );
 

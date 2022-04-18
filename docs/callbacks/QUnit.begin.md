@@ -24,10 +24,11 @@ The callback will be called once, before QUnit runs any tests.
 | property | description |
 |-----------|-------------|
 | `totalTests` (number) | Number of registered tests |
-| `modules` (array) | List of registered modules,<br>as  `{ name: string }` objects. |
+| `modules` (array) | List of registered modules,<br>as  `{ name: string, moduleId: string }` objects. |
 
 ## Changelog
 
+| UNRELEASED | Added `moduleId` to the `details.modules` objects.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.modules` property, containing `{ name: string }` objects.
 | [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | Added `details.totalTests` property.
 
