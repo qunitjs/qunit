@@ -60,8 +60,15 @@ export const localSessionStorage = (function () {
 }());
 
 // Basic fallback for ES6 Map
-// Support: IE 9-10, Safari 7, PhantomJS
-export const StringMap = typeof g.Map === 'function'
+// Support: IE 9-10, Safari 7, PhantomJS; Map is undefined
+// Support: iOS 8; `new Map(iterable)` is not supported
+//
+// Fallback for ES7 Map#keys
+// Support: IE 11; Map#keys is undefined
+export const StringMap = typeof g.Map === 'function' &&
+  typeof g.Map.prototype.keys === 'function' &&
+  typeof g.Symbol === 'function' &&
+  typeof g.Symbol.iterator === 'symbol'
   ? g.Map
   : function StringMap (input) {
     let store = Object.create(null);
