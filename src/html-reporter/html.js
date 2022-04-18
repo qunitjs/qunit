@@ -363,34 +363,31 @@ export function escapeText (str) {
     return html;
   }
 
-  function toolbarModuleFilter () {
+  function toolbarModuleFilter (beginDetails) {
     let initialSelected = null;
     dropdownData = {
-      options: [],
+      options: beginDetails.modules.slice(),
       selectedMap: new StringMap(),
       isDirty: function () {
         return [...dropdownData.selectedMap.keys()].sort().join(',') !==
           [...initialSelected.keys()].sort().join(',');
       }
     };
-    for (let i = 0; i < config.modules.length; i++) {
-      const mod = config.modules[i];
-      if (mod.name === '') {
-        // Ignore the implicit and unnamed "global" test module.
-        continue;
-      }
-      dropdownData.options.push({
-        moduleId: mod.moduleId,
-        name: mod.name
-      });
 
+    if (config.moduleId.length) {
       // The module dropdown is seeded with the runtime configuration of the last run.
       //
-      // We keep our own copy, because:
+      // We don't reference `config.moduleId` directly after this and keep our own
+      // copy because:
       // 1. This naturaly filters out unknown moduleIds.
       // 2. Gives us a place to manage and remember unsubmitted checkbox changes.
-      if (config.moduleId.indexOf(mod.moduleId) !== -1) {
-        dropdownData.selectedMap.set(mod.moduleId, mod.name);
+      // 3. Gives us an efficient way to map a selected moduleId to module name
+      //    during rendering.
+      for (let i = 0; i < beginDetails.modules.length; i++) {
+        const mod = beginDetails.modules[i];
+        if (config.moduleId.indexOf(mod.moduleId) !== -1) {
+          dropdownData.selectedMap.set(mod.moduleId, mod.name);
+        }
       }
     }
     initialSelected = new StringMap(dropdownData.selectedMap);
@@ -565,23 +562,21 @@ export function escapeText (str) {
     return moduleFilter;
   }
 
-  function toolbarFilters () {
-    const toolbarFilters = document.createElement('span');
-
-    toolbarFilters.id = 'qunit-toolbar-filters';
-    toolbarFilters.appendChild(toolbarLooseFilter());
-    toolbarFilters.appendChild(toolbarModuleFilter());
-
-    return toolbarFilters;
-  }
-
-  function appendToolbar () {
+  function appendToolbar (beginDetails) {
     const toolbar = id('qunit-testrunner-toolbar');
-
     if (toolbar) {
       toolbar.appendChild(toolbarUrlConfigContainer());
-      toolbar.appendChild(toolbarFilters());
-      toolbar.appendChild(document.createElement('div')).className = 'clearfix';
+
+      const toolbarFilters = document.createElement('span');
+      toolbarFilters.id = 'qunit-toolbar-filters';
+      toolbarFilters.appendChild(toolbarLooseFilter());
+      toolbarFilters.appendChild(toolbarModuleFilter(beginDetails));
+
+      const clearfix = document.createElement('div');
+      clearfix.className = 'clearfix';
+
+      toolbar.appendChild(toolbarFilters);
+      toolbar.appendChild(document.createElement('div'));
     }
   }
 
@@ -653,7 +648,7 @@ export function escapeText (str) {
     }
   }
 
-  function appendInterface () {
+  function appendInterface (beginDetails) {
     const qunit = id('qunit');
 
     // For compat with QUnit 1.2, and to support fully custom theme HTML,
@@ -682,7 +677,7 @@ export function escapeText (str) {
     appendBanner();
     appendTestResults();
     appendUserAgent();
-    appendToolbar();
+    appendToolbar(beginDetails);
   }
 
   function appendTest (name, testId, moduleName) {
@@ -722,7 +717,7 @@ export function escapeText (str) {
     stats.defined = runStart.testCounts.total;
   });
 
-  QUnit.begin(function () {
+  QUnit.begin(function (beginDetails) {
     // Initialize QUnit elements
     // This is done from begin() instead of runStart, because
     // urlparams.js uses begin(), which we need to wait for.
@@ -730,7 +725,7 @@ export function escapeText (str) {
     // add entries to QUnit.config.urlConfig, which may be done
     // asynchronously.
     // <https://github.com/qunitjs/qunit/issues/1657>
-    appendInterface();
+    appendInterface(beginDetails);
   });
 
   function getRerunFailedHtml (failedTests) {
