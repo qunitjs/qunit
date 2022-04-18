@@ -8,11 +8,6 @@ export default (function () {
   // Elements are { a: val, b: val }.
   let pairs = [];
 
-  const getProto = Object.getPrototypeOf || function (obj) {
-    // eslint-disable-next-line no-proto
-    return obj.__proto__;
-  };
-
   function useStrictEquality (a, b) {
     // This only gets called if a and b are not strict equal, and is used to compare on
     // the primitive values inside object wrappers. For example:
@@ -30,8 +25,8 @@ export default (function () {
   }
 
   function compareConstructors (a, b) {
-    let protoA = getProto(a);
-    let protoB = getProto(b);
+    let protoA = Object.getPrototypeOf(a);
+    let protoB = Object.getPrototypeOf(b);
 
     // Comparing constructors is more strict than using `instanceof`
     if (a.constructor === b.constructor) {
