@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "dependencies": {
+    "karma": "^6.3.18",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-firefox-launcher": "^2.1.2",
+    "karma-qunit": "^4.1.2",
+    "qunit": "file:../../.."
+  },
+  "scripts": {
+    "test": "karma start --no-colors"
+  }
+}
