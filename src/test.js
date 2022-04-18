@@ -371,7 +371,7 @@ Test.prototype = {
     let bad = 0;
     const storage = config.storage;
 
-    this.runtime = performance.now() - this.started;
+    this.runtime = Math.round(performance.now() - this.started);
 
     config.stats.all += this.assertions.length;
     config.stats.testCount += 1;
@@ -477,7 +477,7 @@ Test.prototype = {
         failed: module.stats.bad,
         passed: module.stats.all - module.stats.bad,
         total: module.stats.all,
-        runtime: performance.now() - module.stats.started
+        runtime: Math.round(performance.now() - module.stats.started)
       });
     }
   },
@@ -559,7 +559,7 @@ Test.prototype = {
       actual: resultInfo.actual,
       testId: this.testId,
       negative: resultInfo.negative || false,
-      runtime: performance.now() - this.started,
+      runtime: Math.round(performance.now() - this.started),
       todo: !!this.todo
     };
 

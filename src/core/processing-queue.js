@@ -183,7 +183,7 @@ function done () {
 
   const storage = config.storage;
 
-  const runtime = performance.now() - config.started;
+  const runtime = Math.round(performance.now() - config.started);
   const passed = config.stats.all - config.stats.bad;
 
   ProcessingQueue.finished = true;

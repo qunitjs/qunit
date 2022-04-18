@@ -61,7 +61,7 @@ export default class TestReport {
   }
 
   getRuntime () {
-    return this._endTime - this._startTime;
+    return Math.round(this._endTime - this._startTime);
   }
 
   getStatus () {

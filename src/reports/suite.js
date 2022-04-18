@@ -72,7 +72,7 @@ export default class SuiteReport {
   }
 
   getRuntime () {
-    return this._endTime - this._startTime;
+    return Math.round(this._endTime - this._startTime);
   }
 
   getTestCounts (counts = { passed: 0, failed: 0, skipped: 0, todo: 0, total: 0 }) {
