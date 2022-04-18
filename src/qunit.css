@@ -158,6 +158,12 @@
 	background-color: #CCC;
 	color: #000;
 }
+#qunit-testrunner-toolbar button:focus,
+#qunit-testresult button:focus {
+	border-color: #2F68DA;
+	/* emulate 2px border without a layout shift */
+	box-shadow: inset 0 0 0 1px #2F68DA
+}
 #qunit-testrunner-toolbar button:disabled,
 #qunit-testresult button:disabled {
 	border-color: #CCC;
