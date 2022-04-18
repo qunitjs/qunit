@@ -3,7 +3,7 @@ layout: page-api
 title: QUnit.dump.parse()
 excerpt: Extensible data dumping and string serialization.
 groups:
- - extension
+  - extension
 redirect_from:
   - "/QUnit.dump.parse/"
   - "/QUnit.jsDump.parse/"

@@ -190,6 +190,9 @@ function done () {
 
   emit('runEnd', runSuite.end(true));
   runLoggingCallbacks('done', {
+    // @deprecated since 2.19.0 Use done() without `details` parameter,
+    // or use `QUnit.on('runEnd')` instead. Parameter to be replaced in
+    // QUnit 3.0 with test counts.
     passed,
     failed: config.stats.bad,
     total: config.stats.all,

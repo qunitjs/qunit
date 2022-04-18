@@ -3,7 +3,7 @@ layout: page-api
 title: QUnit.stack()
 excerpt: Return a single line string representing the stacktrace.
 groups:
-- extension
+  - extension
 redirect_from:
   - "/config/QUnit.stack/"
 version_added: "1.19.0"

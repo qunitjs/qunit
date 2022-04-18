@@ -13,8 +13,6 @@ version_added: "1.0.0"
 
 Register a callback to fire whenever an assertion completes.
 
-This is one of several callbacks QUnit provides. It's intended for continuous integration scenarios.
-
 **NOTE: The QUnit.log() callback does not handle promises and MUST be synchronous.**
 
 | parameter | description |

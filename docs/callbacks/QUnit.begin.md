@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.begin()
-excerpt: Register a callback to fire whenever the test suite begins.
+excerpt: Register a callback to fire when the test run begins.
 groups:
   - callbacks
 redirect_from:
@@ -11,21 +11,25 @@ version_added: "1.0.0"
 
 `QUnit.begin( callback )`
 
-Register a callback to fire whenever the test suite begins. The callback may be an async function, or a function that returns a promise, which will be waited for before the next callback is handled.
+Register a callback to fire when the test run begins. The callback may be an async function, or a function that returns a Promise, which will be waited for before the next callback is handled.
 
 The callback will be called once, before QUnit runs any tests.
 
 | parameter | description |
 |-----------|-------------|
-| callback (function) | Callback to execute. Provides a single argument with the callback Details object |
+| `callback` (function) | Callback to execute, called with a `details` object. |
 
 ### Details object
 
-Passed to the callback:
-
 | property | description |
 |-----------|-------------|
-| `totalTests` | The number of total tests in the test suite |
+| `totalTests` (number) | Number of registered tests |
+| `modules` (array) | List of registered modules,<br>as  `{ name: string }` objects. |
+
+## Changelog
+
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.modules` property, containing `{ name: string }` objects.
+| [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | Added `details.totalTests` property.
 
 ## Examples
 

@@ -179,6 +179,10 @@ export function begin () {
   for (let i = 0; i < l; i++) {
     modulesLog.push({
       name: config.modules[i].name,
+
+      // Added in QUnit 1.16.0 for internal use by html-reporter,
+      // but no longer used since QUnit 2.7.0.
+      // @deprecated Kept unofficially to be removed in QUnit 3.0.
       tests: config.modules[i].tests
     });
   }

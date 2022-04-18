@@ -58,8 +58,6 @@ class Assert {
     this.test.steps.length = 0;
   }
 
-  // Specify the number of expected assertions to guarantee that failed test
-  // (no assertions are run at all) don't slip through.
   expect (asserts) {
     if (arguments.length === 1) {
       this.test.expected = asserts;
