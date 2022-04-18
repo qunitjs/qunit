@@ -115,6 +115,21 @@ const Repo = {
       );
     }
     {
+      const file = 'package-lock.json';
+      console.log(`Updating ${file}...`);
+      const filePath = path.join(__dirname, '..', file);
+      const json = fs.readFileSync(filePath, 'utf8');
+      const packageIndentation = json.match(/\n([\t\s]+)/)[1];
+      const data = JSON.parse(json);
+
+      data.version = data.packages[''].version = `${version}-pre`;
+
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify(data, null, packageIndentation) + '\n'
+      );
+    }
+    {
       const file = 'AUTHORS.txt';
       console.log(`Updating ${file}...`);
       const updateAuthors = util.promisify(gitAuthors.updateAuthors);

@@ -1,4 +1,18 @@
 
+2.18.2 / 2022-04-17
+==================
+
+### Changed
+
+* HTML Reporter: Improve accessibility and design of the module filter. (Timo Tijhof) [#1664](https://github.com/qunitjs/qunit/issues/1664#issuecomment-1101007741)
+* HTML Reporter: Improve fuzzy-matching of the module filter. (Timo Tijhof) [#1685](https://github.com/qunitjs/qunit/pull/1685)
+
+### Fixed
+
+* HTML Reporter: Faster rendering of module filter results. [#1685](https://github.com/qunitjs/qunit/pull/1685), [#1664](https://github.com/qunitjs/qunit/issues/1664)
+* HTML Reporter: Fix retention of state over multiple module searches. [#1683](https://github.com/qunitjs/qunit/issues/1683)
+* HTML Reporter: Fix runtime to be rounded in Chromium. [#1678](https://github.com/qunitjs/qunit/issues/1678)
+
 2.18.1 / 2022-03-29
 ==================
 
