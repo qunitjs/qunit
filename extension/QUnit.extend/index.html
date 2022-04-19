@@ -69,6 +69,8 @@
 
 <p>Copy the properties defined by a mixin object into a target object.</p>
 
+<p class="note note--warning">This method is <strong>deprecated</strong> and it’s recommended to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign"><code class="language-plaintext highlighter-rouge">Object.assign()</code></a> instead.</p>
+
 <table>
   <thead>
     <tr>
@@ -87,8 +89,6 @@
     </tr>
   </tbody>
 </table>
-
-<p class="note note--warning">This method is <strong>deprecated</strong> and it’s recommended to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign"><code class="language-plaintext highlighter-rouge">Object.assign()</code></a> instead.</p>
 
 <p>This method will modify the <code class="language-plaintext highlighter-rouge">target</code> object to contain the “own” properties defined by the <code class="language-plaintext highlighter-rouge">mixin</code>. If the <code class="language-plaintext highlighter-rouge">mixin</code> object specifies the value of any attribute as <code class="language-plaintext highlighter-rouge">undefined</code>, this property will instead be removed from the <code class="language-plaintext highlighter-rouge">target</code> object.</p>
 

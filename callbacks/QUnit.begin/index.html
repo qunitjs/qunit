@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.begin() | QUnit</title>
-<meta property="og:title" content="QUnit.begin()"><meta name="description" content="Register a callback to fire whenever the test suite begins."><meta property="og:description" content="Register a callback to fire whenever the test suite begins."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit.begin()"><meta name="description" content="Register a callback to fire when the test run begins."><meta property="og:description" content="Register a callback to fire when the test run begins."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.begin( callback )</code></p>
 
-<p>Register a callback to fire whenever the test suite begins. The callback may be an async function, or a function that returns a promise, which will be waited for before the next callback is handled.</p>
+<p>Register a callback to fire when the test run begins. The callback may be an async function, or a function that returns a Promise, which will be waited for before the next callback is handled.</p>
 
 <p>The callback will be called once, before QUnit runs any tests.</p>
 
@@ -79,15 +79,13 @@
   </thead>
   <tbody>
     <tr>
-      <td>callback (function)</td>
-      <td>Callback to execute. Provides a single argument with the callback Details object</td>
+      <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
+      <td>Callback to execute, called with a <code class="language-plaintext highlighter-rouge">details</code> object.</td>
     </tr>
   </tbody>
 </table>
 
 <h3 id="details-object">Details object</h3>
-
-<p>Passed to the callback:</p>
 
 <table>
   <thead>
@@ -98,8 +96,31 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">totalTests</code></td>
-      <td>The number of total tests in the test suite</td>
+      <td><code class="language-plaintext highlighter-rouge">totalTests</code> (number)</td>
+      <td>Number of registered tests</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">modules</code> (array)</td>
+      <td>List of registered modules,<br />as  <code class="language-plaintext highlighter-rouge">{ name: string, moduleId: string }</code> objects.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">moduleId</code> to the <code class="language-plaintext highlighter-rouge">details.modules</code> objects.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">QUnit 1.16</a></td>
+      <td>Added <code class="language-plaintext highlighter-rouge">details.modules</code> property, containing <code class="language-plaintext highlighter-rouge">{ name: string }</code> objects.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.15.0">QUnit 1.15</a></td>
+      <td>Added <code class="language-plaintext highlighter-rouge">details.totalTests</code> property.</td>
     </tr>
   </tbody>
 </table>
@@ -182,7 +203,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#details-object">Details object</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#details-object">Details object</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>

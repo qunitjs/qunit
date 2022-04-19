@@ -69,6 +69,8 @@
 
 <p>Report the result of a custom assertion.</p>
 
+<p class="note note--warning">This method is <strong>deprecated</strong> and it’s recommended to use <a href="/assert/pushResult/"><code class="language-plaintext highlighter-rouge">pushResult</code></a> in the assertion context instead.</p>
+
 <table>
   <thead>
     <tr>
@@ -95,8 +97,6 @@
     </tr>
   </tbody>
 </table>
-
-<p class="note note--warning">This method is <strong>deprecated</strong> and it’s recommended to use <a href="/assert/pushResult/"><code class="language-plaintext highlighter-rouge">pushResult</code></a> in the assertion context instead.</p>
 
 <p><code class="language-plaintext highlighter-rouge">QUnit.push</code> reflects to the current running test, and it may leak assertions in asynchronous mode. Checkout <a href="/assert/pushResult/"><code class="language-plaintext highlighter-rouge">assert.pushResult()</code></a> to set a proper custom assertion.</p>
 

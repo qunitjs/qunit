@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.done() | QUnit</title>
-<meta property="og:title" content="QUnit.done()"><meta name="description" content="Register a callback to fire whenever the test suite ends."><meta property="og:description" content="Register a callback to fire whenever the test suite ends."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit.done()"><meta name="description" content="Register a callback to fire when the test run has ended."><meta property="og:description" content="Register a callback to fire when the test run has ended."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.done( callback )</code></p>
 
-<p>Register a callback to fire whenever the test suite ends. The callback may be an async function, or a function that return a promise which will be waited for before the next callback is handled.</p>
+<p>Register a callback to fire when the test run has ended. The callback may be an async function, or a function that return a Promise which will be waited for before the next callback is handled.</p>
 
 <table>
   <thead>
@@ -77,15 +77,13 @@
   </thead>
   <tbody>
     <tr>
-      <td>callback (function)</td>
-      <td>Callback to execute. Provides a single argument with the callback Details object</td>
+      <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
+      <td>Callback to execute, called with a <code class="language-plaintext highlighter-rouge">details</code> object:</td>
     </tr>
   </tbody>
 </table>
 
 <h3 id="details-object">Details object</h3>
-
-<p>Passed to the callback:</p>
 
 <table>
   <thead>
@@ -97,36 +95,57 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">failed</code> (number)</td>
-      <td>The number of failed assertions</td>
+      <td>Number of failed assertions</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">passed</code> (number)</td>
-      <td>The number of passed assertions</td>
+      <td>Number of passed assertions</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">total</code> (number)</td>
-      <td>The total number of assertions</td>
+      <td>Total number of assertions</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">runtime</code> (number)</td>
-      <td>The time in milliseconds it took tests to run from start to finish.</td>
+      <td>Duration of the test run in milliseconds</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note note--warning">
+
+  <p>Use of <code class="language-plaintext highlighter-rouge">details</code> is <strong>deprecated</strong> and it’s recommended to use <a href="/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code></a> instead.</p>
+
+  <p>Caveats:</p>
+
+  <ul>
+    <li>
+      <p>This callback reports the <strong>internal assertion count</strong>.</p>
+    </li>
+    <li>
+      <p>The default browser and CLI interfaces for QUnit and other popular test frameworks, and most CI integrations, report the number of tests. Reporting the number <em>assertions</em> may be confusing to developers.</p>
+    </li>
+    <li>
+      <p>Failed assertions of a <a href="/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">test.todo()</code></a> test are reported exactly as such. While rare, this means that a test run and all tests within it may be reported as passing, while internally there were some failed assertions. Unfortunately, this internal detail is exposed for compatibility reasons.</p>
+    </li>
+  </ul>
+
+</div>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.2.0">QUnit 2.2</a></td>
+      <td>Deprecate <code class="language-plaintext highlighter-rouge">details</code> parameter in favour of <code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code>.</td>
     </tr>
   </tbody>
 </table>
 
 <h2 id="examples">Examples</h2>
 
-<p>Register a callback that logs test results to the console.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-    <span class="s2">`Total: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2"> Failed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">failed</span><span class="p">}</span><span class="s2"> `</span> <span class="o">+</span>
-      <span class="s2">`Passed: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2"> Runtime: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span><span class="p">}</span><span class="s2">`</span>
-  <span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>Using classic ES5 syntax:</p>
+<p>Register a callback that logs internal assertion counts.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
@@ -175,7 +194,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#details-object">Details object</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#details-object">Details object</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>

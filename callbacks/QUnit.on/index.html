@@ -66,34 +66,287 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.on( eventName, callback )</code></p>
 
-<p>Register a callback to fire whenever the specified event is emitted. Conforms to the <a href="https://github.com/js-reporters/js-reporters">js-reporters standard</a>.</p>
+<p>Register a callback to fire whenever a specified event is emitted.</p>
 
-<p>Use this to listen for events related to the test suite’s execution. Available event names and corresponding data payloads are defined in the <a href="https://github.com/js-reporters/js-reporters">js-reporters specification</a>.</p>
-
-<p><strong>NOTE: The QUnit.on() callback does not handle promises and MUST be synchronous.</strong></p>
+<p>This API implements the <a href="https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc">js-reporters CRI standard</a>, and is the primary interface for use by continuous integration plugins and other reporting software.</p>
 
 <table>
   <thead>
     <tr>
+      <th>type</th>
       <th>parameter</th>
       <th>description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>eventName (string)</td>
-      <td>The name of the event for which to execute the provided callback.</td>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">eventName</code></td>
+      <td>Name of an event.</td>
     </tr>
     <tr>
-      <td>callback (function)</td>
-      <td>Callback to execute. Receives a single argument representing the data for the event.</td>
+      <td><code class="language-plaintext highlighter-rouge">Function</code></td>
+      <td><code class="language-plaintext highlighter-rouge">callback</code></td>
+      <td>A callback function.</td>
     </tr>
   </tbody>
 </table>
 
-<h2 id="examples">Examples</h2>
+<h2 id="the-runstart-event">The <code class="language-plaintext highlighter-rouge">runStart</code> event</h2>
 
-<p>Printing results of a test suite.</p>
+<p>The <code class="language-plaintext highlighter-rouge">runStart</code> event indicates the beginning of a test run. It is emitted exactly once, and before any other events.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Object</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts</code></td>
+      <td>Aggregate counts about tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.total</code></td>
+      <td>Total number of registered tests.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runStart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">runStart</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Test plan: </span><span class="p">${</span><span class="nx">runStart</span><span class="p">.</span><span class="nx">testCounts</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<h2 id="the-suitestart-event">The <code class="language-plaintext highlighter-rouge">suiteStart</code> event</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">suiteStart</code> event indicates the beginning of a module. It is eventually be followed by a corresponding <code class="language-plaintext highlighter-rouge">suiteEnd</code> event.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>Name of the module.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Array&lt;string&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">fullName</code></td>
+      <td>List of one or more strings, containing (in order) the names of any ancestor modules and the name of the current module.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">suiteStart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">suiteStart</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">suiteStart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">suiteStart</span><span class="p">);</span>
+  <span class="c1">// name: 'my module'</span>
+  <span class="c1">// fullName: ['grandparent', 'parent', 'my module']</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="the-suiteend-event">The <code class="language-plaintext highlighter-rouge">suiteEnd</code> event</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">suiteEnd</code> event indicates the end of a module. It is emitted after its corresponding <code class="language-plaintext highlighter-rouge">suiteStart</code> event.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>Name of the module.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Array&lt;string&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">fullName</code></td>
+      <td>List of one or more strings, containing (in order) the names of any ancestor modules and the name of the current module.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">status</code></td>
+      <td>Aggregate result of tests in this module, one of:<br /><code class="language-plaintext highlighter-rouge">failed</code>: at least one test has failed; <br /><code class="language-plaintext highlighter-rouge">passed</code>: there were no failing tests, which means there were only tests with a passed, skipped, or todo status.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">runtime</code></td>
+      <td>Duration of the module in milliseconds.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">suiteEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nx">suiteEnd</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">suiteEnd</span><span class="p">);</span>
+  <span class="c1">// …</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="the-teststart-event">The <code class="language-plaintext highlighter-rouge">testStart</code> event</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">testStart</code> event indicates the beginning of a test. It is eventually followed by a corresponding <code class="language-plaintext highlighter-rouge">testEnd</code> event.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>Name of the test.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string|null</code></td>
+      <td><code class="language-plaintext highlighter-rouge">moduleName</code></td>
+      <td>The module the test belongs to, or null for a global test.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Array&lt;string&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">fullName</code></td>
+      <td>List (in order) of the names of any ancestor modules and the name of the test itself.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">testStart</span><span class="dl">'</span><span class="p">,</span> <span class="nx">testStart</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">testStart</span><span class="p">);</span>
+  <span class="c1">// name: 'my test'</span>
+  <span class="c1">// moduleName: 'my module'</span>
+  <span class="c1">// fullName: ['parent', 'my module', 'my test']</span>
+
+  <span class="c1">// name: 'global test'</span>
+  <span class="c1">// moduleName: null</span>
+  <span class="c1">// fullName: ['global test']</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="the-testend-event">The <code class="language-plaintext highlighter-rouge">testEnd</code> event</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">testEnd</code> event indicates the end of a test. It is emitted after its corresponding <code class="language-plaintext highlighter-rouge">testStart</code> event.</p>
+
+<p>Properties of a testEnd object:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">name</code></td>
+      <td>Name of the test.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string|null</code></td>
+      <td><code class="language-plaintext highlighter-rouge">moduleName</code></td>
+      <td>The module the test belongs to, or null for a global test.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Array&lt;string&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">fullName</code></td>
+      <td>List (in order) of the names of any ancestor modules and the name of the test itself.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">status</code></td>
+      <td>Result of the test, one of:<br /><code class="language-plaintext highlighter-rouge">passed</code>: all assertions passed or no assertions found;<br /><code class="language-plaintext highlighter-rouge">failed</code>: at least one assertion failed or it is a <a href="/QUnit/test.todo/">todo test</a> that no longer has any failing assertions;<br /><code class="language-plaintext highlighter-rouge">skipped</code>: the test was intentionally not run; or<br /><code class="language-plaintext highlighter-rouge">todo</code>: the test is “todo” and still has a failing assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">runtime</code></td>
+      <td>Duration of the test in milliseconds.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Array&lt;FailedAssertion&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">errors</code></td>
+      <td>For tests with status <code class="language-plaintext highlighter-rouge">failed</code> or <code class="language-plaintext highlighter-rouge">todo</code>, there will be at least one failed assertion. However, the list may be empty if the status is <code class="language-plaintext highlighter-rouge">failed</code> due to a “todo” test having no failed assertions.<br /><br />Note that all negative test outcome communicate their details in this manner. For example, timeouts, uncaught errors, and <a href="/config/noglobals/">global pollution</a> also synthesize a failed assertion.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Properties of a FailedAssertion object:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean</code></td>
+      <td><code class="language-plaintext highlighter-rouge">passed</code></td>
+      <td>False for a failed assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string|undefined</code></td>
+      <td><code class="language-plaintext highlighter-rouge">message</code></td>
+      <td>Description of what the assertion checked.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">any</code></td>
+      <td><code class="language-plaintext highlighter-rouge">actual</code></td>
+      <td>The actual value passed to the assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">any</code></td>
+      <td><code class="language-plaintext highlighter-rouge">expected</code></td>
+      <td>The expected value passed to the assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string|undefined</code></td>
+      <td><code class="language-plaintext highlighter-rouge">stack</code></td>
+      <td>Stack trace, may be undefined if the result came from an old web browsers.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">testEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nx">testEnd</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">testEnd</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">failed</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Failed! </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">testEnd</span><span class="p">.</span><span class="nx">fullName</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1"> &gt; </span><span class="dl">'</span><span class="p">));</span>
+    <span class="nx">testEnd</span><span class="p">.</span><span class="nx">errors</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">assertion</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">assertion</span><span class="p">);</span>
+      <span class="c1">// message: speedometer</span>
+      <span class="c1">// actual: 75</span>
+      <span class="c1">// expected: 88</span>
+      <span class="c1">// stack: at dmc.test.js:12</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="the-runend-event">The <code class="language-plaintext highlighter-rouge">runEnd</code> event</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">runEnd</code> event indicates the end of a test run. It is emitted exactly once.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">status</code></td>
+      <td>Aggregate result of all tests, one of:<br /><code class="language-plaintext highlighter-rouge">failed</code>: at least one test failed or a global error ocurred;<br /><code class="language-plaintext highlighter-rouge">passed</code>: there were no failed tests, which means there were only tests with a passed, skipped, or todo status. If <a href="/config/failOnZeroTests/"><code class="language-plaintext highlighter-rouge">QUnit.config.failOnZeroTests</code></a> is disabled, then the run may also pass if there were no tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Object</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts</code></td>
+      <td>Aggregate counts about tests:</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.passed</code></td>
+      <td>Number of passed tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.failed</code></td>
+      <td>Number of failed tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.skipped</code></td>
+      <td>Number of skipped tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.todo</code></td>
+      <td>Number of todo tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">testCounts.total</code></td>
+      <td>Total number of tests, equal to the sum of the above properties.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">number</code></td>
+      <td><code class="language-plaintext highlighter-rouge">runtime</code></td>
+      <td>Total duration of the run in milliseconds.</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nx">runEnd</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Passed: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
@@ -143,7 +396,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#the-runstart-event">The runStart event</a></li><li class="sidebar-item"><a href="#the-suitestart-event">The suiteStart event</a></li><li class="sidebar-item"><a href="#the-suiteend-event">The suiteEnd event</a></li><li class="sidebar-item"><a href="#the-teststart-event">The testStart event</a></li><li class="sidebar-item"><a href="#the-testend-event">The testEnd event</a></li><li class="sidebar-item"><a href="#the-runend-event">The runEnd event</a></li></ol></div>
 </aside>
 
 </div>

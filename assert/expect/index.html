@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.expect() | QUnit</title>
-<meta property="og:title" content="assert.expect()"><meta name="description" content="Specify how many assertions are expected to run within a test."><meta property="og:description" content="Specify how many assertions are expected to run within a test."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.expect()"><meta name="description" content="Specify how many assertions are expected in a test."><meta property="og:description" content="Specify how many assertions are expected in a test."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">expect( amount )</code></p>
 
-<p>Specify how many assertions are expected to run within a test.</p>
+<p>Specify how many assertions are expected in a test.</p>
 
 <table>
   <thead>
@@ -78,18 +78,57 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">amount</code></td>
-      <td>Number of assertions in this test.</td>
+      <td>Number of expected assertions in this test.</td>
     </tr>
   </tbody>
 </table>
 
-<p>To ensure that an explicit number of assertions are run within any test, use <code class="language-plaintext highlighter-rouge">assert.expect()</code> to register an expected count. If the number of assertions run does not match the expected count, the test will fail.</p>
+<p>This is most commonly used as <code class="language-plaintext highlighter-rouge">assert.expect(0)</code>, which indicates that a test may pass making any assertions. This means the test is only used to verify that the code to completion without any uncaught errors. This is is essentially the inverse of <a href="/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a>.</p>
+
+<p>It can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.</p>
+
+<p>It is recommended to test asynchronous code with <a href="/assert/step/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a> or <a href="/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead.</p>
 
 <h2 id="examples">Examples</h2>
 
-<p>Establish an expected assertion count</p>
+<h3 id="example-no-assertions">Example: No assertions</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">a test</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+<p>A test without any assertions:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">up</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">down</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">left</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">right</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">left</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">right</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">attack</span><span class="p">();</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">jump</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-custom-assert">Example: Custom assert</h3>
+
+<p>If you use a generic assertion library that throws when an expectation is not met, you can use <code class="language-plaintext highlighter-rouge">assert.expect(0)</code> if there are no other assertions needed in the test.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Robot</span><span class="p">(</span><span class="nx">database</span><span class="p">);</span>
+  <span class="nx">android</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+
+  <span class="nx">database</span><span class="p">.</span><span class="nx">assertNoOpenConnections</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-explicit-count">Example: Explicit count</h3>
+
+<p>Require an explicit assertion count.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
   <span class="kd">function</span> <span class="nx">calc</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">operation</span><span class="p">)</span> <span class="p">{</span>
@@ -172,7 +211,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-no-assertions">Example: No assertions</a></li><li class="sidebar-item"><a href="#example-custom-assert">Example: Custom assert</a></li><li class="sidebar-item"><a href="#example-explicit-count">Example: Explicit count</a></li></ol></li></ol></div>
 </aside>
 
 </div>
