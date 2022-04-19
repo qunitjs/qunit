@@ -28,7 +28,7 @@ Register a callback to fire when the test run has ended. The callback may be an 
 
 <div class="note note--warning" markdown="1">
 
-Use of `details` is __deprecated__ and it's recommended to use [`QUnit.on('runEnd')`](./QUnit.on.md) instead.
+Use of `details` is __deprecated__ and it's recommended to use [`QUnit.on('runEnd')`](./QUnit.on.md#the-runend-event) instead.
 
 Caveats:
 
