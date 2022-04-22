@@ -1,13 +1,13 @@
 ---
 layout: page-api
 title: QUnit.config.module
-excerpt: Select a single test module to run, by name.
+excerpt: Select a single test module to run.
 groups:
   - config
 version_added: "1.8.0"
 ---
 
-Select a single test module to run, by name.
+Select a single test module to run by name.
 
 <table>
 <tr>

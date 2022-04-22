@@ -9,18 +9,12 @@ import { window } from '../globals';
   }
 
   const urlParams = getUrlParams();
-
   QUnit.urlParams = urlParams;
 
-  // Match module/test by inclusion in an array
+  QUnit.config.filter = urlParams.filter;
+  QUnit.config.module = urlParams.module;
   QUnit.config.moduleId = [].concat(urlParams.moduleId || []);
   QUnit.config.testId = [].concat(urlParams.testId || []);
-
-  // Exact case-insensitive match of the module name
-  QUnit.config.module = urlParams.module;
-
-  // Regular expression or case-insenstive substring match against "moduleName: testName"
-  QUnit.config.filter = urlParams.filter;
 
   // Test order randomization
   if (urlParams.seed === true) {

@@ -1,13 +1,13 @@
 ---
 layout: page-api
 title: QUnit.config.filter
-excerpt: Decide which tests should run based on a substring or pattern match.
+excerpt: Select tests to run based on a substring or pattern match.
 groups:
   - config
 version_added: "1.0.0"
 ---
 
-Decide selectively which tests should run based on a substring or pattern match.
+Select tests to run based on a substring or pattern match.
 
 <table>
 <tr>

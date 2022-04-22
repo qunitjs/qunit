@@ -788,50 +788,55 @@ Test.prototype = {
   },
 
   valid: function () {
-    const filter = config.filter;
-    const regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec(filter);
-    const module = config.module && config.module.toLowerCase();
-    const fullName = (this.module.name + ': ' + this.testName);
-
-    function moduleChainNameMatch (testModule) {
-      const testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
-      if (testModuleName === module) {
-        return true;
-      } else if (testModule.parentModule) {
-        return moduleChainNameMatch(testModule.parentModule);
-      } else {
-        return false;
-      }
-    }
-
-    function moduleChainIdMatch (testModule) {
-      return inArray(testModule.moduleId, config.moduleId) ||
-        (testModule.parentModule && moduleChainIdMatch(testModule.parentModule));
-    }
-
     // Internally-generated tests are always valid
     if (this.callback && this.callback.validTest) {
       return true;
     }
 
-    if (config.moduleId && config.moduleId.length > 0 &&
-      !moduleChainIdMatch(this.module)) {
+    function moduleChainIdMatch (testModule, selectedId) {
+      return (
+        // undefined or empty array
+        !selectedId || !selectedId.length ||
+        inArray(testModule.moduleId, selectedId) || (
+          testModule.parentModule && moduleChainIdMatch(testModule.parentModule, selectedId)
+        )
+      );
+    }
+
+    if (!moduleChainIdMatch(this.module, config.moduleId)) {
       return false;
     }
 
-    if (config.testId && config.testId.length > 0 &&
-      !inArray(this.testId, config.testId)) {
+    if (config.testId && config.testId.length && !inArray(this.testId, config.testId)) {
       return false;
     }
 
-    if (module && !moduleChainNameMatch(this.module)) {
+    function moduleChainNameMatch (testModule, selectedModule) {
+      if (!selectedModule) {
+        // undefined or empty string
+        return true;
+      }
+      const testModuleName = testModule.name ? testModule.name.toLowerCase() : null;
+      if (testModuleName === selectedModule) {
+        return true;
+      } else if (testModule.parentModule) {
+        return moduleChainNameMatch(testModule.parentModule, selectedModule);
+      } else {
+        return false;
+      }
+    }
+    const selectedModule = config.module && config.module.toLowerCase();
+    if (!moduleChainNameMatch(this.module, selectedModule)) {
       return false;
     }
 
+    const filter = config.filter;
     if (!filter) {
       return true;
     }
 
+    const regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec(filter);
+    const fullName = (this.module.name + ': ' + this.testName);
     return regexFilter
       ? this.regexFilter(!!regexFilter[1], regexFilter[2], regexFilter[3], fullName)
       : this.stringFilter(filter, fullName);

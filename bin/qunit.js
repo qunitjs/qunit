@@ -24,8 +24,8 @@ program
   .version(pkg.version)
   .usage('[options] [files]')
   .description(description)
-  .option('-f, --filter <filter>', 'filter which tests run')
-  .option('-m, --module <name>', 'run a specific module')
+  .option('-f, --filter <filter>', 'run only matching module or test names')
+  .option('-m, --module <name>', 'run only the specified module')
   .option('-r, --reporter [name]', 'specify the reporter to use; ' +
     'if no match is found or no name is provided, a list of available ' +
     'reporters will be displayed')

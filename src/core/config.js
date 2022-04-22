@@ -7,46 +7,48 @@ import { extend } from './utilities';
  * `config` initialized at top of scope
  */
 const config = {
-
-  // The queue of tests to run
-  queue: [],
-
-  stats: { all: 0, bad: 0, testCount: 0 },
-
-  // Block until document ready
-  blocking: true,
-
-  // whether or not to fail when there are zero tests
-  // defaults to `true`
-  failOnZeroTests: true,
-
-  // By default, run previously failed tests first
-  // very useful in combination with "Hide passed tests" checked
-  reorder: true,
-
-  // By default, modify document.title when suite is done
+  // HTML Reporter: Modify document.title when suite is done
   altertitle: true,
 
   // HTML Reporter: collapse every test except the first failing test
   // If false, all failing tests will be expanded
   collapse: true,
 
-  // By default, scroll to top of the page when suite is done
-  scrolltop: true,
+  // whether or not to fail when there are zero tests
+  // defaults to `true`
+  failOnZeroTests: true,
+
+  // Select by pattern or case-insenstive substring match against "moduleName: testName"
+  filter: undefined,
 
   // Depth up-to which object will be dumped
   maxDepth: 5,
 
+  // Select case-insensitive match of the module name
+  module: undefined,
+
+  // HTML Reporter: Select module/test by array of internal IDs
+  moduleId: undefined,
+
+  // By default, run previously failed tests first
+  // very useful in combination with "Hide passed tests" checked
+  reorder: true,
+
   // When enabled, all tests must call expect()
   requireExpects: false,
 
-  // Placeholder for user-configurable form-exposed URL parameters
+  // By default, scroll to top of the page when suite is done
+  scrolltop: true,
+
+  // The storage module to use for reordering tests
+  storage: localSessionStorage,
+
+  testId: undefined,
+
+  // HTML Reporter: List of URL parameters that are given visual controls
   urlConfig: [],
 
-  // Set of all modules.
-  modules: [],
-
-  // The first unnamed module
+  // Internal: The first unnamed module
   //
   // By being defined as the intial value for currentModule, it is the
   // receptacle and implied parent for any global tests. It is as if we
@@ -93,14 +95,16 @@ const config = {
     }
   },
 
-  // Exposed to make resets easier
+  // Internal: Exposed to make resets easier
   // Ref https://github.com/qunitjs/qunit/pull/1598
   globalHooks: {},
 
+  // Internal state
+  blocking: true,
   callbacks: {},
-
-  // The storage module to use for reordering tests
-  storage: localSessionStorage
+  modules: [],
+  queue: [],
+  stats: { all: 0, bad: 0, testCount: 0 }
 };
 
 // Apply a predefined QUnit.config object

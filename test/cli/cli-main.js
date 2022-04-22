@@ -527,8 +527,8 @@ HOOK: BCD1 @ B after`;
     });
   }
 
-  QUnit.module('filter', () => {
-    QUnit.test('can properly filter tests', async assert => {
+  QUnit.module('--filter option', () => {
+    QUnit.test('match a module name', async assert => {
       const command = ['qunit', '--filter', 'single', 'test', 'single.js', 'glob/**/*-test.js'];
       const equivalentCommand = ['qunit', 'single.js'];
       const execution = await execute(command);
@@ -554,8 +554,8 @@ HOOK: BCD1 @ B after`;
     });
   });
 
-  QUnit.module('module', () => {
-    QUnit.test('can select a module (case-insensitive)', async assert => {
+  QUnit.module('--module option', () => {
+    QUnit.test('select a module (case-insensitive)', async assert => {
       const command = ['qunit', '--module', 'seconD', 'test/'];
       const execution = await execute(command);
 
@@ -565,8 +565,8 @@ HOOK: BCD1 @ B after`;
     });
   });
 
-  QUnit.module('require', () => {
-    QUnit.test('can properly require dependencies and modules', async assert => {
+  QUnit.module('--require option', () => {
+    QUnit.test('require dependency and scripts', async assert => {
       const command = ['qunit', 'single.js',
         '--require', 'require-dep',
         '--require', './node_modules/require-dep/module.js'
@@ -590,7 +590,7 @@ HOOK: BCD1 @ B after`;
     });
   });
 
-  QUnit.module('seed', () => {
+  QUnit.module('--seed option', () => {
     QUnit.test('can properly seed tests', async assert => {
       const command = ['qunit', '--seed', 's33d', 'test', 'single.js', 'glob/**/*-test.js'];
       const execution = await execute(command);
@@ -601,7 +601,7 @@ HOOK: BCD1 @ B after`;
     });
   });
 
-  QUnit.module('notrycatch', () => {
+  QUnit.module('config.notrycatch', () => {
     QUnit.test('errors if notrycatch is used and a rejection occurs', async assert => {
       try {
         await execute(['qunit', 'notrycatch/returns-rejection.js']);
@@ -695,7 +695,7 @@ HOOK: BCD1 @ B after`;
     }
   });
 
-  QUnit.module('noglobals', () => {
+  QUnit.module('config.noglobals', () => {
     QUnit.test('add global variable', async assert => {
       try {
         await execute(['qunit', 'noglobals/add-global.js']);
