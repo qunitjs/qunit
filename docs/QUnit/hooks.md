@@ -3,7 +3,7 @@ layout: page-api
 title: QUnit.hooks
 excerpt: Add global callbacks to run before or after each test.
 groups:
-  - main
+  - extension
 version_added: "2.18.0"
 ---
 
