@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable quotes */
 
 // Expected outputs from the TapReporter for the commands run in CLI tests
 module.exports = {
@@ -11,6 +12,9 @@ ok 2 Second > 1
 # skip 0
 # todo 0
 # fail 0`,
+
+  'qunit does-not-exist.js':
+`No files were found matching: does-not-exist.js`,
 
   "qunit 'glob/**/*-test.js'":
 `TAP version 13
@@ -82,6 +86,35 @@ ok 5 Second > 1
 # todo 0
 # fail 0`,
 
+  'qunit syntax-error/test.js':
+`not ok 1 global failure
+  ---
+  message: |+
+    Error: Failed to load file syntax-error/test.js
+    ReferenceError: varIsNotDefined is not defined
+  severity: failed
+  stack: |
+    ReferenceError: varIsNotDefined is not defined
+        at /qunit/test/cli/fixtures/syntax-error/test.js:1:1
+  ...
+Bail out! Error: Failed to load file syntax-error/test.js
+TAP version 13
+not ok 2 global failure
+  ---
+  message: No tests were run.
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: No tests were run.
+        at qunit.js
+  ...
+1..2
+# pass 0
+# skip 0
+# todo 0
+# fail 2`,
+
   "qunit --seed s33d test single.js 'glob/**/*-test.js'": `Running tests with seed: s33d
 TAP version 13
 ok 1 Second > 1
@@ -116,7 +149,6 @@ Last test to run (hanging) has an async hold. Ensure all assert.async() callback
         at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
         at qunit.js
         at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
-        at internal
   ...
 Bail out! Error: outside of a test context
 TAP version 13
@@ -129,13 +161,59 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
   stack: |
     Error: Error thrown in non-returned promise!
         at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13
-        at internal
   ...
 1..2
 # pass 0
 # skip 0
 # todo 0
 # fail 2`,
+
+  'qunit hard-error-in-test-with-no-async-handler.js':
+`TAP version 13
+not ok 1 contains a hard error after using assert.async()
+  ---
+  message: |+
+    Died on test #2: expected error thrown in test
+        at /qunit/test/cli/fixtures/hard-error-in-test-with-no-async-handler.js:1:7
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: expected error thrown in test
+        at /qunit/test/cli/fixtures/hard-error-in-test-with-no-async-handler.js:4:9
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  'qunit hard-error-in-hook.js':
+`TAP version 13
+not ok 1 contains a hard error in hook > contains a hard error
+  ---
+  message: before failed on contains a hard error: expected error thrown in hook
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: expected error thrown in hook
+        at /qunit/test/cli/fixtures/hard-error-in-hook.js:3:11
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  // FIXME: The details of this error are swallowed
+  'qunit bad-callbacks/moduleDone-throw.js':
+`TAP version 13
+ok 1 module1 > test1`,
+
+  // FIXME: The details of this error are swallowed
+  'qunit bad-callbacks/testStart-throw.js':
+`TAP version 13`,
 
   // The last frame differs between Node 10 and 12+ (changes in processing of ticks)
   'qunit no-tests':
@@ -149,7 +227,6 @@ not ok 1 global failure
   stack: |
     Error: No tests were run.
         at qunit.js
-        at internal
   ...
 1..1
 # pass 0
@@ -211,7 +288,6 @@ not ok 1 timeout > first
   actual  : null
   expected: undefined
   stack: |
-        at internal
   ...
 ok 2 timeout > second
 1..2
@@ -251,7 +327,6 @@ not ok 1 global failure
   stack: |
     Error: No tests matched the filter "no matches".
         at qunit.js
-        at internal
   ...
 1..1
 # pass 0
@@ -471,7 +546,40 @@ not ok 1 slow
   actual  : null
   expected: undefined
   stack: |
-        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  'qunit noglobals/add-global.js':
+`TAP version 13
+not ok 1 adds global var
+  ---
+  message: Introduced global variable(s): dummyGlobal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at qunit.js
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  'qunit noglobals/remove-global.js':
+`TAP version 13
+not ok 1 deletes global var
+  ---
+  message: Deleted global variable(s): dummyGlobal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at qunit.js
   ...
 1..1
 # pass 0
@@ -489,7 +597,6 @@ not ok 1 global failure
     Error: No dice
         at /qunit/test/cli/fixtures/bad-callbacks/begin-throw.js:2:9
         at qunit.js
-        at internal
   ...
 Bail out! Error: No dice`,
 
@@ -509,7 +616,6 @@ Bail out! Error: No dice
     Error: No dice
         at /qunit/test/cli/fixtures/bad-callbacks/done-throw.js:2:9
         at qunit.js
-        at internal
   ...`,
 
   'qunit done-after-timeout.js':
@@ -521,7 +627,6 @@ not ok 1 times out before scheduled done is called
   actual  : null
   expected: undefined
   stack: |
-        at internal
   ...
 1..1
 # pass 0
@@ -536,7 +641,6 @@ not ok 1 Test A
   message: |+
     Died on test #2: this is an intentional error
         at /qunit/test/cli/fixtures/drooling-done.js:5:7
-        at internal
   severity: failed
   actual  : null
   expected: undefined
@@ -560,7 +664,6 @@ not ok 2 Test B
     Died on test #2: Unexpected release of async pause during a different test.
     > Test: Test A [async #1]
         at /qunit/test/cli/fixtures/drooling-extra-done.js:13:7
-        at internal
   severity: failed
   actual  : null
   expected: undefined
@@ -592,7 +695,6 @@ Bail out! Error: Unexpected release of async pause after tests finished.
     Error: Unexpected release of async pause after tests finished.
     > Test: extra done scheduled outside any test [async #1]
         at qunit.js
-        at internal
   ...`,
 
   'qunit too-many-done-calls.js':
@@ -603,7 +705,6 @@ not ok 1 Test A
     Died on test #2: Tried to release async pause that was already released.
     > Test: Test A [async #1]
         at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
-        at internal
   severity: failed
   actual  : null
   expected: undefined
@@ -623,5 +724,56 @@ not ok 1 Test A
 # pass 0
 # skip 0
 # todo 0
-# fail 0`
+# fail 0`,
+
+  'qunit assert-expect/failing-expect.js':
+`TAP version 13
+not ok 1 failing test
+  ---
+  message: Expected 2 assertions, but 1 were run
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect/failing-expect.js:1:7
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  'qunit assert-expect/no-assertions.js':
+`TAP version 13
+not ok 1 no assertions
+  ---
+  message: Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect/no-assertions.js:1:7
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`,
+
+  'qunit assert-expect/require-expects.js':
+`TAP version 13
+not ok 1 passing test
+  ---
+  message: Expected number of assertions to be defined, but expect() was not called.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect/require-expects.js:3:7
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1`
 };

@@ -1,4 +1,4 @@
-QUnit.test('contains a hard error after using `assert.async`', assert => {
+QUnit.test('contains a hard error after using assert.async()', assert => {
   assert.async();
   assert.true(true);
   throw new Error('expected error thrown in test');

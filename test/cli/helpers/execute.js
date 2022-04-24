@@ -19,8 +19,6 @@ function normalize (actual) {
     // Convert "at processModule (/qunit/qunit/qunit.js:1:2)" to "at qunit.js"
     // Convert "at /qunit/qunit/qunit.js:1:2" to "at qunit.js"
     .replace(/^(\s+at ).*\/qunit\/qunit\/qunit\.js.*$/gm, '$1qunit.js')
-    // Convert any "/qunit/qunit/qunit.js:1:2" to "/qunit/qunit/qunit.js"
-    .replace(/(\/qunit\/qunit\/qunit\.js):\d+:\d+/g, '$1')
     // Strip inferred names for anonymous test closures (as Node 10 did),
     // to match the output of Node 12+.
     // Convert "at QUnit.done (/qunit/test/foo.js:1:2)" to "at /qunit/test/foo.js:1:2"
@@ -36,7 +34,15 @@ function normalize (actual) {
     //
     // ESM-style internal traces from Node 14+:
     // Convert "at wrap (node:internal/modules/cjs/loader:1)" to "at internal"
-    .replace(/ {2}at .+\([^/)][^)]*\)/g, '  at internal')
+    .replace(/^(\s+at ).+\([^/)][^)]*\)$/gm, '$1internal')
+
+    // Convert /bin/qunit and /src/cli to internal as well
+    // Because there are differences between Node 10 and Node 12 in terms
+    // of how much back and forth ocurrs, so by mapping both to internal
+    // we can flatten and normalize across.
+    .replace(/^(\s+at ).*\/qunit\/bin\/qunit\.js.*$/gm, '$1internal')
+    .replace(/^(\s+at ).*\/qunit\/src\/cli\/.*$/gm, '$1internal')
+
     // Strip frames from indirect nyc dependencies that are specific
     // to code coverage jobs:
     // Convert "at load (/qunit/node_modules/append-transform/index.js:6" to "at internal"
@@ -44,7 +50,16 @@ function normalize (actual) {
     // Consolidate subsequent qunit.js frames
     .replace(/^(\s+at qunit\.js$)(\n\s+at qunit\.js$)+/gm, '$1')
     // Consolidate subsequent internal frames
-    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1');
+    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1')
+
+    // If the final frame is internal, strip it.
+    // Use negative-lookahead instead of '$' because stdout generally
+    // contains other text before and after the trace as well.
+    //
+    // On Windows with Node 14, for some reason the stack for
+    // the "noglobals/add-global.js" failure does not have a
+    // trailing internal frame whereas it does on other platform.
+    .replace(/(\n\s+at internal)(?!\n\s+at )/g, '');
 }
 
 /**
