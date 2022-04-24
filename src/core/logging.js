@@ -1,5 +1,4 @@
 import config from './config';
-import { objectType } from './utilities';
 import Promise from '../promise';
 
 // Register logging callbacks
@@ -9,7 +8,7 @@ export function registerLoggingCallbacks (obj) {
 
   function registerLoggingCallback (key) {
     const loggingCallback = function (callback) {
-      if (objectType(callback) !== 'function') {
+      if (typeof callback !== 'function') {
         throw new Error(
           'QUnit logging methods require a callback function as their first parameters.'
         );
@@ -25,7 +24,7 @@ export function registerLoggingCallbacks (obj) {
     const key = callbackNames[i];
 
     // Initialize key collection of logging callback
-    if (objectType(config.callbacks[key]) === 'undefined') {
+    if (typeof config.callbacks[key] === 'undefined') {
       config.callbacks[key] = [];
     }
 

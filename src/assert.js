@@ -37,9 +37,9 @@ class Assert {
 
     this.test.steps.push(message);
 
-    if (objectType(message) === 'undefined' || message === '') {
+    if (typeof message === 'undefined' || message === '') {
       assertionMessage = 'You must provide a message to assert.step';
-    } else if (objectType(message) !== 'string') {
+    } else if (typeof message !== 'string') {
       assertionMessage = 'You must provide a string value to assert.step';
       result = false;
     }
@@ -280,7 +280,7 @@ class Assert {
 
     const currentTest = (this instanceof Assert && this.test) || config.current;
 
-    if (objectType(block) !== 'function') {
+    if (typeof block !== 'function') {
       const message = 'The value provided to `assert.throws` in ' +
         '"' + currentTest.testName + '" was not a function.';
 
@@ -324,7 +324,7 @@ class Assert {
     const currentTest = (this instanceof Assert && this.test) || config.current;
 
     const then = promise && promise.then;
-    if (objectType(then) !== 'function') {
+    if (typeof then !== 'function') {
       const message = 'The value provided to `assert.rejects` in ' +
         '"' + currentTest.testName + '" was not a promise.';
 

@@ -12,8 +12,7 @@ import {
   generateHash,
   hasOwn,
   inArray,
-  performance,
-  objectType
+  performance
 } from './core/utilities';
 import { runLoggingCallbacks } from './core/logging';
 import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace';
@@ -762,7 +761,7 @@ Test.prototype = {
     if (promise != null) {
       const test = this;
       const then = promise.then;
-      if (objectType(then) === 'function') {
+      if (typeof then === 'function') {
         const resume = test.internalStop();
         const resolve = function () { resume(); };
         if (config.notrycatch) {

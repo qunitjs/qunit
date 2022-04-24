@@ -1,4 +1,4 @@
-import { objectType, inArray } from './core/utilities';
+import { inArray } from './core/utilities';
 
 const LISTENERS = Object.create(null);
 const SUPPORTED_EVENTS = [
@@ -25,7 +25,7 @@ const SUPPORTED_EVENTS = [
  * @return {void}
  */
 export function emit (eventName, data) {
-  if (objectType(eventName) !== 'string') {
+  if (typeof eventName !== 'string') {
     throw new TypeError('eventName must be a string when emitting an event');
   }
 
@@ -48,12 +48,12 @@ export function emit (eventName, data) {
  * @return {void}
  */
 export function on (eventName, callback) {
-  if (objectType(eventName) !== 'string') {
+  if (typeof eventName !== 'string') {
     throw new TypeError('eventName must be a string when registering a listener');
   } else if (!inArray(eventName, SUPPORTED_EVENTS)) {
     const events = SUPPORTED_EVENTS.join(', ');
     throw new Error(`"${eventName}" is not a valid event; must be one of: ${events}.`);
-  } else if (objectType(callback) !== 'function') {
+  } else if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function when registering a listener');
   }
 
