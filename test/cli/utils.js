@@ -23,6 +23,7 @@ QUnit.module('CLI utils', function () {
       ),
       `
   at qunit.js
+  at internal
 ...`,
       'normalize projectdir, qunit.js, and nodejs internal'
     );
@@ -37,6 +38,7 @@ QUnit.module('CLI utils', function () {
       `
   at internal
   at Object.<anonymous> (/example/temp/foo.js:3)
+  at internal
 ...`,
       'normalize bin/qunit.js and src/cli'
     );
@@ -57,6 +59,7 @@ QUnit.module('CLI utils', function () {
       ),
       `
   at /qunit/test/cli/fixtures/syntax-error/test.js:1:1
+  at internal
 ...`,
       'flatten successive internal frames'
     );
@@ -73,6 +76,7 @@ QUnit.module('CLI utils', function () {
       ),
       `
   at Object.<anonymous> (/example/temp/foo.js:3)
+  at internal
 ...`,
       'strip frames for node_modules/append-transform'
     );

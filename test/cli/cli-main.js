@@ -10,212 +10,78 @@ function getExpected (command) {
   return expectedOutput[prettyPrintCommand(command)];
 }
 
+const fixtureCases = {
+  'load "tests" directory by default': ['qunit'],
+  'load file not found': ['qunit', 'does-not-exist.js'],
+  'load glob pattern': ['qunit', 'glob/**/*-test.js'],
+  'load single file': ['qunit', 'single.js'],
+  'load multiple files': ['qunit', 'single.js', 'double.js'],
+  'load a directory': ['qunit', 'test'],
+  'load mixture of file, directory, and glob': ['qunit', 'test', 'single.js', 'glob/**/*-test.js'],
+  'load file with syntax error': ['qunit', 'syntax-error/test.js'],
+
+  'no tests': ['qunit', 'no-tests'],
+  'no tests and config.failOnZeroTests=false': ['qunit', 'assert-expect/no-tests.js'],
+
+  'test with failing assertion': ['qunit', 'fail/failure.js'],
+  'test that hangs': ['qunit', 'hanging-test'],
+  'two tests with one timeout': ['qunit', 'timeout'],
+  'test with zero assertions': ['qunit', 'zero-assertions.js'],
+
+  'unhandled rejection': ['qunit', 'unhandled-rejection.js'],
+  'uncaught error after assert.async()': ['qunit', 'hard-error-in-test-with-no-async-handler.js'],
+  'uncaught error in hook': ['qunit', 'hard-error-in-hook.js'],
+  'uncaught error in "begin" callback': ['qunit', 'bad-callbacks/begin-throw.js'],
+  'uncaught error in "done" callback': ['qunit', 'bad-callbacks/done-throw.js'],
+  // FIXME: Details of moduleDone() error are swallowed
+  'uncaught error in "moduleDone" callback"': ['qunit', 'bad-callbacks/moduleDone-throw.js'],
+  // FIXME: Details of testStart() error are swallowed
+  'uncaught error in "testStart" callback"': ['qunit', 'bad-callbacks/testStart-throw.js'],
+
+  'QUnit.hooks context': ['qunit', 'hooks-global-context.js'],
+
+  '--filter matches module': ['qunit', '--filter', 'single', 'test', 'single.js', 'glob/**/*-test.js'],
+  '--module selects a module (case-insensitive)': ['qunit', '--module', 'seconD', 'test/'],
+  '--require loads dependency and script': ['qunit', 'single.js', '--require', 'require-dep', '--require', './node_modules/require-dep/module.js'],
+  '--seed value': ['qunit', '--seed', 's33d', 'test', 'single.js', 'glob/**/*-test.js'],
+
+  'config.filter with a string': ['qunit', 'config-filter-string.js'],
+  'config.filter with a regex': ['qunit', 'config-filter-regex.js'],
+  'config.filter with inverted regex': ['qunit', 'config-filter-regex-exclude.js'],
+
+  'config.module': ['qunit', 'config-module.js'],
+  'config.moduleId': ['qunit', 'config-moduleId.js'],
+  'config.testId': ['qunit', 'config-testId.js'],
+  'config.testTimeout': ['qunit', 'config-testTimeout.js'],
+  'config.noglobals and add a global': ['qunit', 'noglobals/add-global.js'],
+  'config.noglobals and remove a global': ['qunit', 'noglobals/remove-global.js'],
+  'config.noglobals and add ignored DOM global': ['qunit', 'noglobals/ignored.js'],
+
+  'assert.async() handled after timeout': ['qunit', 'done-after-timeout.js'],
+  'assert.async() handled outside test': ['qunit', 'drooling-extra-done-outside.js'],
+  'assert.expect() different count': ['qunit', 'assert-expect/failing-expect.js'],
+  'assert.expect() no assertions': ['qunit', 'assert-expect/no-assertions.js'],
+  'assert.expect() missing and config.requireExpects=true': ['qunit', 'assert-expect/require-expects.js'],
+  'test.only()': ['qunit', 'only/test.js'],
+  'module.only() followed by test': ['qunit', 'only/module-then-test.js'],
+  'module() nested with interrupted executeNow': ['qunit', 'module-nested.js'],
+  'module() with async function': ['qunit', 'async-module-warning/test.js'],
+  'module() with promise': ['qunit', 'async-module-warning/promise-test.js'],
+
+  'hooks.beforeEach() during other module': ['qunit', 'incorrect-hooks-warning/test.js']
+};
+
 QUnit.module('CLI Main', () => {
-  QUnit.test("defaults to running tests in 'test' directory", async assert => {
-    const command = ['qunit'];
+  QUnit.test.each('fixtures', fixtureCases, async (assert, command) => {
     const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('errors if no test files are found to run', async assert => {
-    const command = ['qunit', 'does-not-exist.js'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout + e.stderr, getExpected(command));
-    }
-  });
-
-  QUnit.test('accepts globs for test files to run', async assert => {
-    const command = ['qunit', 'glob/**/*-test.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('runs a single JS file', async assert => {
-    const command = ['qunit', 'single.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('runs multiple JS files', async assert => {
-    const command = ['qunit', 'single.js', 'double.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('runs all JS files in a directory matching an arg', async assert => {
-    const command = ['qunit', 'test'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('runs multiple types of file paths', async assert => {
-    const command = ['qunit', 'test', 'single.js', 'glob/**/*-test.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('logs test files that fail to load properly', async assert => {
-    const command = ['qunit', 'syntax-error/test.js'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-    }
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
   QUnit[skipOnWinTest]('report assert.throws() failures properly', async assert => {
     const command = ['qunit', 'fail/throws-match.js'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, '');
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('exit code is 1 when failing tests are present', async assert => {
-    try {
-      await execute(['qunit', 'fail/failure.js']);
-    } catch (e) {
-      assert.equal(e.code, 1);
-    }
-  });
-
-  QUnit.test('exit code is 1 when no tests are run', async assert => {
-    const command = ['qunit', 'no-tests'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, '');
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('exit code is 0 when no tests are run and config.failOnZeroTests=false', async assert => {
-    const command = ['qunit', 'assert-expect/no-tests.js'];
     const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('exit code is 1 when no tests exit before done', async assert => {
-    const command = ['qunit', 'hanging-test'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, getExpected(command));
-    }
-  });
-
-  QUnit.test('unhandled rejections fail tests', async assert => {
-    const command = ['qunit', 'unhandled-rejection.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, '');
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('report uncaught error after unhandled assert.async()', async assert => {
-    const command = ['qunit', 'hard-error-in-test-with-no-async-handler.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-      assert.equal(e.stderr, '');
-    }
-  });
-
-  QUnit.test('report uncaught error in hook', async assert => {
-    const command = ['qunit', 'hard-error-in-hook.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  // Regression test against "details of begin error swallowed"
-  // https://github.com/qunitjs/qunit/issues/1446
-  QUnit.test('report failure in begin callback', async assert => {
-    const command = ['qunit', 'bad-callbacks/begin-throw.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('report failure in done callback', async assert => {
-    const command = ['qunit', 'bad-callbacks/done-throw.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('report failure in moduleDone callback', async assert => {
-    const command = ['qunit', 'bad-callbacks/moduleDone-throw.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-      assert.equal(e.stderr, 'Error: Process exited before tests finished running');
-    }
-  });
-
-  QUnit.test('report failure in testStart callback', async assert => {
-    const command = ['qunit', 'bad-callbacks/testStart-throw.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stdout, getExpected(command));
-      assert.equal(e.stderr, 'Error: Process exited before tests finished running');
-    }
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
   QUnit.test('callbacks', async assert => {
@@ -388,15 +254,6 @@ HOOK: BCD1 @ B after`;
     assert.equal(execution.code, 0);
   });
 
-  QUnit.test('global hooks context', async assert => {
-    const command = ['qunit', 'hooks-global-context.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
   if (semver.gte(process.versions.node, '12.0.0')) {
     QUnit.test('run ESM test suite with import statement', async assert => {
       const command = ['qunit', '../../es2018/esm.mjs'];
@@ -417,13 +274,9 @@ HOOK: BCD1 @ B after`;
     // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
     QUnit[skipOnWinTest]('normal trace with native source map', async assert => {
       const command = ['qunit', 'sourcemap/source.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
+      const execution = await execute(command);
+
+      assert.equal(execution.snapshot, getExpected(command));
     });
 
     // skip if running in code coverage mode,
@@ -433,37 +286,13 @@ HOOK: BCD1 @ B after`;
     QUnit[process.env.NYC_PROCESS_ID ? 'skip' : skipOnWinTest](
       'mapped trace with native source map', async function (assert) {
         const command = ['qunit', 'sourcemap/source.min.js'];
-        try {
-          await execute(command, {
-            env: { NODE_OPTIONS: '--enable-source-maps' }
-          });
-        } catch (e) {
-          assert.equal(e.code, 1);
-          assert.equal(e.stderr, '');
-          assert.equal(e.stdout, getExpected(command));
-        }
+        const execution = await execute(command, {
+          env: { NODE_OPTIONS: '--enable-source-maps' }
+        });
+
+        assert.equal(execution.snapshot, getExpected(command));
       });
   }
-
-  QUnit.test('timeouts correctly recover', async assert => {
-    const command = ['qunit', 'timeout'];
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, '');
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.test('allows running zero-assertion tests', async assert => {
-    const command = ['qunit', 'zero-assertions.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
-  });
 
   // https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
   // Created in Node 11.x, but starts working the way we need from Node 14.
@@ -472,388 +301,97 @@ HOOK: BCD1 @ B after`;
       const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/*.js'];
       const execution = await execute(command);
 
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
+      assert.equal(execution.snapshot, getExpected(command));
     });
 
     QUnit.test('callbacks and hooks from filtered-out modules are properly released for garbage collection', async assert => {
       const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/*.js'];
       const execution = await execute(command);
 
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
+      assert.equal(execution.snapshot, getExpected(command));
     });
   }
 
-  QUnit.module('--filter option', () => {
-    QUnit.test('match a module name', async assert => {
-      const command = ['qunit', '--filter', 'single', 'test', 'single.js', 'glob/**/*-test.js'];
-      const equivalentCommand = ['qunit', 'single.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(equivalentCommand));
-    });
-
-    // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.
-    // https://github.com/nodejs/node/issues/29532
-    // Can't trivially quote since that breaks Linux which would interpret quotes
-    // as literals.
-    QUnit[skipOnWinTest]('exit code is 1 when no tests match filter', async assert => {
-      const command = ['qunit', '--filter', 'no matches', 'test'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-  });
-
-  QUnit.module('--module option', () => {
-    QUnit.test('select a module (case-insensitive)', async assert => {
-      const command = ['qunit', '--module', 'seconD', 'test/'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-  });
-
-  QUnit.module('--require option', () => {
-    QUnit.test('require dependency and scripts', async assert => {
-      const command = ['qunit', 'single.js',
-        '--require', 'require-dep',
-        '--require', './node_modules/require-dep/module.js'
-      ];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-
-    QUnit.test('displays helpful error when failing to require a file', async assert => {
-      const command = ['qunit', 'single.js', '--require', 'does-not-exist-at-all'];
-      try {
-        await execute(command);
-      } catch (e) {
-        // TODO: Change to a generic tap-outputs.js
-        // https://github.com/qunitjs/qunit/issues/1688
-        assert.equal(e.code, 1);
-        assert.true(e.stderr.includes("Error: Cannot find module 'does-not-exist-at-all'"));
-        assert.equal(e.stdout, '');
-      }
-    });
-  });
-
-  QUnit.module('--seed option', () => {
-    QUnit.test('can properly seed tests', async assert => {
-      const command = ['qunit', '--seed', 's33d', 'test', 'single.js', 'glob/**/*-test.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-  });
-
-  QUnit.module('config.notrycatch', () => {
-    QUnit.test('errors if notrycatch is used and a rejection occurs', async assert => {
-      try {
-        await execute(['qunit', 'notrycatch/returns-rejection.js']);
-      } catch (e) {
-        assert.pushResult({
-
-          // only in stdout due to using `console.log` in manual `unhandledRejection` handler
-          result: e.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
-          actual: e.stdout + '\n' + e.stderr
-        });
-      }
-    });
-
-    QUnit.test('errors if notrycatch is used and a rejection occurs in a hook', async assert => {
-      try {
-        await execute(['qunit', 'notrycatch/returns-rejection-in-hook.js']);
-      } catch (e) {
-        assert.pushResult({
-
-          // only in stdout due to using `console.log` in manual `unhandledRejection` handler
-          result: e.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
-          actual: e.stdout + '\n' + e.stderr
-        });
-      }
-    });
-  });
-
-  QUnit.test('config.filter (string)', async assert => {
-    const command = ['qunit', 'config-filter-string.js'];
+  // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.
+  // https://github.com/nodejs/node/issues/29532
+  // Can't trivially quote since that breaks Linux which would interpret quotes
+  // as literals.
+  QUnit[skipOnWinTest]('--filter matches nothing', async assert => {
+    const command = ['qunit', '--filter', 'no matches', 'test'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
-  QUnit.test('config.filter (regex)', async assert => {
-    const command = ['qunit', 'config-filter-regex.js'];
+  QUnit.test('--require loads unknown module', async assert => {
+    const command = ['qunit', 'single.js', '--require', 'does-not-exist-at-all'];
+    const execution = await execute(command);
+    // TODO: Change to a generic tap-outputs.js
+    // https://github.com/qunitjs/qunit/issues/1688
+    assert.equal(execution.code, 1);
+    assert.true(execution.stderr.includes("Error: Cannot find module 'does-not-exist-at-all'"));
+    assert.equal(execution.stdout, '');
+  });
+
+  QUnit.test('config.notrycatch with rejected test', async assert => {
+    const command = ['qunit', 'notrycatch/returns-rejection.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.pushResult({
+      // only in stdout due to using `console.log` in manual `unhandledRejection` handler
+      result: execution.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
+      actual: execution.stdout + '\n' + execution.stderr
+    });
   });
 
-  QUnit.test('config.filter (regex exclude)', async assert => {
-    const command = ['qunit', 'config-filter-regex-exclude.js'];
+  QUnit.test('config.notrycatch with rejected hook', async assert => {
+    const command = ['qunit', 'notrycatch/returns-rejection-in-hook.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.pushResult({
+      // only in stdout due to using `console.log` in manual `unhandledRejection` handler
+      result: execution.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
+      actual: execution.stdout + '\n' + execution.stderr
+    });
   });
 
-  QUnit.test('config.module', async assert => {
-    const command = ['qunit', 'config-module.js'];
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('assert.async() handled after fail in other test', async assert => {
+    const command = ['qunit', 'drooling-done.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
-  QUnit.test('config.moduleId', async assert => {
-    const command = ['qunit', 'config-moduleId.js'];
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('assert.async() handled again in other test', async assert => {
+    const command = ['qunit', 'drooling-extra-done.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
-  QUnit.test('config.testId', async assert => {
-    const command = ['qunit', 'config-testId.js'];
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('assert.async() handled too often', async assert => {
+    const command = ['qunit', 'too-many-done-calls.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
-  QUnit.test('config.testTimeout', async assert => {
-    const command = ['qunit', 'config-testTimeout.js'];
-
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, '');
-      assert.equal(e.stdout, getExpected(command));
-    }
-  });
-
-  QUnit.module('config.noglobals', () => {
-    QUnit.test('add global variable', async assert => {
-      const command = ['qunit', 'noglobals/add-global.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    QUnit.test('remove global variable', async assert => {
-      const command = ['qunit', 'noglobals/remove-global.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    QUnit.test('forgive qunit DOM global variables', async assert => {
-      const execution = await execute(['qunit', 'noglobals/ignored.js']);
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-    });
-  });
-
-  QUnit.module('assert.async', () => {
-    QUnit.test('call after tests timeout', async assert => {
-      const command = ['qunit', 'done-after-timeout.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('drooling call to callback across tests', async assert => {
-      const command = ['qunit', 'drooling-done.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('extra call to callback across tests', async assert => {
-      const command = ['qunit', 'drooling-extra-done.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    QUnit.test('extra call to callback outside tests', async assert => {
-      const command = ['qunit', 'drooling-extra-done-outside.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('too many calls to callback', async assert => {
-      const command = ['qunit', 'too-many-done-calls.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-  });
-
-  QUnit.module('only', () => {
-    QUnit.test('test', async assert => {
-      const command = ['qunit', 'only/test.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('nested modules', async assert => {
-      const command = ['qunit', 'only/module.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-
-    QUnit.test('module followed by test', async assert => {
-      const command = ['qunit', 'only/module-then-test.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('flat modules', async assert => {
-      const command = ['qunit', 'only/module-flat.js'];
-      const execution = await execute(command);
-
-      assert.equal(execution.code, 0);
-      assert.equal(execution.stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-  });
-
-  // Regression test for https://github.com/qunitjs/qunit/issues/1478
-  QUnit.test('nested module scopes', async assert => {
-    const command = ['qunit', 'module-nested.js'];
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('module.only() nested', async assert => {
+    const command = ['qunit', 'only/module.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
-  QUnit.test('warns about incorrect hook usage', async assert => {
-    const command = ['qunit', 'incorrect-hooks-warning/test.js'];
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('module.only() flat', async assert => {
+    const command = ['qunit', 'only/module-flat.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, 'The `beforeEach` hook was called inside the wrong module (`module providing hooks > module not providing hooks`). Instead, use hooks provided by the callback to the containing module (`module providing hooks`). This will become an error in QUnit 3.0.', 'The warning shows');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('warns about unsupported async module callback', async assert => {
-    const command = ['qunit', 'async-module-warning/test.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior. This will become an error in QUnit 3.0.', 'The warning shows');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.test('warns about unsupported promise return value from module', async assert => {
-    const command = ['qunit', 'async-module-warning/promise-test.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior. This will become an error in QUnit 3.0.', 'The warning shows');
-    assert.equal(execution.stdout, getExpected(command));
-  });
-
-  QUnit.module('assert.expect()', () => {
-    QUnit.test('mismatched assertion count', async assert => {
-      const command = ['qunit', 'assert-expect/failing-expect.js'];
-      try {
-        const result = await execute(command);
-        assert.pushResult({
-          result: false,
-          actual: result.stdout
-        });
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    QUnit.test('no assertions', async assert => {
-      const command = ['qunit', 'assert-expect/no-assertions.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
-
-    QUnit.test('config.requireExpects', async assert => {
-      const command = ['qunit', 'assert-expect/require-expects.js'];
-      try {
-        await execute(command);
-      } catch (e) {
-        assert.equal(e.code, 1);
-        assert.equal(e.stderr, '');
-        assert.equal(e.stdout, getExpected(command));
-      }
-    });
+    assert.equal(execution.snapshot, getExpected(command));
   });
 });

@@ -40,32 +40,20 @@ QUnit.module('CLI Reporter', function () {
     const command = ['qunit', '--reporter', 'npm-reporter'];
     const execution = await execute(command);
 
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, getExpected(command));
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
   QUnit.test('exits early and lists available reporters if reporter is not found', async function (assert) {
     const command = ['qunit', '--reporter', 'does-not-exist'];
+    const execution = await execute(command);
 
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, getExpected(command));
-      assert.equal(e.stdout, '');
-    }
+    assert.equal(execution.snapshot, getExpected(command));
   });
 
   QUnit.test('exits early and lists available reporters if reporter option is used with no value', async function (assert) {
     const command = ['qunit', '--reporter'];
+    const execution = await execute(command);
 
-    try {
-      await execute(command);
-    } catch (e) {
-      assert.equal(e.code, 1);
-      assert.equal(e.stderr, getExpected(command));
-      assert.equal(e.stdout, '');
-    }
+    assert.equal(execution.snapshot, getExpected(command));
   });
 });

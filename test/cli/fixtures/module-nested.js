@@ -1,3 +1,5 @@
+// Regression test for https://github.com/qunitjs/qunit/issues/1478
+
 try {
   QUnit.module('module 1', () => {
     QUnit.test('test in module 1', assert => {
@@ -5,7 +7,6 @@ try {
     });
   });
 } catch (e) {
-
   // Ignore
 }
 
@@ -19,7 +20,6 @@ try {
     });
   });
 } catch (e) {
-
   // Ignore
 }
 
@@ -30,6 +30,5 @@ try {
     });
   });
 } catch (e) {
-
   // Ignore
 }

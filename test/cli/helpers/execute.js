@@ -50,16 +50,7 @@ function normalize (actual) {
     // Consolidate subsequent qunit.js frames
     .replace(/^(\s+at qunit\.js$)(\n\s+at qunit\.js$)+/gm, '$1')
     // Consolidate subsequent internal frames
-    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1')
-
-    // If the final frame is internal, strip it.
-    // Use negative-lookahead instead of '$' because stdout generally
-    // contains other text before and after the trace as well.
-    //
-    // On Windows with Node 14, for some reason the stack for
-    // the "noglobals/add-global.js" failure does not have a
-    // trailing internal frame whereas it does on other platform.
-    .replace(/(\n\s+at internal)(?!\n\s+at )/g, '');
+    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1');
 }
 
 /**
@@ -130,19 +121,26 @@ module.exports.execute = async function execute (command, options = {}, hook) {
 
   try {
     await execPromise;
-    result.stdout = normalize(String(result.stdout).trimEnd());
-    result.stderr = String(result.stderr).trimEnd();
-    return result;
   } catch (e) {
-    e.pid = result.pid;
-    e.code = result.code;
-    e.stdout = normalize(String(result.stdout).trimEnd());
-    e.stderr = normalize(String(result.stderr).trimEnd());
-    throw e;
+    // We return `result` instead of re-throwing a modified `e`
+    // which makes test handlers more consistent by simply asserting
+    // `result.code`. But, makes sure the code is actually non-zero.
+    result.code = result.code || 'oops';
   }
-};
 
-module.exports.normalize = normalize;
+  result.stdout = normalize(String(result.stdout).trimEnd());
+  result.stderr = normalize(String(result.stderr).trimEnd());
+
+  result.snapshot = result.stdout;
+  if (result.stderr) {
+    result.snapshot += (result.snapshot ? '\n\n' : '') + '# stderr\n' + result.stderr;
+  }
+  if (result.code) {
+    result.snapshot += (result.snapshot ? '\n\n' : '') + '# exit code: ' + result.code;
+  }
+
+  return result;
+};
 
 // Very loose command formatter.
 // Not for the purpose of execution, but for the purpose
@@ -153,3 +151,5 @@ module.exports.prettyPrintCommand = function prettyPrintCommand (command) {
     return /[ *]/.test(arg) ? `'${arg}'` : arg;
   }).join(' ');
 };
+
+module.exports.normalize = normalize;
