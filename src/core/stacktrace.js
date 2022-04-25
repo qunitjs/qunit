@@ -2,7 +2,9 @@
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 const fileName = (sourceFromStacktrace(0) || '')
   .replace(/(:\d+)+\)?/, '')
-  .replace(/.+\//, '');
+  // Remove anything prior to the last slash (Unix/Windows)
+  // from the last frame
+  .replace(/.+[/\\]/, '');
 
 export function extractStacktrace (e, offset) {
   offset = offset === undefined ? 4 : offset;
