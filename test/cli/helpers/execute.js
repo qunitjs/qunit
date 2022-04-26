@@ -1,7 +1,9 @@
 'use strict';
 
-const path = require('path');
 const cp = require('child_process');
+const os = require('os');
+const path = require('path');
+
 const reEscape = /([\\{}()|.?*+\-^$[\]])/g;
 
 // Apply light normalization to CLI output to allow strict string
@@ -65,7 +67,7 @@ function normalize (actual) {
  * @param {Object} [options.env]
  * @param {Function} [hook]
  */
-module.exports.execute = async function execute (command, options = {}, hook) {
+async function execute (command, options = {}, hook) {
   options.cwd = path.join(__dirname, '..', 'fixtures');
 
   // Inherit no environment by default
@@ -138,18 +140,64 @@ module.exports.execute = async function execute (command, options = {}, hook) {
   if (result.code) {
     result.snapshot += (result.snapshot ? '\n\n' : '') + '# exit code: ' + result.code;
   }
+  result.command = command;
 
   return result;
-};
+}
 
 // Very loose command formatter.
 // Not for the purpose of execution, but for the purpose
 // of formatting the string key in fixtures/ files.
-module.exports.prettyPrintCommand = function prettyPrintCommand (command) {
+function prettyPrintCommand (command) {
   return command.map(arg => {
     // Quote spaces and stars
     return /[ *]/.test(arg) ? `'${arg}'` : arg;
   }).join(' ');
-};
+}
 
-module.exports.normalize = normalize;
+/**
+ * @param {Array<number,any>} input
+ * @param {number} [concurrency=0]
+ * @return {Array<number,Promise>}
+ */
+function concurrentMap (input, concurrency, asyncFn) {
+  const ret = [];
+  if (!concurrency) {
+    concurrency = os.cpus().length;
+  }
+  if (concurrency < 1) {
+    throw new Error('Concurrency must be non-zero');
+  }
+  for (let i = 0; i < input.length; i++) {
+    const val = input[i];
+    ret[i] = (i < concurrency)
+      ? Promise.resolve(asyncFn(val))
+      : ret[i - concurrency].then(asyncFn.bind(null, val));
+  }
+  return ret;
+}
+
+/**
+ * @param {Object<string,any>} input
+ * @param {number} [concurrency=0]
+ * @return {Object<string,Promise>}
+ */
+function concurrentMapKeys (input, concurrency, asyncFn) {
+  const keys = Object.keys(input);
+  const values = concurrentMap(keys, concurrency, async function (key) {
+    return await asyncFn(input[key]);
+  });
+  const ret = {};
+  for (var i = 0; i < keys.length; i++) {
+    ret[keys[i]] = values[i];
+  }
+  return ret;
+}
+
+module.exports = {
+  normalize,
+  execute,
+  prettyPrintCommand,
+  concurrentMap,
+  concurrentMapKeys
+};

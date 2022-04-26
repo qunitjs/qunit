@@ -1,7 +1,7 @@
 const path = require('path');
 
 const { getIgnoreList } = require('../../src/cli/utils');
-const { normalize } = require('./helpers/execute');
+const { normalize, concurrentMap, concurrentMapKeys } = require('./helpers/execute');
 
 QUnit.module('CLI utils', function () {
   QUnit.test('getIgnoreList()', function (assert) {
@@ -80,5 +80,131 @@ QUnit.module('CLI utils', function () {
 ...`,
       'strip frames for node_modules/append-transform'
     );
+  });
+
+  QUnit.test.each('concurrentMap()', {
+    'concurrency=1': [1, [
+      'prepare',
+      'start A',
+      'init',
+      'finish A',
+      'start B',
+      'finish B',
+      'start C',
+      'finish C',
+      'start D',
+      'finish D',
+      'start E',
+      'finish E',
+      'start F',
+      'finish F'
+    ]],
+    'concurrency=2': [2, [
+      'prepare',
+      'start A',
+      'start B',
+      'init',
+      'finish A',
+      'finish B',
+      'start C',
+      'start D',
+      'finish C',
+      'finish D',
+      'start E',
+      'start F',
+      'finish E',
+      'finish F'
+    ]],
+    'concurrency=3': [3, [
+      'prepare',
+      'start A',
+      'start B',
+      'start C',
+      'init',
+      'finish A',
+      'finish B',
+      'finish C',
+      'start D',
+      'start E',
+      'start F',
+      'finish D',
+      'finish E',
+      'finish F'
+    ]]
+  }, async function (assert, [concurrency, expected]) {
+    const steps = [];
+
+    steps.push('prepare');
+
+    const stream = concurrentMap(
+      ['A', 'B', 'C', 'D', 'E', 'F'],
+      concurrency,
+      async function (val) {
+        steps.push(`start ${val}`);
+        await Promise.resolve();
+        steps.push(`finish ${val}`);
+        return val;
+      }
+    );
+
+    steps.push('init');
+
+    const end = stream.length - 1;
+    await stream[end];
+
+    assert.deepEqual(steps, expected);
+  });
+
+  function waitMicroTicks (count) {
+    let prom = Promise.resolve();
+    for (let i = 1; i < count; i++) {
+      prom = prom.then(() => {
+        return new Promise(resolve => {
+          setImmediate(resolve);
+        });
+      });
+    }
+    return prom;
+  }
+
+  QUnit.test('concurrentMapKeys()', async function (assert) {
+    let actual = [];
+    let running = 0;
+
+    const stream = concurrentMapKeys({
+      one: 10,
+      two: 5,
+      three: 7,
+      four: 1,
+      five: 29,
+      six: 15,
+      seven: 17,
+      eight: 8,
+      nine: 9
+    }, 4, async function (int) {
+      running++;
+      actual.push(running);
+      await waitMicroTicks(int);
+      running--;
+      return 1000 + int;
+    });
+
+    assert.strictEqual(await stream.one, 1010);
+    assert.strictEqual(await stream.seven, 1017);
+    assert.strictEqual(await stream.nine, 1009);
+    assert.deepEqual(actual, [
+      // ramp up
+      1,
+      2,
+      3,
+      // keep up
+      4,
+      4,
+      4,
+      4,
+      // no more remaining
+      3,
+      1
+    ]);
   });
 });

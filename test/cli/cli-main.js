@@ -1,7 +1,7 @@
 'use strict';
 
 const expectedOutput = require('./fixtures/expected/tap-outputs');
-const { execute, prettyPrintCommand } = require('./helpers/execute');
+const { execute, prettyPrintCommand, concurrentMapKeys } = require('./helpers/execute');
 const semver = require('semver');
 
 const skipOnWinTest = (process.platform === 'win32' ? 'skip' : 'test');
@@ -72,10 +72,15 @@ const fixtureCases = {
 };
 
 QUnit.module('CLI Main', () => {
-  QUnit.test.each('fixtures', fixtureCases, async (assert, command) => {
-    const execution = await execute(command);
-    assert.equal(execution.snapshot, getExpected(command));
-  });
+  QUnit.test.each('fixtures',
+    // Faster testing: Let the commands run in the background with concurrency,
+    // and only await/assert the already-started command.
+    concurrentMapKeys(fixtureCases, 0, (command) => execute(command)),
+    async (assert, execution) => {
+      const result = await execution;
+      assert.equal(result.snapshot, getExpected(result.command));
+    }
+  );
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
   QUnit[skipOnWinTest]('report assert.throws() failures properly', async assert => {
