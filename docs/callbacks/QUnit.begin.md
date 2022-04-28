@@ -28,7 +28,7 @@ The callback will be called once, before QUnit runs any tests.
 
 ## Changelog
 
-| UNRELEASED | Added `moduleId` to the `details.modules` objects.
+| [QUnit 2.19.0](https://github.com/qunitjs/qunit/releases/tag/2.19.0) | Added `moduleId` to the `details.modules` objects.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.modules` property, containing `{ name: string }` objects.
 | [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | Added `details.totalTests` property.
 

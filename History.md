@@ -1,4 +1,18 @@
 
+2.19.0 / 2022-04-28
+==================
+
+### Added
+
+* CLI: Add `--module` option. (Shachar) [#1680](https://github.com/qunitjs/qunit/issues/1680)
+* Core: Add `moduleId` to [`QUnit.begin()`](https://api.qunitjs.com/callbacks/QUnit.begin/) details object.
+
+### Fixed
+
+* Core: Fix event "runtime" data to be rounded to milliseconds.
+* Core: Fix pretty stacktrace shortening to work on Windows.
+* HTML Reporter: Faster toolbar setup by reusing `beginDetails.modules`.
+
 2.18.2 / 2022-04-17
 ==================
 
