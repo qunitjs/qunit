@@ -20,12 +20,14 @@ QUnit.test.each('failing tests', {
 >> Message: some message
 >> Actual: false
 >> Expected: true
->> at `],
+>>   at `],
   'no-tests': ['fail-no-tests', `Testing fail-no-tests.html F
 >> global failure
 >> Message: No tests were run.
+>> Actual: undefined
+>> Expected: undefined
 >> Error: No tests were run.
->>   at done (file:)`]
+>>     at done (file:)`]
 }, (assert, [command, expected]) => {
   try {
     const ret = cp.execSync('node_modules/.bin/grunt qunit:' + command, {
