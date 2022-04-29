@@ -244,7 +244,7 @@ export default (function () {
         const attrs = node.attributes;
 
         if (attrs) {
-          for (let i = 0, len = attrs.length; i < len; i++) {
+          for (let i = 0; i < attrs.length; i++) {
             const val = attrs[i].nodeValue;
 
             // IE6 includes all attributes in .attributes, even ones not explicitly

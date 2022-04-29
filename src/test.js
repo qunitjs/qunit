@@ -149,8 +149,9 @@ Test.prototype = {
     const notStartedModules = getNotStartedModules(module);
 
     // ensure the callbacks are executed serially for each module
-    const callbackPromises = notStartedModules.reduce((promiseChain, startModule) => {
-      return promiseChain.then(() => {
+    let moduleStartChain = Promise.resolve();
+    notStartedModules.forEach(startModule => {
+      moduleStartChain = moduleStartChain.then(() => {
         startModule.stats = { all: 0, bad: 0, started: performance.now() };
         emit('suiteStart', startModule.suiteReport.start(true));
         return runLoggingCallbacks('moduleStart', {
@@ -158,9 +159,9 @@ Test.prototype = {
           tests: startModule.tests
         });
       });
-    }, Promise.resolve([]));
+    });
 
-    return callbackPromises.then(() => {
+    return moduleStartChain.then(() => {
       config.current = this;
 
       this.testEnvironment = extend({}, module.testEnvironment);
@@ -442,11 +443,13 @@ Test.prototype = {
           parent = parent.parentModule;
         }
 
-        return completedModules.reduce((promiseChain, completedModule) => {
-          return promiseChain.then(() => {
+        let moduleDoneChain = Promise.resolve();
+        completedModules.forEach(completedModule => {
+          moduleDoneChain = moduleDoneChain.then(() => {
             return logSuiteEnd(completedModule);
           });
-        }, Promise.resolve([]));
+        });
+        return moduleDoneChain;
       }
     }).then(function () {
       config.current = undefined;
