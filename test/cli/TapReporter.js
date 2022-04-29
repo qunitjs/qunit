@@ -351,6 +351,29 @@ Bail out! ReferenceError: Boo is not defined
     );
   });
 
+  QUnit.test('output actual value with a cyclical array', assert => {
+    function createCyclicalArray () {
+      const cyclical = { sub: ['example'] };
+      cyclical.sub.push(cyclical.sub);
+      cyclical.sub.push(cyclical);
+      return cyclical;
+    }
+    emitter.emit('testEnd', makeFailingTestEnd(createCyclicalArray()));
+    assert.strictEqual(last, `  ---
+  message: failed
+  severity: failed
+  actual  : {
+  "sub": [
+    "example",
+    "[Circular]",
+    "[Circular]"
+  ]
+}
+  expected: expected
+  ...`
+    );
+  });
+
   QUnit.test('output actual assertion value of an acyclical structure', assert => {
     // Creates an object that references another object more
     // than once in an acyclical way.
