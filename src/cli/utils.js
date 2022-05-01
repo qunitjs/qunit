@@ -73,12 +73,7 @@ function error (message) {
   process.exit(1);
 }
 
-function capitalize (string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 module.exports = {
-  capitalize,
   error,
   getFilesFromArgs,
   getIgnoreList
