@@ -226,6 +226,10 @@
 	top: 100%;
 	margin-top: 2px;
 
+	/* ensure that when on a narrow viewports and having only one result,
+	   that #qunit-modulefilter-actions fall outside the dropdown rectangle. */
+	min-height: 3em;
+
 	border: 1px solid #AAA;
 	border-top-color: transparent;
 	border-radius: 0 0 .25em .25em;

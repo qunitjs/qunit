@@ -576,7 +576,7 @@ export function escapeText (str) {
       clearfix.className = 'clearfix';
 
       toolbar.appendChild(toolbarFilters);
-      toolbar.appendChild(document.createElement('div'));
+      toolbar.appendChild(clearfix);
     }
   }
 
