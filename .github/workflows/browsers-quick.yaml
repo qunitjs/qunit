@@ -19,10 +19,10 @@ jobs:
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js 10
+      - name: Use Node.js 14
         uses: actions/setup-node@v2
         with:
-          node-version: 10.x
+          node-version: 14.x
 
       - name: Prepare
         run: |

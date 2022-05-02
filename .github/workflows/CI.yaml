@@ -11,15 +11,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: "Linux: Node 14"
+          - name: "Linux: Node 16"
             # Includes 'firefox', 'chromium', and more.
             # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
             os: ubuntu-20.04
-            node: 14.x
+            node: 16.x
             # Run the lint step only once because, in March 2022, GitHub began
             # automatically extracting ESLint warnings from build logs and turning them into
             # checks shown inline in PR diffs, but doesn't de-duplicate these.
             script: npm test
+
+          - name: "Linux: Node 14"
+            os: ubuntu-20.04
+            node: 14.x
+            script: npm run test-nolint
 
           - name: "Linux: Node 12"
             os: ubuntu-20.04
@@ -33,19 +38,17 @@ jobs:
 
           - name: "Integration"
             os: ubuntu-20.04
-            node: 12.x
+            node: 14.x
             script: npm run test-integration
 
-          # On Windows, cannot test CLI yet.
-          # https://github.com/qunitjs/qunit/issues/1359
-          - name: "Windows: Node 14"
+          - name: "Windows: Node 16"
             os: windows-latest
-            node: 14.x
+            node: 16.x
             script: npm run test-nolint
 
-          - name: "macOS: Node 14"
+          - name: "macOS: Node 16"
             os: macos-latest
-            node: 14.x
+            node: 16.x
             script: npm run test-nolint
 
     name: ${{ matrix.name }}
