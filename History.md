@@ -1,4 +1,11 @@
 
+2.19.1 / 2022-05-01
+==================
+
+### Fixed
+
+* HTML Reporter: Restore float-clear for narrow viewports. [87c90ce2e0](https://github.com/qunitjs/qunit/commit/87c90ce2e0eb03f3d10b8cec07c0ac9b3709b0d7)
+
 2.19.0 / 2022-04-28
 ==================
 
