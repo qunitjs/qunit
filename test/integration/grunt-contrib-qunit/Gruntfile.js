@@ -12,7 +12,8 @@ module.exports = function (grunt) {
       },
       pass: ['pass-*.html'],
       'fail-assert': 'fail-assert.html',
-      'fail-no-tests': 'fail-no-tests.html'
+      'fail-no-tests': 'fail-no-tests.html',
+      'fail-uncaught': 'fail-uncaught.html'
     }
   });
 

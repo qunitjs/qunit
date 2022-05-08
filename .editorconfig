@@ -12,6 +12,8 @@ insert_final_newline = true
 
 [test/cli/TapReporter.js]
 trim_trailing_whitespace = false
+[test/integration/grunt-contrib-qunit.js]
+trim_trailing_whitespace = false
 [test/integration/nyc.js]
 trim_trailing_whitespace = false
 

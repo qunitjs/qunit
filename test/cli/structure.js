@@ -57,13 +57,11 @@ QUnit.module('structure', () => {
       cwd: path.join(__dirname, '..'),
       filesOnly: true
     })
-
-    // Normalize Windows-style line endings as yielded by glob.
-    // The expected HTML paths use Unix-style line ending, as per HTTP.
+      // Normalize Windows-style line endings as yielded by glob.
+      // The expected HTML paths use Unix-style line ending, as per HTTP.
       .map(file => file.replace(/\\/g, '/'))
-
-    // Ignore file names containing "--", which are subresources (e.g. iframes).
-    // Ignore integration/grunt-contrib-qunit, which is managed separately.
+      // Ignore file names containing "--", which are subresources (e.g. iframes).
+      // Ignore integration/grunt-contrib-qunit, which is managed separately.
       .filter(file => !file.includes('--') && !file.includes('integration'))
       .map(file => `test/${file}`);
 
