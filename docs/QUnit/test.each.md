@@ -86,9 +86,7 @@ function isEven (x) {
 }
 
 async function isAsyncEven (x) {
-  return new Promise(resolve => {
-    resolve(isEven(x));
-  });
+  return isEven(x);
 }
 
 QUnit.test.each('isAsyncEven()', [2, 4], async (assert, data) => {
@@ -96,7 +94,7 @@ QUnit.test.each('isAsyncEven()', [2, 4], async (assert, data) => {
 });
 ```
 
-Return a Promise from each callback, using classic ES5 syntax:
+Or in classic ES5 syntax, by returning a Promise from each callback:
 
 ```js
 function isEven (x) {
@@ -104,14 +102,12 @@ function isEven (x) {
 }
 
 function isAsyncEven (x) {
-  return new Promise(function (resolve) {
-    resolve(isEven(x));
-  });
+  return Promise.resolve(isEven(x));
 }
 
-QUnit.test.each('isAsyncEven()', [2, 4], (assert, value) => {
-  return isAsyncEven(value).then((result) => {
-    assert.true(result, `${value} is even`);
+QUnit.test.each('isAsyncEven()', [2, 4], function (assert, data) {
+  return isAsyncEven(data).then(function (result) {
+    assert.true(result, data + ' is even');
   });
 });
 ```
