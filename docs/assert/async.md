@@ -18,7 +18,7 @@ Instruct QUnit to wait for an asynchronous operation.
 
 | name | description |
 |------|-------------|
-| `count` (number) | Number of expected calls before the tests will resume. Defaults to `1`. |
+| `count` (number) | Number of expected calls. Defaults to `1`. |
 
 `assert.async()` returns a callback function and pauses test processing until the callback function is called. The callback will throw an `Error` if it is invoked more often than the required call count.
 

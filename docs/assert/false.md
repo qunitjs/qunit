@@ -14,7 +14,7 @@ A strict comparison that passes if the first argument is boolean `false`.
 | name | description |
 |------|-------------|
 | `actual` | Expression being tested |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description |
 
 `false` requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails.
 

@@ -15,8 +15,7 @@ Check that an object does not contain certain properties.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | Short description of the actual value |
-
+| `message` (string) | Short description |
 
 The `notPropContains` assertion compares the subset of properties in the expected object, and tests that these keys are either absent or hold a value that is different according to a strict equality comparison.
 

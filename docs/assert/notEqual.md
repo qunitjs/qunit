@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.notEqual()
-excerpt: A non-strict comparison, checking for inequality.
+excerpt: A loose inequality comparison.
 groups:
   - assert
 redirect_from:
@@ -11,15 +11,15 @@ version_added: "1.0.0"
 
 `notEqual( actual, expected, message = "" )`
 
-A non-strict comparison, checking for inequality.
+A loose inequality comparison, checking for non-strict differences between two values.
 
 | name | description |
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description |
 
-The `notEqual` assertion uses the simple inverted comparison operator (`!=`) to compare the actual and expected arguments. When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
+The `notEqual` assertion uses the simple inverted comparison operator (`!=`) to compare the actual and expected values. When they aren't equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
 [`assert.equal()`](./equal.md) can be used to test equality.
 

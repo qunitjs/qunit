@@ -16,11 +16,11 @@ Report the result of a custom assertion.
 | `data.result` (boolean) | Result of the assertion |
 | `data.actual` | Expression being tested |
 | `data.expected` | Known comparison value |
-| `data.message` (string) | A short description of the assertion |
+| `data.message` (string or undefined) | Short description of the assertion |
 
 ## Examples
 
-If you need to express an expectation that is not abstracted by QUnit's built-in assertions, you can perform your own logic ad-hoc, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass your own representative boolean result to [`assert.true()`](./true.md).
+If you need to express an expectation that is not abstracted by a built-in QUnit assertion, you can perform your own logic ad-hoc in an expression, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass your own representative boolean result to [`assert.true()`](./true.md).
 
 ```js
 QUnit.test('bad example with remainder', assert => {

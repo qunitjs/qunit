@@ -17,11 +17,11 @@ Compare an object's own properties using a strict comparison.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description of the actual expression |
 
-The `propEqual` assertion compares only an object's own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype, unlike with [`assert.deepEqual()`](./deepEqual.md).
+The `propEqual` assertion only compares an object's own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype. This is in contrast with [`assert.deepEqual()`](./deepEqual.md).
 
-The assertion fails if values differ, if there are additional properties, or if some properties are missing.
+This assertion fails if the values differ, or if there are extra properties, or if some properties are missing.
 
 This method is recursive and can compare any nested or complex object via a plain object.
 

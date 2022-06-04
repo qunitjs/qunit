@@ -1,35 +1,42 @@
 ---
 layout: page-api
 title: assert.step()
-excerpt: A marker for progress in a given test.
+excerpt: Record a step for later verification.
 groups:
   - assert
 version_added: "2.2.0"
 ---
 
-`step( message )`
+`step( value )`
 
-A marker for progress in a given test.
+Record a step for later verification.
 
 | name | description |
 |------|-------------|
-| `message` (string) | Message to display for the step |
+| `value` (string) | Relevant string value, or short description, to mark this step. |
 
-The `step()` assertion registers a passing assertion with a provided message. This makes it easy to check that specific portions of code are being executed, especially in asynchronous test cases and when used with `verifySteps()`. A step will always pass unless a message is not provided or is a non-string value.
+This assertion registers a passing assertion with the provided string. This and any other steps should be verified later in the test via [`assert.verifySteps()`](./verifySteps.md).
 
-Together with the [`assert.verifySteps`](./verifySteps.md) method, `step()` assertions give you an easy way to verify both the count and order of code execution.
+The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.
 
 ## Examples
 
 ```js
-QUnit.test('step example', assert => {
-  const thing = new MyThing();
-  thing.on('something', () => {
-    assert.step('something happened');
+QUnit.test('example', function (assert) {
+  var maker = new WordMaker();
+  maker.on('start', () => {
+    assert.step('start');
   });
-  thing.run();
+  maker.on('data', (word) => {
+    assert.step(word);
+  });
+  maker.on('end', () => {
+    assert.step('end');
+  });
 
-  assert.verifySteps([ 'something happened' ]);
+  maker.process('3.1');
+
+  assert.verifySteps([ 'start', '3', 'point', '1', 'end' ]);
 });
 ```
 

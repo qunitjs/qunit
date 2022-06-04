@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.verifySteps()
-excerpt: A helper assertion to verify the order and number of steps in a test.
+excerpt: Verify the exact order of steps.
 groups:
   - assert
 version_added: "2.2.0"
@@ -9,22 +9,24 @@ version_added: "2.2.0"
 
 `verifySteps( steps, message = "" )`
 
-A helper assertion to verify the order and number of steps in a test.
+Verify the presence and exact order of previously marked steps in a test.
 
 | name | description |
 |------|-------------|
 | `steps` (array) | List of strings |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description |
 
-The `assert.verifySteps()` assertion compares a given array of string values (representing steps) with the order and values of previous `step()` calls. This assertion is helpful for verifying the order and count of portions of code paths, especially asynchronous ones.
+The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.
 
-The list of steps to validate is reset when `assert.verifySteps([/* ...snip ... */])` is called. This allows multiple combinations of `assert.step` and `assert.verifySteps` within the same test.
+For example, you can mark steps to observe and validate whether parts of your code are reached correctly, or to check the frequency (how often) an asynchronous code path is executed. You can also capture any unexpected steps, which are automatically detected and shown as part of the test failure.
 
-Learn how to use the Step API and the value it adds to your test suite.
+This assertion compares a given array of string values to a list of previously recorded steps, as marked via previous calls to [`assert.step()`](./step.md).
+
+Calling `verifySteps()` will clear and reset the internal list of steps. This allows multiple independent sequences of `assert.step()` to exist within the same test.
+
+Refer to the below examples and learn how to use the Step API in your test suite.
 
 ## Examples
-
-The **Step API** strictly validates the order and frequency of observed values. It also allows detecting of unexpected steps, which are then shown as part the test failure.
 
 ### Test event-based interface
 
@@ -32,72 +34,72 @@ This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/ev
 
 ```js
 QUnit.test('good example', async assert => {
-  const thing = new MyThing();
-  thing.on('start', () => {
+  const maker = new WordMaker();
+  maker.on('start', () => {
     assert.step('start');
   });
-  thing.on('middle', () => {
-    assert.step('middle');
+  maker.on('data', (word) => {
+    assert.step(word);
   });
-  thing.on('end', () => {
+  maker.on('end', () => {
     assert.step('end');
   });
-  thing.on('error', message => {
-    assert.step({ error: message });
+  maker.on('error', message => {
+    assert.step('error: ' + message);
   });
 
-  await thing.process();
+  await maker.process('3.1');
 
-  assert.verifySteps([ 'start', 'middle', 'end' ]);
+  assert.verifySteps(['start', '3', 'point', '1', 'end']);
 });
 ```
 
-When approaching this scenario **without the Step API** one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over, because that would provide loose assurances and can easily cause false positives (a callback might not run, run out of order, or run multipe times). It also offers rather limited debugging information in case of problems.
+When approaching this scenario **without the Step API** one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over. This creates loose assurances, and can easily cause false positives (a callback might not run, run out of order, or run multipe times). It also offers rather limited debugging information.
 
 ```js
 // WARNING: This is a BAD example
-QUnit.test('bad example 1', assert => {
-  const thing = new MyThing();
-  thing.on('start', () => {
+QUnit.test('bad example 1', async assert => {
+  const maker = new WordMaker();
+  maker.on('start', () => {
     assert.true(true, 'start');
   });
-  thing.on('middle', () => {
+  maker.on('middle', () => {
     assert.true(true, 'middle');
   });
-  thing.on('end', () => {
+  maker.on('end', () => {
     assert.true(true, 'end');
   });
-  thing.on('error', () => {
+  maker.on('error', () => {
     assert.true(false, 'error');
   });
 
-  return thing.process();
+  await maker.process();
 });
 ```
 
-A less fragile approach could involve a local counter variable with an array that we check with [`deepEqual`](./deepEqual.md). This catches out-of-order issues, unexpected values, duplicate values, and provides detailed debugging information in case of problems. This is basically how the Step API works:
+A less fragile approach could involve a local array that we check afterwards with [`deepEqual`](./deepEqual.md). This catches out-of-order issues, unexpected values, and duplicate values. It also provides detailed debugging information in case of problems. The below is in essence how the Step API works:
 
 ```js
-QUnit.test('manual example without Step API', assert => {
+QUnit.test('manual example without Step API', async assert => {
   const values = [];
 
-  const thing = new MyThing();
-  thing.on('start', () => {
+  const maker = new WordMaker();
+  maker.on('start', () => {
     values.push('start');
   });
-  thing.on('middle', () => {
+  maker.on('middle', () => {
     values.push('middle');
   });
-  thing.on('end', () => {
+  maker.on('end', () => {
     values.push('end');
   });
-  thing.on('error', () => {
+  maker.on('error', () => {
     values.push('error');
   });
 
-  return thing.process().then(() => {
-    assert.deepEqual(values, [ 'start', 'middle', 'end' ]);
-  });
+  await maker.process();
+
+  assert.deepEqual(values, ['start', 'middle', 'end']);
 });
 ```
 
@@ -135,10 +137,10 @@ The internal buffer of observed steps is automatically reset when calling `verif
 QUnit.test('multiple verifications example', assert => {
   assert.step('one');
   assert.step('two');
-  assert.verifySteps([ 'one', 'two' ]);
+  assert.verifySteps(['one', 'two']);
 
   assert.step('three');
   assert.step('four');
-  assert.verifySteps([ 'three', 'four' ]);
+  assert.verifySteps(['three', 'four']);
 });
  ```

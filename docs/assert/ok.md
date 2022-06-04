@@ -11,16 +11,18 @@ version_added: "1.0.0"
 
 `ok( state, message = "" )`
 
-A boolean check. Passes if the first argument is truthy.
+A boolean check that passes when the first argument is truthy.
 
 | name | description |
 |------|-------------|
 | `state` | Expression being tested |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description |
 
-The most basic assertion in QUnit, `ok()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
+This assertion requires only one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
 
-[`assert.notOk()`](./notOk.md) is the inverse of this method.
+To strictly compare against boolean true, use [`assert.true()`](./true.md).
+
+For the inverse of `ok()`, refer to [`assert.notOk()`](./notOk.md)
 
 ## Examples
 

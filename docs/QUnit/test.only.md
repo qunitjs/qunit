@@ -26,7 +26,7 @@ Add a test that is exclusively run, preventing other tests from running unless t
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-Use this method to focus your test suite on specific tests. `QUnit.only` will cause any other tests in your suite to be ignored.
+Use this method to focus your test suite on specific tests. `QUnit.test.only` will cause any other tests in your suite to be ignored.
 
 This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful as it can be done upfront without first running the test suite, e.g. in a codebase with many long-running tests.
 

@@ -15,11 +15,11 @@ Specify how many assertions are expected in a test.
 
 | name | description |
 |------|-------------|
-| `amount` | Number of expected assertions in this test. |
+| `amount` | Number of expected assertions in this test |
 
-This is most commonly used as `assert.expect(0)`, which indicates that a test may pass making any assertions. This means the test is only used to verify that the code to completion without any uncaught errors. This is is essentially the inverse of [`assert.throws()`](./throws.md).
+This is most commonly used as `assert.expect(0)`, which indicates that a test may pass without making any assertions. This means the test is only used to verify that the code runs to completion, without any uncaught errors. This is is essentially the inverse of [`assert.throws()`](./throws.md).
 
-It can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.
+This can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.
 
 It is recommended to test asynchronous code with [`assert.step()`](./step.md) or [`assert.async()`](./async.md) instead.
 

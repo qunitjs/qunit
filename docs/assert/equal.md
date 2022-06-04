@@ -19,15 +19,15 @@ A non-strict comparison of two values.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description of the actual expression |
 
 The `equal` assertion uses the simple comparison operator (`==`) to compare the actual and expected arguments. When they are equal, the assertion passes; otherwise, it fails. When it fails, both actual and expected values are displayed in the test result, in addition to a given message.
 
 This method is similar to the `assertEquals()` method found in xUnit-style frameworks.
 
-[`assert.notEqual()`](./notEqual.md) can be used to explicitly test inequality.
+To explicitly test inequality, use [`assert.notEqual()`](./notEqual.md).
 
-[`assert.strictEqual()`](./strictEqual.md) can be used to test strict equality.
+To test for strict equality, use [`assert.strictEqual()`](./strictEqual.md).
 
 ## Changelog
 

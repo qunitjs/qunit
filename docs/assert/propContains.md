@@ -15,8 +15,7 @@ Check that an object contains certain properties.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | Short description of the actual value |
-
+| `message` (string) | Short description of the actual expression |
 
 The `propContains` assertion compares only the **subset** of properties in the expected object,
 and tests that these keys exist as own properties with strictly equal values.
@@ -26,7 +25,7 @@ This method is recursive and allows partial comparison of nested objects as well
 ## See also
 
 * Use [`assert.propEqual()`](./propEqual.md) to compare all properties, considering extra properties as unexpected.
-* Use [`assert.notPropContains()`](./notPropContains.md) to test for the absence or inequality of certain properties.
+* Use [`assert.notPropContains()`](./notPropContains.md) to test for the absence or inequality of properties.
 
 ## Examples
 

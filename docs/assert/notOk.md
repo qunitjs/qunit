@@ -4,19 +4,23 @@ title: assert.notOk()
 excerpt: Check if the first argument is falsy.
 groups:
   - assert
+redirect_from:
+  - "/notOk/"
 version_added: "1.18.0"
 ---
 
 `notOk( state, message = "" )`
 
-A boolean check, inverse of [`assert.ok()`](./ok.md). Passes if the first argument is falsy.
+A boolean check that passes when the first argument is falsy.
 
 | name | description |
 |------|-------------|
-| state | Expression being tested |
-| message (string) | A short description of the assertion |
+| `state` | Expression being tested |
+| `message` (string) | Short description |
 
-`notOk()` requires just one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.
+This assertion requires only one argument. If the argument evaluates to false, the assertion passes; otherwise, it fails.
+
+To strictly compare against boolean false, use [`assert.false()`](./false.md).
 
 ## Examples
 

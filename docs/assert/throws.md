@@ -19,15 +19,15 @@ Test if a callback throws an exception, and optionally compare the thrown error.
 |------|-------------|
 | `blockFn` (function) | Function to execute |
 | `expectedMatcher` | Expected error matcher |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description of the assertion |
 
 When testing code that is expected to throw an exception based on a specific set of circumstances, use `assert.throws()` to catch the error object for testing and comparison.
 
 The `expectedMatcher` argument can be:
 
-* An Error object
-* An Error constructor to use ala `errorValue instanceof expectedMatcher`
-* A RegExp that matches (or partially matches) the String representation
+* An Error object.
+* An Error constructor to use ala `errorValue instanceof expectedMatcher`.
+* A RegExp that matches (or partially matches) the string representation.
 * A callback Function that must return `true` to pass the assertion check.
 
 <p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises()`. It has the same signature and behaviour, just a different name.</p>

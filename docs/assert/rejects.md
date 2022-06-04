@@ -14,10 +14,9 @@ Test if the provided promise rejects, and optionally compare the rejection value
 
 | name | description |
 |------|-------------|
-| `promise` (thenable) | promise to test for rejection |
+| `promise` (thenable) | Promise to test for rejection |
 | `expectedMatcher` | Rejection value matcher |
-| `message` (string) | A short description of the assertion |
-
+| `message` (string) | Short description of the assertion |
 
 When testing code that is expected to return a rejected promise based on a
 specific set of circumstances, use `assert.rejects()` for testing and
@@ -26,9 +25,9 @@ comparison.
 The `expectedMatcher` argument can be:
 
 * A function that returns `true` when the assertion should be considered passing.
-* An Error object
-* A base constructor to use ala `rejectionValue instanceof expectedMatcher`
-* A RegExp that matches (or partially matches) `rejectionValue.toString()`
+* An Error object.
+* A base constructor to use ala `rejectionValue instanceof expectedMatcher`.
+* A RegExp that matches (or partially matches) `rejectionValue.toString()`.
 
 Note: in order to avoid confusion between the `message` and the `expectedMatcher`, the `expectedMatcher` **can not** be a string.
 

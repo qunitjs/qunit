@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.deepEqual()
-excerpt: A deep recursive strict comparison.
+excerpt: A recursive and strict comparison.
 groups:
   - assert
 redirect_from:
@@ -11,19 +11,21 @@ version_added: "1.0.0"
 
 `deepEqual( actual, expected, message = "" )`
 
-A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.
+A recursive and strict comparison, considering all own and inherited properties.
 
 | name | description |
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | A short description of the assertion |
+| `message` (string) | Short description of the actual expression |
 
-The `deepEqual` assertion can be used to compare the property values of objects, such that `{ key: value }` is equal to `{ key: value }`. For objects, their identity is disregarded by `deepEqual`.
+This assertion compares the full objects as passed. For primitive values, a strict comparison is performed. For objects, the object identity is disregarded and instead a recursive comparison of all own and inherited properties is used. This means arrays, plain objects, and arbitrary class instance objects can all be compared in this way.
 
-`deepEqual` compares all inherited properties. Use [`assert.propEqual()`](./propEqual.md) to test deep and strict equality only on own properties.
+The deep comparison includes built-in support for Date objects, regular expressions (RegExp), NaN, as well as ES6 features such as Symbol, Set, and Map objects.
 
-[`assert.notDeepEqual()`](./notDeepEqual.md) can be used to explicitly test deep, strict inequality.
+To assert strict equality on own properties only, refer to [`assert.propEqual()`](./propEqual.md) instead.
+
+[`assert.notDeepEqual()`](./notDeepEqual.md) can be used to check for inequality instead.
 
 ## Examples
 
