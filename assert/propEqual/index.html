@@ -86,14 +86,14 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td>Short description of the actual expression</td>
     </tr>
   </tbody>
 </table>
 
-<p>The <code class="language-plaintext highlighter-rouge">propEqual</code> assertion compares only an object’s own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype, unlike with <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">assert.deepEqual()</code></a>.</p>
+<p>The <code class="language-plaintext highlighter-rouge">propEqual</code> assertion only compares an object’s own properties. This means the expected value does not need to be an instance of the same class or otherwise inherit the same prototype. This is in contrast with <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">assert.deepEqual()</code></a>.</p>
 
-<p>The assertion fails if values differ, if there are additional properties, or if some properties are missing.</p>
+<p>This assertion fails if the values differ, or if there are extra properties, or if some properties are missing.</p>
 
 <p>This method is recursive and can compare any nested or complex object via a plain object.</p>
 

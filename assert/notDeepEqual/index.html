@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.notDeepEqual() | QUnit</title>
-<meta property="og:title" content="assert.notDeepEqual()"><meta name="description" content="An inverted deep recursive comparison."><meta property="og:description" content="An inverted deep recursive comparison."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.notDeepEqual()"><meta name="description" content="An inverted deep equal comparison."><meta property="og:description" content="An inverted deep equal comparison."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">notDeepEqual( actual, expected, message = "" )</code></p>
 
-<p>An inverted deep recursive comparison, working on primitive types, arrays, objects, regular expressions, dates and functions.</p>
+<p>An inverted deep equal comparison.</p>
 
 <table>
   <thead>
@@ -86,10 +86,14 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td>Short description</td>
     </tr>
   </tbody>
 </table>
+
+<p>This assertion fails if the actual and expected values are recursively equal by strict comparison, considering both own and inherited properties.</p>
+
+<p>The assertion passes if there are structural differences, type differences, or even a subtle difference in a particular property value.</p>
 
 <p>This is the inverse of <a href="/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">assert.deepEqual()</code></a>.</p>
 

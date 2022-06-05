@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.deepEqual() | QUnit</title>
-<meta property="og:title" content="assert.deepEqual()"><meta name="description" content="A deep recursive strict comparison."><meta property="og:description" content="A deep recursive strict comparison."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.deepEqual()"><meta name="description" content="A recursive and strict comparison."><meta property="og:description" content="A recursive and strict comparison."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">deepEqual( actual, expected, message = "" )</code></p>
 
-<p>A deep recursive strict comparison, working on primitive types, arrays, objects, regular expressions, dates and functions considering all own and inherited properties.</p>
+<p>A recursive and strict comparison, considering all own and inherited properties.</p>
 
 <table>
   <thead>
@@ -86,16 +86,18 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td>Short description of the actual expression</td>
     </tr>
   </tbody>
 </table>
 
-<p>The <code class="language-plaintext highlighter-rouge">deepEqual</code> assertion can be used to compare the property values of objects, such that <code class="language-plaintext highlighter-rouge">{ key: value }</code> is equal to <code class="language-plaintext highlighter-rouge">{ key: value }</code>. For objects, their identity is disregarded by <code class="language-plaintext highlighter-rouge">deepEqual</code>.</p>
+<p>This assertion compares the full objects as passed. For primitive values, a strict comparison is performed. For objects, the object identity is disregarded and instead a recursive comparison of all own and inherited properties is used. This means arrays, plain objects, and arbitrary class instance objects can all be compared in this way.</p>
 
-<p><code class="language-plaintext highlighter-rouge">deepEqual</code> compares all inherited properties. Use <a href="/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> to test deep and strict equality only on own properties.</p>
+<p>The deep comparison includes built-in support for Date objects, regular expressions (RegExp), NaN, as well as ES6 features such as Symbol, Set, and Map objects.</p>
 
-<p><a href="/assert/notDeepEqual/"><code class="language-plaintext highlighter-rouge">assert.notDeepEqual()</code></a> can be used to explicitly test deep, strict inequality.</p>
+<p>To assert strict equality on own properties only, refer to <a href="/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> instead.</p>
+
+<p><a href="/assert/notDeepEqual/"><code class="language-plaintext highlighter-rouge">assert.notDeepEqual()</code></a> can be used to check for inequality instead.</p>
 
 <h2 id="examples">Examples</h2>
 

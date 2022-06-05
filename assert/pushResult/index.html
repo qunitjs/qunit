@@ -89,15 +89,15 @@
       <td>Known comparison value</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">data.message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td><code class="language-plaintext highlighter-rouge">data.message</code> (string or undefined)</td>
+      <td>Short description of the assertion</td>
     </tr>
   </tbody>
 </table>
 
 <h2 id="examples">Examples</h2>
 
-<p>If you need to express an expectation that is not abstracted by QUnit’s built-in assertions, you can perform your own logic ad-hoc, and then pass two directly comparable values to <a href="/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass your own representative boolean result to <a href="/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
+<p>If you need to express an expectation that is not abstracted by a built-in QUnit assertion, you can perform your own logic ad-hoc in an expression, and then pass two directly comparable values to <a href="/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass your own representative boolean result to <a href="/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example with remainder</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>

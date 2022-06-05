@@ -79,7 +79,7 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">promise</code> (thenable)</td>
-      <td>promise to test for rejection</td>
+      <td>Promise to test for rejection</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">expectedMatcher</code></td>
@@ -87,7 +87,7 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td>Short description of the assertion</td>
     </tr>
   </tbody>
 </table>
@@ -100,9 +100,9 @@ comparison.</p>
 
 <ul>
   <li>A function that returns <code class="language-plaintext highlighter-rouge">true</code> when the assertion should be considered passing.</li>
-  <li>An Error object</li>
-  <li>A base constructor to use ala <code class="language-plaintext highlighter-rouge">rejectionValue instanceof expectedMatcher</code></li>
-  <li>A RegExp that matches (or partially matches) <code class="language-plaintext highlighter-rouge">rejectionValue.toString()</code></li>
+  <li>An Error object.</li>
+  <li>A base constructor to use ala <code class="language-plaintext highlighter-rouge">rejectionValue instanceof expectedMatcher</code>.</li>
+  <li>A RegExp that matches (or partially matches) <code class="language-plaintext highlighter-rouge">rejectionValue.toString()</code>.</li>
 </ul>
 
 <p>Note: in order to avoid confusion between the <code class="language-plaintext highlighter-rouge">message</code> and the <code class="language-plaintext highlighter-rouge">expectedMatcher</code>, the <code class="language-plaintext highlighter-rouge">expectedMatcher</code> <strong>can not</strong> be a string.</p>

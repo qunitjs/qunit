@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">ok( state, message = "" )</code></p>
 
-<p>A boolean check. Passes if the first argument is truthy.</p>
+<p>A boolean check that passes when the first argument is truthy.</p>
 
 <table>
   <thead>
@@ -82,14 +82,16 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>A short description of the assertion</td>
+      <td>Short description</td>
     </tr>
   </tbody>
 </table>
 
-<p>The most basic assertion in QUnit, <code class="language-plaintext highlighter-rouge">ok()</code> requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails. If a second message argument is provided, it will be displayed in place of the result.</p>
+<p>This assertion requires only one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.</p>
 
-<p><a href="/assert/notOk/"><code class="language-plaintext highlighter-rouge">assert.notOk()</code></a> is the inverse of this method.</p>
+<p>To strictly compare against boolean true, use <a href="/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
+
+<p>For the inverse of <code class="language-plaintext highlighter-rouge">ok()</code>, refer to <a href="/assert/notOk/"><code class="language-plaintext highlighter-rouge">assert.notOk()</code></a></p>
 
 <h2 id="examples">Examples</h2>
 

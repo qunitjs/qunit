@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.timeout() | QUnit</title>
-<meta property="og:title" content="assert.timeout()"><meta name="description" content="Set how long to wait for async operations."><meta property="og:description" content="Set how long to wait for async operations."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.timeout()"><meta name="description" content="How long to wait for async operations."><meta property="og:description" content="How long to wait for async operations."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -66,7 +66,7 @@
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">timeout( duration )</code></p>
 
-<p>Set how long to wait for async operations to complete before failing the test.</p>
+<p>Set how long to wait for async operations to finish.</p>
 
 <table>
   <thead>
@@ -78,16 +78,16 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">duration</code> (number)</td>
-      <td>The length of time, in milliseconds, to wait for async operations.</td>
+      <td>The length of time to wait, in milliseconds.</td>
     </tr>
   </tbody>
 </table>
 
-<p><code class="language-plaintext highlighter-rouge">assert.timeout()</code> defines how long to wait (at most) in the current test. It overrides <a href="/config/testTimeout/"><code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code></a> on a per-test basis.</p>
+<p>This assertion defines how long to wait (at most) in the current test. It overrides <a href="/config/testTimeout/"><code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code></a> on a per-test basis.</p>
 
-<p>The timeout length only applies when performing async operations. If <code class="language-plaintext highlighter-rouge">0</code> is passed, then any asynchronous task may fail the test.</p>
+<p>The timeout length only applies when a test actually involves asynchronous functions or promises. If <code class="language-plaintext highlighter-rouge">0</code> is passed, then awaiting or returning any Promise may fail the test.</p>
 
-<p>If <code class="language-plaintext highlighter-rouge">assert.timeout()</code> is called after a timeout has already been set, the old timeout will be cleared and the new duration will be used for a new timer. If a non-numeric value is passed as an argument, the function will throw an error.</p>
+<p>If <code class="language-plaintext highlighter-rouge">assert.timeout()</code> is called after a different timeout is already set, the old timeout will be cleared and the new duration will be used to start a new timer.</p>
 
 <h2 id="examples">Examples</h2>
 

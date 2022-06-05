@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.step() | QUnit</title>
-<meta property="og:title" content="assert.step()"><meta name="description" content="A marker for progress in a given test."><meta property="og:description" content="A marker for progress in a given test."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="assert.step()"><meta name="description" content="Record a step for later verification."><meta property="og:description" content="Record a step for later verification."><link rel="me" href="https://mastodon.technology/@qunitjs"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -64,9 +64,9 @@
 <div class="content" role="main">
     <h1>assert.step()</h1><p class="version-details">version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.2.0">2.2.0</a>
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p><code class="language-plaintext highlighter-rouge">step( message )</code></p>
+<p><code class="language-plaintext highlighter-rouge">step( value )</code></p>
 
-<p>A marker for progress in a given test.</p>
+<p>Record a step for later verification.</p>
 
 <table>
   <thead>
@@ -77,26 +77,33 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>Message to display for the step</td>
+      <td><code class="language-plaintext highlighter-rouge">value</code> (string)</td>
+      <td>Relevant string value, or short description, to mark this step.</td>
     </tr>
   </tbody>
 </table>
 
-<p>The <code class="language-plaintext highlighter-rouge">step()</code> assertion registers a passing assertion with a provided message. This makes it easy to check that specific portions of code are being executed, especially in asynchronous test cases and when used with <code class="language-plaintext highlighter-rouge">verifySteps()</code>. A step will always pass unless a message is not provided or is a non-string value.</p>
+<p>This assertion registers a passing assertion with the provided string. This and any other steps should be verified later in the test via <a href="/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a>.</p>
 
-<p>Together with the <a href="/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps</code></a> method, <code class="language-plaintext highlighter-rouge">step()</code> assertions give you an easy way to verify both the count and order of code execution.</p>
+<p>The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.</p>
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">step example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">thing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyThing</span><span class="p">();</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">something</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">something happened</span><span class="dl">'</span><span class="p">);</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WordMaker</span><span class="p">();</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">thing</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">something happened</span><span class="dl">'</span> <span class="p">]);</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nx">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">3.1</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">verifySteps</span><span class="p">([</span> <span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">point</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span> <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

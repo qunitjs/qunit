@@ -78,14 +78,14 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">amount</code></td>
-      <td>Number of expected assertions in this test.</td>
+      <td>Number of expected assertions in this test</td>
     </tr>
   </tbody>
 </table>
 
-<p>This is most commonly used as <code class="language-plaintext highlighter-rouge">assert.expect(0)</code>, which indicates that a test may pass making any assertions. This means the test is only used to verify that the code to completion without any uncaught errors. This is is essentially the inverse of <a href="/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a>.</p>
+<p>This is most commonly used as <code class="language-plaintext highlighter-rouge">assert.expect(0)</code>, which indicates that a test may pass without making any assertions. This means the test is only used to verify that the code runs to completion, without any uncaught errors. This is is essentially the inverse of <a href="/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a>.</p>
 
-<p>It can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.</p>
+<p>This can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.</p>
 
 <p>It is recommended to test asynchronous code with <a href="/assert/step/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a> or <a href="/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead.</p>
 
