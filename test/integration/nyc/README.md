@@ -1,5 +1,7 @@
 # QUnit ♥️ Istanbul
 
+See also <https://istanbul.js.org>.
+
 ```bash
 npm test
 ```
