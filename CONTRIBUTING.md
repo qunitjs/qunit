@@ -36,7 +36,7 @@ Install dependencies in the repository via `npm ci`. Make your code
 changes and run `npm test` which will validate the syntax and coding style,
 and run unit and integration tests.
 
-In general, code changes should be accompanied by a unit tests to verify the
+In general, code changes should be accompanied by a unit test to verify the
 change in functionality. Once the new tests are passing, make a commit, push it
 to your GitHub fork, and create the pull request.
 
