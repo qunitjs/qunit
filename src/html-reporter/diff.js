@@ -56,15 +56,12 @@ QUnit.diff = (function () {
    * @return {!Array.<!DiffMatchPatch.Diff>} Array of diff tuples.
    */
   DiffMatchPatch.prototype.DiffMain = function (text1, text2, optChecklines) {
-    let deadline, checklines, commonlength,
-      commonprefix, commonsuffix, diffs;
-
     // The diff must be complete in up to 1 second.
-    deadline = (new Date()).getTime() + 1000;
+    let deadline = Date.now() + 1000;
 
     // Check for null inputs.
     if (text1 === null || text2 === null) {
-      throw new Error('Null input. (DiffMain)');
+      throw new Error('Cannot diff null input.');
     }
 
     // Check for equality (speedup).
@@ -81,22 +78,20 @@ QUnit.diff = (function () {
       optChecklines = true;
     }
 
-    checklines = optChecklines;
-
     // Trim off common prefix (speedup).
-    commonlength = this.diffCommonPrefix(text1, text2);
-    commonprefix = text1.substring(0, commonlength);
+    let commonlength = this.diffCommonPrefix(text1, text2);
+    let commonprefix = text1.substring(0, commonlength);
     text1 = text1.substring(commonlength);
     text2 = text2.substring(commonlength);
 
     // Trim off common suffix (speedup).
     commonlength = this.diffCommonSuffix(text1, text2);
-    commonsuffix = text1.substring(text1.length - commonlength);
+    let commonsuffix = text1.substring(text1.length - commonlength);
     text1 = text1.substring(0, text1.length - commonlength);
     text2 = text2.substring(0, text2.length - commonlength);
 
     // Compute the diff on the middle block.
-    diffs = this.diffCompute(text1, text2, checklines, deadline);
+    let diffs = this.diffCompute(text1, text2, optChecklines, deadline);
 
     // Restore the prefix and suffix.
     if (commonprefix) {
@@ -601,7 +596,7 @@ QUnit.diff = (function () {
     k2end = 0;
     for (d = 0; d < maxD; d++) {
       // Bail out if deadline is reached.
-      if ((new Date()).getTime() > deadline) {
+      if (Date.now() > deadline) {
         break;
       }
 
@@ -716,25 +711,22 @@ QUnit.diff = (function () {
    * @param {!Array.<!DiffMatchPatch.Diff>} diffs Array of diff tuples.
    */
   DiffMatchPatch.prototype.diffCleanupSemantic = function (diffs) {
-    let changes, equalities, equalitiesLength, lastequality,
-      pointer, lengthInsertions2, lengthDeletions2, lengthInsertions1,
-      lengthDeletions1, deletion, insertion, overlapLength1, overlapLength2;
-    changes = false;
-    equalities = []; // Stack of indices where equalities are found.
-    equalitiesLength = 0; // Keeping our own length var is faster in JS.
+    let changes = false;
+    let equalities = []; // Stack of indices where equalities are found.
+    let equalitiesLength = 0; // Keeping our own length var is faster in JS.
     /** @type {?string} */
-    lastequality = null;
+    let lastequality = null;
 
     // Always equal to diffs[equalities[equalitiesLength - 1]][1]
-    pointer = 0; // Index of current position.
+    let pointer = 0; // Index of current position.
 
     // Number of characters that changed prior to the equality.
-    lengthInsertions1 = 0;
-    lengthDeletions1 = 0;
+    let lengthInsertions1 = 0;
+    let lengthDeletions1 = 0;
 
     // Number of characters that changed after the equality.
-    lengthInsertions2 = 0;
-    lengthDeletions2 = 0;
+    let lengthInsertions2 = 0;
+    let lengthDeletions2 = 0;
     while (pointer < diffs.length) {
       if (diffs[pointer][0] === DIFF_EQUAL) { // Equality found.
         equalities[equalitiesLength++] = pointer;
@@ -789,6 +781,8 @@ QUnit.diff = (function () {
     if (changes) {
       this.diffCleanupMerge(diffs);
     }
+
+    let deletion, insertion, overlapLength1, overlapLength2;
 
     // Find any overlaps between deletions and insertions.
     // e.g: <del>abcxxx</del><ins>xxxdef</ins>
@@ -853,12 +847,9 @@ QUnit.diff = (function () {
    * @private
    */
   DiffMatchPatch.prototype.diffCommonOverlap = function (text1, text2) {
-    let text1Length, text2Length, textLength,
-      best, length, pattern, found;
-
     // Cache the text lengths to prevent multiple calls.
-    text1Length = text1.length;
-    text2Length = text2.length;
+    const text1Length = text1.length;
+    const text2Length = text2.length;
 
     // Eliminate the null case.
     if (text1Length === 0 || text2Length === 0) {
@@ -871,7 +862,7 @@ QUnit.diff = (function () {
     } else if (text1Length < text2Length) {
       text2 = text2.substring(0, text1Length);
     }
-    textLength = Math.min(text1Length, text2Length);
+    const textLength = Math.min(text1Length, text2Length);
 
     // Quick check for the worst case.
     if (text1 === text2) {
@@ -881,11 +872,11 @@ QUnit.diff = (function () {
     // Start by looking for a single character match
     // and increase length until no match is found.
     // Performance analysis: https://neil.fraser.name/news/2010/11/04/
-    best = 0;
-    length = 1;
+    let best = 0;
+    let length = 1;
     while (true) {
-      pattern = text1.substring(textLength - length);
-      found = text2.indexOf(pattern);
+      const pattern = text1.substring(textLength - length);
+      const found = text2.indexOf(pattern);
       if (found === -1) {
         return best;
       }
@@ -910,9 +901,8 @@ QUnit.diff = (function () {
    * @private
    */
   DiffMatchPatch.prototype.diffLinesToChars = function (text1, text2) {
-    let lineArray, lineHash, chars1, chars2;
-    lineArray = []; // E.g. lineArray[4] === 'Hello\n'
-    lineHash = {}; // E.g. lineHash['Hello\n'] === 4
+    let lineArray = []; // E.g. lineArray[4] === 'Hello\n'
+    let lineHash = {}; // E.g. lineHash['Hello\n'] === 4
 
     // '\x00' is a valid character, but various debuggers don't like it.
     // So we'll insert a junk entry to avoid generating a null character.
@@ -956,8 +946,8 @@ QUnit.diff = (function () {
       return chars;
     }
 
-    chars1 = diffLinesToCharsMunge(text1);
-    chars2 = diffLinesToCharsMunge(text2);
+    const chars1 = diffLinesToCharsMunge(text1);
+    const chars2 = diffLinesToCharsMunge(text2);
     return {
       chars1: chars1,
       chars2: chars2,
@@ -973,11 +963,10 @@ QUnit.diff = (function () {
    * @private
    */
   DiffMatchPatch.prototype.diffCharsToLines = function (diffs, lineArray) {
-    let x, chars, text, y;
-    for (x = 0; x < diffs.length; x++) {
-      chars = diffs[x][1];
-      text = [];
-      for (y = 0; y < chars.length; y++) {
+    for (let x = 0; x < diffs.length; x++) {
+      const chars = diffs[x][1];
+      const text = [];
+      for (let y = 0; y < chars.length; y++) {
         text[y] = lineArray[chars.charCodeAt(y)];
       }
       diffs[x][1] = text.join('');
@@ -990,14 +979,12 @@ QUnit.diff = (function () {
    * @param {!Array.<!DiffMatchPatch.Diff>} diffs Array of diff tuples.
    */
   DiffMatchPatch.prototype.diffCleanupMerge = function (diffs) {
-    let pointer, countDelete, countInsert, textInsert, textDelete,
-      commonlength, changes, diffPointer, position;
     diffs.push([DIFF_EQUAL, '']); // Add a dummy entry at the end.
-    pointer = 0;
-    countDelete = 0;
-    countInsert = 0;
-    textDelete = '';
-    textInsert = '';
+    let pointer = 0;
+    let countDelete = 0;
+    let countInsert = 0;
+    let textDelete = '';
+    let textInsert = '';
 
     while (pointer < diffs.length) {
       switch (diffs[pointer][0]) {
@@ -1017,7 +1004,7 @@ QUnit.diff = (function () {
           if (countDelete + countInsert > 1) {
             if (countDelete !== 0 && countInsert !== 0) {
               // Factor out any common prefixes.
-              commonlength = this.diffCommonPrefix(textInsert, textDelete);
+              let commonlength = this.diffCommonPrefix(textInsert, textDelete);
               if (commonlength !== 0) {
                 if ((pointer - countDelete - countInsert) > 0 &&
                   diffs[pointer - countDelete - countInsert - 1][0] ===
@@ -1083,15 +1070,15 @@ QUnit.diff = (function () {
     // Second pass: look for single edits surrounded on both sides by equalities
     // which can be shifted sideways to eliminate an equality.
     // e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
-    changes = false;
+    let changes = false;
     pointer = 1;
 
     // Intentionally ignore the first and last element (don't need checking).
     while (pointer < diffs.length - 1) {
       if (diffs[pointer - 1][0] === DIFF_EQUAL &&
           diffs[pointer + 1][0] === DIFF_EQUAL) {
-        diffPointer = diffs[pointer][1];
-        position = diffPointer.substring(
+        const diffPointer = diffs[pointer][1];
+        const position = diffPointer.substring(
           diffPointer.length - diffs[pointer - 1][1].length
         );
 

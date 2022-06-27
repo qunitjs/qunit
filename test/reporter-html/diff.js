@@ -144,6 +144,23 @@ QUnit.test('simplified diffs', function (assert) {
     QUnit.diff('xxxabc', 'defxxx'),
     '<ins>def</ins><span>xxx</span><del>abc</del>'
   );
+
+  assert.equal(
+    QUnit.diff(
+      'before 0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz more than 100 chars\nsecond_line',
+      'after 1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz more than 100 chars\ndifferent_end'
+    ),
+    '<del>before 0</del><ins>after 1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
+      '<span>foobarbaz more than 100 chars\n</span>' +
+      '<del>secon</del><span>d</span><del>_l</del><span>i</span><ins>ffere</ins><span>n</span><ins>t_</ins><span>e</span><ins>nd</ins>',
+    'simplify longer multi-line diffs'
+  );
 });
 
 QUnit.test('equal values', function (assert) {
@@ -163,7 +180,7 @@ QUnit.test('Edge cases', function (assert) {
     function () {
       QUnit.diff('abc', null);
     },
-    /Error: Null input. \(DiffMain\)/);
+    /Error: Cannot diff null input/);
 
   // this hits several hard-to-reach cases for the sake of code coverage
   var X = repeat('x', 100);
