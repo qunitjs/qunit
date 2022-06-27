@@ -2,7 +2,7 @@
   "private": true,
   "devDependencies": {
     "grunt": "^1.5.1",
-    "grunt-contrib-qunit": "^6.1.0"
+    "grunt-contrib-qunit": "^6.2.0"
   },
   "scripts": {
     "test": "grunt"
