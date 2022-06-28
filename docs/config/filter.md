@@ -22,11 +22,11 @@ Select tests to run based on a substring or pattern match.
 
 <p class="note" markdown="1">This option is available as [CLI option](https://qunitjs.com/cli/), as control in the [HTML Reporter](https://qunitjs.com/intro/#in-the-browser), and supported as URL query parameter.</p>
 
-Only run tests of which the module name or test name have a case-insensitive substring match for the provided string. You can inverse the filter by prefixing a bang character (`!`) to the string, which will exclude the matched tests, thus only running tests that don't contain the string.
+QUnit only runs tests of which the module name or test name are a case-insensitive substring match for the filter string. You can invert the filter by prefixing an exclamation mark (`!`) to the string, in which case we skip the matched tests, and run the tests that don't match the filter.
 
-You can also match via a regular expression by setting the filter to a regular expression literal in string form, encloses by slashes, such as `/(this|that)/`.
+You can also match via a regular expression by setting the filter to a regular expression literal, enclosed by slashes, such as `/(this|that)/`.
 
-While substring filters are always **case-insensitive**, a regular expression is only insensitive when passing the `/i` flag.
+While substring filters are always **case-insensitive**, a regular expression is case-sensitive by default.
 
 See also:
 * [QUnit.config.module](./module.md)
@@ -35,13 +35,13 @@ See also:
 
 ### Substring filter
 
-The below matches `QUnit.module( "FooBar" )` and `QUnit.test( "createFooBar" )`.
+The below matches `FooBar` and `foo > bar`, because string matching is case-insensitive.
 
 ```js
 QUnit.config.filter = 'foo';
 ```
 
-As inverted filter, the below would skip `QUnit.module( "FooBar" )` and `QUnit.test( "createFooBar" )`, but match `QUnit.module( "Bar" )` and `QUnit.test( "createBar" )`.
+As inversed filter, the below skips `FooBar` and `foo > bar`, but runs `Bar` and `bar > sub`.
 
 ```js
 QUnit.config.filter = '!foo';
@@ -49,20 +49,26 @@ QUnit.config.filter = '!foo';
 
 ### Regular expression filter
 
-The below would match `QUnit.test( "foo" )`, but not `QUnit.test( "Foo" )`.
+The below matches `foo` but not `Foo`, because regexes are case-sensitive by default.
 
 ```js
 QUnit.config.filter = '/foo/';
 ```
 
-The below would both match `QUnit.test( "foo" )` and `QUnit.test( "Foo" )`.
+The below matches both `foo` and `Foo`.
 
 ```js
 QUnit.config.filter = '/foo/i';
 ```
 
-The below would exclude `QUnit.test( "foo" )` and `QUnit.test( "Foo" )`.
+The below skips both `foo` and `Foo`.
 
 ```js
 QUnit.config.filter = '!/foo/i';
+```
+
+The below matches `foo`, `foo > sub`, and `foo.sub`, but skips `bar`, `bar.foo`, and `FooBar`.
+
+```js
+QUnit.config.filter = '/^foo/';
 ```
