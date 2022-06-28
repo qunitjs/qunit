@@ -23,29 +23,37 @@ Report the result of a custom assertion.
 If you need to express an expectation that is not abstracted by a built-in QUnit assertion, you can perform your own logic ad-hoc in an expression, and then pass two directly comparable values to [`assert.strictEqual()`](./strictEqual.md), or pass your own representative boolean result to [`assert.true()`](./true.md).
 
 ```js
-QUnit.test('bad example with remainder', assert => {
-  const result = 3;
-  const actual = (result % 2) === 1;
-  assert.true(actual, 'remainder of mod 2 is 1');
-  // In case of failure, there is no information about the
-  // actually observed remainder or the expected value
+QUnit.test('bad example of remainder', assert => {
+  const result = 4;
+  const actual = (result % 3) === 2;
+  assert.true(actual, 'remainder');
+  // In case of failure:
+  // > Actual: false
+  // > Expected: true
+  //
+  // No mention of the actual remainder.
+  // No mention of the expected value.
 });
 
-QUnit.test('good example with remainder', assert => {
-  const result = 3;
-  assert.strictEqual(result % 2, 1, 'remainder of mod 2');
+QUnit.test('good example of remainder', assert => {
+  const result = 4;
+  assert.strictEqual(result % 3, 2, 'remainder');
+  // In case of failure:
+  // > Actual: 1
+  // > Expected: 2
 });
 
-QUnit.test('example with value in range', assert => {
+QUnit.test('bad example of between', assert => {
   const actual = 3;
   const isBetween = (actual >= 1 && actual <= 10);
   assert.true(isBetween, 'result between 1 and 10');
-  // No information in case of failure.
-  // Cannot be expressed in a useful way using strictEqual()
+  // In case of failure:
+  // > Actual: false
+  // > Expected: true
   //
-  // Example of failure if result is out of range:
-  // > actual: false
-  // > expected: true
+  // No mention of the actual remainder.
+  // No mention of the expected value.
+  // Cannot be expressed in a useful way with strictEqual()
 });
 ```
 

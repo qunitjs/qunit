@@ -32,15 +32,15 @@ To assert strict equality on own properties only, refer to [`assert.propEqual()`
 Validate the properties and values of a given object.
 
 ```js
-QUnit.test('good example', assert => {
+QUnit.test('passing example', assert => {
   const result = { foo: 'bar' };
 
-  assert.deepEqual(result, { foo: 'bar' }, 'result object');
+  assert.deepEqual(result, { foo: 'bar' });
 });
 ```
 
 ```js
-QUnit.test('bad example', assert => {
+QUnit.test('failing example', assert => {
   const result = {
     a: 'Albert',
     b: 'Berta',
