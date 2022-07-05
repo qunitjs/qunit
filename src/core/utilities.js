@@ -117,20 +117,6 @@ export function objectValuesSubset (obj, model) {
   return subset;
 }
 
-export function extend (a, b, undefOnly) {
-  for (const prop in b) {
-    if (hasOwn.call(b, prop)) {
-      if (b[prop] === undefined) {
-        delete a[prop];
-      } else if (!(undefOnly && typeof a[prop] !== 'undefined')) {
-        a[prop] = b[prop];
-      }
-    }
-  }
-
-  return a;
-}
-
 export function objectType (obj) {
   if (typeof obj === 'undefined') {
     return 'undefined';

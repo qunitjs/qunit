@@ -1,5 +1,5 @@
 import config from './config';
-import { extend, generateHash, performance } from './utilities';
+import { generateHash, performance } from './utilities';
 import { runLoggingCallbacks } from './logging';
 
 import Promise from '../promise';
@@ -166,7 +166,7 @@ function done () {
       error = new Error('No tests were run.');
     }
 
-    test('global failure', extend(function (assert) {
+    test('global failure', Object.assign(function (assert) {
       assert.pushResult({
         result: false,
         message: error.message,

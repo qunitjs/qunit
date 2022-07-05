@@ -1,4 +1,4 @@
-import { extend, performance } from '../core/utilities';
+import { performance } from '../core/utilities';
 
 export default class TestReport {
   constructor (name, suite, options) {
@@ -48,7 +48,7 @@ export default class TestReport {
       }
     }
 
-    return extend(this.start(), {
+    return Object.assign(this.start(), {
       runtime: this.getRuntime(),
       status: this.getStatus(),
       errors: this.getFailedAssertions(),

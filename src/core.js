@@ -11,7 +11,7 @@ import reporters from './reporters';
 
 import config from './core/config';
 import hooks from './core/hooks';
-import { extend, objectType, is, performance } from './core/utilities';
+import { objectType, is, performance } from './core/utilities';
 import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging';
 import { sourceFromStacktrace } from './core/stacktrace';
 import ProcessingQueue from './core/processing-queue';
@@ -39,7 +39,7 @@ QUnit.isLocal = (window && window.location && window.location.protocol === 'file
 // Expose the current QUnit version
 QUnit.version = '@VERSION';
 
-extend(QUnit, {
+Object.assign(QUnit, {
   config,
 
   dump,
@@ -104,19 +104,11 @@ extend(QUnit, {
     onUncaughtException(reason);
   },
 
-  extend: function (...args) {
-    Logger.warn('QUnit.extend is deprecated and will be removed in QUnit 3.0.' +
-      ' Please use Object.assign instead.');
-
-    // delegate to utility implementation, which does not warn and can be used elsewhere internally
-    return extend.apply(this, args);
-  },
-
   load: function () {
     config.pageLoaded = true;
 
     // Initialize the configuration options
-    extend(config, {
+    Object.assign(config, {
       started: 0,
       updateRate: 1000,
       autostart: true,

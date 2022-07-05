@@ -1,5 +1,5 @@
 import QUnit from '../core';
-import { extend, errorString } from '../core/utilities';
+import { errorString } from '../core/utilities';
 import { window, document, navigator, console, StringMap } from '../globals';
 import './urlparams';
 import fuzzysort from 'fuzzysort';
@@ -253,7 +253,7 @@ export function escapeText (str) {
     let querystring = '?';
     const location = window.location;
 
-    params = extend(extend({}, QUnit.urlParams), params);
+    params = Object.assign(Object.assign({}, QUnit.urlParams), params);
 
     for (let key in params) {
       // Skip inherited or undefined properties

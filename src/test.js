@@ -8,7 +8,6 @@ import config from './core/config';
 import {
   diff,
   errorString,
-  extend,
   generateHash,
   hasOwn,
   inArray,
@@ -39,7 +38,7 @@ export default function Test (settings) {
   //
   // This needs is customised by test.each()
   this.stackOffset = 3;
-  extend(this, settings);
+  Object.assign(this, settings);
 
   // If a module is skipped, all its tests and the tests of the child suites
   // should be treated as skipped even if they are defined as `only` or `todo`.
@@ -164,7 +163,7 @@ Test.prototype = {
     return moduleStartChain.then(() => {
       config.current = this;
 
-      this.testEnvironment = extend({}, module.testEnvironment);
+      this.testEnvironment = Object.assign({}, module.testEnvironment);
 
       this.started = performance.now();
       emit('testStart', this.testReport.start(true));
@@ -487,7 +486,7 @@ Test.prototype = {
   preserveTestEnvironment: function () {
     if (this.preserveEnvironment) {
       this.module.testEnvironment = this.testEnvironment;
-      this.testEnvironment = extend({}, this.module.testEnvironment);
+      this.testEnvironment = Object.assign({}, this.module.testEnvironment);
     }
   },
 
@@ -966,7 +965,7 @@ found ${typeof data} instead.`
   }
 }
 
-extend(test, {
+Object.assign(test, {
   todo: function (testName, callback) {
     addTest({ testName, callback, todo: true });
   },
