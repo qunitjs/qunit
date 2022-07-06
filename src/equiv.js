@@ -9,19 +9,11 @@ export default (function () {
   let pairs = [];
 
   function useStrictEquality (a, b) {
-    // This only gets called if a and b are not strict equal, and is used to compare on
-    // the primitive values inside object wrappers. For example:
-    // `var i = 1;`
-    // `var j = new Number(1);`
-    // Neither a nor b can be null, as a !== b and they have the same type.
-    if (typeof a === 'object') {
-      a = a.valueOf();
-    }
-    if (typeof b === 'object') {
-      b = b.valueOf();
-    }
-
     return a === b;
+  }
+
+  function useDateStrictEquality (a, b) {
+    return a.valueOf() === b.valueOf();
   }
 
   function compareConstructors (a, b) {
@@ -89,7 +81,7 @@ export default (function () {
     null: useStrictEquality,
     undefined: useStrictEquality,
     symbol: useStrictEquality,
-    date: useStrictEquality,
+    date: useDateStrictEquality,
 
     nan: function () {
       return true;
