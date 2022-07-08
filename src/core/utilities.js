@@ -43,13 +43,7 @@ export const performance = {
 
 // Returns a new Array with the elements that are in a but not in b
 export function diff (a, b) {
-  return a.reduce((result, item) => {
-    if (b.indexOf(item) === -1) {
-      result.push(item);
-    }
-
-    return result;
-  }, []);
+  return a.filter((a) => b.indexOf(a) === -1);
 }
 
 /**
