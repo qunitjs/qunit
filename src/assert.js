@@ -158,11 +158,9 @@ class Assert {
   }
 
   equal (actual, expected, message) {
-    // eslint-disable-next-line eqeqeq
-    const result = expected == actual;
-
     this.pushResult({
-      result,
+      // eslint-disable-next-line eqeqeq
+      result: expected == actual,
       actual,
       expected,
       message
@@ -170,11 +168,9 @@ class Assert {
   }
 
   notEqual (actual, expected, message) {
-    // eslint-disable-next-line eqeqeq
-    const result = expected != actual;
-
     this.pushResult({
-      result,
+      // eslint-disable-next-line eqeqeq
+      result: expected != actual,
       actual,
       expected,
       message,
@@ -281,13 +277,11 @@ class Assert {
     const currentTest = (this instanceof Assert && this.test) || config.current;
 
     if (typeof block !== 'function') {
-      const message = 'The value provided to `assert.throws` in ' +
-        '"' + currentTest.testName + '" was not a function.';
-
       currentTest.assert.pushResult({
         result: false,
         actual: block,
-        message
+        message: 'The value provided to `assert.throws` in ' +
+          '"' + currentTest.testName + '" was not a function.'
       });
 
       return;
@@ -325,12 +319,10 @@ class Assert {
 
     const then = promise && promise.then;
     if (typeof then !== 'function') {
-      const message = 'The value provided to `assert.rejects` in ' +
-        '"' + currentTest.testName + '" was not a promise.';
-
       currentTest.assert.pushResult({
         result: false,
-        message: message,
+        message: 'The value provided to `assert.rejects` in ' +
+          '"' + currentTest.testName + '" was not a promise.',
         actual: promise
       });
 
@@ -342,12 +334,10 @@ class Assert {
     return then.call(
       promise,
       function handleFulfillment () {
-        const message = 'The promise returned by the `assert.rejects` callback in ' +
-          '"' + currentTest.testName + '" did not reject.';
-
         currentTest.assert.pushResult({
           result: false,
-          message: message,
+          message: 'The promise returned by the `assert.rejects` callback in ' +
+            '"' + currentTest.testName + '" did not reject.',
           actual: promise
         });
 
@@ -398,10 +388,8 @@ function validateExpectedExceptionArgs (expected, message, assertionMethod) {
     expectedType === 'object';
 
   if (!valid) {
-    const message =
-      'Invalid expected value type (' + expectedType + ') ' +
-      'provided to assert.' + assertionMethod + '.';
-    throw new Error(message);
+    throw new Error('Invalid expected value type (' + expectedType + ') ' +
+      'provided to assert.' + assertionMethod + '.');
   }
 
   return [expected, message];
