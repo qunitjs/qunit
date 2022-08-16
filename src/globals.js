@@ -112,3 +112,31 @@ export const StringMap = typeof g.Map === 'function' &&
       });
     }
   };
+
+// Basic fallback for ES6 Set
+// Support: IE 11, `new Set(iterable)` parameter not yet implemented
+// Test for Set#values() which came after Set(iterable).
+export const StringSet = typeof g.Set === 'function' &&
+  typeof g.Set.prototype.values === 'function'
+  ? g.Set
+  : function (input) {
+    const set = Object.create(null);
+
+    if (Array.isArray(input)) {
+      input.forEach(item => {
+        set[item] = true;
+      });
+    }
+
+    return {
+      add (value) {
+        set[value] = true;
+      },
+      has (value) {
+        return value in set;
+      },
+      get size () {
+        return Object.keys(set).length;
+      }
+    };
+  };
