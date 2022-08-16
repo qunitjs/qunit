@@ -66,13 +66,11 @@ function breadthFirstCompareChild (a, b) {
   // over the pair.
   if (a === b) {
     return true;
-  }
-  if (!isContainer(a)) {
+  } else if (!isContainer(a)) {
     return typeEquiv(a, b);
-  }
-  if (pairs.every((pair) => pair.a !== a || pair.b !== b)) {
+  } else if (pairs.every((pair) => pair.a !== a || pair.b !== b)) {
     // Not yet started comparing this pair
-    pairs.push({ a: a, b: b });
+    pairs.push({ a, b });
   }
   return true;
 }
@@ -103,13 +101,12 @@ const callbacks = {
   },
 
   array (a, b) {
-    const len = a.length;
-    if (len !== b.length) {
+    if (a.length !== b.length) {
       // Safe and faster
       return false;
     }
 
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < a.length; i++) {
       // Compare non-containers; queue non-reference-equal containers
       if (!breadthFirstCompareChild(a[i], b[i])) {
         return false;
@@ -284,7 +281,7 @@ function innerEquiv (a, b) {
   }
 
   // Clear the global pair queue and add the top-level values being compared
-  pairs = [{ a: a, b: b }];
+  pairs = [{ a, b }];
 
   for (let i = 0; i < pairs.length; i++) {
     const pair = pairs[i];
@@ -311,4 +308,4 @@ export default function equiv (...args) {
   // Release any retained objects
   pairs.length = 0;
   return result;
-};
+}
