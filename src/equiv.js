@@ -70,9 +70,7 @@ function breadthFirstCompareChild (a, b) {
   if (!isContainer(a)) {
     return typeEquiv(a, b);
   }
-  if (pairs.every(function (pair) {
-    return pair.a !== a || pair.b !== b;
-  })) {
+  if (pairs.every((pair) => pair.a !== a || pair.b !== b)) {
     // Not yet started comparing this pair
     pairs.push({ a: a, b: b });
   }
@@ -88,11 +86,11 @@ const callbacks = {
   symbol: useStrictEquality,
   date: useStrictEquality,
 
-  nan: function () {
+  nan () {
     return true;
   },
 
-  regexp: function (a, b) {
+  regexp (a, b) {
     return a.source === b.source &&
 
       // Include flags in the comparison
@@ -100,11 +98,11 @@ const callbacks = {
   },
 
   // abort (identical references / instance methods were skipped earlier)
-  function: function () {
+  function () {
     return false;
   },
 
-  array: function (a, b) {
+  array (a, b) {
     const len = a.length;
     if (len !== b.length) {
       // Safe and faster
@@ -125,7 +123,7 @@ const callbacks = {
   // repetitions are not counted, so these are equivalent:
   // a = new Set( [ {}, [], [] ] );
   // b = new Set( [ {}, {}, [] ] );
-  set: function (a, b) {
+  set (a, b) {
     if (a.size !== b.size) {
       // This optimization has certain quirks because of the lack of
       // repetition counting. For instance, adding the same
@@ -136,7 +134,7 @@ const callbacks = {
 
     let outerEq = true;
 
-    a.forEach(function (aVal) {
+    a.forEach((aVal) => {
       // Short-circuit if the result is already known. (Using for...of
       // with a break clause would be cleaner here, but it would cause
       // a syntax error on older JavaScript implementations even if
@@ -147,7 +145,7 @@ const callbacks = {
 
       let innerEq = false;
 
-      b.forEach(function (bVal) {
+      b.forEach((bVal) => {
         // Likewise, short-circuit if the result is already known
         if (innerEq) {
           return;
@@ -178,7 +176,7 @@ const callbacks = {
   // counted, so these are equivalent:
   // a = new Map( [ [ {}, 1 ], [ {}, 1 ], [ [], 1 ] ] );
   // b = new Map( [ [ {}, 1 ], [ [], 1 ], [ [], 1 ] ] );
-  map: function (a, b) {
+  map (a, b) {
     if (a.size !== b.size) {
       // This optimization has certain quirks because of the lack of
       // repetition counting. For instance, adding the same
@@ -189,7 +187,7 @@ const callbacks = {
 
     let outerEq = true;
 
-    a.forEach(function (aVal, aKey) {
+    a.forEach((aVal, aKey) => {
       // Short-circuit if the result is already known. (Using for...of
       // with a break clause would be cleaner here, but it would cause
       // a syntax error on older JavaScript implementations even if
@@ -200,7 +198,7 @@ const callbacks = {
 
       let innerEq = false;
 
-      b.forEach(function (bVal, bKey) {
+      b.forEach((bVal, bKey) => {
         // Likewise, short-circuit if the result is already known
         if (innerEq) {
           return;
@@ -225,7 +223,7 @@ const callbacks = {
     return outerEq;
   },
 
-  object: function (a, b) {
+  object (a, b) {
     if (compareConstructors(a, b) === false) {
       return false;
     }
@@ -307,7 +305,7 @@ function innerEquiv (a, b) {
   return arguments.length === 2 || innerEquiv.apply(this, [].slice.call(arguments, 1));
 }
 
-export default function equiv(...args) {
+export default function equiv (...args) {
   const result = innerEquiv(...args);
 
   // Release any retained objects
