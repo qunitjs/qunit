@@ -22,13 +22,12 @@ function useStrictEquality (a, b) {
 }
 
 function compareConstructors (a, b) {
-  let protoA = Object.getPrototypeOf(a);
-  let protoB = Object.getPrototypeOf(b);
-
-  // Comparing constructors is more strict than using `instanceof`
   if (a.constructor === b.constructor) {
     return true;
   }
+
+  let protoA = Object.getPrototypeOf(a);
+  let protoB = Object.getPrototypeOf(b);
 
   // Ref #851
   // If the obj prototype descends from a null constructor, treat it
