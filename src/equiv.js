@@ -1,4 +1,7 @@
 import { objectType, slice } from './core/utilities';
+import { StringSet } from './globals';
+
+const CONTAINER_TYPES = new StringSet(['object', 'array', 'map', 'set']);
 
 // Value pairs queued for comparison. Used for breadth-first processing order, recursion
 // detection and avoiding repeated comparison (see below for details).
@@ -55,17 +58,13 @@ function getRegExpFlags (regexp) {
   return 'flags' in regexp ? regexp.flags : regexp.toString().match(/[gimuy]*$/)[0];
 }
 
-function isContainer (val) {
-  return ['object', 'array', 'map', 'set'].indexOf(objectType(val)) !== -1;
-}
-
 function breadthFirstCompareChild (a, b) {
   // If a is a container not reference-equal to b, postpone the comparison to the
   // end of the pairs queue -- unless (a, b) has been seen before, in which case skip
   // over the pair.
   if (a === b) {
     return true;
-  } else if (!isContainer(a)) {
+  } else if (!CONTAINER_TYPES.has(objectType(a))) {
     return typeEquiv(a, b);
   } else if (pairs.every((pair) => pair.a !== a || pair.b !== b)) {
     // Not yet started comparing this pair

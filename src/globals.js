@@ -112,3 +112,25 @@ export const StringMap = typeof g.Map === 'function' &&
       });
     }
   };
+
+export const StringSet = g.Set || function (input) {
+  const set = Object.create(null);
+
+  if (Array.isArray(input)) {
+    input.forEach(item => {
+      set[item] = true;
+    });
+  }
+
+  return {
+    add (value) {
+      set[value] = true;
+    },
+    has (value) {
+      return value in set;
+    },
+    get size () {
+      return Object.keys(set).length;
+    }
+  };
+};
