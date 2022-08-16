@@ -3,6 +3,7 @@ import Logger from '../logger';
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;
+export const slice = Array.prototype.slice;
 
 const nativePerf = getNativePerf();
 

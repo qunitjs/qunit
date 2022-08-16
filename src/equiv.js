@@ -1,4 +1,4 @@
-import { objectType } from './core/utilities';
+import { objectType, slice } from './core/utilities';
 
 // Value pairs queued for comparison. Used for breadth-first processing order, recursion
 // detection and avoiding repeated comparison (see below for details).
@@ -298,7 +298,7 @@ function innerEquiv (a, b) {
   }
 
   // ...across all consecutive argument pairs
-  return arguments.length === 2 || innerEquiv.apply(this, [].slice.call(arguments, 1));
+  return arguments.length === 2 || innerEquiv.apply(this, slice.call(arguments, 1));
 }
 
 export default function equiv (...args) {
