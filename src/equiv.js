@@ -115,37 +115,32 @@ const callbacks = {
       return false;
     }
 
-    const aProperties = [];
-    const bProperties = [];
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
 
-    // Be strict: don't ensure hasOwnProperty and go deep
-    for (const i in a) {
-      // Collect a's properties
-      aProperties.push(i);
+    if (aKeys.length !== bKeys.length) {
+      return false;
+    }
 
-      // Skip OOP methods that look the same
+    for (const key in a) {
       if (
         a.constructor !== Object &&
         typeof a.constructor !== 'undefined' &&
-        typeof a[i] === 'function' &&
-        typeof b[i] === 'function' &&
-        a[i].toString() === b[i].toString()
+        typeof a[key] === 'function' &&
+        typeof b[key] === 'function' &&
+        a[key].toString() === b[key].toString()
       ) {
         continue;
+      } else if (!(key in b)) {
+        return false;
       }
 
-      // Compare non-containers; queue non-reference-equal containers
-      if (!breadthFirstCompareChild(a[i], b[i], pairs)) {
+      if (!breadthFirstCompareChild(a[key], b[key], pairs)) {
         return false;
       }
     }
 
-    for (const i in b) {
-      // Collect b's properties
-      bProperties.push(i);
-    }
-
-    return callbacks.array(aProperties.sort(), bProperties.sort(), pairs);
+    return true;
   }
 };
 
