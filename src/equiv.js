@@ -93,7 +93,7 @@ const callbacks = {
   // repetitions are not counted, so these are equivalent:
   // a = new Set( [ {}, [], [] ] );
   // b = new Set( [ {}, {}, [] ] );
-  set (a, b, pairs) {
+  set (a, b) {
     if (a.size !== b.size) {
       // This optimization has certain quirks because of the lack of
       // repetition counting. For instance, adding the same
@@ -121,15 +121,9 @@ const callbacks = {
           return;
         }
 
-        // Swap out the global pairs list, as the nested call to
-        // innerEquiv will clobber its contents
-        const parentPairs = pairs;
         if (innerEquiv(bVal, aVal)) {
           innerEq = true;
         }
-
-        // Replace the global pairs list
-        pairs = parentPairs;
       });
 
       if (!innerEq) {
@@ -146,7 +140,7 @@ const callbacks = {
   // counted, so these are equivalent:
   // a = new Map( [ [ {}, 1 ], [ {}, 1 ], [ [], 1 ] ] );
   // b = new Map( [ [ {}, 1 ], [ [], 1 ], [ [], 1 ] ] );
-  map (a, b, pairs) {
+  map (a, b) {
     if (a.size !== b.size) {
       // This optimization has certain quirks because of the lack of
       // repetition counting. For instance, adding the same
@@ -174,15 +168,9 @@ const callbacks = {
           return;
         }
 
-        // Swap out the global pairs list, as the nested call to
-        // innerEquiv will clobber its contents
-        const parentPairs = pairs;
         if (innerEquiv([bVal, bKey], [aVal, aKey])) {
           innerEq = true;
         }
-
-        // Replace the global pairs list
-        pairs = parentPairs;
       });
 
       if (!innerEq) {
