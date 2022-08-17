@@ -134,3 +134,6 @@ export const StringSet = g.Set || function (input) {
     }
   };
 };
+
+// eslint-disable-next-line
+export const ArrayFrom = Array.from;

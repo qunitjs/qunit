@@ -1,5 +1,5 @@
 import { objectType, slice } from './core/utilities';
-import { StringSet } from './globals';
+import { StringSet, ArrayFrom } from './globals';
 
 const CONTAINER_TYPES = new StringSet(['object', 'array', 'map', 'set']);
 
@@ -95,43 +95,12 @@ const callbacks = {
   // b = new Set( [ {}, {}, [] ] );
   set (a, b) {
     if (a.size !== b.size) {
-      // This optimization has certain quirks because of the lack of
-      // repetition counting. For instance, adding the same
-      // (reference-identical) element to two equivalent sets can
-      // make them non-equivalent.
       return false;
     }
 
-    let outerEq = true;
+    const B_ARRAY = ArrayFrom(b);
 
-    a.forEach((aVal) => {
-      // Short-circuit if the result is already known. (Using for...of
-      // with a break clause would be cleaner here, but it would cause
-      // a syntax error on older JavaScript implementations even if
-      // Set is unused)
-      if (!outerEq) {
-        return;
-      }
-
-      let innerEq = false;
-
-      b.forEach((bVal) => {
-        // Likewise, short-circuit if the result is already known
-        if (innerEq) {
-          return;
-        }
-
-        if (innerEquiv(bVal, aVal)) {
-          innerEq = true;
-        }
-      });
-
-      if (!innerEq) {
-        outerEq = false;
-      }
-    });
-
-    return outerEq;
+    return ArrayFrom(a).every((aVal) => B_ARRAY.some((bVal) => innerEquiv(bVal, aVal)));
   },
 
   // Define maps a and b to be equivalent if for each key-value pair (aKey, aVal)
@@ -142,43 +111,13 @@ const callbacks = {
   // b = new Map( [ [ {}, 1 ], [ [], 1 ], [ [], 1 ] ] );
   map (a, b) {
     if (a.size !== b.size) {
-      // This optimization has certain quirks because of the lack of
-      // repetition counting. For instance, adding the same
-      // (reference-identical) key-value pair to two equivalent maps
-      // can make them non-equivalent.
       return false;
     }
 
-    let outerEq = true;
+    const B_ARRAY = ArrayFrom(b);
 
-    a.forEach((aVal, aKey) => {
-      // Short-circuit if the result is already known. (Using for...of
-      // with a break clause would be cleaner here, but it would cause
-      // a syntax error on older JavaScript implementations even if
-      // Map is unused)
-      if (!outerEq) {
-        return;
-      }
-
-      let innerEq = false;
-
-      b.forEach((bVal, bKey) => {
-        // Likewise, short-circuit if the result is already known
-        if (innerEq) {
-          return;
-        }
-
-        if (innerEquiv([bVal, bKey], [aVal, aKey])) {
-          innerEq = true;
-        }
-      });
-
-      if (!innerEq) {
-        outerEq = false;
-      }
-    });
-
-    return outerEq;
+    return ArrayFrom(a)
+      .every(([aKey, aVal]) => B_ARRAY.some(([bKey, bVal]) => innerEquiv([bKey, bVal], [aKey, aVal])));
   },
 
   object (a, b, pairs) {
