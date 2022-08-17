@@ -62,10 +62,7 @@ const callbacks = {
   },
 
   regexp (a, b) {
-    return a.source === b.source &&
-
-      // Include flags in the comparison
-      getRegExpFlags(a) === getRegExpFlags(b);
+    return a.source === b.source && getRegExpFlags(a) === getRegExpFlags(b);
   },
 
   // abort (identical references / instance methods were skipped earlier)
@@ -75,7 +72,6 @@ const callbacks = {
 
   array (a, b, pairs) {
     if (a.length !== b.length) {
-      // Safe and faster
       return false;
     }
 
@@ -174,7 +170,6 @@ function typeEquiv (a, b, pairs) {
 }
 
 function innerEquiv (a, b) {
-  // We're done when there's nothing more to compare
   if (arguments.length < 2) {
     return true;
   }
