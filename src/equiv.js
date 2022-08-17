@@ -75,13 +75,7 @@ const callbacks = {
       return false;
     }
 
-    for (let i = 0; i < a.length; i++) {
-      // Compare non-containers; queue non-reference-equal containers
-      if (!breadthFirstCompareChild(a[i], b[i], pairs)) {
-        return false;
-      }
-    }
-    return true;
+    return a.every((element, index) => breadthFirstCompareChild(element, b[index], pairs));
   },
 
   // Define sets a and b to be equivalent if for each element aVal in a, there
