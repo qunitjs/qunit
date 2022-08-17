@@ -253,8 +253,7 @@ const callbacks = {
       bProperties.push(i);
     }
 
-    // Ensures identical properties name
-    return typeEquiv(aProperties.sort(), bProperties.sort());
+    return callbacks.array(aProperties.sort(), bProperties.sort());
   }
 };
 
