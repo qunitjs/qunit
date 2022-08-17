@@ -24,34 +24,14 @@ function useStrictEquality (a, b) {
   return a === b;
 }
 
+function getConstructor (obj) {
+  const proto = Object.getPrototypeOf(obj);
+
+  return !proto || proto.constructor === null ? Object : proto.constructor;
+}
+
 function compareConstructors (a, b) {
-  if (a.constructor === b.constructor) {
-    return true;
-  }
-
-  let protoA = Object.getPrototypeOf(a);
-  let protoB = Object.getPrototypeOf(b);
-
-  // Ref #851
-  // If the obj prototype descends from a null constructor, treat it
-  // as a null prototype.
-  if (protoA && protoA.constructor === null) {
-    protoA = null;
-  }
-  if (protoB && protoB.constructor === null) {
-    protoB = null;
-  }
-
-  // Allow objects with no prototype to be equivalent to
-  // objects with Object as their constructor.
-  if (
-    (protoA === null && protoB === Object.prototype) ||
-    (protoB === null && protoA === Object.prototype)
-  ) {
-    return true;
-  }
-
-  return false;
+  return getConstructor(a) === getConstructor(b);
 }
 
 function getRegExpFlags (regexp) {
