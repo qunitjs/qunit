@@ -10,6 +10,14 @@
     "ie_9",
     "safari_9.1",
     "safari_current",
+    {
+
+      "browser": "opera",
+      "browser_version": "36.0",
+      "device": null,
+      "os": "OS X",
+      "os_version": "Sierra"
+    },
     "opera_current",
     "chrome_current",
     {
