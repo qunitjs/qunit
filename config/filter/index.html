@@ -79,11 +79,11 @@
 
 <p class="note">This option is available as <a href="https://qunitjs.com/cli/">CLI option</a>, as control in the <a href="https://qunitjs.com/intro/#in-the-browser">HTML Reporter</a>, and supported as URL query parameter.</p>
 
-<p>Only run tests of which the module name or test name have a case-insensitive substring match for the provided string. You can inverse the filter by prefixing a bang character (<code class="language-plaintext highlighter-rouge">!</code>) to the string, which will exclude the matched tests, thus only running tests that don’t contain the string.</p>
+<p>QUnit only runs tests of which the module name or test name are a case-insensitive substring match for the filter string. You can invert the filter by prefixing an exclamation mark (<code class="language-plaintext highlighter-rouge">!</code>) to the string, in which case we skip the matched tests, and run the tests that don’t match the filter.</p>
 
-<p>You can also match via a regular expression by setting the filter to a regular expression literal in string form, encloses by slashes, such as <code class="language-plaintext highlighter-rouge">/(this|that)/</code>.</p>
+<p>You can also match via a regular expression by setting the filter to a regular expression literal, enclosed by slashes, such as <code class="language-plaintext highlighter-rouge">/(this|that)/</code>.</p>
 
-<p>While substring filters are always <strong>case-insensitive</strong>, a regular expression is only insensitive when passing the <code class="language-plaintext highlighter-rouge">/i</code> flag.</p>
+<p>While substring filters are always <strong>case-insensitive</strong>, a regular expression is case-sensitive by default.</p>
 
 <p>See also:</p>
 <ul>
@@ -94,31 +94,36 @@
 
 <h3 id="substring-filter">Substring filter</h3>
 
-<p>The below matches <code class="language-plaintext highlighter-rouge">QUnit.module( "FooBar" )</code> and <code class="language-plaintext highlighter-rouge">QUnit.test( "createFooBar" )</code>.</p>
+<p>The below matches <code class="language-plaintext highlighter-rouge">FooBar</code> and <code class="language-plaintext highlighter-rouge">foo &gt; bar</code>, because string matching is case-insensitive.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">foo</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>As inverted filter, the below would skip <code class="language-plaintext highlighter-rouge">QUnit.module( "FooBar" )</code> and <code class="language-plaintext highlighter-rouge">QUnit.test( "createFooBar" )</code>, but match <code class="language-plaintext highlighter-rouge">QUnit.module( "Bar" )</code> and <code class="language-plaintext highlighter-rouge">QUnit.test( "createBar" )</code>.</p>
+<p>As inversed filter, the below skips <code class="language-plaintext highlighter-rouge">FooBar</code> and <code class="language-plaintext highlighter-rouge">foo &gt; bar</code>, but runs <code class="language-plaintext highlighter-rouge">Bar</code> and <code class="language-plaintext highlighter-rouge">bar &gt; sub</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">!foo</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></div>
 
 <h3 id="regular-expression-filter">Regular expression filter</h3>
 
-<p>The below would match <code class="language-plaintext highlighter-rouge">QUnit.test( "foo" )</code>, but not <code class="language-plaintext highlighter-rouge">QUnit.test( "Foo" )</code>.</p>
+<p>The below matches <code class="language-plaintext highlighter-rouge">foo</code> but not <code class="language-plaintext highlighter-rouge">Foo</code>, because regexes are case-sensitive by default.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/foo/</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>The below would both match <code class="language-plaintext highlighter-rouge">QUnit.test( "foo" )</code> and <code class="language-plaintext highlighter-rouge">QUnit.test( "Foo" )</code>.</p>
+<p>The below matches both <code class="language-plaintext highlighter-rouge">foo</code> and <code class="language-plaintext highlighter-rouge">Foo</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/foo/i</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>The below would exclude <code class="language-plaintext highlighter-rouge">QUnit.test( "foo" )</code> and <code class="language-plaintext highlighter-rouge">QUnit.test( "Foo" )</code>.</p>
+<p>The below skips both <code class="language-plaintext highlighter-rouge">foo</code> and <code class="language-plaintext highlighter-rouge">Foo</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">!/foo/i</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The below matches <code class="language-plaintext highlighter-rouge">foo</code>, <code class="language-plaintext highlighter-rouge">foo &gt; sub</code>, and <code class="language-plaintext highlighter-rouge">foo.sub</code>, but skips <code class="language-plaintext highlighter-rouge">bar</code>, <code class="language-plaintext highlighter-rouge">bar.foo</code>, and <code class="language-plaintext highlighter-rouge">FooBar</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/^foo/</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></div>
 
 </div>

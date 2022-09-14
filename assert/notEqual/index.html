@@ -101,19 +101,19 @@
 
 <p>The simplest assertion example:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">passing example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">;</span>
 
   <span class="c1">// succeeds, 1 and 2 are different.</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">string and number</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">failing example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">;</span>
 
-  <span class="c1">// fails, the number 2 and the string "2" are actually considered equal</span>
-  <span class="c1">// when loosely compared. Use notStrictEqual instead to consider them different</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nx">notEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="dl">'</span><span class="s1">string and number</span><span class="dl">'</span><span class="p">);</span>
+  <span class="c1">// fails, the number 2 and the string "2" are considered equal when</span>
+  <span class="c1">// compared loosely. Use `assert.notStrictEqual` to consider them different.</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nx">notEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
