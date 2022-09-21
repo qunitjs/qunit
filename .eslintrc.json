@@ -127,7 +127,7 @@
       }
     },
     {
-      "files": ["test/es2018/**"],
+      "files": ["test/benchmark/**", "test/es2018/**"],
       "env": {
         "es2017": true
       },

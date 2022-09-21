@@ -92,6 +92,7 @@ jobs:
   #    ```
   #    root@ubuntu-tmp/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
   #    root@ubuntu-tmp/qunit$ js68 test/mozjs.js
+  #    root@ubuntu-tmp/qunit$ js68 test/benchmark/index-mozjs.js
   #    ```
   sm-test:
     name: SpiderMonkey

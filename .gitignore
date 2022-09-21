@@ -4,6 +4,8 @@
 /docs/.jekyll-cache/
 /docs/_site/
 /docs/Gemfile.lock
+/test/benchmark/package-lock.json
+/test/benchmark/node_modules/
 /test/integration/*/package-lock.json
 /test/integration/*/node_modules/
 /node_modules/

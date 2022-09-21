@@ -61,8 +61,9 @@ QUnit.module('structure', () => {
       // The expected HTML paths use Unix-style line ending, as per HTTP.
       .map(file => file.replace(/\\/g, '/'))
       // Ignore file names containing "--", which are subresources (e.g. iframes).
-      // Ignore integration/grunt-contrib-qunit, which is managed separately.
-      .filter(file => !file.includes('--') && !file.includes('integration'))
+      // Ignore test/benchmark, which is unrelated.
+      // Ignore test/integration/grunt-contrib-qunit, which we manage separately.
+      .filter(file => !file.includes('--') && !file.includes('benchmark') && !file.includes('integration'))
       .map(file => `test/${file}`);
 
     QUnit.test('files', assert => {
