@@ -42,17 +42,8 @@
       "os_version": "10.0"
     },
     {
-      "device": null,
-      "os": "ios",
-      "os_version": "8"
-    },
-    {
-      "device": null,
-      "os": "ios",
-      "os_version": "9"
-    },
-    {
-      "device": null,
+      "device": "iPhone 7",
+      "real_mobile": true,
       "os": "ios",
       "os_version": "10"
     },
@@ -69,7 +60,7 @@
       "os_version": "12"
     }
   ],
-  "@browsers_broken": [
+  "@browsers_disabled": [
     {
       "@ref": [
         "https://github.com/browserstack/browserstack-runner/issues/245",
