@@ -171,8 +171,7 @@ const objTypeCallbacks = {
         // Swap out the global memory, as nested typeEquiv() would clobber it
         const originalMemory = memory;
         memory = [];
-        // TODO: Optimization, call objTypeCallbacks.array directly
-        if (typeEquiv([bVal, bKey], [aVal, aKey])) {
+        if (objTypeCallbacks.array([bVal, bKey], [aVal, aKey])) {
           innerEq = true;
         }
         // Restore
