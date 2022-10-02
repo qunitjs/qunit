@@ -24,3 +24,15 @@ The default is to benchmark the local development version of QUnit.
      * Check the console output.
 
 Powered by [Benchmark.js](https://benchmarkjs.com/).
+
+### Compare against `fast-deep-equal`
+
+```
+qunit/test/benchmark$ node index-node.js fast-deep-equal
+```
+
+### Run a subset only
+
+```
+qunit/test/benchmark$ node index-node.js fast-deep-equal 'small array'
+```

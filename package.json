@@ -87,6 +87,7 @@
     "build": "rollup -c && grunt copy:src-css",
     "build-coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy:src-css",
     "build-dev": "node build/watch.js",
+    "benchmark": "npm install --silent --no-audit --prefix test/benchmark/ && node test/benchmark/index-node.js",
     "lint": "eslint --cache .",
     "lint-fix": "eslint --cache --fix .",
     "test-main": "grunt test",

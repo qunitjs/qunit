@@ -103,8 +103,8 @@ const callbacks = {
   // Define sets a and b to be equivalent if for each element aVal in a, there
   // is some element bVal in b such that aVal and bVal are equivalent. Element
   // repetitions are not counted, so these are equivalent:
-  // a = new Set( [ {}, [], [] ] );
-  // b = new Set( [ {}, {}, [] ] );
+  // a = new Set( [ X={}, Y=[], Y ] );
+  // b = new Set( [ Y, X, X ] );
   set (a, b) {
     if (a.size !== b.size) {
       // This optimization has certain quirks because of the lack of
