@@ -296,6 +296,6 @@ export default function equiv (...args) {
   const result = innerEquiv(...args);
 
   // Release any retained objects
-  pairs.length = 0;
+  pairs = [];
   return result;
 }
