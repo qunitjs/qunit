@@ -14,6 +14,28 @@ const DEBOUNCE_RESTART_LENGTH = 200 - DEBOUNCE_WATCH_LENGTH;
 const changedPendingPurge = [];
 
 let QUnit;
+let running = false;
+let restartDebounceTimer;
+
+function onUnhandledRejection (reason, _promise) {
+  QUnit.onUncaughtException(reason);
+}
+function onUncaughtException (error, _origin) {
+  QUnit.onUncaughtException(error);
+}
+function onExit () {
+  if (running) {
+    console.error('Error: Process exited before tests finished running');
+
+    const currentTest = QUnit.config.current;
+    if (currentTest && currentTest.pauses.size > 0) {
+      const name = currentTest.testName;
+      console.error('Last test to run (' + name + ') has an async hold. ' +
+        'Ensure all assert.async() callbacks are invoked and Promises resolve. ' +
+        'You should also set a standard timeout via QUnit.config.testTimeout.');
+    }
+  }
+}
 
 async function run (args, options) {
   // Default to non-zero exit code to avoid false positives
@@ -105,27 +127,11 @@ async function run (args, options) {
   }
 
   // Handle the unhandled
-  process.on('unhandledRejection', (reason, _promise) => {
-    QUnit.onUncaughtException(reason);
-  });
-  process.on('uncaughtException', (error, _origin) => {
-    QUnit.onUncaughtException(error);
-  });
+  process.on('unhandledRejection', onUnhandledRejection);
+  process.on('uncaughtException', onUncaughtException);
 
-  let running = true;
-  process.on('exit', function () {
-    if (running) {
-      console.error('Error: Process exited before tests finished running');
-
-      const currentTest = QUnit.config.current;
-      if (currentTest && currentTest.pauses.size > 0) {
-        const name = currentTest.testName;
-        console.error('Last test to run (' + name + ') has an async hold. ' +
-          'Ensure all assert.async() callbacks are invoked and Promises resolve. ' +
-          'You should also set a standard timeout via QUnit.config.testTimeout.');
-      }
-    }
-  });
+  running = true;
+  process.on('exit', onExit);
 
   QUnit.on('error', function (_error) {
     // Set exitCode directly, to make sure it is set to fail even if "runEnd" will never be
@@ -146,10 +152,10 @@ async function run (args, options) {
   QUnit.start();
 }
 
-run.restart = function (args) {
-  clearTimeout(this._restartDebounceTimer);
+run.restart = function restart (args, options) {
+  clearTimeout(restartDebounceTimer);
 
-  this._restartDebounceTimer = setTimeout(() => {
+  restartDebounceTimer = setTimeout(() => {
     changedPendingPurge.forEach(file => delete require.cache[path.resolve(file)]);
     changedPendingPurge.length = 0;
 
@@ -159,12 +165,17 @@ run.restart = function (args) {
       console.log('Restarting...');
     }
 
-    run.abort(() => run.apply(null, args));
+    abort(() => run(args, options));
   }, DEBOUNCE_RESTART_LENGTH);
 };
 
-run.abort = function (callback) {
+function abort (callback) {
   function clearQUnit () {
+    process.off('unhandledRejection', onUnhandledRejection);
+    process.off('uncaughtException', onUncaughtException);
+    process.off('exit', onExit);
+    running = false;
+
     delete global.QUnit;
     QUnit = null;
     if (callback) {
@@ -179,11 +190,10 @@ run.abort = function (callback) {
   } else {
     clearQUnit();
   }
-};
+}
 
-run.watch = function watch (_, options) {
+run.watch = function watch (args, options) {
   const watch = require('node-watch');
-  const args = Array.prototype.slice.call(arguments);
   const baseDir = process.cwd();
 
   QUnit = requireQUnit();
@@ -206,7 +216,7 @@ run.watch = function watch (_, options) {
     persistent: true,
     recursive: true,
 
-    // Bare minimum delay, we have another debounce in run.restart().
+    // Bare minimum delay, we have another debounce in restart().
     delay: DEBOUNCE_WATCH_LENGTH,
     filter: (fullpath, skip) => {
       if (/\/node_modules\//.test(fullpath) ||
@@ -219,18 +229,18 @@ run.watch = function watch (_, options) {
   }, (event, fullpath) => {
     console.log(`File ${event}: ${path.relative(baseDir, fullpath)}`);
     changedPendingPurge.push(fullpath);
-    run.restart(args);
+    run.restart(args, options);
   });
 
   watcher.on('ready', () => {
-    run.apply(null, args);
+    run(args, options);
   });
 
   function stop () {
     console.log('Stopping QUnit...');
 
     watcher.close();
-    run.abort(() => {
+    abort(() => {
       process.exit();
     });
   }
