@@ -632,8 +632,8 @@ ok 1 test 2
 ok 2 module A > module B > test 1
 ok 3 module A > module C > test 2
 ok 4 module D > test 1
-1..0
-# pass 0
+1..4
+# pass 4
 # skip 0
 # todo 0
 # fail 0`,

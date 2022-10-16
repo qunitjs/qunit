@@ -66,7 +66,7 @@ export default function Test (settings) {
     // (Meaning the CI passes irregardless of the added tests).
     //
     // TODO: Make this an error in QUnit 3.0
-    // throw new Error( "Unexpected new test after the run already ended" );
+    // throw new Error( "Unexpected test after runEnd" );
     Logger.warn('Unexpected test after runEnd. This is unstable and will fail in QUnit 3.0.');
     return;
   }
@@ -74,6 +74,14 @@ export default function Test (settings) {
     const method = this.todo ? 'QUnit.todo' : 'QUnit.test';
     throw new TypeError(`You must provide a callback to ${method}("${this.testName}")`);
   }
+
+  // Register unique strings
+  for (let i = 0, l = this.module.tests; i < l.length; i++) {
+    if (this.module.tests[i].name === this.testName) {
+      this.testName += ' ';
+    }
+  }
+  this.testId = generateHash(this.module.name, this.testName);
 
   // No validation after this. Beyond this point, failures must be recorded as
   // a completed test with errors, instead of early bail out.
@@ -93,15 +101,6 @@ export default function Test (settings) {
     skip: this.skip,
     valid: this.valid()
   });
-
-  // Register unique strings
-  for (let i = 0, l = this.module.tests; i < l.length; i++) {
-    if (this.module.tests[i].name === this.testName) {
-      this.testName += ' ';
-    }
-  }
-
-  this.testId = generateHash(this.module.name, this.testName);
 
   this.module.tests.push({
     name: this.testName,
