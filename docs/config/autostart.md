@@ -1,13 +1,13 @@
 ---
 layout: page-api
 title: QUnit.config.autostart
-excerpt: Start running the tests once all files have been loaded.
+excerpt: Control when the test run may start.
 groups:
   - config
 version_added: "1.0.0"
 ---
 
-Start running the tests once all files have been loaded.
+Control when the test run may start, e.g. after asynchronously loading test files with RequireJS, AMD, ES6 dynamic imports, or other means.
 
 <table>
 <tr>
@@ -20,13 +20,40 @@ Start running the tests once all files have been loaded.
 </tr>
 </table>
 
-By default, QUnit starts running the tests when `load` event is triggered on the `window` (in the browser), or after all specified files have been imported (in the CLI).
+In the browser, QUnit by default waits for all `<script>`  elements to finish loading (by means of the window `load` event). When using the QUnit CLI, it waits until the specified files are imported.
 
-Set this property to `false` if you load your test files asynchronously through custom means (e.g. RequireJS). Remember to call `QUnit.start()` once you're ready for tests to begin running.
+Set this property to `false` to instruct QUnit to wait longer, allowing you to load test files asynchronously. Remember to call [`QUnit.start()`](../QUnit/start.md) once you're ready for tests to begin running.
 
-## Example
+If you asynchronously load test files _without_ disabling autostart, you may encounter this warning:
 
-Disable autostart when loading tests asynchronously, such as when using RequireJS:
+<p class="note note--warning" markdown="1">**warning**: Unexpected test after runEnd.</p>
+
+## Examples
+
+### ESM Dynamic imports
+
+This example uses the [import()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) operator to dynamically load ECMAScript module (ESM) files.
+
+```html
+<script src="../lib/qunit.js"></script>
+<script type="module" src="tests.js"></script>
+```
+
+```js
+// tests.js
+QUnit.config.autostart = false;
+
+Promise.all([
+  import('./foo.js'),
+  import('./bar.js')
+]).then(function () {
+  QUnit.start();
+});
+```
+
+### Loading with RequireJS
+
+This example uses [RequireJS](https://requirejs.org/) to call a "require" function as defined by the [AMD specification](https://github.com/amdjs/amdjs-api/blob/master/require.md) (Asynchronous Module Definition).
 
 ```js
 QUnit.config.autostart = false;

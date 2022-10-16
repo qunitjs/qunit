@@ -139,6 +139,18 @@
       }
     },
     {
+      "files": ["test/dynamic-import/**"],
+      "env": {
+        "es2017": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2020
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
       "files": ["test/node/**"],
       "env": {
         "es2017": true,
