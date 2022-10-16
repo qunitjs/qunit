@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=9edb4346" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.start() | QUnit</title>
-<meta property="og:title" content="QUnit.start()"><meta name="description" content="Start an async test suite."><meta property="og:description" content="Start an async test suite."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit.start()"><meta name="description" content="Start the test runner."><meta property="og:description" content="Start the test runner."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -64,23 +64,13 @@
 <div class="content" role="main">
     <h1>QUnit.start()</h1><p class="version-details">version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a>
     </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p><code class="language-plaintext highlighter-rouge">QUnit.start()</code> must be used to start a test run that has <a href="/config/autostart/"><code class="language-plaintext highlighter-rouge">QUnit.config.autostart</code></a> set to <code class="language-plaintext highlighter-rouge">false</code>.</p>
+<p><code class="language-plaintext highlighter-rouge">QUnit.start()</code></p>
 
-<p class="note note--warning">Warning: This method was previously used to control async tests on text contexts along with <code class="language-plaintext highlighter-rouge">QUnit.stop</code>. For asynchronous tests, use <a href="/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async</code></a> instead.</p>
+<p>Start the test runner manually, when <a href="/config/autostart/"><code class="language-plaintext highlighter-rouge">QUnit.config.autostart</code></a> is <code class="language-plaintext highlighter-rouge">false</code>. For example, if you load test files with AMD, RequireJS, or ESM dynamic imports.</p>
 
-<p>When your async test has multiple exit points, call <code class="language-plaintext highlighter-rouge">QUnit.start()</code> for the corresponding number of <code class="language-plaintext highlighter-rouge">QUnit.stop()</code> increments.</p>
+<p>Note: See <a href="/config/autostart/"><code class="language-plaintext highlighter-rouge">QUnit.config.autostart</code></a> for detailed examples of how to use this.</p>
 
-<h2 id="examples">Examples</h2>
-
-<p>A test run that does not begin when the page is done loading. This example uses an Asynchronous Module Definition (AMD) loader-style <code class="language-plaintext highlighter-rouge">require</code> call.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">autostart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-
-<span class="nx">require</span><span class="p">(</span>
-  <span class="p">[</span><span class="dl">'</span><span class="s1">test/tests1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">test/tests2.js</span><span class="dl">'</span><span class="p">],</span>
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">start</span>
-<span class="p">);</span>
-</code></pre></div></div>
+<p class="note note--warning"><strong>Warning</strong>: Prior to QUnit 1.16, this method was used for resuming an async <code class="language-plaintext highlighter-rouge">QUnit.start</code> function, as complement to <code class="language-plaintext highlighter-rouge">QUnit.stop()</code>. To resume asynchronous tests, use <a href="/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead.</p>
 
 </div>
 <aside class="sidebar" role="complementary">
@@ -119,7 +109,7 @@
 
 	<h4><a href="/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
 </aside>
 
 </div>
