@@ -1,4 +1,20 @@
 
+2.19.2 / 2022-10-17
+==================
+
+### Changed
+
+* Core: Faster diffing for `config.noglobals` by refactoring slow mutations. (Izel Nakri) [#1697](https://github.com/qunitjs/qunit/pull/1697)
+* Assert: Improve performance of `QUnit.equiv()`. (Izel Nakri) [#1700](https://github.com/qunitjs/qunit/pull/1700)
+* Assert: Faster deepEqual for Map values by avoiding typeEquiv calls. (Timo Tijhof)
+* Assert: Faster deepEqual by reducing internal objectType checks. (Timo Tijhof)
+* Assert: Faster deepEqual by using re-assignment for internal pairs. (Timo Tijhof)
+
+### Fixed
+
+* Core: Fix inaccurate count in reporter output after re-run. [#1687](https://github.com/qunitjs/qunit/issues/1687)
+* CLI: Fix MaxListeners warning in long-running watch mode. [#1692](https://github.com/qunitjs/qunit/issues/1692)
+
 2.19.1 / 2022-05-01
 ==================
 
