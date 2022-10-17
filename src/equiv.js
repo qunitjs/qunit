@@ -31,7 +31,7 @@ function getConstructor (obj) {
   //
   // Allow objects with no prototype, from Object.create(null), to be equivalent to
   // plain objects that have Object as their constructor.
-  return !proto || proto.constructor === null ? Object : proto.constructor;
+  return !proto || proto.constructor === null ? Object : obj.constructor;
 }
 
 function getRegExpFlags (regexp) {

@@ -1310,6 +1310,41 @@ QUnit.test('Prototypal inheritance', function (assert) {
   assert.equal(QUnit.equiv(function () {}, function () {}), false);
 });
 
+QUnit.test('Prototypal inheritance imposter', function (assert) {
+  // Bar is a subclass of Foo that very loosely tries to hide itself
+  // as intermediary prototype by not adding or overriding any methods
+  // and not adding or overriding any instance properties, except to
+  // assign obj.constructor as Foo.
+  //
+  // This is a regression test for https://github.com/qunitjs/qunit/issues/1706.
+  //
+  // We may change this behaviour in a future major version, but for now
+  // ensure the behaviour does not change unintentionally.
+  //
+  // This difference has very low impact, given that any added methods
+  // or properties will result in non-equality regardless of
+  // obj.constructor being equal given that equiv() iterates and
+  // compares all own and inherited properties in a single pass.
+  // The only observable difference would be `instanceof` (in one
+  // direction) and possibly presence of non-enumerable properties.
+  function Foo (id) {
+    this.id = id;
+
+    // Make subclass Bar pretend to be Foo in terms of obj.constructor,
+    // thus very loosely hiding that it is an intermediary prototype.
+    this.constructor = Foo;
+  }
+  Foo.prototype.constructor = Foo;
+
+  function Bar (id) {
+    Foo.call(this, id);
+  }
+  Bar.prototype = Object.create(Foo.prototype);
+  Bar.prototype.constructor = Bar;
+
+  assert.deepEqual(new Foo(4), new Bar(4));
+});
+
 QUnit.test('Instances', function (assert) {
   var a1, a2, b1, b2, c1, c2, c3, car, carSame, carDiff, human;
 
