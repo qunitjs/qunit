@@ -112,9 +112,11 @@ async function execute (command, options = {}, hook) {
     });
     spawned.on('exit', (exitCode, _signal) => {
       result.code = exitCode;
-      const stderr = normalize(String(result.stderr).trimEnd());
-      if (exitCode !== 0) {
-        reject(new Error('Error code ' + exitCode + '\n' + (stderr || result.stdout)));
+    });
+    // Wait for 'close' event. https://github.com/nodejs/node/issues/45085
+    spawned.on('close', () => {
+      if (result.code !== 0) {
+        reject(new Error('Exit code ' + result.code));
       } else {
         resolve();
       }
