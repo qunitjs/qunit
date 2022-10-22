@@ -11,6 +11,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: "Linux: Node 18"
+            os: ubuntu-20.04
+            node: 18.x
+            script: npm run test-nolint
+
           - name: "Linux: Node 16"
             # Includes 'firefox', 'chromium', and more.
             # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
@@ -38,7 +43,7 @@ jobs:
 
           - name: "Integration"
             os: ubuntu-20.04
-            node: 14.x
+            node: 16.x
             script: npm run test-integration
 
           - name: "Windows: Node 16"
@@ -57,9 +62,9 @@ jobs:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
       FORCE_COLOR: "1"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         if: ${{ runner.os != 'Windows' }}
         with:
           path: |
@@ -68,7 +73,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3.5.0
         with:
           node-version: ${{ matrix.node }}
 
@@ -100,17 +105,17 @@ jobs:
     env:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Use Node.js 10
-        uses: actions/setup-node@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3.5.0
         with:
-          node-version: 10.x
+          node-version: 16.x
       - name: Install mozjs
         run: |
           sudo apt-fast install -y libmozjs-68-dev

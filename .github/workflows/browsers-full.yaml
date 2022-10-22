@@ -18,19 +18,19 @@ jobs:
     env:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js 10
-        uses: actions/setup-node@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3.5.0
         with:
-          node-version: 10.x
+          node-version: 16.x
 
       - name: Prepare
         run: |
