@@ -19,7 +19,7 @@ Compare an object's own properties using a strict inequality comparison.
 | `expected` | Known comparison value |
 | `message` (string) | Short description |
 
-The `notPropEqual` assertion compares only an object's own properties, using the strict inquality operator (`!==`).
+The `notPropEqual` assertion compares only an object's own properties, using the strict inequality operator (`!==`).
 
 The test passes if there are properties with different values, or extra properties, or missing properties.
 

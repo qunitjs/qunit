@@ -22,4 +22,4 @@ In the HTML Reporter, hide results of passed tests.
 
 <p class="note" markdown="1">This option can also be controlled via the [HTML Reporter](https://qunitjs.com/intro/#in-the-browser).</p>
 
-By default, the HTML Reporter will list (in collapsd form) the names of all passed tests. Enable this option, to only list failing tests.
+By default, the HTML Reporter will list (in collapsed form) the names of all passed tests. Enable this option, to only list failing tests.

@@ -25,7 +25,7 @@ Group related tests under a common label.
 
 All tests inside a module will be grouped under that module. Tests can be added to a module using the [QUnit.test](./test.md) method. Modules help organize, select, and filter tests to run. See [§ Organizing your tests](#organizing-your-tests).
 
-Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grantparent > Parent > Child > my test". See [§ Nested module scope](#nested-module-scope).
+Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grandparent > Parent > Child > my test". See [§ Nested module scope](#nested-module-scope).
 
 The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.todo()`](./test.todo.md) to all a module's tests at once.
 
@@ -76,7 +76,7 @@ Example: [§ Declaring module options](#declaring-module-options).
 
 ### Nested scope
 
-Modules can be nested to group tests under under a commmon label within a parent module.
+Modules can be nested to group tests under a common label within a parent module.
 
 The module scope is given a `hooks` object which can be used to procedurally add [hooks](#hooks).
 

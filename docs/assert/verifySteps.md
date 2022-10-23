@@ -54,7 +54,7 @@ QUnit.test('good example', async assert => {
 });
 ```
 
-When approaching this scenario **without the Step API** one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over. This creates loose assurances, and can easily cause false positives (a callback might not run, run out of order, or run multipe times). It also offers rather limited debugging information.
+When approaching this scenario **without the Step API** one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over. This creates loose assurances, and can easily cause false positives (a callback might not run, run out of order, or run multiple times). It also offers rather limited debugging information.
 
 ```js
 // WARNING: This is a BAD example

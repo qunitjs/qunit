@@ -122,7 +122,7 @@ QUnit.on('testEnd', testEnd => {
 
 The `runEnd` event indicates the end of a test run. It is emitted exactly once.
 
-| `string` | `status` | Aggregate result of all tests, one of:<br>`failed`: at least one test failed or a global error ocurred;<br>`passed`: there were no failed tests, which means there were only tests with a passed, skipped, or todo status. If [`QUnit.config.failOnZeroTests`](../config/failOnZeroTests.md) is disabled, then the run may also pass if there were no tests.
+| `string` | `status` | Aggregate result of all tests, one of:<br>`failed`: at least one test failed or a global error occurred;<br>`passed`: there were no failed tests, which means there were only tests with a passed, skipped, or todo status. If [`QUnit.config.failOnZeroTests`](../config/failOnZeroTests.md) is disabled, then the run may also pass if there were no tests.
 | `Object` | `testCounts` | Aggregate counts about tests:
 | `number` | `testCounts.passed` | Number of passed tests.
 | `number` | `testCounts.failed` | Number of failed tests.
