@@ -1,4 +1,11 @@
 
+2.19.3 / 2022-10-22
+==================
+
+### Fixed
+
+* Assert: Restore how deepEqual treats imposter objects. (Timo Tijhof) [#1706](https://github.com/qunitjs/qunit/issues/1706)
+
 2.19.2 / 2022-10-17
 ==================
 
