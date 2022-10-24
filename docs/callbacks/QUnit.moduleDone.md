@@ -27,7 +27,7 @@ Passed to the callback:
 | `failed` (number) | The number of failed assertions |
 | `passed` (number) | The number of passed assertions |
 | `total` (number) | The total number of assertions |
-| `runtime` (number) | The execution time in millseconds of this module |
+| `runtime` (number) | The execution time in milliseconds of this module |
 
 ## Examples
 

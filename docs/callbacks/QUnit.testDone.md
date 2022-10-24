@@ -28,7 +28,7 @@ Passed to the callback:
 | `failed` (number) | The number of failed assertions |
 | `passed` (number) | The number of passed assertions |
 | `total` (number) | The total number of assertions |
-| `runtime` (number) | The execution time in millseconds of the test, including beforeEach and afterEach calls |
+| `runtime` (number) | The execution time in milliseconds of the test, including beforeEach and afterEach calls |
 | `skipped` (boolean) | Indicates whether or not the current test was skipped |
 | `todo` (boolean) | Indicates whether or not the current test was a todo |
 

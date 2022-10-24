@@ -7,7 +7,7 @@
 
 - group: async
   # These pages are all in at least one other group.
-  # It exisxts for discoverability, but we don't need
+  # It exists for discoverability, but we don't need
   # to highlight its pages in two places.
   expand: false
 
