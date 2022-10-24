@@ -96,7 +96,7 @@
 
 <p>All tests inside a module will be grouped under that module. Tests can be added to a module using the <a href="/QUnit/test/">QUnit.test</a> method. Modules help organize, select, and filter tests to run. See <a href="#organizing-your-tests">§ Organizing your tests</a>.</p>
 
-<p>Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grantparent &gt; Parent &gt; Child &gt; my test”. See <a href="#nested-module-scope">§ Nested module scope</a>.</p>
+<p>Modules can be nested inside other modules. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grandparent &gt; Parent &gt; Child &gt; my test”. See <a href="#nested-module-scope">§ Nested module scope</a>.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>, <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code>, and <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> methods are aliases for <code class="language-plaintext highlighter-rouge">QUnit.module()</code> that apply the behaviour of <a href="/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only()</code></a>, <a href="/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a> or <a href="/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a> to all a module’s tests at once.</p>
 
@@ -177,7 +177,7 @@
 
 <h3 id="nested-scope">Nested scope</h3>
 
-<p>Modules can be nested to group tests under under a commmon label within a parent module.</p>
+<p>Modules can be nested to group tests under a common label within a parent module.</p>
 
 <p>The module scope is given a <code class="language-plaintext highlighter-rouge">hooks</code> object which can be used to procedurally add <a href="#hooks">hooks</a>.</p>
 
