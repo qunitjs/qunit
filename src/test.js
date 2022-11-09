@@ -341,6 +341,13 @@ Test.prototype = {
   finish: function () {
     config.current = this;
 
+    // Release the timeout and timeout callback references to be garbage collected.
+    // https://github.com/qunitjs/qunit/pull/1708
+    if (setTimeout) {
+      clearTimeout(this.timeout);
+      config.timeoutHandler = null;
+    }
+
     // Release the test callback to ensure that anything referenced has been
     // released to be garbage collected.
     this.callback = undefined;

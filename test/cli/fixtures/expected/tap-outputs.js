@@ -467,6 +467,15 @@ ok 2 module-closure check > memory release
 # todo 0
 # fail 0`,
 
+  "node --expose-gc ../../../bin/qunit.js memory-leak/test-object.js":
+`TAP version 13
+ok 1 test-object > example test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`,
+
   'qunit only/test.js':
 `TAP version 13
 ok 1 run this test

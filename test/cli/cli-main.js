@@ -313,6 +313,12 @@ HOOK: BCD1 @ B after`;
       const execution = await execute(command);
       assert.equal(execution.snapshot, getExpected(command));
     });
+
+    QUnit.test('memory-leak/test-object', async assert => {
+      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
+      const execution = await execute(command);
+      assert.equal(execution.snapshot, getExpected(command));
+    });
   }
 
   // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.
