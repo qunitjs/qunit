@@ -18,7 +18,7 @@ const config = {
   // defaults to `true`
   failOnZeroTests: true,
 
-  // Select by pattern or case-insenstive substring match against "moduleName: testName"
+  // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: undefined,
 
   // Depth up-to which object will be dumped
