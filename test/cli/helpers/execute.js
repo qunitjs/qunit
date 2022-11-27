@@ -40,7 +40,7 @@ function normalize (actual) {
 
     // Convert /bin/qunit and /src/cli to internal as well
     // Because there are differences between Node 10 and Node 12 in terms
-    // of how much back and forth ocurrs, so by mapping both to internal
+    // of how much back and forth occurs, so by mapping both to internal
     // we can flatten and normalize across.
     .replace(/^(\s+at ).*\/qunit\/bin\/qunit\.js.*$/gm, '$1internal')
     .replace(/^(\s+at ).*\/qunit\/src\/cli\/.*$/gm, '$1internal')

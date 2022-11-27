@@ -379,7 +379,7 @@ export function escapeText (str) {
       //
       // We don't reference `config.moduleId` directly after this and keep our own
       // copy because:
-      // 1. This naturaly filters out unknown moduleIds.
+      // 1. This naturally filters out unknown moduleIds.
       // 2. Gives us a place to manage and remember unsubmitted checkbox changes.
       // 3. Gives us an efficient way to map a selected moduleId to module name
       //    during rendering.
