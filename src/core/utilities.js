@@ -55,9 +55,9 @@ export function diff (a, b) {
  * @param {Array} array
  * @return {boolean}
  */
-export function inArray (elem, array) {
-  return array.indexOf(elem) !== -1;
-}
+export const inArray = Array.prototype.includes
+  ? (elem, array) => array.includes(elem)
+  : (elem, array) => array.indexOf(elem) !== -1;
 
 /**
  * Recursively clone an object into a plain array or object, taking only the
