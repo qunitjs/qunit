@@ -48,7 +48,7 @@ amethyst:
   github: qunitjs
   gitter: qunitjs/qunit
   algolia:
-    search_only_api_key: f492bec49e061a41cb8f57128483fd16
+    search_only_api_key: f93ac48385f4f5866ffe9227829b329e
     sources:
       - index: qunitjs-api
       - index: qunitjs
@@ -65,7 +65,7 @@ amethyst:
 # https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-algolia-search
 #
 algolia:
-  application_id: EQYECMT6Q0
+  application_id: 2Q66ROFTLQ
   # Which index_name the 'jekyll algolia' command will create or update.
   index_name: qunitjs-api
   # By default only HTML paragraphs are indexed (and headings, albeit through a different mechanism).
