@@ -135,7 +135,7 @@ Gaurav Munjal <gaurav9576@yahoo.com>
 Invis1ble <Invis1ble@users.noreply.github.com>
 David Chan <david@troi.org>
 Ryan T <ryanto@gmail.com>
-Ben Demboski <ben@turbopatent.com>
+Ben Demboski <demboskb@gmail.com>
 NaridaL <adrianleonhard@gmail.com>
 Kevin Wang <kevin@fossa.io>
 Marten Schilstra <marten.schilstra@dockyard.com>
@@ -177,8 +177,10 @@ zq <290353142@qq.com>
 Brenden Palmer <brendenpalmer@gmail.com>
 Ryuta Kamizono <kamipo@gmail.com>
 Chris Krycho <hello@chriskrycho.com>
-Ben Demboski <demboskb@gmail.com>
 Jan Buschtöns <jan@buschtoens.me>
 Jarek Radosz <jradosz@gmail.com>
 Izel Nakri <contact@izelnakri.com>
 ShaMan123 <shacharnen@gmail.com>
+Andrew Dawes <andrewsdawes@gmail.com>
+Tim Gates <tim.gates@iress.com>
+Sergey Astapov <SergeAstapov@gmail.com>

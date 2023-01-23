@@ -1,4 +1,11 @@
 
+2.19.4 / 2023-01-23
+==================
+
+### Fixed
+
+* Core: Fix memory leak via `config.timeoutHandler` from last async test. (Sergey Astapov)
+
 2.19.3 / 2022-10-22
 ==================
 
