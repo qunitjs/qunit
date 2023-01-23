@@ -302,17 +302,15 @@ HOOK: BCD1 @ B after`;
   // https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
   // Created in Node 11.x, but starts working the way we need from Node 14.
   if (semver.gte(process.versions.node, '14.0.0')) {
-    QUnit.test('callbacks and hooks from modules are properly released for garbage collection', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/*.js'];
+    QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
+      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
       const execution = await execute(command);
-
       assert.equal(execution.snapshot, getExpected(command));
     });
 
-    QUnit.test('callbacks and hooks from filtered-out modules are properly released for garbage collection', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/*.js'];
+    QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
+      const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
       const execution = await execute(command);
-
       assert.equal(execution.snapshot, getExpected(command));
     });
   }

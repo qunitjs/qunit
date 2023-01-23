@@ -27,7 +27,7 @@ function streamToString (stream) {
   });
 }
 
-QUnit.module('some nested module', function (hooks) {
+QUnit.module('module-closure', function (hooks) {
   let foo1, foo2;
 
   hooks.beforeEach(function () {
@@ -40,25 +40,25 @@ QUnit.module('some nested module', function (hooks) {
     assert.equal(foo2.getId(), 'FooNum');
   });
 
-  QUnit.test('can call method on foo', function (assert) {
+  QUnit.test('example test', function (assert) {
     assert.equal(foo1.getId(), 'FooNum');
   });
 
-  QUnit.module('child module', function (hooks) {
+  QUnit.module('example child module', function (hooks) {
     let foo3;
 
     hooks.beforeEach(function () {
       foo3 = foo1;
     });
 
-    QUnit.test('child test', function (assert) {
+    QUnit.test('example child module test', function (assert) {
       assert.ok(foo3);
     });
   });
 });
 
-QUnit.module('later thing', function () {
-  QUnit.test('has released all foos', async function (assert) {
+QUnit.module('module-closure check', function () {
+  QUnit.test('memory release', async function (assert) {
     // The snapshot is expected to contain entries like this:
     // > "FooNum<integer>"
     // It is important that the regex uses \d and that the above

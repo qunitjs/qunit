@@ -446,21 +446,21 @@ ok 1 Single > has a test
 # todo 0
 # fail 0`,
 
-  "node --expose-gc ../../../bin/qunit.js 'memory-leak/*.js'":
+  "node --expose-gc ../../../bin/qunit.js memory-leak/module-closure.js":
 `TAP version 13
-ok 1 some nested module > can call method on foo
-ok 2 some nested module > child module > child test
-ok 3 later thing > has released all foos
+ok 1 module-closure > example test
+ok 2 module-closure > example child module > example child module test
+ok 3 module-closure check > memory release
 1..3
 # pass 3
 # skip 0
 # todo 0
 # fail 0`,
 
-  "node --expose-gc ../../../bin/qunit.js --filter !child 'memory-leak/*.js'":
+  "node --expose-gc ../../../bin/qunit.js --filter !child memory-leak/module-closure.js":
 `TAP version 13
-ok 1 some nested module > can call method on foo
-ok 2 later thing > has released all foos
+ok 1 module-closure > example test
+ok 2 module-closure check > memory release
 1..2
 # pass 2
 # skip 0
