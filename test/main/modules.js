@@ -283,17 +283,18 @@ QUnit.module('QUnit.module', function () {
   });
 
   QUnit.module('contained suite `this`', function (hooks) {
+    var outerThis;
+    var innerThis;
     this.outer = 1;
 
     hooks.beforeEach(function () {
+      outerThis = this;
       this.outer++;
     });
 
     hooks.afterEach(function (assert) {
-      assert.equal(
-        this.outer, 42,
-        'in-test environment modifications are visible by afterEach callbacks'
-      );
+      assert.notStrictEqual(outerThis, undefined, 'outer `this` should be defined in the outer `afterEach`');
+      assert.notStrictEqual(outerThis, innerThis, 'outer and inner `this` should differ in the outer `afterEach`');
     });
 
     QUnit.test('`this` is shared from modules to the tests', function (assert) {
@@ -310,6 +311,8 @@ QUnit.module('QUnit.module', function () {
       this.inner = true;
 
       hooks.beforeEach(function (assert) {
+        innerThis = this;
+
         assert.strictEqual(this.outer, 2);
         assert.true(this.inner);
       });
@@ -318,6 +321,10 @@ QUnit.module('QUnit.module', function () {
         assert.strictEqual(this.outer, 2);
         assert.true(this.inner);
 
+        assert.notStrictEqual(outerThis, undefined, 'outer `this` should be defined in the inner `afterEach`');
+        assert.notStrictEqual(innerThis, undefined, 'inner `this` should be defined in the inner `afterEach`');
+        assert.notStrictEqual(outerThis, innerThis, 'outer and inner `this` should differ in the inner `afterEach`');
+
         // This change affects the outermodule afterEach assertion.
         this.outer = 42;
       });
@@ -325,6 +332,11 @@ QUnit.module('QUnit.module', function () {
       QUnit.test('inner modules share outer environments', function (assert) {
         assert.strictEqual(this.outer, 2);
         assert.true(this.inner);
+      });
+
+      QUnit.test('tests do not have identical `this` to parent environments', function (assert) {
+        assert.notStrictEqual(this, outerThis, 'test `this` is not `outerThis`');
+        assert.notStrictEqual(this, innerThis, 'test `this` is not `innerThis`');
       });
     });
 
