@@ -39,6 +39,8 @@ export function escapeText (str) {
     return;
   }
 
+  QUnit.reporters.perf.init(QUnit);
+
   const config = QUnit.config;
   const hiddenTests = [];
   let collapseNext = false;
