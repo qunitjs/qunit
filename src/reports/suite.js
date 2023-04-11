@@ -21,9 +21,6 @@ export default class SuiteReport {
   start (recordTime) {
     if (recordTime) {
       this._startTime = performance.now();
-
-      const suiteLevel = this.fullName.length;
-      performance.mark(`qunit_suite_${suiteLevel}_start`);
     }
 
     return {
@@ -40,16 +37,6 @@ export default class SuiteReport {
   end (recordTime) {
     if (recordTime) {
       this._endTime = performance.now();
-
-      const suiteLevel = this.fullName.length;
-      const suiteName = this.fullName.join(' – ');
-
-      performance.mark(`qunit_suite_${suiteLevel}_end`);
-      performance.measure(
-        suiteLevel === 0 ? 'QUnit Test Run' : `QUnit Test Suite: ${suiteName}`,
-          `qunit_suite_${suiteLevel}_start`,
-          `qunit_suite_${suiteLevel}_end`
-      );
     }
 
     return {
