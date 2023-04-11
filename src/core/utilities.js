@@ -1,45 +1,12 @@
 import { window } from '../globals';
-import Logger from '../logger';
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;
 export const slice = Array.prototype.slice;
 
-const nativePerf = getNativePerf();
-
-// TODO: Consider using globalThis instead so that perf marks work
-// in Node.js as well. As they can have overhead, we should also
-// have a way to disable these, and/or make them an opt-in reporter
-// in QUnit 3 and then support globalThis.
-// For example: `QUnit.addReporter(QUnit.reporters.perf)`.
-function getNativePerf () {
-  if (window &&
-    typeof window.performance !== 'undefined' &&
-    typeof window.performance.mark === 'function' &&
-    typeof window.performance.measure === 'function'
-  ) {
-    return window.performance;
-  } else {
-    return undefined;
-  }
-}
-
 export const performance = {
-  now: nativePerf
-    ? nativePerf.now.bind(nativePerf)
-    : Date.now,
-  measure: nativePerf
-    ? function (comment, startMark, endMark) {
-      // `performance.measure` may fail if the mark could not be found.
-      // reasons a specific mark could not be found include: outside code invoking `performance.clearMarks()`
-      try {
-        nativePerf.measure(comment, startMark, endMark);
-      } catch (ex) {
-        Logger.warn('performance.measure could not be executed because of ', ex.message);
-      }
-    }
-    : function () {},
-  mark: nativePerf ? nativePerf.mark.bind(nativePerf) : function () {}
+  // eslint-disable-next-line compat/compat -- Checked
+  now: window && window.performance && window.performance.now ? window.performance.now.bind(window.performance) : Date.now
 };
 
 // Returns a new Array with the elements that are in a but not in b

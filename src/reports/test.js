@@ -22,7 +22,6 @@ export default class TestReport {
   start (recordTime) {
     if (recordTime) {
       this._startTime = performance.now();
-      performance.mark('qunit_test_start');
     }
 
     return {
@@ -35,17 +34,6 @@ export default class TestReport {
   end (recordTime) {
     if (recordTime) {
       this._endTime = performance.now();
-      if (performance) {
-        performance.mark('qunit_test_end');
-
-        const testName = this.fullName.join(' – ');
-
-        performance.measure(
-          `QUnit Test: ${testName}`,
-          'qunit_test_start',
-          'qunit_test_end'
-        );
-      }
     }
 
     return extend(this.start(), {
