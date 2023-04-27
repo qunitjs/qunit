@@ -67,7 +67,7 @@
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.only( name, callback )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.only( name, callback )</code></p>
 
-<p>Add a test that is exclusively run, preventing other tests from running unless they are defined this way.</p>
+<p>Add a test that is exclusively run, preventing other tests from running unless they are also defined in this way.</p>
 
 <table>
   <thead>
@@ -107,11 +107,11 @@
 
 <p>Use this method to focus your test suite on specific tests. <code class="language-plaintext highlighter-rouge">QUnit.test.only</code> will cause any other tests in your suite to be ignored.</p>
 
-<p>This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful as it can be done upfront without first running the test suite, e.g. in a codebase with many long-running tests.</p>
+<p>This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful to set your filter upfront without first running the test suite in a browser, e.g. in a codebase with many long-running tests.</p>
 
-<p>It can also be used instead of the <code class="language-plaintext highlighter-rouge">--filter</code> CLI option, e.g. if you’re already having the test open in your text editor. Similar to how one might use the <code class="language-plaintext highlighter-rouge">debugger</code> keyword.</p>
+<p>It can also be used as alternative to the <code class="language-plaintext highlighter-rouge">--filter</code> CLI option. If you have a specific test in front of you in your text editor, you set the “only” flag on this test directly by using <code class="language-plaintext highlighter-rouge">QUnit.test.only</code>, without needing to copy or otherwise match the test name via the <code class="language-plaintext highlighter-rouge">--filter</code> option. Setting the “only” flag in this way, is similar to how you might use the <code class="language-plaintext highlighter-rouge">debugger</code> keyword to interact with browser devtools.</p>
 
-<p>When debugging a larger area of code, you may want to <em>only</em> run all tests within a given module. You can also use<a href="/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.only()</code></a> to automatically mark all tests in a module as “only” tests.</p>
+<p>When debugging a larger area of code, you may want to expand your filter to run all tests under a given module. You can use<a href="/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.only()</code></a> to automatically mark all tests inside that module as “only” tests.</p>
 
 <h2 id="changelog">Changelog</h2>
 
