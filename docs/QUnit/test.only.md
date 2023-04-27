@@ -13,7 +13,7 @@ version_added: "1.20.0"
 `QUnit.test.only( name, callback )`<br>
 `QUnit.only( name, callback )`
 
-Add a test that is exclusively run, preventing other tests from running unless they are defined this way.
+Add a test that is exclusively run, preventing other tests from running unless they are also defined in this way.
 
 | parameter | description |
 |-----------|-------------|
@@ -28,11 +28,11 @@ Add a test that is exclusively run, preventing other tests from running unless t
 
 Use this method to focus your test suite on specific tests. `QUnit.test.only` will cause any other tests in your suite to be ignored.
 
-This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful as it can be done upfront without first running the test suite, e.g. in a codebase with many long-running tests.
+This method is an alternative to re-running individual tests from the HTML reporter interface, and can be especially useful to set your filter upfront without first running the test suite in a browser, e.g. in a codebase with many long-running tests.
 
-It can also be used instead of the `--filter` CLI option, e.g. if you're already having the test open in your text editor. Similar to how one might use the `debugger` keyword.
+It can also be used as alternative to the `--filter` CLI option. If you have a specific test in front of you in your text editor, you set the "only" flag on this test directly by using `QUnit.test.only`, without needing to copy or otherwise match the test name via the `--filter` option. Setting the "only" flag in this way, is similar to how you might use the `debugger` keyword to interact with browser devtools.
 
-When debugging a larger area of code, you may want to _only_ run all tests within a given module. You can also use[`QUnit.module.only()`](./module.md) to automatically mark all tests in a module as "only" tests.
+When debugging a larger area of code, you may want to expand your filter to run all tests under a given module. You can use[`QUnit.module.only()`](./module.md) to automatically mark all tests inside that module as "only" tests.
 
 ## Changelog
 

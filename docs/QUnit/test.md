@@ -53,8 +53,8 @@ function square (x) {
 }
 
 QUnit.test('square()', assert => {
-  assert.equal(square(2), 4, 'square(2)');
-  assert.equal(square(3), 9, 'square(3)');
+  assert.equal(square(2), 4);
+  assert.equal(square(3), 9);
 });
 ```
 

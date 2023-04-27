@@ -48,7 +48,7 @@ QUnit.module('Robot', hooks => {
     robot = new Robot();
   });
 
-  // Robot is not yet finished, expect this is a todo test
+  // Robot is not yet finished
   QUnit.test.todo('fireLazer', assert => {
     const result = robot.fireLazer();
     assert.equal(result, "I'm firing my lazer!");
