@@ -1,4 +1,4 @@
-<p align="center"><img src="/docs/img/logo-with-colored-dark-text.svg" height="width" height="125" alt="QUnit"></p>
+<p align="center"><img src="docs/img/logo-with-colored-dark-text.svg" height="80" alt="QUnit"></p>
 
 <div align="center">
 

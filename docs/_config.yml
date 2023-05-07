@@ -47,29 +47,8 @@ amethyst:
   twitter: qunitjs
   github: qunitjs
   gitter: qunitjs/qunit
-  algolia:
-    search_only_api_key: f93ac48385f4f5866ffe9227829b329e
-    sources:
-      - index: qunitjs-api
-      - index: qunitjs
-        base: https://qunitjs.com
+  typesense:
+    origin: https://typesense.jquery.com
+    collection: qunitjs_com
+    search_only_api_key: Zh8mMgohXECel9wjPwqT7lekLSG3OCgz
 
-
-# Backend search settings
-#
-# This applies to the 'jekyll algolia' command, which is typically
-# run from an after a commit is merged. The settings are documented at:
-# https://github.com/algolia/jekyll-algolia
-#
-# To learn how to set this up, refer to:
-# https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-algolia-search
-#
-algolia:
-  application_id: 2Q66ROFTLQ
-  # Which index_name the 'jekyll algolia' command will create or update.
-  index_name: qunitjs-api
-  # By default only HTML paragraphs are indexed (and headings, albeit through a different mechanism).
-  # * Include list items (similar to paragraphs).
-  # * Include tables (used for method parameter docs; index per row for better excerpts).
-  # * Exclude <pre> (mostly code examples, degrades result quality).
-  nodes_to_index: 'p,li,tr'

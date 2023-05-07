@@ -1,8 +1,8 @@
 name: spider-check
 on:
-  # Once a day at 02:30
+  # Once a week on Friday at 00:00
   schedule:
-    - cron: '30 2 * * *'
+    - cron: '0 0 * * 5'
   # Or manually
   workflow_dispatch:
   # Or when developing this workflow
@@ -15,15 +15,20 @@ on:
 
 jobs:
   spider-check:
-    # Includes Python 3
-    # https://github.com/actions/virtual-environments/blob/ubuntu20/20210318.0/images/linux/Ubuntu2004-README.md
+    env:
+      # Site address to crawl
+      #
+      # Example:
+      # - https://example.org
+      # - https://example.github.io/
+      # - https://example.github.io/my-project/
+      MY_SITE: https://api.qunitjs.com
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'qunitjs/qunit' }} # skip on forks, noisy cron and likely stale main branch
+    if: ${{ github.repository_owner == 'qunitjs' }} # skip on forks
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: qunitjs/hydra-link-checker
-          ref: v1.0.2
-
+          repository: jquery/hydra-link-checker
+          ref: v2.0.0
       - name: Run hydra-link-checker
-        run: python3 hydra.py "https://api.qunitjs.com"
+        run: python3 hydra.py "$MY_SITE"
