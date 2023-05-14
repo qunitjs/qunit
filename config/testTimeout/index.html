@@ -3,41 +3,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="/assets/styles.css?v=16088b9d" media="screen">
+<link rel="stylesheet" href="/assets/styles.css?v=66a04ebf" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.config.testTimeout | QUnit</title>
 <meta property="og:title" content="QUnit.config.testTimeout"><meta name="description" content="Set a global default timeout after which a test will fail."><meta property="og:description" content="Set a global default timeout after which a test will fail."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
-            <a class="site-logo" href="https://qunitjs.com"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form class="site-search" id="site-search-form" action="https://duckduckgo.com">
-<label class="screen-reader-text" for="aa-search-input">Search</label>
-<input type="search" name="q" id="aa-search-input" class="aa-input-search" placeholder="Search..." autocomplete="off">
-<input type="hidden" name="sites" value="api.qunitjs.com">
-<svg class="aa-input-icon" viewBox="654 -372 1664 1664" height="20">
-    <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
-</svg>
-</form><nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+            <a class="site-logo" href="https://qunitjs.com"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="api.qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="https://qunitjs.com/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="https://qunitjs.com/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/about/">About QUnit</a></li></ul></li></ul></nav>
             <div class="site-toggles">
-                <button class="search-toggle toggle" data-opens=".site-search" aria-expanded="false">
+                <button class="search-toggle toggle" aria-expanded="false">
                     <span class="screen-reader-text">Search</span>
                     <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
                         <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
                     </svg>
                 </button>
-                <script type="module">
-                const searchToggle = document.querySelector('.search-toggle');
-                const searchToggleOpens = document.querySelector(searchToggle.dataset.opens);
-                searchToggle.addEventListener('click', () => {
-                    const state = searchToggle.classList.contains('opened');
-                    searchToggle.classList.toggle('opened', !state);
-                    searchToggle.setAttribute('aria-expanded', !state);
-                    searchToggleOpens.classList.toggle('opened', !state);
-                    searchToggleOpens.setAttribute('aria-expanded', !state);
-                });
-                </script>
                 <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
                     <span class="screen-reader-text">Menu</span>
                     <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
@@ -47,14 +35,31 @@
                     </svg>
                 </button>
                 <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
                 const navToggle = document.querySelector('.nav-toggle');
                 const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
                 navToggle.addEventListener('click', () => {
-                    const state = navToggle.classList.contains('opened');
-                    navToggle.classList.toggle('opened', !state);
-                    navToggle.setAttribute('aria-expanded', !state);
-                    navToggleOpens.classList.toggle('opened', !state);
-                    navToggleOpens.setAttribute('aria-expanded', !state);
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
                 });
                 </script>
             </div>
@@ -62,8 +67,14 @@
     </header>
     <div class="main main--columns wrapper">
 <div class="content" role="main">
-    <h1>QUnit.config.testTimeout</h1><p class="version-details">version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a>
-    </p><h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
+<article>
+    <header>
+    <h1>QUnit.config.testTimeout</h1>
+    <p class="post-meta">Categories: <a class="category" href="/config/">QUnit.config</a>.</p>
+    </header>
+    <p class="version-details">
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
+    <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p>Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents tests from running indefinitely.</p>
 
 <table>
@@ -79,6 +90,7 @@
 
 <p>This can be overridden on a per-test basis via <a href="/assert/timeout/">assert.timeout()</a>. If you don’t have per-test overrides, it is recommended to set this to a relatively high value (e.g. <code class="language-plaintext highlighter-rouge">30000</code> for 30 seconds) to avoid intermittent test failures from unrelated delays one might in a browser or CI service.</p>
 
+</article>
 </div>
 <aside class="sidebar" role="complementary">
 
@@ -152,102 +164,14 @@
     <footer class="site-footer">
         <div class="wrapper">
             <p class="external-links">
-                <a href="https://github.com/qunitjs" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener noreferrer">Mastodon</a>
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
                 
-                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
                 
-                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener noreferrer">Chat</a>
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
             </p>
-            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener noreferrer">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/config/testTimeout.md">Edit this page</a></p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/config/testTimeout.md">Edit this page</a></p>
         </div>
-    </footer><script type="module">
-const loadSearch = () => Promise.all([
-    new Promise((resolve) => document.body.append(Object.assign(document.createElement('script'), {
-        crossOrigin: 'anonymous',
-        integrity: 'sha256-YuyfhK9VEyfW6ejFiPbfOX2SELbFrgFU/8tU3MHuh60=',
-        src: 'https://cdn.jsdelivr.net/npm/algoliasearch@4.3.1/dist/algoliasearch-lite.umd.js',
-        onload: resolve
-    }))),
-    new Promise((resolve) => document.body.append(Object.assign(document.createElement('script'), {
-        crossOrigin: 'anonymous',
-        integrity: 'sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU=',
-        src: 'https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js',
-        onload: resolve
-    })))
-]);
-const input = document.querySelector('#aa-search-input');
-const form = document.querySelector('#site-search-form');
-let restoreFocus = false;
-async function setupSearch(e) {
-    restoreFocus = restoreFocus || (e && (e.type === 'click' || e.type === 'focus'));
-    if (setupSearch.setup) return;
-    setupSearch.setup = true;
-    await loadSearch();
-
-    const client = algoliasearch('2Q66ROFTLQ', 'f93ac48385f4f5866ffe9227829b329e');
-    const indexSources = [{"index":"qunitjs-api"},{"index":"qunitjs","base":"https://qunitjs.com"}];
-    const escapeString = autocomplete.escapeHighlightedString;
-    const autocompleteOptions = {
-        // Debug allows inspecting the suggestions
-        debug: true,
-        // (Re)open suggestions on (re)focus when input is non-empty
-        openOnFocus: true,
-        hint: false,
-        ariaLabel: 'search input',
-        templates: {
-            // https://github.com/algolia/autocomplete.js/issues/248
-            empty(query) {
-                return `No results for "${escapeString(query.query)}".`;
-            },
-            footer: '<div class="aa-footer">Search by <a class="aa-logo" href="https://algolia.com" target="_blank">Algolia</a></div>'
-        }
-    };
-    function formatURL(suggestion) {
-        return (suggestion.anchor && !suggestion.url.includes('#')) ? suggestion.url + '#' + suggestion.anchor : suggestion.url;
-    }
-    function newHitsSource(index, params) {
-        return function(query, cb) {
-            index.search(query, params).then(
-                res => { cb(res.hits, res); },
-                err => { cb([]); console.error(err); }
-            );
-        };
-    }
-    const autocompleteSources = indexSources.map(source => ({
-        source: newHitsSource(client.initIndex(source.index), { hitsPerPage: 5 }),
-        displayKey: '',
-        templates: {
-            suggestion(suggestion) {
-                const title = [ suggestion.title ].concat(suggestion.headings || []).join(' › ');
-                const content = suggestion._highlightResult.content && suggestion._highlightResult.content.value || '';
-                suggestion._href = (source.base || '') + formatURL(suggestion);
-                return `<a href="${suggestion._href}" tabindex="-1">
-                    <p class="aa-suggestion_title">${title}</p>
-                    <p class="aa-suggestion_content">${content}</p>
-                </a>`;
-            }
-        }
-    }));
-    const $input = autocomplete('#aa-search-input', autocompleteOptions, autocompleteSources)
-        .on('autocomplete:selected', (e, suggestion) => location.href = suggestion._href || suggestion.url);
-
-    if (restoreFocus) $input.focus();
-
-    // Disable fallback form
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-    });
-}
-document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !(document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName))) {
-        input.focus();
-        e.preventDefault();
-    }
-});
-input.addEventListener('focus', setupSearch, { once: true });
-form.addEventListener('click', setupSearch, { once: true });
-form.classList.add('site-search--bound');
-</script>
-</body>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=ee67b1a6"></script></body>
 </html>
