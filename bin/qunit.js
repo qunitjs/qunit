@@ -39,8 +39,7 @@ program
 const opts = program.opts();
 
 if (opts.reporter === true) {
-  const requireQUnit = require('../src/cli/require-qunit');
-  displayAvailableReporters(requireQUnit().reporters);
+  displayAvailableReporters();
 }
 
 const options = {

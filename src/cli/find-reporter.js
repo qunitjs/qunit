@@ -25,17 +25,20 @@ function findReporter (reporterName, builtin) {
   }
 
   // If we didn't find a reporter, display the available reporters and exit
-  displayAvailableReporters(builtin, reporterName);
+  displayAvailableReporters(reporterName);
 }
 
-function displayAvailableReporters (builtin, inputReporterName) {
+function displayAvailableReporters (inputReporterName) {
   const message = [];
 
   if (inputReporterName) {
     message.push(`No reporter found matching "${inputReporterName}".`);
   }
 
-  const jsReporters = Object.keys(builtin).sort();
+  const jsReporters = [
+    'console',
+    'tap'
+  ].sort();
   message.push(`Built-in reporters: ${jsReporters.join(', ')}`);
 
   const npmReporters = getReportersFromDependencies();
