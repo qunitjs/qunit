@@ -110,7 +110,7 @@
 <span class="p">}</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">async example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">async</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
 
   <span class="nf">fetchDouble</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Result</span><span class="dl">'</span><span class="p">);</span>
@@ -123,8 +123,8 @@
 <p>Call <code class="language-plaintext highlighter-rouge">assert.async()</code> multiple times to wait for multiple async operations. Each <code class="language-plaintext highlighter-rouge">done</code> callback must be called exactly once for the test to pass.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">two async calls</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">done1</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">async</span><span class="p">();</span>
-  <span class="kd">const</span> <span class="nx">done2</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">async</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">done1</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">done2</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
 
   <span class="nf">fetchDouble</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="dl">'</span><span class="s1">double of 3</span><span class="dl">'</span><span class="p">);</span>
@@ -152,8 +152,8 @@
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">multiple calls example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
 
-  <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">async</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">async</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
 
   <span class="nf">uploadBatch</span><span class="p">(</span>
     <span class="p">[</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">b</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">c</span><span class="dl">'</span><span class="p">],</span>

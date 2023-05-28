@@ -161,19 +161,19 @@
 <p>Log the module name and test result whenever an assertion fails:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nf">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">`[FAILED] </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">module</span><span class="p">}</span><span class="s2"> &gt; </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
-  <span class="nf">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="nf">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">actual</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">actual</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`\nexpected: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">expected</span><span class="p">}</span><span class="s2">\nactual: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">actual</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="nf">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`\n</span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">source</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
   <span class="p">}</span>
 
