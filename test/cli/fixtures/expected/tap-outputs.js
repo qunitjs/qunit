@@ -172,14 +172,14 @@ ok 5 A-Test > derp
   'qunit --reporter does-not-exist':
 `# stderr
 No reporter found matching "does-not-exist".
-Built-in reporters: console, perf, tap
+Built-in reporters: console, tap
 Extra reporters found among package dependencies: npm-reporter
 
 # exit code: 1`,
 
   'qunit --reporter':
 `# stderr
-Built-in reporters: console, perf, tap
+Built-in reporters: console, tap
 Extra reporters found among package dependencies: npm-reporter
 
 # exit code: 1`,
