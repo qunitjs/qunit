@@ -15,6 +15,8 @@ on:
 
 jobs:
   spider-check:
+    if: ${{ github.repository_owner == 'qunitjs' }} # skip on forks
+    runs-on: ubuntu-latest
     env:
       # Site address to crawl
       #
@@ -23,12 +25,16 @@ jobs:
       # - https://example.github.io/
       # - https://example.github.io/my-project/
       MY_SITE: https://api.qunitjs.com
-    runs-on: ubuntu-latest
-    if: ${{ github.repository_owner == 'qunitjs' }} # skip on forks
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install hydra
+        uses: actions/checkout@v3
         with:
           repository: jquery/hydra-link-checker
           ref: v2.0.0
+          path: hydra
+
       - name: Run hydra-link-checker
-        run: python3 hydra.py "$MY_SITE"
+        run: python3 hydra/hydra.py "$MY_SITE" --config build/hydra-config.json
