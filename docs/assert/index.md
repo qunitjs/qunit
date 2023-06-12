@@ -2,6 +2,8 @@
 layout: group
 group: assert
 title: Assertions
+amethyst:
+  robots: index
 redirect_from:
   - "/QUnit.assert/"
   - "/category/assert/"
