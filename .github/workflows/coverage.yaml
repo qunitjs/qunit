@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Use Node.js 16
-        uses: actions/setup-node@v3.5.0
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
