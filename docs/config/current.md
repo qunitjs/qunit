@@ -13,7 +13,7 @@ Internal object representing the currently running test.
 <table>
 <tr>
   <th>type</th>
-  <td markdown="span">`object`</td>
+  <td markdown="span">`object` (read-only)</td>
 </tr>
 </table>
 
