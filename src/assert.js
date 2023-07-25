@@ -68,7 +68,12 @@ class Assert {
 
   // Create a new async pause and return a new function that can release the pause.
   async (count) {
-    const requiredCalls = count === undefined ? 1 : count;
+    if (count === undefined) {
+      count = 1;
+    } else if (typeof count !== 'number') {
+      throw new TypeError('async takes number as an input');
+    }
+    const requiredCalls = count;
     return this.test.internalStop(requiredCalls);
   }
 
