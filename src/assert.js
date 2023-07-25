@@ -77,7 +77,7 @@ class Assert {
     return this.test.internalStop(requiredCalls);
   }
 
-  // goExports test.push() to the user API
+  // Exports test.push() to the user API
   // Alias of pushResult.
   push (result, actual, expected, message, negative) {
     Logger.warn('assert.push is deprecated and will be removed in QUnit 3.0.' +
