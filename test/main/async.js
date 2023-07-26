@@ -121,6 +121,15 @@ QUnit.module('assert.async', function () {
     done();
   });
 
+  QUnit.test('fails if using non-numeric as an input', function (assert) {
+    assert.throws(
+      function () {
+        assert.async('an invalid string input');
+      },
+      new TypeError('async takes number as an input')
+    );
+  });
+
   QUnit.test('fails if called more than specified count', function (assert) {
     // Having an outer async flow in this test avoids the need to manually modify QUnit internals
     // in order to avoid post-`done` assertions causing additional failures
