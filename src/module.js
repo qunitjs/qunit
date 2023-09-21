@@ -24,9 +24,9 @@ function createModule (name, testEnvironment, modifiers) {
 
   const env = {};
   if (parentModule) {
-    extend(env, parentModule.testEnvironment);
+    Object.assign(env, parentModule.testEnvironment);
   }
-  extend(env, testEnvironment);
+  Object.assign(env, testEnvironment);
 
   const module = {
     name: moduleName,

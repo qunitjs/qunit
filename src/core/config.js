@@ -113,7 +113,7 @@ const config = {
 // That means QUnit was loaded twice! (Use the same approach as export.js)
 const preConfig = globalThis && globalThis.QUnit && !globalThis.QUnit.version && globalThis.QUnit.config;
 if (preConfig) {
-  extend(config, preConfig);
+  Object.assign(config, preConfig);
 }
 
 // Push a loose unnamed module to the modules collection
