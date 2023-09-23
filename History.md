@@ -1,4 +1,20 @@
 
+2.20.0 / 2023-09-23
+==================
+
+### Added
+
+* Core: Add `QUnit.reporters.perf`. (Timo Tijhof) [#1714](https://github.com/qunitjs/qunit/pull/1714)
+
+### Changed
+
+* Assert: Add type check for `assert.async()` parameter. (Zixin Yin) [#1721](https://github.com/qunitjs/qunit/issues/1721)
+* HTML Reporter: Remove units for 0 values in qunit.css. (Hareesh) [#1715](https://github.com/qunitjs/qunit/pull/1715)
+
+### Fixed
+
+* Core: Faster `inArray` by using Array.prototype.includes when possible. (Izel Nakri)
+
 2.19.4 / 2023-01-23
 ==================
 
