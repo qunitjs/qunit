@@ -28,10 +28,9 @@ QUnit.test.each('failing tests', {
 >> Expected: undefined
 >> Error: No tests were run.
 >>     at `],
-  // FIXME: Error line is off by one in Chrome, broke betweeen Puppeteer 9 and 21.
   uncaught: ['fail-uncaught', `Testing fail-uncaught.html \n\
 >> ReferenceError: boom is not defined
->>     at file:fail-uncaught.html:15`]
+>>     at file:fail-uncaught.html:16`]
 }, (assert, [command, expected]) => {
   try {
     const ret = cp.execSync('node_modules/.bin/grunt qunit:' + command, {
