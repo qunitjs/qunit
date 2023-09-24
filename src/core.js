@@ -19,6 +19,7 @@ import ProcessingQueue from './core/processing-queue';
 import { on, emit } from './events';
 import onWindowError from './core/onerror';
 import onUncaughtException from './core/on-uncaught-exception';
+import diff from './core/diff';
 
 const QUnit = {};
 
@@ -42,6 +43,7 @@ QUnit.version = '@VERSION';
 extend(QUnit, {
   config,
 
+  diff,
   dump,
   equiv,
   reporters,

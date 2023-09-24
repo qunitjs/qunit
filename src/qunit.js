@@ -1,2 +1,4 @@
 import './core';
-import './html-reporter/reporter';
+import './html-runner/fixture';
+import './html-runner/urlparams';
+import './html-reporter/html';

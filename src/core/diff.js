@@ -1,4 +1,4 @@
-import QUnit from '../core';
+/* eslint-disable indent */
 import { escapeText } from '../core/utilities';
 
 /*
@@ -29,7 +29,6 @@ import { escapeText } from '../core/utilities';
  * Usage: QUnit.diff(expected, actual)
  *
  */
-QUnit.diff = (function () {
   function DiffMatchPatch () {
   }
 
@@ -1112,7 +1111,7 @@ QUnit.diff = (function () {
     }
   };
 
-  return function (o, n) {
+  export default function diff (o, n) {
     let diff, output, text;
     diff = new DiffMatchPatch();
     output = diff.DiffMain(o, n);
@@ -1120,5 +1119,4 @@ QUnit.diff = (function () {
     text = diff.diffPrettyHtml(output);
 
     return text;
-  };
-}());
+  }
