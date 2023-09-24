@@ -167,3 +167,25 @@ export function errorString (error) {
     return resultErrorString;
   }
 }
+
+export function escapeText (str) {
+  if (!str) {
+    return '';
+  }
+
+  // Both single quotes and double quotes (for attributes)
+  return ('' + str).replace(/['"<>&]/g, function (s) {
+    switch (s) {
+      case "'":
+        return '&#039;';
+      case '"':
+        return '&quot;';
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+    }
+  });
+}

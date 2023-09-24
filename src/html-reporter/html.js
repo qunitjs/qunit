@@ -1,7 +1,6 @@
 import QUnit from '../core';
-import { extend, errorString } from '../core/utilities';
+import { extend, errorString, escapeText } from '../core/utilities';
 import { window, document, navigator, console, StringMap } from '../globals';
-import './urlparams';
 import fuzzysort from 'fuzzysort';
 
 const stats = {
@@ -9,29 +8,6 @@ const stats = {
   defined: 0,
   completed: 0
 };
-
-// Escape text for attribute or text content.
-export function escapeText (str) {
-  if (!str) {
-    return '';
-  }
-
-  // Both single quotes and double quotes (for attributes)
-  return ('' + str).replace(/['"<>&]/g, function (s) {
-    switch (s) {
-      case "'":
-        return '&#039;';
-      case '"':
-        return '&quot;';
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '&':
-        return '&amp;';
-    }
-  });
-}
 
 (function () {
   // Don't load the HTML Reporter on non-browser environments

@@ -1,5 +1,5 @@
 import QUnit from '../core';
-import { escapeText } from './html';
+import { escapeText } from '../core/utilities';
 
 /*
  * This file is a modified version of google-diff-match-patch's JavaScript implementation
