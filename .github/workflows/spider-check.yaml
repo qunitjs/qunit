@@ -29,12 +29,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install hydra
-        uses: actions/checkout@v3
-        with:
-          repository: jquery/hydra-link-checker
-          ref: v2.0.0
-          path: hydra
-
       - name: Run hydra-link-checker
-        run: python3 hydra/hydra.py "$MY_SITE" --config build/hydra-config.json
+        run: |
+          curl -O https://raw.githubusercontent.com/jquery/hydra-link-checker/v2.0.0/hydra.py
+          python3 hydra.py "$MY_SITE" --config build/hydra-config.json
