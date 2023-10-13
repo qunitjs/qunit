@@ -97,7 +97,7 @@ Example: [§ Nested module scope](#nested-module-scope).
 
 ### Organizing your tests
 
-If `QUnit.module` is defined without a `nested` callback argument, all subsequently defined tests will be grouped into the module until another module is defined.
+If `QUnit.module` is called without a `nested` callback argument, all subsequently defined tests will be grouped into that module until another module is defined.
 
 ```js
 QUnit.module('Group A');
