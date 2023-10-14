@@ -21,7 +21,7 @@ export default function exportQUnit (QUnit) {
 
     // For consistency with CommonJS environments' exports
     module.exports.QUnit = QUnit;
-    // For allowing a CJS-compatible ESM imports
+    // For allowing ESM imports
     module.exports.todo = QUnit.todo;
     module.exports.skip = QUnit.skip;
     module.exports.test = QUnit.test;
