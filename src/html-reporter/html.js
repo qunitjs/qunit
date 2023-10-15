@@ -1079,9 +1079,9 @@ const stats = {
   }
 
   if (!usingPhantom && document.readyState === 'complete') {
-    QUnit.load();
+    QUnit.autostart();
   } else {
-    addEvent(window, 'load', QUnit.load);
+    addEvent(window, 'load', QUnit.autostart);
   }
 
   // Wrap window.onerror. We will call the original window.onerror to see if
