@@ -147,6 +147,6 @@ const version = process.argv[2];
 (async function main () {
   await Repo.prep(version);
 }()).catch(e => {
-  console.error(e.toString());
+  console.error(e);
   process.exit(1);
 });

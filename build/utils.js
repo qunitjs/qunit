@@ -54,7 +54,7 @@ async function downloadFile (url, dest) {
 
 function cleanDir (dirPath) {
   if (fs.existsSync(dirPath)) {
-    fs.rmdirSync(dirPath, { recursive: true });
+    fs.rmSync(dirPath, { force: true, recursive: true });
   }
   fs.mkdirSync(dirPath, { recursive: true });
 }
