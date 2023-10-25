@@ -32,16 +32,6 @@ export default function exportQUnit (QUnit) {
     exportedModule = true;
   }
 
-  // For AMD
-  if (typeof define === 'function' && define.amd) {
-    define(function () {
-      return QUnit;
-    });
-    QUnit.config.autostart = false;
-
-    exportedModule = true;
-  }
-
   // For other environments, including Web Workers (globalThis === self),
   // SpiderMonkey (mozjs), and other embedded JavaScript engines
   if (!exportedModule) {
