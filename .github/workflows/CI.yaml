@@ -16,44 +16,19 @@ jobs:
             node: 18.x
             script: npm run test-nolint
 
-          - name: "Linux: Node 16"
-            # Includes 'firefox', 'chromium', and more.
-            # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
-            os: ubuntu-20.04
-            node: 16.x
-            # Run the lint step only once because, in March 2022, GitHub began
-            # automatically extracting ESLint warnings from build logs and turning them into
-            # checks shown inline in PR diffs, but doesn't de-duplicate these.
-            script: npm test
-
-          - name: "Linux: Node 14"
-            os: ubuntu-20.04
-            node: 14.x
-            script: npm run test-nolint
-
-          - name: "Linux: Node 12"
-            os: ubuntu-20.04
-            node: 12.x
-            script: npm run test-nolint
-
-          - name: "Linux: Node 10"
-            os: ubuntu-20.04
-            node: 10.x
-            script: npm run test-nolint
-
           - name: "Integration"
             os: ubuntu-20.04
-            node: 16.x
+            node: 18.x
             script: npm run test-integration
 
-          - name: "Windows: Node 16"
+          - name: "Windows: Node 18"
             os: windows-latest
-            node: 16.x
+            node: 18.x
             script: npm run test-nolint
 
-          - name: "macOS: Node 16"
+          - name: "macOS: Node 18"
             os: macos-latest
-            node: 16.x
+            node: 18.x
             script: npm run test-nolint
 
     name: ${{ matrix.name }}
@@ -112,10 +87,10 @@ jobs:
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Use Node.js 16
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: Install mozjs
         run: |
           sudo apt-fast install -y libmozjs-68-dev
