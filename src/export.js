@@ -1,4 +1,4 @@
-/* global module, exports, define */
+/* global module, exports */
 import { window, document, globalThis } from './globals';
 
 export default function exportQUnit (QUnit) {
