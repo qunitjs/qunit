@@ -2,7 +2,6 @@
 
 const expectedOutput = require('./fixtures/expected/tap-outputs');
 const { execute, prettyPrintCommand, concurrentMapKeys } = require('./helpers/execute');
-const semver = require('semver');
 
 const skipOnWinTest = (process.platform === 'win32' ? 'skip' : 'test');
 
