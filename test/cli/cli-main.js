@@ -259,67 +259,53 @@ HOOK: BCD1 @ B after`;
     assert.equal(execution.code, 0);
   });
 
-  if (semver.gte(process.versions.node, '12.0.0')) {
-    QUnit.test('run ESM test suite with import statement', async assert => {
-      const command = ['qunit', '../../es2018/esm.mjs'];
-      const execution = await execute(command);
+  QUnit.test('run ESM test suite with import statement', async assert => {
+    const command = ['qunit', '../../es2018/esm.mjs'];
+    const execution = await execute(command);
+    assert.equal(execution.code, 0);
+    assert.equal(execution.stderr, '');
+    assert.equal(execution.stdout, getExpected(command));
+  });
 
-      // Node 12 enabled ESM by default, without experimental flag,
-      // but left the warning in stderr. The warning was removed in Node 14.
-      // Don't bother checking stderr
-      const stderr = semver.gte(process.versions.node, '14.0.0') ? execution.stderr : '';
-      assert.equal(execution.code, 0);
-      assert.equal(stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
-    });
-  }
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[skipOnWinTest]('normal trace with native source map', async assert => {
+    const command = ['qunit', 'sourcemap/source.js'];
+    const execution = await execute(command);
 
-  // https://nodejs.org/dist/v12.12.0/docs/api/cli.html#cli_enable_source_maps
-  if (semver.gte(process.versions.node, '14.0.0')) {
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('normal trace with native source map', async assert => {
-      const command = ['qunit', 'sourcemap/source.js'];
-      const execution = await execute(command);
+    assert.equal(execution.snapshot, getExpected(command));
+  });
 
-      assert.equal(execution.snapshot, getExpected(command));
-    });
-
-    // skip if running in code coverage mode,
-    // as that leads to conflicting maps-on-maps that invalidate this test
-    //
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[process.env.NYC_PROCESS_ID ? 'skip' : skipOnWinTest](
-      'mapped trace with native source map', async function (assert) {
-        const command = ['qunit', 'sourcemap/source.min.js'];
-        const execution = await execute(command, {
-          env: { NODE_OPTIONS: '--enable-source-maps' }
-        });
-
-        assert.equal(execution.snapshot, getExpected(command));
+  // skip if running in code coverage mode,
+  // as that leads to conflicting maps-on-maps that invalidate this test
+  //
+  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
+  QUnit[process.env.NYC_PROCESS_ID ? 'skip' : skipOnWinTest](
+    'mapped trace with native source map', async function (assert) {
+      const command = ['qunit', 'sourcemap/source.min.js'];
+      const execution = await execute(command, {
+        env: { NODE_OPTIONS: '--enable-source-maps' }
       });
-  }
 
-  // https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
-  // Created in Node 11.x, but starts working the way we need from Node 14.
-  if (semver.gte(process.versions.node, '14.0.0')) {
-    QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
-      const execution = await execute(command);
       assert.equal(execution.snapshot, getExpected(command));
     });
 
-    QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
-      const execution = await execute(command);
-      assert.equal(execution.snapshot, getExpected(command));
-    });
+  QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, getExpected(command));
+  });
 
-    QUnit.test('memory-leak/test-object', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
-      const execution = await execute(command);
-      assert.equal(execution.snapshot, getExpected(command));
-    });
-  }
+  QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, getExpected(command));
+  });
+
+  QUnit.test('memory-leak/test-object', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, getExpected(command));
+  });
 
   // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.
   // https://github.com/nodejs/node/issues/29532
