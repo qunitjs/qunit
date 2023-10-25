@@ -2,8 +2,6 @@
 
 const path = require('path');
 
-const semver = require('semver');
-
 const { execute, concurrentMapKeys } = require('./helpers/execute.js');
 const { readFixtures } = require('./helpers/fixtures.js');
 
@@ -222,34 +220,28 @@ HOOK: BCD1 @ B after`;
     assert.equal(execution.code, 0);
   });
 
-  if (semver.gte(process.versions.node, '12.0.0')) {
-    QUnit.test('run ESM test suite with import statement', async assert => {
-      const command = ['qunit', '../../es2018/esm.mjs'];
-      const execution = await execute(command);
+  // TODO: Move to /test/cli/fixtures/
+  QUnit.test('run ESM test suite with import statement', async assert => {
+    const command = ['qunit', '../../es2018/esm.mjs'];
+    const execution = await execute(command);
 
-      // Node 12 enabled ESM by default, without experimental flag,
-      // but left the warning in stderr. The warning was removed in Node 14.
-      // Don't bother checking stderr
-      const stderr = semver.gte(process.versions.node, '14.0.0') ? execution.stderr : '';
-      assert.equal(execution.code, 0);
-      assert.equal(stderr, '');
-      assert.equal(execution.stdout, `TAP version 13
+    assert.equal(execution.code, 0);
+    assert.equal(execution.stderr, '');
+    assert.equal(execution.stdout, `TAP version 13
 ok 1 ESM test suite > sum()
 1..1
 # pass 1
 # skip 0
 # todo 0
 # fail 0`);
-    });
-  }
+  });
 
-  // https://nodejs.org/dist/v12.12.0/docs/api/cli.html#cli_enable_source_maps
-  if (semver.gte(process.versions.node, '14.0.0')) {
-    QUnit.test('normal trace with native source map', async assert => {
-      const command = ['qunit', 'sourcemap/source.js'];
-      const execution = await execute(command);
+  // TODO: Move to /test/cli/fixtures/
+  QUnit.test('normal trace with native source map', async assert => {
+    const command = ['qunit', 'sourcemap/source.js'];
+    const execution = await execute(command);
 
-      assert.equal(execution.snapshot, `TAP version 13
+    assert.equal(execution.snapshot, `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
   ---
@@ -267,18 +259,18 @@ not ok 2 Example > bad
 # fail 1
 
 # exit code: 1`);
-    });
+  });
 
-    // skip if running in code coverage mode,
-    // as that leads to conflicting maps-on-maps that invalidate this test
-    QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test'](
-      'mapped trace with native source map', async function (assert) {
-        const command = ['qunit', 'sourcemap/source.min.js'];
-        const execution = await execute(command, {
-          env: { NODE_OPTIONS: '--enable-source-maps' }
-        });
+  // skip if running in code coverage mode,
+  // as that leads to conflicting maps-on-maps that invalidate this test
+  QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test'](
+    'mapped trace with native source map', async function (assert) {
+      const command = ['qunit', 'sourcemap/source.min.js'];
+      const execution = await execute(command, {
+        env: { NODE_OPTIONS: '--enable-source-maps' }
+      });
 
-        assert.equal(execution.snapshot, `TAP version 13
+      assert.equal(execution.snapshot, `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
   ---
@@ -296,16 +288,13 @@ not ok 2 Example > bad
 # fail 1
 
 # exit code: 1`);
-      });
-  }
+    });
 
-  // https://nodejs.org/docs/v14.0.0/api/v8.html#v8_v8_getheapsnapshot
-  // Created in Node 11.x, but starts working the way we need from Node 14.
-  if (semver.gte(process.versions.node, '14.0.0')) {
-    QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
-      const execution = await execute(command);
-      assert.equal(execution.snapshot, `TAP version 13
+  // TODO: Move to /test/cli/fixtures/
+  QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, `TAP version 13
 ok 1 module-closure > example test
 ok 2 module-closure > example child module > example child module test
 ok 3 module-closure check > memory release
@@ -314,12 +303,12 @@ ok 3 module-closure check > memory release
 # skip 0
 # todo 0
 # fail 0`);
-    });
+  });
 
-    QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
-      const execution = await execute(command);
-      assert.equal(execution.snapshot, `TAP version 13
+  QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, `TAP version 13
 ok 1 module-closure > example test
 ok 2 module-closure check > memory release
 1..2
@@ -327,20 +316,19 @@ ok 2 module-closure check > memory release
 # skip 0
 # todo 0
 # fail 0`);
-    });
+  });
 
-    QUnit.test('memory-leak/test-object', async assert => {
-      const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
-      const execution = await execute(command);
-      assert.equal(execution.snapshot, `TAP version 13
+  QUnit.test('memory-leak/test-object', async assert => {
+    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
+    const execution = await execute(command);
+    assert.equal(execution.snapshot, `TAP version 13
 ok 1 test-object > example test
 1..1
 # pass 1
 # skip 0
 # todo 0
 # fail 0`);
-    });
-  }
+  });
 
   // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.
   // https://github.com/nodejs/node/issues/29532

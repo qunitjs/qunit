@@ -38,7 +38,7 @@
   ],
   "main": "qunit/qunit.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   },
   "dependencies": {
     "commander": "7.2.0",
@@ -79,8 +79,7 @@
     "proxyquire": "^1.8.0",
     "requirejs": "^2.3.6",
     "rimraf": "^3.0.2",
-    "rollup": "^2.79.1",
-    "semver": "^7.6.2"
+    "rollup": "^2.79.1"
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",
