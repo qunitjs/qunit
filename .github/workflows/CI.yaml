@@ -14,7 +14,7 @@ jobs:
           - name: "Linux: Node 18"
             os: ubuntu-20.04
             node: 18.x
-            script: npm run test-nolint
+            script: npm run test
 
           - name: "Integration"
             os: ubuntu-20.04
