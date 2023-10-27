@@ -1,4 +1,4 @@
-/* global module, exports, define */
+/* global module, exports */
 import { window, document, globalThis } from './globals';
 
 export default function exportQUnit (QUnit) {
@@ -28,16 +28,6 @@ export default function exportQUnit (QUnit) {
   // For CommonJS with exports, but without module.exports, like Rhino
   if (typeof exports !== 'undefined' && exports) {
     exports.QUnit = QUnit;
-
-    exportedModule = true;
-  }
-
-  // For AMD
-  if (typeof define === 'function' && define.amd) {
-    define(function () {
-      return QUnit;
-    });
-    QUnit.config.autostart = false;
 
     exportedModule = true;
   }
