@@ -1,8 +1,13 @@
 import kleur from 'kleur';
-import { errorString } from '../utilities.js';
+
+import { diffText } from '../diff.js';
+import dump from '../dump.js';
 import { console } from '../globals.js';
+import { errorString } from '../utilities.js';
 
 const hasOwn = Object.prototype.hasOwnProperty;
+
+const TAP_YAML_INDENT = 4;
 
 /**
  * Format a given value into YAML.
@@ -36,7 +41,7 @@ const hasOwn = Object.prototype.hasOwnProperty;
  * Objects with cyclical references will be stringifed as
  * "[Circular]" as they cannot otherwise be represented.
  */
-function prettyYamlValue (value, indent = 4) {
+function prettyYamlValue (value, indent = TAP_YAML_INDENT) {
   if (value === undefined) {
     // Not supported in JSON/YAML, turn into string
     // and let the below output it as bare string.
@@ -259,6 +264,26 @@ export default class TapReporter {
 
     if (hasOwn.call(error, 'expected')) {
       out += `\n  expected: ${prettyYamlValue(error.expected)}`;
+    }
+
+    if (hasOwn.call(error, 'actual') && hasOwn.call(error, 'expected')) {
+      const diff = diffText(dump.parse(error.expected), dump.parse(error.actual));
+      // Only show diff if there is both overlap and differences,
+      // otherwise the actual/expected blocks suffice.
+      if (/^ /m.test(diff) && /^[-+]/m.test(diff)) {
+        const prefix = (new Array(TAP_YAML_INDENT + 1)).join(' ');
+        // YAML does not permit simple multi-line block values to start with
+        // a space, as that makes for ambigious indentation.
+        const diffFormatted = '--- expected\n+++ actual\n' + diff
+          // Highlight
+          .replace(/^(-[^\n]+)/mg, kleur.red('$1'))
+          .replace(/^(\+[^\n]+)/mg, kleur.green('$1'));
+        const diffIndented = diffFormatted
+          .split('\n')
+          .map(line => prefix + line)
+          .join('\n');
+        out += `\n  diff: |\n${diffIndented}`;
+      }
     }
 
     if (error.stack) {

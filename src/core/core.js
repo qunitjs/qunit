@@ -14,7 +14,7 @@ import ProcessingQueue from './processing-queue.js';
 import { urlParams } from './urlparams.js';
 import { on } from './events.js';
 import onUncaughtException from './on-uncaught-exception.js';
-import diff from './diff.js';
+import { diffHtml } from './diff.js';
 import version from './version.js';
 import { createStartFunction } from './start.js';
 
@@ -40,7 +40,7 @@ const QUnit = {
   stack,
   urlParams,
 
-  diff,
+  diff: diffHtml,
   dump,
   equiv,
   reporters,

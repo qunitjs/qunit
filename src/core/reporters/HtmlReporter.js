@@ -1,5 +1,5 @@
 import { extend, errorString, escapeText } from '../utilities.js';
-import diff from '../diff.js';
+import { diffHtml as diff } from '../diff.js';
 import dump from '../dump.js';
 import { prioritySymbol } from '../events.js';
 import { window, document, navigator, StringMap } from '../globals.js';
@@ -114,14 +114,6 @@ function getUrlConfigHtml (config) {
   }
 
   return urlConfigHtml;
-}
-
-function stripHtml (string) {
-  // Strip tags, html entity and whitespaces
-  return string
-    .replace(/<\/?[^>]+(>|$)/g, '')
-    .replace(/&quot;/g, '')
-    .replace(/\s+/g, '');
 }
 
 export default class HtmlReporter {
@@ -870,10 +862,8 @@ export default class HtmlReporter {
         ) {
           diffHtml = diff(expected, actual);
 
-          // don't show diff if there is zero overlap
-          showDiff = stripHtml(diffHtml).length !==
-            stripHtml(expected).length +
-            stripHtml(actual).length;
+          // don't show diff if there is zero overlap (i.e. no context <span>'s)
+          showDiff = diff.indexOf('<span>') !== -1;
         }
 
         if (showDiff) {
