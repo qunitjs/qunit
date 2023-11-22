@@ -35,6 +35,6 @@ Register a callback that logs the module results
 
 ```js
 QUnit.moduleDone(details => {
-  console.log(`Finished running: ${details.name} Failed/total: ${details.failed}/${total}`);
+  console.log(`Finished running: ${details.name} Failed/total: ${details.failed}/${details.total}`);
 });
 ```
