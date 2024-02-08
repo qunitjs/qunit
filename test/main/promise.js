@@ -8,19 +8,22 @@ var defer = typeof setTimeout !== 'undefined'
     Promise.resolve().then(fn);
   };
 
-// Get the global namespace the same way
-// as the Promise polyfill.
-var globalNS = (function() {
+// Get the global namespace the same way as the Promise polyfill.
+var globalNS = (function () {
   if (typeof globalThis !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return globalThis;
   }
   if (typeof self !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return self;
   }
   if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return window;
   }
   if (typeof global !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return global;
   }
   throw new Error('unable to locate global object');
