@@ -270,14 +270,18 @@ QUnit.module('Support for Promise', function () {
     beforeEach: function (assert) {
       this.setTimeout = globalNS.setTimeout;
       globalNS.setTimeout = function () {};
-      this.setImmediate = globalNS.setImmediate;
-      globalNS.setImmediate = function () {};
+      if (globalNS.setImmediate) {
+        this.setImmediate = globalNS.setImmediate;
+        globalNS.setImmediate = function () {};
+      }
       // Adds 1 assertion
       return createMockPromise(assert);
     },
     afterEach: function (assert) {
       globalNS.setTimeout = this.setTimeout;
-      globalNS.setImmediate = this.setImmediate;
+      if (this.setImmediate) {
+        globalNS.setImmediate = this.setImmediate;
+      }
       // Adds 1 assertion
       return createMockPromise(assert);
     }
