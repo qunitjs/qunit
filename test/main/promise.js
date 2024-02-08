@@ -8,6 +8,27 @@ var defer = typeof setTimeout !== 'undefined'
     Promise.resolve().then(fn);
   };
 
+// Get the global namespace the same way as the Promise polyfill.
+var globalNS = (function () {
+  if (typeof globalThis !== 'undefined') {
+    // eslint-disable-next-line no-undef
+    return globalThis;
+  }
+  if (typeof self !== 'undefined') {
+    // eslint-disable-next-line no-undef
+    return self;
+  }
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-undef
+    return window;
+  }
+  if (typeof global !== 'undefined') {
+    // eslint-disable-next-line no-undef
+    return global;
+  }
+  throw new Error('unable to locate global object');
+})();
+
 // NOTE: Adds 1 assertion
 function createMockPromise (assert, reject, value) {
   if (arguments.length < 3) {
@@ -246,5 +267,30 @@ QUnit.module('Support for Promise', function () {
     };
 
     return createMockPromise(assert, true, new Error('this is an error'));
+  });
+
+  QUnit.module('compatible with fake timers', {
+    beforeEach: function (assert) {
+      this.setTimeout = globalNS.setTimeout;
+      globalNS.setTimeout = function () {};
+      if (globalNS.setImmediate) {
+        this.setImmediate = globalNS.setImmediate;
+        globalNS.setImmediate = function () {};
+      }
+      // Adds 1 assertion
+      return createMockPromise(assert);
+    },
+    afterEach: function (assert) {
+      globalNS.setTimeout = this.setTimeout;
+      if (this.setImmediate) {
+        globalNS.setImmediate = this.setImmediate;
+      }
+      // Adds 1 assertion
+      return createMockPromise(assert);
+    }
+  });
+
+  QUnit.test('test', function (assert) {
+    assert.expect(2);
   });
 });
