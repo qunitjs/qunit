@@ -752,7 +752,7 @@ Test.prototype = {
               `Test took longer than ${timeout}ms; test timed out.`,
               sourceFromStacktrace(2)
             );
-            internalStart(test);
+            internalRecover(test);
           };
         };
         clearTimeout(config.timeout);

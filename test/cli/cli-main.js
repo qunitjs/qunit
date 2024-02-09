@@ -25,6 +25,7 @@ const fixtureCases = {
 
   'test with failing assertion': ['qunit', 'fail/failure.js'],
   'test that hangs': ['qunit', 'hanging-test'],
+  'test with pending async after timeout': ['qunit', 'pending-async-after-timeout.js'],
   'two tests with one timeout': ['qunit', 'timeout'],
   'test with zero assertions': ['qunit', 'zero-assertions.js'],
 

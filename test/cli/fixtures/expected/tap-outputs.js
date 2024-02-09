@@ -193,6 +193,25 @@ Last test to run (hanging) has an async hold. Ensure all assert.async() callback
 
 # exit code: 1`,
 
+  'qunit pending-async-after-timeout.js':
+`TAP version 13
+not ok 1 example
+  ---
+  message: Test took longer than 10ms; test timed out.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`,
+
   'qunit unhandled-rejection.js':
 `not ok 1 global failure
   ---
