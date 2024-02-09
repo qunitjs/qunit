@@ -543,7 +543,7 @@ Test.prototype = {
 
     this.previousFailure = !!previousFailCount;
 
-    config.pq.add(runTest, prioritize, config.seed);
+    config.pq.add(runTest, prioritize);
   },
 
   pushResult: function (resultInfo) {
