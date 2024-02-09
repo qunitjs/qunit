@@ -31,6 +31,8 @@ const QUnit = {};
 // rather than partly in config.js and partly here.
 config.currentModule.suiteReport = runSuite;
 
+config.pq = new ProcessingQueue(test);
+
 let globalStartCalled = false;
 let runStarted = false;
 
@@ -157,7 +159,7 @@ function scheduleBegin () {
 
 function unblockAndAdvanceQueue () {
   config.blocking = false;
-  ProcessingQueue.advance();
+  config.pq.advance();
 }
 
 export function begin () {
