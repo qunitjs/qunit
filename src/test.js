@@ -16,7 +16,6 @@ import {
 } from './core/utilities';
 import { runLoggingCallbacks } from './core/logging';
 import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace';
-import ProcessingQueue from './core/processing-queue';
 
 import TestReport from './reports/test';
 
@@ -60,7 +59,7 @@ export default function Test (settings) {
   // Queuing a late test after the run has ended is not allowed.
   // This was once supported for internal use by QUnit.onError().
   // Ref https://github.com/qunitjs/qunit/issues/1377
-  if (ProcessingQueue.finished) {
+  if (config.pq.finished) {
     // Using this for anything other than onError(), such as testing in QUnit.done(),
     // is unstable and will likely result in the added tests being ignored by CI.
     // (Meaning the CI passes irregardless of the added tests).
@@ -273,7 +272,7 @@ Test.prototype = {
       // when the 'after' and 'finish' tasks are the only tasks left to process
       if (hookName === 'after' &&
         !lastTestWithinModuleExecuted(hookOwner) &&
-        (config.queue.length > 0 || ProcessingQueue.taskCount() > 2)) {
+        (config.queue.length > 0 || config.pq.taskCount() > 2)) {
         return;
       }
 
@@ -544,7 +543,7 @@ Test.prototype = {
 
     this.previousFailure = !!previousFailCount;
 
-    ProcessingQueue.add(runTest, prioritize, config.seed);
+    config.pq.add(runTest, prioritize, config.seed);
   },
 
   pushResult: function (resultInfo) {
@@ -1057,11 +1056,11 @@ function internalStart (test) {
       config.timeout = null;
 
       config.blocking = false;
-      ProcessingQueue.advance();
+      config.pq.advance();
     });
   } else {
     config.blocking = false;
-    ProcessingQueue.advance();
+    config.pq.advance();
   }
 }
 

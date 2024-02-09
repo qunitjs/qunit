@@ -99,6 +99,9 @@ const config = {
   // Ref https://github.com/qunitjs/qunit/pull/1598
   globalHooks: {},
 
+  // Internal: ProcessingQueue singleton, created in /src/core.js
+  pq: null,
+
   // Internal state
   blocking: true,
   callbacks: {},
