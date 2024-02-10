@@ -38,6 +38,7 @@ const fixtureCases = {
   'uncaught error in "moduleDone" callback"': ['qunit', 'bad-callbacks/moduleDone-throw.js'],
   // FIXME: Details of testStart() error are swallowed
   'uncaught error in "testStart" callback"': ['qunit', 'bad-callbacks/testStart-throw.js'],
+  'rejection from callbacks': ['qunit', 'callbacks-rejected.js'],
 
   'QUnit.hooks context': ['qunit', 'hooks-global-context.js'],
 
