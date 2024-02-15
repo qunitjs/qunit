@@ -1,4 +1,12 @@
 
+2.20.1 / 2024-02-15
+==================
+
+### Fixed
+
+* Core: Fix compatibility with `sinon.useFakeTimers` in IE 10 and IE 11. (Timmy Willison) [#1738](https://github.com/qunitjs/qunit/pull/1738)
+* Core: Fix hanging `assert.async()` after `assert.timeout()`. (Timo Tijhof) [#1705](https://github.com/qunitjs/qunit/issues/1705)
+
 2.20.0 / 2023-09-23
 ==================
 
