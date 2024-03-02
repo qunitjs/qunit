@@ -85,15 +85,21 @@ extend(QUnit, {
         'QUnit.config.autostart was true');
     }
 
+    // Until we remove QUnit.load() in QUnit 3, we keep `pageLoaded`.
+    // It no longer serves any purpose other than to support old test runners
+    // that still call only QUnit.load(), or that call both it and QUnit.start().
     if (!config.pageLoaded) {
-      // The page isn't completely loaded yet, so we set autostart and then
-      // load if we're in Node or wait for the browser's load event.
+      // If the test runner used `autostart = false` and is calling QUnit.start()
+      // to tell is their resources are ready, but the browser isn't ready yet,
+      // then enable autostart now, and we'll let the tests really start after
+      // the browser's "load" event handler calls autostart().
       config.autostart = true;
 
-      // Starts from Node even if .load was not previously called. We still return
-      // early otherwise we'll wind up "beginning" twice.
+      // If we're in Node or another non-browser environment, we start now as there
+      // won't be any "load" event. We return early either way since autostart
+      // is responsible for calling scheduleBegin (avoid "beginning" twice).
       if (!document) {
-        QUnit.load();
+        QUnit.autostart();
       }
 
       return;
@@ -117,9 +123,20 @@ extend(QUnit, {
   },
 
   load: function () {
+    Logger.warn('QUnit.load is deprecated and will be removed in QUnit 3.0.' +
+      ' Refer to <https://api.qunitjs.com/QUnit/load/>.');
+
+    QUnit.autostart();
+  },
+
+  /**
+   * @internal
+   */
+  autostart: function () {
     config.pageLoaded = true;
 
     // Initialize the configuration options
+    // TODO: Move this to config.js in QUnit 3.
     extend(config, {
       started: 0,
       updateRate: 1000,

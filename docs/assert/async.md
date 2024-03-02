@@ -22,7 +22,9 @@ Instruct QUnit to wait for an asynchronous operation.
 
 `assert.async()` returns a callback function and pauses test processing until the callback function is called. The callback will throw an `Error` if it is invoked more often than the required call count.
 
-This replaces functionality previously provided by `QUnit.stop()` and [`QUnit.start()`](../QUnit/start.md).
+## See also
+
+* [Migration guide](https://qunitjs.com/upgrade-guide-2.x/#introducing-assertasync) from QUnit 1.x `stop()` and `start()`.
 
 ## Examples
 
