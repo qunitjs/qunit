@@ -92,6 +92,27 @@ QUnit.test('notStrictEqual', function (assert) {
   assert.notStrictEqual('foo', { toString: function () { return 'foo'; } });
 });
 
+QUnit.test('closeTo', function (assert) {
+  assert.closeTo(1, 1, 0);
+  assert.closeTo(1, 1, 0.1);
+
+  assert.closeTo(7, 7.1, 0.1);
+  assert.closeTo(7, 7.1, 0.2);
+
+  assert.closeTo(2011, 2013, 2);
+
+  assert.closeTo(0.1 + 0.2, 0.3, 0.001);
+  assert.closeTo(20.13, 20.10, 0.05);
+
+  assert.throws(function () {
+    assert.closeTo(1, 1);
+  }, TypeError, 'missing delta');
+
+  assert.throws(function () {
+    assert.closeTo(1, 1, false);
+  }, TypeError, 'invalid delta');
+});
+
 QUnit.test('propEqual', function (assert) {
   function Foo (x, y, z) {
     this.x = x;

@@ -77,6 +77,18 @@ class Assert {
     return this.test.internalStop(requiredCalls);
   }
 
+  closeTo (actual, expected, delta, message) {
+    if (typeof delta !== 'number') {
+      throw new TypeError('closeTo() requires a delta argument');
+    }
+    this.pushResult({
+      result: Math.abs(actual - expected) <= delta,
+      actual,
+      expected,
+      message: message || `value should be within ${delta} inclusive`
+    });
+  }
+
   // Exports test.push() to the user API
   // Alias of pushResult.
   push (result, actual, expected, message, negative) {
