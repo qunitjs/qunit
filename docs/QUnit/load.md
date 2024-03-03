@@ -4,8 +4,6 @@ title: QUnit.load()
 excerpt: Inform the test runner that code has finished loading.
 groups:
   - deprecated
-redirect_from:
-  - "/start/"
 version_added: "1.0.0"
 version_deprecated: "unreleased"
 ---
