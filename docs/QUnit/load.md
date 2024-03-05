@@ -41,6 +41,8 @@ If your test runner works in a similar way, call [`QUnit.start()`](./start.md) i
 
 ### Karma runner
 
-> QUnit.load is deprecated and will be removed in QUnit 3.0.
+```
+QUnit.load is deprecated and will be removed in QUnit 3.0.
+```
 
 If you encounter this warning in Karma output, upgrade to [karma-qunit](https://github.com/karma-runner/karma-qunit) 4.2.0 or later, which [fixes](https://github.com/karma-runner/karma-qunit/pull/184) this warning.
