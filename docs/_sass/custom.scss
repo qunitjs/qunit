@@ -1,1 +1,37 @@
-// Custom styles for api.qunitjs.com
+// Custom styles for qunitjs.com
+
+h3 a {
+    // Improve balance of layout color contrast on "Plugins" and "Projects" pages
+    // (not everything the same color)
+    color: inherit;
+}
+
+/* Plugins */
+#plugins {
+    list-style: none;
+    padding: 0;
+}
+.plugin {
+    border-bottom: 1px solid $color-off-white;
+}
+
+/* Brand */
+.q-color-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+}
+.q-color-block {
+    display: block;
+    padding: 1em;
+}
+
+.main img {
+    max-width: 100%;
+    max-height: 100vh;
+}
+.main figure {
+    text-align: center;
+}

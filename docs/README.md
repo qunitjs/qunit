@@ -1,6 +1,8 @@
 [![Build Status: spider-check](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml)
 
-# [api.qunitjs.com](https://api.qunitjs.com/)
+# [qunitjs.com](https://qunitjs.com/)
+
+This directory houses the content and code for the [qunitjs.com](https://qunitjs.com/) website.
 
 ## Table of contents
 
@@ -14,8 +16,6 @@
 
 ## Contribute
 
-The API documentation site is hosted at <https://api.qunitjs.com> using GitHub Pages.
-
 ### Requirements
 
 * [Ruby](https://www.ruby-lang.org/) (tested with Ruby 2.7)
@@ -24,11 +24,23 @@ The API documentation site is hosted at <https://api.qunitjs.com> using GitHub P
 To install or update Jekyll and plugins:
 
 ```shell
-bundle update
+qunit/docs/$ bundle update
 ```
 
-To regenerate the site and serve locally at <http://127.0.0.1:4000/>:
+To regenerate the site and serve locally at <http://localhost:4000/>:
 
 ```shell
-bundle exec jekyll serve
+qunit/docs/$ bundle exec jekyll serve
+```
+
+### Update plugins
+
+```shell
+qunit/$ node build/site-update-plugins.js
+```
+
+### Update QUnit version
+
+```shell
+qunit/$ node build/site-set-version.js VERSION
 ```
