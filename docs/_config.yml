@@ -1,11 +1,11 @@
-
+# Site settings
 #
 # Docs: https://jekyllrb.com/docs/configuration/
 title: QUnit
 description: The powerful, easy-to-use JavaScript testing framework.
-url: "https://api.qunitjs.com"
-baseurl: ""
-permalink: /:title/
+url: "https://qunitjs.com"
+# For pages (not blog posts) this is equivalant to /:title/
+permalink: /:year/:month/:day/:title/
 lang: en
 timezone: UTC
 highlighter: rouge
@@ -36,7 +36,7 @@ amethyst:
   # We keep a classic ICO file as well, for compat with de-facto standard
   # machine discovery, e.g. search engines and analytics software.
   favicon: /favicon.svg
-  home_href: https://qunitjs.com
+  home_href:
   header_logo:
     src: /img/logo-with-colored-text.svg
     width: 250
@@ -47,8 +47,18 @@ amethyst:
   twitter: qunitjs
   github: qunitjs
   gitter: qunitjs/qunit
+  # https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-typesense
   typesense:
     origin: https://typesense.jquery.com
     collection: qunitjs_com
     search_only_api_key: Zh8mMgohXECel9wjPwqT7lekLSG3OCgz
 
+# Blog archives
+#
+# Docs: https://github.com/jekyll/jekyll-archives/
+jekyll-archives:
+  enabled:
+    - year
+  layout: posts-year
+  permalinks:
+    year: "/:year/"

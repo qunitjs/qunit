@@ -1,6 +1,8 @@
 [![Build Status: spider-check](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/spider-check.yaml)
 
-# [api.qunitjs.com](https://api.qunitjs.com/)
+# qunitjs.com
+
+[qunitjs.com](https://qunitjs.com/) is built using [Jekyll](https://jekyllrb.com/).
 
 ## Table of contents
 
@@ -14,21 +16,29 @@
 
 ## Contribute
 
-The API documentation site is hosted at <https://api.qunitjs.com> using GitHub Pages.
+Prerequisites:
+* [Ruby](https://www.ruby-lang.org/) 2.7 or later. Install from Apt on Linux, or [Homebrew](https://brew.sh/) on macOS.
+* [Bundler](https://bundler.io/), e.g. `gem install bundler`.
 
-### Requirements
-
-* [Ruby](https://www.ruby-lang.org/) (tested with Ruby 2.7)
-* [Bundler](https://bundler.io/) (if missing, install with `gem install bundler`)
-
-To install or update Jekyll and plugins:
+To regenerate the site and serve locally at <http://localhost:4000/>.
 
 ```shell
-bundle update
+cd qunit/docs/
+bundle update && bundle exec jekyll serve
 ```
 
-To regenerate the site and serve locally at <http://127.0.0.1:4000/>:
+This will start the server in watch mode and regenerate the site as-needed.
+
+### Update plugins page
 
 ```shell
-bundle exec jekyll serve
+node build/site-update-plugins.js
+```
+
+This will fetch search results from npmjs.org and save them to [_data/plugins.json](./_data/plugins.json).
+
+### Update QUnit version
+
+```shell
+node build/site-set-version.js VERSION
 ```

@@ -1,0 +1,26 @@
+{
+  "index_name": "qunitjs_com",
+  "start_urls": [
+    "https://qunitjs.com"
+  ],
+  "stop_content": [
+    "<meta name=\"docsearch:amethyst_pagetype_navigation\""
+  ],
+  "selectors": {
+    "lvl0": "h1",
+    "lvl1": "h2:not(.screen-reader-text)",
+    "lvl2": "h3:not(.screen-reader-text)",
+    "lvl3": "h4:not(.screen-reader-text)",
+    "lvl4": "h5:not(.screen-reader-text)",
+    "lvl5": "h6:not(.screen-reader-text)",
+    "text": ".content p, .content li, .content tr, .content pre"
+  },
+  "custom_settings": {
+    "token_separators": ["_", "-", "."]
+  },
+  "selectors_exclude": [
+    "aside.sidebar",
+    ".toc-wrapper"
+  ],
+  "scrape_start_urls": false
+}

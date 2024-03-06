@@ -1,0 +1,142 @@
+[
+  {
+    "name": "@matthewp/node-qunit-puppeteer",
+    "description": "A simple node module for running qunit tests with headless Chromium",
+    "date": "2021-11-01T12:52:46.858Z"
+  },
+  {
+    "name": "node-qunit-puppeteer",
+    "description": "A simple node module for running qunit tests with headless Chromium",
+    "date": "2022-12-31T10:59:09.869Z"
+  },
+  {
+    "name": "qunit-assert-canvas",
+    "description": "A QUnit plugin for asserting individual pixel values within a Canvas element.",
+    "date": "2016-10-02T02:25:02.752Z"
+  },
+  {
+    "name": "qunit-assert-classes",
+    "description": "A set of assertions for checking thats an element has ( or does not have ) any number of classes. The check is order independent and gives a diff of the expected classes.",
+    "date": "2015-04-29T19:09:20.175Z"
+  },
+  {
+    "name": "qunit-assert-close",
+    "description": "A QUnit plugin for asserting that a number is approximately equal (or not) to an expected number, within a given tolerance.",
+    "date": "2016-10-02T02:25:51.041Z"
+  },
+  {
+    "name": "qunit-assert-compare",
+    "description": "A QUnit plugin for asserting numerical comparisons like greater than, less than, etc.",
+    "date": "2016-10-02T03:13:17.701Z"
+  },
+  {
+    "name": "qunit-assert-html",
+    "description": "QUnit HTML assertion addon",
+    "date": "2016-10-03T02:49:50.045Z"
+  },
+  {
+    "name": "qunit-assert-nodes",
+    "description": "A QUnit plugin providing a convenient API for batch acceptance assertions",
+    "date": "2013-06-25T07:56:50.394Z"
+  },
+  {
+    "name": "qunit-assert-step",
+    "description": "A QUnit plugin for asserting the proper sequence in which the code should execute.",
+    "date": "2016-10-03T03:46:41.981Z"
+  },
+  {
+    "name": "qunit-assertions-extra",
+    "description": "Collection of helpful assertions for use with qunit",
+    "date": "2023-07-03T22:41:29.910Z"
+  },
+  {
+    "name": "qunit-ava-spec",
+    "description": "Helper functions for using QUnit as if it was ava/ava-spec.",
+    "date": "2022-11-10T20:10:03.296Z"
+  },
+  {
+    "name": "qunit-composite",
+    "description": "Run multiple QUnit test suite pages.",
+    "date": "2016-10-02T01:26:01.185Z"
+  },
+  {
+    "name": "qunit-dark",
+    "description": "A kind of dark theme for qunit",
+    "date": "2014-03-20T17:47:37.864Z"
+  },
+  {
+    "name": "qunit-dom",
+    "description": "High Level DOM Assertions for QUnit",
+    "date": "2023-10-12T14:40:16.837Z"
+  },
+  {
+    "name": "qunit-junit",
+    "description": "Produce JUnit-style XML test reports with QUnit.",
+    "date": "2023-07-08T17:02:23.203Z"
+  },
+  {
+    "name": "qunit-pending",
+    "description": "A QUnit plugin to add the \"pending\" test syntax to QUnit, a la Mocha.",
+    "date": "2016-10-02T01:55:55.632Z"
+  },
+  {
+    "name": "qunit-puppeteer-reporter",
+    "description": "headless browser testing for QUnit test suites",
+    "date": "2020-08-01T08:31:56.699Z"
+  },
+  {
+    "name": "qunit-puppeteer-runner",
+    "description": "Runs QUnit tests in a Puppeteer instance and compiles results to JUnit XML",
+    "date": "2023-07-20T21:46:06.528Z"
+  },
+  {
+    "name": "qunit-reporter-junit",
+    "description": "Produce JUnit-style XML test reports with QUnit.",
+    "date": "2016-10-16T01:23:43.596Z"
+  },
+  {
+    "name": "qunit-reporter-lcov",
+    "description": "Produce lcov test reports with QUnit",
+    "date": "2015-03-15T20:31:35.403Z"
+  },
+  {
+    "name": "qunit-retry",
+    "description": "Drop in replacement for qunit `test` which retries a failed test.",
+    "date": "2021-04-05T08:44:23.358Z"
+  },
+  {
+    "name": "qunit-theme-burce",
+    "description": "A QUnit theme by Bryce Dorn.",
+    "date": "2014-06-09T22:03:07.465Z"
+  },
+  {
+    "name": "qunit-theme-ember",
+    "description": "A theme for the QUnit web UI test runner powered by the Ember styleguide.",
+    "date": "2023-12-09T14:25:04.302Z"
+  },
+  {
+    "name": "qunit-theme-gabe",
+    "description": "A QUnit theme by Gabe Hendry.",
+    "date": "2020-09-14T23:15:22.306Z"
+  },
+  {
+    "name": "qunit-theme-ninja",
+    "description": "A QUnit theme for ninjas.",
+    "date": "2022-04-18T23:56:40.520Z"
+  },
+  {
+    "name": "qunit-theme-nv",
+    "description": "A QUnit theme.",
+    "date": "2019-01-03T23:49:09.721Z"
+  },
+  {
+    "name": "qunit-wait-for",
+    "description": "Wait for a QUnit assertion",
+    "date": "2021-11-29T21:09:31.345Z"
+  },
+  {
+    "name": "qunitx-dom",
+    "description": "High Level DOM Assertions for QUnit",
+    "date": "2021-05-31T16:37:57.111Z"
+  }
+]

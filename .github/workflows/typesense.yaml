@@ -1,0 +1,29 @@
+name: typesense
+on:
+  # Once a day at 11:30 UTC <https://crontab.guru/>
+  schedule:
+    - cron: '30 11 * * *'
+  # Or after a deployment
+  push:
+    branches:
+      - main
+  # Or manually
+  workflow_dispatch:
+
+jobs:
+  typesense:
+    name: Update Typesense
+    if: ${{ github.repository_owner == 'qunitjs' }} # skip on forks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docsearch Scraper
+        shell: bash
+        run: |
+          docker run \
+            -e TYPESENSE_API_KEY=${{ secrets.TYPESENSE_ADMIN_KEY }} \
+            -e TYPESENSE_HOST="${{ secrets.TYPESENSE_HOST }}" \
+            -e TYPESENSE_PORT="443" \
+            -e TYPESENSE_PROTOCOL="https" \
+            -e CONFIG="$(cat docsearch.config.json | jq -r tostring)" \
+            typesense/docsearch-scraper:0.9.1

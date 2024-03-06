@@ -1,20 +1,24 @@
 - name: Guides
-  href: https://qunitjs.com/guides/
+  href: /guides/
   sub:
     - name: Getting Started
-      href: https://qunitjs.com/intro/
+      href: /intro/
     - name: Command-line interface
-      href: https://qunitjs.com/cli/
+      href: /cli/
     - name: Plugins
-      href: https://qunitjs.com/plugins/
+      href: /plugins/
     - name: 2.x Upgrade Guide
-      href: https://qunitjs.com/upgrade-guide-2.x/
+      href: /upgrade-guide-2.x/
 - name: Documentation
-  href: /
+  href: /api/
 - name: About
-  href: https://qunitjs.com/about/
+  href: /about/
   sub:
     - name: Who's using QUnit?
-      href: https://qunitjs.com/projects/
+      href: /projects/
+    - name: Browser support
+      href: /intro/#browser-support
     - name: About QUnit
-      href: https://qunitjs.com/about/
+      href: /about/
+    - name: Brand guidelines
+      href: /brand/

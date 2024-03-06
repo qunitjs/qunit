@@ -1,0 +1,242 @@
+# General:
+# - Up to three projects per entry.
+#
+# Organizations should meet these criteria:
+#
+# - One or more its projects are under an OSI-approved free software license and use QUnit.
+# - Meets at least one of the following notability criteria:
+#   - has an official social media account with 5000+ followers.
+#   - or, an English Wikipedia article exists about the organization, and has existed for at least one year.
+#
+# Projects should meet these criteria:
+#
+# - Published under an OSI-approved free software license.
+# - Has had its 1.0 release at least one year ago.
+# - Meets at least one of the following notability criteria:
+#   - published to a package manager with 50+ non-dev dependent packages.
+#   - or, maintained on a social coding platform (e.g. GitLab, GitHub) with 500+ stars.
+#   - or, has a official social media account with 1000+ followers.
+#   - or, an English Wikipedia article exists about the project, and has existed for at least one year.
+#
+orgs:
+
+  - name: Addepar
+    href: https://github.com/Addepar
+    sub:
+      - name: ember-table
+        href: https://github.com/Addepar/ember-table
+
+  - name: Discourse
+    href: https://github.com/discourse
+    sub:
+      - name: Discourse
+        href: https://github.com/discourse/discourse
+      - name: discourse-subscriptions
+        href: https://github.com/discourse/discourse-subscriptions
+
+  - name: DocumentCloud
+    href: https://www.documentcloud.org/opensource
+    sub:
+      - name: Underscore.js
+        href: https://github.com/jashkenas/underscore
+      - name: Backbone.js
+        href: https://github.com/jashkenas/backbone
+
+  - name: Filament Group
+    href: https://github.com/filamentgroup
+    sub:
+      - name: formcore
+        href: https://github.com/filamentgroup/formcore/
+      - name: layersnap
+        href: https://github.com/filamentgroup/layersnap
+      - name: tablesaw
+        href: https://github.com/filamentgroup/tablesaw
+
+  - name: HashiCorp
+    href: https://github.com/hashicorp
+    sub:
+      - name: Vault
+        href: https://github.com/hashicorp/vault
+      - name: Consul
+        href: https://github.com/hashicorp/consul
+      - name: Nomad
+        href: https://github.com/hashicorp/nomad
+
+  - name: Khan Academy
+    href: https://github.com/Khan
+    sub:
+      - name: KAS
+        href: https://github.com/Khan/KAS
+      - name: structured.js
+        href: https://github.com/Khan/structuredjs
+
+  - name: Kiwix
+    href: https://github.com/kiwix
+    sub:
+      - name: kiwix-js
+        href: https://github.com/kiwix/kiwix-js
+
+  - name: Twitter
+    href: https://github.com/twitter
+    sub:
+      - name: Hogan.js
+        href: https://github.com/twitter/hogan.js
+      - name: twitter-text
+        href: https://github.com/twitter/twitter-text
+
+  - name: Wikimedia
+    href: https://doc.wikimedia.org/
+    sub:
+      - name: MediaWiki
+        href: https://github.com/wikimedia/mediawiki
+      - name: VisualEditor
+        href: https://github.com/wikimedia/VisualEditor
+      - name: CSSJanus
+        href: https://github.com/cssjanus/cssjanus
+
+  - name: WordPress
+    href: https://github.com/WordPress
+    sub:
+      - name: WordPress
+        href: https://github.com/WordPress/wordpress-develop
+
+projects:
+  - name: Bestie
+    href: https://github.com/bestiejs/benchmark.js
+    sub:
+    - name: Benchmark.js
+      href: https://github.com/bestiejs/benchmark.js
+    - name: Platform.js
+      href: https://github.com/bestiejs/platform.js
+
+  - name: Bootstrap
+    href: https://github.com/twbs
+    sub:
+      - name: Bootstrap
+        href: https://github.com/twbs/bootstrap
+      - name: bootlint
+        href: https://github.com/twbs/bootlint
+
+  - name: CefSharp
+    href: https://github.com/cefsharp
+    sub:
+      - name: CefSharp
+        href: https://github.com/cefsharp/CefSharp
+
+  - name: core-js
+    href: https://github.com/zloirock/core-js
+    sub:
+      - name: core-js
+        href: https://github.com/zloirock/core-js
+
+  - name: jQuery
+    href: https://github.com/jquery
+    sub:
+      - name: jQuery
+        href: https://github.com/jquery/jquery
+      - name: jQuery UI
+        href: https://github.com/jquery/jquery-ui
+      - name: typesense-minibar
+        href: https://github.com/jquery/typesense-minibar
+
+  - name: jQuery community
+    href: https://www.npmjs.com/search?q=keywords%3Ajquery-plugin
+    sub:
+      - name: jquery-validation
+        href: https://github.com/jquery-validation/jquery-validation
+      - name: mockjax
+        href: https://github.com/jakerella/jquery-mockjax
+      - name: inputmask
+        href: https://www.npmjs.com/package/inputmask
+
+  - name: js-cookie
+    href: https://github.com/js-cookie/js-cookie
+    sub:
+      - name: js-cookie
+        href: https://github.com/js-cookie/js-cookie
+
+  - name: Ember.js
+    href: https://github.com/emberjs
+    sub:
+      - name: Ember.js
+        href: https://github.com/emberjs/ember.js
+      - name: ember-qunit
+        href: https://github.com/emberjs/ember-qunit
+      - name: ember-twiddle
+        href: https://github.com/ember-cli/ember-twiddle
+
+  - name: Ember.js community
+    href: https://www.npmjs.com/search?q=keywords%3Aember-addon
+    sub:
+      - name: ember-moment
+        href: https://github.com/stefanpenner/ember-moment
+      - name: ember-intl
+        href: https://github.com/ember-intl/ember-intl
+      - name: ember-table
+        href: https://github.com/Addepar/ember-table
+
+  - name: Fabric.js
+    href: https://github.com/fabricjs
+    sub:
+      - name: Fabric.js
+        href: https://github.com/fabricjs/fabric.js
+
+  - name: Globalize
+    href: https://github.com/globalizejs/globalize
+    sub:
+      - name: Globalize
+        href: https://github.com/globalizejs/globalize
+
+  - name: Moment.js
+    href: https://github.com/moment
+    sub:
+      - name: Moment.js
+        href: https://github.com/moment/moment
+
+  - name: Paper.js
+    href: https://github.com/paperjs
+    sub:
+      - name: Paper.js
+        href: https://github.com/paperjs/paper.js
+
+  - name: StealJS
+    href: https://github.com/stealjs/
+    sub:
+      - name: StealJS
+        href: https://github.com/stealjs/steal
+      - name: steal-qunit
+        href: https://github.com/stealjs/steal-qunit
+      - name: steal-tools
+        href: https://github.com/stealjs/steal-tools
+
+  - name: three.js
+    href: https://github.com/mrdoob/three.js
+    sub:
+      - name: three.js
+        href: https://github.com/mrdoob/three.js
+
+  - name: Video.js
+    href: https://github.com/videojs/video.js
+    sub:
+      - name: video.js
+        href: https://github.com/videojs/video.js
+      - name: videojs/http-streaming
+        href: https://github.com/videojs/http-streaming
+      - name: mux.js
+        href: https://github.com/videojs/mux.js
+
+  - name: Wikibase
+    href: https://wikiba.se/
+    sub:
+      - name: Wikibase
+        href: https://github.com/wikimedia/Wikibase
+      - name: data-model
+        href: https://github.com/wmde/WikibaseDataModelJavaScript
+      - name: data-values
+        href: https://github.com/wmde/DataValuesJavaScript
+
+  - name: ZeroClipboard
+    href: https://github.com/zeroclipboard
+    sub:
+      - name: ZeroClipboard
+        href: https://github.com/zeroclipboard/zeroclipboard
