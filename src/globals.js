@@ -40,11 +40,15 @@ function getGlobalThis () {
 // to change getGlobalThis and use the same (generated) variable name there.
 const g = getGlobalThis();
 export { g as globalThis };
-export const window = g.window;
+
+// These optional globals are undefined in one or more environments:
+// modern browser, old browser, Node.js, SpiderMonkey.
+// Calling code must check these for truthy-ness before use.
 export const console = g.console;
 export const setTimeout = g.setTimeout;
 export const clearTimeout = g.clearTimeout;
-
+export const process = g.process;
+export const window = g.window;
 export const document = window && window.document;
 export const navigator = window && window.navigator;
 

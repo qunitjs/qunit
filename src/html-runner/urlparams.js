@@ -9,8 +9,13 @@ import { window } from '../globals';
   }
 
   const urlParams = getUrlParams();
+
+  // TODO: Move to /src/core/ in QUnit 3
+  // TODO: Document this as public API (read-only)
   QUnit.urlParams = urlParams;
 
+  // TODO: Move to /src/core/config.js in QUnit 3,
+  // in accordance with /docs/api/config.index.md#order
   QUnit.config.filter = urlParams.filter;
   QUnit.config.module = urlParams.module;
   QUnit.config.moduleId = [].concat(urlParams.moduleId || []);

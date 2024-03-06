@@ -21,6 +21,36 @@ QUnit.module('CLI Main', () => {
     }
   );
 
+  QUnit.test('preconfig-flat', async assert => {
+    const command = ['qunit', 'preconfig-flat.js'];
+    const execution = await execute(command, {
+      env: {
+        qunit_config_filter: '!foobar',
+        qunit_config_seed: 'dummyfirstyes',
+        qunit_config_testtimeout: '7'
+      }
+    });
+    assert.equal(execution.snapshot, `TAP version 13
+ok 1 dummy
+not ok 2 slow
+  ---
+  message: Test took longer than 7ms; test timed out.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at internal
+  ...
+ok 3 config
+1..3
+# pass 2
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
+  });
+
   QUnit.test('callbacks', async assert => {
     const expected = `CALLBACK: begin1
 CALLBACK: begin2

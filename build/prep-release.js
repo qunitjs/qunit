@@ -24,7 +24,7 @@ function versionDeprecatedString (version) {
 }
 
 function formatChangelogColumn (version) {
-  return `| [QUnit ${version}](https://github.com/qunitjs/qunit/releases/tag/${version}) |`;
+  return `[QUnit ${version}](https://github.com/qunitjs/qunit/releases/tag/${version})`;
 }
 
 const Repo = {
@@ -35,7 +35,7 @@ const Repo = {
     {
       const UNRELEASED_ADDED = versionAddedString('unreleased');
       const UNRELEASED_DEP = versionDeprecatedString('unreleased');
-      const UNRELEASED_CHANGELOG = '| UNRELEASED |';
+      const UNRELEASED_CONTENT = /\bUNRELEASED\b/g;
 
       // Silence error from grep, which exits non-zero if no results.
       const results = parseLineResults(cp.execSync(
@@ -48,7 +48,7 @@ const Repo = {
           doc
             .replace(UNRELEASED_ADDED, versionAddedString(version))
             .replace(UNRELEASED_DEP, versionDeprecatedString(version))
-            .replace(UNRELEASED_CHANGELOG, formatChangelogColumn(version))
+            .replace(UNRELEASED_CONTENT, formatChangelogColumn(version))
         );
       });
     }

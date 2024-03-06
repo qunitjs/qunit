@@ -17,18 +17,42 @@ QUnit.module('karma-qunit', {
   }
 });
 
-QUnit.test('passing test', assert => {
-  const expected = `
+QUnit.test.each('passing test', {
+  basic: ['', `
 INFO [karma-server]: Karma server started at
 INFO [launcher]: Launching browsers FirefoxHeadless with concurrency unlimited
 INFO [launcher]: Starting browser FirefoxHeadless
 INFO [Firefox]: Connected on socket
 ...
-Firefox: Executed 3 of 3 SUCCESS
-`.trim();
-  const actual = normalize(
-    cp.execSync('npm test', { cwd: DIR, env: { PATH: process.env.PATH }, encoding: 'utf8' })
-  );
+Firefox: Executed 3 of 3 SUCCESS`
+  ],
+  config: ['pass-config.js', `
+INFO [karma-server]: Karma server started at
+INFO [launcher]: Launching browsers FirefoxHeadless with concurrency unlimited
+INFO [launcher]: Starting browser FirefoxHeadless
+INFO [Firefox]: Connected on socket
+.
+Firefox: Executed 1 of 1 SUCCESS`, { KARMA_QUNIT_CONFIG: '1' }
+  ]
+}, (assert, [file, expected, env = {}]) => {
+  expected = expected.trim();
+  let ret;
+  try {
+    ret = cp.execSync('npm test', {
+      cwd: DIR,
+      env: {
+        PATH: process.env.PATH,
+        KARMA_FILES: file,
+        ...env
+      },
+      encoding: 'utf8'
+    });
+  } catch (e) {
+    const actual = normalize(e.stdout);
+    assert.pushResult({ result: false, actual, expected });
+    return;
+  }
+  const actual = normalize(ret);
   assert.pushResult({ result: actual.includes(expected), actual, expected });
 });
 

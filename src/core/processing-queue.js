@@ -77,9 +77,6 @@ class ProcessingQueue {
     if (this.taskQueue.length && !config.blocking) {
       const elapsedTime = performance.now() - start;
 
-      // The updateRate ensures that a user interface (HTML Reporter) can be updated
-      // at least once every second. This can also prevent browsers from prompting
-      // a warning about long running scripts.
       if (!setTimeout || config.updateRate <= 0 || elapsedTime < config.updateRate) {
         const task = this.taskQueue.shift();
         Promise.resolve(task()).then(() => {

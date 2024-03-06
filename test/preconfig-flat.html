@@ -2,18 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>preconfigured</title>
+  <title>preconfig-flat</title>
   <link rel="stylesheet" href="../qunit/qunit.css">
   <script>
-  window.QUnit = {
-    config: {
-      autostart: false,
-      reorder: false
-    }
-  };
+  /* eslint-disable camelcase, no-undef */
+  qunit_config_autostart = false;
+  qunit_config_seed = 'd84af39036';
   </script>
   <script src="../qunit/qunit.js"></script>
-  <script src="preconfigured.js"></script>
+  <script src="preconfig-flat.js"></script>
 </head>
 <body>
   <div id="qunit"></div>

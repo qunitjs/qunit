@@ -3,9 +3,6 @@
   "start_urls": [
     "https://qunitjs.com"
   ],
-  "stop_content": [
-    "<meta name=\"docsearch:amethyst_pagetype_navigation\""
-  ],
   "selectors": {
     "lvl0": "h1",
     "lvl1": "h2:not(.screen-reader-text)",
@@ -19,6 +16,7 @@
     "token_separators": ["_", "-", "."]
   },
   "selectors_exclude": [
+    ".posts",
     "aside.sidebar",
     ".toc-wrapper"
   ],

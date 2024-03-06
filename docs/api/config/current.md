@@ -15,7 +15,7 @@ Internal object representing the currently running test.
 <table>
 <tr>
   <th>type</th>
-  <td markdown="span">`object` (read-only)</td>
+  <td markdown="span">`undefined` or `object` (read-only)</td>
 </tr>
 </table>
 

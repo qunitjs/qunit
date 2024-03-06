@@ -12,6 +12,7 @@ import { window, document } from '../globals';
   // Stores fixture HTML for resetting later
   function storeFixture () {
     // Avoid overwriting user-defined values
+    // TODO: Change to negative null/undefined check once declared in /src/config.js
     if (hasOwn.call(config, 'fixture')) {
       return;
     }

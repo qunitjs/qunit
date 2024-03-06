@@ -1,4 +1,4 @@
-import { globalThis, localSessionStorage } from '../globals';
+import { globalThis, process, localSessionStorage } from '../globals';
 import { extend } from './utilities';
 
 /**
@@ -10,9 +10,15 @@ const config = {
   // HTML Reporter: Modify document.title when suite is done
   altertitle: true,
 
+  // TODO: Move here from /src/core.js in QUnit 3.
+  // autostart: true,
+
   // HTML Reporter: collapse every test except the first failing test
   // If false, all failing tests will be expanded
   collapse: true,
+
+  // TODO: Make explicit in QUnit 3.
+  // current: undefined,
 
   // whether or not to fail when there are zero tests
   // defaults to `true`
@@ -20,6 +26,9 @@ const config = {
 
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: undefined,
+
+  // TODO: Make explicit in QUnit 3.
+  // fixture: undefined,
 
   // Depth up-to which object will be dumped
   maxDepth: 5,
@@ -40,10 +49,21 @@ const config = {
   // By default, scroll to top of the page when suite is done
   scrolltop: true,
 
+  // TODO: Make explicit in QUnit 3.
+  // seed: undefined,
+
   // The storage module to use for reordering tests
   storage: localSessionStorage,
 
   testId: undefined,
+
+  // The updateRate controls how often QUnit will yield the main thread
+  // between tests. This is mainly for the benefit of the HTML Reporter,
+  // so that the browser can visually paint DOM changes with test results.
+  // This also helps avoid causing browsers to prompt a warning about
+  // long-running scripts.
+  // TODO: Move here from /src/core.js in QUnit 3.
+  // updateRate: 1000,
 
   // HTML Reporter: List of URL parameters that are given visual controls
   urlConfig: [],
@@ -102,6 +122,10 @@ const config = {
   // Internal: ProcessingQueue singleton, created in /src/core.js
   pq: null,
 
+  // Internal: Created in /src/core.js
+  // TODO: Move definitions here in QUnit 3.0.
+  // started: 0,
+
   // Internal state
   blocking: true,
   callbacks: {},
@@ -109,6 +133,56 @@ const config = {
   queue: [],
   stats: { all: 0, bad: 0, testCount: 0 }
 };
+
+function readFlatPreconfigBoolean (val, dest) {
+  if (typeof val === 'boolean' || (typeof val === 'string' && val !== '')) {
+    config[dest] = (val === true || val === 'true');
+  }
+}
+
+function readFlatPreconfigNumber (val, dest) {
+  if (typeof val === 'number' || (typeof val === 'string' && /^[0-9]+$/.test(val))) {
+    config[dest] = +val;
+  }
+}
+
+function readFlatPreconfigString (val, dest) {
+  if (typeof val === 'string' && val !== '') {
+    config[dest] = val;
+  }
+}
+
+function readFlatPreconfigStringArray (val, dest) {
+  if (typeof val === 'string' && val !== '') {
+    config[dest] = [val];
+  }
+}
+
+function readFlatPreconfig (obj) {
+  readFlatPreconfigBoolean(obj.qunit_config_altertitle, 'altertitle');
+  readFlatPreconfigBoolean(obj.qunit_config_autostart, 'autostart');
+  readFlatPreconfigBoolean(obj.qunit_config_collapse, 'collapse');
+  readFlatPreconfigBoolean(obj.qunit_config_failonzerotests, 'failOnZeroTests');
+  readFlatPreconfigString(obj.qunit_config_filter, 'filter');
+  readFlatPreconfigString(obj.qunit_config_fixture, 'fixture');
+  readFlatPreconfigBoolean(obj.qunit_config_hidepassed, 'hidepassed');
+  readFlatPreconfigNumber(obj.qunit_config_maxdepth, 'maxDepth');
+  readFlatPreconfigString(obj.qunit_config_module, 'module');
+  readFlatPreconfigStringArray(obj.qunit_config_moduleid, 'moduleId');
+  readFlatPreconfigBoolean(obj.qunit_config_noglobals, 'noglobals');
+  readFlatPreconfigBoolean(obj.qunit_config_notrycatch, 'notrycatch');
+  readFlatPreconfigBoolean(obj.qunit_config_reorder, 'reorder');
+  readFlatPreconfigBoolean(obj.qunit_config_requireexpects, 'requireExpects');
+  readFlatPreconfigBoolean(obj.qunit_config_scrolltop, 'scrolltop');
+  readFlatPreconfigString(obj.qunit_config_seed, 'seed');
+  readFlatPreconfigStringArray(obj.qunit_config_testid, 'testId');
+  readFlatPreconfigNumber(obj.qunit_config_testtimeout, 'testTimeout');
+}
+
+if (process && 'env' in process) {
+  readFlatPreconfig(process.env);
+}
+readFlatPreconfig(globalThis);
 
 // Apply a predefined QUnit.config object
 //
