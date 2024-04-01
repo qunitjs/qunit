@@ -11,7 +11,6 @@ QUnit aims for its releases to be reproducible. Recent releases are automaticall
 >
 > * **Permission to publish to the jQuery CDN** via [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com).
 > * Permission to publish releases to npm for the [`qunit`](https://www.npmjs.com/package/qunit) npm package.
-> * Permission to publish the website via [qunitjs/qunit.com](https://github.com/qunitjs/qunitjs.com).
 >
 > System prerequisites:
 >
@@ -105,19 +104,19 @@ git show
 
 After the release is published, we need to update the website.
 
-Check out the main branch of the [qunitjs/qunitjs.com](https://github.com/qunitjs/qunitjs.com) repository, and ensure it is clean and up-to-date. Run the following script, which will update release links and demos to use the new version:
+Check out the main branch of the [qunitjs/qunit](https://github.com/qunitjs/qunit) repository, and ensure it is clean and up-to-date. Run the following script, which will update release links and demos to use the new version:
 
 ```
-qunitjs.com$ node build/set-version.js <version>
+qunit$ node build/site-set-version.js VERSION
 ```
 
 Stage the changes it made, and commit with the following message:
 
 ```
-All: Update url and version to <version>
+Docs: Update url and version to VERSION
 ```
 
-Push the commit, and check the website in a few minutes to verify the change ([deployment log](https://github.com/qunitjs/qunitjs.com/deployments/activity_log?environment=github-pages)).
+Push the commit to a branch on origin, wait CI checks to complete, then re-push to the main branch. Check the website in a few minutes to verify the change ([deployment log](https://github.com/qunitjs/qunit/deployments/activity_log?environment=github-pages)).
 
 ## Final steps
 

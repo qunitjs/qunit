@@ -66,7 +66,7 @@
 ### Added
 
 * CLI: Add `--module` option. (Shachar) [#1680](https://github.com/qunitjs/qunit/issues/1680)
-* Core: Add `moduleId` to [`QUnit.begin()`](https://api.qunitjs.com/callbacks/QUnit.begin/) details object.
+* Core: Add `moduleId` to [`QUnit.begin()`](https://qunitjs.com/api/callbacks/QUnit.begin/) details object.
 
 ### Fixed
 
@@ -149,7 +149,7 @@
 * Core: The internal `QUnit.onError` and `QUnit.onUnhandledRejection` callbacks are deprecated. [#1638](https://github.com/qunitjs/qunit/pull/1638)
 
   These were undocumented, but may have been used in a fork or other custom runner for QUnit.
-  Switch to the supported [`QUnit.onUncaughtException`](https://api.qunitjs.com/extension/QUnit.onUncaughtException/) instead.
+  Switch to the supported [`QUnit.onUncaughtException`](https://qunitjs.com/api/extension/QUnit.onUncaughtException/) instead.
 
 ### Fixed
 
