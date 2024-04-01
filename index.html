@@ -3,22 +3,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="/assets/styles.css?v=b586456e" media="screen">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit</title>
-<meta property="og:title" content="QUnit API"><meta name="description" content="API reference documentation for QUnit."><meta property="og:description" content="API reference documentation for QUnit."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit"><meta name="description" content="The powerful, easy-to-use JavaScript testing framework."><meta property="og:description" content="The powerful, easy-to-use JavaScript testing framework."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
-            <a class="site-logo" href="https://qunitjs.com"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
     <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
-    <input type="hidden" name="sites" value="api.qunitjs.com">
+    <input type="hidden" name="sites" value="qunitjs.com">
 </form>
 
 
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="https://qunitjs.com/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="https://qunitjs.com/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="https://qunitjs.com/about/">About QUnit</a></li></ul></li></ul></nav>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
                     <span class="screen-reader-text">Search</span>
@@ -65,59 +65,104 @@
             </div>
         </div>
     </header>
-    <div class="main main--columns wrapper">
-<div class="content" role="main">
-<article>
-    <header>
-    <h1>QUnit API</h1>
-    
-    </header>
-    
-    <p>QUnit is a powerful, easy-to-use JavaScript unit test suite.</p>
+    <section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title"><img src="/img/logo-text.svg" alt="QUnit"></h1>
+        <h2 class="hero-description">The powerful, easy-to-use JavaScript testing framework.</h2><a class="hero-button button" href="/intro/">Get Started</a>
+        <a class="hero-button button secondary" href="/api/">View the Docs</a>
+        </div>
+</section>
+<div class="main wrapper content layout-home">
+    <section class="grid grid--small home-highlights">
+  <div>
+    <h2>Easy</h2>
+    <p>Easy, zero configuration setup for any Node.js project and minimal configuration for Browser-based projects.</p>
+  </div>
 
-<p>If you’re new to QUnit, check out <a href="https://qunitjs.com/intro/">Getting Started</a>.</p>
+  <div>
+    <h2>Universal</h2>
+    <p>QUnit can run anywhere; web browsers, Node, SpiderMonkey, even in a Web Worker! Test your code where it runs.</p>
+  </div>
 
-<p>QUnit has no dependencies and supports Node.js, SpiderMonkey, and all <a href="https://qunitjs.com/intro/#in-the-browser">major browsers</a>.</p>
+  <div>
+    <h2>Extensible</h2>
+    <p>Flexible APIs for custom assertions, runners, and reporters mean you can extend QUnit to fit your needs.</p>
+  </div>
+</section>
 
-</article>
+<hr />
+
+<h2 id="a-quick-example">A Quick Example</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">two numbers</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="grid grid--split">
+
+  <div class="example-result">
+
+    <h3 id="browser-result">Browser Result</h3>
+
+    <iframe loading="lazy" title="The example test code running in the browser" src="/resources/example-add.html"></iframe>
+
+  </div>
+
+  <div class="example-result">
+
+    <h3 id="cli-result">CLI Result</h3>
+
+    <div class="language-tap highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">TAP version 13
+</span><span class="kr">ok</span> <span class="mi">1</span> add &gt; two numbers
+<span class="kd">1..1</span><span class="c">
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+</span></code></pre></div>    </div>
+
+  </div>
+
 </div>
-<aside class="sidebar" role="complementary">
 
-	<h4 class="sidebar-title-open"><a href="/QUnit/">Main methods</a></h4>
-	<ul class="sidebar-list"><li class="sidebar-item">
-		<a href="/QUnit/module/">QUnit.module()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/start/">QUnit.start()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/test/">QUnit.test()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/test.each/">QUnit.test.each()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/test.only/">QUnit.test.only()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/test.skip/">QUnit.test.skip()</a>
-	</li><li class="sidebar-item">
-		<a href="/QUnit/test.todo/">QUnit.test.todo()</a>
-	</li></ul>
+<hr />
 
-	<h4><a href="/assert/">Assertions</a></h4>
-	
+<h2 id="current-release">Current Release</h2>
 
-	<h4><a href="/callbacks/">Callback events</a></h4>
-	
+<p class="lead lead--center">v2.20.1 (<a href="https://github.com/qunitjs/qunit/blob/2.20.1/History.md">changelog</a>)</p>
 
-	<h4><a href="/async/">Async control</a></h4>
-	
+<p>These are the officially supported <a href="/intro/#release-channels">release channels</a> for QUnit:</p>
 
-	<h4><a href="/config/">Configuration</a></h4>
-	
+<ul>
+  <li>CDN: <a href="https://code.jquery.com/qunit/qunit-2.20.1.js"><code class="language-plaintext highlighter-rouge">qunit-2.20.1.js</code></a> and <a href="https://code.jquery.com/qunit/qunit-2.20.1.css"><code class="language-plaintext highlighter-rouge">qunit-2.20.1.css</code></a></li>
+  <li>npm: <code class="language-plaintext highlighter-rouge">npm install --save-dev qunit</code></li>
+  <li>Yarn: <code class="language-plaintext highlighter-rouge">yarn add --dev qunit</code></li>
+  <li>Bower: <code class="language-plaintext highlighter-rouge">bower install --save-dev qunit</code></li>
+</ul>
 
-	<h4><a href="/extension/">Extension interface</a></h4>
-	
+<hr />
 
-	<h4><a href="/deprecated/">Deprecated methods</a></h4>
-	
-</aside>
+<h2 id="join-the-community">Join the Community</h2>
+
+<p class="lead lead--center">Join us on <a href="https://fosstodon.org/@qunit">Mastodon</a>, <a href="https://twitter.com/qunitjs">Twitter</a>, or <a href="https://gitter.im/qunitjs/qunit">Gitter chat</a>.</p>
+
+<p>To contribute:</p>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit">Watch the repository</a> to learn about release, new requests, or bug reports.</li>
+  <li>The source of this website, is in the <a href="https://github.com/qunitjs/qunit/tree/main/docs">“docs/” directory</a>.</li>
+</ul>
+
+<hr />
+
+<p class="cta">What are you waiting for? <a href="/intro/" class="button">Get started!</a></p>
 
 </div>
 
@@ -133,5 +178,5 @@
             </p>
             <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/index.md">Edit this page</a></p>
         </div>
-    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=1d96e487"></script></body>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
 </html>

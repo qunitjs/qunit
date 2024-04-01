@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit 2.0 Upgrade Guide | QUnit</title>
+<meta property="og:title" content="QUnit 2.0 Upgrade Guide"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">QUnit 2.0 Upgrade Guide</h1>
+    </div>
+</section>
+<div class="main wrapper content"><!--
+  Follow semistandard in code examples.
+
+  <https://github.com/standard/semistandard>
+  <https://standardjs.com/rules.html>
+-->
+<p class="lead">This guide will assist you in upgrading from QUnit 1 to QUnit 2.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>The QUnit 2 release only removes old methods. The “QUnit 2” methods were introduced as part of QUnit 1.x releases. If you are on QUnit 1.23, you can already migrate gradually, before making the jump.</p>
+
+<p>The old methods are removed in QUnit 2.0 and replaced with placeholder methods that throw descriptive errors to simplify migration (<code class="language-plaintext highlighter-rouge">"Global 'test()' method is removed, use 'QUnit.test() instead"</code>). QUnit 2.1 removes that layer and would instead throw native errors like <code class="language-plaintext highlighter-rouge">"ReferenceError: test is not defined"</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>QUnit 1.x</th>
+      <th>QUnit 2.x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">module()</code></td>
+      <td><a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">test()</code></td>
+      <td><a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">asyncTest()</code></td>
+      <td><a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> with <a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">stop()</code>/<code class="language-plaintext highlighter-rouge">start()</code></td>
+      <td><a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expect()</code></td>
+      <td><a href="/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ok()</code>, <code class="language-plaintext highlighter-rouge">equal()</code>, <code class="language-plaintext highlighter-rouge">deepEqual()</code>, …</td>
+      <td><a href="/api/assert/"><code class="language-plaintext highlighter-rouge">assert</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">setup</code>/<code class="language-plaintext highlighter-rouge">teardown</code> options</td>
+      <td><a href="/api/QUnit/module/#options-object"><code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> hooks</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For plugins and other integrations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>QUnit 1.x</th>
+      <th>QUnit 2.x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">QUnit.log = …</code><br /><code class="language-plaintext highlighter-rouge">QUnit.begin = …</code><br />…</td>
+      <td><a href="/api/callbacks/QUnit.log/"><code class="language-plaintext highlighter-rouge">QUnit.log(…)</code></a>,<br /><a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin(…)</code></a>,<br />…</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">QUnit.push()</code></td>
+      <td><a href="/api/assert/pushResult/"><code class="language-plaintext highlighter-rouge">assert.pushResult()</code></a></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">QUnit.jsDump.parse()</code></td>
+      <td><a href="/api/extension/QUnit.dump.parse/"><code class="language-plaintext highlighter-rouge">QUnit.dump.parse()</code></a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="changes">Changes</h2>
+
+<p class="note">The <a href="https://github.com/apsdehal/qunit-migrate">qunit-migrate</a> tool can automate the transition to QUnit 2.</p>
+
+<ul>
+  <li><a href="#removed-global-functions">Removed global functions</a></li>
+  <li><a href="#introducing-assertasync">Introducing <code class="language-plaintext highlighter-rouge">assert.async</code></a></li>
+  <li><a href="#renamed-module-hooks">Renamed module hooks</a></li>
+  <li><a href="#removed-legacy-callback-properties">Removed legacy callback properties</a></li>
+  <li><a href="#replace-qunitpush-with-assertpushresult">Replace <code class="language-plaintext highlighter-rouge">QUnit.push</code> with <code class="language-plaintext highlighter-rouge">assert.pushResult</code></a></li>
+  <li><a href="#removed-qunitinit-without-replacement">Removed <code class="language-plaintext highlighter-rouge">QUnit.init</code> without replacement</a></li>
+  <li><a href="#removed-qunitreset">Removed <code class="language-plaintext highlighter-rouge">QUnit.reset</code></a></li>
+  <li><a href="#renamed-qunitjsdump-to-qunitdump">Renamed <code class="language-plaintext highlighter-rouge">QUnit.jsDump</code> to <code class="language-plaintext highlighter-rouge">QUnit.dump</code></a></li>
+  <li><a href="#replace-expected-number-argument-of-qunittest">Replace <code class="language-plaintext highlighter-rouge">expected</code> number argument of <code class="language-plaintext highlighter-rouge">QUnit.test</code></a></li>
+  <li><a href="#replace-assertthrowsfunction-string-message-signature">Replace <code class="language-plaintext highlighter-rouge">assert.throws(Function, string, message)</code> signature</a></li>
+</ul>
+
+<h3 id="removed-global-functions">Removed global functions</h3>
+
+<p>QUnit 2 no longer uses global functions. The main methods are now part of the <code class="language-plaintext highlighter-rouge">QUnit</code> interface, and the assertion methods are exposed through a new <a href="/api/assert/"><code class="language-plaintext highlighter-rouge">assert</code></a> object that is bound to each test.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">5</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">5</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="introducing-assertasync">Introducing <code class="language-plaintext highlighter-rouge">assert.async()</code></h3>
+
+<p>Use <a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead of the <code class="language-plaintext highlighter-rouge">stop()</code> and <code class="language-plaintext highlighter-rouge">start()</code> functions. Calling <code class="language-plaintext highlighter-rouge">assert.async()</code> returns a <code class="language-plaintext highlighter-rouge">done</code> function that should be called once the asynchronous operation is finished.</p>
+
+<p>Similarly, if you were using <code class="language-plaintext highlighter-rouge">asyncTest()</code>, use the regular <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> with <a href="/api/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">navigates to new page</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">stop</span><span class="p">();</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">navigate</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">newPage</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">equal</span><span class="p">(</span><span class="nx">newPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nf">start</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// Or</span>
+
+<span class="nf">asyncTest</span><span class="p">(</span><span class="dl">'</span><span class="s1">navigates to new page</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">navigate</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">newPage</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">equal</span><span class="p">(</span><span class="nx">newPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nf">start</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">navigates to new page</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">navigate</span><span class="p">(</span><span class="nx">newPage</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">newPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nf">done</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="renamed-module-hooks">Renamed module hooks</h3>
+
+<p>The <a href="/api/QUnit/module/">module hooks</a> <code class="language-plaintext highlighter-rouge">setup</code> and <code class="language-plaintext highlighter-rouge">teardown</code> have been renamed to <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code>. The new names were first introduced in QUnit 1.16, and removed in QUnit 2.0.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">router</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">setup</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Router</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="na">teardown</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">router</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">beforeEach</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Router</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="na">afterEach</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You can also use a <a href="/api/QUnit/module/#nested-scope">nested scope</a> as of QUnit 1.20, which makes for simpler sharing of variables and associating of tests with modules.</p>
+
+<p>Example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">router</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">router</span><span class="p">;</span>
+
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Router</span><span class="p">();</span>
+  <span class="p">});</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">router</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">router</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">));</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="removed-legacy-callback-properties">Removed legacy callback properties</h3>
+
+<p>Early alpha releases of QUnit 0.x required property assignments to register callback events. In QUnit 1.0, these were deprecated in favour of more modern event registration methods. The ability to use assignments as way to register callbacks was removed in QUnit 2.0.</p>
+
+<p class="note">
+
+See also <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on()</code></a>, which implements the <a href="https://github.com/js-reporters/js-reporters">js-reporters spec</a> since QUnit 2.2.
+
+</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">log</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">results</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">results</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This applies to all reporting callbacks, specifically: <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">begin</code></a>, <a href="/api/callbacks/QUnit.done/"><code class="language-plaintext highlighter-rouge">done</code></a>, <a href="/api/callbacks/QUnit.log/"><code class="language-plaintext highlighter-rouge">log</code></a>, <a href="/api/callbacks/QUnit.moduleDone/"><code class="language-plaintext highlighter-rouge">moduleDone</code></a>, <a href="/api/callbacks/QUnit.moduleStart/"><code class="language-plaintext highlighter-rouge">moduleStart</code></a>, <a href="/api/callbacks/QUnit.testDone/"><code class="language-plaintext highlighter-rouge">testDone</code></a>, and <a href="/api/callbacks/QUnit.testStart/"><code class="language-plaintext highlighter-rouge">testStart</code></a>.</p>
+
+<h3 id="replace-qunitpush-with-assertpushresult">Replace <code class="language-plaintext highlighter-rouge">QUnit.push()</code> with <code class="language-plaintext highlighter-rouge">assert.pushResult()</code></h3>
+
+<p>To implement custom assertions, assign functions to <a href="/api/extension/QUnit.assert/"><code class="language-plaintext highlighter-rouge">QUnit.assert</code></a>, and inside use <a href="/api/assert/pushResult/"><code class="language-plaintext highlighter-rouge">this.pushResult()</code></a> instead of <code class="language-plaintext highlighter-rouge">QUnit.push</code>. This allows assertions to be directly associated with its test context, preventing asynchronous tests from leaking into other tests.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">assert</span><span class="p">.</span><span class="nx">mod2</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">%</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">actual</span> <span class="o">===</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">assert</span><span class="p">.</span><span class="nx">mod2</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">%</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nf">pushResult</span><span class="p">({</span> <span class="na">result</span><span class="p">:</span> <span class="nx">actual</span> <span class="o">===</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">expected</span><span class="p">,</span> <span class="nx">message</span> <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="removed-qunitinit-without-replacement">Removed <code class="language-plaintext highlighter-rouge">QUnit.init</code> without replacement</h3>
+
+<p>This method used to reinitialize the test runner. It should never have been exposed as a public method and is now gone, without replacement. If you’ve built an integration or runner framework that requires the use of <code class="language-plaintext highlighter-rouge">QUnit.init</code>, reach out in our <a href="https://gitter.im/qunitjs/qunit">Chat room</a>, or contact us in the <a href="https://github.com/qunitjs/qunit/issues">issue tracker</a> to help find a replacement.</p>
+
+<h3 id="removed-qunitreset">Removed <code class="language-plaintext highlighter-rouge">QUnit.reset</code></h3>
+
+<p>This method accessed QUnit’s internal fixture reset. This is now gone, without replacement. If your code is using it, you may need to split affected tests into separate tests.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentPage</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">refresh</span><span class="p">();</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">router</span><span class="p">.</span><span class="nx">currentPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">reset</span><span class="p">();</span>
+
+  <span class="nx">history</span><span class="p">.</span><span class="nf">replaceState</span><span class="p">(</span><span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">refresh</span><span class="p">();</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">router</span><span class="p">.</span><span class="nx">currentPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">42</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentPage default</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">refresh</span><span class="p">();</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">router</span><span class="p">.</span><span class="nx">currentPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentPage after replaceState</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">history</span><span class="p">.</span><span class="nf">replaceState</span><span class="p">(</span><span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">router</span><span class="p">.</span><span class="nf">refresh</span><span class="p">();</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">router</span><span class="p">.</span><span class="nx">currentPage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="mi">42</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="renamed-qunitjsdump-to-qunitdump">Renamed <code class="language-plaintext highlighter-rouge">QUnit.jsDump</code> to <code class="language-plaintext highlighter-rouge">QUnit.dump</code></h3>
+
+<p>Originally <code class="language-plaintext highlighter-rouge">jsDump</code> was a standalone library imported into QUnit. It has since evolved further within the library. To reflect that, the property was renamed to <a href="/api/extension/QUnit.dump.parse/"><code class="language-plaintext highlighter-rouge">QUnit.dump.parse</code></a>. This should only affect custom reporter code, not regular testsuites.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">obj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">jsDump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">actual</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">expected</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">jsDump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">expected</span><span class="p">);</span>
+  <span class="nf">sendMessage</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">result</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">expected</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">obj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">actual</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">expected</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">expected</span><span class="p">);</span>
+  <span class="nf">sendMessage</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">result</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">expected</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="replace-expected-number-argument-of-qunittest">Replace <code class="language-plaintext highlighter-rouge">expected</code> number argument of <code class="language-plaintext highlighter-rouge">QUnit.test</code></h3>
+
+<p>The optional <code class="language-plaintext highlighter-rouge">expected</code> argument to <code class="language-plaintext highlighter-rouge">QUnit.test</code> for specifying the expected number of assertions, was removed. Call <code class="language-plaintext highlighter-rouge">assert.expect()</code> instead.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">addition</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">5</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">addition</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">5</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="replace-assertthrowsfunction-string-message-signature">Replace <code class="language-plaintext highlighter-rouge">assert.throws(Function, string, message)</code> signature</h3>
+
+<p>The signature of <a href="/api/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a> that accepted an error string as second parameter has been removed. This avoids ambiguity with the assertion message, as both parameters were optional.</p>
+
+<p>It is recommended to use a regular expression or error object as the expected value instead.</p>
+
+<p>For example, to test the following code:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">This is an error</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">add</span><span class="p">();</span>
+  <span class="p">},</span> <span class="dl">'</span><span class="s1">This is an error</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Fail if A is undefined</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">add</span><span class="p">();</span>
+  <span class="p">},</span> <span class="sr">/This is an error/</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Fail if A is undefined</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Or</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">add</span><span class="p">();</span>
+  <span class="p">},</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">This is an error</span><span class="dl">'</span><span class="p">),</span> <span class="dl">'</span><span class="s1">Fail if A is undefined</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>See <a href="/api/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a> for an overview of the supported signatures.</p>
+
+<p>Note that in the two-argument signature <code class="language-plaintext highlighter-rouge">assert.throws(Function, string)</code> has always been interpreted as asserting <em>anything</em> is thrown, with the string argument being the assertion message. This continues to be supported.</p>
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/upgrade-guide-2.x.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

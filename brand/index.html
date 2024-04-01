@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>Brand guidelines | QUnit</title>
+<meta property="og:title" content="Brand guidelines"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">Brand guidelines</h1>
+    </div>
+</section>
+<div class="main main--columns wrapper">
+<div class="content"><h2 id="brand-colors">Brand colors</h2>
+
+<ul>
+  <li><span class="q-color-icon" style="background: #9C3493;"></span> QUnit Primary Purple <code class="language-plaintext highlighter-rouge">#9C3493</code></li>
+  <li><span class="q-color-icon" style="background: #390F39;"></span> QUnit Secondary Purple <code class="language-plaintext highlighter-rouge">#390F39</code></li>
+</ul>
+
+<p class="q-color-block" style="background: #9C3493; color: #FFF;">
+
+<strong>QUnit Primary Purple</strong><br />
+HEX: #9C3493<br />
+CMYK: 0 67 6 39<br />
+RGB: 156 52 147<br />
+Pantone: 253
+
+</p>
+
+<p class="q-color-block" style="background: #390F39; color: #FFF;">
+
+<strong>QUnit Secondary Purple</strong><br />
+HEX: #390F39<br />
+CMYK: 0 74 0 78<br />
+RGB: 57 15 57<br />
+Pantone: 229
+
+</p>
+
+<h2 id="logo">Logo</h2>
+
+<p>The primary QUnit purple should always be used when presenting the QUnit brand. Please use this color for the logo mark as well as the tagline when presented on a light background. When presented on a dark background, all text, including name and tagline, must be white.</p>
+
+<p><a href="https://github.com/openjs-foundation/artwork/tree/main/projects/qunit#qunit-artwork">Download QUnit artwork presskit</a>.</p>
+
+<figure>
+	<img alt="" src="/img/2013-logo-qunit_color_study.png" style="max-height: 270px" />
+</figure>
+
+<p>Use of any trademark or logo is subject to the trademark policy available at <a href="https://trademark-policy.openjsf.org">https://trademark-policy.openjsf.org</a>. A list of the trademarks covered by this policy can be found at <a href="https://trademark-list.openjsf.org">https://trademark-list.openjsf.org</a>.</p>
+
+<h2 id="brand-history">Brand history</h2>
+
+<h3 id="2011">2011</h3>
+
+<div style="clear: right; float: right; margin: 0 0 1em 1em; padding: 20px 10px 10px 10px; background: #00733c;"><img alt="QUnit logo 2011" src="/img/2011-logo-qunit.png" height="58" /></div>
+
+<p>Prior to January 2013, the QUnit brand featured a green color theme.</p>
+
+<ul>
+  <li><span class="q-color-icon" style="background: #1d923c;"></span> QUnit Light Green <code class="language-plaintext highlighter-rouge">#1d923c</code></li>
+  <li><span class="q-color-icon" style="background: #00733c;"></span> QUnit Dark Green <code class="language-plaintext highlighter-rouge">#00733c</code></li>
+</ul>
+
+<p>A temporary logo used the Myriad Semibold font for the project name.</p>
+
+<h3 id="2012">2012</h3>
+
+<div style="clear: right; float: right; margin: 0 0 1em 1em; padding: 25px 15px 15px 25px; background: #cdcdcd;"><img alt="QUnit logo 2012" src="/img/2012-logo-qunit.png" srcset="/img/2012-logo-qunit@2x.png 2x" width="186" height="53" /></div>
+<div style="clear: right; float: right; margin: 0 0 1em 1em; padding: 20px 15px 15px 15px; background: #00733c;"><img alt="QUnit logo 2012" src="/img/2012b-logo-qunit.png" width="203" height="60" /></div>
+
+<p>In 2012, the logo was updated to align with the other jQuery Foundation projects, based on the jQuery logo as <a href="https://blog.jquery.com/2008/08/29/jquerycom-site-redesign/">designed by Scott Jehl</a> in 2008. The 2012 version of the QUnit logo was <a href="https://github.com/qunitjs/qunit/issues/222">created</a> by <a href="https://github.com/zrmccarthy">Zach McCarthy</a>.</p>
+
+<p>The 2012 website theme was <a href="http://web.archive.org/web/20130918130115/http://appendto.com/blog/2013/01/jquery-design-doug-neiner/">designed and developed by Doug Neiner</a> and <a href="https://twitter.com/dougneiner/status/44191485884772352">Darcy Clarke</a>, which would be deployed to jquery.com <a href="https://blog.jquery.com/2013/01/23/a-site-to-behold-open-content-design-comes-to-jquery-2/">two months later</a>. You can browse the <a href="https://web.archive.org/web/20121210184108/http://qunitjs.com/">2012 version of the website</a> at the Internet Archive.</p>
+
+<p><img src="/img/2012-website-qunit.png" alt="" /></p>
+
+<h3 id="2013">2013</h3>
+
+<ul>
+  <li><span class="q-color-icon" style="background: #9C3493;"></span> QUnit Primary Purple <code class="language-plaintext highlighter-rouge">#9C3493</code></li>
+  <li><span class="q-color-icon" style="background: #390F39;"></span> QUnit Secondary Purple <code class="language-plaintext highlighter-rouge">#390F39</code></li>
+</ul>
+
+<p>In January 2013, QUnit <a href="https://github.com/jquery/jquery-wp-content/commit/3eaa0f780b03c894b8577755be8028526b90c99b">changed</a> its branding to its now-beloved purple. This was the outcome of a 2012 <a href="https://github.com/qunitjs/qunitjs.com/issues/20">color study</a> in collaboration with FortySeven Media, that reviewed it in context of other jQuery Foundation projects.</p>
+
+<p>You can browse the <a href="https://web.archive.org/web/20180128085010/http://qunitjs.com/">2013 version of the website</a> at the Internet Archive.</p>
+
+<p><img src="/img/2013-website-qunit.png" alt="" /></p>
+
+<h3 id="2020">2020</h3>
+
+<p>In 2018, Trent Willis <a href="https://github.com/qunitjs/qunitjs.com/issues/151#issuecomment-655154878">designed</a> a new homepage for QUnit. In 2020, Timo Tijhof <a href="https://github.com/qunitjs/qunit/issues/1458#issuecomment-661576550">launched</a> the redesign with a matching redesign of the API documentation. The QUnit site framework is published as <a href="https://github.com/qunitjs/jekyll-theme-amethyst">jekyll-theme-amethyst</a>.</p>
+
+<p><img src="/img/2020-website-qunit.png" alt="" /></p>
+</div>
+<aside class="sidebar" role="complementary"><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#brand-colors">Brand colors</a></li><li class="sidebar-item"><a href="#logo">Logo</a></li><li class="sidebar-item"><a href="#brand-history">Brand history</a><ol><li class="sidebar-item"><a href="#2011">2011</a></li><li class="sidebar-item"><a href="#2012">2012</a></li><li class="sidebar-item"><a href="#2013">2013</a></li><li class="sidebar-item"><a href="#2020">2020</a></li></ol></li></ol></div>
+</aside>
+
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/brand.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit.config.testId | QUnit</title>
+<meta property="og:title" content="QUnit.config.testId"><meta name="description" content="Select one or more tests to run, by their internal ID (HTML Reporter)."><meta property="og:description" content="Select one or more tests to run, by their internal ID (HTML Reporter)."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+    <header>
+    <h1>QUnit.config.testId</h1>
+    <p class="post-meta">Categories: <a class="category" href="/api/config/">QUnit.config</a>.</p>
+    </header>
+    <p class="version-details">
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">1.16.0</a><span class="sep">.</span></p>
+    <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
+<p>In the HTML Reporter, select one or more tests to run by their internal ID.</p>
+
+<table>
+<tr>
+  <th>type</th>
+  <td><code class="language-plaintext highlighter-rouge">array</code> or <code class="language-plaintext highlighter-rouge">undefined</code></td>
+</tr>
+<tr>
+  <th>default</th>
+  <td><code class="language-plaintext highlighter-rouge">undefined</code></td>
+</tr>
+</table>
+
+<p class="note">This option can be controlled via the <a href="/intro/#in-the-browser">HTML Reporter</a> interface.</p>
+
+<p>This property allows QUnit to run specific tests by their internally hashed identifier. You can specify one or multiple tests to run. This option powers the “Rerun” button in the HTML Reporter.</p>
+
+<p>See also:</p>
+<ul>
+  <li><a href="/api/config/filter/">QUnit.config.filter</a></li>
+  <li><a href="/api/config/moduleId/">QUnit.config.moduleId</a></li>
+</ul>
+
+</article>
+</div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/api/QUnit/">Main methods</a></h4>
+	
+
+	<h4><a href="/api/assert/">Assertions</a></h4>
+	
+
+	<h4><a href="/api/callbacks/">Callback events</a></h4>
+	
+
+	<h4><a href="/api/async/">Async control</a></h4>
+	
+
+	<h4 class="sidebar-title-open"><a href="/api/config/">Configuration</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/config/altertitle/">QUnit.config.altertitle</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/autostart/">QUnit.config.autostart</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/collapse/">QUnit.config.collapse</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/current/">QUnit.config.current</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/failOnZeroTests/">QUnit.config.failOnZeroTests</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/filter/">QUnit.config.filter</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/fixture/">QUnit.config.fixture</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/hidepassed/">QUnit.config.hidepassed</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/maxDepth/">QUnit.config.maxDepth</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/module/">QUnit.config.module</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/moduleId/">QUnit.config.moduleId</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/modules/">QUnit.config.modules</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/noglobals/">QUnit.config.noglobals</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/notrycatch/">QUnit.config.notrycatch</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/reorder/">QUnit.config.reorder</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/requireExpects/">QUnit.config.requireExpects</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/scrolltop/">QUnit.config.scrolltop</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/seed/">QUnit.config.seed</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/storage/">QUnit.config.storage</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/config/testId/">QUnit.config.testId</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/testTimeout/">QUnit.config.testTimeout</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
+	</li></ul>
+
+	<h4><a href="/api/extension/">Extension interface</a></h4>
+	
+
+	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
+	<hr><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/api/config/testId.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

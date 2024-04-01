@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>assert.verifySteps() | QUnit</title>
+<meta property="og:title" content="assert.verifySteps()"><meta name="description" content="Verify the exact order of steps."><meta property="og:description" content="Verify the exact order of steps."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+    <header>
+    <h1>assert.verifySteps()</h1>
+    <p class="post-meta">Categories: <a class="category" href="/api/assert/">Assertions</a>.</p>
+    </header>
+    <p class="version-details">
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.2.0">2.2.0</a><span class="sep">.</span></p>
+    <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
+<p><code class="language-plaintext highlighter-rouge">verifySteps( steps, message = "" )</code></p>
+
+<p>Verify the presence and exact order of previously marked steps in a test.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">steps</code> (array)</td>
+      <td>List of strings</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
+      <td>Short description</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.</p>
+
+<p>For example, you can mark steps to observe and validate whether parts of your code are reached correctly, or to check the frequency (how often) an asynchronous code path is executed. You can also capture any unexpected steps, which are automatically detected and shown as part of the test failure.</p>
+
+<p>This assertion compares a given array of string values to a list of previously recorded steps, as marked via previous calls to <a href="/api/assert/step/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a>.</p>
+
+<p>Calling <code class="language-plaintext highlighter-rouge">verifySteps()</code> will clear and reset the internal list of steps. This allows multiple independent sequences of <code class="language-plaintext highlighter-rouge">assert.step()</code> to exist within the same test.</p>
+
+<p>Refer to the below examples and learn how to use the Step API in your test suite.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="test-event-based-interface">Test event-based interface</h3>
+
+<p>This example uses a class based on an <a href="https://nodejs.org/api/events.html"><code class="language-plaintext highlighter-rouge">EventEmitter</code></a>, such as the one provided by Node.js and other environments:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordMaker</span><span class="p">();</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">message</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">3.1</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">point</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>When approaching this scenario <strong>without the Step API</strong> one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over. This creates loose assurances, and can easily cause false positives (a callback might not run, run out of order, or run multiple times). It also offers rather limited debugging information.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// WARNING: This is a BAD example</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example 1</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordMaker</span><span class="p">();</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nf">process</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>A less fragile approach could involve a local array that we check afterwards with <a href="/api/assert/deepEqual/"><code class="language-plaintext highlighter-rouge">deepEqual</code></a>. This catches out-of-order issues, unexpected values, and duplicate values. It also provides detailed debugging information in case of problems. The below is in essence how the Step API works:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">manual example without Step API</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="kd">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordMaker</span><span class="p">();</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">maker</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">values</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nf">process</span><span class="p">();</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">middle</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="test-publishsubscribe-system">Test publish/subscribe system</h3>
+
+<p>Use the <strong>Step API</strong> to verify messages received in a Pub-Sub channel or topic.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">publisher</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Publisher</span><span class="p">();</span>
+
+  <span class="kd">const</span> <span class="nx">subscriber1</span> <span class="o">=</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="s2">`Sub 1: </span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">subscriber2</span> <span class="o">=</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="s2">`Sub 2: </span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+
+  <span class="nx">publisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">subscriber1</span><span class="p">);</span>
+  <span class="nx">publisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">subscriber2</span><span class="p">);</span>
+  <span class="nx">publisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">publisher</span><span class="p">.</span><span class="nf">unsubscribe</span><span class="p">(</span><span class="nx">subscriber1</span><span class="p">);</span>
+  <span class="nx">publisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="dl">'</span><span class="s1">World!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span>
+    <span class="dl">'</span><span class="s1">Sub 1: Hello!</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">Sub 2: Hello!</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">Sub 2: World!</span><span class="dl">'</span>
+  <span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="multiple-steps-verifications-in-one-test">Multiple steps verifications in one test</h3>
+
+<p>The internal buffer of observed steps is automatically reset when calling <code class="language-plaintext highlighter-rouge">verifySteps()</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">multiple verifications example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">one</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">two</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">one</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">two</span><span class="dl">'</span><span class="p">]);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">three</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">four</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">three</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">four</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+</article>
+</div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/api/QUnit/">Main methods</a></h4>
+	
+
+	<h4 class="sidebar-title-open"><a href="/api/assert/">Assertions</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/assert/async/">assert.async()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/deepEqual/">assert.deepEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/equal/">assert.equal()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/expect/">assert.expect()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/false/">assert.false()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notDeepEqual/">assert.notDeepEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notEqual/">assert.notEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notOk/">assert.notOk()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notPropContains/">assert.notPropContains()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notPropEqual/">assert.notPropEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/notStrictEqual/">assert.notStrictEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/ok/">assert.ok()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/propContains/">assert.propContains()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/propEqual/">assert.propEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/pushResult/">assert.pushResult()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/rejects/">assert.rejects()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/step/">assert.step()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/strictEqual/">assert.strictEqual()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/throws/">assert.throws()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/timeout/">assert.timeout()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/assert/true/">assert.true()</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/assert/verifySteps/">assert.verifySteps()</a>
+	</li></ul>
+
+	<h4><a href="/api/callbacks/">Callback events</a></h4>
+	
+
+	<h4><a href="/api/async/">Async control</a></h4>
+	
+
+	<h4><a href="/api/config/">Configuration</a></h4>
+	
+
+	<h4><a href="/api/extension/">Extension interface</a></h4>
+	
+
+	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
+	<hr><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#test-event-based-interface">Test event-based interface</a></li><li class="sidebar-item"><a href="#test-publishsubscribe-system">Test publish/subscribe system</a></li><li class="sidebar-item"><a href="#multiple-steps-verifications-in-one-test">Multiple steps verifications in one test</a></li></ol></li></ol></div>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/api/assert/verifySteps.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

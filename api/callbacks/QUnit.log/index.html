@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit.log() | QUnit</title>
+<meta property="og:title" content="QUnit.log()"><meta name="description" content="Register a callback to fire whenever an assertion completes."><meta property="og:description" content="Register a callback to fire whenever an assertion completes."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+    <header>
+    <h1>QUnit.log()</h1>
+    <p class="post-meta">Categories: <a class="category" href="/api/callbacks/">Callback events</a>.</p>
+    </header>
+    <p class="version-details">
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
+    <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
+<p><code class="language-plaintext highlighter-rouge">QUnit.log( callback )</code></p>
+
+<p>Register a callback to fire whenever an assertion completes.</p>
+
+<p><strong>NOTE: The QUnit.log() callback does not handle promises and MUST be synchronous.</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>parameter</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>callback (function)</td>
+      <td>Callback to execute. Provides a single argument with the callback Details object</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="details-object">Details object</h3>
+
+<p>Passed to the callback:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>property</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">result</code> (boolean)</td>
+      <td>The boolean result of an assertion, <code class="language-plaintext highlighter-rouge">true</code> means passed, <code class="language-plaintext highlighter-rouge">false</code> means failed.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">actual</code></td>
+      <td>One side of a comparison assertion. Can be <em>undefined</em> when <code class="language-plaintext highlighter-rouge">ok()</code> is used.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expected</code></td>
+      <td>One side of a comparison assertion. Can be <em>undefined</em> when <code class="language-plaintext highlighter-rouge">ok()</code> is used.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
+      <td>A string description provided by the assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source</code> (string)</td>
+      <td>The associated stacktrace, either from an exception or pointing to the source of the assertion. Depends on browser support for providing stacktraces, so can be undefined.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">module</code> (string)</td>
+      <td>The test module name of the assertion. If the assertion is not connected to any module, the property’s value will be <em>undefined</em>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">name</code> (string)</td>
+      <td>The test block name of the assertion.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">runtime</code> (number)</td>
+      <td>The time elapsed in milliseconds since the start of the containing <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>, including setup.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">todo</code> (boolean)</td>
+      <td>Indicates whether or not this assertion was part of a todo test.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<p>Register a callback that logs the assertion result and its message:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Log: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">result</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Log the module name and test result whenever an assertion fails:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">details</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">let</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">`[FAILED] </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">module</span><span class="p">}</span><span class="s2"> &gt; </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">actual</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`\nexpected: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">expected</span><span class="p">}</span><span class="s2">\nactual: </span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">actual</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">details</span><span class="p">.</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">output</span> <span class="o">+=</span> <span class="s2">`\n</span><span class="p">${</span><span class="nx">details</span><span class="p">.</span><span class="nx">source</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">output</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+</article>
+</div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/api/QUnit/">Main methods</a></h4>
+	
+
+	<h4><a href="/api/assert/">Assertions</a></h4>
+	
+
+	<h4 class="sidebar-title-open"><a href="/api/callbacks/">Callback events</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.begin/">QUnit.begin()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.done/">QUnit.done()</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/callbacks/QUnit.log/">QUnit.log()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.moduleDone/">QUnit.moduleDone()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.moduleStart/">QUnit.moduleStart()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.on/">QUnit.on()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.testDone/">QUnit.testDone()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.testStart/">QUnit.testStart()</a>
+	</li></ul>
+
+	<h4><a href="/api/async/">Async control</a></h4>
+	
+
+	<h4><a href="/api/config/">Configuration</a></h4>
+	
+
+	<h4><a href="/api/extension/">Extension interface</a></h4>
+	
+
+	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
+	<hr><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#details-object">Details object</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/api/callbacks/QUnit.log.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

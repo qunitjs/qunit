@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=f58f9980" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>Plugins | QUnit</title>
+<meta property="og:title" content="Plugins"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">2.x Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">Plugins</h1>
+    </div>
+</section>
+<div class="main wrapper content"><p class="lead">Plugins can extend, enhance, and modify QUnit itself; as well as the developer experience of using QUnit.</p>
+
+<ul id="plugins" class="grid grid--split">
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-theme-ember" target="_blank" rel="noopener noreferrer">qunit-theme-ember</a></h3>
+      <p>A theme for the QUnit web UI test runner powered by the Ember styleguide.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-dom" target="_blank" rel="noopener noreferrer">qunit-dom</a></h3>
+      <p>High Level DOM Assertions for QUnit</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-puppeteer-runner" target="_blank" rel="noopener noreferrer">qunit-puppeteer-runner</a></h3>
+      <p>Runs QUnit tests in a Puppeteer instance and compiles results to JUnit XML</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-junit" target="_blank" rel="noopener noreferrer">qunit-junit</a></h3>
+      <p>Produce JUnit-style XML test reports with QUnit.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assertions-extra" target="_blank" rel="noopener noreferrer">qunit-assertions-extra</a></h3>
+      <p>Collection of helpful assertions for use with qunit</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/node-qunit-puppeteer" target="_blank" rel="noopener noreferrer">node-qunit-puppeteer</a></h3>
+      <p>A simple node module for running qunit tests with headless Chromium</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-ava-spec" target="_blank" rel="noopener noreferrer">qunit-ava-spec</a></h3>
+      <p>Helper functions for using QUnit as if it was ava/ava-spec.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-theme-ninja" target="_blank" rel="noopener noreferrer">qunit-theme-ninja</a></h3>
+      <p>A QUnit theme for ninjas.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-wait-for" target="_blank" rel="noopener noreferrer">qunit-wait-for</a></h3>
+      <p>Wait for a QUnit assertion</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/@matthewp/node-qunit-puppeteer" target="_blank" rel="noopener noreferrer">@matthewp/node-qunit-puppeteer</a></h3>
+      <p>A simple node module for running qunit tests with headless Chromium</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunitx-dom" target="_blank" rel="noopener noreferrer">qunitx-dom</a></h3>
+      <p>High Level DOM Assertions for QUnit</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-retry" target="_blank" rel="noopener noreferrer">qunit-retry</a></h3>
+      <p>Drop in replacement for qunit `test` which retries a failed test.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-theme-gabe" target="_blank" rel="noopener noreferrer">qunit-theme-gabe</a></h3>
+      <p>A QUnit theme by Gabe Hendry.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-puppeteer-reporter" target="_blank" rel="noopener noreferrer">qunit-puppeteer-reporter</a></h3>
+      <p>headless browser testing for QUnit test suites</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-theme-nv" target="_blank" rel="noopener noreferrer">qunit-theme-nv</a></h3>
+      <p>A QUnit theme.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-reporter-junit" target="_blank" rel="noopener noreferrer">qunit-reporter-junit</a></h3>
+      <p>Produce JUnit-style XML test reports with QUnit.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-step" target="_blank" rel="noopener noreferrer">qunit-assert-step</a></h3>
+      <p>A QUnit plugin for asserting the proper sequence in which the code should execute.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-html" target="_blank" rel="noopener noreferrer">qunit-assert-html</a></h3>
+      <p>QUnit HTML assertion addon</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-compare" target="_blank" rel="noopener noreferrer">qunit-assert-compare</a></h3>
+      <p>A QUnit plugin for asserting numerical comparisons like greater than, less than, etc.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-close" target="_blank" rel="noopener noreferrer">qunit-assert-close</a></h3>
+      <p>A QUnit plugin for asserting that a number is approximately equal (or not) to an expected number, within a given tolerance.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-canvas" target="_blank" rel="noopener noreferrer">qunit-assert-canvas</a></h3>
+      <p>A QUnit plugin for asserting individual pixel values within a Canvas element.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-pending" target="_blank" rel="noopener noreferrer">qunit-pending</a></h3>
+      <p>A QUnit plugin to add the "pending" test syntax to QUnit, a la Mocha.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-composite" target="_blank" rel="noopener noreferrer">qunit-composite</a></h3>
+      <p>Run multiple QUnit test suite pages.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-classes" target="_blank" rel="noopener noreferrer">qunit-assert-classes</a></h3>
+      <p>A set of assertions for checking thats an element has ( or does not have ) any number of classes. The check is order independent and gives a diff of the expected classes.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-reporter-lcov" target="_blank" rel="noopener noreferrer">qunit-reporter-lcov</a></h3>
+      <p>Produce lcov test reports with QUnit</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-theme-burce" target="_blank" rel="noopener noreferrer">qunit-theme-burce</a></h3>
+      <p>A QUnit theme by Bryce Dorn.</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-dark" target="_blank" rel="noopener noreferrer">qunit-dark</a></h3>
+      <p>A kind of dark theme for qunit</p>
+    </li>
+  <li class="plugin">
+      <h3><a href="https://npmjs.com/package/qunit-assert-nodes" target="_blank" rel="noopener noreferrer">qunit-assert-nodes</a></h3>
+      <p>A QUnit plugin providing a convenient API for batch acceptance assertions</p>
+    </li>
+  
+</ul>
+
+<p>Plugins are sometimes known as QUnit addons.</p>
+
+<p><em>Note: This list is automatically generated from npm packages using the <a href="https://www.npmjs.com/search?q=keywords:qunit-plugin"><strong>qunit-plugin</strong> keyword</a>.</em></p>
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/plugins.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>
