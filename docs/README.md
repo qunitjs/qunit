@@ -8,11 +8,11 @@
 
 <!-- For in-repo browsing convenience: -->
 
-* [Main methods](./QUnit/)
-* [Assertions](./assert/)
-* [Callback events](./callbacks/)
-* [Configuration options](./config/)
-* [Extension interface](./extension/)
+* [Main methods](./api/QUnit/)
+* [Assertions](./api/assert/)
+* [Callback events](./api/callbacks/)
+* [Configuration options](./api/config/)
+* [Extension interface](./api/extension/)
 
 ## Contribute
 
