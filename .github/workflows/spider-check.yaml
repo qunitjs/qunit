@@ -26,7 +26,7 @@ jobs:
       # - https://example.github.io/my-project/
       MY_SITE: https://qunitjs.com
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Run hydra-link-checker
         run: |
