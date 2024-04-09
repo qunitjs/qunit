@@ -1,0 +1,14 @@
+# name: config.moduleId
+# command: ["qunit", "config-moduleId.js"]
+
+TAP version 13
+ok 1 module A scoped > module C nested > test C1
+ok 2 module D scoped > test D1
+ok 3 module D scoped > module E nested > test E1
+ok 4 module D scoped > test D2
+ok 5 module F flat > test F1
+1..5
+# pass 5
+# skip 0
+# todo 0
+# fail 0

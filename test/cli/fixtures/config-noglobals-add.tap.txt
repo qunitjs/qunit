@@ -1,0 +1,20 @@
+# name: config.noglobals and add a global
+# command: ["qunit", "config-noglobals-add.js"]
+
+TAP version 13
+not ok 1 adds global var
+  ---
+  message: Introduced global variable(s): dummyGlobal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at qunit.js
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

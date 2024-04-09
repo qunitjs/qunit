@@ -1,0 +1,11 @@
+# name: config.filter with a string
+# command: ["qunit","config-filter-string.js"]
+
+TAP version 13
+ok 1 filter > foo test
+ok 2 filter > bar test
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0

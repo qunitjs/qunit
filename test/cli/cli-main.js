@@ -1,94 +1,47 @@
 'use strict';
 
-const expectedOutput = require('./fixtures/expected/tap-outputs');
-const { execute, prettyPrintCommand, concurrentMapKeys } = require('./helpers/execute');
+const path = require('path');
+
 const semver = require('semver');
 
+const { execute, concurrentMapKeys } = require('./helpers/execute.js');
+const { readFixtures } = require('./helpers/fixtures.js');
+
+const FIXTURES_DIR = path.join(__dirname, 'fixtures');
 const skipOnWinTest = (process.platform === 'win32' ? 'skip' : 'test');
-
-function getExpected (command) {
-  return expectedOutput[prettyPrintCommand(command)];
-}
-
-const fixtureCases = {
-  'load "tests" directory by default': ['qunit'],
-  'load file not found': ['qunit', 'does-not-exist.js'],
-  'load glob pattern': ['qunit', 'glob/**/*-test.js'],
-  'load single file': ['qunit', 'single.js'],
-  'load multiple files': ['qunit', 'single.js', 'double.js'],
-  'load a directory': ['qunit', 'test'],
-  'load mixture of file, directory, and glob': ['qunit', 'test', 'single.js', 'glob/**/*-test.js'],
-  'load file with syntax error': ['qunit', 'syntax-error/test.js'],
-
-  'no tests': ['qunit', 'no-tests'],
-  'no tests and config.failOnZeroTests=false': ['qunit', 'assert-expect/no-tests.js'],
-
-  'test with failing assertion': ['qunit', 'fail/failure.js'],
-  'test that hangs': ['qunit', 'hanging-test'],
-  'test with pending async after timeout': ['qunit', 'pending-async-after-timeout.js'],
-  'two tests with one timeout': ['qunit', 'timeout'],
-  'test with zero assertions': ['qunit', 'zero-assertions.js'],
-
-  'unhandled rejection': ['qunit', 'unhandled-rejection.js'],
-  'uncaught error after assert.async()': ['qunit', 'hard-error-in-test-with-no-async-handler.js'],
-  'uncaught error in hook': ['qunit', 'hard-error-in-hook.js'],
-  'uncaught error in "begin" callback': ['qunit', 'bad-callbacks/begin-throw.js'],
-  'uncaught error in "done" callback': ['qunit', 'bad-callbacks/done-throw.js'],
-  // FIXME: Details of moduleDone() error are swallowed
-  'uncaught error in "moduleDone" callback"': ['qunit', 'bad-callbacks/moduleDone-throw.js'],
-  // FIXME: Details of testStart() error are swallowed
-  'uncaught error in "testStart" callback"': ['qunit', 'bad-callbacks/testStart-throw.js'],
-  'rejection from callbacks': ['qunit', 'callbacks-rejected.js'],
-
-  'QUnit.hooks context': ['qunit', 'hooks-global-context.js'],
-
-  '--filter matches module': ['qunit', '--filter', 'single', 'test', 'single.js', 'glob/**/*-test.js'],
-  '--module selects a module (case-insensitive)': ['qunit', '--module', 'seconD', 'test/'],
-  '--require loads dependency and script': ['qunit', 'single.js', '--require', 'require-dep', '--require', './node_modules/require-dep/module.js'],
-  '--seed value': ['qunit', '--seed', 's33d', 'test', 'single.js', 'glob/**/*-test.js'],
-
-  'config.filter with a string': ['qunit', 'config-filter-string.js'],
-  'config.filter with a regex': ['qunit', 'config-filter-regex.js'],
-  'config.filter with inverted regex': ['qunit', 'config-filter-regex-exclude.js'],
-
-  'config.module': ['qunit', 'config-module.js'],
-  'config.moduleId': ['qunit', 'config-moduleId.js'],
-  'config.testId': ['qunit', 'config-testId.js'],
-  'config.testTimeout': ['qunit', 'config-testTimeout.js'],
-  'config.noglobals and add a global': ['qunit', 'noglobals/add-global.js'],
-  'config.noglobals and remove a global': ['qunit', 'noglobals/remove-global.js'],
-  'config.noglobals and add ignored DOM global': ['qunit', 'noglobals/ignored.js'],
-
-  'assert.async() handled after timeout': ['qunit', 'done-after-timeout.js'],
-  'assert.async() handled outside test': ['qunit', 'drooling-extra-done-outside.js'],
-  'assert.expect() different count': ['qunit', 'assert-expect/failing-expect.js'],
-  'assert.expect() no assertions': ['qunit', 'assert-expect/no-assertions.js'],
-  'assert.expect() missing and config.requireExpects=true': ['qunit', 'assert-expect/require-expects.js'],
-  'test.only()': ['qunit', 'only/test.js'],
-  'module.only() followed by test': ['qunit', 'only/module-then-test.js'],
-  'module() nested with interrupted executeNow': ['qunit', 'module-nested.js'],
-  'module() with async function': ['qunit', 'async-module-warning/test.js'],
-  'module() with promise': ['qunit', 'async-module-warning/promise-test.js'],
-
-  'hooks.beforeEach() during other module': ['qunit', 'incorrect-hooks-warning/test.js']
-};
 
 QUnit.module('CLI Main', () => {
   QUnit.test.each('fixtures',
     // Faster testing: Let the commands run in the background with concurrency,
     // and only await/assert the already-started command.
-    concurrentMapKeys(fixtureCases, 0, (command) => execute(command)),
-    async (assert, execution) => {
-      const result = await execution;
-      assert.equal(result.snapshot, getExpected(result.command));
+    concurrentMapKeys(readFixtures(FIXTURES_DIR), 0, (runFixture) => runFixture()),
+    async (assert, fixture) => {
+      const result = await fixture;
+      assert.equal(result.snapshot, result.expected);
     }
   );
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
   QUnit[skipOnWinTest]('report assert.throws() failures properly', async assert => {
-    const command = ['qunit', 'fail/throws-match.js'];
+    const command = ['qunit', 'assert-throws-failure.js'];
     const execution = await execute(command);
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 Throws match > bad
+  ---
+  message: match error
+  severity: failed
+  actual  : Error: Match me with a pattern
+  expected: "/incorrect pattern/"
+  stack: |
+        at /qunit/test/cli/fixtures/assert-throws-failure.js:3:12
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
   });
 
   QUnit.test('callbacks', async assert => {
@@ -272,7 +225,13 @@ HOOK: BCD1 @ B after`;
       const stderr = semver.gte(process.versions.node, '14.0.0') ? execution.stderr : '';
       assert.equal(execution.code, 0);
       assert.equal(stderr, '');
-      assert.equal(execution.stdout, getExpected(command));
+      assert.equal(execution.stdout, `TAP version 13
+ok 1 ESM test suite > sum()
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`);
     });
   }
 
@@ -283,7 +242,24 @@ HOOK: BCD1 @ B after`;
       const command = ['qunit', 'sourcemap/source.js'];
       const execution = await execute(command);
 
-      assert.equal(execution.snapshot, getExpected(command));
+      assert.equal(execution.snapshot, `TAP version 13
+ok 1 Example > good
+not ok 2 Example > bad
+  ---
+  message: failed
+  severity: failed
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/sourcemap/source.js:7:16
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
     });
 
     // skip if running in code coverage mode,
@@ -297,7 +273,24 @@ HOOK: BCD1 @ B after`;
           env: { NODE_OPTIONS: '--enable-source-maps' }
         });
 
-        assert.equal(execution.snapshot, getExpected(command));
+        assert.equal(execution.snapshot, `TAP version 13
+ok 1 Example > good
+not ok 2 Example > bad
+  ---
+  message: failed
+  severity: failed
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/sourcemap/sourcemap/source.js:7:10
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
       });
   }
 
@@ -307,19 +300,40 @@ HOOK: BCD1 @ B after`;
     QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
       const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
       const execution = await execute(command);
-      assert.equal(execution.snapshot, getExpected(command));
+      assert.equal(execution.snapshot, `TAP version 13
+ok 1 module-closure > example test
+ok 2 module-closure > example child module > example child module test
+ok 3 module-closure check > memory release
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`);
     });
 
     QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
       const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
       const execution = await execute(command);
-      assert.equal(execution.snapshot, getExpected(command));
+      assert.equal(execution.snapshot, `TAP version 13
+ok 1 module-closure > example test
+ok 2 module-closure check > memory release
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0`);
     });
 
     QUnit.test('memory-leak/test-object', async assert => {
       const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
       const execution = await execute(command);
-      assert.equal(execution.snapshot, getExpected(command));
+      assert.equal(execution.snapshot, `TAP version 13
+ok 1 test-object > example test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0`);
     });
   }
 
@@ -331,11 +345,29 @@ HOOK: BCD1 @ B after`;
     const command = ['qunit', '--filter', 'no matches', 'test'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 global failure
+  ---
+  message: "No tests matched the filter \\"no matches\\"."
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: No tests matched the filter "no matches".
+        at qunit.js
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
   });
 
   QUnit.test('--require loads unknown module', async assert => {
-    const command = ['qunit', 'single.js', '--require', 'does-not-exist-at-all'];
+    const command = ['qunit', 'basic-one.js', '--require', 'does-not-exist-at-all'];
     const execution = await execute(command);
     // TODO: Change to a generic tap-outputs.js
     // https://github.com/qunitjs/qunit/issues/1688
@@ -345,7 +377,7 @@ HOOK: BCD1 @ B after`;
   });
 
   QUnit.test('config.notrycatch with rejected test', async assert => {
-    const command = ['qunit', 'notrycatch/returns-rejection.js'];
+    const command = ['qunit', 'config-notrycatch-test-rejection.js'];
     const execution = await execute(command);
 
     assert.pushResult({
@@ -356,7 +388,7 @@ HOOK: BCD1 @ B after`;
   });
 
   QUnit.test('config.notrycatch with rejected hook', async assert => {
-    const command = ['qunit', 'notrycatch/returns-rejection-in-hook.js'];
+    const command = ['qunit', 'config-notrycatch-hook-rejection.js'];
     const execution = await execute(command);
 
     assert.pushResult({
@@ -371,7 +403,28 @@ HOOK: BCD1 @ B after`;
     const command = ['qunit', 'drooling-done.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 Test A
+  ---
+  message: |+
+    Died on test #2: this is an intentional error
+        at /qunit/test/cli/fixtures/drooling-done.js:5:7
+        at internal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: this is an intentional error
+        at /qunit/test/cli/fixtures/drooling-done.js:8:9
+  ...
+ok 2 Test B
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
   });
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
@@ -379,7 +432,29 @@ HOOK: BCD1 @ B after`;
     const command = ['qunit', 'drooling-extra-done.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+ok 1 Test A
+not ok 2 Test B
+  ---
+  message: |+
+    Died on test #2: Unexpected release of async pause during a different test.
+    > Test: Test A [async #1]
+        at /qunit/test/cli/fixtures/drooling-extra-done.js:13:7
+        at internal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: Unexpected release of async pause during a different test.
+    > Test: Test A [async #1]
+  ...
+1..2
+# pass 1
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
   });
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
@@ -387,22 +462,78 @@ HOOK: BCD1 @ B after`;
     const command = ['qunit', 'too-many-done-calls.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 Test A
+  ---
+  message: |+
+    Died on test #2: Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+        at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
+        at internal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1`);
   });
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
   QUnit[skipOnWinTest]('module.only() nested', async assert => {
-    const command = ['qunit', 'only/module.js'];
+    const command = ['qunit', 'only-module.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 # TODO module B > Only this module should run > a todo test
+  ---
+  message: not implemented yet
+  severity: todo
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/only-module.js:17:18
+  ...
+ok 2 # SKIP module B > Only this module should run > implicitly skipped test
+ok 3 module B > Only this module should run > normal test
+ok 4 module D > test D
+ok 5 module E > module F > test F
+ok 6 module E > test E
+1..8
+# pass 6
+# skip 1
+# todo 1
+# fail 0`);
   });
 
   // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
   QUnit[skipOnWinTest]('module.only() flat', async assert => {
-    const command = ['qunit', 'only/module-flat.js'];
+    const command = ['qunit', 'only-module-flat.js'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `TAP version 13
+not ok 1 # TODO module B > test B
+  ---
+  message: not implemented yet
+  severity: todo
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/only-module-flat.js:8:14
+  ...
+ok 2 # SKIP module B > test C
+ok 3 module B > test D
+1..4
+# pass 2
+# skip 1
+# todo 1
+# fail 0`);
   });
 });

@@ -1,0 +1,7 @@
+# name: load file not found
+# command: ["qunit","does-not-exist.js"]
+
+# stderr
+No files were found matching: does-not-exist.js
+
+# exit code: 1

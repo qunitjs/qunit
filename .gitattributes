@@ -3,5 +3,6 @@
 
 # JS and HTML files must always use LF for tools to work
 *.js eol=lf
+*.tap.txt eol=lf
 *.json eol=lf
 *.html eol=lf

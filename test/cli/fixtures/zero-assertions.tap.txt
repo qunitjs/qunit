@@ -1,0 +1,10 @@
+# name: test with zero assertions
+# command: ["qunit", "zero-assertions.js"]
+
+TAP version 13
+ok 1 Zero assertions > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0

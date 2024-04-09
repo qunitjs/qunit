@@ -1,0 +1,20 @@
+# name: rejection from callbacks
+# command: ["qunit", "callbacks-rejected.js"]
+
+TAP version 13
+not ok 1 global failure
+  ---
+  message: Error: begin
+  severity: failed
+  stack: |
+    Error: begin
+        at /qunit/test/cli/fixtures/callbacks-rejected.js:8:25
+        at qunit.js
+        at internal
+  ...
+Bail out! Error: begin
+
+# stderr
+Error: Process exited before tests finished running
+
+# exit code: 1

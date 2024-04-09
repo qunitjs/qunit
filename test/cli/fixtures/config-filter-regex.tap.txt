@@ -1,0 +1,12 @@
+# name: config.filter with a regex
+# command: ["qunit","config-filter-regex.js"]
+
+TAP version 13
+ok 1 filter > foo test
+ok 2 filter > FOO test
+ok 3 filter > bar test
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0

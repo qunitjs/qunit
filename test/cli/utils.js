@@ -202,9 +202,9 @@ QUnit.module('CLI utils', function () {
       4,
       4,
       4,
+      4,
       // no more remaining
-      3,
-      1
+      4
     ]);
   });
 });

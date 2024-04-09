@@ -1,0 +1,21 @@
+# name: assert.expect() missing and config.requireExpects=true
+# command: ["qunit","config-requireExpects.js"]
+
+TAP version 13
+not ok 1 passing test
+  ---
+  message: Expected number of assertions to be defined, but expect() was not called.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/config-requireExpects.js:3:7
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

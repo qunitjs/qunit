@@ -1,0 +1,21 @@
+# name: assert.expect() no assertions
+# command: ["qunit", "assert-expect-no-assertions.js"]
+
+TAP version 13
+not ok 1 no assertions
+  ---
+  message: Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect-no-assertions.js:1:7
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

@@ -1,0 +1,22 @@
+# name: no tests
+# command: ["qunit", "no-tests.js"]
+
+TAP version 13
+not ok 1 global failure
+  ---
+  message: No tests were run.
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: No tests were run.
+        at qunit.js
+        at internal
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

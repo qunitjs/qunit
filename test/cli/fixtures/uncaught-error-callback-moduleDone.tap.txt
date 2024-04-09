@@ -1,0 +1,10 @@
+# name: uncaught error in "moduleDone" callback
+# command: ["qunit","uncaught-error-callback-moduleDone.js"]
+
+TAP version 13
+ok 1 module1 > test1
+
+# stderr
+Error: Process exited before tests finished running
+
+# exit code: 1

@@ -1,0 +1,24 @@
+# name: uncaught error after assert.async()
+# command: ["qunit", "uncaught-error-after-assert-async.js"]
+
+TAP version 13
+not ok 1 contains a hard error after using assert.async()
+  ---
+  message: |+
+    Died on test #2: expected error thrown in test
+        at /qunit/test/cli/fixtures/uncaught-error-after-assert-async.js:1:7
+        at internal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: expected error thrown in test
+        at /qunit/test/cli/fixtures/uncaught-error-after-assert-async.js:4:9
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

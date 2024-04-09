@@ -1,0 +1,14 @@
+# name: load mixture of file, directory, and glob
+# command: ["qunit","test","basic-one.js","glob/**/*-test.js"]
+
+TAP version 13
+ok 1 Single > has a test
+ok 2 A-Test > derp
+ok 3 Nested-Test > herp
+ok 4 First > 1
+ok 5 Second > 1
+1..5
+# pass 5
+# skip 0
+# todo 0
+# fail 0

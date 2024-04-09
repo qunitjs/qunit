@@ -1,0 +1,20 @@
+# name: config.noglobals and remove a global
+# command: ["qunit","config-noglobals-remove.js"]
+
+TAP version 13
+not ok 1 deletes global var
+  ---
+  message: Deleted global variable(s): dummyGlobal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at qunit.js
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

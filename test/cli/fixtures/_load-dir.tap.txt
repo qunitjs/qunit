@@ -1,0 +1,11 @@
+# name: load a directory
+# command: ["qunit","test"]
+
+TAP version 13
+ok 1 First > 1
+ok 2 Second > 1
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0

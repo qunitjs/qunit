@@ -1,0 +1,13 @@
+# name: hooks.beforeEach() during other module
+# command: ["qunit", "hooks-other-module-warning.js"]
+
+TAP version 13
+ok 1 module providing hooks > module not providing hooks > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+The `beforeEach` hook was called inside the wrong module (`module providing hooks > module not providing hooks`). Instead, use hooks provided by the callback to the containing module (`module providing hooks`). This will become an error in QUnit 3.0.

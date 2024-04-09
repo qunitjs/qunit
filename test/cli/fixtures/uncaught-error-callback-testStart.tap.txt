@@ -1,0 +1,9 @@
+# name: uncaught error in "testStart" callback
+# command: ["qunit","uncaught-error-callback-testStart.js"]
+
+TAP version 13
+
+# stderr
+Error: Process exited before tests finished running
+
+# exit code: 1

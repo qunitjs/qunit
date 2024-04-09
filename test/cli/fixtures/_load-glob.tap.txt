@@ -1,0 +1,11 @@
+# name: load glob pattern
+# command: ["qunit","glob/**/*-test.js"]
+
+TAP version 13
+ok 1 A-Test > derp
+ok 2 Nested-Test > herp
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0

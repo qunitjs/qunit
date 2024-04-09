@@ -147,34 +147,38 @@ async function execute (command, options = {}, hook) {
   return result;
 }
 
-// Very loose command formatter.
-// Not for the purpose of execution, but for the purpose
-// of formatting the string key in fixtures/ files.
-function prettyPrintCommand (command) {
-  return command.map(arg => {
-    // Quote spaces and stars
-    return /[ *]/.test(arg) ? `'${arg}'` : arg;
-  }).join(' ');
-}
-
 /**
  * @param {Array<number,any>} input
  * @param {number} [concurrency=0]
  * @return {Array<number,Promise>}
  */
 function concurrentMap (input, concurrency, asyncFn) {
-  const ret = [];
   if (!concurrency) {
     concurrency = os.cpus().length;
   }
   if (concurrency < 1) {
     throw new Error('Concurrency must be non-zero');
   }
+  const queue = [];
+  const ret = [];
+  function next () {
+    if (queue.length) {
+      queue.shift()();
+    }
+  }
   for (let i = 0; i < input.length; i++) {
     const val = input[i];
-    ret[i] = (i < concurrency)
-      ? Promise.resolve(asyncFn(val))
-      : ret[i - concurrency].then(asyncFn.bind(null, val));
+    if (i < concurrency) {
+      ret[i] = Promise.resolve(asyncFn(val)).finally(next);
+    } else {
+      let trigger;
+      const promise = new Promise((resolve) => {
+        trigger = resolve;
+      });
+      queue.push(trigger);
+
+      ret[i] = promise.then(asyncFn.bind(null, val)).finally(next);
+    }
   }
   return ret;
 }
@@ -199,7 +203,6 @@ function concurrentMapKeys (input, concurrency, asyncFn) {
 module.exports = {
   normalize,
   execute,
-  prettyPrintCommand,
   concurrentMap,
   concurrentMapKeys
 };

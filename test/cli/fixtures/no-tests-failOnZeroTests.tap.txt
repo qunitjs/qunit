@@ -1,0 +1,9 @@
+# name: no tests and config.failOnZeroTests=false
+# command: ["qunit", "no-tests-failOnZeroTests.js"]
+
+TAP version 13
+1..0
+# pass 0
+# skip 0
+# todo 0
+# fail 0

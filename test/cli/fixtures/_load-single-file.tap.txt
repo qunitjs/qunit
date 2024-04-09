@@ -1,0 +1,10 @@
+# name: load single file
+# command: ["qunit","basic-one.js"]
+
+TAP version 13
+ok 1 Single > has a test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0

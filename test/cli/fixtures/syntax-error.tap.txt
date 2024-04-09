@@ -1,0 +1,34 @@
+# name: load file with syntax error
+# command: ["qunit", "syntax-error.js"]
+
+not ok 1 global failure
+  ---
+  message: |+
+    Error: Failed to load file syntax-error.js
+    ReferenceError: varIsNotDefined is not defined
+  severity: failed
+  stack: |
+    ReferenceError: varIsNotDefined is not defined
+        at /qunit/test/cli/fixtures/syntax-error.js:1:1
+        at internal
+  ...
+Bail out! Error: Failed to load file syntax-error.js
+TAP version 13
+not ok 2 global failure
+  ---
+  message: No tests were run.
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: No tests were run.
+        at qunit.js
+        at internal
+  ...
+1..2
+# pass 0
+# skip 0
+# todo 0
+# fail 2
+
+# exit code: 1

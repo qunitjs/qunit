@@ -1,0 +1,15 @@
+# name: --seed value
+# command: ["qunit", "--seed", "s33d", "test", "basic-one.js", "glob/**/*-test.js"]
+
+Running tests with seed: s33d
+TAP version 13
+ok 1 Second > 1
+ok 2 Nested-Test > herp
+ok 3 First > 1
+ok 4 A-Test > derp
+ok 5 Single > has a test
+1..5
+# pass 5
+# skip 0
+# todo 0
+# fail 0

@@ -1,0 +1,34 @@
+# name: unhandled rejection
+# command: ["qunit","unhandled-rejection.js"]
+
+not ok 1 global failure
+  ---
+  message: Error: outside of a test context
+  severity: failed
+  stack: |
+    Error: outside of a test context
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
+        at qunit.js
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
+        at internal
+  ...
+Bail out! Error: outside of a test context
+TAP version 13
+not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promise
+  ---
+  message: global failure: Error: Error thrown in non-returned promise!
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: Error thrown in non-returned promise!
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13
+        at internal
+  ...
+1..2
+# pass 0
+# skip 0
+# todo 0
+# fail 2
+
+# exit code: 1

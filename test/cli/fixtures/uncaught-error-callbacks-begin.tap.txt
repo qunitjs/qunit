@@ -1,0 +1,20 @@
+# name: uncaught error in "begin" callback
+# command: ["qunit", "uncaught-error-callbacks-begin.js"]
+
+TAP version 13
+not ok 1 global failure
+  ---
+  message: Error: No dice
+  severity: failed
+  stack: |
+    Error: No dice
+        at /qunit/test/cli/fixtures/uncaught-error-callbacks-begin.js:2:9
+        at qunit.js
+        at internal
+  ...
+Bail out! Error: No dice
+
+# stderr
+Error: Process exited before tests finished running
+
+# exit code: 1

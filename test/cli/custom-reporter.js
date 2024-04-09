@@ -2,12 +2,7 @@ const NPMReporter = require('npm-reporter');
 
 const findReporter = require('../../src/cli/find-reporter').findReporter;
 
-const expectedOutput = require('./fixtures/expected/tap-outputs');
-const { execute, prettyPrintCommand } = require('./helpers/execute');
-
-function getExpected (command) {
-  return expectedOutput[prettyPrintCommand(command)];
-}
+const { execute } = require('./helpers/execute');
 
 QUnit.module('find-reporter', function () {
   QUnit.test('tap reporter is bundled', function (assert) {
@@ -40,20 +35,29 @@ QUnit.module('CLI Reporter', function () {
     const command = ['qunit', '--reporter', 'npm-reporter'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, 'Run ended!');
   });
 
   QUnit.test('exits early and lists available reporters if reporter is not found', async function (assert) {
     const command = ['qunit', '--reporter', 'does-not-exist'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `# stderr
+No reporter found matching "does-not-exist".
+Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
+
+# exit code: 1`);
   });
 
   QUnit.test('exits early and lists available reporters if reporter option is used with no value', async function (assert) {
     const command = ['qunit', '--reporter'];
     const execution = await execute(command);
 
-    assert.equal(execution.snapshot, getExpected(command));
+    assert.equal(execution.snapshot, `# stderr
+Built-in reporters: console, tap
+Extra reporters found among package dependencies: npm-reporter
+
+# exit code: 1`);
   });
 });
