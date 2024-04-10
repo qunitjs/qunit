@@ -1,0 +1,25 @@
+# name: assert.async() handled too often
+# command: ["qunit", "too-many-done-calls.js"]
+
+TAP version 13
+not ok 1 Test A
+  ---
+  message: |+
+    Died on test #2: Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+        at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
+        at internal
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: Tried to release async pause that was already released.
+    > Test: Test A [async #1]
+  ...
+1..1
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

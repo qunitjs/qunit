@@ -12,11 +12,12 @@ const reEscape = /([\\{}()|.?*+\-^$[\]])/g;
 function normalize (actual) {
   const dir = path.join(__dirname, '..', '..', '..');
   const reDir = new RegExp(dir.replace(reEscape, '\\$1'), 'g');
-  const reSep = new RegExp(path.sep.replace(reEscape, '\\$1'), 'g');
+  // Replace backslashes (\) in stack traces on Windows to POSIX
+  // but leave quoted/escaped shell arguments like \"foo\" unchanged.
+  const reSep = new RegExp(path.sep.replace(reEscape, '\\$1') + '(?!")', 'g');
 
   return actual
     .replace(reDir, '/qunit')
-    // Replace backslashes (\) in stack traces on Windows to POSIX
     .replace(reSep, '/')
     // Convert "at processModule (/qunit/qunit/qunit.js:1:2)" to "at qunit.js"
     // Convert "at /qunit/qunit/qunit.js:1:2" to "at qunit.js"
@@ -169,7 +170,7 @@ function concurrentMap (input, concurrency, asyncFn) {
   for (let i = 0; i < input.length; i++) {
     const val = input[i];
     if (i < concurrency) {
-      ret[i] = Promise.resolve(asyncFn(val)).finally(next);
+      ret[i] = Promise.resolve(asyncFn(val));
     } else {
       let trigger;
       const promise = new Promise((resolve) => {
@@ -177,8 +178,10 @@ function concurrentMap (input, concurrency, asyncFn) {
       });
       queue.push(trigger);
 
-      ret[i] = promise.then(asyncFn.bind(null, val)).finally(next);
+      ret[i] = promise.then(asyncFn.bind(null, val));
     }
+    // Avoid premature UnhandledPromiseRejectionWarning
+    ret[i].catch(() => null).finally(next);
   }
   return ret;
 }

@@ -17,32 +17,9 @@ QUnit.module('CLI Main', () => {
     concurrentMapKeys(readFixtures(FIXTURES_DIR), 0, (runFixture) => runFixture()),
     async (assert, fixture) => {
       const result = await fixture;
-      assert.equal(result.snapshot, result.expected);
+      assert.equal(result.snapshot, result.expected, result.name);
     }
   );
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('report assert.throws() failures properly', async assert => {
-    const command = ['qunit', 'assert-throws-failure.js'];
-    const execution = await execute(command);
-    assert.equal(execution.snapshot, `TAP version 13
-not ok 1 Throws match > bad
-  ---
-  message: match error
-  severity: failed
-  actual  : Error: Match me with a pattern
-  expected: "/incorrect pattern/"
-  stack: |
-        at /qunit/test/cli/fixtures/assert-throws-failure.js:3:12
-  ...
-1..1
-# pass 0
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
 
   QUnit.test('callbacks', async assert => {
     const expected = `CALLBACK: begin1
@@ -237,8 +214,7 @@ ok 1 ESM test suite > sum()
 
   // https://nodejs.org/dist/v12.12.0/docs/api/cli.html#cli_enable_source_maps
   if (semver.gte(process.versions.node, '14.0.0')) {
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[skipOnWinTest]('normal trace with native source map', async assert => {
+    QUnit.test('normal trace with native source map', async assert => {
       const command = ['qunit', 'sourcemap/source.js'];
       const execution = await execute(command);
 
@@ -264,9 +240,7 @@ not ok 2 Example > bad
 
     // skip if running in code coverage mode,
     // as that leads to conflicting maps-on-maps that invalidate this test
-    //
-    // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-    QUnit[process.env.NYC_PROCESS_ID ? 'skip' : skipOnWinTest](
+    QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test'](
       'mapped trace with native source map', async function (assert) {
         const command = ['qunit', 'sourcemap/source.min.js'];
         const execution = await execute(command, {
@@ -396,144 +370,5 @@ not ok 1 global failure
       result: execution.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
       actual: execution.stdout + '\n' + execution.stderr
     });
-  });
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('assert.async() handled after fail in other test', async assert => {
-    const command = ['qunit', 'drooling-done.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-not ok 1 Test A
-  ---
-  message: |+
-    Died on test #2: this is an intentional error
-        at /qunit/test/cli/fixtures/drooling-done.js:5:7
-        at internal
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-    Error: this is an intentional error
-        at /qunit/test/cli/fixtures/drooling-done.js:8:9
-  ...
-ok 2 Test B
-1..2
-# pass 1
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('assert.async() handled again in other test', async assert => {
-    const command = ['qunit', 'drooling-extra-done.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-ok 1 Test A
-not ok 2 Test B
-  ---
-  message: |+
-    Died on test #2: Unexpected release of async pause during a different test.
-    > Test: Test A [async #1]
-        at /qunit/test/cli/fixtures/drooling-extra-done.js:13:7
-        at internal
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-    Error: Unexpected release of async pause during a different test.
-    > Test: Test A [async #1]
-  ...
-1..2
-# pass 1
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('assert.async() handled too often', async assert => {
-    const command = ['qunit', 'too-many-done-calls.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-not ok 1 Test A
-  ---
-  message: |+
-    Died on test #2: Tried to release async pause that was already released.
-    > Test: Test A [async #1]
-        at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
-        at internal
-  severity: failed
-  actual  : null
-  expected: undefined
-  stack: |
-    Error: Tried to release async pause that was already released.
-    > Test: Test A [async #1]
-  ...
-1..1
-# pass 0
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('module.only() nested', async assert => {
-    const command = ['qunit', 'only-module.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-not ok 1 # TODO module B > Only this module should run > a todo test
-  ---
-  message: not implemented yet
-  severity: todo
-  actual  : false
-  expected: true
-  stack: |
-        at /qunit/test/cli/fixtures/only-module.js:17:18
-  ...
-ok 2 # SKIP module B > Only this module should run > implicitly skipped test
-ok 3 module B > Only this module should run > normal test
-ok 4 module D > test D
-ok 5 module E > module F > test F
-ok 6 module E > test E
-1..8
-# pass 6
-# skip 1
-# todo 1
-# fail 0`);
-  });
-
-  // TODO: Figure out why trace isn't trimmed on Windows. https://github.com/qunitjs/qunit/issues/1359
-  QUnit[skipOnWinTest]('module.only() flat', async assert => {
-    const command = ['qunit', 'only-module-flat.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-not ok 1 # TODO module B > test B
-  ---
-  message: not implemented yet
-  severity: todo
-  actual  : false
-  expected: true
-  stack: |
-        at /qunit/test/cli/fixtures/only-module-flat.js:8:14
-  ...
-ok 2 # SKIP module B > test C
-ok 3 module B > test D
-1..4
-# pass 2
-# skip 1
-# todo 1
-# fail 0`);
   });
 });

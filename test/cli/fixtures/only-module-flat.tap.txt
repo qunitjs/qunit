@@ -1,0 +1,19 @@
+# command: ["qunit", "only-module-flat.js"]
+
+TAP version 13
+not ok 1 # TODO module B > test B
+  ---
+  message: not implemented yet
+  severity: todo
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/only-module-flat.js:8:14
+  ...
+ok 2 # SKIP module B > test C
+ok 3 module B > test D
+1..4
+# pass 2
+# skip 1
+# todo 1
+# fail 0

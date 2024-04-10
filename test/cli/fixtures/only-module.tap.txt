@@ -1,0 +1,23 @@
+# name: module.only() nested
+# command: ["qunit", "only-module.js"]
+
+TAP version 13
+not ok 1 # TODO module B > Only this module should run > a todo test
+  ---
+  message: not implemented yet
+  severity: todo
+  actual  : false
+  expected: true
+  stack: |
+        at /qunit/test/cli/fixtures/only-module.js:17:18
+  ...
+ok 2 # SKIP module B > Only this module should run > implicitly skipped test
+ok 3 module B > Only this module should run > normal test
+ok 4 module D > test D
+ok 5 module E > module F > test F
+ok 6 module E > test E
+1..8
+# pass 6
+# skip 1
+# todo 1
+# fail 0
