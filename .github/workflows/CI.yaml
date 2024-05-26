@@ -86,25 +86,19 @@ jobs:
       - name: Tests
         run: ${{ matrix.script }}
 
-  # To reproduce SpiderMonkey builds locally:
+  # To reproduce SpiderMonkey 68 builds locally:
   #
-  # 1. Run the build the same way you normally do.
-  #    ```
-  #    nobody@nodejs-isolated:/qunit$ npm run build
-  #    ```
-  # 2. Start a temporary Docker container using the official Ubuntu image from DockerHub,
-  #    and mount the current working directory in it:
-  #    ```
-  #    you@host:/qunit$ MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:focal -c "cd /$MNT;bash"
-  #    ```
-  # 3. Run the following from the Docker container's bash prompt:
-  #    ```
-  #    root@ubuntu-tmp/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
-  #    root@ubuntu-tmp/qunit$ js68 test/mozjs.js
-  #    root@ubuntu-tmp/qunit$ js68 test/benchmark/index-mozjs.js
-  #    ```
-  sm-test:
-    name: SpiderMonkey
+  # ```
+  # you:/qunit$ npm run build
+  #
+  # you:/qunit$ export MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:20.04 -c "cd /$MNT;bash"
+  # ```
+  # ```
+  # root@ubuntu:/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
+  # root@ubuntu:/qunit$ js68 test/mozjs.js
+  # ```
+  mozjs-68:
+    name: SpiderMonkey 68
     runs-on: ubuntu-20.04
     env:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
@@ -116,10 +110,10 @@ jobs:
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Use Node.js 16
+      - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: Install mozjs
         run: |
           sudo apt-fast install -y libmozjs-68-dev
@@ -127,3 +121,75 @@ jobs:
       - run: npm run build
       - name: Tests
         run: js68 test/mozjs.js
+
+  # To reproduce SpiderMonkey 102 builds locally:
+  #
+  # ```
+  # you:/qunit$ npm run build
+  #
+  # you:/qunit$ export MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh debian:12-slim -c "cd /$MNT;bash"
+  # ```
+  # ```
+  # root@ubuntu:/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-102-dev
+  # root@ubuntu:/qunit$ js102 test/mozjs.js
+  # ```
+  mozjs-102:
+    name: SpiderMonkey 102
+    runs-on: ubuntu-24.04
+    env:
+      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: Install mozjs
+        run: |
+          sudo apt-fast install -y libmozjs-102-dev
+      - run: npm ci
+      - run: npm run build
+      - name: Tests
+        run: js102 test/mozjs.js
+
+  # To reproduce SpiderMonkey 115 builds locally:
+  #
+  # ```
+  # you:/qunit$ npm run build
+  #
+  # you:/qunit$ export MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:24.04 -c "cd /$MNT;bash"
+  # ```
+  # ```
+  # root@ubuntu:/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-115-dev
+  # root@ubuntu:/qunit$ js115 test/mozjs.js
+  # ```
+  mozjs-115:
+    name: SpiderMonkey 115
+    runs-on: ubuntu-24.04
+    env:
+      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.puppeteer_download
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: Install mozjs
+        run: |
+          sudo apt-fast install -y libmozjs-115-dev
+      - run: npm ci
+      - run: npm run build
+      - name: Tests
+        run: js115 test/mozjs.js
