@@ -16,6 +16,7 @@ QUnit.module('CLI Main', () => {
     // and only await/assert the already-started command.
     concurrentMapKeys(readFixtures(FIXTURES_DIR), 0, (runFixture) => runFixture()),
     async (assert, fixture) => {
+      assert.timeout(10000);
       const result = await fixture;
       assert.equal(result.snapshot, result.expected, result.name);
     }

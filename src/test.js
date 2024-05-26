@@ -759,6 +759,18 @@ Test.prototype = {
           config.timeoutHandler(timeoutDuration),
           timeoutDuration
         );
+      } else {
+        clearTimeout(config.timeout);
+        config.timeout = setTimeout(
+          function () {
+            config.timeout = null;
+            if (!config._deprecated_timeout_shown) {
+              config._deprecated_timeout_shown = true;
+              Logger.warn(`Test "${test.testName}" took longer than 3000ms, but no timeout was set. Set QUnit.config.testTimeout or call assert.timeout() to avoid a timeout in QUnit 3. https://qunitjs.com/api/config/testTimeout/`);
+            }
+          },
+          3000
+        );
       }
     }
 

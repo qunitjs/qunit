@@ -127,6 +127,7 @@ const config = {
   // started: 0,
 
   // Internal state
+  _deprecated_timeout_shown: false,
   blocking: true,
   callbacks: {},
   modules: [],

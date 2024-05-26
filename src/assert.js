@@ -81,7 +81,7 @@ class Assert {
   // Alias of pushResult.
   push (result, actual, expected, message, negative) {
     Logger.warn('assert.push is deprecated and will be removed in QUnit 3.0.' +
-      ' Please use assert.pushResult instead (https://qunitjs.com/api/assert/pushResult).');
+      ' Please use assert.pushResult instead. https://qunitjs.com/api/assert/pushResult');
 
     const currentAssert = this instanceof Assert ? this : config.current.assert;
     return currentAssert.pushResult({

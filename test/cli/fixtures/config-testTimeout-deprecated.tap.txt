@@ -1,0 +1,14 @@
+# command: ["qunit", "config-testTimeout-deprecated.js"]
+
+TAP version 13
+ok 1 fast async
+ok 2 slow async 1
+ok 3 slow async 2
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+Test "slow async 1" took longer than 3000ms, but no timeout was set. Set QUnit.config.testTimeout or call assert.timeout() to avoid a timeout in QUnit 3. https://qunitjs.com/api/config/testTimeout/

@@ -124,7 +124,7 @@ extend(QUnit, {
 
   load: function () {
     Logger.warn('QUnit.load is deprecated and will be removed in QUnit 3.0.' +
-      ' Refer to <https://qunitjs.com/api/QUnit/load/>.');
+      ' https://qunitjs.com/api/QUnit/load/');
 
     QUnit.autostart();
   },
