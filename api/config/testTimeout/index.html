@@ -75,7 +75,7 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p>Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents tests from running indefinitely.</p>
+<p>Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.</p>
 
 <table>
 <tr>
@@ -88,7 +88,54 @@
 </tr>
 </table>
 
-<p>This can be overridden on a per-test basis via <a href="/api/assert/timeout/">assert.timeout()</a>. If you don’t have per-test overrides, it is recommended to set this to a relatively high value (e.g. <code class="language-plaintext highlighter-rouge">30000</code> for 30 seconds) to avoid intermittent test failures from unrelated delays one might in a browser or CI service.</p>
+<p>This can be overridden on a per-test basis via <a href="/api/assert/timeout/">assert.timeout()</a>.</p>
+
+<p>It is recommended to keep the global default at <code class="language-plaintext highlighter-rouge">3000</code> (3 seconds) or higher, to avoid intermittent test failures from unrelated delays that may periodically occur inside a browser or CI service.</p>
+
+<h3 id="deprecated-no-timeout-set">Deprecated: No timeout set</h3>
+
+<p>Starting in QUnit 2.21, a deprecation warning will be logged if a test takes longer than 3 seconds, when there is no timeout set.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test {name} took longer than 3000ms, but no timeout was set.
+</code></pre></div></div>
+
+<p>You can prepare yourself for QUnit 3 when this happens, by either calling <code class="language-plaintext highlighter-rouge">assert.timeout()</code> inside those tests, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout.</p>
+
+<p>Depending on your test runner of choice, there may be more convenient ways to set configuration:</p>
+
+<ul>
+  <li>Set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config.set({
+  frameworks: ['qunit'],
+  plugins: ['karma-qunit'],
+  client: {
+    qunit: {
+      testTimeout: 5000
+    }
+  }
+});
+</code></pre></div>    </div>
+  </li>
+  <li>and, are not using a test runner that sets its own timeout (e.g. <a href="https://github.com/gruntjs/grunt-contrib-qunit">grunt-contrib-qunit</a>),</li>
+</ul>
+
+<h3 id="introducing-a-timeout">Introducing a timeout</h3>
+
+<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test could time out or get stuck for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
+
+<p>QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.</p>
+
+<h3 id="changelog">Changelog</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td>Announce change of default from undefined to <code class="language-plaintext highlighter-rouge">3000</code>, with a deprecation warning.</td>
+    </tr>
+  </tbody>
+</table>
 
 </article>
 </div>
@@ -158,7 +205,7 @@
 
 	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li><li class="sidebar-item"><a href="#introducing-a-timeout">Introducing a timeout</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></li></ol></div>
 </aside>
 
 </div>

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=4ca9bae3" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.config | QUnit</title>
-<meta property="og:title" content="QUnit.config"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="noindex,follow"><meta name="docsearch:amethyst_pagetype_navigation" content="1">
+<meta property="og:title" content="QUnit.config"><meta name="description" content="General configuration options for QUnit."><meta property="og:description" content="General configuration options for QUnit."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="index"><meta name="docsearch:amethyst_pagetype_navigation" content="1">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -73,17 +73,102 @@
     
     </header>
     
-    <p>General configuration options for QUnit.</p>
+    <h2 id="order">Order</h2>
 
-<h2 id="preconfiguring-qunit">Preconfiguring QUnit</h2>
+<p>Configurations are read in the following order:</p>
 
-<p>If you load QUnit asynchronously or otherwise need to configure QUnit before it is loaded, you can predefine the configuration by creating a global variable <code class="language-plaintext highlighter-rouge">QUnit</code> with a <code class="language-plaintext highlighter-rouge">config</code> property.</p>
+<ol>
+  <li>Default values</li>
+  <li>Flat preconfig</li>
+  <li>Object preconfig</li>
+  <li>Runner options (URL parameters in the HTML Reporter, or CLI options in the QUnit CLI)</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">QUnit.config</code> from your own inline or bootstrap script.</li>
+</ol>
 
-<p>The config values specified here will be carried over to the real <code class="language-plaintext highlighter-rouge">QUnit.config</code> object. Any other properties of this object will be ignored.</p>
+<h2 id="set-configuration">Set configuration</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Implicit global</span>
-<span class="c1">// Supported everywhere, including old browsers. (But not ES strict mode.)</span>
-<span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span>
+<p>You can configure the test run via the <code class="language-plaintext highlighter-rouge">QUnit.config</code> object. In the HTML Runner, you can set the configuration from any script after qunit.js:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>QUnit<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/lib/qunit/qunit.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/lib/qunit/qunit.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script&gt;</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">reorder</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/src/app.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/test/bootstrap.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/test/app.test.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>If you have custom plugins or want to re-use your configuration across multiple HTML test suites, you can also configure your project from an external <code class="language-plaintext highlighter-rouge">/test/bootstrap.js</code> script. Make sure to place this script before your other test files.</p>
+
+<p>When using the <a href="https://qunitjs.com/cli/">QUnit CLI</a>, you can setup your project and configure QUnit via <a href="https://qunitjs.com/cli/#--require"><code class="language-plaintext highlighter-rouge">--require</code></a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit <span class="nt">--require</span> ./test/bootstrap.js
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// test/bootstrap.js</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">noglobals</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">notrycatch</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyApp</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">../</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nf">setAccount</span><span class="p">(</span><span class="dl">'</span><span class="s1">TestUser</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="preconfiguration">Preconfiguration</h2>
+
+<p>Preconfiguration allows you to define QUnit configuration via global variables or environment variables, before QUnit itself is loaded.</p>
+
+<p>This is the recommended approach for general purpose test runners and integrations, as it provides a reliable way to override the default configuration. Ths can be especially useful if the end-user may control the loading of QUnit, possibly asynchronously, or through custom means, where it would be difficult to inject your overrides at the “right” time (after QUnit loads, but before any user code).</p>
+
+<p>Preconfig allows integrations to declare configuration without needing to embed, wrap, adapt, modify, or otherwise control the loading of QUnit itself. This in turn allows integrations to easily support use of standalone HTML test suites, that developers can also run and debug in the browser directly, without depending on or needing to install and set up any specific integration system.</p>
+
+<h3 id="flat-preconfig">Flat preconfig</h3>
+
+<p><em>Version added: UNRELEASED</em>.</p>
+
+<p>Flat preconfig allows multiple integrations to seemlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).</p>
+
+<p>In the browser context (HTML Runner), global variables that start with <code class="language-plaintext highlighter-rouge">qunit_config_</code> may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting <code class="language-plaintext highlighter-rouge">QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;</code></p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+<span class="nx">qunit_config_hidepassed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">qunit_config_seed</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">d84af39036</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">qunit_config_testtimeout</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>For the <a href="/cli/">QUnit CLI</a> and other Node.js runners, the same can also be done via environment variables. Environment variables must be set in the shell before running the <code class="language-plaintext highlighter-rouge">qunit</code> or <code class="language-plaintext highlighter-rouge">node</code> command. The variable names are case-sensitive and must be in lowercase. You may set boolean configuration variables using the string <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">qunit_config_noglobals</span><span class="o">=</span><span class="nb">true
+export </span><span class="nv">qunit_config_filter</span><span class="o">=</span>foo
+<span class="nb">export </span><span class="nv">qunit_config_testtimeout</span><span class="o">=</span>1000
+
+qunit test.js
+</code></pre></div></div>
+
+<p>Or:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">qunit_config_filter</span><span class="o">=</span>foo <span class="nv">qunit_config_testtimeout</span><span class="o">=</span>1000 qunit test.js
+</code></pre></div></div>
+
+<p>Configuration options that are read-only, internal/undocumented, or that require an object value (such as <a href="/api/config/storage/"><code class="language-plaintext highlighter-rouge">QUnit.config.storage</code></a>) cannot be set via environment variables. Options that require an array of strings will be converted to an array holding the given string.</p>
+
+<h3 id="object-preconfig">Object preconfig</h3>
+
+<p><em>Version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">2.1.0</a></em>.</p>
+
+<p>You can create a <code class="language-plaintext highlighter-rouge">QUnit</code> global variable with a <code class="language-plaintext highlighter-rouge">config</code> property, before QUnit itself is loaded. Any properties on this <code class="language-plaintext highlighter-rouge">QUnit.config</code> placeholder object will be carried over and applied to the real <code class="language-plaintext highlighter-rouge">QUnit.config</code> object once it exists. Any additional properties on the placeholder are ignored.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Isomorphic global</span>
+<span class="c1">// For modern browsers, SpiderMonkey, and Node.js (including strict mode).</span>
+<span class="nx">globalThis</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">config</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">autostart</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="na">maxDepth</span><span class="p">:</span> <span class="mi">12</span>
@@ -91,12 +176,12 @@
 <span class="p">};</span>
 
 <span class="c1">// Browser global</span>
-<span class="c1">// For all browsers (including strict mode and old browsers)</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">};</span>
+<span class="c1">// Supported in all browsers (including old browsers, and strict mode).</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* config: .. */</span> <span class="p">};</span>
 
-<span class="c1">// Isomorphic global</span>
-<span class="c1">// For modern browsers, SpiderMonkey, and Node.js (incl. strict mode).</span>
-<span class="nx">globalThis</span><span class="p">.</span><span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">};</span>
+<span class="c1">// Implicit global</span>
+<span class="c1">// Supported everywhere, including old browsers. (But not ES strict mode.)</span>
+<span class="nx">QUnit</span> <span class="o">=</span> <span class="p">{</span> <span class="cm">/* config: .. */</span> <span class="p">};</span>
 </code></pre></div></div>
 
 <h3 id="changelog">Changelog</h3>
@@ -104,16 +189,22 @@
 <table>
   <tbody>
     <tr>
+      <td>UNRELEASED</td>
+      <td>Added flat preconfig.</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.18.1">QUnit 2.18.1</a></td>
-      <td>Preconfig support added for SpiderMonkey and other environments.<br />Previously, it was limited to the browser environment.</td>
+      <td>Added object preconfig support for Node.js, SpiderMonkey, and other environments.<br />Previously, it was limited to the browser environment.</td>
     </tr>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">QUnit 2.1.0</a></td>
-      <td>Preconfig feature introduced.</td>
+      <td>Introduce object preconfig feature.</td>
     </tr>
   </tbody>
 </table>
 
+
+<div class="posts">
 <h2 id="qunit-config-altertitle"><a href="/api/config/altertitle/">QUnit.config.altertitle</a></h2>
 <p>Insert a success or failure symbol in the document title (HTML Reporter).</p>
 
@@ -179,6 +270,7 @@
 
 <h2 id="qunit-config-urlconfig"><a href="/api/config/urlConfig/">QUnit.config.urlConfig</a></h2>
 <p>Register additional input fields in the toolbar (HTML Reporter).</p>
+</div>
 
 </article>
 </div>
