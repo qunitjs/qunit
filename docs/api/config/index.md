@@ -5,6 +5,7 @@ title: QUnit.config
 redirect_from:
   - "/QUnit.config/"
   - "/config/"
+  - "/config/QUnit.config/"
 ---
 
 General configuration options for QUnit.
