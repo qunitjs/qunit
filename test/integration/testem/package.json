@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "devDependencies": {
+    "testem": "3.13.0"
+  },
+  "scripts": {
+    "test": "testem -l 'Headless Firefox' ci"
+  }
+}

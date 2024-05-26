@@ -13,8 +13,6 @@ function normalize (str) {
 
 QUnit.module('karma-qunit', {
   before: () => {
-    // Need --legacy-peer-deps under npm 7 for "file:" override in package.json.
-    // Once CI and dev environments are on npm 8, consider using native "overrides".
     cp.execSync('npm install --prefer-offline --no-audit --omit=dev --legacy-peer-deps', { cwd: DIR, encoding: 'utf8' });
   }
 });
