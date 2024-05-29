@@ -41,7 +41,7 @@
         "no-console": "error",
         "compat/compat": [
           "error",
-          "android >= 4.3, firefox >= 45, ie >= 9, safari >= 9.1, ios_saf >= 7, chrome >= 58"
+          "android >= 4.3, firefox >= 45, ie >= 11, safari >= 9.1, ios_saf >= 7, chrome >= 58"
         ]
       }
     },
@@ -60,7 +60,7 @@
       "rules": {
         "compat/compat": [
           "error",
-          "android >= 4.3, firefox >= 45, ie >= 9, safari >= 9.1, chrome >= 58"
+          "android >= 4.3, firefox >= 45, ie >= 11, safari >= 9.1, chrome >= 58"
         ],
         "max-len": "off",
         "no-throw-literal": "off",

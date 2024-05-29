@@ -1,4 +1,3 @@
-// Doesn't support IE9, it will return undefined on these browsers
 // See also https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
 const fileName = (sourceFromStacktrace(0) || '')
   .replace(/(:\d+)+\)?/, '')
@@ -33,8 +32,9 @@ export function extractStacktrace (e, offset) {
 export function sourceFromStacktrace (offset) {
   let error = new Error();
 
-  // Support: Safari <=7 only, IE <=10 - 11 only
-  // Not all browsers generate the `stack` property for `new Error()`, see also #636
+  // Support: Safari <=7, IE 11
+  // Not all browsers generate the `stack` property for `new Error()`
+  // See also https://github.com/qunitjs/qunit/issues/636
   if (!error.stack) {
     try {
       throw error;

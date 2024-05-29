@@ -1,4 +1,3 @@
-// Support IE 9: Promise not supported, test MUST NOT load polyfil globally.
 // Support SpiderMonkey: setTimeout is not supported, but native Promise is.
 var defer = typeof setTimeout !== 'undefined'
   // eslint-disable-next-line no-undef

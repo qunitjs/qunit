@@ -1,11 +1,7 @@
 /* eslint-env browser */
 QUnit.module('Web Worker');
 
-// Support: IE 9
-/* eslint-disable compat/compat */
-var testMethod = window.Worker ? 'test' : 'skip';
-
-QUnit[testMethod]('main tests', function (assert) {
+QUnit.test('main tests', function (assert) {
   assert.expect(1);
   var done = assert.async();
   var worker = new Worker('webWorker-worker.js');

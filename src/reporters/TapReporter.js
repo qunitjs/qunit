@@ -42,7 +42,7 @@ function prettyYamlValue (value, indent = 4) {
     value = String(value);
   }
 
-  // Support IE 9-11: Use isFinite instead of ES6 Number.isFinite
+  // Support IE 11: Use isFinite instead of ES6 Number.isFinite
   if (typeof value === 'number' && !isFinite(value)) {
     // Turn NaN and Infinity into simple strings.
     // Paranoia: Don't return directly just in case there's
@@ -93,7 +93,7 @@ function prettyYamlValue (value, indent = 4) {
       }
 
       // See also <https://yaml-multiline.info/>
-      // Support IE 9-11: Avoid ES6 String#repeat
+      // Support IE 11: Avoid ES6 String#repeat
       const prefix = (new Array(indent + 1)).join(' ');
 
       const trailingLinebreakMatch = value.match(/\n+$/);
@@ -174,8 +174,7 @@ export default class TapReporter {
     // Cache references to console methods to ensure we can report failures
     // from tests tests that mock the console object itself.
     // https://github.com/qunitjs/qunit/issues/1340
-    // Support IE 9: Function#bind is supported, but no console.log.bind().
-    this.log = options.log || Function.prototype.bind.call(console.log, console);
+    this.log = options.log || console.log.bind(console);
 
     this.testCount = 0;
     this.ended = false;

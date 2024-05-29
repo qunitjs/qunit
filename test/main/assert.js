@@ -1,5 +1,4 @@
 function buildMockPromise (settledValue, shouldFulfill) {
-  // Support IE 9: Promise not supported, test MUST NOT load polyfil globally.
   // Support SpiderMonkey: setTimeout is not supported, but native Promise is.
   var defer = typeof setTimeout !== 'undefined'
     // eslint-disable-next-line no-undef
@@ -362,8 +361,6 @@ QUnit.test('throws', function (assert) {
     );
   }, /^Error: assert\.throws does not accept a string value for the expected argument/);
 
-  // This test is for IE 7 and prior which does not properly
-  // implement Error.prototype.toString
   assert.throws(
     function () {
       throw new Error('error message');
@@ -396,10 +393,6 @@ QUnit.test('throws', function (assert) {
     'thrown TypeError with a message is an instance of Error'
   );
 
-  // This test is for IE 8 and prior which goes against the standards
-  // by considering that the native Error constructors, such TypeError,
-  // are also instances of the Error constructor. As such, the assertion
-  // sometimes went down the wrong path.
   assert.throws(
     function () {
       throw new TypeError('error message');
@@ -604,8 +597,6 @@ QUnit.test('rejects', function (assert) {
     "simple string rejection, no 'expected' value given"
   );
 
-  // This test is for IE 7 and prior which does not properly
-  // implement Error.prototype.toString
   assert.rejects(
     buildMockPromise(new Error('error message')),
     /error message/,
@@ -630,10 +621,6 @@ QUnit.test('rejects', function (assert) {
     'thrown TypeError with a message is an instance of Error'
   );
 
-  // This test is for IE 8 and prior which goes against the standards
-  // by considering that the native Error constructors, such TypeError,
-  // are also instances of the Error constructor. As such, the assertion
-  // sometimes went down the wrong path.
   assert.rejects(
     buildMockPromise(new TypeError('error message')),
     TypeError,
