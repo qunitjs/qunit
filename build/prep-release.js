@@ -6,9 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const util = require('util');
 const cp = require('child_process');
-const gitAuthors = require('grunt-git-authors');
 
 function parseLineResults (output = '') {
   output = output.trim();
@@ -138,12 +136,10 @@ const Repo = {
     {
       const file = 'AUTHORS.txt';
       console.log(`Updating ${file}...`);
-      const updateAuthors = util.promisify(gitAuthors.updateAuthors);
-      await updateAuthors({
-        dir: path.dirname(__dirname),
-        filename: file,
-        banner: 'Authors ordered by first contribution'
-      });
+      cp.execSync(
+        require('../package.json').scripts.authors,
+        { encoding: 'utf8' }
+      );
     }
   }
 };

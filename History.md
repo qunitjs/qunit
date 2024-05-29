@@ -1,4 +1,17 @@
 
+2.21.0 / 2024-05-29
+==================
+
+### Added
+
+* Assert: Add [`assert.closeTo()`](https://qunitjs.com/api/assert/closeTo/). (Timo Tijhof) [#1735](https://github.com/qunitjs/qunit/issues/1735)
+* Core: Add support for [flat preconfig](https://qunitjs.com/api/config/) via environment/global variables. (Timo Tijhof)
+
+### Deprecated
+
+* Core: Deprecate `QUnit.load()` and document migration path at <https://qunitjs.com/api/QUnit/load/>. (Timo Tijhof) [#1743](https://github.com/qunitjs/qunit/pull/1743)
+* Core: Deprecate unset [testTimeout](https://qunitjs.com/api/config/testTimeout/) for tests taking longer than 3 seconds. (Timo Tijhof) [#1483](https://github.com/qunitjs/qunit/issues/1483)
+
 2.20.1 / 2024-02-15
 ==================
 
