@@ -64,7 +64,7 @@ export const localSessionStorage = (function () {
 }());
 
 // Basic fallback for ES6 Map
-// Support: Safari 7, PhantomJS; Map is undefined
+// Support: Safari 7; Map is undefined
 // Support: iOS 8; `new Map(iterable)` is not supported
 //
 // Fallback for ES7 Map#keys

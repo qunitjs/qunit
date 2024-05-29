@@ -1,6 +1,6 @@
 import QUnit from '../core';
 import { extend, errorString, escapeText } from '../core/utilities';
-import { window, document, navigator, console, StringMap } from '../globals';
+import { window, document, navigator, StringMap } from '../globals';
 import fuzzysort from 'fuzzysort';
 
 const stats = {
@@ -1068,17 +1068,7 @@ const stats = {
     testItem.className = 'fail';
   });
 
-  // Avoid readyState issue with phantomjs
-  // Ref: #818
-  const usingPhantom = (function (p) {
-    return (p && p.version && p.version.major > 0);
-  })(window.phantom);
-
-  if (usingPhantom) {
-    console.warn('Support for PhantomJS is deprecated and will be removed in QUnit 3.0.');
-  }
-
-  if (!usingPhantom && document.readyState === 'complete') {
+  if (document.readyState === 'complete') {
     QUnit.autostart();
   } else {
     addEvent(window, 'load', QUnit.autostart);
