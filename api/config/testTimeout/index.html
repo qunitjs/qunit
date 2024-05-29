@@ -99,7 +99,7 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test {name} took longer than 3000ms, but no timeout was set.
 </code></pre></div></div>
 
-<p>You can prepare yourself for QUnit 3 when this happens, by either calling <code class="language-plaintext highlighter-rouge">assert.timeout()</code> inside those tests, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout.</p>
+<p>You can prepare yourself for QUnit 3 when this happens, by either calling <code class="language-plaintext highlighter-rouge">assert.timeout()</code> inside those tests, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout (in your <a href="/api/config/">HTML or bootstrap script</a>).</p>
 
 <p>Depending on your test runner of choice, there may be more convenient ways to set configuration:</p>
 
@@ -117,7 +117,6 @@
 });
 </code></pre></div>    </div>
   </li>
-  <li>and, are not using a test runner that sets its own timeout (e.g. <a href="https://github.com/gruntjs/grunt-contrib-qunit">grunt-contrib-qunit</a>),</li>
 </ul>
 
 <h3 id="introducing-a-timeout">Introducing a timeout</h3>
