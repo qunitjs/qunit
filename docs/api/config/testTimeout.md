@@ -34,7 +34,7 @@ Starting in QUnit 2.21, a deprecation warning will be logged if a test takes lon
 Test {name} took longer than 3000ms, but no timeout was set.
 ```
 
-You can prepare yourself for QUnit 3 when this happens, by either calling `assert.timeout()` inside those tests, or by setting `QUnit.config.testTimeout` once globally with a higher timeout.
+You can prepare yourself for QUnit 3 when this happens, by either calling `assert.timeout()` inside those tests, or by setting `QUnit.config.testTimeout` once globally with a higher timeout (in your [HTML or bootstrap script](../config/index.md)).
 
 Depending on your test runner of choice, there may be more convenient ways to set configuration:
 
@@ -51,8 +51,6 @@ Depending on your test runner of choice, there may be more convenient ways to se
     }
   });
   ```
-
-* and, are not using a test runner that sets its own timeout (e.g. [grunt-contrib-qunit](https://github.com/gruntjs/grunt-contrib-qunit)),
 
 ### Introducing a timeout
 
