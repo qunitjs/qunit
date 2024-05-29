@@ -19,5 +19,5 @@
 - group: deprecated
   expand: false
 
-# - group: removed
-#   expand: false
+- group: removed
+  expand: false

@@ -21,6 +21,10 @@ function versionDeprecatedString (version) {
   return `version_deprecated: "${version}"`;
 }
 
+function versionRemovedString (version) {
+  return `version_removed: "${version}"`;
+}
+
 function formatChangelogColumn (version) {
   return `[QUnit ${version}](https://github.com/qunitjs/qunit/releases/tag/${version})`;
 }
@@ -33,6 +37,7 @@ const Repo = {
     {
       const UNRELEASED_ADDED = versionAddedString('unreleased');
       const UNRELEASED_DEP = versionDeprecatedString('unreleased');
+      const UNRELEASED_RM = versionRemovedString('unreleased');
       const UNRELEASED_CONTENT = /\bUNRELEASED\b/g;
 
       // Silence error from grep, which exits non-zero if no results.
@@ -46,6 +51,7 @@ const Repo = {
           doc
             .replace(UNRELEASED_ADDED, versionAddedString(version))
             .replace(UNRELEASED_DEP, versionDeprecatedString(version))
+            .replace(UNRELEASED_RM, versionRemovedString(version))
             .replace(UNRELEASED_CONTENT, formatChangelogColumn(version))
         );
       });
