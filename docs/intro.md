@@ -109,11 +109,11 @@ To get started with QUnit in the browser, create a simple HTML file called `test
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Test Suite</title>
-<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.20.1.css">
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
-  <script src="https://code.jquery.com/qunit/qunit-2.20.1.js"></script>
+  <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
 </body>
 ```
 
@@ -184,13 +184,13 @@ These are the officially supported download channels for QUnit releases:
 
 * Download:
 
-  QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.20.1.js`](https://code.jquery.com/qunit/qunit-2.20.1.js) and [`qunit-2.20.1.css`](https://code.jquery.com/qunit/qunit-2.20.1.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/), which is powered by [StackPath](https://www.stackpath.com/).
+  QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/), which is powered by [StackPath](https://www.stackpath.com/).
 
   Or download them via the terminal:
 
   ```bash
-  curl -o qunit.css 'https://code.jquery.com/qunit/qunit-2.20.1.css'
-  curl -o qunit.js 'https://code.jquery.com/qunit/qunit-2.20.1.js'
+  curl -o qunit.css 'https://code.jquery.com/qunit/qunit-2.21.0.css'
+  curl -o qunit.js 'https://code.jquery.com/qunit/qunit-2.21.0.js'
   ```
 
 * npm Registry:
