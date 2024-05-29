@@ -49,7 +49,7 @@
     "@babel/core": "^7.24.6",
     "@babel/plugin-external-helpers": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
-    "@qunitjs/browserstack-runner": "0.9.5-qunitjs.1",
+    "@qunitjs/browserstack-runner": "0.9.5-qunitjs.2",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-node-resolve": "^14.1.0",
