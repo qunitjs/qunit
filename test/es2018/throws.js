@@ -1,4 +1,3 @@
-
 QUnit.module('assert');
 
 function CustomError (message) {

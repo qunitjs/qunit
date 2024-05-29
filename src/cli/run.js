@@ -114,7 +114,7 @@ async function run (args, options) {
           // filePath is an absolute file path here (per path.resolve above).
           // On Windows, Node.js enforces that absolute paths via ESM use valid URLs,
           // e.g. file-protocol) https://github.com/qunitjs/qunit/issues/1667
-          await import(url.pathToFileURL(filePath)); // eslint-disable-line node/no-unsupported-features/es-syntax
+          await import(url.pathToFileURL(filePath));
         } else {
           throw e;
         }
@@ -208,7 +208,7 @@ run.watch = function watch (args, options) {
   //
   // Include ".cjs" and ".mjs", which Node.js doesn't expose via require.extensions by default.
   //
-  // eslint-disable-next-line node/no-deprecated-api
+  // eslint-disable-next-line n/no-deprecated-api
   const includeExts = Object.keys(require.extensions).concat(['.cjs', '.mjs']);
   const ignoreDirs = ['.git', 'node_modules'];
 

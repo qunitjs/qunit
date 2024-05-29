@@ -13,8 +13,9 @@ const config = Object.assign(standard, {
     semi: ['error', 'always'],
     'no-extra-semi': 'error',
     // disablements
+    'n/no-callback-literal': 'off',
     'no-lone-blocks': 'off',
-    'node/no-callback-literal': 'off',
+    'object-shorthand': 'off',
     'prefer-const': 'off',
     'prefer-promise-reject-errors': 'off',
     // extra

@@ -9,7 +9,7 @@ not ok 1 # TODO module B > Only this module should run > a todo test
   actual  : false
   expected: true
   stack: |
-        at /qunit/test/cli/fixtures/only-module.js:17:18
+        at /qunit/test/cli/fixtures/only-module.js:16:18
   ...
 ok 2 # SKIP module B > Only this module should run > implicitly skipped test
 ok 3 module B > Only this module should run > normal test

@@ -68,6 +68,7 @@
         "prefer-regex-literals": "off",
         "qunit/literal-compare-order": "off",
         "qunit/no-arrow-tests": "off",
+        "qunit/no-assert-equal": "off",
         "qunit/no-assert-equal-boolean": "off",
         "qunit/no-assert-logical-expression": "off",
         "qunit/no-only": "off",
@@ -87,7 +88,7 @@
       "excludedFiles": [
         "build/coverage-bridge.js"
       ],
-      "extends": [".eslintrc.base.js", "plugin:node/recommended"],
+      "extends": [".eslintrc.base.js", "plugin:n/recommended"],
       "parserOptions": {
         "ecmaVersion": 2020,
         "sourceType": "script"
@@ -99,8 +100,9 @@
         "compat/compat": "off",
         "no-console": "off",
         "no-process-exit": "off",
-        "node/no-missing-require": "off",
-        "node/no-unpublished-require": "off"
+        "n/no-process-exit": "off",
+        "n/no-missing-require": "off",
+        "n/no-unpublished-require": "off"
       }
     },
     // Misc overrides
@@ -208,6 +210,7 @@
         "no-unused-expressions": "off",
         "no-unused-vars": "off",
         "no-var": "off",
+        "object-shorthand": "off",
         "strict": "off"
       }
     },

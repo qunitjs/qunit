@@ -1,4 +1,3 @@
-
 QUnit.module('module A', function () {
   QUnit.test('test A', function (assert) {
     assert.true(false, 'this test should not run');
