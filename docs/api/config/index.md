@@ -72,7 +72,7 @@ Preconfig allows integrations to declare configuration without needing to embed,
 
 ### Flat preconfig
 
-*Version added: UNRELEASED*.
+*Version added: [QUnit 2.21.0](https://github.com/qunitjs/qunit/releases/tag/2.21.0)*.
 
 Flat preconfig allows multiple integrations to seemlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).
 
@@ -131,6 +131,6 @@ QUnit = { /* config: .. */ };
 
 ### Changelog
 
-| UNRELEASED | Added flat preconfig.
+| [QUnit 2.21.0](https://github.com/qunitjs/qunit/releases/tag/2.21.0) | Added flat preconfig.
 | [QUnit 2.18.1](https://github.com/qunitjs/qunit/releases/tag/2.18.1) | Added object preconfig support for Node.js, SpiderMonkey, and other environments.<br/>Previously, it was limited to the browser environment.
 | [QUnit 2.1.0](https://github.com/qunitjs/qunit/releases/tag/2.1.0) | Introduce object preconfig feature.

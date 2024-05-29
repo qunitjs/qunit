@@ -60,4 +60,4 @@ QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds
 
 ### Changelog
 
-| UNRELEASED | Announce change of default from undefined to `3000`, with a deprecation warning.
+| [QUnit 2.21.0](https://github.com/qunitjs/qunit/releases/tag/2.21.0) | Announce change of default from undefined to `3000`, with a deprecation warning.

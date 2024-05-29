@@ -37,7 +37,7 @@ const Repo = {
 
       // Silence error from grep, which exits non-zero if no results.
       const results = parseLineResults(cp.execSync(
-        'grep -F -i -l unreleased docs/**/*.md || echo',
+        'git grep --full-name --name-only -i unreleased docs/ || echo',
         { encoding: 'utf8' }
       ));
       results.forEach(filePath => {

@@ -6,7 +6,7 @@ groups:
   - assert
 redirect_from:
   - "/assert/closeTo/"
-version_added: "unreleased"
+version_added: "2.21.0"
 ---
 
 `closeTo( actual, expected, delta, message = "" )`
