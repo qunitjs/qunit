@@ -46,9 +46,9 @@
     "tiny-glob": "0.2.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
-    "@babel/plugin-external-helpers": "^7.18.6",
-    "@babel/preset-env": "^7.19.4",
+    "@babel/core": "^7.24.6",
+    "@babel/plugin-external-helpers": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "@qunitjs/browserstack-runner": "0.9.5-qunitjs.1",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.1.0",
@@ -58,10 +58,10 @@
     "eslint": "7.32.0",
     "eslint-config-semistandard": "^16.0.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-compat": "^4.0.2",
+    "eslint-plugin-compat": "^4.1.1",
     "eslint-plugin-html": "^6.1.2",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-json-es": "^1.5.5",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-json-es": "^1.6.0",
     "eslint-plugin-markdown": "^2.2.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
@@ -80,7 +80,7 @@
     "requirejs": "^2.3.6",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.1",
-    "semver": "^7.3.8"
+    "semver": "^7.6.2"
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",
