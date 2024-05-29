@@ -28,21 +28,6 @@ const Repo = {
       throw new Error('Invalid or missing version argument');
     }
     {
-      const file = 'bower.json';
-      console.log(`Updating ${file}...`);
-      const filePath = path.join(__dirname, '..', file);
-      const json = fs.readFileSync(filePath, 'utf8');
-      const packageIndentation = json.match(/\n([\t\s]+)/)[1];
-      const data = JSON.parse(json);
-
-      data.version = version;
-
-      fs.writeFileSync(
-        filePath,
-        JSON.stringify(data, null, packageIndentation) + '\n'
-      );
-    }
-    {
       const file = 'package.json';
       console.log(`Updating ${file}...`);
       const filePath = path.join(__dirname, '..', file);

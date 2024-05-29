@@ -208,13 +208,9 @@ These are the officially supported download channels for QUnit releases:
 
 * Bower:
 
-  Using [Bower](https://bower.io/):
+  QUnit 1.x and QUnit 2.x releases were published to [Bower](https://bower.io/), and remain available there.
 
-  ```bash
-  bower install --save-dev qunit
-  ```
-
-  Then reference `bower_components/qunit/qunit/qunit.css` and `bower_components/qunit/qunit/qunit.js` in your HTML.
+  For QUnit 3.0 and later, either download and check-in the JS and CSS file directly (e.g. using the curl command above), or install the `qunit` package from npm as a dev dependency.
 
 ---
 

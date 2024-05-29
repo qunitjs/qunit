@@ -67,7 +67,7 @@ git show
    ```
    node build/build-release.js @VERSION
    ```
-   This script does not need any credentials or permissions, and may be run in a container that can only read-write the current directory. This will edit `package.json` and `bower.json`, then execute `npm run build` to generate the release artifacts, then create a local clone of [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com), and prepare a local commit for you to later push.
+   This script does not need any credentials or permissions, and may be run in a container that can only read-write the current directory. This will edit `package.json`, then execute `npm run build` to generate the release artifacts, then create a local clone of [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com), and prepare a local commit for you to later push.
 
    Review the release artifacts, compared to the previous release.
    ```
@@ -78,7 +78,7 @@ git show
 
 5. Publish to GitHub.<br>⚠️ Do not push to the main branch!
    ```
-   git add -f package.json bower.json qunit/
+   git add -f package.json qunit/
    git commit -m "Release @VERSION"
    git tag -s "@VERSION" -m "Release @VERSION"
    git push --tags
