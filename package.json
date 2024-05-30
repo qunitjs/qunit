@@ -71,7 +71,7 @@
     "grunt": "^1.6.1",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-qunit": "^5.1.1",
+    "grunt-contrib-qunit": "^8.0.1",
     "grunt-search": "^0.1.8",
     "kleur": "4.1.5",
     "npm-reporter": "file:./test/cli/fixtures/npm-reporter",

@@ -3,8 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>sandboxed-iframe</title>
+  <link rel="stylesheet" href="../qunit/qunit.css">
+  <script src="../qunit/qunit.js"></script>
 </head>
 <body>
+  <script>
+    var _iframeResult = [];
+    window.onmessage = function (event) {
+      _iframeResult.push(event.data);
+    };
+  </script>
   <iframe src="sandboxed-iframe--contents.html" sandbox="allow-scripts"></iframe>
+  <script>
+  // Show results in console to make debugging easier
+  if (!self.__grunt_contrib_qunit__) {
+    QUnit.reporters.tap.init(QUnit);
+  }
+
+  QUnit.test('parent', function (assert) {
+    // Wait for iframe to finish loading
+    // QUnit waits for the parent to wait, and window.onload by default
+    // waits for iframes already. However, postMessage is async and arrives
+    // slightly too late otherwise.
+    var done = assert.async();
+    setTimeout(function () {
+      assert.deepEqual(
+        _iframeResult,
+        [
+          'hello',
+          'testEnd: bar',
+          'runEnd: status=passed, total=2'
+        ],
+        'messages from iframe'
+      );
+
+      done();
+    }, 300);
+  });
+  </script>
 </body>
 </html>

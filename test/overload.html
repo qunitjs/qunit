@@ -4,19 +4,29 @@
     <meta charset="UTF-8">
     <title>overload</title>
     <link rel="stylesheet" href="../qunit/qunit.css">
-    <script src="../qunit/qunit.js"></script>
     <script>
+    var _globalError;
     window.onerror = function (error) {
-      QUnit.module('Overload', function () {
-        QUnit.test('error is thrown when overloading QUnit global', function (assert) {
-          assert.true(error.includes('QUnit has already been defined.'));
-        });
-      });
-
-      return false;
+      _globalError = error;
+      // Cancel, don't report to browser and grunt-contrib-qunit
+      return true;
     };
     </script>
     <script src="../qunit/qunit.js"></script>
+    <!-- Load twice -->
+    <script src="../qunit/qunit.js"></script>
+    <script>
+    QUnit.module('overload', function () {
+      QUnit.test('detect', function (assert) {
+        assert.true(
+          // In Firefox the string starts with "Error: "
+          // In Chrome the string starts with "Uncaught Error: "
+          _globalError.includes('QUnit has already been defined.'),
+          'error is thrown if QUnit global was overloaded'
+        );
+      });
+    });
+    </script>
   </head>
   <body>
     <div id="qunit"></div>

@@ -1,36 +1,31 @@
 /* eslint-env browser */
 
-if (self.__grunt_contrib_qunit__ === undefined) {
-  // For debugging
-  self.__grunt_contrib_qunit__ = function () {
-    var args = [].slice.call(arguments);
-    args.unshift('[grunt-contrib-qunit]');
-    console.log.apply(console, args);
-  };
-}
+window.parent.postMessage('hello', '*');
 
-QUnit.module('QUnit.only', function (hooks) {
-  var testsRun = 0;
+QUnit.on('testEnd', function (testEnd) {
+  window.parent.postMessage(
+    'testEnd: ' + testEnd.name,
+    '*'
+  );
+});
 
-  hooks.after(function (assert) {
-    assert.strictEqual(testsRun, 2);
+QUnit.on('runEnd', function (runEnd) {
+  window.parent.postMessage(
+    'runEnd: status=' + runEnd.status + ', total=' + runEnd.testCounts.total,
+    '*'
+  );
+});
+
+QUnit.module('sandboxed', function () {
+  QUnit.test('foo', function (assert) {
+    assert.true(false);
   });
 
-  QUnit.test('implicitly skipped test', function (assert) {
-    assert.true(false, 'test should be skipped');
+  QUnit.test.only('bar', function (assert) {
+    assert.true(true);
   });
 
-  QUnit.only('run this test', function (assert) {
-    testsRun += 1;
-    assert.true(true, 'only this test should run');
-  });
-
-  QUnit.test('another implicitly skipped test', function (assert) {
-    assert.true(false, 'test should be skipped');
-  });
-
-  QUnit.only('all tests with only run', function (assert) {
-    testsRun += 1;
-    assert.true(true, 'this test should run as well');
+  QUnit.test.skip('quux', function (assert) {
+    assert.true(false);
   });
 });
