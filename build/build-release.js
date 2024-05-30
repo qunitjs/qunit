@@ -69,9 +69,7 @@ const Repo = {
   cdnClone (repoPath) {
     const remote = cdnRemotes.anonymous;
     console.log('... cloning ' + remote);
-    if (fs.existsSync(repoPath)) {
-      fs.rmdirSync(repoPath, { recursive: true });
-    }
+    fs.rmSync(repoPath, { recursive: true, force: true });
     cp.execFileSync('git', [
       'clone',
       '--depth=5',

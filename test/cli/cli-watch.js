@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const fixturify = require('fixturify');
-const rimraf = require('rimraf');
 
 const expectedWatchOutput = require('./fixtures/expected/watch-tap-outputs');
 const { execute } = require('./helpers/execute');
@@ -29,7 +28,7 @@ if (process.platform === 'win32') {
 
 QUnit.module('CLI Watch', function (hooks) {
   hooks.before(function () {
-    rimraf.sync(fixturePath);
+    fs.rmSync(fixturePath, { recursive: true, force: true });
   });
 
   hooks.beforeEach(function () {
@@ -40,7 +39,7 @@ QUnit.module('CLI Watch', function (hooks) {
   });
 
   hooks.afterEach(function () {
-    rimraf.sync(fixturePath);
+    fs.rmSync(fixturePath, { recursive: true, force: true });
   });
 
   QUnit.test('runs tests and waits until SIGTERM', async assert => {
