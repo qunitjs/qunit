@@ -106,15 +106,15 @@
 <ul>
   <li>Set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</li>
   <li>Set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config.set({
-  frameworks: ['qunit'],
-  plugins: ['karma-qunit'],
-  client: {
-    qunit: {
-      testTimeout: 5000
-    }
-  }
-});
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">config</span><span class="p">.</span><span class="nf">set</span><span class="p">({</span>
+  <span class="na">frameworks</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">qunit</span><span class="dl">'</span><span class="p">],</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">karma-qunit</span><span class="dl">'</span><span class="p">],</span>
+  <span class="na">client</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">qunit</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">testTimeout</span><span class="p">:</span> <span class="mi">5000</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
 </code></pre></div>    </div>
   </li>
 </ul>
