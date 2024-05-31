@@ -4,7 +4,9 @@ title: assert.pushResult()
 excerpt: Report the result of a custom assertion.
 groups:
   - assert
+  - extension
 redirect_from:
+  - "/pushResult/"
   - "/assert/pushResult/"
 version_added: "1.22.0"
 ---

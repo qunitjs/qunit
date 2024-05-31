@@ -862,9 +862,11 @@ const stats = {
     let diff;
     let showDiff = false;
 
-    // The pushFailure doesn't provide details.expected
-    // when it calls, it's implicit to also not show expected and diff stuff
-    // Also, we need to check details.expected existence, as it can exist and be undefined
+    // When pushFailure() is called, it is implied that no expected value
+    // or diff should be shown. It does not set details.expected.
+    //
+    // This must check details.expected existence. If it exists as undefined,
+    // that's a regular assertion for which to render actual/expected and a diff.
     if (!details.result && hasOwn.call(details, 'expected')) {
       if (details.negative) {
         expected = 'NOT ' + QUnit.dump.parse(details.expected);
@@ -922,7 +924,7 @@ const stats = {
 
       message += '</table>';
 
-      // This occurs when pushFailure is set and we have an extracted stack trace
+      // This occurs when pushFailure is called and we have an extracted stack trace
     } else if (!details.result && details.source) {
       message += '<table>' +
       "<tr class='test-source'><th>Source: </th><td><pre>" +

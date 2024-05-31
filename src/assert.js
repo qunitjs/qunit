@@ -89,8 +89,6 @@ class Assert {
     });
   }
 
-  // Exports test.push() to the user API
-  // Alias of pushResult.
   push (result, actual, expected, message, negative) {
     Logger.warn('assert.push is deprecated and will be removed in QUnit 3.0.' +
       ' Please use assert.pushResult instead. https://qunitjs.com/api/assert/pushResult');
@@ -105,6 +103,7 @@ class Assert {
     });
   }
 
+  // Public API to internal test.pushResult()
   pushResult (resultInfo) {
     // Destructure of resultInfo = { result, actual, expected, message, negative }
     let assert = this;

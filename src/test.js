@@ -590,7 +590,7 @@ Test.prototype = {
     });
   },
 
-  pushFailure: function (message, source, actual) {
+  pushFailure: function (message, source) {
     if (!(this instanceof Test)) {
       throw new Error('pushFailure() assertion outside test context, was ' +
         sourceFromStacktrace(2));
@@ -599,7 +599,7 @@ Test.prototype = {
     this.pushResult({
       result: false,
       message: message || 'error',
-      actual: actual || null,
+      actual: null,
       source
     });
   },
