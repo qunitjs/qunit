@@ -40,7 +40,7 @@ Depending on your test runner of choice, there may be more convenient ways to se
 
 * Set `qunit_config_testtimeout` via [preconfig](../config/index.md) as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).
 * Set `testTimeout` via [karma-qunit](https://github.com/karma-runner/karma-qunit/#readme):
-  ```
+  ```js
   config.set({
     frameworks: ['qunit'],
     plugins: ['karma-qunit'],
