@@ -184,7 +184,7 @@ These are the officially supported download channels for QUnit releases:
 
 * Download:
 
-  QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/), which is powered by [StackPath](https://www.stackpath.com/).
+  QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/).
 
   Or download them via the terminal:
 
