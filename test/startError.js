@@ -1,34 +1,42 @@
 /* eslint-env browser */
 
+QUnit.config.autostart = false;
+
+// Real
+QUnit.start();
+
+// Bad 1
+QUnit.config.autostart = true;
 try {
-  QUnit.config.autostart = true;
   QUnit.start();
 } catch (thrownError) {
   window.autostartStartError = thrownError;
 }
 
+// Bad 2
+QUnit.config.autostart = false;
 try {
   QUnit.start();
 } catch (thrownError) {
   window.tooManyStartsError = thrownError;
 }
 
-QUnit.module('global start unrecoverable errors');
+QUnit.module('startError');
 
-QUnit.test('start() throws when QUnit.config.autostart === true', function (assert) {
-  assert.equal(window.autostartStartError.message,
-    'Called start() outside of a test context when QUnit.config.autostart was true');
+QUnit.test('start() with autostart enabled [Bad 1]', function (assert) {
+  assert.propContains(window.autostartStartError,
+    { message: 'QUnit.start() called too many times. Did you call QUnit.start() in browser context when autostart is also enabled? https://qunitjs.com/api/QUnit/start/' });
 });
 
-QUnit.test('Throws after calling start() too many times outside of a test context', function (assert) {
-  assert.equal(window.tooManyStartsError.message,
-    'Called start() outside of a test context too many times');
+QUnit.test('start() again [Bad 2]', function (assert) {
+  assert.propContains(window.tooManyStartsError,
+    { message: 'QUnit.start() called too many times.' });
 });
 
-QUnit.test('QUnit.start cannot be called inside a test context.', function (assert) {
+QUnit.test('start() inside a test', function (assert) {
   assert.throws(function () {
     // eslint-disable-next-line qunit/no-qunit-start-in-tests
     QUnit.start();
   },
-  /QUnit\.start cannot be called inside a test context\./);
+  new Error('QUnit.start cannot be called inside a test.'));
 });

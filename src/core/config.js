@@ -10,8 +10,7 @@ const config = {
   // HTML Reporter: Modify document.title when suite is done
   altertitle: true,
 
-  // TODO: Move here from /src/core.js in QUnit 3.
-  // autostart: true,
+  autostart: true,
 
   // HTML Reporter: collapse every test except the first failing test
   // If false, all failing tests will be expanded
@@ -25,7 +24,7 @@ const config = {
   failOnZeroTests: true,
 
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
-  filter: undefined,
+  filter: '',
 
   // TODO: Make explicit in QUnit 3.
   // fixture: undefined,
@@ -62,8 +61,7 @@ const config = {
   // so that the browser can visually paint DOM changes with test results.
   // This also helps avoid causing browsers to prompt a warning about
   // long-running scripts.
-  // TODO: Move here from /src/core.js in QUnit 3.
-  // updateRate: 1000,
+  updateRate: 1000,
 
   // HTML Reporter: List of URL parameters that are given visual controls
   urlConfig: [],
@@ -122,11 +120,11 @@ const config = {
   // Internal: ProcessingQueue singleton, created in /src/core.js
   pq: null,
 
-  // Internal: Created in /src/core.js
-  // TODO: Move definitions here in QUnit 3.0.
-  // started: 0,
+  // Internal: Used for runtime measurement to runEnd event and QUnit.done.
+  started: 0,
 
   // Internal state
+  _runStarted: false,
   _deprecated_timeout_shown: false,
   blocking: true,
   callbacks: {},

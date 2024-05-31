@@ -33,9 +33,6 @@ config.currentModule.suiteReport = runSuite;
 
 config.pq = new ProcessingQueue(test);
 
-let globalStartCalled = false;
-let runStarted = false;
-
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = (window && window.location && window.location.protocol === 'file:');
 
@@ -66,83 +63,41 @@ extend(QUnit, {
   skip: test.skip,
   only: test.only,
 
-  start: function (count) {
+  start: function () {
     if (config.current) {
-      throw new Error('QUnit.start cannot be called inside a test context.');
+      throw new Error('QUnit.start cannot be called inside a test.');
     }
-
-    const globalStartAlreadyCalled = globalStartCalled;
-    globalStartCalled = true;
-
-    if (runStarted) {
-      throw new Error('Called start() while test already started running');
-    }
-    if (globalStartAlreadyCalled || count > 1) {
-      throw new Error('Called start() outside of a test context too many times');
-    }
-    if (config.autostart) {
-      throw new Error('Called start() outside of a test context when ' +
-        'QUnit.config.autostart was true');
-    }
-
-    // Until we remove QUnit.load() in QUnit 3, we keep `pageLoaded`.
-    // It no longer serves any purpose other than to support old test runners
-    // that still call only QUnit.load(), or that call both it and QUnit.start().
-    if (!config.pageLoaded) {
-      // If the test runner used `autostart = false` and is calling QUnit.start()
-      // to tell is their resources are ready, but the browser isn't ready yet,
-      // then enable autostart now, and we'll let the tests really start after
-      // the browser's "load" event handler calls autostart().
-      config.autostart = true;
-
-      // If we're in Node or another non-browser environment, we start now as there
-      // won't be any "load" event. We return early either way since autostart
-      // is responsible for calling scheduleBegin (avoid "beginning" twice).
-      if (!document) {
-        QUnit.autostart();
+    if (config._runStarted) {
+      if (document && config.autostart) {
+        throw new Error('QUnit.start() called too many times. Did you call QUnit.start() in browser context when autostart is also enabled? https://qunitjs.com/api/QUnit/start/');
       }
-
-      return;
+      throw new Error('QUnit.start() called too many times.');
     }
 
-    scheduleBegin();
+    config._runStarted = true;
+
+    // Add a slight delay to allow definition of more modules and tests.
+    if (document && document.readyState !== 'complete' && setTimeout) {
+      // In browser environments, if QUnit.start() is called very early,
+      // still wait for DOM ready to ensure reliable integration of reporters.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          begin();
+        });
+      });
+    } else if (setTimeout) {
+      setTimeout(function () {
+        begin();
+      });
+    } else {
+      begin();
+    }
   },
 
   onUnhandledRejection: function (reason) {
     Logger.warn('QUnit.onUnhandledRejection is deprecated and will be removed in QUnit 3.0.' +
       ' Please use QUnit.onUncaughtException instead.');
     onUncaughtException(reason);
-  },
-
-  load: function () {
-    Logger.warn('QUnit.load is deprecated and will be removed in QUnit 3.0.' +
-      ' https://qunitjs.com/api/QUnit/load/');
-
-    QUnit.autostart();
-  },
-
-  /**
-   * @internal
-   */
-  autostart: function () {
-    config.pageLoaded = true;
-
-    // Initialize the configuration options
-    // TODO: Move this to config.js in QUnit 3.
-    extend(config, {
-      started: 0,
-      updateRate: 1000,
-      autostart: true,
-      filter: ''
-    }, true);
-
-    if (!runStarted) {
-      config.blocking = false;
-
-      if (config.autostart) {
-        scheduleBegin();
-      }
-    }
   },
 
   stack: function (offset) {
@@ -153,25 +108,12 @@ extend(QUnit, {
 
 registerLoggingCallbacks(QUnit);
 
-function scheduleBegin () {
-  runStarted = true;
-
-  // Add a slight delay to allow definition of more modules and tests.
-  if (setTimeout) {
-    setTimeout(function () {
-      begin();
-    });
-  } else {
-    begin();
-  }
-}
-
 function unblockAndAdvanceQueue () {
   config.blocking = false;
   config.pq.advance();
 }
 
-export function begin () {
+function begin () {
   if (config.started) {
     unblockAndAdvanceQueue();
     return;

@@ -1070,10 +1070,18 @@ const stats = {
     testItem.className = 'fail';
   });
 
+  function autostart () {
+    // Check as late as possible because if projecst set autostart=false,
+    // they generally do so in their own scripts, after qunit.js.
+    if (config.autostart) {
+      QUnit.start();
+    }
+  }
+
   if (document.readyState === 'complete') {
-    QUnit.autostart();
+    autostart();
   } else {
-    addEvent(window, 'load', QUnit.autostart);
+    addEvent(window, 'load', autostart);
   }
 
   // Wrap window.onerror. We will call the original window.onerror to see if
