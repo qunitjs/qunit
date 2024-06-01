@@ -15,7 +15,7 @@ QUnit should be easy-to-use from start to finish. Setting up your first test wit
 
 Additionally, QUnit should be fast to make it easy for developers to have confidence that putting their tests on their critical path won't slow them down.
 
-### Univeral
+### Universal
 
 QUnit should be universally applicable for testing JavaScript code and support many different environments. JavaScript can run in the browser, in worker threads, and on the server, and so should QUnit so that you can test your code in the same environment where it will be running; the environment where you need to have confidence it works.
 

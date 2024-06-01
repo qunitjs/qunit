@@ -27,7 +27,7 @@ When testing code that is expected to throw an exception based on a specific set
 The `expectedMatcher` argument can be:
 
 * An Error object.
-* An Error constructor to use ala `errorValue instanceof expectedMatcher`.
+* An Error constructor, evaluated as `errorValue instanceof expectedMatcher`.
 * A RegExp that matches (or partially matches) the string representation.
 * A callback Function that must return `true` to pass the assertion check.
 

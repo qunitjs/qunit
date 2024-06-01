@@ -66,7 +66,7 @@ MyApp.setAccount('TestUser');
 
 Preconfiguration allows you to define QUnit configuration via global variables or environment variables, before QUnit itself is loaded.
 
-This is the recommended approach for general purpose test runners and integrations, as it provides a reliable way to override the default configuration. Ths can be especially useful if the end-user may control the loading of QUnit, possibly asynchronously, or through custom means, where it would be difficult to inject your overrides at the "right" time (after QUnit loads, but before any user code).
+This is the recommended approach for general purpose test runners and integrations, as it provides a reliable way to override the default configuration. This can be especially useful if the end-user may control the loading of QUnit, possibly asynchronously, or through custom means, where it would be difficult to inject your overrides at the "right" time (after QUnit loads, but before any user code).
 
 Preconfig allows integrations to declare configuration without needing to embed, wrap, adapt, modify, or otherwise control the loading of QUnit itself. This in turn allows integrations to easily support use of standalone HTML test suites, that developers can also run and debug in the browser directly, without depending on or needing to install and set up any specific integration system.
 

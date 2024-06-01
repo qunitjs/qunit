@@ -47,7 +47,7 @@ The below matches `FooBar` and `foo > bar`, because string matching is case-inse
 QUnit.config.filter = 'foo';
 ```
 
-As inversed filter, the below skips `FooBar` and `foo > bar`, but runs `Bar` and `bar > sub`.
+As inverted filter, the below skips `FooBar` and `foo > bar`, but runs `Bar` and `bar > sub`.
 
 ```js
 QUnit.config.filter = '!foo';
