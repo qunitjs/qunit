@@ -4,7 +4,6 @@ import equiv from './equiv';
 import dump from './dump';
 import { runSuite, module } from './module';
 import Assert from './assert';
-import Logger from './logger';
 import Test, { test, pushFailure } from './test';
 import exportQUnit from './export';
 import reporters from './reporters';
@@ -17,7 +16,6 @@ import { sourceFromStacktrace } from './core/stacktrace';
 import ProcessingQueue from './core/processing-queue';
 
 import { on, emit } from './events';
-import onWindowError from './core/onerror';
 import onUncaughtException from './core/on-uncaught-exception';
 import diff from './core/diff';
 
@@ -50,7 +48,6 @@ extend(QUnit, {
   is,
   objectType,
   on,
-  onError: onWindowError,
   onUncaughtException,
   pushFailure,
 
@@ -92,12 +89,6 @@ extend(QUnit, {
     } else {
       begin();
     }
-  },
-
-  onUnhandledRejection: function (reason) {
-    Logger.warn('QUnit.onUnhandledRejection is deprecated and will be removed in QUnit 3.0.' +
-      ' Please use QUnit.onUncaughtException instead.');
-    onUncaughtException(reason);
   },
 
   stack: function (offset) {

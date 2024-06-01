@@ -14,7 +14,6 @@ importScripts(
   'main/dump.js',
   'main/each.js',
   'main/modules.js',
-  'main/onError.js',
   'main/onUncaughtException.js',
   'main/promise.js',
   'main/setTimeout.js',

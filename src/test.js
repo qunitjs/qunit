@@ -57,15 +57,14 @@ export default function Test (settings) {
   }
 
   // Queuing a late test after the run has ended is not allowed.
-  // This was once supported for internal use by QUnit.onError().
+  // This was once supported for internal use by QUnit.onUncaughtException(),
+  // to render a "global error" if the uncaught error happened outside a test
+  // and after the runEnd event. This was unstable and could be missed by CI.
+  // (Meaning the CI would pass despite the late-failing test).
   // Ref https://github.com/qunitjs/qunit/issues/1377
   if (config.pq.finished) {
-    // Using this for anything other than onError(), such as testing in QUnit.done(),
-    // is unstable and will likely result in the added tests being ignored by CI.
-    // (Meaning the CI passes irregardless of the added tests).
-    //
     // TODO: Make this an error in QUnit 3.0
-    // throw new Error( "Unexpected test after runEnd" );
+    // throw new Error( 'Unexpected test after runEnd. To report errors, consider calling QUnit.onUncaughtException() instead.' );
     Logger.warn('Unexpected test after runEnd. This is unstable and will fail in QUnit 3.0.');
     return;
   }
