@@ -188,23 +188,23 @@ QUnit.module('test', function () {
   };
 
   QUnit.test('mod2', function (assert) {
-    assert.mod2(2, 0, '2 % 2 == 0');
-    assert.mod2(3, 1, '3 % 2 == 1');
-  });
-
-  QUnit.test('testForPush', function (assert) {
-    QUnit.log(function (detail) {
-      if (detail.message === 'should be call pushResult') {
-        /* eslint-disable qunit/no-conditional-assertions */
-        assert.equal(detail.result, true);
-        assert.equal(detail.actual, 1);
-        assert.equal(detail.expected, 1);
-        assert.equal(detail.message, 'should be call pushResult');
-        assert.equal(detail.negative, false);
-        /* eslint-enable */
+    var detail;
+    QUnit.log(function (data) {
+      if (data.message === 'three') {
+        detail = data;
       }
     });
-    assert.testForPush(1, 1, 'should be call pushResult');
+
+    assert.mod2(2, 0, 'two');
+    assert.mod2(3, 1, 'three');
+
+    assert.propContains(detail, {
+      result: true,
+      actual: 1,
+      expected: 1,
+      message: 'three',
+      negative: false
+    });
   });
 
   QUnit.module('aliases');

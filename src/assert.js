@@ -1,6 +1,5 @@
 import dump from './dump';
 import equiv from './equiv';
-import Logger from './logger';
 
 import config from './core/config';
 import { objectType, objectValues, objectValuesSubset, errorString } from './core/utilities';
@@ -86,20 +85,6 @@ class Assert {
       actual,
       expected,
       message: message || `value should be within ${delta} inclusive`
-    });
-  }
-
-  push (result, actual, expected, message, negative) {
-    Logger.warn('assert.push is deprecated and will be removed in QUnit 3.0.' +
-      ' Please use assert.pushResult instead. https://qunitjs.com/api/assert/pushResult');
-
-    const currentAssert = this instanceof Assert ? this : config.current.assert;
-    return currentAssert.pushResult({
-      result,
-      actual,
-      expected,
-      message,
-      negative
     });
   }
 
