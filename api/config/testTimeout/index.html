@@ -92,6 +92,12 @@
 
 <p>It is recommended to keep the global default at <code class="language-plaintext highlighter-rouge">3000</code> (3 seconds) or higher, to avoid intermittent test failures from unrelated delays that may periodically occur inside a browser or CI service.</p>
 
+<h2 id="introducing-a-timeout">Introducing a timeout</h2>
+
+<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test could time out or get stuck for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
+
+<p>QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.</p>
+
 <h3 id="deprecated-no-timeout-set">Deprecated: No timeout set</h3>
 
 <p>Starting in QUnit 2.21, a deprecation warning will be logged if a test takes longer than 3 seconds, when there is no timeout set.</p>
@@ -99,9 +105,12 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test {name} took longer than 3000ms, but no timeout was set.
 </code></pre></div></div>
 
-<p>You can prepare yourself for QUnit 3 when this happens, by either calling <code class="language-plaintext highlighter-rouge">assert.timeout()</code> inside those tests, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout (in your <a href="/api/config/">HTML or bootstrap script</a>).</p>
+<p>You can prepare yourself for QUnit 3 when this happens, by calling <a href="/api/assert/timeout/">assert.timeout()</a> inside the slow test, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout (in your <a href="/api/config/">HTML or bootstrap script</a>).</p>
 
-<p>Depending on your test runner of choice, there may be more convenient ways to set configuration:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">testTimeout</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">;</span> <span class="c1">// 1 minute</span>
+</code></pre></div></div>
+
+<p>Depending on your test runner of choice, there may be also other convenient ways to set configuration:</p>
 
 <ul>
   <li>Set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</li>
@@ -119,13 +128,7 @@
   </li>
 </ul>
 
-<h3 id="introducing-a-timeout">Introducing a timeout</h3>
-
-<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test could time out or get stuck for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
-
-<p>QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.</p>
-
-<h3 id="changelog">Changelog</h3>
+<h2 id="changelog">Changelog</h2>
 
 <table>
   <tbody>
@@ -207,7 +210,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li><li class="sidebar-item"><a href="#introducing-a-timeout">Introducing a timeout</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#introducing-a-timeout">Introducing a timeout</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
 </aside>
 
 </div>
