@@ -144,6 +144,9 @@ QUnit.module('CLI Watch', function (hooks) {
     assert.equal(result.stdout, expectedWatchOutput['add-file']);
   });
 
+  // NOTE: This is known to fail on Linux with Node.js 20.12.
+  // The regression was fixed in Node.js 20.13.
+  // https://github.com/nodejs/node/issues/52018
   QUnit.test('re-runs tests on file removed', async assert => {
     fixturify.writeSync(fixturePath, {
       'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });",
