@@ -40,7 +40,9 @@ module.exports = {
       presets: [
         ['@babel/preset-env', {
           targets: {
-            ie: 9
+            ie: 11,
+            safari: 7,
+            node: 18
           }
         }]
       ]
