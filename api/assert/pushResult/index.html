@@ -108,45 +108,11 @@
 
 <h2 id="examples">Examples</h2>
 
-<p>If you need to express an expectation that is not abstracted by a built-in QUnit assertion, you can perform your own logic ad-hoc in an expression, and then pass two directly comparable values to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass your own representative boolean result to <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example of remainder</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="p">(</span><span class="nx">result</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">actual</span><span class="p">,</span> <span class="dl">'</span><span class="s1">remainder</span><span class="dl">'</span><span class="p">);</span>
-  <span class="c1">// In case of failure:</span>
-  <span class="c1">// &gt; Actual: false</span>
-  <span class="c1">// &gt; Expected: true</span>
-  <span class="c1">//</span>
-  <span class="c1">// No mention of the actual remainder.</span>
-  <span class="c1">// No mention of the expected value.</span>
-<span class="p">});</span>
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example of remainder</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span> <span class="o">%</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="dl">'</span><span class="s1">remainder</span><span class="dl">'</span><span class="p">);</span>
-  <span class="c1">// In case of failure:</span>
-  <span class="c1">// &gt; Actual: 1</span>
-  <span class="c1">// &gt; Expected: 2</span>
-<span class="p">});</span>
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example of between</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">isBetween</span><span class="p">,</span> <span class="dl">'</span><span class="s1">result between 1 and 10</span><span class="dl">'</span><span class="p">);</span>
-  <span class="c1">// In case of failure:</span>
-  <span class="c1">// &gt; Actual: false</span>
-  <span class="c1">// &gt; Expected: true</span>
-  <span class="c1">//</span>
-  <span class="c1">// No mention of the actual remainder.</span>
-  <span class="c1">// No mention of the expected value.</span>
-  <span class="c1">// Cannot be expressed in a useful way with strictEqual()</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<h3 id="custom-assertion">Custom assertion</h3>
+<h3 id="create-a-qunit-assert-plugin">Create a QUnit assert plugin</h3>
 
 <p>With a custom assertion method, you can control how an assertion should be evaluated, separately from how its actual and expected values are described in case of a failure.</p>
+
+<p>This provides more helpful and transparent diagnostic information when test failures are presented. It also lets you avoid duplication and separate concerns between your test requirements and the way specific a generic and re-usable check is implemented.</p>
 
 <p>For example:</p>
 
@@ -161,14 +127,68 @@
   <span class="p">});</span>
 <span class="p">};</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">custom assertion example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">between</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">'</span><span class="s1">result</span><span class="dl">'</span><span class="p">);</span>
-  <span class="c1">// Example of failure if result is out of range</span>
+  <span class="c1">// Example test failure</span>
   <span class="c1">// &gt; actual: 42</span>
   <span class="c1">// &gt; expected: between 1 and 10</span>
 <span class="p">});</span>
 </code></pre></div></div>
+
+<h3 id="when-to-create-an-assertion">When to create an assertion</h3>
+
+<p>If there isn’t a built-in QUnit assertion for something that you need to check, you can always freely express it using inline JavaScript within your test. It is recommended to, whenever possible, end your ad-hoc logic with two values that you can pass to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass a boolean result to <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [bad]</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+
+  <span class="c1">// Example failure:</span>
+  <span class="c1">// &gt; Actual: false</span>
+  <span class="c1">// &gt; Expected: true</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [good]</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">%</span> <span class="mi">3</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="dl">'</span><span class="s1">remainder of mod 3</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="c1">// Example failure:</span>
+  <span class="c1">// &gt; Message: remainder of mod 3</span>
+  <span class="c1">// &gt; Actual: 1</span>
+  <span class="c1">// &gt; Expected: 2</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">between example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+  <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="nx">actual</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">isBetween</span><span class="p">);</span>
+
+  <span class="c1">// Example failure:</span>
+  <span class="c1">// &gt; Actual: false</span>
+  <span class="c1">// &gt; Expected: true</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Writing a custom expression like this is perfectly fine occasionally. But, if you need to do this a lot, you do take on additional risks and costs over time:</p>
+
+<ul>
+  <li>Risk of subtle bugs or false positives due to logic duplication.
+With a plugin, you can write/document/test it once, and then re-use.</li>
+  <li>No mention of the actual number.</li>
+  <li>No mention of the expected value(s).</li>
+  <li>No description of the problem.</li>
+  <li>No (useful) diff.</li>
+</ul>
+
+<p>This is likely to increase the cost of debugging, requiring an issue to first be reproduced and stepped-through locally before the failure is understood. You can compensate for this by maintaining a copy of the most important information in the “message” field of your assertions.</p>
+
+<p>When you create an assertion plugin instead, this is automated as part of the “actual” and “expected” values, which you can control separately from the boolean result.</p>
 
 </article>
 </div>
@@ -263,7 +283,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#custom-assertion">Custom assertion</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#create-a-qunit-assert-plugin">Create a QUnit assert plugin</a></li><li class="sidebar-item"><a href="#when-to-create-an-assertion">When to create an assertion</a></li></ol></li></ol></div>
 </aside>
 
 </div>

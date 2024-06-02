@@ -112,7 +112,7 @@ comparison.</p>
 <ul>
   <li>A function that returns <code class="language-plaintext highlighter-rouge">true</code> when the assertion should be considered passing.</li>
   <li>An Error object.</li>
-  <li>A base constructor to use ala <code class="language-plaintext highlighter-rouge">rejectionValue instanceof expectedMatcher</code>.</li>
+  <li>A base constructor, evaluated as <code class="language-plaintext highlighter-rouge">rejectionValue instanceof expectedMatcher</code>.</li>
   <li>A RegExp that matches (or partially matches) <code class="language-plaintext highlighter-rouge">rejectionValue.toString()</code>.</li>
 </ul>
 
