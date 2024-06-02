@@ -26,7 +26,7 @@ The actual number may be either above or below the expected number, as long as i
 
 While non-strict assertions like this are [often discouraged](https://timotijhof.net/posts/2015/qunit-anti-patterns/), it may be necessary to account for limitations in how fractional numbers are represented in JavaScript. For example, `0.1 + 0.2` is actually `0.30000000000000004`. This because math operations in JavaScript adhere to the "IEEE floating-point" standard.
 
-To learn how floating-point numbers work internally, refer to [Double-precision floating-point format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) on Wikipedia. To learn why floating-point numbers experience these side effects, refer to "[What Every Computer Scientist Should Know About Floating-Point Arithmetic](http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html)" by David Goldberg.
+To learn how floating-point numbers work internally, refer to [Double-precision floating-point format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) on Wikipedia. To learn when and why floating-point numbers experience these side effects, refer to "[What Every Computer Scientist Should Know About Floating-Point Arithmetic](http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html)" by David Goldberg.
 
 ## Examples
 
