@@ -125,12 +125,7 @@ function begin () {
     if (config.modules[i].name !== '') {
       modulesLog.push({
         name: config.modules[i].name,
-        moduleId: config.modules[i].moduleId,
-
-        // Added in QUnit 1.16.0 for internal use by html-reporter,
-        // but no longer used since QUnit 2.7.0.
-        // @deprecated Kept unofficially to be removed in QUnit 3.0.
-        tests: config.modules[i].tests
+        moduleId: config.modules[i].moduleId
       });
     }
   }
