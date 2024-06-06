@@ -139,7 +139,7 @@ jobs:
           node-version: 18.x
       - name: Install mozjs
         run: |
-          sudo apt-fast install -y libmozjs-102-dev
+          sudo apt-get install -y libmozjs-102-dev
       - run: npm ci
       - run: npm run build
       - name: Tests
@@ -175,7 +175,7 @@ jobs:
           node-version: 18.x
       - name: Install mozjs
         run: |
-          sudo apt-fast install -y libmozjs-115-dev
+          sudo apt-get install -y libmozjs-115-dev
       - run: npm ci
       - run: npm run build
       - name: Tests
