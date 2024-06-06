@@ -725,7 +725,6 @@ const stats = {
     const banner = id('qunit-banner');
     const tests = id('qunit-tests');
     const abortButton = id('qunit-abort-tests-button');
-    const assertPassed = config.stats.all - config.stats.bad;
     let html = [
       runEnd.testCounts.total,
       ' tests completed in ',
@@ -736,14 +735,7 @@ const stats = {
       runEnd.testCounts.skipped,
       ' skipped, and ',
       runEnd.testCounts.todo,
-      ' todo.<br />',
-      "<span class='passed'>",
-      assertPassed,
-      "</span> assertions of <span class='total'>",
-      config.stats.all,
-      "</span> passed, <span class='failed'>",
-      config.stats.bad,
-      '</span> failed.',
+      ' todo.',
       getRerunFailedHtml(stats.failedTests)
     ].join('');
     let test;
