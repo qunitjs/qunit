@@ -721,6 +721,15 @@ const stats = {
     ].join('');
   }
 
+  function msToSec (milliseconds) {
+    if (milliseconds < 1000) {
+      // Will return e.g. "0.2", "0.03" or "0.004"
+      return (milliseconds / 1000).toPrecision(1) + ' seconds';
+    }
+    const sec = Math.ceil(milliseconds / 1000);
+    return sec + (sec === 1 ? ' second' : ' seconds');
+  }
+
   QUnit.on('runEnd', function (runEnd) {
     const banner = id('qunit-banner');
     const tests = id('qunit-tests');
@@ -728,8 +737,8 @@ const stats = {
     let html = [
       runEnd.testCounts.total,
       ' tests completed in ',
-      runEnd.runtime,
-      ' milliseconds, with ',
+      msToSec(runEnd.runtime),
+      ', with ',
       runEnd.testCounts.failed,
       ' failed, ',
       runEnd.testCounts.skipped,
@@ -744,7 +753,7 @@ const stats = {
 
     // Update remaining tests to aborted
     if (abortButton && abortButton.disabled) {
-      html = 'Tests aborted after ' + runEnd.runtime + ' milliseconds.';
+      html = 'Tests aborted after ' + msToSec(runEnd.runtime) + '.';
 
       for (let i = 0; i < tests.children.length; i++) {
         test = tests.children[i];
