@@ -5,7 +5,7 @@ const path = require('path');
 const rollup = require('rollup');
 const kleur = require('kleur');
 const watch = require('node-watch');
-const loadConfigFile = require('rollup/dist/loadConfigFile.js');
+const { loadConfigFile } = require('rollup/dist/loadConfigFile.js');
 
 const { preprocess } = require('./dist-replace.js');
 
