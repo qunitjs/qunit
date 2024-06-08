@@ -77,11 +77,7 @@ function setHookFromEnvironment (hooks, environment, name) {
 function makeSetHook (module, hookName) {
   return function setHook (callback) {
     if (config.currentModule !== module) {
-      Logger.warn('The `' + hookName + '` hook was called inside the wrong module (`' +
-        config.currentModule.name + '`). ' +
-        'Instead, use hooks provided by the callback to the containing module (`' +
-        module.name + '`). ' +
-        'This will become an error in QUnit 3.0.');
+      throw new Error(`Cannot add ${hookName} hook outside the containing module. Called on "${module.name}", instead of expected "${config.currentModule.name}"`);
     }
     module.hooks[hookName].push(callback);
   };

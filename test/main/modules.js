@@ -419,4 +419,39 @@ QUnit.module('QUnit.module', function () {
       assert.expect(9);
     });
   });
+
+  QUnit.module('improper hook creation', function (hooks) {
+    QUnit.module('child', function (innerHooks) {
+      var outerHookRan = false;
+      var innerHookRan = false;
+      var beforeEachErrorMessage = null;
+
+      try {
+        hooks.beforeEach(function () {
+          outerHookRan = true;
+        });
+      } catch (e) {
+        beforeEachErrorMessage = e.message;
+      }
+
+      innerHooks.beforeEach(function () {
+        innerHookRan = true;
+      });
+
+      QUnit.test('create hook on parent module', function (assert) {
+        assert.strictEqual(beforeEachErrorMessage,
+          'Cannot add beforeEach hook outside the containing module. Called on "QUnit.module > improper hook creation", instead of expected "QUnit.module > improper hook creation > child"',
+          'beforeEachErrorMessage'
+        );
+        assert.false(outerHookRan, 'outerHookRan');
+        assert.true(innerHookRan, 'innerHookRan');
+      });
+    });
+
+    QUnit.test('create hook during test', function (assert) {
+      assert.throws(function () {
+        hooks.beforeEach(function () { });
+      }, /Cannot add beforeEach hook outside the containing module/);
+    });
+  });
 });
