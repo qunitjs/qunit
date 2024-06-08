@@ -116,9 +116,10 @@ function processModule (name, options, executeNow, modifiers = {}) {
     try {
       const cbReturnValue = executeNow.call(module.testEnvironment, moduleFns);
       if (cbReturnValue && typeof cbReturnValue.then === 'function') {
-        Logger.warn('Returning a promise from a module callback is not supported. ' +
-          'Instead, use hooks for async behavior. ' +
-          'This will become an error in QUnit 3.0.');
+        throw new Error(
+          'Returning a promise from a module callback is not supported. ' +
+            'Instead, use hooks for async behavior.'
+        );
       }
     } finally {
       // If the module closure threw an uncaught error during the load phase,
