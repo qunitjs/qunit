@@ -26,11 +26,22 @@ In the browser, QUnit by default waits for all `<script>`  elements to finish lo
 
 Set this property to `false` to instruct QUnit to wait longer, allowing you to load test files asynchronously. Remember to call [`QUnit.start()`](../QUnit/start.md) once you're ready for tests to begin running.
 
-If you asynchronously load test files _without_ disabling autostart, you may encounter this warning:
-
-<p class="note note--warning" markdown="1">**warning**: Unexpected test after runEnd.</p>
-
 ## Examples
+
+### Error: Unexpected test after runEnd {#E0001}
+
+If tests are new tests defined after QUnit has finished its run, you may encounter this error:
+
+```
+Error: Unexpected test after runEnd.
+```
+
+If you load test files asynchronously, make sure to disable autostart and call [`QUnit.start()`](../QUnit/start.md) accordingly.
+
+If you encounter this error unrelated to autostart, it might be that you're dynamically registering a new [QUnit.test](./test.md) from inside a hook or event callback towards the end of the test run, such as `hooks.after()` or `QUnit.done()`. It is recommended to define dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md) instead. ([#1663](https://github.com/qunitjs/qunit/issues/1663))
+
+To report global errors from a plugin or other integration layer, consider calling [QUnit.onUncaughtException()](../QUnit/onUncaughtException.md) instead.
+
 
 ### ESM Dynamic imports
 

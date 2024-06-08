@@ -63,7 +63,7 @@ export default function Test (settings) {
   // (Meaning the CI would pass despite the late-failing test).
   // Ref https://github.com/qunitjs/qunit/issues/1377
   if (config.pq.finished) {
-    throw new Error('Unexpected test after runEnd. To report errors, consider calling QUnit.onUncaughtException() instead.');
+    throw new Error('Unexpected test after runEnd. https://qunitjs.com/api/QUnit/module/#E0001');
   }
   if (!this.skip && typeof this.callback !== 'function') {
     const method = this.todo ? 'QUnit.todo' : 'QUnit.test';
