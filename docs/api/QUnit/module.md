@@ -123,23 +123,21 @@ QUnit.test('basic test example 4', function (assert) {
 Using modern syntax:
 
 ```js
-const { test } = QUnit;
-
 QUnit.module('Group A');
 
-test('basic test example', assert => {
+QUnit.test('basic test example', assert => {
   assert.true(true, 'this is fine');
 });
-test('basic test example 2', assert => {
+QUnit.test('basic test example 2', assert => {
   assert.true(true, 'this is also fine');
 });
 
 QUnit.module('Group B');
 
-test('basic test example 3', assert => {
+QUnit.test('basic test example 3', assert => {
   assert.true(true, 'this is fine');
 });
-test('basic test example 4', assert => {
+QUnit.test('basic test example 4', assert => {
   assert.true(true, 'this is also fine');
 });
 ```
@@ -166,24 +164,22 @@ QUnit.module('module A', {
 ### Nested module scope
 
 ```js
-const { test } = QUnit;
-
 QUnit.module('Group A', hooks => {
-  test('basic test example', assert => {
+  QUnit.test('basic test example', assert => {
     assert.true(true, 'this is fine');
   });
 
-  test('basic test example 2', assert => {
+  QUnit.test('basic test example 2', assert => {
     assert.true(true, 'this is also fine');
   });
 });
 
 QUnit.module('Group B', hooks => {
-  test('basic test example 3', assert => {
+  QUnit.test('basic test example 3', assert => {
     assert.true(true, 'this is fine');
   });
 
-  test('basic test example 4', assert => {
+  QUnit.test('basic test example 4', assert => {
     assert.true(true, 'this is also fine');
   });
 });
@@ -194,8 +190,6 @@ QUnit.module('Group B', hooks => {
 Use `before`/`beforeEach` hooks are queued for nested modules. `after`/`afterEach` hooks are stacked on nested modules.
 
 ```js
-const { test } = QUnit;
-
 QUnit.module('My Group', hooks => {
   // It is valid to call the same hook methods more than once.
   hooks.beforeEach(assert => {
@@ -206,7 +200,7 @@ QUnit.module('My Group', hooks => {
     assert.ok(true, 'afterEach called');
   });
 
-  test('with hooks', assert => {
+  QUnit.test('with hooks', assert => {
     // 1 x beforeEach
     // 1 x afterEach
     assert.expect(2);
@@ -223,7 +217,7 @@ QUnit.module('My Group', hooks => {
       assert.ok(true, 'nested afterEach called');
     });
 
-    test('with nested hooks', assert => {
+    QUnit.test('with nested hooks', assert => {
       // 2 x beforeEach (parent, current)
       // 2 x afterEach (current, parent)
       assert.expect(4);
@@ -261,21 +255,19 @@ The test context is also available when using the nested scope. Beware that use 
 in arrow functions.
 
 ```js
-const { test } = QUnit;
-
 QUnit.module('Machine Maker', hooks => {
   hooks.beforeEach(function () {
     this.maker = new Maker();
     this.parts = ['wheels', 'motor', 'chassis'];
   });
 
-  test('makes a robot', function (assert) {
+  QUnit.test('makes a robot', function (assert) {
     this.parts.push('arduino');
     assert.equal(this.maker.build(this.parts), 'robot');
     assert.deepEqual(this.maker.log, ['robot']);
   });
 
-  test('makes a car', function (assert) {
+  QUnit.test('makes a car', function (assert) {
     assert.equal(this.maker.build(this.parts), 'car');
     this.maker.duplicate();
     assert.deepEqual(this.maker.log, ['car', 'car']);
@@ -286,8 +278,6 @@ QUnit.module('Machine Maker', hooks => {
 It might be more convenient to use JavaScript's own lexical scope instead:
 
 ```js
-const { test } = QUnit;
-
 QUnit.module('Machine Maker', hooks => {
   let maker;
   let parts;
@@ -296,13 +286,13 @@ QUnit.module('Machine Maker', hooks => {
     parts = ['wheels', 'motor', 'chassis'];
   });
 
-  test('makes a robot', assert => {
+  QUnit.test('makes a robot', assert => {
     parts.push('arduino');
     assert.equal(maker.build(parts), 'robot');
     assert.deepEqual(maker.log, ['robot']);
   });
 
-  test('makes a car', assert => {
+  QUnit.test('makes a car', assert => {
     assert.equal(maker.build(parts), 'car');
     maker.duplicate();
     assert.deepEqual(maker.log, ['car', 'car']);
@@ -434,5 +424,47 @@ QUnit.module.todo('Robot', hooks => {
   });
 
   // ...
+});
+```
+
+### Error: Cannot add hook outside the containing module {#E0002}
+
+If you encounter this error, it means you have called `hooks.beforeEach()` or `hooks.afterEach()` on the "hooks" parameter of a module outside the current module scope. Detection of this issue was [introduced](https://github.com/qunitjs/qunit/issues/1576) in QUnit 3.0.
+
+```
+Error: Cannot add beforeEach hook outside the containing module.
+```
+```
+Error: Cannot add afterEach hook outside the containing module.
+Called on "X", instead of expected "Y".
+```
+
+This can happen if you create a nested module and forget to specify the `hooks` parameter on the inner scope:
+
+```js
+QUnit.module('MyGroup', (hooks) => {
+  QUnit.module('Child', () => {
+    //                  ^ Oops, forgot "hooks" here!
+
+    hooks.beforeEach(() => {
+      // ...
+    });
+
+    QUnit.test('example');
+  });
+});
+```
+
+Another way that this might happen is if you have named them differently, or perhaps mispelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.
+
+```js
+QUnit.module('MyGroup', (hooksOuter) => {
+  QUnit.module('Child', (hooksInner) => {
+    hooksOuter.beforeEach(() => {
+    // Oops, used "hooksOuter" instead of "hooksInner"!
+    });
+
+    QUnit.test('example');
+  });
 });
 ```

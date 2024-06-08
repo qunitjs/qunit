@@ -440,7 +440,7 @@ QUnit.module('QUnit.module', function () {
 
       QUnit.test('create hook on parent module', function (assert) {
         assert.strictEqual(beforeEachErrorMessage,
-          'Cannot add beforeEach hook outside the containing module. Called on "QUnit.module > improper hook creation", instead of expected "QUnit.module > improper hook creation > child"',
+          'Cannot add beforeEach hook outside the containing module. Called on "QUnit.module > improper hook creation", instead of expected "QUnit.module > improper hook creation > child". https://qunitjs.com/api/QUnit/module/#E0002',
           'beforeEachErrorMessage'
         );
         assert.false(outerHookRan, 'outerHookRan');

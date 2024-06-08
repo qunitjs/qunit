@@ -77,7 +77,7 @@ function setHookFromEnvironment (hooks, environment, name) {
 function makeSetHook (module, hookName) {
   return function setHook (callback) {
     if (config.currentModule !== module) {
-      throw new Error(`Cannot add ${hookName} hook outside the containing module. Called on "${module.name}", instead of expected "${config.currentModule.name}"`);
+      throw new Error(`Cannot add ${hookName} hook outside the containing module. Called on "${module.name}", instead of expected "${config.currentModule.name}". https://qunitjs.com/api/QUnit/module/#E0002`);
     }
     module.hooks[hookName].push(callback);
   };
