@@ -1,5 +1,5 @@
 # name: module() with async function
-# command: ["qunit","async-module-warning.js"]
+# command: ["qunit","async-module-error.js"]
 
 not ok 1 global failure
   ---
