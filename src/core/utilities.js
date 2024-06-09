@@ -75,9 +75,9 @@ export function objectValuesSubset (obj, model) {
 }
 
 // Support: IE 11, iOS 7-8
-export function extend (a, b, undefOnly) {
+export function extend (a, b, undefOnly, allProperties) {
   for (const prop in b) {
-    if (hasOwn.call(b, prop)) {
+    if (hasOwn.call(b, prop) || allProperties) {
       if (b[prop] === undefined) {
         delete a[prop];
       } else if (!(undefOnly && typeof a[prop] !== 'undefined')) {

@@ -21,9 +21,9 @@ function createModule (name, testEnvironment, modifiers) {
   const skip = (parentModule !== null && parentModule.skip) || modifiers.skip;
   const todo = (parentModule !== null && parentModule.todo) || modifiers.todo;
 
-  const env = {};
+  let env = {};
   if (parentModule) {
-    extend(env, parentModule.testEnvironment);
+    env = Object.create(parentModule.testEnvironment || {});
   }
   extend(env, testEnvironment);
 
