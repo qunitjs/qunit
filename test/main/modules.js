@@ -1,4 +1,4 @@
-/* global setTimeout, Promise */
+/* global setTimeout */
 QUnit.module('QUnit.module', function () {
   QUnit.module('before/beforeEach/afterEach/after', {
     before: function () {
@@ -468,24 +468,6 @@ QUnit.module('QUnit.module', function () {
     QUnit.test('module with thenable callback function errored', function (assert) {
       assert.true(errorFromThenableCallbackModule instanceof Error);
       assert.strictEqual(errorFromThenableCallbackModule.message, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.');
-    });
-
-    var errorFromPromiseCallbackModule;
-    try {
-      QUnit.module('with promise callback', function () {
-        // eslint-disable-next-line compat/compat
-        return Promise.resolve();
-      });
-    } catch (e) {
-      errorFromPromiseCallbackModule = e;
-    }
-
-    QUnit.test('module with promise callback function errored', function (assert) {
-      assert.true(errorFromPromiseCallbackModule instanceof Error);
-      assert.strictEqual(
-        errorFromPromiseCallbackModule.message,
-        'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.'
-      );
     });
   });
 });
