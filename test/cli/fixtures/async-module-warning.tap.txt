@@ -1,10 +1,35 @@
 # name: module() with async function
 # command: ["qunit","async-module-warning.js"]
 
+not ok 1 global failure
+  ---
+  message: |+
+    Error: Failed to load file async-module-warning.js
+    Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
+  severity: failed
+  stack: |
+    Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
+        at qunit.js
+        at /qunit/test/cli/fixtures/async-module-warning.js:2:7
+        at internal
+  ...
+Bail out! Error: Failed to load file async-module-warning.js
 TAP version 13
-ok 1 Correct error thrown from async module function
-1..1
-# pass 1
+not ok 2 global failure
+  ---
+  message: No tests were run.
+  severity: failed
+  actual  : undefined
+  expected: undefined
+  stack: |
+    Error: No tests were run.
+        at qunit.js
+        at internal
+  ...
+1..2
+# pass 0
 # skip 0
 # todo 0
-# fail 0
+# fail 2
+
+# exit code: 1
