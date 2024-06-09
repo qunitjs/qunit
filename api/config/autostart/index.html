@@ -92,11 +92,20 @@
 
 <p>Set this property to <code class="language-plaintext highlighter-rouge">false</code> to instruct QUnit to wait longer, allowing you to load test files asynchronously. Remember to call <a href="/api/QUnit/start/"><code class="language-plaintext highlighter-rouge">QUnit.start()</code></a> once you’re ready for tests to begin running.</p>
 
-<p>If you asynchronously load test files <em>without</em> disabling autostart, you may encounter this warning:</p>
-
-<p class="note note--warning"><strong>warning</strong>: Unexpected test after runEnd.</p>
-
 <h2 id="examples">Examples</h2>
+
+<h3 id="E0001">Error: Unexpected test after runEnd</h3>
+
+<p>If tests are new tests defined after QUnit has finished its run, you may encounter this error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Unexpected test after runEnd.
+</code></pre></div></div>
+
+<p>If you load test files asynchronously, make sure to disable autostart and call <a href="/api/QUnit/start/"><code class="language-plaintext highlighter-rouge">QUnit.start()</code></a> accordingly.</p>
+
+<p>If you encounter this error unrelated to autostart, it might be that you’re dynamically registering a new <a href="./test.md">QUnit.test</a> from inside a hook or event callback towards the end of the test run, such as <code class="language-plaintext highlighter-rouge">hooks.after()</code> or <code class="language-plaintext highlighter-rouge">QUnit.done()</code>. It is recommended to define dynamic tests via <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> instead. (<a href="https://github.com/qunitjs/qunit/issues/1663">#1663</a>)</p>
+
+<p>To report global errors from a plugin or other integration layer, consider calling <a href="../QUnit/onUncaughtException.md">QUnit.onUncaughtException()</a> instead.</p>
 
 <h3 id="esm-dynamic-imports">ESM Dynamic imports</h3>
 
@@ -205,7 +214,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#esm-dynamic-imports">ESM Dynamic imports</a></li><li class="sidebar-item"><a href="#loading-with-requirejs">Loading with RequireJS</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#E0001">Error: Unexpected test after runEnd</a></li><li class="sidebar-item"><a href="#esm-dynamic-imports">ESM Dynamic imports</a></li><li class="sidebar-item"><a href="#loading-with-requirejs">Loading with RequireJS</a></li></ol></li></ol></div>
 </aside>
 
 </div>
