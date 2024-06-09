@@ -4,16 +4,16 @@
 not ok 1 global failure
   ---
   message: |+
-    Error: Failed to load file async-module-warning.js
+    Error: Failed to load file async-module-error.js
     Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
   severity: failed
   stack: |
     Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
         at qunit.js
-        at /qunit/test/cli/fixtures/async-module-warning.js:2:7
+        at /qunit/test/cli/fixtures/async-module-error.js:2:7
         at internal
   ...
-Bail out! Error: Failed to load file async-module-warning.js
+Bail out! Error: Failed to load file async-module-error.js
 TAP version 13
 not ok 2 global failure
   ---

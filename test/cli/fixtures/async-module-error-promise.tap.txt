@@ -1,11 +1,25 @@
-# name: module() with promise
+# name: module() with promise return value
 # command: ["qunit","async-module-error-promise.js"]
 
+not ok 1 global failure
+  ---
+  message: |+
+    Error: Failed to load file async-module-error-promise.js
+    Error: Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.
+  severity: failed
+  stack: |
+    Error: Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.
+        at qunit.js
+        at /qunit/test/cli/fixtures/async-module-error-promise.js:1:7
+        at internal
+  ...
+Bail out! Error: Failed to load file async-module-error-promise.js
 TAP version 13
-ok 1 module manually returning a promise > has a test
-ok 2 Correct error thrown from module function that returns a promise
+ok 2 module manually returning a promise > has a test
 1..2
-# pass 2
+# pass 1
 # skip 0
 # todo 0
-# fail 0
+# fail 1
+
+# exit code: 1
