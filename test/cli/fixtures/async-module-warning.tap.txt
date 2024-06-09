@@ -3,9 +3,8 @@
 
 TAP version 13
 ok 1 Correct error thrown from async module function
-ok 2 has a test
-1..2
-# pass 2
+1..1
+# pass 1
 # skip 0
 # todo 0
 # fail 0

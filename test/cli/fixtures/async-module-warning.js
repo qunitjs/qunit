@@ -18,7 +18,7 @@ QUnit.test(
     assert.true(errorFromAsyncModule instanceof Error);
     assert.strictEqual(
       errorFromAsyncModule.message,
-      'Returning a promise from a module callback is not supported. ' +
+      'Async module callbacks are not supported. ' +
         'Instead, use hooks for async behavior.',
       'Error has correct message'
     );

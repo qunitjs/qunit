@@ -1,7 +1,7 @@
 import Logger from './logger';
 import config from './core/config';
 import SuiteReport from './reports/suite';
-import { extend, generateHash } from './core/utilities';
+import { extend, generateHash, isAsyncFunction } from './core/utilities';
 
 const moduleStack = [];
 
@@ -87,6 +87,11 @@ function processModule (name, options, executeNow, modifiers = {}) {
   if (typeof options === 'function') {
     executeNow = options;
     options = undefined;
+  }
+
+  if (isAsyncFunction(executeNow)) {
+    throw new Error('Async module callbacks are not supported. ' +
+      'Instead, use hooks for async behavior.');
   }
 
   const module = createModule(name, options, modifiers);
