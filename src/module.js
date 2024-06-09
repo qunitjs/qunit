@@ -1,4 +1,3 @@
-import Logger from './logger';
 import config from './core/config';
 import SuiteReport from './reports/suite';
 import { extend, generateHash, isAsyncFunction } from './core/utilities';
