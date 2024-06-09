@@ -1,5 +1,5 @@
 # name: module() with promise
-# command: ["qunit","async-module-warning-promise.js"]
+# command: ["qunit","async-module-error-promise.js"]
 
 TAP version 13
 ok 1 module manually returning a promise > has a test
