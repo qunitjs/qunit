@@ -5,10 +5,10 @@ not ok 1 global failure
   ---
   message: |+
     Error: Failed to load file async-module-error.js
-    Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
+    TypeError: QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks
   severity: failed
   stack: |
-    Error: Async module callbacks are not supported. Instead, use hooks for async behavior.
+    TypeError: QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks
         at qunit.js
         at /qunit/test/cli/fixtures/async-module-error.js:2:7
         at internal

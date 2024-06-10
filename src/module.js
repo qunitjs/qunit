@@ -89,8 +89,7 @@ function processModule (name, options, executeNow, modifiers = {}) {
   }
 
   if (isAsyncFunction(executeNow)) {
-    throw new Error('Async module callbacks are not supported. ' +
-      'Instead, use hooks for async behavior.');
+    throw new TypeError('QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks');
   }
 
   const module = createModule(name, options, modifiers);
@@ -120,10 +119,7 @@ function processModule (name, options, executeNow, modifiers = {}) {
     try {
       const cbReturnValue = executeNow.call(module.testEnvironment, moduleFns);
       if (cbReturnValue && typeof cbReturnValue.then === 'function') {
-        throw new Error(
-          'Returning a promise from a module callback is not supported. ' +
-            'Instead, use hooks for async behavior.'
-        );
+        throw new TypeError('QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks');
       }
     } finally {
       // If the module closure threw an uncaught error during the load phase,

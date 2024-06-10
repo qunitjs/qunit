@@ -466,8 +466,8 @@ QUnit.module('QUnit.module', function () {
     }
 
     QUnit.test('thenable callback function errored', function (assert) {
-      assert.true(caught instanceof Error);
-      assert.strictEqual(caught.message, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.');
+      assert.true(caught instanceof TypeError);
+      assert.strictEqual(caught.message, 'QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks');
     });
   });
 });
