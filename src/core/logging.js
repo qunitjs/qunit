@@ -27,7 +27,7 @@ export function registerLoggingCallbacks (obj) {
   }
 }
 
-export function runLoggingCallbacks (key, args) {
+export function runLoggingCallbacks (key, arg) {
   const callbacks = config.callbacks[key];
 
   // Handling 'log' callbacks separately. Unlike the other callbacks,
@@ -35,7 +35,7 @@ export function runLoggingCallbacks (key, args) {
   // but rather used by asserts. Hence to promisfy the 'log' callback
   // would mean promisfying each step of a test
   if (key === 'log') {
-    callbacks.map(callback => callback(args));
+    callbacks.map(callback => callback(arg));
     return;
   }
 
@@ -43,7 +43,7 @@ export function runLoggingCallbacks (key, args) {
   let promiseChain = Promise.resolve();
   callbacks.forEach(callback => {
     promiseChain = promiseChain.then(() => {
-      return Promise.resolve(callback(args));
+      return Promise.resolve(callback(arg));
     });
   });
   return promiseChain;
