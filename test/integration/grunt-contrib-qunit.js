@@ -5,7 +5,7 @@ const DIR = path.join(__dirname, 'grunt-contrib-qunit');
 QUnit.module('grunt-contrib-qunit', {
   before: () => {
     // Let this be quick for re-runs
-    cp.execSync('npm install --prefer-offline --no-audit', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install --prefer-offline --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
   }
 });
 

@@ -13,7 +13,7 @@ function normalize (str) {
 
 QUnit.module('karma-qunit', {
   before: () => {
-    cp.execSync('npm install --prefer-offline --no-audit --omit=dev --legacy-peer-deps', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install --prefer-offline --no-audit --omit=dev --legacy-peer-deps --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
   }
 });
 
