@@ -16,8 +16,8 @@
     window.totalCount = 0;
     sessionStorage['qunit-test-First fail module-2-should be fail'] = 1;
     sessionStorage['qunit-test-Second fail module-2-should be fail'] = 1;
-    QUnit.done(function (details) {
-      window.totalCount = details.failed;
+    QUnit.on('runEnd', function (runEnd) {
+      window.totalCount = runEnd.testCounts.failed;
       delete sessionStorage['qunit-test-First fail module-2-should be fail'];
       delete sessionStorage['qunit-test-Second fail module-2-should be fail'];
     });

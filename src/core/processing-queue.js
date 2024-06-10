@@ -189,16 +189,22 @@ class ProcessingQueue {
 
     const storage = config.storage;
 
-    const runtime = Math.round(performance.now() - config.started);
-    const passed = config.stats.all - config.stats.bad;
-
     this.finished = true;
 
-    emit('runEnd', runSuite.end(true));
+    const runEnd = runSuite.end(true);
+    emit('runEnd', runEnd);
+
+    const runtime = runEnd.runtime;
+    const passed = config.stats.all - config.stats.bad;
+
     runLoggingCallbacks('done', {
-      // @deprecated since 2.19.0 Use done() without `details` parameter,
-      // or use `QUnit.on('runEnd')` instead. Parameter to be replaced in
-      // QUnit 3.0 with test counts.
+      // Use of "details" parameter to QUnit.done() is discouraged
+      // since QUnit 2.19 to solve the "assertion counting" gotchas
+      // documented at https://qunitjs.com/api/callbacks/QUnit.done/.
+      // Use QUnit.on('runEnd') instead.
+      //
+      // Kept for compatibility with ecosystem integrations
+      // such as Testem, which safely only the "runtime" field only.
       passed,
       failed: config.stats.bad,
       total: config.stats.all,

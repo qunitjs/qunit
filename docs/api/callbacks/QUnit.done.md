@@ -29,7 +29,7 @@ Register a callback to fire when the test run has ended. The callback may be an 
 
 <div class="note note--warning" markdown="1">
 
-Use of `details` is __deprecated__ and it's recommended to use [`QUnit.on('runEnd')`](./QUnit.on.md#the-runend-event) instead.
+Use of `details` is __discouraged__ and it's recommended to use [`QUnit.on('runEnd')`](./QUnit.on.md#the-runend-event) instead.
 
 Caveats:
 
@@ -43,7 +43,7 @@ Caveats:
 
 ## Changelog
 
-| [QUnit 2.2](https://github.com/qunitjs/qunit/releases/tag/2.2.0) | Deprecate `details` parameter in favour of `QUnit.on('runEnd')`.
+| [QUnit 2.2](https://github.com/qunitjs/qunit/releases/tag/2.2.0) | Discourage `details` parameter in favour of `QUnit.on('runEnd')`.
 
 ## Examples
 
@@ -51,9 +51,6 @@ Register a callback that logs internal assertion counts.
 
 ```js
 QUnit.done(function (details) {
-  console.log(
-    'Total: ' + details.total + ' Failed: ' + details.failed +
-    ' Passed: ' + details.passed + ' Runtime: ' + details.runtime
-  );
+  console.log('Runtime: ' + details.runtime);
 });
 ```
