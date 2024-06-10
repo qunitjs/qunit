@@ -143,7 +143,7 @@ QUnit.module('router', {
 });
 ```
 
-You can also use a [nested scope](./api/QUnit/module.md#nested-scope) as of QUnit 1.20, which makes for simpler sharing of variables and associating of tests with modules.
+You can also use a [module scope](./api/QUnit/module.md#module-scope) as of QUnit 1.20, which makes for simpler sharing of variables and associating of tests with modules.
 
 Example:
 
