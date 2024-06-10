@@ -454,4 +454,20 @@ QUnit.module('QUnit.module', function () {
       }, /Cannot add beforeEach hook outside the containing module/);
     });
   });
+
+  QUnit.module('disallowed async module callbacks', function () {
+    var errorFromThenableCallbackModule;
+    try {
+      QUnit.module('with thenable callback', function () {
+        return { then: function () {} };
+      });
+    } catch (e) {
+      errorFromThenableCallbackModule = e;
+    }
+
+    QUnit.test('module with thenable callback function errored', function (assert) {
+      assert.true(errorFromThenableCallbackModule instanceof Error);
+      assert.strictEqual(errorFromThenableCallbackModule.message, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.');
+    });
+  });
 });

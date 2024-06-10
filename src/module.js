@@ -1,7 +1,6 @@
-import Logger from './logger';
 import config from './core/config';
 import SuiteReport from './reports/suite';
-import { extend, generateHash } from './core/utilities';
+import { extend, generateHash, isAsyncFunction } from './core/utilities';
 
 const moduleStack = [];
 
@@ -89,6 +88,11 @@ function processModule (name, options, executeNow, modifiers = {}) {
     options = undefined;
   }
 
+  if (isAsyncFunction(executeNow)) {
+    throw new Error('Async module callbacks are not supported. ' +
+      'Instead, use hooks for async behavior.');
+  }
+
   const module = createModule(name, options, modifiers);
 
   // Transfer any initial hooks from the options object to the 'hooks' object
@@ -116,9 +120,10 @@ function processModule (name, options, executeNow, modifiers = {}) {
     try {
       const cbReturnValue = executeNow.call(module.testEnvironment, moduleFns);
       if (cbReturnValue && typeof cbReturnValue.then === 'function') {
-        Logger.warn('Returning a promise from a module callback is not supported. ' +
-          'Instead, use hooks for async behavior. ' +
-          'This will become an error in QUnit 3.0.');
+        throw new Error(
+          'Returning a promise from a module callback is not supported. ' +
+            'Instead, use hooks for async behavior.'
+        );
       }
     } finally {
       // If the module closure threw an uncaught error during the load phase,

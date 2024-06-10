@@ -6,5 +6,3 @@ QUnit.module('module with async callback', async function () {
     assert.true(true);
   });
 });
-
-QUnit.module('resulting parent module');
