@@ -125,7 +125,7 @@
 
 <div class="note note--warning">
 
-  <p>Use of <code class="language-plaintext highlighter-rouge">details</code> is <strong>deprecated</strong> and it’s recommended to use <a href="/api/callbacks/QUnit.on/#the-runend-event"><code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code></a> instead.</p>
+  <p>Use of <code class="language-plaintext highlighter-rouge">details</code> is <strong>discouraged</strong> and it’s recommended to use <a href="/api/callbacks/QUnit.on/#the-runend-event"><code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code></a> instead.</p>
 
   <p>Caveats:</p>
 
@@ -149,7 +149,7 @@
   <tbody>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.2.0">QUnit 2.2</a></td>
-      <td>Deprecate <code class="language-plaintext highlighter-rouge">details</code> parameter in favour of <code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code>.</td>
+      <td>Discourage <code class="language-plaintext highlighter-rouge">details</code> parameter in favour of <code class="language-plaintext highlighter-rouge">QUnit.on('runEnd')</code>.</td>
     </tr>
   </tbody>
 </table>
@@ -159,10 +159,7 @@
 <p>Register a callback that logs internal assertion counts.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">done</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span>
-    <span class="dl">'</span><span class="s1">Total: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">total</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> Failed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">failed</span> <span class="o">+</span>
-    <span class="dl">'</span><span class="s1"> Passed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">passed</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> Runtime: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span>
-  <span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Runtime: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">details</span><span class="p">.</span><span class="nx">runtime</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
