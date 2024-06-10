@@ -455,19 +455,19 @@ QUnit.module('QUnit.module', function () {
     });
   });
 
-  QUnit.module('disallowed async module callbacks', function () {
-    var errorFromThenableCallbackModule;
+  QUnit.module('disallow async module callback', function () {
+    var caught;
     try {
       QUnit.module('with thenable callback', function () {
         return { then: function () {} };
       });
     } catch (e) {
-      errorFromThenableCallbackModule = e;
+      caught = e;
     }
 
-    QUnit.test('module with thenable callback function errored', function (assert) {
-      assert.true(errorFromThenableCallbackModule instanceof Error);
-      assert.strictEqual(errorFromThenableCallbackModule.message, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.');
+    QUnit.test('thenable callback function errored', function (assert) {
+      assert.true(caught instanceof Error);
+      assert.strictEqual(caught.message, 'Returning a promise from a module callback is not supported. Instead, use hooks for async behavior.');
     });
   });
 });

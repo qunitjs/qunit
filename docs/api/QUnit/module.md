@@ -50,7 +50,7 @@ Hooks that run _before_ a test, are ordered from outer-most to inner-most, in th
 
 #### Hook callback
 
-A hook callback may be an async function, and may return a Promise or any other then-able. QUnit will automatically wait for your hook's asynchronous work to finish before continuing to execute the tests.
+A hook callback may be an async function, and may return a Promise or any other then-able. QUnit will automatically wait for your hook's asynchronous work to finish before continuing to execute the tests. Example: [§ Async hook callback](#async-hook-callback).
 
 Each hook has access to the same `assert` object, and test context via `this`, as the [QUnit.test](./test.md) that the hook is running for. Example: [§ Using the test context](#using-the-test-context).
 
@@ -73,7 +73,7 @@ You can use the options object to add [hooks](#hooks).
 
 Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Using the test context](#using-the-test-context).
 
-Example: [§ Declaring module options](#declaring-module-options).
+Example: [§ Hooks via module options](#hooks-via-module-options).
 
 ### Nested scope
 
@@ -142,26 +142,7 @@ QUnit.test('basic test example 4', assert => {
 });
 ```
 
-### Declaring module options
-
-```js
-QUnit.module('module A', {
-  before: function () {
-    // prepare something once for all tests
-  },
-  beforeEach: function () {
-    // prepare something before each test
-  },
-  afterEach: function () {
-    // clean up after each test
-  },
-  after: function () {
-    // clean up once after all tests are done
-  }
-});
-```
-
-### Nested module scope
+<span id="nested-module-scope"></span>Nested module scope:
 
 ```js
 QUnit.module('Group A', hooks => {
@@ -185,13 +166,15 @@ QUnit.module('Group B', hooks => {
 });
 ```
 
-### Hooks on nested modules
+<span id="hooks-on-nested-modules"></span>
+
+### Set hook callbacks
 
 Use `before`/`beforeEach` hooks are queued for nested modules. `after`/`afterEach` hooks are stacked on nested modules.
 
 ```js
 QUnit.module('My Group', hooks => {
-  // It is valid to call the same hook methods more than once.
+  // You may call hooks.beforeEach() multiple times to create multiple hooks.
   hooks.beforeEach(assert => {
     assert.ok(true, 'beforeEach called');
   });
@@ -206,23 +189,89 @@ QUnit.module('My Group', hooks => {
     assert.expect(2);
   });
 
-  QUnit.module('Nested Group', hooks => {
+  QUnit.module('Nested Child', hooks => {
     // This will run after the parent module's beforeEach hook
     hooks.beforeEach(assert => {
       assert.ok(true, 'nested beforeEach called');
     });
 
-    // This will run before the parent module's afterEach
+    // This will run before the parent module's afterEach hook
     hooks.afterEach(assert => {
       assert.ok(true, 'nested afterEach called');
     });
 
     QUnit.test('with nested hooks', assert => {
-      // 2 x beforeEach (parent, current)
-      // 2 x afterEach (current, parent)
+      // 2 x beforeEach (parent, child)
+      // 2 x afterEach (child, parent)
       assert.expect(4);
     });
   });
+});
+```
+
+### Async hook callback
+
+```js
+QUnit.module('Database connection', function (hooks) {
+  hooks.before(async function () {
+    await MyDb.connect();
+  });
+
+  hooks.after(async function () {
+    await MyDb.disconnect();
+  });
+});
+```
+
+<span id="module-hook-with-promise"></span>Module hook with Promise:
+
+An example of handling an asynchronous `then`able Promise result in hooks. This example uses an [ES6 Promise][] interface that is fulfilled after connecting to or disconnecting from database.
+
+[ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+```js
+QUnit.module('Database connection', {
+  before: function () {
+    return new Promise(function (resolve, reject) {
+      MyDb.connect(function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  },
+  after: function () {
+    return new Promise(function (resolve, reject) {
+      MyDb.disconnect(function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+});
+```
+
+### Hooks via module options
+
+```js
+QUnit.module('module A', {
+  before: function () {
+    // prepare something once for all tests
+  },
+  beforeEach: function () {
+    // prepare something before each test
+  },
+  afterEach: function () {
+    // clean up after each test
+  },
+  after: function () {
+    // clean up once after all tests are done
+  }
 });
 ```
 
@@ -297,39 +346,6 @@ QUnit.module('Machine Maker', hooks => {
     maker.duplicate();
     assert.deepEqual(maker.log, ['car', 'car']);
   });
-});
-```
-
-### Module hook with Promise
-
-An example of handling an asynchronous `then`able Promise result in hooks. This example uses an [ES6 Promise][] interface that is fulfilled after connecting to or disconnecting from database.
-
-[ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
-```js
-QUnit.module('Database connection', {
-  before: function () {
-    return new Promise(function (resolve, reject) {
-      DB.connect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  },
-  after: function () {
-    return new Promise(function (resolve, reject) {
-      DB.disconnect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
 });
 ```
 
