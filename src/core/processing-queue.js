@@ -194,9 +194,6 @@ class ProcessingQueue {
     const runEnd = runSuite.end(true);
     emit('runEnd', runEnd);
 
-    const runtime = runEnd.runtime;
-    const passed = config.stats.all - config.stats.bad;
-
     runLoggingCallbacks('done', {
       // Use of "details" parameter to QUnit.done() is discouraged
       // since QUnit 2.19 to solve the "assertion counting" gotchas
@@ -204,17 +201,22 @@ class ProcessingQueue {
       // Use QUnit.on('runEnd') instead.
       //
       // Kept for compatibility with ecosystem integrations
-      // such as Testem, which safely only the "runtime" field only.
-      passed,
+      // such as Testem, which safely use the "runtime" field only.
+      passed: config.stats.all - config.stats.bad,
       failed: config.stats.bad,
       total: config.stats.all,
-      runtime
+      runtime: runEnd.runtime
     }).then(() => {
-      // Clear own storage items if all tests passed
-      if (storage && config.stats.bad === 0) {
+      // Clear our storage keys if run passed and there were no "todo" tests left.
+      //
+      // The check for "todo" is important, because after a passing run,
+      // it is useful for re-runs to quickly start with known "todo" tests.
+      // In test.js we inform storage about "todo" failures the same as
+      // any other failure. Clearing here after merely "passed" would defeat
+      // that logic.
+      if (storage && runEnd.status === 'passed' && !runEnd.testCounts.todo) {
         for (let i = storage.length - 1; i >= 0; i--) {
           const key = storage.key(i);
-
           if (key.indexOf('qunit-test-') === 0) {
             storage.removeItem(key);
           }
