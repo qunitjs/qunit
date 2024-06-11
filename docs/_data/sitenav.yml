@@ -3,11 +3,11 @@
   sub:
     - name: Getting Started
       href: /intro/
-    - name: Command-line interface
+    - name: Command-line Interface
       href: /cli/
     - name: Plugins
       href: /plugins/
-    - name: 2.x Upgrade Guide
+    - name: QUnit 2.0 Upgrade Guide
       href: /upgrade-guide-2.x/
 - name: Documentation
   href: /api/
@@ -16,9 +16,9 @@
   sub:
     - name: Who's using QUnit?
       href: /projects/
-    - name: Browser support
+    - name: Browser Support
       href: /intro/#browser-support
     - name: About QUnit
       href: /about/
-    - name: Brand guidelines
+    - name: Brand Guidelines
       href: /brand/

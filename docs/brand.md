@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Brand guidelines
+title: Brand Guidelines
 amethyst:
   toc: true
 ---

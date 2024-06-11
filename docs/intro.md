@@ -10,7 +10,7 @@ redirect_from:
 
 <p class="lead" markdown="1">
 
-The following guide will get you up-and-running with QUnit either in Node.js or [in the Browser](#in-the-browser).
+This tutorial gets you up-and-running with QUnit in Node.js or [in the browser](#in-the-browser).
 
 </p>
 
@@ -67,7 +67,7 @@ Then run:
 npm test
 ```
 
-... and QUnit will run your test!
+Congrats! You just wrote and executed your first QUnit test!
 
 ```bash
 TAP version 13
@@ -79,11 +79,7 @@ ok 1 add > two numbers
 # fail 0
 ```
 
-Congrats! You just wrote and executed your first QUnit test!
-
-Check out the [API documentation](./api/index.md) to learn about QUnit APIs for organising tests and making assertions.
-
-See [Command-line interface](./cli.md) for help with the `qunit` command.
+Check out the [API documentation](./api/index.md) to learn more about the QUnit APIs for organising tests and making assertions. See [Command-line Interface](./cli.md) for what the `qunit` command can do.
 
 ### Support policy
 
@@ -222,6 +218,6 @@ These are the officially supported download channels for QUnit releases:
 
 ---
 
-## Further Reading
+## Further reading
 
 * [Introdution to JavaScript Unit Testing](https://coding.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/), Jörn Zaefferer (2012).

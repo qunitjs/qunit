@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Command-line interface
+title: Command-line Interface
 redirect_from:
   - "/node/"
 amethyst:
