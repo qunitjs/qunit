@@ -45,6 +45,7 @@ const Repo = {
     }
     {
       console.log('Running `npm run build`...');
+      process.env.QUNIT_BUILD_RELEASE = '1';
       cp.execFileSync('npm', [
         'run',
         'build'
