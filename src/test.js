@@ -772,7 +772,7 @@ Test.prototype = {
   },
 
   resolvePromise: function (promise, phase) {
-    if (promise != null) {
+    if (promise !== undefined && promise !== null) {
       const test = this;
       const then = promise.then;
       if (typeof then === 'function') {

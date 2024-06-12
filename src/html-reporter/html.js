@@ -216,6 +216,7 @@ const stats = {
           }
         } else {
           let test;
+          // eslint-disable-next-line eqeqeq
           while ((test = hiddenTests.pop()) != null) {
             tests.appendChild(test);
           }

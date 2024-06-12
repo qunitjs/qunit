@@ -19,6 +19,7 @@ const config = Object.assign(standard, {
     'prefer-const': 'off',
     'prefer-promise-reject-errors': 'off',
     // extra
+    eqeqeq: ['error'],
     'no-unused-vars': ['error', { args: 'all', argsIgnorePattern: '^_' }]
   })
 });
