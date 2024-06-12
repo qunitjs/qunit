@@ -16,8 +16,7 @@ const config = {
   // If false, all failing tests will be expanded
   collapse: true,
 
-  // TODO: Make explicit in QUnit 3.
-  // current: undefined,
+  current: undefined,
 
   // whether or not to fail when there are zero tests
   // defaults to `true`
