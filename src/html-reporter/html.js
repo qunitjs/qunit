@@ -215,9 +215,8 @@ const stats = {
             tests.removeChild(hiddenTest);
           }
         } else {
-          let test;
-          while ((test = hiddenTests.pop()) != null) {
-            tests.appendChild(test);
+          while (hiddenTests.length) {
+            tests.appendChild(hiddenTests.shift());
           }
         }
       }
