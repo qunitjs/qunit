@@ -7,13 +7,17 @@ import { window, document } from '../globals';
   }
 
   const config = QUnit.config;
-  const hasOwn = Object.prototype.hasOwnProperty;
 
   // Stores fixture HTML for resetting later
   function storeFixture () {
     // Avoid overwriting user-defined values
-    // TODO: Change to negative null/undefined check once declared in /src/config.js
-    if (hasOwn.call(config, 'fixture')) {
+    if (config.fixture !== undefined) {
+      // If set to null, do nothing as the fixture feature is disabled.
+      //
+      // If set to string or HTMLElement, also do nothing because in that case
+      // we will restore the fixture to the configured value after each test,
+      // instead of using the initial DOM value of #qunit-fixture as the
+      // configured value to restore (default behaviour).
       return;
     }
 
@@ -27,7 +31,7 @@ import { window, document } from '../globals';
 
   // Resets the fixture DOM element if available.
   function resetFixture () {
-    if (config.fixture == null) {
+    if (config.fixture === undefined || config.fixture === null) {
       return;
     }
 

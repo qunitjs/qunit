@@ -19,14 +19,12 @@ const config = {
   current: undefined,
 
   // whether or not to fail when there are zero tests
-  // defaults to `true`
   failOnZeroTests: true,
 
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: '',
 
-  // TODO: Make explicit in QUnit 3.
-  // fixture: undefined,
+  fixture: undefined,
 
   // Depth up-to which object will be dumped
   maxDepth: 5,
