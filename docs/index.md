@@ -35,8 +35,8 @@ function add (a, b) {
   return a + b;
 }
 
-QUnit.module('add', hooks => {
-  QUnit.test('two numbers', assert => {
+QUnit.module('add', (hooks) => {
+  QUnit.test('two numbers', (assert) => {
     assert.equal(add(1, 2), 3);
   });
 });
@@ -76,7 +76,7 @@ ok 1 add > two numbers
 
 <p class="lead lead--center">v2.21.0 (<a href="https://github.com/qunitjs/qunit/blob/2.21.0/History.md">changelog</a>)</p>
 
-These are the officially supported [release channels](intro.md#release-channels) for QUnit:
+These are the official [release channels](intro.md#download) for QUnit:
 
 * Download: [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css)
 * npm: `npm install --save-dev qunit`

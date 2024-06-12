@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.16.0"
 ---
 
-In the HTML Reporter, select one or more tests to run by their internal ID.
+Used by the HTML Reporter, select one or more tests to run by their internal ID.
 
 <table>
 <tr>
@@ -22,7 +22,11 @@ In the HTML Reporter, select one or more tests to run by their internal ID.
 </tr>
 </table>
 
-<p class="note" markdown="1">This option can be controlled via the [HTML Reporter](../../intro.md#in-the-browser) interface.</p>
+<p class="note" markdown="1">
+
+This option can be controlled via the [HTML Reporter](../../browser.md) interface.
+
+</p>
 
 This property allows QUnit to run specific tests by their internally hashed identifier. You can specify one or multiple tests to run. This option powers the "Rerun" button in the HTML Reporter.
 

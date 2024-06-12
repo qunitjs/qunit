@@ -192,6 +192,22 @@
       }
     },
     {
+      "files": [
+        "docs/resources/**/*.html",
+        "docs/resources/**/*.js"
+      ],
+      "parserOptions": {
+        "ecmaVersion": 2018
+      },
+      "env": {
+        "es2017": true,
+        "browser": true
+      },
+      "globals": {
+        "QUnit": "readonly"
+      }
+    },
+    {
       "files": ["**/*.md"],
       "processor": "markdown/markdown"
     },

@@ -3,8 +3,12 @@
   sub:
     - name: Getting Started
       href: /intro/
+    - name: Browser Runner
+      href: /browser/
     - name: Command-line Interface
       href: /cli/
+    - name: Download
+      href: /intro/#download
     - name: Plugins
       href: /plugins/
     - name: QUnit 2.0 Upgrade Guide
@@ -17,7 +21,7 @@
     - name: Who's using QUnit?
       href: /projects/
     - name: Browser Support
-      href: /intro/#browser-support
+      href: /browser/#browser-support
     - name: About QUnit
       href: /about/
     - name: Brand Guidelines

@@ -4,6 +4,7 @@ title: QUnit.on()
 excerpt: Register an event listener callback.
 groups:
   - callbacks
+  - extension
 redirect_from:
   - "/callbacks/QUnit.on/"
 version_added: "2.2.0"

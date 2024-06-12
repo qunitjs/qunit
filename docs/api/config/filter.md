@@ -24,7 +24,7 @@ Select tests to run based on a substring or pattern match.
 
 <p class="note" markdown="1">
 
-This option is available as [CLI option](../../cli.md), as control in the [HTML Reporter](../../intro.md#in-the-browser), and supported as URL query parameter.
+This option is available as [CLI option](../../cli.md), as control in the [HTML Reporter](../../browser.md), and supported as URL query parameter.
 
 </p>
 
@@ -77,4 +77,13 @@ The below matches `foo`, `foo > sub`, and `foo.sub`, but skips `bar`, `bar.foo`,
 
 ```js
 QUnit.config.filter = '/^foo/';
+```
+
+### URL parameter
+
+```
+?filter=foo
+?filter=!foo
+?filter=/foo/
+?filter=!/foo/
 ```

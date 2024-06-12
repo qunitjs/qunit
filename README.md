@@ -18,8 +18,8 @@ project and has since evolved to test any client-side or server-side JavaScript 
 
 * [API documentation](https://qunitjs.com/api/)
 * [Guides how-to](https://qunitjs.com/guides/)
-* [Browser support](https://qunitjs.com/intro/#browser-support)
-* [Integrations](https://qunitjs.com/intro/#integrations)
+* [Browser support](https://qunitjs.com/browser/#browser-support)
+* [Browser automation](https://qunitjs.com/browser/#integrations)
 
 ## Support
 

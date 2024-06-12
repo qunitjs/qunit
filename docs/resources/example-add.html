@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta charset="utf-8">
 <title>QUnit</title>
 <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
@@ -7,14 +8,16 @@
   <div id="qunit-fixture"></div>
   <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
   <script>
-    function add(a, b) {
-      return a + b;
-    }
-    QUnit.module('add', function() {
-      QUnit.test('two numbers', function(assert) {
-        assert.equal(add(1, 2), 3);
-      });
+  function add (a, b) {
+    return a + b;
+  }
+
+  QUnit.module('add', function () {
+    QUnit.test('two numbers', function (assert) {
+      assert.equal(add(1, 2), 3);
     });
+  });
   </script>
 </body>
+</html>
 <!-- This is the demo on the home page. -->

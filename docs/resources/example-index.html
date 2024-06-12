@@ -1,20 +1,14 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta charset="utf-8">
 <title>QUnit</title>
 <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
+
   <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
-  <script>
-    function add(a, b) {
-      return a + b;
-    }
-    QUnit.module('add', function() {
-      QUnit.test('two numbers', function(assert) {
-        assert.equal(add(1, 2), 3);
-      });
-    });
-  </script>
+  <script type="module" src="calc.test.js"></script>
+  <script type="module" src="game.test.js"></script>
 </body>
-<!-- This is the example on the Getting Started page. -->
+</html>

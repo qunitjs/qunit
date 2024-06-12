@@ -22,6 +22,14 @@ In the HTML Reporter, hide results of passed tests.
 </tr>
 </table>
 
-<p class="note" markdown="1">This option can also be controlled via the [HTML Reporter](../../intro.md#in-the-browser).</p>
+<p class="note" markdown="1">
 
-By default, the HTML Reporter will list (in collapsed form) the names of all passed tests. Enable this option, to only list failing tests.
+This option can also be controlled via the [HTML Reporter](../../browser.md).
+
+</p>
+
+By default, the HTML Reporter will list both passing and failing tests. Passing tests are by default collapsed to display only their name. Enable `hidepassed` to hide passing tests completely, and show only failing tests in the list.
+
+## See also
+
+* [QUnit.config.collapse](./collapse.md)

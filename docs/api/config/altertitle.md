@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.config.altertitle
-excerpt: Insert a success or failure symbol in the document title (HTML Reporter).
+excerpt: Insert a success or failure symbol in the document title.
 groups:
   - config
 redirect_from:
@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-In the HTML Reporter, whether to insert a success or failure symbol in the document title.
+In browser environments, whether to insert a success or failure symbol in the document title.
 
 <table>
 <tr>

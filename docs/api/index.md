@@ -10,7 +10,7 @@ redirect_from:
 
 If you're new to QUnit, check out [Getting Started](../intro.md)!
 
-QUnit is a powerful, easy-to-use JavaScript unit test suite. QUnit has no dependencies and supports Node.js, SpiderMonkey, and all [major browsers](../intro.md#browser-support).
+QUnit is a powerful, easy-to-use JavaScript unit test suite. QUnit has no dependencies and supports Node.js, SpiderMonkey, and all [major browsers](../browser.md#browser-support).
 
 <!-- Omit trailing index.md, to aid in-repo directory browsing: -->
 

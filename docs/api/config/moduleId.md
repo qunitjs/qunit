@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.23.0"
 ---
 
-In the HTML Reporter, select one or more modules to run by their internal ID.
+Used by the HTML Reporter, this selects one or more modules by their internal ID to run exclusively.
 
 <table>
 <tr>
@@ -22,7 +22,11 @@ In the HTML Reporter, select one or more modules to run by their internal ID.
 </tr>
 </table>
 
-<p class="note" markdown="1">This option can be controlled via the [HTML Reporter](../../intro.md#in-the-browser) interface.</p>
+<p class="note" markdown="1">
+
+This option can be controlled via the [HTML Reporter](../../browser.md) interface.
+
+</p>
 
 Specify modules by their internally hashed identifier for a given module. You can specify one or multiple modules to run. This option powers the multi-select dropdown menu in the HTML Reporter.
 

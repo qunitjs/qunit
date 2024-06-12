@@ -5,16 +5,15 @@ amethyst:
   toc: true
 redirect_from:
   - "/guides/"
-  - "/cookbook/"
 ---
 
 <p class="lead" markdown="1">
 
-This tutorial gets you up-and-running with QUnit in Node.js or [in the browser](#in-the-browser).
+This tutorial gets you up-and-running with QUnit in Node.js or [in the browser](./browser.md).
 
 </p>
 
-QUnit has no dependencies and supports Node.js, SpiderMonkey, and all [major browsers](#browser-support).
+QUnit has no dependencies and supports Node.js, SpiderMonkey, and all [major browsers](./browser.md#browser-support).
 
 ## In Node.js
 
@@ -44,7 +43,7 @@ const add = require('../add.js');
 
 QUnit.module('add');
 
-QUnit.test('two numbers', assert => {
+QUnit.test('two numbers', (assert) => {
   assert.equal(add(1, 2), 3);
 });
 ```
@@ -91,99 +90,23 @@ Prior to QUnit 2.4.1, the npm package was published under the name "qunit**js**"
 
 The 0.x and 1.x versions of the "qunit" package on npm holds an alternative CLI that is now published as [node-qunit](https://github.com/qunitjs/node-qunit).
 
-### Linting
+---
+
+## Linting
 
 The [eslint-plugin-qunit](https://github.com/platinumazure/eslint-plugin-qunit) package has a variety of rules available for enforcing best testing practices as well as detecting broken tests.
 
 ---
 
-## In the Browser
+## Download
 
-To get started with QUnit in the browser, create a simple HTML file called `test.html` and include the following markup:
-
-```html
-<!DOCTYPE html>
-<meta charset="utf-8">
-<title>Test Suite</title>
-<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
-<body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture"></div>
-  <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
-</body>
-```
-
-That's all the markup you need to start writing tests. Note that this loads the library from the [jQuery CDN](https://code.jquery.com/qunit/).
-
-See also [Integrations & Downloads](#integrations) for integration you can use to automate browser testing. These usually also manage the HTML file for you.
-
-Let's add the following script, which tests an example `add()` function for adding two numbers together:
-
-```html
-<script>
-  function add(a, b) {
-    return a + b;
-  }
-
-  QUnit.module('add', function() {
-    QUnit.test('two numbers', function(assert) {
-      assert.equal(add(1, 2), 3);
-    });
-  });
-</script>
-```
-
-This code defines a test module for the `add()` function and verifies the result of adding two numbers.
-
-If you open this up in the browser you'll find a detailed report of the tests that ran and their assertions, as well as various options for filtering and re-running individual tests to help during development. Like so:
-
-<iframe loading="lazy" title="The test code running in the browser" src="/resources/example-index.html" style="height: 300px;"></iframe>
-
-Congrats! You just wrote and executed your first QUnit test!
-
-Check out the [API documentation](./api/index.md) to learn more about the QUnit APIs for organising tests and making assertions.
-
-### Browser support
-
-QUnit currently supports the following browsers:
-
-* Internet Explorer: 9+
-* Edge: 15+ (both legacy MSEdge and Chromium-based)
-* Firefox: 45+
-* Safari: 9+
-* Opera: 36+
-* Chrome: 58+
-* Android: 4.3+
-* iOS: 7+ (Mobile Safari)
-
-For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use the 1.x series of QUnit.
-
-### Integrations
-
-The following integrations can be used to automate the running of browser tests with QUnit:
-
-* [grunt-contrib-qunit](https://github.com/gruntjs/grunt-contrib-qunit) for [Grunt task runner](https://gruntjs.com/) (test Headless Chrome).
-* [testem](https://github.com/testem/testem) (test any local browser, including headless)
-* [wdio-qunit-service](https://webdriver.io/docs/wdio-qunit-service/) (test any local, headless, or cloud browser; via WDIO selenium driver)
-* [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) with [web-test-runner-qunit](https://github.com/brandonaaron/web-test-runner-qunit) (test any local, headless, or cloud browser)
-* [Karma](https://karma-runner.github.io/latest/index.html) with [karma-qunit](https://github.com/karma-runner/karma-qunit) (test any local browser or cloud).
-* [node-qunit-puppeteer](https://github.com/ameshkov/node-qunit-puppeteer) (test Headless Chrome).
-* [StealJS](https://stealjs.com/) with [steal-qunit](https://stealjs.com/docs/steal-qunit.html) via [Testee](https://www.npmjs.com/package/testee) (test any local browser or cloud).
-* [testcafe](https://github.com/DevExpress/testcafe) (test any local browser or cloud).
-
-Example projects:
-
-* [Krinkle/example-node-and-browser-qunit-ci](https://github.com/Krinkle/example-node-and-browser-qunit-ci/): Run QUnit tests locally and in CI, on Headless Firefox and Chrome (using Karma), and with Node.js.<br/>Also demonstrates code coverage, and testing of isomorphic JavaScript projects.
-
-### Release channels
-
-These are the officially supported download channels for QUnit releases:
+These are the official release channels for QUnit releases:
 
 * Download:
 
   QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/).
 
-  Or download them via the terminal:
+  Or download them via the terminal, and save them in your Git repository.
 
   ```bash
   curl -o qunit.css 'https://code.jquery.com/qunit/qunit-2.21.0.css'
@@ -205,7 +128,7 @@ These are the officially supported download channels for QUnit releases:
 
   You can then reference `node_modules/qunit/qunit/qunit.css` and `node_modules/qunit/qunit/qunit.js` in your HTML.
 
-  If your project uses a custom npm frontend that locates packages elsewhere, you may need to generate the HTML dynamically and use [`require.resolve()`](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to locate `qunit/qunit/qunit.js` and `qunit/qunit/qunit.css`. Alternatively, use one of the [Integrations](#integrations) such as karma-qunit which do all of that for you.
+  If your project uses a custom npm frontend that locates packages elsewhere, you may need to generate the HTML dynamically and use [`require.resolve()`](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to locate `qunit/qunit/qunit.js` and `qunit/qunit/qunit.css`. Alternatively, use one of the [Integrations](./browser.md#integrations) such as karma-qunit which can do this for you.
 
 * Bower:
 

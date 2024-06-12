@@ -22,7 +22,11 @@ Enable randomized ordering of tests.
 </tr>
 </table>
 
-<p class="note" markdown="1">This option is also available as [CLI option](../../cli.md), and as URL query parameter in the browser.</p>
+<p class="note" markdown="1">
+
+This option is also available as [CLI option](../../cli.md), and as URL query parameter in the [browser](../../browser.md).
+
+</p>
 
 When set to boolean true, or a string, QUnit will run tests in a [seeded-random order](https://en.wikipedia.org/wiki/Random_seed).
 
@@ -31,3 +35,7 @@ The provided string will be used as the seed in a pseudo-random number generator
 Randomly ordering your tests can help identify non-atomic tests which either depend on a previous test or are leaking state to subsequent tests.
 
 If `seed` is boolean true (or set as URL query parameter without a value), then QUnit will generate on-demand a new random value to use as seed. You can then read the seed at runtime from the configuration value, and use it to reproduce the same test sequence later.
+
+## See also
+
+* [QUnit.config.reorder](./reorder.md)
