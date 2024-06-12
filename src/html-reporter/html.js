@@ -735,16 +735,13 @@ const stats = {
     const tests = id('qunit-tests');
     const abortButton = id('qunit-abort-tests-button');
     let html = [
-      runEnd.testCounts.total,
-      ' tests completed in ',
+      '<span class="total">', runEnd.testCounts.total, '</span> tests completed in ',
       msToSec(runEnd.runtime),
-      ', with ',
-      runEnd.testCounts.failed,
-      ' failed, ',
-      runEnd.testCounts.skipped,
-      ' skipped, and ',
-      runEnd.testCounts.todo,
-      ' todo.',
+      '.<br/>',
+      '<span class="passed">', runEnd.testCounts.passed, '</span> passed, ',
+      '<span class="skipped">', runEnd.testCounts.skipped, '</span> skipped, ',
+      '<span class="failed">', runEnd.testCounts.failed, '</span> failed, ',
+      'and <span class="todo">', runEnd.testCounts.todo, '</span> todo.',
       getRerunFailedHtml(stats.failedTests)
     ].join('');
     let test;

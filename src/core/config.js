@@ -125,6 +125,8 @@ const config = {
 
   // Internal state
   _runStarted: false,
+  _event_listeners: Object.create(null),
+  _event_memory: {},
   _deprecated_timeout_shown: false,
   blocking: true,
   callbacks: {},

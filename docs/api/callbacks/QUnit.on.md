@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.on()
-excerpt: Register a callback to fire whenever the specified event is emitted.
+excerpt: Register an event listener callback.
 groups:
   - callbacks
 redirect_from:
@@ -11,9 +11,9 @@ version_added: "2.2.0"
 
 `QUnit.on( eventName, callback )`
 
-Register a callback to fire whenever a specified event is emitted.
+Register a callback that will be invoked after the specified event is emitted.
 
-This API implements the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc), and is the primary interface for use by continuous integration plugins and other reporting software.
+This API is the primary interface for QUnit plugins, continuous integration support, and other reporters. It is based on the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc).
 
 | type | parameter | description
 |--|--|--
@@ -123,6 +123,12 @@ QUnit.on('testEnd', testEnd => {
 ## The `runEnd` event
 
 The `runEnd` event indicates the end of a test run. It is emitted exactly once.
+
+<p class="note" markdown="1">
+
+Unlike other events, the `runEnd` event has **memory** (since QUnit 3.0). This means listening for the event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the `runEnd` event. These will be invoked immediately in that case. This removes the need for HTML scraping.
+
+</p>
 
 | `string` | `status` | Aggregate result of all tests, one of:<br>`failed`: at least one test failed or a global error occurred;<br>`passed`: there were no failed tests, which means there were only tests with a passed, skipped, or todo status. If [`QUnit.config.failOnZeroTests`](../config/failOnZeroTests.md) is disabled, then the run may also pass if there were no tests.
 | `Object` | `testCounts` | Aggregate counts about tests:
