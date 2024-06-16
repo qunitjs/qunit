@@ -12,7 +12,7 @@
     window.__grunt_contrib_qunit__.apply(window, arguments);
   }
 
-  QUnit.done(function () {
+  QUnit.on('runEnd', function () {
     // send coverage data if available
     if (window.__coverage__) {
       sendMessage('qunit.coverage', window.location.pathname, window.__coverage__);
