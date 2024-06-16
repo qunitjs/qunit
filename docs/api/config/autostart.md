@@ -38,9 +38,9 @@ Error: Unexpected test after runEnd.
 
 If you load test files asynchronously, make sure to disable autostart and call [`QUnit.start()`](../QUnit/start.md) accordingly.
 
-If you encounter this error unrelated to autostart, it might be that you're dynamically registering a new [QUnit.test](./test.md) from inside a hook or event callback towards the end of the test run, such as `hooks.after()` or `QUnit.done()`. It is recommended to define dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md) instead. ([#1663](https://github.com/qunitjs/qunit/issues/1663))
+If you encounter this error unrelated to autostart, it might be that you're dynamically registering a new [QUnit.test](../QUnit/test.md) from inside a hook or event callback towards the end of the test run, such as `hooks.after()` or `QUnit.done()`. It is recommended to define dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md) instead. ([#1663](https://github.com/qunitjs/qunit/issues/1663))
 
-To report global errors from a plugin or other integration layer, consider calling [QUnit.onUncaughtException()](../QUnit/onUncaughtException.md) instead.
+To report global errors from a plugin or other integration layer, consider calling [QUnit.onUncaughtException()](../extension/QUnit.onUncaughtException.md) instead.
 
 
 ### ESM Dynamic imports
