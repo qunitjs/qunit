@@ -103,9 +103,9 @@
 
 <p>If you load test files asynchronously, make sure to disable autostart and call <a href="/api/QUnit/start/"><code class="language-plaintext highlighter-rouge">QUnit.start()</code></a> accordingly.</p>
 
-<p>If you encounter this error unrelated to autostart, it might be that you’re dynamically registering a new <a href="./test.md">QUnit.test</a> from inside a hook or event callback towards the end of the test run, such as <code class="language-plaintext highlighter-rouge">hooks.after()</code> or <code class="language-plaintext highlighter-rouge">QUnit.done()</code>. It is recommended to define dynamic tests via <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> instead. (<a href="https://github.com/qunitjs/qunit/issues/1663">#1663</a>)</p>
+<p>If you encounter this error unrelated to autostart, it might be that you’re dynamically registering a new <a href="/api/QUnit/test/">QUnit.test</a> from inside a hook or event callback towards the end of the test run, such as <code class="language-plaintext highlighter-rouge">hooks.after()</code> or <code class="language-plaintext highlighter-rouge">QUnit.done()</code>. It is recommended to define dynamic tests via <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> instead. (<a href="https://github.com/qunitjs/qunit/issues/1663">#1663</a>)</p>
 
-<p>To report global errors from a plugin or other integration layer, consider calling <a href="../QUnit/onUncaughtException.md">QUnit.onUncaughtException()</a> instead.</p>
+<p>To report global errors from a plugin or other integration layer, consider calling <a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a> instead.</p>
 
 <h3 id="esm-dynamic-imports">ESM Dynamic imports</h3>
 
