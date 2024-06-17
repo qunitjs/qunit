@@ -103,7 +103,6 @@ const stats = {
   }
 
   function getUrlConfigHtml () {
-    let selection = false;
     const urlConfig = config.urlConfig;
     let urlConfigHtml = '';
 
@@ -116,6 +115,7 @@ const stats = {
           label: val
         };
       }
+      const currentVal = config[val.id];
 
       let escaped = escapeText(val.id);
       let escapedTooltip = escapeText(val.tooltip);
@@ -125,9 +125,10 @@ const stats = {
           "' title='" + escapedTooltip + "'><input id='qunit-urlconfig-" + escaped +
           "' name='" + escaped + "' type='checkbox'" +
           (val.value ? " value='" + escapeText(val.value) + "'" : '') +
-          (config[val.id] ? " checked='checked'" : '') +
+          (currentVal ? " checked='checked'" : '') +
           " title='" + escapedTooltip + "' />" + escapeText(val.label) + '</label>';
       } else {
+        let selection = false;
         urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
           "' title='" + escapedTooltip + "'>" + val.label +
           ": </label><select id='qunit-urlconfig-" + escaped +
@@ -137,7 +138,7 @@ const stats = {
           for (let j = 0; j < val.value.length; j++) {
             escaped = escapeText(val.value[j]);
             urlConfigHtml += "<option value='" + escaped + "'" +
-              (config[val.id] === val.value[j]
+              (currentVal === val.value[j]
                 ? (selection = true) && " selected='selected'"
                 : '') +
               '>' + escaped + '</option>';
@@ -146,15 +147,15 @@ const stats = {
           for (let j in val.value) {
             if (hasOwn.call(val.value, j)) {
               urlConfigHtml += "<option value='" + escapeText(j) + "'" +
-                (config[val.id] === j
+                (currentVal === j
                   ? (selection = true) && " selected='selected'"
                   : '') +
                 '>' + escapeText(val.value[j]) + '</option>';
             }
           }
         }
-        if (config[val.id] && !selection) {
-          escaped = escapeText(config[val.id]);
+        if (currentVal && !selection) {
+          escaped = escapeText(currentVal);
           urlConfigHtml += "<option value='" + escaped +
             "' selected='selected' disabled='disabled'>" + escaped + '</option>';
         }
@@ -343,7 +344,7 @@ const stats = {
       }
     };
 
-    if (config.moduleId.length) {
+    if (config.moduleId && config.moduleId.length) {
       // The module dropdown is seeded with the runtime configuration of the last run.
       //
       // We don't reference `config.moduleId` directly after this and keep our own

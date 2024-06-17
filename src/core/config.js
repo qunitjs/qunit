@@ -1,4 +1,5 @@
 import { globalThis, process, localSessionStorage } from '../globals';
+import { urlParams } from '../urlparams';
 import { extend } from './utilities';
 
 /**
@@ -26,6 +27,9 @@ const config = {
 
   fixture: undefined,
 
+  // HTML Reporter: Hide results of passed tests.
+  hidepassed: false,
+
   // Depth up-to which object will be dumped
   maxDepth: 5,
 
@@ -34,6 +38,10 @@ const config = {
 
   // HTML Reporter: Select module/test by array of internal IDs
   moduleId: undefined,
+
+  noglobals: false,
+
+  notrycatch: false,
 
   // By default, run previously failed tests first
   // very useful in combination with "Hide passed tests" checked
@@ -60,8 +68,27 @@ const config = {
   // long-running scripts.
   updateRate: 1000,
 
-  // HTML Reporter: List of URL parameters that are given visual controls
-  urlConfig: [],
+  // HTML Reporter: List of URL parameters that are given visual controls.
+  // These are given an `<input type=checkbox/>` or `<select/>` by the HTML Reporter.
+  // Values can be read from QUnit.urlParams.
+  urlConfig: [
+    {
+      id: 'hidepassed',
+      label: 'Hide passed tests',
+      tooltip: 'Only show tests and assertions that fail. Stored as query string.'
+    },
+    {
+      id: 'noglobals',
+      label: 'Check for globals',
+      tooltip: 'Enabling this will test if any test introduces new properties on the ' +
+        'global object (e.g. `window` in browsers). Stored as query string.'
+    },
+    {
+      id: 'notrycatch',
+      label: 'No try-catch',
+      tooltip: 'Enabling this will run tests outside of a try-catch block. Stored as query string.'
+    }
+  ],
 
   // Internal: The first unnamed module
   //
@@ -134,7 +161,7 @@ const config = {
 
 function readFlatPreconfigBoolean (val, dest) {
   if (typeof val === 'boolean' || (typeof val === 'string' && val !== '')) {
-    config[dest] = (val === true || val === 'true');
+    config[dest] = (val === true || val === 'true' || val === '1');
   }
 }
 
@@ -189,6 +216,26 @@ readFlatPreconfig(globalThis);
 const preConfig = globalThis && globalThis.QUnit && !globalThis.QUnit.version && globalThis.QUnit.config;
 if (preConfig) {
   extend(config, preConfig);
+}
+
+// Apply QUnit.urlParams
+// in accordance with /docs/api/config.index.md#order
+readFlatPreconfigString(urlParams.filter, 'filter');
+readFlatPreconfigString(urlParams.module, 'module');
+if (urlParams.moduleId) {
+  config.moduleId = [].concat(urlParams.moduleId);
+}
+if (urlParams.testId) {
+  config.testId = [].concat(urlParams.testId);
+}
+readFlatPreconfigBoolean(urlParams.hidepassed, 'hidepassed');
+readFlatPreconfigBoolean(urlParams.noglobals, 'noglobals');
+readFlatPreconfigBoolean(urlParams.notrycatch, 'notrycatch');
+if (urlParams.seed === true) {
+  // Generate a random seed if the option is specified without a value
+  config.seed = Math.random().toString(36).slice(2);
+} else {
+  readFlatPreconfigString(urlParams.seed, 'seed');
 }
 
 // Push a loose unnamed module to the modules collection

@@ -1,8 +1,13 @@
 QUnit.test('config', function (assert) {
   assert.strictEqual(QUnit.config.maxDepth, 5, 'maxDepth default');
-  assert.strictEqual(QUnit.config.filter, '!foobar', 'filter override');
-  assert.strictEqual(QUnit.config.seed, 'dummyfirstyes', 'seed override');
-  assert.strictEqual(QUnit.config.testTimeout, 7, 'testTimeout override');
+  assert.strictEqual(QUnit.config.filter, '!foobar', 'filter');
+  assert.strictEqual(QUnit.config.seed, 'dummyfirstyes', 'seed');
+  assert.strictEqual(QUnit.config.testTimeout, 7, 'testTimeout');
+
+  // readFlatPreconfigBoolean
+  assert.strictEqual(QUnit.config.altertitle, true, 'altertitle "true"');
+  assert.strictEqual(QUnit.config.noglobals, true, 'noglobals "1"');
+  assert.strictEqual(QUnit.config.notrycatch, false, 'notrycatch "false"');
 });
 
 QUnit.test('dummy', function (assert) {

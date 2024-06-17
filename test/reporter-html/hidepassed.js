@@ -23,7 +23,7 @@ QUnit.module('hidepassed', function () {
     assert.strictEqual(document.getElementById('qunit-tests').children.length, 1);
   });
   QUnit.test('config parsed', function (assert) {
-    assert.strictEqual(QUnit.config.hidepassed, 'true');
+    assert.strictEqual(QUnit.config.hidepassed, true);
   });
   QUnit.test('interface', function (assert) {
     var node = document.getElementById('qunit-urlconfig-hidepassed');

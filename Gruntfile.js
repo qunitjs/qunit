@@ -85,6 +85,7 @@ module.exports = function (grunt) {
             'test/only-each.html',
             'test/overload.html',
             'test/performance-mark.html',
+            'test/preconfig-flat-testId.html',
             'test/preconfig-flat.html',
             'test/preconfig-object.html',
             'test/reorder.html',

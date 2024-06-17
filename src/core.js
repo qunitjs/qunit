@@ -15,6 +15,7 @@ import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging';
 import { sourceFromStacktrace } from './core/stacktrace';
 import ProcessingQueue from './core/processing-queue';
 
+import { urlParams } from './urlparams';
 import { on, emit } from './events';
 import onUncaughtException from './core/on-uncaught-exception';
 import diff from './core/diff';
@@ -39,6 +40,7 @@ QUnit.version = '@VERSION';
 
 extend(QUnit, {
   config,
+  urlParams,
 
   diff,
   dump,

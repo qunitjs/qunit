@@ -1,96 +1,30 @@
 import QUnit from '../core';
-import { window } from '../globals';
 
-(function () {
-  // Only interact with URLs via window.location
-  const location = typeof window !== 'undefined' && window.location;
-  if (!location) {
-    return;
-  }
+const hasOwn = Object.prototype.hasOwnProperty;
 
-  const urlParams = getUrlParams();
+// Wait until QUnit.begin() so that users can add their keys to urlConfig
+// any time during test loading, including during `QUnit.on('runStart')`.
+QUnit.begin(function () {
+  const urlConfig = QUnit.config.urlConfig;
 
-  // TODO: Move to /src/core/ in QUnit 3
-  // TODO: Document this as public API (read-only)
-  QUnit.urlParams = urlParams;
-
-  // TODO: Move to /src/core/config.js in QUnit 3,
-  // in accordance with /docs/api/config.index.md#order
-  QUnit.config.filter = urlParams.filter;
-  QUnit.config.module = urlParams.module;
-  QUnit.config.moduleId = [].concat(urlParams.moduleId || []);
-  QUnit.config.testId = [].concat(urlParams.testId || []);
-
-  // Test order randomization
-  if (urlParams.seed === true) {
-    // Generate a random seed if the option is specified without a value
-    QUnit.config.seed = Math.random().toString(36).slice(2);
-  } else if (urlParams.seed) {
-    QUnit.config.seed = urlParams.seed;
-  }
-
-  // Add URL-parameter-mapped config values with UI form rendering data
-  QUnit.config.urlConfig.push(
-    {
-      id: 'hidepassed',
-      label: 'Hide passed tests',
-      tooltip: 'Only show tests and assertions that fail. Stored as query-strings.'
-    },
-    {
-      id: 'noglobals',
-      label: 'Check for Globals',
-      tooltip: 'Enabling this will test if any test introduces new properties on the ' +
-        'global object (`window` in Browsers). Stored as query-strings.'
-    },
-    {
-      id: 'notrycatch',
-      label: 'No try-catch',
-      tooltip: 'Enabling this will run tests outside of a try-catch block. Makes debugging ' +
-        'exceptions in IE reasonable. Stored as query-strings.'
-    }
-  );
-
-  QUnit.begin(function () {
-    const urlConfig = QUnit.config.urlConfig;
-
-    for (let i = 0; i < urlConfig.length; i++) {
-      // Options can be either strings or objects with nonempty "id" properties
-      let option = QUnit.config.urlConfig[i];
-      if (typeof option !== 'string') {
-        option = option.id;
-      }
-
-      if (QUnit.config[option] === undefined) {
-        QUnit.config[option] = urlParams[option];
-      }
-    }
-  });
-
-  function getUrlParams () {
-    const urlParams = Object.create(null);
-    const params = location.search.slice(1).split('&');
-    const length = params.length;
-
-    for (let i = 0; i < length; i++) {
-      if (params[i]) {
-        const param = params[i].split('=');
-        const name = decodeQueryParam(param[0]);
-
-        // Allow just a key to turn on a flag, e.g., test.html?noglobals
-        const value = param.length === 1 ||
-          decodeQueryParam(param.slice(1).join('='));
-        if (name in urlParams) {
-          urlParams[name] = [].concat(urlParams[name], value);
-        } else {
-          urlParams[name] = value;
-        }
-      }
+  for (let i = 0; i < urlConfig.length; i++) {
+    // Options can be either strings or objects with nonempty "id" properties
+    let option = QUnit.config.urlConfig[i];
+    if (typeof option !== 'string') {
+      option = option.id;
     }
 
-    return urlParams;
+    // only create new property for user-defined QUnit.config.urlConfig keys
+    // that don't conflict with a built-in QUnit.config option or are otherwise
+    // already set. This prevents internal TypeError from bad urls where keys
+    // could otherwise unexpectedly be set to type string or array.
+    //
+    // Given that HTML Reporter renders checkboxes based on QUnit.config
+    // instead of QUnit.urlParams, this also helps make sure that checkboxes
+    // for built-in keys are correctly shown as off if a urlParams value exists
+    // but was invalid and discarded by config.js.
+    if (!hasOwn.call(QUnit.config, option)) {
+      QUnit.config[option] = QUnit.urlParams[option];
+    }
   }
-
-  function decodeQueryParam (param) {
-    return decodeURIComponent(param.replace(/\+/g, '%20'));
-  }
-}());
+});

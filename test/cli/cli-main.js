@@ -26,7 +26,11 @@ QUnit.module('CLI Main', () => {
       env: {
         qunit_config_filter: '!foobar',
         qunit_config_seed: 'dummyfirstyes',
-        qunit_config_testtimeout: '7'
+        qunit_config_testtimeout: '7',
+
+        qunit_config_altertitle: 'true',
+        qunit_config_noglobals: '1',
+        qunit_config_notrycatch: 'false'
       }
     });
     assert.equal(execution.snapshot, `TAP version 13

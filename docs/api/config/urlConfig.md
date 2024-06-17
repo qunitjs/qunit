@@ -10,7 +10,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-In the HTML Reporter, this array is used to generate additional input fields in the toolbar.
+In the HTML Reporter, this array is used to create additional input fields in the toolbar.
 
 <table>
 <tr>
@@ -23,7 +23,7 @@ In the HTML Reporter, this array is used to generate additional input fields in 
 </tr>
 </table>
 
-This property controls which form controls to put into the QUnit toolbar. By default, the `noglobals` and `notrycatch` checkboxes are registered. By adding to this array, you can add your own checkboxes and select dropdowns.
+This property controls which form controls display in the QUnit toolbar. By default, the `noglobals` and `notrycatch` checkboxes are registered. By adding to this array, the HTML Reporter will add extra checkboxes and select dropdowns for your custom configuration.
 
 Each array item should be an object shaped as follows:
 
@@ -32,15 +32,15 @@ Each array item should be an object shaped as follows:
   id: string,
   label: string,
   tooltip: string, // optional
-  value: string | array | object // optional
+  value: undefined | string | array | object // optional
 });
 ```
 
-* The `id` property is used as the key for storing the value under `QUnit.config`, and as URL query parameter.
-* The `label` property is used as text label in the user interface.
-* The optional `tooltip` property is used as the `title` attribute and should explain what the control is used for.
+* The `id` property is used as URL query parameter name, and corresponding key under `QUnit.urlParams`.
+* The `label` property is used as text for the HTML label element in the user interface.
+* The optional `tooltip` property is used as the `title` attribute and should explain what you code will do with this option.
 
-Each element should also have a `value` property controlling available options and rendering.
+Each item may also have a `value` property:
 
 If `value` is undefined, the option will render as a checkbox. The corresponding URL parameter will be set to "true" when the checkbox is checked, and otherwise will be absent.
 
