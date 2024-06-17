@@ -29,14 +29,6 @@ const stats = {
   });
   let dropdownData = null;
 
-  function trim (string) {
-    if (typeof string.trim === 'function') {
-      return string.trim();
-    } else {
-      return string.replace(/^\s+|\s+$/g, '');
-    }
-  }
-
   function addEvent (elem, type, fn) {
     elem.addEventListener(type, fn, false);
   }
@@ -79,7 +71,7 @@ const stats = {
     }
 
     // Trim for prettiness
-    elem.className = trim(set);
+    elem.className = set.trim();
   }
 
   function id (name) {
@@ -99,7 +91,7 @@ const stats = {
   function interceptNavigation (ev) {
     // Trim potential accidental whitespace so that QUnit doesn't throw an error about no tests matching the filter.
     const filterInputElem = id('qunit-filter-input');
-    filterInputElem.value = trim(filterInputElem.value);
+    filterInputElem.value = filterInputElem.value.trim();
 
     applyUrlParams();
 
