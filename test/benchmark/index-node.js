@@ -1,6 +1,6 @@
 /* eslint-env node */
 
-global.QUnit = require('qunit');
+require('qunit');
 
 if (process.argv[2] === 'fast-deep-equal') {
   const fde = require('fast-deep-equal/es6');

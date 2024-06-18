@@ -212,7 +212,7 @@ readFlatPreconfig(globalThis);
 // Apply a predefined QUnit.config object
 //
 // Ignore QUnit.config if it is a QUnit distribution instead of preconfig.
-// That means QUnit was loaded twice! (Use the same approach as export.js)
+// This should use the same heuristic as the export in qunit.js.
 const preConfig = globalThis && globalThis.QUnit && !globalThis.QUnit.version && globalThis.QUnit.config;
 if (preConfig) {
   extend(config, preConfig);
