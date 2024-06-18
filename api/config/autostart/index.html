@@ -128,9 +128,23 @@
 
 <h3 id="loading-with-requirejs">Loading with RequireJS</h3>
 
-<p>This example uses <a href="https://requirejs.org/">RequireJS</a> to call a “require” function as defined by the <a href="https://github.com/amdjs/amdjs-api/blob/master/require.md">AMD specification</a> (Asynchronous Module Definition).</p>
+<p>This example uses <a href="https://requirejs.org/">RequireJS</a> to load your test files through the <code class="language-plaintext highlighter-rouge">require()</code> function (as defined in the <a href="https://github.com/amdjs/amdjs-api/blob/master/require.md">AMD specification</a>).</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">autostart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<p>It is recommended to load QUnit itself before RequireJS. See also <a href="https://github.com/requirejs/requirejs/wiki/Test-frameworks">RequireJS wiki</a>.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;title&gt;</span>QUnit<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"./lib/qunit.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../lib/qunit.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../lib/requirejs/require.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"tests.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// tests.js</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">autostart</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
 <span class="nf">require</span><span class="p">(</span>
   <span class="p">[</span>
