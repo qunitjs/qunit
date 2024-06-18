@@ -42,7 +42,6 @@ If you encounter this error unrelated to autostart, it might be that you're dyna
 
 To report global errors from a plugin or other integration layer, consider calling [QUnit.onUncaughtException()](../extension/QUnit.onUncaughtException.md) instead.
 
-
 ### ESM Dynamic imports
 
 This example uses the [import()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) operator to dynamically load ECMAScript module (ESM) files.
@@ -66,9 +65,24 @@ Promise.all([
 
 ### Loading with RequireJS
 
-This example uses [RequireJS](https://requirejs.org/) to call a "require" function as defined by the [AMD specification](https://github.com/amdjs/amdjs-api/blob/master/require.md) (Asynchronous Module Definition).
+This example uses [RequireJS](https://requirejs.org/) to load your test files through the `require()` function (as defined in the [AMD specification](https://github.com/amdjs/amdjs-api/blob/master/require.md)).
 
+It is recommended to load QUnit itself before RequireJS. See also [RequireJS wiki](https://github.com/requirejs/requirejs/wiki/Test-frameworks).
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>QUnit</title>
+<link rel="stylesheet" href="./lib/qunit.css">
+<body>
+  <div id="qunit"></div>
+  <script src="../lib/qunit.js"></script>
+  <script src="../lib/requirejs/require.js"></script>
+  <script src="tests.js"></script>
+</body>
+```
 ```js
+// tests.js
 QUnit.config.autostart = false;
 
 require(
