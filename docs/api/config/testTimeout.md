@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.config.testTimeout
-excerpt: Set a global default timeout after which a test will fail.
+excerpt: Set a global default timeout for async tests.
 groups:
   - config
 redirect_from:
@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.
+Set a global default timeout in milliseconds after which an async test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.
 
 <table>
 <tr>
@@ -22,13 +22,15 @@ Set a global default timeout in milliseconds after which a test will fail. This 
 </tr>
 </table>
 
-This can be overridden on a per-test basis via [assert.timeout()](../assert/timeout.md).
+Only async tests can timeout. An async test is any [QUnit.test](../QUnit/test.md) with an async function as callback, or that returns a Promise, or that calls [assert.async()](../assert/async.md).
 
-It is recommended to keep the global default at `3000` (3 seconds) or higher, to avoid intermittent test failures from unrelated delays that may periodically occur inside a browser or CI service.
+The `testTimeout` config can be overridden via [assert.timeout()](../assert/timeout.md) to any lower or higher amount.
 
-## Introducing a timeout
+It is recommended to keep the global default at `3000` or higher (3 seconds), to avoid intermittent failures from unrelated delays that may periodically occur inside a browser or CI service.
 
-Prior to QUnit 3, there has not been a default timeout. This meant that a test could time out or get stuck for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).
+## Introducing a default timeout
+
+Prior to QUnit 3, there has not been a default timeout. This meant that a test hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).
 
 QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.
 
@@ -40,16 +42,29 @@ Starting in QUnit 2.21, a deprecation warning will be logged if a test takes lon
 Test {name} took longer than 3000ms, but no timeout was set.
 ```
 
-You can prepare yourself for QUnit 3 when this happens, by calling [assert.timeout()](../assert/timeout.md) inside the slow test, or by setting `QUnit.config.testTimeout` once globally with a higher timeout (in your [HTML or bootstrap script](../config/index.md)).
+You can address this warning before upgrading to QUnit 3 as follows:
 
-```js
-QUnit.config.testTimeout = 60000; // 1 minute
-```
+* **(Recommended)** Call [assert.timeout()](../assert/timeout.md) inside the slow test.
 
-Depending on your test runner of choice, there may be also other convenient ways to set configuration:
+  ```js
+  QUnit.test('example', function (assert) {
+    assert.timeout(5000);
+    // …
+  });
+  ```
 
-* Set `qunit_config_testtimeout` via [preconfig](../config/index.md) as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).
-* Set `testTimeout` via [karma-qunit](https://github.com/karma-runner/karma-qunit/#readme):
+* Or, set `QUnit.config.testTimeout` once from an [HTML or bootstrap script](../config/index.md).
+
+  ```js
+  QUnit.config.testTimeout = 60000; // 1 minute
+  ```
+
+* Or, set `qunit_config_testtimeout` via [preconfig](../config/index.md) as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).
+
+* Or, your test runner of choice may offer other ways to set configuration.
+
+  For example, to set `testTimeout` via [karma-qunit](https://github.com/karma-runner/karma-qunit/#readme):
+
   ```js
   config.set({
     frameworks: ['qunit'],
