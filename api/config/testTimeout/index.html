@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=4ca9bae3" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.config.testTimeout | QUnit</title>
-<meta property="og:title" content="QUnit.config.testTimeout"><meta name="description" content="Set a global default timeout after which a test will fail."><meta property="og:description" content="Set a global default timeout after which a test will fail."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit.config.testTimeout"><meta name="description" content="Set a global default timeout for async tests."><meta property="og:description" content="Set a global default timeout for async tests."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -75,7 +75,7 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p>Set a global default timeout in milliseconds after which a test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.</p>
+<p>Set a global default timeout in milliseconds after which an async test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.</p>
 
 <table>
 <tr>
@@ -88,13 +88,15 @@
 </tr>
 </table>
 
-<p>This can be overridden on a per-test basis via <a href="/api/assert/timeout/">assert.timeout()</a>.</p>
+<p>Only async tests can timeout. An async test is any <a href="/api/QUnit/test/">QUnit.test</a> with an async function as callback, or that returns a Promise, or that calls <a href="/api/assert/async/">assert.async()</a>.</p>
 
-<p>It is recommended to keep the global default at <code class="language-plaintext highlighter-rouge">3000</code> (3 seconds) or higher, to avoid intermittent test failures from unrelated delays that may periodically occur inside a browser or CI service.</p>
+<p>The <code class="language-plaintext highlighter-rouge">testTimeout</code> config can be overridden via <a href="/api/assert/timeout/">assert.timeout()</a> to any lower or higher amount.</p>
 
-<h2 id="introducing-a-timeout">Introducing a timeout</h2>
+<p>It is recommended to keep the global default at <code class="language-plaintext highlighter-rouge">3000</code> or higher (3 seconds), to avoid intermittent failures from unrelated delays that may periodically occur inside a browser or CI service.</p>
 
-<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test could time out or get stuck for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
+<h2 id="introducing-a-default-timeout">Introducing a default timeout</h2>
+
+<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
 
 <p>QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.</p>
 
@@ -105,16 +107,32 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test {name} took longer than 3000ms, but no timeout was set.
 </code></pre></div></div>
 
-<p>You can prepare yourself for QUnit 3 when this happens, by calling <a href="/api/assert/timeout/">assert.timeout()</a> inside the slow test, or by setting <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once globally with a higher timeout (in your <a href="/api/config/">HTML or bootstrap script</a>).</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">testTimeout</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">;</span> <span class="c1">// 1 minute</span>
-</code></pre></div></div>
-
-<p>Depending on your test runner of choice, there may be also other convenient ways to set configuration:</p>
+<p>You can address this warning before upgrading to QUnit 3 as follows:</p>
 
 <ul>
-  <li>Set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</li>
-  <li>Set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:
+  <li>
+    <p><strong>(Recommended)</strong> Call <a href="/api/assert/timeout/">assert.timeout()</a> inside the slow test.</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+  <span class="c1">// …</span>
+<span class="p">});</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Or, set <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once from an <a href="/api/config/">HTML or bootstrap script</a>.</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">testTimeout</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">;</span> <span class="c1">// 1 minute</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Or, set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</p>
+  </li>
+  <li>
+    <p>Or, your test runner of choice may offer other ways to set configuration.</p>
+
+    <p>For example, to set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:</p>
+
     <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">config</span><span class="p">.</span><span class="nf">set</span><span class="p">({</span>
   <span class="na">frameworks</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">qunit</span><span class="dl">'</span><span class="p">],</span>
   <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">karma-qunit</span><span class="dl">'</span><span class="p">],</span>
@@ -210,7 +228,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#introducing-a-timeout">Introducing a timeout</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#introducing-a-default-timeout">Introducing a default timeout</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
 </aside>
 
 </div>
