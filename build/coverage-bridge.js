@@ -1,13 +1,6 @@
-/* global QUnit, window, define, require */
+/* global QUnit, window */
 
-(function (factory) {
-  // For the amd tests we need to delay setup
-  if (typeof define === 'function' && define.amd) {
-    require(['qunit'], factory);
-  } else {
-    factory(QUnit);
-  }
-}(function (QUnit) {
+(function () {
   function sendMessage () {
     window.__grunt_contrib_qunit__.apply(window, arguments);
   }
@@ -18,4 +11,4 @@
       sendMessage('qunit.coverage', window.location.pathname, window.__coverage__);
     }
   });
-}));
+}());

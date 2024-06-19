@@ -1,21 +1,12 @@
-/* eslint-env browser, amd */
-define(['qunit'], function (QUnit) {
-  return function () {
-    QUnit.module('AMD autostart', {
-      after: function (assert) {
-        assert.true(true, 'after hook ran');
-      }
-    });
+/* eslint-env browser */
 
-    QUnit.test('Prove the test run started as expected', function (assert) {
-      assert.expect(2);
-      assert.strictEqual(window.beginData.totalTests, 1, 'Should have expected 1 test');
-    });
+QUnit.module('AMD autostart', {
+  after: function (assert) {
+    assert.true(true, 'after hook ran');
+  }
+});
 
-    setTimeout(function () {
-      QUnit.test('Async-loaded tests should not run after hook again', function (assert) {
-        assert.expect(0);
-      });
-    }, 5000);
-  };
+QUnit.test('Prove the test run started as expected', function (assert) {
+  assert.expect(2);
+  assert.strictEqual(window.beginData.totalTests, 1, 'Should have expected 1 test');
 });
