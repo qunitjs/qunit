@@ -1,178 +1,483 @@
 /* global setTimeout */
 QUnit.module('QUnit.module', function () {
-  QUnit.module('before/beforeEach/afterEach/after', {
-    before: function () {
-      this.lastHook = 'module-before';
-    },
-    beforeEach: function (assert) {
-      assert.strictEqual(this.lastHook, 'module-before',
-        "Module's beforeEach runs after before");
-      this.lastHook = 'module-beforeEach';
-    },
-    afterEach: function (assert) {
-      assert.strictEqual(this.lastHook, 'test-block',
-        "Module's afterEach runs after current test block");
-      this.lastHook = 'module-afterEach';
-    },
-    after: function (assert) {
-      assert.strictEqual(this.lastHook, 'module-afterEach',
-        "Module's afterEach runs before after");
-      this.lastHook = 'module-after';
+  function flat (obj) {
+    var str = [];
+    for (var key in obj) {
+      str.push(key + '=' + obj[key]);
     }
-  });
+    return str.join(' ') || '(empty)';
+  }
 
-  QUnit.test('hooks order', function (assert) {
-    assert.expect(4);
+  var actual = {};
+  var expected = {
+    'parent with children': [
+      // parent > child > one
+      // parent > child > two
+      'parent-before: (empty)',
+      'child-before: before=P',
+      'parent-beforeEach: before=PC',
+      'child-beforeEach: before=PC beforeEach=P',
+      'child-test: before=PC beforeEach=PC',
+      'child-afterEach: before=PC beforeEach=PC tester=1',
+      'parent-afterEach: before=PC beforeEach=PC tester=1 afterEach=C',
+      'parent-beforeEach: before=PC',
+      'child-beforeEach: before=PC beforeEach=P',
+      'child-test: before=PC beforeEach=PC',
+      'child-afterEach: before=PC beforeEach=PC tester=2',
+      'parent-afterEach: before=PC beforeEach=PC tester=2 afterEach=C',
+      'child-after: before=PC beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: before=PC beforeEach=PC tester=2 afterEach=CP after=C'
+    ],
+    // FIXME: https://github.com/qunitjs/qunit/issues/1328
+    // - parent test missing own state if there is a child module before the test.
+    // - last test state presists into after()
+    'parent with trailing test': [
+      // parent > child > one
+      // parent > two
+      'parent-before: (empty)',
+      'child-before: before=P',
+      'parent-beforeEach: before=PC',
+      'child-beforeEach: before=PC beforeEach=P',
+      'child-test: before=PC beforeEach=PC',
+      'child-afterEach: before=PC beforeEach=PC tester=1',
+      'parent-afterEach: before=PC beforeEach=PC tester=1 afterEach=C',
+      'child-after: before=PC beforeEach=PC tester=1 afterEach=CP',
+      'parent-beforeEach: (empty)',
+      'parent-test: beforeEach=P',
+      'parent-afterEach: beforeEach=P tester=2',
+      'parent-after: beforeEach=P tester=2 afterEach=P'
+    ],
 
-    assert.strictEqual(this.lastHook, 'module-beforeEach',
-      "Module's beforeEach runs before current test block");
-    this.lastHook = 'test-block';
-  });
+    // FIXME: https://github.com/qunitjs/qunit/issues/1328
+    // child is missing parent state if there is an initial test before the child module.
+    'parent with initial test': [
+      // parent > one
+      // parent > child > two
+      'parent-before: (empty)',
+      'parent-beforeEach: before=P',
+      'parent-test: before=P beforeEach=P',
+      'parent-afterEach: before=P beforeEach=P tester=1',
+      'child-before: (empty)',
+      'parent-beforeEach: before=C',
+      'child-beforeEach: before=C beforeEach=P',
+      'child-test: before=C beforeEach=PC',
+      'child-afterEach: before=C beforeEach=PC tester=2',
+      'parent-afterEach: before=C beforeEach=PC tester=2 afterEach=C',
+      'child-after: before=C beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: before=C beforeEach=PC tester=2 afterEach=CP after=C'
+    ],
 
-  QUnit.module('before', {
-    before: function (assert) {
-      assert.true(true, 'before hook ran');
+    // Confirm each step waits for the previous before restoring/saving testEnvironment
+    // Should be identical to 'parent with initial test'
+    'async test': [
+      // parent > one
+      // parent > child > two
+      'parent-before: (empty)',
+      'parent-beforeEach: before=P',
+      'parent-test: before=P beforeEach=P',
+      'parent-afterEach: before=P beforeEach=P tester=1',
+      'child-before: (empty)',
+      'parent-beforeEach: before=C',
+      'child-beforeEach: before=C beforeEach=P',
+      'child-test: before=C beforeEach=PC',
+      'child-afterEach: before=C beforeEach=PC tester=2',
+      'parent-afterEach: before=C beforeEach=PC tester=2 afterEach=C',
+      'child-after: before=C beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: before=C beforeEach=PC tester=2 afterEach=CP after=C'
+    ],
+    'multiple hooks': [
+      'parent-before: (empty)',
+      'parent-before: before=P1',
+      'child-before: before=P1P2',
+      'child-before: before=P1P2C1',
+      'parent-beforeEach: before=P1P2C1C2',
+      'parent-beforeEach: before=P1P2C1C2 beforeEach=P1',
+      'child-beforeEach: before=P1P2C1C2 beforeEach=P1P2',
+      'child-beforeEach: before=P1P2C1C2 beforeEach=P1P2C1',
+      'child-test: before=P1P2C1C2 beforeEach=P1P2C1C2',
+      'child-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2',
+      'child-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2',
+      'parent-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1',
+      'parent-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2',
+      'child-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1',
+      'child-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2',
+      'parent-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2C1',
+      'parent-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2C1P2'
+    ]
+  };
 
-      if (typeof this.beforeCount === 'undefined') {
-        this.beforeCount = 0;
-      }
+  QUnit.module('parent with children', function (hooks) {
+    var x = actual['parent with children'] = [];
 
-      this.beforeCount++;
-    }
-  });
+    hooks.before(function () {
+      x.push('parent-before: ' + flat(this));
+      this.before = (this.before || '') + 'P';
+    });
+    hooks.beforeEach(function () {
+      x.push('parent-beforeEach: ' + flat(this));
+      this.beforeEach = (this.beforeEach || '') + 'P';
+    });
+    hooks.afterEach(function () {
+      x.push('parent-afterEach: ' + flat(this));
+      this.afterEach = (this.afterEach || '') + 'P';
+    });
+    hooks.after(function () {
+      x.push('parent-after: ' + flat(this));
+      this.after = (this.after || '') + 'P';
+    });
 
-  QUnit.test('runs before first test', function (assert) {
-    assert.expect(2);
-    assert.equal(this.beforeCount, 1, 'beforeCount should be one');
-  });
+    QUnit.module('child', function (hooks) {
+      hooks.before(function () {
+        x.push('child-before: ' + flat(this));
+        this.before = (this.before || '') + 'C';
+      });
+      hooks.beforeEach(function () {
+        x.push('child-beforeEach: ' + flat(this));
+        this.beforeEach = (this.beforeEach || '') + 'C';
+      });
+      hooks.afterEach(function () {
+        x.push('child-afterEach: ' + flat(this));
+        this.afterEach = (this.afterEach || '') + 'C';
+      });
+      hooks.after(function () {
+        x.push('child-after: ' + flat(this));
+        this.after = (this.after || '') + 'C';
+      });
 
-  QUnit.test('does not run before subsequent tests', function (assert) {
-    assert.expect(1);
-    assert.equal(this.beforeCount, 1, 'beforeCount did not increase from last test');
-  });
-
-  QUnit.module('before (skip)', {
-    before: function (assert) {
-      assert.true(true, 'before hook ran');
-    }
-  });
-
-  QUnit.skip('first test in module is skipped');
-
-  QUnit.test('runs before first unskipped test', function (assert) {
-    assert.expect(1);
-  });
-
-  QUnit.module('after', {
-    after: function (assert) {
-      assert.true(true, 'after hook ran');
-    }
-  });
-
-  QUnit.test('does not run after initial tests', function (assert) {
-    assert.expect(0);
-  });
-
-  QUnit.test('runs after final test', function (assert) {
-    assert.expect(1);
-  });
-
-  QUnit.module('after (skip)', {
-    after: function (assert) {
-      assert.true(true, 'after hook ran');
-    }
-  });
-
-  QUnit.test('does not run after initial tests', function (assert) {
-    assert.expect(0);
-  });
-
-  QUnit.test('runs after final unskipped test', function (assert) {
-    assert.expect(1);
-  });
-
-  QUnit.skip('last test in module is skipped');
-
-  QUnit.module('before/after with all tests skipped', {
-    before: function (assert) {
-      assert.true(false, 'should not occur');
-    },
-    after: function (assert) {
-      assert.true(false, 'should not occur');
-    }
-  });
-
-  QUnit.skip('verifier');
-
-  QUnit.module('Test context object', {
-    beforeEach: function (assert) {
-      var key;
-      var keys = [];
-
-      for (key in this) {
-        keys.push(key);
-      }
-      assert.deepEqual(keys, ['helper']);
-    },
-    afterEach: function () {},
-    helper: function () {}
-  });
-
-  QUnit.test('keys', function (assert) {
-    assert.expect(1);
-    this.contextTest = true;
-  });
-
-  QUnit.module('afterEach and assert.async', {
-    beforeEach: function () {
-      this.state = false;
-    },
-    afterEach: function (assert) {
-      assert.strictEqual(this.state, true, 'Test afterEach.');
-    }
-  });
-
-  QUnit.test('afterEach must be called after test ended', function (assert) {
-    var testContext = this;
-    var done = assert.async();
-    assert.expect(1);
-    setTimeout(function () {
-      testContext.state = true;
-      done();
+      QUnit.test('one', function (assert) {
+        x.push('child-test: ' + flat(this));
+        this.tester = '1';
+        assert.true(true);
+      });
+      QUnit.test('two', function (assert) {
+        x.push('child-test: ' + flat(this));
+        this.tester = '2';
+        assert.true(true);
+      });
     });
   });
 
-  QUnit.module('async beforeEach test', {
-    beforeEach: function (assert) {
+  QUnit.module('parent with trailing test', function (hooks) {
+    var x = actual['parent with trailing test'] = [];
+
+    hooks.before(function () {
+      x.push('parent-before: ' + flat(this));
+      this.before = (this.before || '') + 'P';
+    });
+    hooks.beforeEach(function () {
+      x.push('parent-beforeEach: ' + flat(this));
+      this.beforeEach = (this.beforeEach || '') + 'P';
+    });
+    hooks.afterEach(function () {
+      x.push('parent-afterEach: ' + flat(this));
+      this.afterEach = (this.afterEach || '') + 'P';
+    });
+    hooks.after(function () {
+      x.push('parent-after: ' + flat(this));
+      this.after = (this.after || '') + 'P';
+    });
+
+    QUnit.module('child', function (hooks) {
+      hooks.before(function () {
+        x.push('child-before: ' + flat(this));
+        this.before = (this.before || '') + 'C';
+      });
+      hooks.beforeEach(function () {
+        x.push('child-beforeEach: ' + flat(this));
+        this.beforeEach = (this.beforeEach || '') + 'C';
+      });
+      hooks.afterEach(function () {
+        x.push('child-afterEach: ' + flat(this));
+        this.afterEach = (this.afterEach || '') + 'C';
+      });
+      hooks.after(function () {
+        x.push('child-after: ' + flat(this));
+        this.after = (this.after || '') + 'C';
+      });
+
+      QUnit.test('one', function (assert) {
+        x.push('child-test: ' + flat(this));
+        this.tester = '1';
+        assert.true(true);
+      });
+    });
+
+    QUnit.test('two', function (assert) {
+      x.push('parent-test: ' + flat(this));
+      this.tester = '2';
+      assert.true(true);
+    });
+  });
+
+  QUnit.module('parent with initial test', function (hooks) {
+    var x = actual['parent with initial test'] = [];
+
+    hooks.before(function () {
+      x.push('parent-before: ' + flat(this));
+      this.before = (this.before || '') + 'P';
+    });
+    hooks.beforeEach(function () {
+      x.push('parent-beforeEach: ' + flat(this));
+      this.beforeEach = (this.beforeEach || '') + 'P';
+    });
+    hooks.afterEach(function () {
+      x.push('parent-afterEach: ' + flat(this));
+      this.afterEach = (this.afterEach || '') + 'P';
+    });
+    hooks.after(function () {
+      x.push('parent-after: ' + flat(this));
+      this.after = (this.after || '') + 'P';
+    });
+
+    QUnit.test('one', function (assert) {
+      x.push('parent-test: ' + flat(this));
+      this.tester = '1';
+      assert.true(true);
+    });
+
+    QUnit.module('child', function (hooks) {
+      hooks.before(function () {
+        x.push('child-before: ' + flat(this));
+        this.before = (this.before || '') + 'C';
+      });
+      hooks.beforeEach(function () {
+        x.push('child-beforeEach: ' + flat(this));
+        this.beforeEach = (this.beforeEach || '') + 'C';
+      });
+      hooks.afterEach(function () {
+        x.push('child-afterEach: ' + flat(this));
+        this.afterEach = (this.afterEach || '') + 'C';
+      });
+      hooks.after(function () {
+        x.push('child-after: ' + flat(this));
+        this.after = (this.after || '') + 'C';
+      });
+
+      QUnit.test('two', function (assert) {
+        x.push('child-test: ' + flat(this));
+        this.tester = '2';
+        assert.true(true);
+      });
+    });
+  });
+
+  QUnit.module('async test', function (hooks) {
+    var x = actual['async test'] = [];
+
+    hooks.before(function (assert) {
+      x.push('parent-before: ' + flat(this));
       var done = assert.async();
       setTimeout(function () {
-        assert.true(true);
+        this.before = (this.before || '') + 'P';
         done();
-      });
-    }
-  });
-
-  QUnit.test('module with async beforeEach', function (assert) {
-    assert.expect(2);
-    assert.true(true);
-  });
-
-  QUnit.module('async afterEach test', {
-    afterEach: function (assert) {
+      }.bind(this));
+    });
+    hooks.beforeEach(function (assert) {
+      x.push('parent-beforeEach: ' + flat(this));
       var done = assert.async();
       setTimeout(function () {
-        assert.true(true);
+        this.beforeEach = (this.beforeEach || '') + 'P';
         done();
+      }.bind(this));
+    });
+    hooks.afterEach(function (assert) {
+      x.push('parent-afterEach: ' + flat(this));
+      var done = assert.async();
+      setTimeout(function () {
+        this.afterEach = (this.afterEach || '') + 'P';
+        done();
+      }.bind(this));
+    });
+    hooks.after(function (assert) {
+      x.push('parent-after: ' + flat(this));
+      var done = assert.async();
+      setTimeout(function () {
+        this.after = (this.after || '') + 'P';
+        done();
+      }.bind(this));
+    });
+
+    QUnit.test('one', function (assert) {
+      x.push('parent-test: ' + flat(this));
+      var done = assert.async();
+      setTimeout(function () {
+        this.tester = '1';
+        done();
+      }.bind(this));
+      assert.true(true);
+    });
+
+    QUnit.module('child', function (hooks) {
+      hooks.before(function (assert) {
+        x.push('child-before: ' + flat(this));
+        var done = assert.async();
+        setTimeout(function () {
+          this.before = (this.before || '') + 'C';
+          done();
+        }.bind(this));
       });
-    }
+      hooks.beforeEach(function (assert) {
+        x.push('child-beforeEach: ' + flat(this));
+        var done = assert.async();
+        setTimeout(function () {
+          this.beforeEach = (this.beforeEach || '') + 'C';
+          done();
+        }.bind(this));
+      });
+      hooks.afterEach(function (assert) {
+        x.push('child-afterEach: ' + flat(this));
+        var done = assert.async();
+        setTimeout(function () {
+          this.afterEach = (this.afterEach || '') + 'C';
+          done();
+        }.bind(this));
+      });
+      hooks.after(function (assert) {
+        x.push('child-after: ' + flat(this));
+        var done = assert.async();
+        setTimeout(function () {
+          this.after = (this.after || '') + 'C';
+          done();
+        }.bind(this));
+      });
+
+      QUnit.test('two', function (assert) {
+        x.push('child-test: ' + flat(this));
+        assert.true(true);
+        var done = assert.async();
+        setTimeout(function () {
+          this.tester = '2';
+          done();
+        }.bind(this));
+      });
+    });
   });
 
-  QUnit.test('module with async afterEach', function (assert) {
-    assert.expect(2);
-    assert.true(true);
+  QUnit.module('multiple hooks', function (hooks) {
+    var x = actual['multiple hooks'] = [];
+
+    hooks.before(function () {
+      x.push('parent-before: ' + flat(this));
+      this.before = (this.before || '') + 'P1';
+    });
+    hooks.before(function () {
+      x.push('parent-before: ' + flat(this));
+      this.before = (this.before || '') + 'P2';
+    });
+    hooks.beforeEach(function () {
+      x.push('parent-beforeEach: ' + flat(this));
+      this.beforeEach = (this.beforeEach || '') + 'P1';
+    });
+    hooks.beforeEach(function () {
+      x.push('parent-beforeEach: ' + flat(this));
+      this.beforeEach = (this.beforeEach || '') + 'P2';
+    });
+    hooks.afterEach(function () {
+      x.push('parent-afterEach: ' + flat(this));
+      this.afterEach = (this.afterEach || '') + 'P1';
+    });
+    hooks.afterEach(function () {
+      x.push('parent-afterEach: ' + flat(this));
+      this.afterEach = (this.afterEach || '') + 'P2';
+    });
+    hooks.after(function () {
+      x.push('parent-after: ' + flat(this));
+      this.after = (this.after || '') + 'P1';
+    });
+    hooks.after(function () {
+      x.push('parent-after: ' + flat(this));
+      this.after = (this.after || '') + 'P2';
+    });
+
+    QUnit.module('child', function (hooks) {
+      hooks.before(function () {
+        x.push('child-before: ' + flat(this));
+        this.before = (this.before || '') + 'C1';
+      });
+      hooks.before(function () {
+        x.push('child-before: ' + flat(this));
+        this.before = (this.before || '') + 'C2';
+      });
+      hooks.beforeEach(function () {
+        x.push('child-beforeEach: ' + flat(this));
+        this.beforeEach = (this.beforeEach || '') + 'C1';
+      });
+      hooks.beforeEach(function () {
+        x.push('child-beforeEach: ' + flat(this));
+        this.beforeEach = (this.beforeEach || '') + 'C2';
+      });
+      hooks.afterEach(function () {
+        x.push('child-afterEach: ' + flat(this));
+        this.afterEach = (this.afterEach || '') + 'C1';
+      });
+      hooks.afterEach(function () {
+        x.push('child-afterEach: ' + flat(this));
+        this.afterEach = (this.afterEach || '') + 'C2';
+      });
+      hooks.after(function () {
+        x.push('child-after: ' + flat(this));
+        this.after = (this.after || '') + 'C1';
+      });
+      hooks.after(function () {
+        x.push('child-after: ' + flat(this));
+        this.after = (this.after || '') + 'C2';
+      });
+
+      QUnit.test('two', function (assert) {
+        x.push('child-test: ' + flat(this));
+        this.tester = '2';
+        assert.true(true);
+      });
+    });
   });
 
-  QUnit.module('save scope', {
+  QUnit.test.each('verify', Object.keys(expected), function (assert, key) {
+    assert.deepEqual(actual[key], expected[key]);
+  });
+
+  QUnit.module('module with initial skip', function (hooks) {
+    var x = [];
+    hooks.before(function () {
+      x.push('before');
+    });
+
+    QUnit.skip('one');
+
+    QUnit.test('two', function (assert) {
+      assert.deepEqual(x, ['before'], 'hooks.before() runs on first unskipped test');
+    });
+  });
+
+  QUnit.module('module with trailing skip', function (hooks) {
+    hooks.after(function (assert) {
+      assert.true(true);
+    });
+
+    QUnit.test('one', function (assert) {
+      assert.expect(0);
+      // hooks.after() does not run on first test
+    });
+
+    QUnit.test('two', function (assert) {
+      assert.expect(1);
+      // hooks.after() runs on last unskipped test
+    });
+
+    QUnit.skip('three');
+  });
+
+  QUnit.module('module with only skips', function (hooks) {
+    hooks.before(function (assert) {
+      assert.true(false, 'should not occur');
+    });
+    hooks.after(function (assert) {
+      assert.true(false, 'should not occur');
+    });
+
+    QUnit.skip('one');
+  });
+
+  QUnit.module('set testEnvironment via options', {
     foo: 'foo',
     beforeEach: function (assert) {
       assert.deepEqual(this.foo, 'foo');
@@ -183,7 +488,7 @@ QUnit.module('QUnit.module', function () {
     }
   });
 
-  QUnit.test('scope check', function (assert) {
+  QUnit.test('example', function (assert) {
     assert.expect(3);
     assert.deepEqual(this.foo, 'bar');
     this.foo = 'foobar';
@@ -279,144 +584,6 @@ QUnit.module('QUnit.module', function () {
           assert.expect(4);
         });
       });
-    });
-  });
-
-  QUnit.module('contained suite `this`', function (hooks) {
-    this.outer = 1;
-
-    hooks.beforeEach(function () {
-      this.outer++;
-    });
-
-    hooks.afterEach(function (assert) {
-      assert.equal(
-        this.outer, 42,
-        'in-test environment modifications are visible by afterEach callbacks'
-      );
-    });
-
-    QUnit.test('`this` is shared from modules to the tests', function (assert) {
-      assert.equal(this.outer, 2);
-      this.outer = 42;
-    });
-
-    QUnit.test("sibling tests don't share environments", function (assert) {
-      assert.equal(this.outer, 2);
-      this.outer = 42;
-    });
-
-    QUnit.module('nested suite `this`', function (hooks) {
-      this.inner = true;
-
-      hooks.beforeEach(function (assert) {
-        assert.strictEqual(this.outer, 2);
-        assert.true(this.inner);
-      });
-
-      hooks.afterEach(function (assert) {
-        assert.strictEqual(this.outer, 2);
-        assert.true(this.inner);
-
-        // This change affects the outermodule afterEach assertion.
-        this.outer = 42;
-      });
-
-      QUnit.test('inner modules share outer environments', function (assert) {
-        assert.strictEqual(this.outer, 2);
-        assert.true(this.inner);
-      });
-    });
-
-    QUnit.test("tests can't see environments from nested modules", function (assert) {
-      assert.strictEqual(this.inner, undefined);
-      this.outer = 42;
-    });
-  });
-
-  QUnit.module('nested modules before/after', {
-    before: function (assert) {
-      assert.true(true, 'before hook ran');
-      this.lastHook = 'before';
-    },
-    after: function (assert) {
-      assert.strictEqual(this.lastHook, 'outer-after');
-    }
-  }, function () {
-    QUnit.test('should run before', function (assert) {
-      assert.expect(2);
-      assert.strictEqual(this.lastHook, 'before');
-    });
-
-    QUnit.module('outer', {
-      before: function (assert) {
-        assert.true(true, 'outer before hook ran');
-        this.lastHook = 'outer-before';
-      },
-      after: function (assert) {
-        assert.strictEqual(this.lastHook, 'outer-test');
-        this.lastHook = 'outer-after';
-      }
-    }, function () {
-      QUnit.module('inner', {
-        before: function (assert) {
-          assert.strictEqual(this.lastHook, 'outer-before');
-          this.lastHook = 'inner-before';
-        },
-        after: function (assert) {
-          assert.strictEqual(this.lastHook, 'inner-test');
-        }
-      }, function () {
-        QUnit.test('should run outer-before and inner-before', function (assert) {
-          assert.expect(3);
-          assert.strictEqual(this.lastHook, 'inner-before');
-        });
-
-        QUnit.test('should run inner-after', function (assert) {
-          assert.expect(1);
-          this.lastHook = 'inner-test';
-        });
-      });
-
-      QUnit.test('should run outer-after and after', function (assert) {
-        assert.expect(2);
-        this.lastHook = 'outer-test';
-      });
-    });
-  });
-
-  QUnit.module('multiple hooks', function (hooks) {
-    hooks.before(function (assert) { assert.step('before1'); });
-    hooks.before(function (assert) { assert.step('before2'); });
-
-    hooks.beforeEach(function (assert) { assert.step('beforeEach1'); });
-    hooks.beforeEach(function (assert) { assert.step('beforeEach2'); });
-
-    hooks.afterEach(function (assert) { assert.step('afterEach1'); });
-    hooks.afterEach(function (assert) { assert.step('afterEach2'); });
-
-    hooks.after(function (assert) {
-      assert.verifySteps([
-
-        // before/beforeEach execute in FIFO order
-        'before1',
-        'before2',
-        'beforeEach1',
-        'beforeEach2',
-
-        // after/afterEach execute in LIFO order
-        'afterEach2',
-        'afterEach1',
-        'after2',
-        'after1'
-      ]);
-    });
-
-    hooks.after(function (assert) { assert.step('after1'); });
-    hooks.after(function (assert) { assert.step('after2'); });
-
-    QUnit.test('all hooks', function (assert) {
-      assert.expect(9);
     });
   });
 

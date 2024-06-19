@@ -5,6 +5,10 @@
   <title>QUnit Main Test Suite</title>
   <link rel="stylesheet" href="../src/qunit.css">
   <script src="../qunit/qunit.js"></script>
+  <script>
+    // For main/module.js
+    QUnit.config.reorder = false;
+  </script>
 
   <script src="main/assert.js"></script>
   <script src="main/assert-step.js"></script>
