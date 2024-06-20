@@ -27,7 +27,13 @@
     assert.pushResult({
       result: simple.indexOf('/main/stacktrace.js') !== -1,
       actual: simple,
-      message: 'current file'
+      message: 'include current file'
+    });
+    assert.pushResult({
+      result: simple.indexOf('qunit.js') === -1,
+      actual: simple,
+      expected: 'NOT qunit.js',
+      message: 'stacktrace cleaning stops before qunit.js'
     });
 
     var nested = norm(fooParent());
