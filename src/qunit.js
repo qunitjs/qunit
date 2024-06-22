@@ -1,4 +1,5 @@
-import './core';
+import QUnit from './core';
 import './html-runner/fixture';
 import './html-runner/urlparams';
-import './html-reporter/html';
+
+QUnit.reporters.html.init(QUnit);
