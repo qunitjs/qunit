@@ -18,7 +18,7 @@ import ProcessingQueue from './core/processing-queue';
 import { urlParams } from './urlparams';
 import { on, emit } from './events';
 import onUncaughtException from './core/on-uncaught-exception';
-import diff from './core/diff';
+import diff from './diff';
 
 const QUnit = {};
 

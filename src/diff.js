@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { escapeText } from '../core/utilities';
+import { escapeText } from './core/utilities';
 
 /*
  * This file is a modified version of google-diff-match-patch's JavaScript implementation

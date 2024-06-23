@@ -1,5 +1,5 @@
 import { extend, errorString, escapeText } from '../core/utilities';
-import diff from '../core/diff';
+import diff from '../diff';
 import dump from '../dump';
 import { window, document, navigator, StringMap } from '../globals';
 import { urlParams } from '../urlparams';
