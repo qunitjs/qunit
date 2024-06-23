@@ -1,4 +1,6 @@
 import { extend, errorString, escapeText } from '../core/utilities';
+import diff from '../core/diff';
+import dump from '../dump';
 import { window, document, navigator, StringMap } from '../globals';
 import { urlParams } from '../urlparams';
 import fuzzysort from 'fuzzysort';
@@ -302,8 +304,7 @@ export default class HtmlReporter {
 
     // Check if we can apply the change without a page refresh
     if (field.name === 'hidepassed' && 'replaceState' in window.history) {
-      // eslint-disable-next-line no-undef
-      QUnit.urlParams[field.name] = value;
+      urlParams[field.name] = value;
       // TODO: Do we really have to write this change to QUnit.config?
       this.config[field.name] = value || false;
       let tests = DOM.id('qunit-tests');
@@ -923,8 +924,6 @@ export default class HtmlReporter {
 
     let expected;
     let actual;
-    let diff;
-    let showDiff = false;
 
     // When pushFailure() is called, it is implied that no expected value
     // or diff should be shown. It does not set details.expected.
@@ -933,15 +932,12 @@ export default class HtmlReporter {
     // that's a regular assertion for which to render actual/expected and a diff.
     if (!details.result && hasOwn.call(details, 'expected')) {
       if (details.negative) {
-        // eslint-disable-next-line no-undef
-        expected = 'NOT ' + QUnit.dump.parse(details.expected);
+        expected = 'NOT ' + dump.parse(details.expected);
       } else {
-        // eslint-disable-next-line no-undef
-        expected = QUnit.dump.parse(details.expected);
+        expected = dump.parse(details.expected);
       }
 
-      // eslint-disable-next-line no-undef
-      actual = QUnit.dump.parse(details.actual);
+      actual = dump.parse(details.actual);
       message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +
       escapeText(expected) +
       '</pre></td></tr>';
@@ -950,27 +946,28 @@ export default class HtmlReporter {
         message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
           escapeText(actual) + '</pre></td></tr>';
 
+        let showDiff = false;
+        let diffHtml;
         if (typeof details.actual === 'number' && typeof details.expected === 'number') {
           if (!isNaN(details.actual) && !isNaN(details.expected)) {
             showDiff = true;
-            diff = (details.actual - details.expected);
-            diff = (diff > 0 ? '+' : '') + diff;
+            const numDiff = (details.actual - details.expected);
+            diffHtml = (numDiff > 0 ? '+' : '') + numDiff;
           }
         } else if (typeof details.actual !== 'boolean' &&
               typeof details.expected !== 'boolean'
         ) {
-          // eslint-disable-next-line no-undef
-          diff = QUnit.diff(expected, actual);
+          diffHtml = diff(expected, actual);
 
           // don't show diff if there is zero overlap
-          showDiff = stripHtml(diff).length !==
+          showDiff = stripHtml(diffHtml).length !==
             stripHtml(expected).length +
             stripHtml(actual).length;
         }
 
         if (showDiff) {
           message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
-          diff + '</pre></td></tr>';
+            diffHtml + '</pre></td></tr>';
         }
       } else if (expected.indexOf('[object Array]') !== -1 ||
         expected.indexOf('[object Object]') !== -1) {
