@@ -165,6 +165,7 @@ The following integrations can be used to automate the running of browser tests 
 * [grunt-contrib-qunit](https://github.com/gruntjs/grunt-contrib-qunit) for [Grunt task runner](https://gruntjs.com/) (test Headless Chrome).
 * [testem](https://github.com/testem/testem) (test any local browser, including headless)
 * [wdio-qunit-service](https://webdriver.io/docs/wdio-qunit-service/) (test any local, headless, or cloud browser; via WDIO selenium driver)
+* [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) with [web-test-runner-qunit](https://github.com/brandonaaron/web-test-runner-qunit) (test any local, headless, or cloud browser)
 * [Karma](https://karma-runner.github.io/latest/index.html) with [karma-qunit](https://github.com/karma-runner/karma-qunit) (test any local browser or cloud).
 * [node-qunit-puppeteer](https://github.com/ameshkov/node-qunit-puppeteer) (test Headless Chrome).
 * [StealJS](https://stealjs.com/) with [steal-qunit](https://stealjs.com/docs/steal-qunit.html) via [Testee](https://www.npmjs.com/package/testee) (test any local browser or cloud).
