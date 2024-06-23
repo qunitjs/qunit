@@ -1,11 +1,4 @@
-import QUnit from '../core';
-import { window, document } from '../globals';
-
-(function () {
-  if (!window || !document) {
-    return;
-  }
-
+export default function initFixture (QUnit, document) {
   const config = QUnit.config;
 
   // Stores fixture HTML for resetting later
@@ -50,4 +43,4 @@ import { window, document } from '../globals';
   }
 
   QUnit.testStart(resetFixture);
-})();
+}

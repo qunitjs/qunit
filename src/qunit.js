@@ -1,5 +1,7 @@
 import QUnit from './core';
-import './html-runner/fixture';
-import './html-runner/urlparams';
+import { initBrowser } from './browser/browser-runner';
+import { window, document } from './globals';
 
-QUnit.reporters.html.init(QUnit);
+if (window && document) {
+  initBrowser(QUnit, window, document);
+}
