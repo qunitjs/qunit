@@ -19,6 +19,7 @@ import { urlParams } from './urlparams';
 import { on, emit } from './events';
 import onUncaughtException from './core/on-uncaught-exception';
 import diff from './diff';
+import version from './version';
 
 const QUnit = {};
 
@@ -36,7 +37,7 @@ config.pq = new ProcessingQueue(test);
 QUnit.isLocal = (window && window.location && window.location.protocol === 'file:');
 
 // Expose the current QUnit version
-QUnit.version = '@VERSION';
+QUnit.version = version;
 
 extend(QUnit, {
   config,

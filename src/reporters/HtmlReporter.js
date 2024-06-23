@@ -3,6 +3,7 @@ import diff from '../diff';
 import dump from '../dump';
 import { window, document, navigator, StringMap } from '../globals';
 import { urlParams } from '../urlparams';
+import version from '../version';
 import fuzzysort from 'fuzzysort';
 
 const hasOwn = Object.prototype.hasOwnProperty;
@@ -734,8 +735,7 @@ export default class HtmlReporter {
       userAgent.innerHTML = '';
       userAgent.appendChild(
         document.createTextNode(
-          // eslint-disable-next-line no-undef
-          'QUnit ' + QUnit.version + '; ' + navigator.userAgent
+          'QUnit ' + version + '; ' + navigator.userAgent
         )
       );
     }
