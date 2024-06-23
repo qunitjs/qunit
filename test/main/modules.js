@@ -1,9 +1,11 @@
 /* global setTimeout */
 QUnit.module('QUnit.module', function () {
+  var hasOwn = Object.prototype.hasOwnProperty;
   function flat (obj) {
     var str = [];
     for (var key in obj) {
-      str.push(key + '=' + obj[key]);
+      var prefix = !hasOwn.call(obj, key) ? '%' : '';
+      str.push(prefix + key + '=' + obj[key]);
     }
     return str.join(' ') || '(empty)';
   }
@@ -14,19 +16,19 @@ QUnit.module('QUnit.module', function () {
       // parent > child > one
       // parent > child > two
       'parent-before: (empty)',
-      'child-before: before=P',
-      'parent-beforeEach: before=PC',
-      'child-beforeEach: before=PC beforeEach=P',
-      'child-test: before=PC beforeEach=PC',
-      'child-afterEach: before=PC beforeEach=PC tester=1',
-      'parent-afterEach: before=PC beforeEach=PC tester=1 afterEach=C',
-      'parent-beforeEach: before=PC',
-      'child-beforeEach: before=PC beforeEach=P',
-      'child-test: before=PC beforeEach=PC',
-      'child-afterEach: before=PC beforeEach=PC tester=2',
-      'parent-afterEach: before=PC beforeEach=PC tester=2 afterEach=C',
-      'child-after: before=PC beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: before=PC beforeEach=PC tester=2 afterEach=CP after=C'
+      'child-before: beforeP=1',
+      'parent-beforeEach: beforeP=1 beforeC=1',
+      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
+      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
+      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1',
+      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=C',
+      'parent-beforeEach: beforeP=1 beforeC=1',
+      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
+      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
+      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
     ],
     // FIXME: https://github.com/qunitjs/qunit/issues/1328
     // - parent test missing own state if there is a child module before the test.
@@ -35,13 +37,13 @@ QUnit.module('QUnit.module', function () {
       // parent > child > one
       // parent > two
       'parent-before: (empty)',
-      'child-before: before=P',
-      'parent-beforeEach: before=PC',
-      'child-beforeEach: before=PC beforeEach=P',
-      'child-test: before=PC beforeEach=PC',
-      'child-afterEach: before=PC beforeEach=PC tester=1',
-      'parent-afterEach: before=PC beforeEach=PC tester=1 afterEach=C',
-      'child-after: before=PC beforeEach=PC tester=1 afterEach=CP',
+      'child-before: beforeP=1',
+      'parent-beforeEach: beforeP=1 beforeC=1',
+      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
+      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
+      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1',
+      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=C',
+      'child-after: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=CP',
       'parent-beforeEach: (empty)',
       'parent-test: beforeEach=P',
       'parent-afterEach: beforeEach=P tester=2',
@@ -54,17 +56,17 @@ QUnit.module('QUnit.module', function () {
       // parent > one
       // parent > child > two
       'parent-before: (empty)',
-      'parent-beforeEach: before=P',
-      'parent-test: before=P beforeEach=P',
-      'parent-afterEach: before=P beforeEach=P tester=1',
+      'parent-beforeEach: beforeP=1',
+      'parent-test: beforeP=1 beforeEach=P',
+      'parent-afterEach: beforeP=1 beforeEach=P tester=1',
       'child-before: (empty)',
-      'parent-beforeEach: before=C',
-      'child-beforeEach: before=C beforeEach=P',
-      'child-test: before=C beforeEach=PC',
-      'child-afterEach: before=C beforeEach=PC tester=2',
-      'parent-afterEach: before=C beforeEach=PC tester=2 afterEach=C',
-      'child-after: before=C beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: before=C beforeEach=PC tester=2 afterEach=CP after=C'
+      'parent-beforeEach: beforeC=1',
+      'child-beforeEach: beforeC=1 beforeEach=P',
+      'child-test: beforeC=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeC=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
     ],
 
     // Confirm each step waits for the previous before restoring/saving testEnvironment
@@ -73,36 +75,37 @@ QUnit.module('QUnit.module', function () {
       // parent > one
       // parent > child > two
       'parent-before: (empty)',
-      'parent-beforeEach: before=P',
-      'parent-test: before=P beforeEach=P',
-      'parent-afterEach: before=P beforeEach=P tester=1',
+      'parent-beforeEach: beforeP=1',
+      'parent-test: beforeP=1 beforeEach=P',
+      'parent-afterEach: beforeP=1 beforeEach=P tester=1',
       'child-before: (empty)',
-      'parent-beforeEach: before=C',
-      'child-beforeEach: before=C beforeEach=P',
-      'child-test: before=C beforeEach=PC',
-      'child-afterEach: before=C beforeEach=PC tester=2',
-      'parent-afterEach: before=C beforeEach=PC tester=2 afterEach=C',
-      'child-after: before=C beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: before=C beforeEach=PC tester=2 afterEach=CP after=C'
+      'parent-beforeEach: beforeC=1',
+      'child-beforeEach: beforeC=1 beforeEach=P',
+      'child-test: beforeC=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeC=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP',
+      'parent-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
     ],
     'multiple hooks': [
+
       'parent-before: (empty)',
-      'parent-before: before=P1',
-      'child-before: before=P1P2',
-      'child-before: before=P1P2C1',
-      'parent-beforeEach: before=P1P2C1C2',
-      'parent-beforeEach: before=P1P2C1C2 beforeEach=P1',
-      'child-beforeEach: before=P1P2C1C2 beforeEach=P1P2',
-      'child-beforeEach: before=P1P2C1C2 beforeEach=P1P2C1',
-      'child-test: before=P1P2C1C2 beforeEach=P1P2C1C2',
-      'child-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2',
-      'child-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2',
-      'parent-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1',
-      'parent-afterEach: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2',
-      'child-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1',
-      'child-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2',
-      'parent-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2C1',
-      'parent-after: before=P1P2C1C2 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 after=C2C1P2'
+      'parent-before: beforeP=1',
+      'child-before: beforeP=12',
+      'child-before: beforeP=12 beforeC=1',
+      'parent-beforeEach: beforeP=12 beforeC=12',
+      'parent-beforeEach: beforeP=12 beforeC=12 beforeEach=P1',
+      'child-beforeEach: beforeP=12 beforeC=12 beforeEach=P1P2',
+      'child-beforeEach: beforeP=12 beforeC=12 beforeEach=P1P2C1',
+      'child-test: beforeP=12 beforeC=12 beforeEach=P1P2C1C2',
+      'child-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2',
+      'child-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2',
+      'parent-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1',
+      'parent-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2',
+      'child-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1',
+      'child-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=2',
+      'parent-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=21',
+      'parent-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=21 afterP=2'
     ]
   };
 
@@ -111,7 +114,7 @@ QUnit.module('QUnit.module', function () {
 
     hooks.before(function () {
       x.push('parent-before: ' + flat(this));
-      this.before = (this.before || '') + 'P';
+      this.beforeP = (this.beforeP || '') + '1';
     });
     hooks.beforeEach(function () {
       x.push('parent-beforeEach: ' + flat(this));
@@ -123,13 +126,13 @@ QUnit.module('QUnit.module', function () {
     });
     hooks.after(function () {
       x.push('parent-after: ' + flat(this));
-      this.after = (this.after || '') + 'P';
+      this.afterP = (this.afterP || '') + '1';
     });
 
     QUnit.module('child', function (hooks) {
       hooks.before(function () {
         x.push('child-before: ' + flat(this));
-        this.before = (this.before || '') + 'C';
+        this.beforeC = (this.beforeC || '') + '1';
       });
       hooks.beforeEach(function () {
         x.push('child-beforeEach: ' + flat(this));
@@ -141,7 +144,7 @@ QUnit.module('QUnit.module', function () {
       });
       hooks.after(function () {
         x.push('child-after: ' + flat(this));
-        this.after = (this.after || '') + 'C';
+        this.afterC = (this.afterC || '') + '1';
       });
 
       QUnit.test('one', function (assert) {
@@ -162,7 +165,7 @@ QUnit.module('QUnit.module', function () {
 
     hooks.before(function () {
       x.push('parent-before: ' + flat(this));
-      this.before = (this.before || '') + 'P';
+      this.beforeP = (this.beforeP || '') + '1';
     });
     hooks.beforeEach(function () {
       x.push('parent-beforeEach: ' + flat(this));
@@ -174,13 +177,13 @@ QUnit.module('QUnit.module', function () {
     });
     hooks.after(function () {
       x.push('parent-after: ' + flat(this));
-      this.after = (this.after || '') + 'P';
+      this.afterP = (this.afterP || '') + '1';
     });
 
     QUnit.module('child', function (hooks) {
       hooks.before(function () {
         x.push('child-before: ' + flat(this));
-        this.before = (this.before || '') + 'C';
+        this.beforeC = (this.beforeC || '') + '1';
       });
       hooks.beforeEach(function () {
         x.push('child-beforeEach: ' + flat(this));
@@ -192,7 +195,7 @@ QUnit.module('QUnit.module', function () {
       });
       hooks.after(function () {
         x.push('child-after: ' + flat(this));
-        this.after = (this.after || '') + 'C';
+        this.afterC = (this.afterC || '') + '1';
       });
 
       QUnit.test('one', function (assert) {
@@ -214,7 +217,7 @@ QUnit.module('QUnit.module', function () {
 
     hooks.before(function () {
       x.push('parent-before: ' + flat(this));
-      this.before = (this.before || '') + 'P';
+      this.beforeP = (this.beforeP || '') + '1';
     });
     hooks.beforeEach(function () {
       x.push('parent-beforeEach: ' + flat(this));
@@ -226,7 +229,7 @@ QUnit.module('QUnit.module', function () {
     });
     hooks.after(function () {
       x.push('parent-after: ' + flat(this));
-      this.after = (this.after || '') + 'P';
+      this.afterP = (this.afterP || '') + '1';
     });
 
     QUnit.test('one', function (assert) {
@@ -238,7 +241,7 @@ QUnit.module('QUnit.module', function () {
     QUnit.module('child', function (hooks) {
       hooks.before(function () {
         x.push('child-before: ' + flat(this));
-        this.before = (this.before || '') + 'C';
+        this.beforeC = (this.beforeC || '') + '1';
       });
       hooks.beforeEach(function () {
         x.push('child-beforeEach: ' + flat(this));
@@ -250,7 +253,7 @@ QUnit.module('QUnit.module', function () {
       });
       hooks.after(function () {
         x.push('child-after: ' + flat(this));
-        this.after = (this.after || '') + 'C';
+        this.afterC = (this.afterC || '') + '1';
       });
 
       QUnit.test('two', function (assert) {
@@ -268,7 +271,7 @@ QUnit.module('QUnit.module', function () {
       x.push('parent-before: ' + flat(this));
       var done = assert.async();
       setTimeout(function () {
-        this.before = (this.before || '') + 'P';
+        this.beforeP = (this.beforeP || '') + '1';
         done();
       }.bind(this));
     });
@@ -292,7 +295,7 @@ QUnit.module('QUnit.module', function () {
       x.push('parent-after: ' + flat(this));
       var done = assert.async();
       setTimeout(function () {
-        this.after = (this.after || '') + 'P';
+        this.afterP = (this.afterP || '') + '1';
         done();
       }.bind(this));
     });
@@ -312,7 +315,7 @@ QUnit.module('QUnit.module', function () {
         x.push('child-before: ' + flat(this));
         var done = assert.async();
         setTimeout(function () {
-          this.before = (this.before || '') + 'C';
+          this.beforeC = (this.beforeC || '') + '1';
           done();
         }.bind(this));
       });
@@ -336,7 +339,7 @@ QUnit.module('QUnit.module', function () {
         x.push('child-after: ' + flat(this));
         var done = assert.async();
         setTimeout(function () {
-          this.after = (this.after || '') + 'C';
+          this.afterC = (this.afterC || '') + '1';
           done();
         }.bind(this));
       });
@@ -358,11 +361,11 @@ QUnit.module('QUnit.module', function () {
 
     hooks.before(function () {
       x.push('parent-before: ' + flat(this));
-      this.before = (this.before || '') + 'P1';
+      this.beforeP = (this.beforeP || '') + '1';
     });
     hooks.before(function () {
       x.push('parent-before: ' + flat(this));
-      this.before = (this.before || '') + 'P2';
+      this.beforeP = (this.beforeP || '') + '2';
     });
     hooks.beforeEach(function () {
       x.push('parent-beforeEach: ' + flat(this));
@@ -382,21 +385,21 @@ QUnit.module('QUnit.module', function () {
     });
     hooks.after(function () {
       x.push('parent-after: ' + flat(this));
-      this.after = (this.after || '') + 'P1';
+      this.afterP = (this.afterP || '') + '1';
     });
     hooks.after(function () {
       x.push('parent-after: ' + flat(this));
-      this.after = (this.after || '') + 'P2';
+      this.afterP = (this.afterP || '') + '2';
     });
 
     QUnit.module('child', function (hooks) {
       hooks.before(function () {
         x.push('child-before: ' + flat(this));
-        this.before = (this.before || '') + 'C1';
+        this.beforeC = (this.beforeC || '') + '1';
       });
       hooks.before(function () {
         x.push('child-before: ' + flat(this));
-        this.before = (this.before || '') + 'C2';
+        this.beforeC = (this.beforeC || '') + '2';
       });
       hooks.beforeEach(function () {
         x.push('child-beforeEach: ' + flat(this));
@@ -416,11 +419,11 @@ QUnit.module('QUnit.module', function () {
       });
       hooks.after(function () {
         x.push('child-after: ' + flat(this));
-        this.after = (this.after || '') + 'C1';
+        this.afterC = (this.afterC || '') + '1';
       });
       hooks.after(function () {
         x.push('child-after: ' + flat(this));
-        this.after = (this.after || '') + 'C2';
+        this.afterC = (this.afterC || '') + '2';
       });
 
       QUnit.test('two', function (assert) {
@@ -492,6 +495,20 @@ QUnit.module('QUnit.module', function () {
     assert.expect(3);
     assert.deepEqual(this.foo, 'bar');
     this.foo = 'foobar';
+  });
+
+  QUnit.module('nested modules with testEnvironment options', { foo: 1 }, function () {
+    // scope sees context
+    this.foo++;
+    QUnit.module('child', { bar: 1 }, function () {
+    // child scope inherits parent context
+      var foo = this.foo;
+      var bar = this.bar;
+      QUnit.test('example', function (assert) {
+        assert.strictEqual(foo, 2, 'foo');
+        assert.strictEqual(bar, 1, 'bar');
+      });
+    });
   });
 
   QUnit.module('nested modules', function () {
