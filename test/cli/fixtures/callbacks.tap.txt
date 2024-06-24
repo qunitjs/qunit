@@ -1,0 +1,94 @@
+# command: ["qunit", "callbacks.js"]
+
+TAP version 13
+ok 1 module1 > test1
+ok 2 module1 > module2 > test1
+ok 3 module1 > module3 > test1
+ok 4 module1 > test2
+ok 5 module1 > module4 > test1
+1..5
+# pass 5
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+CALLBACK: begin1
+CALLBACK: begin2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module1 > before
+CALLBACK: module1 > beforeEach
+TEST: module1 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module1 > afterEach
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module2 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module2 > beforeEach
+TEST: module2 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module2 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module2 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module3 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module3 > beforeEach
+TEST: module3 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module3 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module3 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module1 > beforeEach
+TEST: module1 > test2
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module1 > afterEach
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleStart1
+CALLBACK: moduleStart2
+CALLBACK: testStart1
+CALLBACK: testStart2
+CALLBACK: module4 > before
+CALLBACK: module1 > beforeEach
+CALLBACK: module4 > beforeEach
+TEST: module4 > test1
+CALLBACK: log1
+CALLBACK: log2
+CALLBACK: module4 > afterEach
+CALLBACK: module1 > afterEach
+CALLBACK: module4 > after
+CALLBACK: module1 > after
+CALLBACK: testDone1
+CALLBACK: testDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: moduleDone1
+CALLBACK: moduleDone2
+CALLBACK: done1
+CALLBACK: done2

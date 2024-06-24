@@ -1,0 +1,64 @@
+# command: ["qunit", "hooks-global-order.js"]
+
+TAP version 13
+ok 1 A1
+ok 2 B > B1
+ok 3 B > B2
+ok 4 B > BC > BC1
+ok 5 B > BC > BC2
+ok 6 B > BC > BCD > BCD1
+1..6
+# pass 6
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+HOOK: A1 @ global beforeEach-1
+HOOK: A1 @ global beforeEach-2
+HOOK: A1 @ global afterEach-2
+HOOK: A1 @ global afterEach-1
+HOOK: B1 @ B before
+HOOK: B1 @ global beforeEach-1
+HOOK: B1 @ global beforeEach-2
+HOOK: B1 @ B beforeEach
+HOOK: B1 @ B afterEach
+HOOK: B1 @ global afterEach-2
+HOOK: B1 @ global afterEach-1
+HOOK: B2 @ global beforeEach-1
+HOOK: B2 @ global beforeEach-2
+HOOK: B2 @ B beforeEach
+HOOK: B2 @ B afterEach
+HOOK: B2 @ global afterEach-2
+HOOK: B2 @ global afterEach-1
+HOOK: BC1 @ BC before
+HOOK: BC1 @ global beforeEach-1
+HOOK: BC1 @ global beforeEach-2
+HOOK: BC1 @ B beforeEach
+HOOK: BC1 @ BC beforeEach
+HOOK: BC1 @ BC afterEach
+HOOK: BC1 @ B afterEach
+HOOK: BC1 @ global afterEach-2
+HOOK: BC1 @ global afterEach-1
+HOOK: BC2 @ global beforeEach-1
+HOOK: BC2 @ global beforeEach-2
+HOOK: BC2 @ B beforeEach
+HOOK: BC2 @ BC beforeEach
+HOOK: BC2 @ BC afterEach
+HOOK: BC2 @ B afterEach
+HOOK: BC2 @ global afterEach-2
+HOOK: BC2 @ global afterEach-1
+HOOK: BCD1 @ BCD before
+HOOK: BCD1 @ global beforeEach-1
+HOOK: BCD1 @ global beforeEach-2
+HOOK: BCD1 @ B beforeEach
+HOOK: BCD1 @ BC beforeEach
+HOOK: BCD1 @ BCD beforeEach
+HOOK: BCD1 @ BCD afterEach
+HOOK: BCD1 @ BC afterEach
+HOOK: BCD1 @ B afterEach
+HOOK: BCD1 @ global afterEach-2
+HOOK: BCD1 @ global afterEach-1
+HOOK: BCD1 @ BCD after
+HOOK: BCD1 @ BC after
+HOOK: BCD1 @ B after
