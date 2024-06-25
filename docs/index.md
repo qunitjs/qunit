@@ -86,7 +86,7 @@ These are the officially supported [release channels](intro.md#release-channels)
 
 ## Join the Community
 
-<p class="lead lead--center" markdown="1">Join us on [Mastodon](https://fosstodon.org/@qunit), [Twitter](https://twitter.com/qunitjs), or [Gitter chat](https://gitter.im/qunitjs/qunit).</p>
+<p class="lead lead--center" markdown="1">Join us on [Mastodon](https://fosstodon.org/@qunit), [Twitter](https://twitter.com/qunitjs), or [Matrix chat](https://gitter.im/qunitjs/qunit).</p>
 
 To contribute:
 

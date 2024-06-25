@@ -4,7 +4,7 @@
 
 [![Continuous integration](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml/badge.svg)](https://github.com/qunitjs/qunit/actions/workflows/CI.yaml)
 [![Test coverage](https://coveralls.io/repos/qunitjs/qunit/badge.svg)](https://coveralls.io/github/qunitjs/qunit)
-[![Chat on Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit)
+[![Chat on Matrix](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qunitjs/qunit)
 [![npm](https://img.shields.io/npm/v/qunit.svg?style=flat)](https://www.npmjs.com/package/qunit)
 [![Reproducible build status](https://img.shields.io/badge/Reproducible_Builds-ok-success?labelColor=1e5b96)](https://github.com/qunitjs/qunit/actions/workflows/reproducible.yaml)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/5751/badge)](https://www.bestpractices.dev/projects/5751)
@@ -25,7 +25,7 @@ project and has since evolved to test any client-side or server-side JavaScript 
 
 To report a bug or request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
 
-If you need help using QUnit, chat with us on [Gitter](https://gitter.im/qunitjs/qunit).
+If you need help using QUnit, chat with us on [Matrix](https://gitter.im/qunitjs/qunit).
 
 ## Contribute
 
