@@ -16,42 +16,36 @@ QUnit.module('QUnit.module', function () {
       // parent > child > one
       // parent > child > two
       'parent-before: (empty)',
-      'child-before: beforeP=1',
-      'parent-beforeEach: beforeP=1 beforeC=1',
-      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
-      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
-      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1',
-      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=C',
-      'parent-beforeEach: beforeP=1 beforeC=1',
-      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
-      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
-      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=2',
-      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=C',
-      'child-after: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: beforeP=1 beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
+      'child-before: %beforeP=1',
+      'parent-beforeEach: beforeC=1 beforeP=1',
+      'child-beforeEach: beforeC=1 beforeP=1 beforeEach=P',
+      'child-test: beforeC=1 beforeP=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=1',
+      'parent-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=1 afterEach=C',
+      'parent-beforeEach: beforeC=1 beforeP=1',
+      'child-beforeEach: beforeC=1 beforeP=1 beforeEach=P',
+      'child-test: beforeC=1 beforeP=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeC=1 %beforeP=1',
+      'parent-after: beforeP=1'
     ],
-    // FIXME: https://github.com/qunitjs/qunit/issues/1328
-    // - parent test missing own state if there is a child module before the test.
-    // - last test state presists into after()
     'parent with trailing test': [
       // parent > child > one
       // parent > two
       'parent-before: (empty)',
-      'child-before: beforeP=1',
-      'parent-beforeEach: beforeP=1 beforeC=1',
-      'child-beforeEach: beforeP=1 beforeC=1 beforeEach=P',
-      'child-test: beforeP=1 beforeC=1 beforeEach=PC',
-      'child-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1',
-      'parent-afterEach: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=C',
-      'child-after: beforeP=1 beforeC=1 beforeEach=PC tester=1 afterEach=CP',
-      'parent-beforeEach: (empty)',
-      'parent-test: beforeEach=P',
-      'parent-afterEach: beforeEach=P tester=2',
-      'parent-after: beforeEach=P tester=2 afterEach=P'
+      'child-before: %beforeP=1',
+      'parent-beforeEach: beforeC=1 beforeP=1',
+      'child-beforeEach: beforeC=1 beforeP=1 beforeEach=P',
+      'child-test: beforeC=1 beforeP=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=1',
+      'parent-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=1 afterEach=C',
+      'child-after: beforeC=1 %beforeP=1',
+      'parent-beforeEach: beforeP=1',
+      'parent-test: beforeP=1 beforeEach=P',
+      'parent-afterEach: beforeP=1 beforeEach=P tester=2',
+      'parent-after: beforeP=1'
     ],
-
-    // FIXME: https://github.com/qunitjs/qunit/issues/1328
-    // child is missing parent state if there is an initial test before the child module.
     'parent with initial test': [
       // parent > one
       // parent > child > two
@@ -59,14 +53,14 @@ QUnit.module('QUnit.module', function () {
       'parent-beforeEach: beforeP=1',
       'parent-test: beforeP=1 beforeEach=P',
       'parent-afterEach: beforeP=1 beforeEach=P tester=1',
-      'child-before: (empty)',
-      'parent-beforeEach: beforeC=1',
-      'child-beforeEach: beforeC=1 beforeEach=P',
-      'child-test: beforeC=1 beforeEach=PC',
-      'child-afterEach: beforeC=1 beforeEach=PC tester=2',
-      'parent-afterEach: beforeC=1 beforeEach=PC tester=2 afterEach=C',
-      'child-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
+      'child-before: %beforeP=1',
+      'parent-beforeEach: beforeC=1 beforeP=1',
+      'child-beforeEach: beforeC=1 beforeP=1 beforeEach=P',
+      'child-test: beforeC=1 beforeP=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeC=1 %beforeP=1',
+      'parent-after: beforeP=1'
     ],
 
     // Confirm each step waits for the previous before restoring/saving testEnvironment
@@ -78,34 +72,33 @@ QUnit.module('QUnit.module', function () {
       'parent-beforeEach: beforeP=1',
       'parent-test: beforeP=1 beforeEach=P',
       'parent-afterEach: beforeP=1 beforeEach=P tester=1',
-      'child-before: (empty)',
-      'parent-beforeEach: beforeC=1',
-      'child-beforeEach: beforeC=1 beforeEach=P',
-      'child-test: beforeC=1 beforeEach=PC',
-      'child-afterEach: beforeC=1 beforeEach=PC tester=2',
-      'parent-afterEach: beforeC=1 beforeEach=PC tester=2 afterEach=C',
-      'child-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP',
-      'parent-after: beforeC=1 beforeEach=PC tester=2 afterEach=CP afterC=1'
+      'child-before: %beforeP=1',
+      'parent-beforeEach: beforeC=1 beforeP=1',
+      'child-beforeEach: beforeC=1 beforeP=1 beforeEach=P',
+      'child-test: beforeC=1 beforeP=1 beforeEach=PC',
+      'child-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2',
+      'parent-afterEach: beforeC=1 beforeP=1 beforeEach=PC tester=2 afterEach=C',
+      'child-after: beforeC=1 %beforeP=1',
+      'parent-after: beforeP=1'
     ],
     'multiple hooks': [
-
       'parent-before: (empty)',
       'parent-before: beforeP=1',
-      'child-before: beforeP=12',
-      'child-before: beforeP=12 beforeC=1',
-      'parent-beforeEach: beforeP=12 beforeC=12',
-      'parent-beforeEach: beforeP=12 beforeC=12 beforeEach=P1',
-      'child-beforeEach: beforeP=12 beforeC=12 beforeEach=P1P2',
-      'child-beforeEach: beforeP=12 beforeC=12 beforeEach=P1P2C1',
-      'child-test: beforeP=12 beforeC=12 beforeEach=P1P2C1C2',
-      'child-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2',
-      'child-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2',
-      'parent-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1',
-      'parent-afterEach: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2',
-      'child-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1',
-      'child-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=2',
-      'parent-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=21',
-      'parent-after: beforeP=12 beforeC=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2P1 afterC=21 afterP=2'
+      'child-before: %beforeP=12',
+      'child-before: beforeC=1 %beforeP=12',
+      'parent-beforeEach: beforeC=12 beforeP=12',
+      'parent-beforeEach: beforeC=12 beforeP=12 beforeEach=P1',
+      'child-beforeEach: beforeC=12 beforeP=12 beforeEach=P1P2',
+      'child-beforeEach: beforeC=12 beforeP=12 beforeEach=P1P2C1',
+      'child-test: beforeC=12 beforeP=12 beforeEach=P1P2C1C2',
+      'child-afterEach: beforeC=12 beforeP=12 beforeEach=P1P2C1C2 tester=2',
+      'child-afterEach: beforeC=12 beforeP=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2',
+      'parent-afterEach: beforeC=12 beforeP=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1',
+      'parent-afterEach: beforeC=12 beforeP=12 beforeEach=P1P2C1C2 tester=2 afterEach=C2C1P2',
+      'child-after: beforeC=12 %beforeP=12',
+      'child-after: beforeC=12 afterC=2 %beforeP=12',
+      'parent-after: beforeP=12',
+      'parent-after: beforeP=12 afterP=2'
     ]
   };
 

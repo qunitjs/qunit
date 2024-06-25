@@ -242,18 +242,22 @@ QUnit.module('assert.async', function () {
     QUnit.test('test', function () {});
   });
 
+  var inBeforeHookModuleState;
   QUnit.module('in before hook', {
     before: function (assert) {
       var done = assert.async();
-      var testContext = this;
       setTimeout(function () {
-        testContext.state = 'before';
+        inBeforeHookModuleState = 'before';
         done();
       });
     }
   }, function () {
     QUnit.test('call order', function (assert) {
-      assert.equal(this.state, 'before', 'called before test callback');
+      assert.equal(
+        inBeforeHookModuleState,
+        'before',
+        'called before test callback'
+      );
     });
   });
 
@@ -289,18 +293,18 @@ QUnit.module('assert.async', function () {
     });
   });
 
+  var inAfterHookModuleState;
   QUnit.module('in after hook', {
     after: function (assert) {
-      assert.equal(this.state, 'done', 'called after test callback');
+      assert.equal(inAfterHookModuleState, 'done', 'called after test callback');
       assert.true(true, 'called before expected assert count is validated');
     }
   }, function () {
     QUnit.test('call order', function (assert) {
       assert.expect(2);
       var done = assert.async();
-      var testContext = this;
       setTimeout(function () {
-        testContext.state = 'done';
+        inAfterHookModuleState = 'done';
         done();
       });
     });
