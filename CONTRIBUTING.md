@@ -42,10 +42,9 @@ to your GitHub fork, and create the pull request.
 
 ## Documentation
 
-The API documentation for QUnit lives in the `docs/` directory of this
-repository. For the rest of the QUnit website, see the [qunitjs.com repo](https://github.com/qunitjs/qunitjs.com).
+The website lives in the `docs/` directory of this repository.
 
-See [docs/README.md](docs/README.md) for how to locally preview the API documentation site.
+Check [docs/README.md](docs/README.md) for how to locally preview the API documentation site.
 
 ## Commit messages
 
