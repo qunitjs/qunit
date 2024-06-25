@@ -1,0 +1,16 @@
+# command: ["qunit", "config-testTimeout-invalid.js"]
+
+TAP version 13
+ok 1 invalid [undefined]
+ok 2 invalid [null]
+ok 3 invalid [string]
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+QUnit.config.testTimeout was set to an an invalid value (undefined). Using default. https://qunitjs.com/api/config/testTimeout/
+QUnit.config.testTimeout was set to an an invalid value (null). Using default. https://qunitjs.com/api/config/testTimeout/
+QUnit.config.testTimeout was set to an an invalid value (string). Using default. https://qunitjs.com/api/config/testTimeout/

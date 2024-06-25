@@ -61,6 +61,8 @@ const config = {
 
   testId: undefined,
 
+  testTimeout: 3000,
+
   // The updateRate controls how often QUnit will yield the main thread
   // between tests. This is mainly for the benefit of the HTML Reporter,
   // so that the browser can visually paint DOM changes with test results.
@@ -151,7 +153,6 @@ const config = {
   _runStarted: false,
   _event_listeners: Object.create(null),
   _event_memory: {},
-  _deprecated_timeout_shown: false,
   blocking: true,
   callbacks: {},
   modules: [],

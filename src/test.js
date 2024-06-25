@@ -16,6 +16,7 @@ import {
 } from './core/utilities';
 import { runLoggingCallbacks } from './core/logging';
 import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace';
+import dump from './dump';
 
 import TestReport from './reports/test';
 
@@ -725,9 +726,12 @@ Test.prototype = {
         timeoutDuration = test.timeout;
       } else if (typeof config.testTimeout === 'number') {
         timeoutDuration = config.testTimeout;
+      } else {
+        Logger.warn(`QUnit.config.testTimeout was set to an an invalid value (${dump.typeOf(config.testTimeout)}). Using default. https://qunitjs.com/api/config/testTimeout/`);
+        timeoutDuration = 3000;
       }
 
-      if (typeof timeoutDuration === 'number' && timeoutDuration > 0) {
+      if (timeoutDuration > 0) {
         config.timeoutHandler = function (timeout) {
           return function () {
             config.timeout = null;
@@ -745,18 +749,6 @@ Test.prototype = {
         config.timeout = setTimeout(
           config.timeoutHandler(timeoutDuration),
           timeoutDuration
-        );
-      } else {
-        clearTimeout(config.timeout);
-        config.timeout = setTimeout(
-          function () {
-            config.timeout = null;
-            if (!config._deprecated_timeout_shown) {
-              config._deprecated_timeout_shown = true;
-              Logger.warn(`Test "${test.testName}" took longer than 3000ms, but no timeout was set. Set QUnit.config.testTimeout or call assert.timeout() to avoid a timeout in QUnit 3. https://qunitjs.com/api/config/testTimeout/`);
-            }
-          },
-          3000
         );
       }
     }

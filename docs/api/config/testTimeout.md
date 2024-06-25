@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.config.testTimeout
-excerpt: Set a global default timeout for async tests.
+excerpt: Default timeout for async tests.
 groups:
   - config
 redirect_from:
@@ -9,24 +9,24 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-Set a global default timeout in milliseconds after which an async test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.
+Default timeout in milliseconds after which an async test will fail. This helps to detect async tests that are broken, and prevents a test run from hanging indefinitely.
 
 <table>
 <tr>
   <th>type</th>
-  <td markdown="span">`number` or `undefined`</td>
+  <td markdown="span">`number`</td>
 </tr>
 <tr>
   <th>default</th>
-  <td markdown="span">`undefined`</td>
+  <td markdown="span">`3000`</td>
 </tr>
 </table>
 
 Only async tests can timeout. An async test is any [QUnit.test](../QUnit/test.md) with an async function as callback, or that returns a Promise, or that calls [assert.async()](../assert/async.md).
 
-The `testTimeout` config can be overridden via [assert.timeout()](../assert/timeout.md) to any lower or higher amount.
+Individual tests can override the default `testTimeout` config via [assert.timeout()](../assert/timeout.md) to any lower or higher amount.
 
-It is recommended to keep the global default at `3000` or higher (3 seconds), to avoid intermittent failures from unrelated delays that may periodically occur inside a browser or CI service.
+It is recommended to set the default at `3000` or higher (3 seconds). A lower timeout may cause intermittent failures due to unrelated infrastructure delays that are known to sometimes occur inside CI services and other virtual servers.
 
 ## Introducing a default timeout
 
