@@ -202,26 +202,4 @@ not ok 1 global failure
     assert.true(execution.stderr.includes("Error: Cannot find module 'does-not-exist-at-all'"));
     assert.equal(execution.stdout, '');
   });
-
-  QUnit.test('config.notrycatch with rejected test', async assert => {
-    const command = ['qunit', 'config-notrycatch-test-rejection.js'];
-    const execution = await execute(command);
-
-    assert.pushResult({
-      // only in stdout due to using `console.log` in manual `unhandledRejection` handler
-      result: execution.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
-      actual: execution.stdout + '\n' + execution.stderr
-    });
-  });
-
-  QUnit.test('config.notrycatch with rejected hook', async assert => {
-    const command = ['qunit', 'config-notrycatch-hook-rejection.js'];
-    const execution = await execute(command);
-
-    assert.pushResult({
-      // only in stdout due to using `console.log` in manual `unhandledRejection` handler
-      result: execution.stdout.includes('Unhandled Rejection: bad things happen sometimes'),
-      actual: execution.stdout + '\n' + execution.stderr
-    });
-  });
 });

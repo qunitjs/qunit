@@ -46,10 +46,11 @@ function normalize (actual) {
     .replace(/^(\s+at ).*\/qunit\/bin\/qunit\.js.*$/gm, '$1internal')
     .replace(/^(\s+at ).*\/qunit\/src\/cli\/.*$/gm, '$1internal')
 
-    // Strip frames from indirect nyc dependencies that are specific
-    // to code coverage jobs:
-    // Convert "at load (/qunit/node_modules/append-transform/index.js:6" to "at internal"
+    // Strip frames from nyc dependencies that nyc injects during coverage job:
+    // Convert "at load (/qunit/node_modules/append-transform/index.js:6"
+    // Convert "at process.processEmit (/qunit/node_modules/signal-exit/index.js:199:34)"
     .replace(/ {2}at .+\/.*node_modules\/append-transform\/.*\)/g, '  at internal')
+    .replace(/ {2}at .+\/.*node_modules\/signal-exit\/.*\)/g, '  at internal')
     // Consolidate subsequent qunit.js frames
     .replace(/^(\s+at qunit\.js$)(\n\s+at qunit\.js$)+/gm, '$1')
     // Consolidate subsequent internal frames
