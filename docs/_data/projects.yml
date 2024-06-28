@@ -6,7 +6,7 @@
 # - One or more its projects are under an OSI-approved free software license and use QUnit.
 # - Meets at least one of the following notability criteria:
 #   - has an official social media account with 5000+ followers.
-#   - or, an English Wikipedia article exists about the organization, and has existed for at least one year.
+#   - or, an English Wikipedia article exists for at least one year about the organization.
 #
 # Projects should meet these criteria:
 #
@@ -16,7 +16,7 @@
 #   - published to a package manager with 50+ non-dev dependent packages.
 #   - or, maintained on a social coding platform (e.g. GitLab, GitHub) with 500+ stars.
 #   - or, has a official social media account with 1000+ followers.
-#   - or, an English Wikipedia article exists about the project, and has existed for at least one year.
+#   - or, an English Wikipedia article exists for at least one year about.
 #
 orgs:
 
@@ -75,6 +75,16 @@ orgs:
     sub:
       - name: kiwix-js
         href: https://github.com/kiwix/kiwix-js
+
+  - name: Square
+    href: https://github.com/square/
+    sub:
+      - name: ember-computable
+        href: https://github.com/square/ember-computable
+      - name: eslint-plugin-square
+        href: https://github.com/square/eslint-plugin-square
+      - name: qunit-bdd
+        href: https://github.com/square/qunit-bdd
 
   - name: Twitter
     href: https://github.com/twitter

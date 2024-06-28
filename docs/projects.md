@@ -3,7 +3,7 @@ layout: page
 title: Who's using QUnit?
 ---
 
-<p class="lead">These organizations and open-source projects use QUnit to keep their code in check.</p>
+<p class="lead">These organizations and open-source projects, and many others, use QUnit to keep their code in check.</p>
 
 ## Organizations
 
