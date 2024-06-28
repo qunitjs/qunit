@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=4ca9bae3" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>Browser Runner | QUnit</title>
+<meta property="og:title" content="Browser Runner"><meta name="description" content="Test JavaScript code in a real browser."><meta property="og:description" content="Test JavaScript code in a real browser."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">Browser Runner</h1>
+    </div>
+</section>
+<div class="main main--columns wrapper">
+<div class="content"><p class="lead">
+
+Test JavaScript code in a real browser with QUnit.
+
+</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>QUnit releases are standalone and require no runtime dependencies for use in the browser. To get started, all you need is an HTML file that loads two files: <code class="language-plaintext highlighter-rouge">qunit.js</code> and <code class="language-plaintext highlighter-rouge">qunit.css</code>.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;title&gt;</span>QUnit<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://code.jquery.com/qunit/qunit-2.21.0.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-fixture"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/qunit/qunit-2.21.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="c">&lt;!-- &lt;script src="your_app.test.js"&gt;&lt;/script&gt; --&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>This is typically saved as <code class="language-plaintext highlighter-rouge">/test.html</code> or <code class="language-plaintext highlighter-rouge">/test/index.html</code> in your project.</p>
+
+<p>The above example loads QUnit from the jQuery CDN. For improved experience during local or offline development, it is recommended to <a href="/intro/#download">install or download QUnit</a> within your project. Some <a href="#integrations">integrations</a>, like Web Test Runner and Karma, can auto-create the HTML from a list of JS files or glob pattern.</p>
+
+<p>Let’s add the following script, which tests an “add” function that adds two numbers together:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+<span class="kd">function</span> <span class="nf">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">two numbers</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>Open your HTML file in a browser to find a detailed report. Live example (<a href="/resources/example-add.html" target="_blank">open in a new tab</a>):</p>
+
+<iframe loading="lazy" title="Example test suite running in the browser" src="/resources/example-add.html" style="height: 380px;"></iframe>
+
+<p>Congrats! You just executed your first QUnit test!</p>
+
+<h2 id="fixture">Fixture</h2>
+
+<p>Don’t worry about DOM changes from one test affecting other tests, because QUnit will automatically reset the markup after each test. As long as you append or insert your elements inside the fixture, you will never have to manually clean up after your tests.</p>
+
+<p>This helps keep your tests them atomic!</p>
+
+<p>Find examples and learn more at <a href="/api/config/fixture/"><code class="language-plaintext highlighter-rouge">QUnit.config.fixture</code></a>.</p>
+
+<h2 id="integrations">Integrations</h2>
+
+<h3 id="linting">Linting</h3>
+
+<p>The <a href="https://github.com/platinumazure/eslint-plugin-qunit">eslint-plugin-qunit</a> package has a variety of rules available for enforcing best testing practices as well as detecting broken tests.</p>
+
+<h3 id="browser-automation">Browser automation</h3>
+
+<p>The following integrations can be used to automate the running of browser tests with QUnit:</p>
+
+<ul>
+  <li><a href="https://github.com/gruntjs/grunt-contrib-qunit">grunt-contrib-qunit</a> for <a href="https://gruntjs.com/">Grunt task runner</a> (test Headless Chrome).</li>
+  <li><a href="https://github.com/testem/testem">testem</a> (test any local browser, including headless)</li>
+  <li><a href="https://webdriver.io/docs/wdio-qunit-service/">wdio-qunit-service</a> (test any local, headless, or cloud browser; via WDIO selenium driver)</li>
+  <li><a href="https://modern-web.dev/docs/test-runner/overview/">Web Test Runner</a> with <a href="https://github.com/brandonaaron/web-test-runner-qunit">web-test-runner-qunit</a> (test any local, headless, or cloud browser)</li>
+  <li><a href="https://karma-runner.github.io/latest/index.html">Karma</a> with <a href="https://github.com/karma-runner/karma-qunit">karma-qunit</a> (test any local browser or cloud).</li>
+  <li><a href="https://github.com/ameshkov/node-qunit-puppeteer">node-qunit-puppeteer</a> (test Headless Chrome).</li>
+  <li><a href="https://stealjs.com/">StealJS</a> with <a href="https://stealjs.com/docs/steal-qunit.html">steal-qunit</a> via <a href="https://www.npmjs.com/package/testee">Testee</a> (test any local browser or cloud).</li>
+  <li><a href="https://github.com/DevExpress/testcafe">testcafe</a> (test any local browser or cloud).</li>
+</ul>
+
+<p>Example projects:</p>
+
+<ul>
+  <li><a href="https://github.com/Krinkle/example-node-and-browser-qunit-ci/">Krinkle/example-node-and-browser-qunit-ci</a>: Run QUnit tests locally and in CI, on Headless Firefox and Chrome (using Karma), and with Node.js.<br />Also demonstrates code coverage, and testing of isomorphic JavaScript projects.</li>
+</ul>
+
+<h2 id="url-parameters">URL parameters</h2>
+
+<ul>
+  <li><a href="/api/config/hidepassed/">hidepassed</a></li>
+  <li><a href="/api/config/noglobals/">noglobals</a></li>
+  <li><a href="/api/config/notrycatch/">notrycatch</a></li>
+  <li><a href="/api/config/filter/">filter</a></li>
+  <li><a href="/api/config/module/">module</a></li>
+  <li><a href="/api/config/moduleId/">moduleId</a></li>
+  <li><a href="/api/config/testId/">testId</a></li>
+  <li><a href="/api/config/seed/">seed</a></li>
+</ul>
+
+<h2 id="markup">Markup</h2>
+
+<p>QUnit requires no HTML markup in order to run tests. The above “Getting started” example is recommended for new projects, but you can customize this as-needed.</p>
+
+<p>To display test results, the only markup necessary is a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with <code class="language-plaintext highlighter-rouge">id="qunit"</code>. Without this, the tests will run with the <a href="#html-reporter">HTML Reporter</a> disabled.</p>
+
+<p><a href="#integrations">Browser automations</a> that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a TAP reporter, or <a href="./callbacks/QUnit.on.md"><code class="language-plaintext highlighter-rouge">QUnit.on()</code></a> to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).</p>
+
+<h2 id="html-reporter">HTML Reporter</h2>
+
+<p>The header of the report displays:</p>
+<ul>
+  <li>the page title.</li>
+  <li>a green bar when all tests passed, or a red bar if one or more tests failed.</li>
+  <li>the <code class="language-plaintext highlighter-rouge">navigator.userAgent</code> string, handy when comparing results captured from different browsers.</li>
+</ul>
+
+<h3 id="toolbar">Toolbar</h3>
+
+<p><a href="/api/config/hidepassed/">Hide passed tests</a> is useful when a lot of tests ran and only a few failed. Ticking the checkbox will show only the tests that failed..</p>
+
+<p><a href="/api/config/noglobals/">Check for globals</a> detects if a test creates or removes  global variable is. QUnit keeps a list of properties found on the <code class="language-plaintext highlighter-rouge">window</code> object. If properties were added or removed, the test fails.</p>
+
+<p><a href="/api/config/notrycatch/">No try-catch</a> instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging.</p>
+
+<h3 id="filter">Filter</h3>
+
+<p>Enter a search phrase to re-run only tests that match the phrase. It performs a case-insensitive substring match by default, on both the module name and test name. You can use regular expressions, and/or invert the match to exclude tests instead.</p>
+
+<p>Read <a href="/api/config/filter/">filter</a> for examples.</p>
+
+<h3 id="module-selector">Module selector</h3>
+
+<p>To quickly re-run one or more modules of tests, select them from the module selector and press “Apply”.</p>
+
+<p>You can use the input field to quickly find a module, even if you have many modules. The input field performs <a href="https://github.com/farzher/fuzzysort">fuzzy matching</a>, so don’t worry about getting it exactly right! <code class="language-plaintext highlighter-rouge">baor game</code> and <code class="language-plaintext highlighter-rouge">boar dame</code> finds “board game”. This is similar to how “Quick Open” works in modern text editors.</p>
+
+<p>When selecting a parent module, which contains <a href="/api/QUnit/module/">nested modules</a>, the nested modules and their tests will also be run.</p>
+
+<h3 id="test-results">Test results</h3>
+
+<p>Each result is displayed in a numbered list. After the name of the test, in parentheses, are the number of failed, passed, and total assertions. Click the entry to show the results of each assertion, with details about expected and actual results (for failed asssertions).</p>
+
+<p>The “Rerun” link at the end will run that test on its own.</p>
+
+<h2 id="browser-support">Browser support</h2>
+
+<p>QUnit currently supports the following browsers:</p>
+
+<ul>
+  <li>Internet Explorer: 9+</li>
+  <li>Edge: 15+ (both legacy MSEdge and Chromium-based)</li>
+  <li>Firefox: 45+</li>
+  <li>Safari: 9+</li>
+  <li>Opera: 36+</li>
+  <li>Chrome: 58+</li>
+  <li>Android: 4.3+</li>
+  <li>iOS: 7+ (Mobile Safari)</li>
+</ul>
+
+<p>For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the <a href="https://releases.jquery.com/qunit/">release archives</a>.</p>
+</div>
+<aside class="sidebar" role="complementary"><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li></ol></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li></ol></div>
+</aside>
+
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/browser.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

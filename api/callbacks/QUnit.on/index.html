@@ -17,8 +17,8 @@
 
 
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
                     <span class="screen-reader-text">Search</span>
@@ -70,7 +70,7 @@
 <article>
     <header>
     <h1>QUnit.on()</h1>
-    <p class="post-meta">Categories: <a class="category" href="/api/callbacks/">Callback events</a>.</p>
+    <p class="post-meta">Categories: <a class="category" href="/api/callbacks/">Callback events</a>, <a class="category" href="/api/extension/">Extension interface</a>.</p>
     </header>
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.2.0">2.2.0</a><span class="sep">.</span></p>
@@ -409,8 +409,30 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 	<h4><a href="/api/config/">Configuration</a></h4>
 	
 
-	<h4><a href="/api/extension/">Extension interface</a></h4>
-	
+	<h4 class="sidebar-title-open"><a href="/api/extension/">Extension interface</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/assert/pushResult/">assert.pushResult()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.assert/">QUnit.assert</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/current/">QUnit.config.current</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/modules/">QUnit.config.modules</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.dump.parse/">QUnit.dump.parse()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.extend/">QUnit.extend()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/QUnit/hooks/">QUnit.hooks</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/callbacks/QUnit.on/">QUnit.on()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.stack/">QUnit.stack()</a>
+	</li></ul>
 
 	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
 	

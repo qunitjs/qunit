@@ -17,8 +17,8 @@
 
 
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
                     <span class="screen-reader-text">Search</span>
@@ -88,11 +88,16 @@
 </tr>
 </table>
 
-<p class="note">This option can also be controlled via the <a href="/intro/#in-the-browser">HTML Reporter</a> interface, and is supported as URL query parameter.</p>
+<p class="note">
 
-<p>By default, QUnit handles uncaught exceptions during test execution and reports them as test failures. This lets other tests continue running and allows reporters to summarise results.</p>
+This option can also be controlled via the <a href="/browser/">HTML Reporter</a> interface, and is supported as URL query parameter.
 
-<p>Enabling this flag will disable this error handling, allowing you to more easily debug uncaught exceptions through developer tools.</p>
+</p>
+
+<p>By default, QUnit handles uncaught errors during test execution and reports them as test failures. This allows reporters to reliably summarise results.</p>
+
+<p>Enabling this flag will disable this error handling, allowing your error to become a “native” uncaught exception and thus interrupt QUnit. This can sometimes ease debugging through a browser’s developer tools, such as when dealing with breakpoints, or source maps.</p>
+
 
 </article>
 </div>

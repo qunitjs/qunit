@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/assets/styles.css?v=4ca9bae3" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>QUnit.config.fixture | QUnit</title>
-<meta property="og:title" content="QUnit.config.fixture"><meta name="description" content="HTML content to render in the fixture container at the start of each test (HTML Reporter)."><meta property="og:description" content="HTML content to render in the fixture container at the start of each test (HTML Reporter)."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="QUnit.config.fixture"><meta name="description" content="HTML content to render before each test."><meta property="og:description" content="HTML content to render before each test."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -17,8 +17,8 @@
 
 
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/intro/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
                     <span class="screen-reader-text">Search</span>
@@ -75,7 +75,7 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p>In the HTML Reporter, this HTML content will be rendered in the fixture container at the start of each test.</p>
+<p>In browser environments, this HTML will be rendered in the <code class="language-plaintext highlighter-rouge">#qunit-fixture</code> element before each test.</p>
 
 <table>
 <tr>
@@ -88,9 +88,162 @@
 </tr>
 </table>
 
-<p>By default QUnit will observe the initial content of the <code class="language-plaintext highlighter-rouge">#qunit-fixture</code> element, and use that as the fixture content for all tests. Use this option to configure the fixture content through JavaScript instead.</p>
+<p>QUnit automatically resets the contents of <code class="language-plaintext highlighter-rouge">&lt;div id="qunit-fixture"&gt;</code>. This gives every test a fresh start, and automatically cleans up any additions or other changes from your tests. As long as you append or insert your elements inside the fixture, you will never have to manually clean up after your tests to keep them atomic.</p>
+
+<p>By starting with an empty fixture in your test HTML file, you effectively give each test a clean start, as QUnit will automatically remove anything that was added there before the next test begins.</p>
+
+<p>If many of your tests require the same markup, you can also set it inside the fixture ahead of time. This reduces duplication between tests. QUnit guruantees that each test will start with a fresh copy of the original fixture, undoing any changes that happened during any previous tests.</p>
+
+<p>You can define a custom fixture in one of two ways:</p>
+
+<ul>
+  <li>In HTML: By writing it as HTML inside the <code class="language-plaintext highlighter-rouge">&lt;div id="qunit-fixture"&gt;</code> element.</li>
+  <li>In JavaScript: Set <code class="language-plaintext highlighter-rouge">QUnit.config.fixture</code> to a string from an <a href="/api/config/">inline or bootstrap script</a>.</li>
+</ul>
+
+<p>By default, if <code class="language-plaintext highlighter-rouge">QUnit.config.fixture</code> is not set, QUnit will look for the <code class="language-plaintext highlighter-rouge">#qunit-fixture</code> element when the test run begins, and assign its contents to <code class="language-plaintext highlighter-rouge">QUnit.config.fixture</code>. The initially observed content is then restored before each test.</p>
 
 <p>To disable QUnit’s fixture resetting behaviour, set the option to <code class="language-plaintext highlighter-rouge">null</code>.</p>
+
+<h2 id="example">Example</h2>
+
+<h3 id="automatic-teardown">Automatic teardown</h3>
+
+<p>Starting with an empty fixture. Any additions are automatically removed.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-fixture"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"test/example.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// test/example.js</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example [first]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">resultA</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">#first</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">resultA</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">'</span><span class="s1">initial</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">div</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">first</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">fixture</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nx">div</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">resultB</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">#first</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">resultB</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">after append</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example [second]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="c1">// The previous elements were automatically detached.</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">#first</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">'</span><span class="s1">initial is back to zero</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="qunit-fixture-html">qunit-fixture HTML</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-fixture"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"marty"</span><span class="nt">&gt;&lt;strong&gt;</span>Marty McFly<span class="nt">&lt;/strong&gt;</span>: Listen, you got a back door to this place?<span class="nt">&lt;/span&gt;&lt;br&gt;</span>
+      <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"bar"</span><span class="nt">&gt;&lt;strong&gt;</span>Bartender<span class="nt">&lt;/strong&gt;</span>: Yeah, it's in the <span class="nt">&lt;em&gt;</span>back<span class="nt">&lt;/em&gt;</span>.<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">findText</span> <span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">tagName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">ret</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+  <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="nx">emNode</span> <span class="k">of</span> <span class="nx">element</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="nx">tagName</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">ret</span> <span class="o">+=</span> <span class="nx">emNode</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> </span><span class="dl">'</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">ret</span><span class="p">.</span><span class="nf">trim</span><span class="p">()</span> <span class="o">||</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">findText [strong]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span>
+    <span class="nf">findText</span><span class="p">(</span><span class="nx">fixture</span><span class="p">,</span> <span class="dl">'</span><span class="s1">strong</span><span class="dl">'</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">Marty McFly Bartender</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">initial</span><span class="dl">'</span>
+  <span class="p">);</span>
+
+  <span class="nx">fixture</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.bar</span><span class="dl">'</span><span class="p">).</span><span class="nf">remove</span><span class="p">();</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span>
+    <span class="nf">findText</span><span class="p">(</span><span class="nx">fixture</span><span class="p">,</span> <span class="dl">'</span><span class="s1">strong</span><span class="dl">'</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">Marty McFly</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">removed bar</span><span class="dl">'</span>
+  <span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">findText [code]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">fixture</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;p&gt;You can &lt;code&gt;add&lt;/code&gt; two &lt;em&gt;numbers&lt;/em&gt;.&lt;/p&gt;</span><span class="dl">'</span><span class="p">;</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span>
+    <span class="nf">findText</span><span class="p">(</span><span class="nx">fixture</span><span class="p">,</span> <span class="dl">'</span><span class="s1">code</span><span class="dl">'</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">add</span><span class="dl">'</span>
+  <span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span>
+    <span class="nf">findText</span><span class="p">(</span><span class="nx">fixture</span><span class="p">,</span> <span class="dl">'</span><span class="s1">strong</span><span class="dl">'</span><span class="p">),</span>
+    <span class="kc">null</span>
+  <span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// The first test removed &lt;span class=bar&gt; and its &lt;em&gt; child.</span>
+<span class="c1">// The second test replaced the fixture entirely.</span>
+<span class="c1">// The fixture is clean and restored before each test starts.</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">findText [em]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span>
+    <span class="nf">findText</span><span class="p">(</span><span class="nx">fixture</span><span class="p">,</span> <span class="dl">'</span><span class="s1">em</span><span class="dl">'</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">back</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">initial content was restored</span><span class="dl">'</span>
+  <span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="dynamic-qunit-fixture">dynamic qunit-fixture</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-fixture"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"test/bootstrap.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"test/example.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// test/bootstrap.js</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">fixture</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hi &lt;strong&gt;there&lt;/strong&gt;, stranger!&lt;/p&gt;</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// test/example.js</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example [first]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">fixture</span><span class="p">.</span><span class="nx">textContent</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hi there, stranger!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">fixture</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">strong</span><span class="dl">'</span><span class="p">).</span><span class="nf">remove</span><span class="p">();</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">fixture</span><span class="p">.</span><span class="nx">textContent</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hi , stranger!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example [second]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixture</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#qunit-fixture</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="c1">// The fixture starts fresh on each test!</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">fixture</span><span class="p">.</span><span class="nx">textContent</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hi there, stranger!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
 </article>
 </div>
@@ -163,7 +316,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#example">Example</a><ol><li class="sidebar-item"><a href="#automatic-teardown">Automatic teardown</a></li><li class="sidebar-item"><a href="#qunit-fixture-html">qunit-fixture HTML</a></li><li class="sidebar-item"><a href="#dynamic-qunit-fixture">dynamic qunit-fixture</a></li></ol></li></ol></div>
 </aside>
 
 </div>
