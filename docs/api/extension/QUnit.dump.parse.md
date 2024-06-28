@@ -33,7 +33,7 @@ If you need more or less output, change the value of `QUnit.dump.maxDepth`, repr
 
 The following is an example from [grunt-contrib-qunit][], which sends results from QUnit (running in Headless Chrome) to a CLI tool.
 
-[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/188a29af7817e1798fdd95f1ab7d3069231e4859/chrome/bridge.js#L42-L60
+[grunt-contrib-qunit]: https://github.com/gruntjs/grunt-contrib-qunit/blob/v10.0.0/chrome/bridge.js#L111-L124
 
 ```js
 QUnit.log(function (obj) {

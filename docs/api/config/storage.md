@@ -4,6 +4,7 @@ title: QUnit.config.storage
 excerpt: The Storage object to use for remembering failed tests between runs.
 groups:
   - config
+  - extension
 redirect_from:
   - "/config/storage/"
 version_added: "2.1.0"
@@ -18,10 +19,10 @@ The Storage object to use for remembering failed tests between runs.
 </tr>
 <tr>
   <th>default</th>
-  <td markdown="span">`globalThis.sessionStorage`</td>
+  <td markdown="span">`globalThis.sessionStorage` or `undefined`</td>
 </tr>
 </table>
 
-This is mainly for use by the HTML Reporter, where `sessionStorage` will be used if supported by the browser.
+This is used to power the [reorder feature](../config.md). In [browser environments](../../browser.md) this will use `sessionStorage` if supported by the browser.
 
-While Node.js and other non-browser environments are not known to offer something like this by default, one can attach any preferred form of persistence by assigning an object that implements the [`Storage` interface methods](https://html.spec.whatwg.org/multipage/webstorage.html#the-storage-interface) of the Web Storage API.
+In Node.js and other non-browser environments, there is no storage object available for this purpose by default. You can attach your own preferred form of persistence between test runs, by assigning an object to `QUnit.config.storage` that implements `getItem`, `setItem` and `removeItem` methods, similar to the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).

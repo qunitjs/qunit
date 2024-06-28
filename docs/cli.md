@@ -85,6 +85,21 @@ See [QUnit.config](./api/config/index.md) for all available configuration option
 
 This option assigns [`QUnit.config.seed`](./api/config/seed.md) for you.
 
+### `--watch`
+
+Automatically re-run your tests after file changes in the current directory.
+
+In watch mode, QUnit will run your tests once initially, and then keep watch mode open to re-run tests after files changed anywhere in or under the current directory. This includes adding or removing files.
+
+## Efficient development
+
+_For browser automations from the command-line, refer to [Browser automation](./browser.md#integrations) instead._
+
+As your project grows, you may reach a point where the complete test suite takes more than a second to run. QUnit provides several ways to maintain a fast feedback cycle on the command-line.
+
+* Use `--watch` to automatically re-run tests after making changes to your files.
+* When building out a larger feature, use `--filter` or `--module` to run only a subset of tests.
+
 ## Node.js CLI options
 
 The QUnit CLI uses Node.js. You can pass [Node.js CLI](https://nodejs.org/api/cli.html) options via the [`NODE_OPTIONS`](https://nodejs.org/api/cli.html#cli_node_options_options) environment variable. For example, to use `--enable-source-maps` or `--inspect`, invoke QUnit as follows:

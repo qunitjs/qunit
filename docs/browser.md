@@ -68,6 +68,14 @@ This helps keep your tests them atomic!
 
 Find examples and learn more at [`QUnit.config.fixture`](./api/config/fixture.md).
 
+## Efficient development
+
+As your project grows, you may reach a point where the complete test suite takes more than a second or two to run. QUnit provides several automatic and optional ways to maintain a good feedback cycle.
+
+QUnit's [reorder feature](./api/config/reorder.md) automatically remembers failing tests, and prioritizes those when you reload the page, running them before all other tests. Together with "Hide passed tests" in the [toolbar](#html-reporter), this let's you stay focussed by running and showing only what matters most.
+
+When building out a larger feature, you can use the [module selector](#module-selector) to re-run only the tests (and nested modules) under one or more selected module names.
+
 ## Integrations
 
 ### Linting
