@@ -74,80 +74,17 @@
 <div class="main main--columns wrapper">
 <div class="content"><p class="lead">
 
-This tutorial gets you up-and-running with QUnit in Node.js or <a href="/browser/">in the browser</a>.
+Up-and-running with QUnit <a href="/cli/">in Node.js</a> or <a href="/browser/">in the browser</a>.
 
 </p>
 
-<p>QUnit has no dependencies and supports Node.js, SpiderMonkey, and all <a href="/browser/#browser-support">major browsers</a>.</p>
-
 <h2 id="in-nodejs">In Node.js</h2>
 
-<p>Getting started with QUnit for Node.js projects is quick and easy. First, install the <a href="https://www.npmjs.com/package/qunit">qunit</a> package using <code class="language-plaintext highlighter-rouge">npm</code>:</p>
+<p><a href="/cli/">Getting Started in Node.js</a></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save-dev</span> qunit
+<h2 id="in-the-browser">In the browser</h2>
 
-<span class="c"># Or, if using Yarn:</span>
-yarn add <span class="nt">--dev</span> qunit
-</code></pre></div></div>
-
-<p>Let’s create an example program that we can test! We’ll start with a function that adds two numbers. Create a file <code class="language-plaintext highlighter-rouge">add.js</code> with the following contents:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">add</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">add</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>Now, let’s start writing tests! Create a file in a test directory, for example <code class="language-plaintext highlighter-rouge">test/add.js</code>, and write the following:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">add</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">../add.js</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">add</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">two numbers</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>This defines a test suite for the “add” feature, with a single test case that verifies the result of adding two numbers together. Refer to the <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code> page</a> in our API Documentation for how to organise tests and make other assertions.</p>
-
-<p>You can now run your first test through the <a href="/cli/">QUnit CLI</a>. It is recommended that you run the <code class="language-plaintext highlighter-rouge">qunit</code> command via an npm script, which will automatically find the <code class="language-plaintext highlighter-rouge">qunit</code> program in your local <code class="language-plaintext highlighter-rouge">node_modules</code> folder, which is where npm keeps the dependencies you download. In your <code class="language-plaintext highlighter-rouge">package.json</code> file, specify it like so:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qunit"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<p>Then run:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">test</span>
-</code></pre></div></div>
-
-<p>Congrats! You just wrote and executed your first QUnit test!</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TAP version 13
-ok 1 add <span class="o">&gt;</span> two numbers
-1..1
-<span class="c"># pass 1</span>
-<span class="c"># skip 0</span>
-<span class="c"># todo 0</span>
-<span class="c"># fail 0</span>
-</code></pre></div></div>
-
-<p>Check out the <a href="/api/">API documentation</a> to learn more about the QUnit APIs for organising tests and making assertions. See <a href="/cli/">Command-line Interface</a> for what the <code class="language-plaintext highlighter-rouge">qunit</code> command can do.</p>
-
-<h3 id="support-policy">Support policy</h3>
-
-<p>QUnit follows the <a href="https://github.com/nodejs/LTS" target="_blank">Node.js Long-term Support (LTS) schedule</a> and provides support for Current, Active LTS, and Maintenance LTS releases.</p>
-
-<h3 id="package-name-prior-to-241">Package name prior to 2.4.1</h3>
-
-<p>Prior to QUnit 2.4.1, the npm package was published under the name “qunit<strong>js</strong>” instead of “qunit”. To install earlier versions of QUnit for Node, check out <a href="https://www.npmjs.com/package/qunitjs">qunitjs</a>.</p>
-
-<p>The 0.x and 1.x versions of the “qunit” package on npm holds an alternative CLI that is now published as <a href="https://github.com/qunitjs/node-qunit">node-qunit</a>.</p>
+<p><a href="/browser/">Getting Started in the browser</a></p>
 
 <hr />
 
@@ -207,7 +144,7 @@ curl <span class="nt">-o</span> qunit.js <span class="s1">'https://code.jquery.c
 </ul>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#in-nodejs">In Node.js</a><ol><li class="sidebar-item"><a href="#support-policy">Support policy</a></li><li class="sidebar-item"><a href="#package-name-prior-to-241">Package name prior to 2.4.1</a></li></ol></li><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#download">Download</a></li><li class="sidebar-item"><a href="#further-reading">Further reading</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#in-nodejs">In Node.js</a></li><li class="sidebar-item"><a href="#in-the-browser">In the browser</a></li><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#download">Download</a></li><li class="sidebar-item"><a href="#further-reading">Further reading</a></li></ol></div>
 </aside>
 
 </div>
