@@ -58,7 +58,7 @@ Open your HTML file in a browser to find a detailed report. Live example ([open 
 
 <iframe loading="lazy" title="Example test suite running in the browser" src="/resources/example-add.html" style="height: 380px;"></iframe>
 
-Congrats! You just executed your first QUnit test!
+**Congrats!** You just executed your first QUnit test!
 
 ## Fixture
 

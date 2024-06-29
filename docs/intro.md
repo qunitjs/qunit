@@ -9,86 +9,17 @@ redirect_from:
 
 <p class="lead" markdown="1">
 
-This tutorial gets you up-and-running with QUnit in Node.js or [in the browser](./browser.md).
+Up-and-running with QUnit [in Node.js](./cli.md) or [in the browser](./browser.md).
 
 </p>
 
-QUnit has no dependencies and supports Node.js, SpiderMonkey, and all [major browsers](./browser.md#browser-support).
-
 ## In Node.js
 
-Getting started with QUnit for Node.js projects is quick and easy. First, install the [qunit](https://www.npmjs.com/package/qunit) package using `npm`:
+[Getting Started in Node.js](./cli.md)
 
-```bash
-npm install --save-dev qunit
+## In the browser
 
-# Or, if using Yarn:
-yarn add --dev qunit
-```
-
-Let's create an example program that we can test! We'll start with a function that adds two numbers. Create a file `add.js` with the following contents:
-
-```js
-function add (a, b) {
-  return a + b;
-}
-
-module.exports = add;
-```
-
-Now, let's start writing tests! Create a file in a test directory, for example `test/add.js`, and write the following:
-
-```js
-const add = require('../add.js');
-
-QUnit.module('add');
-
-QUnit.test('two numbers', (assert) => {
-  assert.equal(add(1, 2), 3);
-});
-```
-
-This defines a test suite for the "add" feature, with a single test case that verifies the result of adding two numbers together. Refer to the [`QUnit.test()` page](./api/QUnit/test.md) in our API Documentation for how to organise tests and make other assertions.
-
-You can now run your first test through the [QUnit CLI](./cli.md). It is recommended that you run the `qunit` command via an npm script, which will automatically find the `qunit` program in your local `node_modules` folder, which is where npm keeps the dependencies you download. In your `package.json` file, specify it like so:
-
-```json
-{
-  "scripts": {
-    "test": "qunit"
-  }
-}
-```
-
-Then run:
-
-```bash
-npm test
-```
-
-Congrats! You just wrote and executed your first QUnit test!
-
-```bash
-TAP version 13
-ok 1 add > two numbers
-1..1
-# pass 1
-# skip 0
-# todo 0
-# fail 0
-```
-
-Check out the [API documentation](./api/index.md) to learn more about the QUnit APIs for organising tests and making assertions. See [Command-line Interface](./cli.md) for what the `qunit` command can do.
-
-### Support policy
-
-QUnit follows the <a href="https://github.com/nodejs/LTS" target="_blank">Node.js Long-term Support (LTS) schedule</a> and provides support for Current, Active LTS, and Maintenance LTS releases.
-
-### Package name prior to 2.4.1
-
-Prior to QUnit 2.4.1, the npm package was published under the name "qunit**js**" instead of "qunit". To install earlier versions of QUnit for Node, check out [qunitjs](https://www.npmjs.com/package/qunitjs).
-
-The 0.x and 1.x versions of the "qunit" package on npm holds an alternative CLI that is now published as [node-qunit](https://github.com/qunitjs/node-qunit).
+[Getting Started in the browser](./browser.md)
 
 ---
 

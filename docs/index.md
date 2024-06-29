@@ -12,7 +12,7 @@ home_secondary_btn:
 <section class="grid grid--small home-highlights">
   <div>
     <h2>Easy</h2>
-    <p>Easy, zero configuration setup for any Node.js project and minimal configuration for Browser-based projects.</p>
+    <p>Zero configuration and setup for any Node.js project, and minimal setup for Browser-based projects.</p>
   </div>
 
   <div>
