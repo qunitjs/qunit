@@ -129,6 +129,14 @@ Test JavaScript code in a real browser with QUnit.
 
 <p>Find examples and learn more at <a href="/api/config/fixture/"><code class="language-plaintext highlighter-rouge">QUnit.config.fixture</code></a>.</p>
 
+<h2 id="efficient-development">Efficient development</h2>
+
+<p>As your project grows, you may reach a point where the complete test suite takes more than a second or two to run. QUnit provides several automatic and optional ways to maintain a good feedback cycle.</p>
+
+<p>QUnit’s <a href="/api/config/reorder/">reorder feature</a> automatically remembers failing tests, and prioritizes those when you reload the page, running them before all other tests. Together with “Hide passed tests” in the <a href="#html-reporter">toolbar</a>, this let’s you stay focussed by running and showing only what matters most.</p>
+
+<p>When building out a larger feature, you can use the <a href="#module-selector">module selector</a> to re-run only the tests (and nested modules) under one or more selected module names.</p>
+
 <h2 id="integrations">Integrations</h2>
 
 <h3 id="linting">Linting</h3>
@@ -232,7 +240,7 @@ Test JavaScript code in a real browser with QUnit.
 <p>For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the <a href="https://releases.jquery.com/qunit/">release archives</a>.</p>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li></ol></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li></ol></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li></ol></div>
 </aside>
 
 </div>

@@ -149,6 +149,23 @@ Options:
 
 <p>This option assigns <a href="/api/config/seed/"><code class="language-plaintext highlighter-rouge">QUnit.config.seed</code></a> for you.</p>
 
+<h3 id="--watch"><code class="language-plaintext highlighter-rouge">--watch</code></h3>
+
+<p>Automatically re-run your tests after file changes in the current directory.</p>
+
+<p>In watch mode, QUnit will run your tests once initially, and then keep watch mode open to re-run tests after files changed anywhere in or under the current directory. This includes adding or removing files.</p>
+
+<h2 id="efficient-development">Efficient development</h2>
+
+<p><em>For browser automations from the command-line, refer to <a href="/browser/#integrations">Browser automation</a> instead.</em></p>
+
+<p>As your project grows, you may reach a point where the complete test suite takes more than a second to run. QUnit provides several ways to maintain a fast feedback cycle on the command-line.</p>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">--watch</code> to automatically re-run tests after making changes to your files.</li>
+  <li>When building out a larger feature, use <code class="language-plaintext highlighter-rouge">--filter</code> or <code class="language-plaintext highlighter-rouge">--module</code> to run only a subset of tests.</li>
+</ul>
+
 <h2 id="nodejs-cli-options">Node.js CLI options</h2>
 
 <p>The QUnit CLI uses Node.js. You can pass <a href="https://nodejs.org/api/cli.html">Node.js CLI</a> options via the <a href="https://nodejs.org/api/cli.html#cli_node_options_options"><code class="language-plaintext highlighter-rouge">NODE_OPTIONS</code></a> environment variable. For example, to use <code class="language-plaintext highlighter-rouge">--enable-source-maps</code> or <code class="language-plaintext highlighter-rouge">--inspect</code>, invoke QUnit as follows:</p>
@@ -176,7 +193,7 @@ Options:
 <p>For a more elaborate example showcasing a unified test coverage report for tests in both Node.js and a headless browser, see <a href="https://github.com/Krinkle/example-node-and-browser-qunit-ci/">Krinkle/example-node-and-browser-qunit</a>.</p>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#qunit-cli-options">QUnit CLI options</a><ol><li class="sidebar-item"><a href="#--filter">--filter</a></li><li class="sidebar-item"><a href="#--module">--module</a></li><li class="sidebar-item"><a href="#--reporter">--reporter</a></li><li class="sidebar-item"><a href="#--require">--require</a></li><li class="sidebar-item"><a href="#--seed">--seed</a></li></ol></li><li class="sidebar-item"><a href="#nodejs-cli-options">Node.js CLI options</a></li><li class="sidebar-item"><a href="#code-coverage">Code coverage</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#qunit-cli-options">QUnit CLI options</a><ol><li class="sidebar-item"><a href="#--filter">--filter</a></li><li class="sidebar-item"><a href="#--module">--module</a></li><li class="sidebar-item"><a href="#--reporter">--reporter</a></li><li class="sidebar-item"><a href="#--require">--require</a></li><li class="sidebar-item"><a href="#--seed">--seed</a></li><li class="sidebar-item"><a href="#--watch">--watch</a></li></ol></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#nodejs-cli-options">Node.js CLI options</a></li><li class="sidebar-item"><a href="#code-coverage">Code coverage</a></li></ol></div>
 </aside>
 
 </div>

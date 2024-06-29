@@ -70,7 +70,7 @@
 <article>
     <header>
     <h1>QUnit.config.storage</h1>
-    <p class="post-meta">Categories: <a class="category" href="/api/config/">QUnit.config</a>.</p>
+    <p class="post-meta">Categories: <a class="category" href="/api/config/">QUnit.config</a>, <a class="category" href="/api/extension/">Extension interface</a>.</p>
     </header>
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">2.1.0</a><span class="sep">.</span></p>
@@ -84,13 +84,13 @@
 </tr>
 <tr>
   <th>default</th>
-  <td><code class="language-plaintext highlighter-rouge">globalThis.sessionStorage</code></td>
+  <td><code class="language-plaintext highlighter-rouge">globalThis.sessionStorage</code> or <code class="language-plaintext highlighter-rouge">undefined</code></td>
 </tr>
 </table>
 
-<p>This is mainly for use by the HTML Reporter, where <code class="language-plaintext highlighter-rouge">sessionStorage</code> will be used if supported by the browser.</p>
+<p>This is used to power the <a href="../config.md">reorder feature</a>. In <a href="/browser/">browser environments</a> this will use <code class="language-plaintext highlighter-rouge">sessionStorage</code> if supported by the browser.</p>
 
-<p>While Node.js and other non-browser environments are not known to offer something like this by default, one can attach any preferred form of persistence by assigning an object that implements the <a href="https://html.spec.whatwg.org/multipage/webstorage.html#the-storage-interface"><code class="language-plaintext highlighter-rouge">Storage</code> interface methods</a> of the Web Storage API.</p>
+<p>In Node.js and other non-browser environments, there is no storage object available for this purpose by default. You can attach your own preferred form of persistence between test runs, by assigning an object to <code class="language-plaintext highlighter-rouge">QUnit.config.storage</code> that implements <code class="language-plaintext highlighter-rouge">getItem</code>, <code class="language-plaintext highlighter-rouge">setItem</code> and <code class="language-plaintext highlighter-rouge">removeItem</code> methods, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">Web Storage API</a>.</p>
 
 </article>
 </div>
@@ -155,8 +155,32 @@
 		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
 	</li></ul>
 
-	<h4><a href="/api/extension/">Extension interface</a></h4>
-	
+	<h4 class="sidebar-title-open"><a href="/api/extension/">Extension interface</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/assert/pushResult/">assert.pushResult()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.assert/">QUnit.assert</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/current/">QUnit.config.current</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/modules/">QUnit.config.modules</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/config/storage/">QUnit.config.storage</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.dump.parse/">QUnit.dump.parse()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.extend/">QUnit.extend()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/QUnit/hooks/">QUnit.hooks</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.on/">QUnit.on()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.stack/">QUnit.stack()</a>
+	</li></ul>
 
 	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
 	

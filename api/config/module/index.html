@@ -75,7 +75,7 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.8.0">1.8.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p>Select a single test module to run by name.</p>
+<p>Select a single test module to run by name. The module name must be a complete but case-insensitive match.</p>
 
 <table>
 <tr>
@@ -90,7 +90,7 @@
 
 <p class="note">This option can also be set by URL query parameter.</p>
 
-<p>When specified, only a single module will be run if its name is a complete case-insensitive match. If no module name matches, then no tests will be run.</p>
+<p>When specified, only the tests (and nested modules) under the selected module will run. If no module name matches, then no tests will be run.</p>
 
 <p>This option is undefined by default, which means all loaded test modules will be run.</p>
 
