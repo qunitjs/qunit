@@ -52,7 +52,7 @@ export const window = g.window;
 export const document = window && window.document;
 export const navigator = window && window.navigator;
 
-export const localSessionStorage = (function () {
+export const sessionStorage = (function () {
   const x = 'qunit-test-string';
   try {
     g.sessionStorage.setItem(x, x);

@@ -1,4 +1,4 @@
-import { globalThis, process, localSessionStorage } from '../globals';
+import { globalThis, process, sessionStorage } from '../globals';
 import { urlParams } from '../urlparams';
 import { extend } from './utilities';
 
@@ -57,7 +57,7 @@ const config = {
   // seed: undefined,
 
   // The storage module to use for reordering tests
-  storage: localSessionStorage,
+  storage: sessionStorage,
 
   testId: undefined,
 
