@@ -150,6 +150,18 @@ class ProcessingQueue {
     }
   }
 
+  abort () {
+    // Delete the next test and anything after it.
+    // Thus, leaving only the bare minimum to cleanly exit the current test.
+    for (let i = 0, len = config.queue.length; i < len; i++) {
+      if (config.queue[i].name === 'runTest') {
+        const nextTestIndex = i;
+        config.queue.splice(nextTestIndex);
+        return;
+      }
+    }
+  }
+
   /**
    * This function is called when the ProcessingQueue is done processing all
    * items. It handles emitting the final run events.

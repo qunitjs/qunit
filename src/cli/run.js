@@ -183,13 +183,8 @@ function abort (callback) {
     }
   }
 
-  if (QUnit.config.queue.length) {
-    const nextTestIndex = QUnit.config.queue.findIndex(fn => fn.name === 'runTest');
-    QUnit.config.queue.splice(nextTestIndex);
-    QUnit.on('runEnd', clearQUnit);
-  } else {
-    clearQUnit();
-  }
+  QUnit.config._pq.abort();
+  QUnit.on('runEnd', clearQUnit);
 }
 
 run.watch = function watch (args, options) {
