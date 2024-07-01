@@ -666,7 +666,7 @@ export default class HtmlReporter {
       // contains id="qunit".
       qunit.innerHTML =
       "<h1 id='qunit-header'>" + escapeText(document.title) + '</h1>' +
-      "<h2 id='qunit-banner'></h2>" +
+      "<div id='qunit-banner'></div>" +
       "<div id='qunit-testrunner-toolbar' role='navigation'></div>" +
       this.appendFilteredTest() +
       "<h2 id='qunit-userAgent'></h2>" +

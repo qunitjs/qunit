@@ -203,7 +203,7 @@ QUnit 1.x, 2.x:
 ```html
 <div id="qunit">
   <h1 id="qunit-header">…</h1>
-  <h2 id="qunit-banner"></h2>
+  <div id="qunit-banner"></div>
   <div id="qunit-testrunner-toolbar">…</div>
   <h2 id="qunit-userAgent">…</h2>
   <div id="qunit-testresult">…</div>
