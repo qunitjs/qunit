@@ -64,10 +64,6 @@ async function run (args, options) {
     console.log(`Running tests with seed: ${QUnit.config.seed}`);
   }
 
-  // TODO: Enable mode where QUnit is not auto-injected, but other setup is
-  // still done automatically.
-  global.QUnit = QUnit;
-
   options.requires.forEach(requireFromCWD);
 
   findReporter(options.reporter, QUnit.reporters).init(QUnit);
@@ -176,7 +172,7 @@ function abort (callback) {
     process.off('exit', onExit);
     running = false;
 
-    delete global.QUnit;
+    delete globalThis.QUnit;
     QUnit = null;
     if (callback) {
       callback();
@@ -196,8 +192,7 @@ run.watch = function watch (args, options) {
   const watch = require('node-watch');
   const baseDir = process.cwd();
 
-  QUnit = requireQUnit();
-  global.QUnit = QUnit;
+  requireQUnit();
   options.requires.forEach(requireFromCWD);
 
   // Include TypeScript when in use (automatically via require.extensions),

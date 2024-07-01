@@ -13,17 +13,15 @@
     };
     </script>
     <script src="../qunit/qunit.js"></script>
-    <!-- Load twice -->
+    <script>
+    var _qunitFirst = window.QUnit;
+    </script>
     <script src="../qunit/qunit.js"></script>
     <script>
     QUnit.module('overload', function () {
-      QUnit.test('detect', function (assert) {
-        assert.true(
-          // In Firefox the string starts with "Error: "
-          // In Chrome the string starts with "Uncaught Error: "
-          _globalError.includes('QUnit has already been defined.'),
-          'error is thrown if QUnit global was overloaded'
-        );
+      QUnit.test('verify', function (assert) {
+        assert.strictEqual(_globalError, undefined, 'no error');
+        assert.strictEqual(QUnit, _qunitFirst, 'single identity');
       });
     });
     </script>
