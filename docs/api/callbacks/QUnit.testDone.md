@@ -32,6 +32,11 @@ Passed to the callback:
 | `runtime` (number) | The execution time in milliseconds of the test, including beforeEach and afterEach calls |
 | `skipped` (boolean) | Indicates whether or not the current test was skipped |
 | `todo` (boolean) | Indicates whether or not the current test was a todo |
+| `testId` (string) | Internal ID of the current test |
+
+## Changelog
+
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.testId` property.
 
 ## Examples
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title>QUnit</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
+  <script>
+  QUnit.test('example', function (assert) {
+    assert.true(true, 'foo');
+    assert.equal('this is actual', 'this is expected', 'bar');
+    assert.true(true, 'baz');
+  });
+  </script>
+</body>
+</html>
+<!-- This is the demo on the home page. -->

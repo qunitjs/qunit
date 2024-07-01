@@ -65,7 +65,7 @@ value = {
 
 ### Add toolbar checkbox
 
-Add a new checkbox to the toolbar. You can then use the `QUnit.config.min` property in your code to implement a behaviour based on it.
+Add a new checkbox to the toolbar. You can then use the `QUnit.urlParams.min` property in your code to implement a behaviour based on it.
 
 ```js
 QUnit.config.urlConfig.push({

@@ -6,6 +6,32 @@ h3 a {
     color: inherit;
 }
 
+.table-style-api th:first-child {
+  min-width: 20em;
+}
+
+@media (max-width: 768px) {
+  .table-style-api tr,
+  .table-style-api th,
+  .table-style-api td {
+    display: block;
+  }
+  .table-style-api tr {
+    display: flex;
+    flex-flow: row wrap;
+    border: 1px solid $color-off-white;
+  }
+  .table-style-api th:first-child,
+  .table-style-api td:first-child {
+    order: 1;
+    flex-grow: 1;
+  }
+  .table-style-api th,
+  .table-style-api td {
+    border: 0;
+  }
+}
+
 /* Plugins */
 #plugins {
     list-style: none;

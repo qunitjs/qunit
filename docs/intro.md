@@ -35,7 +35,8 @@ These are the official release channels for QUnit releases:
 
 * Download:
 
-  QUnit has no runtime dependencies for browser use. You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the [jQuery CDN](https://code.jquery.com/qunit/).
+  You can save the [`qunit-2.21.0.js`](https://code.jquery.com/qunit/qunit-2.21.0.js) and [`qunit-2.21.0.css`](https://code.jquery.com/qunit/qunit-2.21.0.css) files directly from the jQuery CDN.
+  For older versions, browse the [release archives](https://releases.jquery.com/qunit/).
 
   Or download them via the terminal, and save them in your Git repository.
 
@@ -63,9 +64,9 @@ These are the official release channels for QUnit releases:
 
 * Bower:
 
-  QUnit 1.x and QUnit 2.x releases were published to [Bower](https://bower.io/), and remain available there.
+  QUnit 1.x and QUnit 2.x releases were published to [Bower](https://bower.io/), and remain available there  under the `qunit` package.
 
-  For QUnit 3.0 and later, either download and check-in the JS and CSS file directly (e.g. using the curl command above), or install the `qunit` package from npm as a dev dependency.
+  For QUnit 3.0 and later, either download and commit the JS and CSS file directly in your project (e.g. using the curl command above), or install the `qunit` package from npm as a dev dependency.
 
 ---
 

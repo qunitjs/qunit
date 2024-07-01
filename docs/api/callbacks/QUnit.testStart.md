@@ -26,8 +26,13 @@ Passed to the callback:
 |-----------|-------------|
 | `name` (string) | Name of the next test to run |
 | `module` (string) | Name of the current module |
-| `testId` (string) | Id of the next test to run |
+| `testId` (string) | Internal ID of the next test |
 | `previousFailure` (boolean) | Whether the next test failed on a previous run |
+
+## Changelog
+
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.testId` property.
+
 
 ## Examples
 

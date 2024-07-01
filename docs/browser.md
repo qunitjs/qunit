@@ -76,6 +76,21 @@ QUnit's [reorder feature](./api/config/reorder.md) automatically remembers faili
 
 When building out a larger feature, you can use the [module selector](#module-selector) to re-run only the tests (and nested modules) under one or more selected module names.
 
+## Browser support
+
+QUnit currently supports the following browsers:
+
+* Internet Explorer: 9+
+* Edge: 15+ (both legacy MSEdge and Chromium-based)
+* Firefox: 45+
+* Safari: 9+
+* Opera: 36+
+* Chrome: 58+
+* Android: 4.3+
+* iOS: 7+ (Mobile Safari)
+
+For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the [release archives](https://releases.jquery.com/qunit/).
+
 ## Integrations
 
 ### Linting
@@ -133,11 +148,13 @@ The header of the report displays:
 
 [No try-catch](./api/config/notrycatch.md) instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging.
 
+You can extend the toolbar via [QUnit.config.urlConfig](./api/config/urlConfig.md).
+
 ### Filter
 
 Enter a search phrase to re-run only tests that match the phrase. It performs a case-insensitive substring match by default, on both the module name and test name. You can use regular expressions, and/or invert the match to exclude tests instead.
 
-Read [filter](./api/config/filter.md) for examples.
+Find examples and learn more at [QUnit.config.filter](./api/config/filter.md).
 
 ### Module selector
 
@@ -149,21 +166,75 @@ When selecting a parent module, which contains [nested modules](./api/QUnit/modu
 
 ### Test results
 
-Each result is displayed in a numbered list. After the name of the test, in parentheses, are the number of failed, passed, and total assertions. Click the entry to show the results of each assertion, with details about expected and actual results (for failed asssertions).
+Each result is displayed in a numbered list.
 
-The "Rerun" link at the end will run that test on its own.
+> **MyApp: example** (3) _Rerun_
 
-## Browser support
+After the name of the module and test, in parentheses, is the total number of assertions.
 
-QUnit currently supports the following browsers:
+The "Rerun" link at the end will run that test on its own, skipping all other tests.
 
-* Internet Explorer: 9+
-* Edge: 15+ (both legacy MSEdge and Chromium-based)
-* Firefox: 45+
-* Safari: 9+
-* Opera: 36+
-* Chrome: 58+
-* Android: 4.3+
-* iOS: 7+ (Mobile Safari)
+Click anywhere on result to expand the entry, which reveals the message of each assertion.
 
-For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the [release archives](https://releases.jquery.com/qunit/).
+For failed assertions, the parenthical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.
+
+<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 500px;"></iframe>
+
+### Theme API
+
+The HTML Reporter populates the `<div id="qunit">` element with the following structure:
+
+```html
+<div id="qunit">
+  <h1 id="qunit-header">…</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar">…</div>
+  <h2 id="qunit-userAgent">¬</h2>
+  <p id="qunit-testresult">…</p>
+  <ol id="qunit-tests"></ol>
+</div>
+```
+
+You can style these to create your own theme, or add custom styles to the default theme.
+
+Examples: [Theme plugins](./plugins.md)
+
+The following selectors are considered stable and supported:
+
+| Selector | Description
+|--|--
+| `#qunit-header`<br><br>`#qunit-header a` | Displays the page title, with an anchor link that will reload the page and re-run all tests.
+| `#qunit-banner`<br><br>`#qunit-banner.qunit-pass`<br><br>`#qunit-banner.qunit-fail` | Indicates the test run status. It carries no class while tests are in progress. Once completed, the `qunit-pass` or `qunit-fail` indicated the completed status as reported by the [runEnd event](./api/callbacks/QUnit.on.md#the-runend-event).
+| `#qunit-testrunner-toolbar` | The toolbar.
+| `#qunit-modulefilter` | Module selector.
+| `#qunit-modulefilter-dropdown` | Module selector, dropdown menu.
+| `#qunit-modulefilter-actions`<br><br>`#qunit-modulefilter-actions button` | Module selector, top area of dropdown menu with "Reset" and "Apply" buttons.
+| `#qunit-modulefilter .clickable`<br><br>`#qunit-modulefilter .clickable.checked` | Module selector, options in the dropdown menu.
+{:class="table-style-api"}
+
+### HTML API
+
+#### Test output `id="qunit-test-output-TESTID"`
+
+You may rely on an element with the following ID existing during test execution. This includes during [module hooks](./api/QUnit/module.md#hooks), [global hooks](./api/QUnit/hooks.md), and during the test itself and its assertions.
+
+Seeking an element by this ID during an event, or during a different test, may work at your own risk. This is because the HTML Reporter may not have created the element yet, or may have removed it from the DOM (e.g. when [hidepassed](./api/config/hidepassed.md) is enabled).
+
+Demos:
+* [ColorFactory test page](https://krinkle.github.io/node-colorfactory/test/) ([Source code](https://github.com/Krinkle/node-colorfactory/blob/cd79287c09eb0e7118eb4a45811786c65d0640b7/test/testinit.js#L25-L43))
+* [Fabric.js test page](http://fabricjs.com/test/visual/?coverage) ([Source code](https://github.com/fabricjs/fabric.js/blob/v6.0.0-rc5/test/lib/visualCallbackQunit.js#L41))
+
+
+```js
+QUnit.hooks.afterEach(function () {
+  var target = '#qunit-test-output-' + QUnit.config.current.testId;
+});
+
+QUnit.assert.myplugin = function (actual, expected) {
+  var target = '#qunit-test-output-' + QUnit.config.current.testId;
+};
+```
+
+#### Toolbar HTML
+
+It is recommended to extend the toolbar declaratively via [QUnit.config.urlConfig](./api/config/urlConfig.md). Modifying the toolbar elements directly may work at your own risk.
