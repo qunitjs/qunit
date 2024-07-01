@@ -2,10 +2,10 @@ import config from './config';
 
 function makeAddGlobalHook (hookName) {
   return function addGlobalHook (callback) {
-    if (!config.globalHooks[hookName]) {
-      config.globalHooks[hookName] = [];
+    if (!config._globalHooks[hookName]) {
+      config._globalHooks[hookName] = [];
     }
-    config.globalHooks[hookName].push(callback);
+    config._globalHooks[hookName].push(callback);
   };
 }
 

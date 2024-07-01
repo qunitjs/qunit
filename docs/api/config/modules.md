@@ -19,18 +19,20 @@ List of defined test modules.
 </tr>
 </table>
 
-This property is exposed under `QUnit.config` for use by plugins and other integrations. It returns an array of internal `Module` objects, one for each call to [`QUnit.module()`](../QUnit/module.md).
+The `QUnit.config.modules` property is exposed for use by plugins and other integrations. It returns an array of internal `Module` objects, one for each call to [`QUnit.module()`](../QUnit/module.md).
 
 Before accessing this property, wait for the [`QUnit.on('runStart')`](../callbacks/QUnit.on.md#the-runstart-event) event, or use a [`QUnit.begin()`](../callbacks/QUnit.begin.md) callback.
 
 ### Module object
 
-The following properties are considered publicly supported:
+The following properties are considered stable and public:
 
 | property | description |
 |-----------|-------------|
 | `name` (string) | Module name, as passed to [`QUnit.module()`](../QUnit/module.md).
 | `moduleId` (string) | Hashed identifier, for the [QUnit.config.moduleId](./moduleId.md) filter.
+
+Other properties may change without notice. When possible, use [QUnit.on](../callbacks/QUnit.on.md) or [event callbacks](../callbacks/index.md) instead.
 
 ## Example
 

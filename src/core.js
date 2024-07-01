@@ -31,7 +31,7 @@ const QUnit = {};
 // rather than partly in config.js and partly here.
 config.currentModule.suiteReport = runSuite;
 
-config.pq = new ProcessingQueue(test);
+config._pq = new ProcessingQueue(test);
 
 // Figure out if we're running the tests from a server or not
 QUnit.isLocal = (window && window.location && window.location.protocol === 'file:');
@@ -104,7 +104,7 @@ registerLoggingCallbacks(QUnit);
 
 function unblockAndAdvanceQueue () {
   config.blocking = false;
-  config.pq.advance();
+  config._pq.advance();
 }
 
 function begin () {

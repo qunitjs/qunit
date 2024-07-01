@@ -92,6 +92,9 @@ const config = {
     }
   ],
 
+  // List of defined modules (read-only).
+  modules: [],
+
   // Internal: The first unnamed module
   //
   // By being defined as the intial value for currentModule, it is the
@@ -139,25 +142,35 @@ const config = {
     }
   },
 
-  // Internal: Exposed to make resets easier
-  // Ref https://github.com/qunitjs/qunit/pull/1598
-  globalHooks: {},
-
-  // Internal: ProcessingQueue singleton, created in /src/core.js
-  pq: null,
-
-  // Internal: Used for runtime measurement to runEnd event and QUnit.done.
+  // Semi-internal state.
+  //
+  // These are undocumented but defacto stable for certain limited use cases,
+  // in order to maintain ecosystem compat with popular QUnit 2.x plugins and integrations.
+  //
+  // - blocking: Whether new tests will be defined and queued, or executed immediately.
+  //   In other words, whether QUnit.start() has been called yet.
+  //
+  // - started: Used to measure runtime duration from `QUnit.on('runStart')`.
+  //
+  // - queue: List of internal objects. The only supported operation is checking
+  //   the length of the array, or emptying the array as a way to halt execution.
+  //
+  // - stats: Internal assertion counts. Use `QUnit.on('runEnd')` instead.
+  //   These are discouraged per the notice at https://qunitjs.com/api/callbacks/QUnit.done/.
+  //   https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event
+  blocking: true,
   started: 0,
+  callbacks: {},
+  queue: [],
+  stats: { all: 0, bad: 0, testCount: 0 },
 
-  // Internal state
+  // Internal state, exposed to ease in-process resets
+  // Ref https://github.com/qunitjs/qunit/pull/1598
+  _globalHooks: {},
+  _pq: null, // ProcessingQueue singleton, assigned in /src/core.js
   _runStarted: false,
   _event_listeners: Object.create(null),
-  _event_memory: {},
-  blocking: true,
-  callbacks: {},
-  modules: [],
-  queue: [],
-  stats: { all: 0, bad: 0, testCount: 0 }
+  _event_memory: {}
 };
 
 function readFlatPreconfigBoolean (val, dest) {

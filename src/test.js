@@ -63,7 +63,7 @@ export default function Test (settings) {
   // and after the runEnd event. This was unstable and could be missed by CI.
   // (Meaning the CI would pass despite the late-failing test).
   // Ref https://github.com/qunitjs/qunit/issues/1377
-  if (config.pq.finished) {
+  if (config._pq.finished) {
     throw new Error('Unexpected test after runEnd. https://qunitjs.com/api/QUnit/module/#E0001');
   }
   if (!this.skip && typeof this.callback !== 'function') {
@@ -269,7 +269,7 @@ Test.prototype = {
       // when the 'after' and 'finish' tasks are the only tasks left to process
       if (hookName === 'after' &&
         !lastTestWithinModuleExecuted(hookOwner) &&
-        (config.queue.length > 0 || config.pq.taskCount() > 2)) {
+        (config.queue.length > 0 || config._pq.taskCount() > 2)) {
         return;
       }
 
@@ -303,11 +303,11 @@ Test.prototype = {
     function processGlobalhooks (test) {
       if (
         (handler === 'beforeEach' || handler === 'afterEach') &&
-        config.globalHooks[handler]
+        config._globalHooks[handler]
       ) {
-        for (let i = 0; i < config.globalHooks[handler].length; i++) {
+        for (let i = 0; i < config._globalHooks[handler].length; i++) {
           hooks.push(
-            test.queueGlobalHook(config.globalHooks[handler][i], handler)
+            test.queueGlobalHook(config._globalHooks[handler][i], handler)
           );
         }
       }
@@ -531,7 +531,7 @@ Test.prototype = {
 
     this.previousFailure = !!previousFailCount;
 
-    config.pq.add(runTest, prioritize);
+    config._pq.add(runTest, prioritize);
   },
 
   pushResult: function (resultInfo) {
@@ -1047,11 +1047,11 @@ function internalStart (test) {
       config.timeout = null;
 
       config.blocking = false;
-      config.pq.advance();
+      config._pq.advance();
     });
   } else {
     config.blocking = false;
-    config.pq.advance();
+    config._pq.advance();
   }
 }
 
