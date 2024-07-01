@@ -138,14 +138,32 @@ function stripHtml (string) {
 export default class HtmlReporter {
   /**
    * @param {QUnit} QUnit
-   * @param {Object} [options]
-   * @param {Object} [options.config] For internal usage
+   * @param {Object} [options] For internal usage
    */
-  static init (QUnit, options) {
-    return new HtmlReporter(QUnit, options);
+  static init (QUnit, options = {}) {
+    return new HtmlReporter(QUnit, extend(options, {
+      // This must use a live reference (i.e. not store a copy), because
+      // users may apply their settings to QUnit.config anywhere between
+      // loading qunit.js and the last QUnit.begin() listener finishing.
+      config: QUnit.config
+    }));
   }
 
-  constructor (QUnit, options = {}) {
+  /**
+   * @internal Use QUnit.reporters.html.init() instead.
+   *
+   * @param {QUnit} QUnit
+   * @param {Object} options
+   * @param {Object} options.config For internal usage
+   * @param {boolean} options.config.hidepassed
+   * @param {boolean} options.config.collapse For test result
+   * @param {string} options.config.filter
+   * @param {?string} options.config.moduleId For module selector
+   * @param {?string} options.config.testId For test result, rerun link
+   * @param {number} options.config.maxDepth For test result, error message
+   * @param {Array} options.config.queue For abort button (TODO: Avoid read-write!)
+   */
+  constructor (QUnit, options) {
     // Don't init the HTML Reporter in non-browser environments
     if (!window || !document) {
       return;
@@ -155,10 +173,7 @@ export default class HtmlReporter {
       defined: 0,
       completed: 0
     };
-    // This must use a live reference (i.e. not store a copy), because
-    // users may apply their settings to QUnit.config anywhere between
-    // loading qunit.js and the last QUnit.begin() listener finishing.
-    this.config = options.config || QUnit.config;
+    this.config = options.config;
     this.hiddenTests = [];
     // Keep state for our hidepassed toggle, which can change without a reload.
     // null indicates we use the config/urlParams. Otherwise this will be
@@ -306,6 +321,7 @@ export default class HtmlReporter {
         abortButton.disabled = true;
         abortButton.innerHTML = 'Aborting...';
       }
+      // TODO: Factor this out and re-use in CLI
       this.config.queue.length = 0;
       return false;
     });

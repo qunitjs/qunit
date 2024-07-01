@@ -226,6 +226,7 @@ The following selectors are considered stable and supported:
 | `#qunit-header`<br><br>`#qunit-header a` | Displays the page title, with an anchor link that will reload the page and re-run all tests.
 | `#qunit-banner`<br><br>`#qunit-banner.qunit-pass`<br><br>`#qunit-banner.qunit-fail` | Indicates the test run status. It carries no class while tests are in progress. Once completed, the `qunit-pass` or `qunit-fail` indicated the completed status as reported by the [runEnd event](./api/callbacks/QUnit.on.md#the-runend-event).
 | `#qunit-testrunner-toolbar` | The toolbar.
+| `#qunit-userAgent` | QUnit version and user agent string.
 | `#qunit-modulefilter` | Module selector.
 | `#qunit-modulefilter-dropdown` | Module selector, dropdown menu.
 | `#qunit-modulefilter-actions`<br><br>`#qunit-modulefilter-actions button` | Module selector, top area of dropdown menu with "Reset" and "Apply" buttons.

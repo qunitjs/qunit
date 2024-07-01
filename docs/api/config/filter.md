@@ -14,11 +14,11 @@ Select tests to run based on a substring or pattern match.
 <table>
 <tr>
   <th>type</th>
-  <td markdown="span">`string` or `undefined`</td>
+  <td markdown="span">`string`</td>
 </tr>
 <tr>
   <th>default</th>
-  <td markdown="span">`undefined`</td>
+  <td markdown="span">`""`</td>
 </tr>
 </table>
 
