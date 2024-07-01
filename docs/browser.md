@@ -184,16 +184,36 @@ For failed assertions, the parenthical reports the failed, passed, and total num
 
 The HTML Reporter populates the `<div id="qunit">` element with the following structure:
 
+QUnit 1.x, 2.x:
+
 ```html
 <div id="qunit">
   <h1 id="qunit-header">…</h1>
   <h2 id="qunit-banner"></h2>
   <div id="qunit-testrunner-toolbar">…</div>
-  <h2 id="qunit-userAgent">¬</h2>
+  <h2 id="qunit-userAgent">…</h2>
   <p id="qunit-testresult">…</p>
   <ol id="qunit-tests"></ol>
 </div>
 ```
+
+<details markdown="1">
+<summary>As of QUnit 3.0</summary>
+
+```html
+<div id="qunit">
+  <h1 id="qunit-header">…</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar">…</div>
+  <h2 id="qunit-userAgent">…</h2>
+  <div id="qunit-testresult">…</div>
+  <ol id="qunit-tests"></ol>
+</div>
+```
+
+</details>
+
+-----
 
 You can style these to create your own theme, or add custom styles to the default theme.
 

@@ -608,7 +608,7 @@ export default class HtmlReporter {
 
     if (tests) {
       tests.innerHTML = '';
-      result = document.createElement('p');
+      result = document.createElement('div');
       result.id = 'qunit-testresult';
       result.className = 'result';
       tests.parentNode.insertBefore(result, tests);
