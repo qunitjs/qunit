@@ -160,6 +160,11 @@ export default class HtmlReporter {
     // loading qunit.js and the last QUnit.begin() listener finishing.
     this.config = options.config || QUnit.config;
     this.hiddenTests = [];
+    // Keep state for our hidepassed toggle, which can change without a reload.
+    // null indicates we use the config/urlParams. Otherwise this will be
+    // true/undefined based on checkbox changes. We don't use false here since
+    // that would serialize in makeUrl() as "false".
+    this.hidepassed = null;
     this.collapseNext = false;
     this.unfilteredUrl = this.makeUrl({
       filter: undefined,
@@ -197,7 +202,6 @@ export default class HtmlReporter {
   // Updates the URL with the new state of `config.urlConfig` values.
   onToolbarChanged (ev) {
     const field = ev.currentTarget;
-    const params = {};
 
     // Detect if field is a select menu or a checkbox
     let value;
@@ -207,14 +211,15 @@ export default class HtmlReporter {
       value = field.checked ? (field.defaultValue || true) : undefined;
     }
 
-    params[field.name] = value;
-    let updatedUrl = this.makeUrl(params);
+    let updatedUrl = this.makeUrl({
+      [field.name]: value
+    });
 
     // Check if we can apply the change without a page refresh
     if (field.name === 'hidepassed' && 'replaceState' in window.history) {
-      urlParams[field.name] = value;
-      // TODO: Do we really have to write this change to QUnit.config?
-      this.config[field.name] = value || false;
+      // Set either true or undefined, which will now take precedence over
+      // the original urlParams in makeUrl()
+      this.hidepassed = value;
       let tests = DOM.id('qunit-tests');
       if (tests) {
         const length = tests.children.length;
@@ -247,11 +252,15 @@ export default class HtmlReporter {
     }
   }
 
-  makeUrl (params) {
+  makeUrl (linkParams) {
     let querystring = '?';
     const location = window.location;
 
-    params = extend(extend({}, urlParams), params);
+    const params = extend({}, urlParams);
+    if (this.hidepassed !== null) {
+      params.hidepassed = this.hidepassed;
+    }
+    extend(params, linkParams);
 
     for (let key in params) {
       // Skip inherited or undefined properties
@@ -1009,7 +1018,8 @@ export default class HtmlReporter {
       testItem.appendChild(sourceName);
     }
 
-    if (this.config.hidepassed && (status === 'passed' || details.skipped)) {
+    const hidepassed = (this.hidepassed !== null ? this.hidepassed : this.config.hidepassed);
+    if (hidepassed && (status === 'passed' || details.skipped)) {
       // use removeChild instead of remove because of support
       this.hiddenTests.push(testItem);
 
