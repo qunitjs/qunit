@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="/assets/styles.css?v=4ca9bae3" media="screen">
+<link rel="stylesheet" href="/assets/styles.css?v=a2f76041" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>Browser Runner | QUnit</title>
 <meta property="og:title" content="Browser Runner"><meta name="description" content="Test JavaScript code in a real browser."><meta property="og:description" content="Test JavaScript code in a real browser."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
@@ -137,6 +137,23 @@ Test JavaScript code in a real browser with QUnit.
 
 <p>When building out a larger feature, you can use the <a href="#module-selector">module selector</a> to re-run only the tests (and nested modules) under one or more selected module names.</p>
 
+<h2 id="browser-support">Browser support</h2>
+
+<p>QUnit currently supports the following browsers:</p>
+
+<ul>
+  <li>Internet Explorer: 9+</li>
+  <li>Edge: 15+ (both legacy MSEdge and Chromium-based)</li>
+  <li>Firefox: 45+</li>
+  <li>Safari: 9+</li>
+  <li>Opera: 36+</li>
+  <li>Chrome: 58+</li>
+  <li>Android: 4.3+</li>
+  <li>iOS: 7+ (Mobile Safari)</li>
+</ul>
+
+<p>For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the <a href="https://releases.jquery.com/qunit/">release archives</a>.</p>
+
 <h2 id="integrations">Integrations</h2>
 
 <h3 id="linting">Linting</h3>
@@ -202,11 +219,13 @@ Test JavaScript code in a real browser with QUnit.
 
 <p><a href="/api/config/notrycatch/">No try-catch</a> instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging.</p>
 
+<p>You can extend the toolbar via <a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>.</p>
+
 <h3 id="filter">Filter</h3>
 
 <p>Enter a search phrase to re-run only tests that match the phrase. It performs a case-insensitive substring match by default, on both the module name and test name. You can use regular expressions, and/or invert the match to exclude tests instead.</p>
 
-<p>Read <a href="/api/config/filter/">filter</a> for examples.</p>
+<p>Find examples and learn more at <a href="/api/config/filter/">QUnit.config.filter</a>.</p>
 
 <h3 id="module-selector">Module selector</h3>
 
@@ -218,29 +237,110 @@ Test JavaScript code in a real browser with QUnit.
 
 <h3 id="test-results">Test results</h3>
 
-<p>Each result is displayed in a numbered list. After the name of the test, in parentheses, are the number of failed, passed, and total assertions. Click the entry to show the results of each assertion, with details about expected and actual results (for failed asssertions).</p>
+<p>Each result is displayed in a numbered list.</p>
 
-<p>The “Rerun” link at the end will run that test on its own.</p>
+<blockquote>
+  <p><strong>MyApp: example</strong> (3) <em>Rerun</em></p>
+</blockquote>
 
-<h2 id="browser-support">Browser support</h2>
+<p>After the name of the module and test, in parentheses, is the total number of assertions.</p>
 
-<p>QUnit currently supports the following browsers:</p>
+<p>The “Rerun” link at the end will run that test on its own, skipping all other tests.</p>
 
+<p>Click anywhere on result to expand the entry, which reveals the message of each assertion.</p>
+
+<p>For failed assertions, the parenthical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.</p>
+
+<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 500px;"></iframe>
+
+<h3 id="theme-api">Theme API</h3>
+
+<p>The HTML Reporter populates the <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> element with the following structure:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">"qunit-header"</span><span class="nt">&gt;</span>…<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">"qunit-banner"</span><span class="nt">&gt;&lt;/h2&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-testrunner-toolbar"</span><span class="nt">&gt;</span>…<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">"qunit-userAgent"</span><span class="nt">&gt;</span>¬<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">"qunit-testresult"</span><span class="nt">&gt;</span>…<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;ol</span> <span class="na">id=</span><span class="s">"qunit-tests"</span><span class="nt">&gt;&lt;/ol&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>You can style these to create your own theme, or add custom styles to the default theme.</p>
+
+<p>Examples: <a href="/plugins/">Theme plugins</a></p>
+
+<p>The following selectors are considered stable and supported:</p>
+
+<table class="table-style-api">
+  <thead>
+    <tr>
+      <th>Selector</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-header</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-header a</code></td>
+      <td>Displays the page title, with an anchor link that will reload the page and re-run all tests.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-banner</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-banner.qunit-pass</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-banner.qunit-fail</code></td>
+      <td>Indicates the test run status. It carries no class while tests are in progress. Once completed, the <code class="language-plaintext highlighter-rouge">qunit-pass</code> or <code class="language-plaintext highlighter-rouge">qunit-fail</code> indicated the completed status as reported by the <a href="/api/callbacks/QUnit.on/#the-runend-event">runEnd event</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-testrunner-toolbar</code></td>
+      <td>The toolbar.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-modulefilter</code></td>
+      <td>Module selector.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-modulefilter-dropdown</code></td>
+      <td>Module selector, dropdown menu.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-modulefilter-actions</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-modulefilter-actions button</code></td>
+      <td>Module selector, top area of dropdown menu with “Reset” and “Apply” buttons.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-modulefilter .clickable</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-modulefilter .clickable.checked</code></td>
+      <td>Module selector, options in the dropdown menu.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="html-api">HTML API</h3>
+
+<h4 id="test-output-idqunit-test-output-testid">Test output <code class="language-plaintext highlighter-rouge">id="qunit-test-output-TESTID"</code></h4>
+
+<p>You may rely on an element with the following ID existing during test execution. This includes during <a href="/api/QUnit/module/#hooks">module hooks</a>, <a href="/api/QUnit/hooks/">global hooks</a>, and during the test itself and its assertions.</p>
+
+<p>Seeking an element by this ID during an event, or during a different test, may work at your own risk. This is because the HTML Reporter may not have created the element yet, or may have removed it from the DOM (e.g. when <a href="/api/config/hidepassed/">hidepassed</a> is enabled).</p>
+
+<p>Demos:</p>
 <ul>
-  <li>Internet Explorer: 9+</li>
-  <li>Edge: 15+ (both legacy MSEdge and Chromium-based)</li>
-  <li>Firefox: 45+</li>
-  <li>Safari: 9+</li>
-  <li>Opera: 36+</li>
-  <li>Chrome: 58+</li>
-  <li>Android: 4.3+</li>
-  <li>iOS: 7+ (Mobile Safari)</li>
+  <li><a href="https://krinkle.github.io/node-colorfactory/test/">ColorFactory test page</a> (<a href="https://github.com/Krinkle/node-colorfactory/blob/cd79287c09eb0e7118eb4a45811786c65d0640b7/test/testinit.js#L25-L43">Source code</a>)</li>
+  <li><a href="http://fabricjs.com/test/visual/?coverage">Fabric.js test page</a> (<a href="https://github.com/fabricjs/fabric.js/blob/v6.0.0-rc5/test/lib/visualCallbackQunit.js#L41">Source code</a>)</li>
 </ul>
 
-<p>For older browsers, such as Internet Explorer 6-8, Opera 12+, or Safari 5+, please use QUnit 1.x, which you can download from the <a href="https://releases.jquery.com/qunit/">release archives</a>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">#qunit-test-output-</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">testId</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">assert</span><span class="p">.</span><span class="nx">myplugin</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">actual</span><span class="p">,</span> <span class="nx">expected</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">#qunit-test-output-</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">testId</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h4 id="toolbar-html">Toolbar HTML</h4>
+
+<p>It is recommended to extend the toolbar declaratively via <a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>. Modifying the toolbar elements directly may work at your own risk.</p>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li></ol></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li><li class="sidebar-item"><a href="#theme-api">Theme API</a></li><li class="sidebar-item"><a href="#html-api">HTML API</a></li></ol></li></ol></div>
 </aside>
 
 </div>
