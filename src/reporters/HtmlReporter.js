@@ -48,9 +48,6 @@ const DOM = {
 
     // Trim for prettiness
     elem.className = set.trim();
-  },
-  id (name) {
-    return document.getElementById && document.getElementById(name);
   }
 };
 
@@ -165,10 +162,15 @@ export default class HtmlReporter {
    * @param {?string} options.config.testId For test result, rerun link
    * @param {number} options.config.maxDepth For test result, error message
    * @param {Function} options.abort
+   * @param {HTMLElement|undefined|null} options.element Output element
+   * If set to HTMLElement, the report will be written to this element.
+   * If set to undefined, then at `QUnit.on('runStart')` we look for `#qunit`
+   * and use that if it exists.
+   * If set to null, the reporter is disabled.
    */
   constructor (QUnit, options) {
     // Don't init the HTML Reporter in non-browser environments
-    if (!window || !document) {
+    if (!window || !document || !document.querySelector || options.element === null) {
       return;
     }
     this.stats = {
@@ -193,19 +195,29 @@ export default class HtmlReporter {
     });
     this.dropdownData = null;
 
+    this.element = options.element || undefined;
+    // TODO: Consider rendering the UI early when possible for improved UX.
+
+    // NOTE: Only listen for "error" and "runStart" now.
+    // Other event handlers are added via listen() from onRunStart,
+    // after we know that the element exists. This reduces overhead and avoids
+    // potential internal errors when the HTML Reporter is disabled.
+    this.listen = function () {
+      this.listen = null;
+      QUnit.begin(this.onBegin.bind(this));
+      QUnit.testStart(this.onTestStart.bind(this));
+      QUnit.log(this.onLog.bind(this));
+      QUnit.testDone(this.onTestDone.bind(this));
+      QUnit.on('runEnd', this.onRunEnd.bind(this));
+    };
     QUnit.on('error', this.onError.bind(this));
     QUnit.on('runStart', this.onRunStart.bind(this));
-    QUnit.begin(this.onBegin.bind(this));
-    QUnit.testStart(this.onTestStart.bind(this));
-    QUnit.log(this.onLog.bind(this));
-    QUnit.testDone(this.onTestDone.bind(this));
-    QUnit.on('runEnd', this.onRunEnd.bind(this));
   }
 
   // Handle "submit" event from "filter" or "moduleFilter" field.
   onFilterSubmit (ev) {
     // Trim potential accidental whitespace so that QUnit doesn't throw an error about no tests matching the filter.
-    const filterInputElem = DOM.id('qunit-filter-input');
+    const filterInputElem = this.element.querySelector('#qunit-filter-input');
     filterInputElem.value = filterInputElem.value.trim();
 
     this.applyUrlParams();
@@ -239,7 +251,7 @@ export default class HtmlReporter {
       // Set either true or undefined, which will now take precedence over
       // the original urlParams in makeUrl()
       this.hidepassed = value;
-      let tests = DOM.id('qunit-tests');
+      let tests = this.element.querySelector('#qunit-tests');
       if (tests) {
         const length = tests.children.length;
         const children = tests.children;
@@ -303,7 +315,7 @@ export default class HtmlReporter {
   }
 
   applyUrlParams () {
-    const filter = DOM.id('qunit-filter-input').value;
+    const filter = this.element.querySelector('#qunit-filter-input').value;
 
     window.location = this.makeUrl({
       filter: (filter === '') ? undefined : filter,
@@ -320,7 +332,7 @@ export default class HtmlReporter {
     button.id = 'qunit-abort-tests-button';
     button.innerHTML = 'Abort';
     DOM.on(button, 'click', () => {
-      const abortButton = DOM.id('qunit-abort-tests-button');
+      const abortButton = this.element.querySelector('#qunit-abort-tests-button');
       if (abortButton) {
         abortButton.disabled = true;
         abortButton.innerHTML = 'Aborting...';
@@ -586,7 +598,7 @@ export default class HtmlReporter {
   }
 
   appendToolbar (beginDetails) {
-    const toolbar = DOM.id('qunit-testrunner-toolbar');
+    const toolbar = this.element.querySelector('#qunit-testrunner-toolbar');
     if (toolbar) {
       const urlConfigContainer = document.createElement('span');
       urlConfigContainer.innerHTML = getUrlConfigHtml(this.config);
@@ -609,7 +621,7 @@ export default class HtmlReporter {
   }
 
   appendHeader () {
-    const header = DOM.id('qunit-header');
+    const header = this.element.querySelector('#qunit-header');
 
     if (header) {
       header.innerHTML = "<a href='" + escapeText(this.unfilteredUrl) + "'>" + header.innerHTML +
@@ -617,17 +629,9 @@ export default class HtmlReporter {
     }
   }
 
-  appendBanner () {
-    const banner = DOM.id('qunit-banner');
-
-    if (banner) {
-      banner.className = '';
-    }
-  }
-
   appendTestResults () {
-    const tests = DOM.id('qunit-tests');
-    let result = DOM.id('qunit-testresult');
+    const tests = this.element.querySelector('#qunit-tests');
+    let result = this.element.querySelector('#qunit-testresult');
     let controls;
 
     if (result) {
@@ -643,7 +647,7 @@ export default class HtmlReporter {
       result.innerHTML = '<div id="qunit-testresult-display">Running...<br />&#160;</div>' +
       '<div id="qunit-testresult-controls"></div>' +
       '<div class="clearfix"></div>';
-      controls = DOM.id('qunit-testresult-controls');
+      controls = this.element.querySelector('#qunit-testresult-controls');
     }
 
     if (controls) {
@@ -664,7 +668,7 @@ export default class HtmlReporter {
   }
 
   appendUserAgent () {
-    const userAgent = DOM.id('qunit-userAgent');
+    const userAgent = this.element.querySelector('#qunit-userAgent');
 
     if (userAgent) {
       userAgent.innerHTML = '';
@@ -677,39 +681,27 @@ export default class HtmlReporter {
   }
 
   appendInterface (beginDetails) {
-    const qunit = DOM.id('qunit');
+    const qunit = this.element;
 
-    // For compat with QUnit 1.2, and to support fully custom theme HTML,
-    // we will use any existing elements if no id="qunit" element exists.
-    //
-    // Note that we don't fail or fallback to creating it ourselves,
-    // because not having id="qunit" (and not having the below elements)
-    // simply means QUnit acts headless, allowing users to use their own
-    // reporters, or for a test runner to listen for events directly without
-    // having the HTML reporter actively render anything.
-    if (qunit) {
-      qunit.setAttribute('role', 'main');
+    qunit.setAttribute('role', 'main');
 
-      // Since QUnit 1.3, these are created automatically if the page
-      // contains id="qunit".
-      qunit.innerHTML =
+    // Since QUnit 1.3, these are created automatically.
+    qunit.innerHTML =
       "<h1 id='qunit-header'>" + escapeText(document.title) + '</h1>' +
       "<div id='qunit-banner'></div>" +
       "<div id='qunit-testrunner-toolbar' role='navigation'></div>" +
       this.appendFilteredTest() +
       "<h2 id='qunit-userAgent'></h2>" +
       "<ol id='qunit-tests'></ol>";
-    }
 
     this.appendHeader();
-    this.appendBanner();
     this.appendTestResults();
     this.appendUserAgent();
     this.appendToolbar(beginDetails);
   }
 
   appendTest (name, testId, moduleName) {
-    const tests = DOM.id('qunit-tests');
+    const tests = this.element.querySelector('#qunit-tests');
     if (!tests) {
       return;
     }
@@ -740,19 +732,28 @@ export default class HtmlReporter {
     return testBlock;
   }
 
+  // HTML Reporter initialization and load
   onRunStart (runStart) {
-    // HTML Reporter initialization and load
+    if (this.element === undefined) {
+      this.element = document.querySelector('#qunit') || null;
+    }
+    if (this.element === null) {
+      return;
+    }
+
     this.stats.defined = runStart.testCounts.total;
+
+    // Element exists, now it is safe to attach other event listeners
+    this.listen();
   }
 
+  // Display the HTML Reporter interface
+  //
+  // This is done from begin() instead of runStart, because urlparams.js uses begin(),
+  // which we need to wait for. urlparams.js in turn uses begin() to allow plugins to
+  // add entries to QUnit.config.urlConfig, which may be done asynchronously.
+  // https://github.com/qunitjs/qunit/issues/1657
   onBegin (beginDetails) {
-    // Initialize QUnit elements
-    // This is done from begin() instead of runStart, because
-    // urlparams.js uses begin(), which we need to wait for.
-    // urlparams.js in turn uses begin() to allow plugins to
-    // add entries to QUnit.config.urlConfig, which may be done
-    // asynchronously.
-    // <https://github.com/qunitjs/qunit/issues/1657>
     this.appendInterface(beginDetails);
   }
 
@@ -781,9 +782,9 @@ export default class HtmlReporter {
       return sec + (sec === 1 ? ' second' : ' seconds');
     }
 
-    const banner = DOM.id('qunit-banner');
-    const tests = DOM.id('qunit-tests');
-    const abortButton = DOM.id('qunit-abort-tests-button');
+    const banner = this.element.querySelector('#qunit-banner');
+    const tests = this.element.querySelector('#qunit-tests');
+    const abortButton = this.element.querySelector('#qunit-abort-tests-button');
     let html = [
       '<span class="total">', runEnd.testCounts.total, '</span> tests completed in ',
       msToSec(runEnd.runtime),
@@ -824,14 +825,14 @@ export default class HtmlReporter {
     }
 
     if (tests) {
-      DOM.id('qunit-testresult-display').innerHTML = html;
+      this.element.querySelector('#qunit-testresult-display').innerHTML = html;
     }
   }
 
   onTestStart (details) {
     this.appendTest(details.name, details.testId, details.module);
 
-    let running = DOM.id('qunit-testresult-display');
+    let running = this.element.querySelector('#qunit-testresult-display');
 
     if (running) {
       DOM.addClass(running, 'running');
@@ -848,7 +849,7 @@ export default class HtmlReporter {
   }
 
   onLog (details) {
-    const testItem = DOM.id('qunit-test-output-' + details.testId);
+    const testItem = this.element.querySelector('#qunit-test-output-' + details.testId);
     if (!testItem) {
       return;
     }
@@ -942,8 +943,8 @@ export default class HtmlReporter {
   }
 
   onTestDone (details) {
-    const tests = DOM.id('qunit-tests');
-    const testItem = DOM.id('qunit-test-output-' + details.testId);
+    const tests = this.element.querySelector('#qunit-tests');
+    const testItem = this.element.querySelector('#qunit-test-output-' + details.testId);
     if (!tests || !testItem) {
       return;
     }

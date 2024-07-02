@@ -1,13 +1,45 @@
 /* eslint-env browser */
-QUnit.config.testId = ['2e48c6fa', '9ccf6855'];
+/* eslint-disable new-cap */
+QUnit.module('HtmlReporter');
 
-QUnit.test('Check for changed header after running filtered test', function (assert) {
-  var html = document.getElementById('qunit-filteredTest').innerHTML;
-  var result = /Rerunning selected tests: 2e48c6fa, 9ccf6855/.test(html);
-  assert.true(result);
-});
+QUnit.test('appendFilteredTest() [testId]', function (assert) {
+  var MockQUnit = {
+    on: function (event, fn) {
+      this.on[event] = fn;
+    },
+    emit: function (event, data) {
+      this.on[event](data);
+    },
+    begin: function (fn) {
+      this.on.begin = fn;
+    },
+    testStart: function (fn) {
+      this.on.testStart = fn;
+    },
+    log: function (fn) {
+      this.on.log = fn;
+    },
+    testDone: function (fn) {
+      this.on.testDone = fn;
+    }
+  };
+  var element = document.createElement('div');
+  // eslint-disable-next-line no-unused-vars
+  var rep = new QUnit.reporters.html(MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: [],
+      testId: ['1aaa', '2bbb']
+    }
+  });
 
-QUnit.test('Check for link to clear filter', function (assert) {
-  var html = document.getElementById('qunit-clearFilter').innerHTML;
-  assert.strictEqual(html, 'Run all tests');
+  MockQUnit.emit('runStart', { testCounts: {} });
+  MockQUnit.emit('begin', { modules: [] });
+
+  var filteredTest = element.querySelector('#qunit-filteredTest');
+  assert.equal(
+    filteredTest && filteredTest.textContent,
+    'Rerunning selected tests: 1aaa, 2bbb Run all tests',
+    'header indicates filtered tests, and link to clear filter'
+  );
 });
