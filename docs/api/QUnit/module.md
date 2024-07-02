@@ -28,7 +28,12 @@ All tests inside a module will be grouped under that module. Tests can be added 
 
 Modules can be nested inside other modules via a [module scope](#module-scope). In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grandparent > Parent > Child > my test".
 
-The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.todo()`](./test.todo.md) to all a module's tests at once.
+`QUnit.module.only( name, … )`<br>
+`QUnit.module.todo( name, … )`<br>
+`QUnit.module.skip( name, … )`<br>
+`QUnit.module.if( name, condition, … )`
+
+These methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.todo()`](./test.todo.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.if()`](./test.if.md) to all a module's tests at once.
 
 <span id="nested-scope"></span><span id="nested-module-scope"></span>
 
@@ -119,10 +124,11 @@ Example: [§ Hooks via module options](#hooks-via-module-options).
 
 ## Changelog
 
-| [QUnit 2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0) | The `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` aliases were introduced.
-| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | The `before` and `after` options were introduced.
-| [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | The `scope` feature was introduced.
-| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | The `beforeEach` and `afterEach` options were introduced.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
+| UNRELEASED | Added `QUnit.module.if()` alias.
+| [QUnit 2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0) | Added `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` aliases.
+| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | Added `before` and `after` options.
+| [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | Introduce `scope` feature.
+| [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `beforeEach` and `afterEach` options.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
 
 ## Examples
 

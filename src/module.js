@@ -164,6 +164,14 @@ module.skip = function (name, options, scope) {
   processModule(name, options, scope, { skip: true });
 };
 
+module.if = function (name, condition, options, scope) {
+  if (focused) {
+    return;
+  }
+
+  processModule(name, options, scope, { skip: !condition });
+};
+
 module.todo = function (name, options, scope) {
   if (focused) {
     return;
