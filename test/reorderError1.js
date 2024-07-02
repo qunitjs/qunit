@@ -1,7 +1,8 @@
 /* eslint-env browser */
 QUnit.module('Test call count - first case');
-QUnit[window.sessionStorage ? 'test' : 'skip'](
+QUnit.test.if(
   'does not skip tests after reordering',
+  !!window.sessionStorage,
   function (assert) {
     assert.equal(window.totalCount, 3);
   }

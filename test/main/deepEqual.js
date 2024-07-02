@@ -1825,7 +1825,7 @@ var hasES6Map = (function () {
   }
 }());
 
-QUnit[hasES6Set ? 'test' : 'skip']('Sets', function (assert) {
+QUnit.test.if('Sets', hasES6Set, function (assert) {
   var s1, s2, s3, s4, o1, o2, o3, o4, m1, m2, m3;
 
   // Empty sets
@@ -1898,7 +1898,7 @@ QUnit[hasES6Set ? 'test' : 'skip']('Sets', function (assert) {
   assert.equal(QUnit.equiv(s1, s2), true, 'Sets with different insertion orders');
 });
 
-QUnit[hasES6Map ? 'test' : 'skip']('Maps', function (assert) {
+QUnit.test.if('Maps', hasES6Map, function (assert) {
   var m1, m2, m3, m4, o1, o2, o3, o4, s1, s2, s3;
 
   // Empty maps
@@ -2016,7 +2016,7 @@ var hasES6Symbol = (function () {
   return typeof Symbol === 'function';
 }());
 
-QUnit[hasES6Symbol ? 'test' : 'skip']('Symbols', function (assert) {
+QUnit.test.if('Symbols', hasES6Symbol, function (assert) {
   var a = Symbol(1);
   var b = Symbol(1);
 

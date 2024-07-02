@@ -1,5 +1,5 @@
 // Skip in environments without Error#stack support
-(QUnit.stack() ? QUnit.module : QUnit.module.skip)('stacktrace', function () {
+QUnit.module.if('stacktrace', !!QUnit.stack(), function () {
   function fooCurrent () {
     return QUnit.stack();
   }
@@ -74,7 +74,7 @@
   // We do that for failed assertions, but for passing tests we omit
   // source details in these older browsers.
   var supportsUnthrownStack = !!(new Error().stack);
-  (supportsUnthrownStack ? QUnit.module : QUnit.module.skip)('source details', function () {
+  QUnit.module.if('source details', supportsUnthrownStack, function () {
     QUnit.test('QUnit.test()', function (assert) {
       var stack = norm(QUnit.config.current.stack);
       var line = stack.split('\n')[0];
