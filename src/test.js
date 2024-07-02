@@ -661,10 +661,6 @@ Test.prototype = {
    *   extra errors. We tolerate this since the original test will have already been
    *   marked as failure.
    *
-   *   TODO: QUnit 3 will enable timeouts by default <https://github.com/qunitjs/qunit/issues/1483>,
-   *   but right now a test will hang indefinitely if async pauses are not released,
-   *   unless QUnit.config.testTimeout or assert.timeout() is used.
-   *
    * - Pause is spontaneously released during a different test,
    *   or when no test is currently running.
    *
