@@ -7,12 +7,6 @@ redirect_from:
   - "/guides/"
 ---
 
-<p class="lead" markdown="1">
-
-Up-and-running with QUnit [in Node.js](./cli.md) or [in the browser](./browser.md).
-
-</p>
-
 ## In Node.js
 
 [Getting Started in Node.js](./cli.md)
@@ -20,6 +14,24 @@ Up-and-running with QUnit [in Node.js](./cli.md) or [in the browser](./browser.m
 ## In the browser
 
 [Getting Started in the browser](./browser.md)
+
+## Guides
+
+Check these QUnit tutorials and examples, to make the most of your unit tests!
+
+1. [QUnit.module](./api/QUnit/module.md#organizing-your-tests): How to group related tests.
+1. [QUnit.test](./api/QUnit/test.md#examples): Define tests, How to wait for async code
+1. [Fixture feature](./browser.md#fixture): Keeping your DOM tests atomic.
+1. [Step API](./api/assert/verifySteps.md): Testing asynchronous callbacks or event listeners.
+1. [Assertions](./api/assert/index.md): Partial object comparison, expected exceptions, and much more.
+1. [Browser](./browser.md): Productivity tricks, Browser automation, What can the toolbar do?
+1. [CLI](./cli.md): Productivity tricks, Code coverage.
+
+## Support
+
+To report a bug or request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
+
+If you need help using QUnit, join us in the [Matrix chat](https://app.element.io/#/room/#qunitjs_qunit:gitter.im)!
 
 ---
 

@@ -4,6 +4,7 @@ title: assert.rejects()
 excerpt: Test if the provided promise rejects.
 groups:
   - assert
+  - async
 redirect_from:
   - "/assert/rejects/"
 version_added: "2.5.0"

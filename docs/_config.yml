@@ -46,7 +46,7 @@ amethyst:
   mastodon: https://fosstodon.org/@qunit
   twitter: qunitjs
   github: qunitjs
-  gitter: qunitjs/qunit
+  chat: https://app.element.io/#/room/#qunitjs_qunit:gitter.im
   # https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-typesense
   typesense:
     origin: https://typesense.jquery.com

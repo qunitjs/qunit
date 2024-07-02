@@ -76,6 +76,7 @@ QUnit.test('Test with async-await', async assert => {
 });
 ```
 
+Check out the [Step API](../assert/verifySteps.md) as well. If your async test involves capturing values from an event or async callback, then adopting the `assert.step()` allows for clean test code, that is robust and strict against false positives.
 
 ### Example: Test with Promise
 
