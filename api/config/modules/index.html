@@ -84,13 +84,13 @@
 </tr>
 </table>
 
-<p>This property is exposed under <code class="language-plaintext highlighter-rouge">QUnit.config</code> for use by plugins and other integrations. It returns an array of internal <code class="language-plaintext highlighter-rouge">Module</code> objects, one for each call to <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module()</code></a>.</p>
+<p>The <code class="language-plaintext highlighter-rouge">QUnit.config.modules</code> property is exposed for use by plugins and other integrations. It returns an array of internal <code class="language-plaintext highlighter-rouge">Module</code> objects, one for each call to <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module()</code></a>.</p>
 
 <p>Before accessing this property, wait for the <a href="/api/callbacks/QUnit.on/#the-runstart-event"><code class="language-plaintext highlighter-rouge">QUnit.on('runStart')</code></a> event, or use a <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> callback.</p>
 
 <h3 id="module-object">Module object</h3>
 
-<p>The following properties are considered publicly supported:</p>
+<p>The following properties are considered stable and public:</p>
 
 <table>
   <thead>
@@ -110,6 +110,8 @@
     </tr>
   </tbody>
 </table>
+
+<p>Other properties may change without notice. When possible, use <a href="/api/callbacks/QUnit.on/">QUnit.on</a> or <a href="/api/callbacks/">event callbacks</a> instead.</p>
 
 <h2 id="example">Example</h2>
 
