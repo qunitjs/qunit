@@ -167,6 +167,8 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
+<p>Check out the <a href="/api/assert/verifySteps/">Step API</a> as well. If your async test involves capturing values from an event or async callback, then adopting the <code class="language-plaintext highlighter-rouge">assert.step()</code> allows for clean test code, that is robust and strict against false positives.</p>
+
 <h3 id="example-test-with-promise">Example: Test with Promise</h3>
 
 <p>In ES5 and older environments, you can also return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> from your standard test function. This also supports other then-able, values such as <code class="language-plaintext highlighter-rouge">jQuery.Deferred</code>, and Bluebird Promise.</p>
@@ -242,7 +244,7 @@
                 
                 <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
                 
-                <a href="https://gitter.im/qunitjs/qunit" target="_blank" rel="noopener">Chat</a>
+                <a href="https://app.element.io/#/room/#qunitjs_qunit:gitter.im" target="_blank" rel="noopener">Chat</a>
             </p>
             <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/api/QUnit/test.md">Edit this page</a></p>
         </div>
