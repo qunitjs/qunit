@@ -987,13 +987,11 @@ export default class HtmlReporter {
 
     // The testItem.firstChild is the test name
     let testTitle = testItem.firstChild;
-
-    let testCounts = bad
+    let badGoodCounts = bad
       ? "<b class='failed'>" + bad + '</b>, ' + "<b class='passed'>" + good + '</b>, '
       : '';
 
-    testTitle.innerHTML += " <b class='counts'>(" + testCounts +
-    details.assertions.length + ')</b>';
+    testTitle.innerHTML += " <b class='counts'>(" + badGoodCounts + details.total + ')</b>';
 
     this.stats.completed++;
 
