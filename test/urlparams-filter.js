@@ -1,7 +1,6 @@
 /* eslint-env browser */
-
-// regular expression (case-sensitive), inverted
 if (!location.search) {
+  // regular expression (case-sensitive), inverted
   location.replace('?filter=!/Foo|bar/');
 }
 
@@ -9,11 +8,6 @@ QUnit.module('filter');
 
 QUnit.test('config parsed', function (assert) {
   assert.strictEqual(QUnit.config.filter, '!/Foo|bar/');
-});
-QUnit.test('interface', function (assert) {
-  var node = document.getElementById('qunit-filter-input');
-  assert.strictEqual(node.nodeName, 'INPUT');
-  assert.strictEqual(node.value, '!/Foo|bar/');
 });
 
 QUnit.test('foo test', function (assert) {

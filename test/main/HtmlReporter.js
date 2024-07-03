@@ -118,3 +118,20 @@ QUnit.test('hidepassed', function (assert) {
   assert.strictEqual(node.nodeName, 'INPUT');
   assert.strictEqual(node.checked, true);
 });
+
+QUnit.test('filter', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: [],
+      filter: '!/Foo|bar/'
+    }
+  });
+  this.MockQUnit._do_start_empty();
+
+  // Toolbar
+  var node = element.querySelector('#qunit-filter-input');
+  assert.strictEqual(node.nodeName, 'INPUT');
+  assert.strictEqual(node.value, '!/Foo|bar/');
+});

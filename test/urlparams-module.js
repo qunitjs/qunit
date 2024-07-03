@@ -5,8 +5,7 @@ if (!location.search) {
 
 QUnit.module('Foo');
 
-QUnit.test('Foo test', function (assert) {
-  assert.true(true, 'run module Foo');
+QUnit.test('config parsed', function (assert) {
   assert.strictEqual(QUnit.config.module, 'Foo', 'parsed config');
 });
 

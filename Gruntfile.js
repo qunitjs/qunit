@@ -95,13 +95,13 @@ module.exports = function (grunt) {
             'test/sandboxed-iframe.html',
             'test/seed.html',
             'test/startError.html',
+            'test/urlparams-filter.html',
             'test/urlparams-module.html',
             'test/urlparams-moduleId.html',
             'test/urlparams-testId.html',
             'test/webWorker.html',
 
             'test/reporter-html/dropdown-many.html',
-            'test/reporter-html/urlparams-filter.html',
             'test/reporter-html/window-onerror-preexisting-handler.html',
             'test/reporter-html/window-onerror.html',
             'test/reporter-html/xhtml-escape-details-source.xhtml'
