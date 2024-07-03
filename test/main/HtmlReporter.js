@@ -1,6 +1,7 @@
 /* eslint-env browser */
 /* eslint-disable new-cap */
-QUnit.module('HtmlReporter');
+// Skip in non-browser environment
+(typeof document !== 'undefined' ? QUnit.module : QUnit.module.skip)('HtmlReporter');
 
 QUnit.test('appendFilteredTest() [testId]', function (assert) {
   var MockQUnit = {

@@ -103,12 +103,10 @@ module.exports = function (grunt) {
             'test/reporter-html/dropdown-many.html',
             'test/reporter-html/hidepassed.html?hidepassed=true',
             'test/reporter-html/no-qunit-element.html',
-            'test/reporter-html/config-testId.html',
             'test/reporter-html/urlparams-filter.html',
             'test/reporter-html/window-onerror-preexisting-handler.html',
             'test/reporter-html/window-onerror.html',
-            'test/reporter-html/xhtml-escape-details-source.xhtml',
-            'test/reporter-html/xhtml-config-testId.xhtml'
+            'test/reporter-html/xhtml-escape-details-source.xhtml'
 
           ].map(file => `http://localhost:${connectPort}/${file}`)
         }
@@ -127,6 +125,7 @@ module.exports = function (grunt) {
         'test/main/diff.js',
         'test/main/dump.js',
         'test/main/each.js',
+        'test/main/HtmlReporter.js',
         'test/main/modules.js',
         'test/main/onUncaughtException.js',
         'test/main/promise.js',

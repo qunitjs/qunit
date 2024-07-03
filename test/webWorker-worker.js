@@ -14,6 +14,7 @@ importScripts(
   'main/diff.js',
   'main/dump.js',
   'main/each.js',
+  'main/HtmlReporter.js',
   'main/modules.js',
   'main/onUncaughtException.js',
   'main/promise.js',
