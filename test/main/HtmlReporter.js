@@ -96,6 +96,7 @@ QUnit.test('testresult-display [begin]', function (assert) {
   var testresult = element.querySelector('#qunit-testresult');
   assert.equal(testresult.className, 'result', 'testresult class');
   assert.equal(testresult.textContent, 'Running...\u00A0Abort', 'testresult text');
+
   var display = element.querySelector('#qunit-testresult-display');
   assert.equal(display.className, '', 'display class');
   assert.equal(display.textContent, 'Running...\u00A0', 'display text');
@@ -113,9 +114,65 @@ QUnit.test('testresult-display [testStart]', function (assert) {
 
   var testresult = element.querySelector('#qunit-testresult');
   assert.equal(testresult.className, 'result', 'testresult class');
+
   var display = element.querySelector('#qunit-testresult-display');
   assert.equal(display.className, 'running', 'display class');
   assert.equal(display.textContent, '1 / 4 tests completed.Running: B', 'display text');
+
+  var testOutput = element.querySelector('#qunit-test-output-00A');
+  assert.equal(
+    testOutput.textContent,
+    'A (1)' + 'Rerun' + '0 ms' + 'okay' + '@ 0 ms',
+    'test output: name, count, duration, assert message, and assert runtime offset'
+  );
+});
+
+QUnit.test('test-output trace', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+
+  this.MockQUnit.emit('runStart', { testCounts: { total: 1 } });
+  this.MockQUnit.emit('begin', { modules: [] });
+  this.MockQUnit.emit('testStart', { testId: '00A', name: 'A' });
+  this.MockQUnit.emit('log', {
+    testId: '00A',
+    message: 'boo',
+    result: false,
+    actual: false,
+    expected: true,
+    source: 'bar@example.js\nfoo@example.js\n@foo.test.js',
+    runtime: 1
+  });
+  this.MockQUnit.emit('testDone', {
+    testId: '00A',
+    name: 'A',
+    source: '@foo.test.js',
+    total: 1,
+    passed: 1,
+    failed: 0,
+    runtime: 2
+  });
+  this.MockQUnit.emit('runEnd', {
+    testCounts: { total: 1, passed: 0, failed: 1, skipped: 0, todo: 0 },
+    status: 'failed',
+    runtime: 2
+  });
+
+  var testOutput = element.querySelector('#qunit-test-output-00A');
+  assert.strictEqual(
+    testOutput.textContent,
+    'A (1)' + 'Rerun' + '2 ms' + 'boo' + '@ 1 ms' +
+      'Expected: true' +
+      'Result: false' +
+      'Source: bar@example.js\nfoo@example.js\n@foo.test.js' +
+      'Source: @foo.test.js',
+    'test output'
+  );
 });
 
 QUnit.test('appendFilteredTest() [testId]', function (assert) {
@@ -173,4 +230,94 @@ QUnit.test('filter', function (assert) {
   var node = element.querySelector('#qunit-filter-input');
   assert.strictEqual(node.nodeName, 'INPUT');
   assert.strictEqual(node.value, '!/Foo|bar/');
+});
+
+QUnit.test('module selector', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_start_empty();
+
+  var node = element.querySelector('#qunit-modulefilter-search');
+  assert.strictEqual(node.autocomplete, 'off', 'disables autocomplete');
+});
+
+QUnit.test('overall escaping', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+
+  this.MockQUnit.emit('runStart', { testCounts: { total: 1 } });
+  this.MockQUnit.emit('begin', {
+    modules: [
+      { moduleId: 'FF1', name: "<script id='oops-module'>window.oops='module';</script>" }
+    ]
+  });
+  this.MockQUnit.emit('testStart', {
+    testId: '00A',
+    module: "<script id='oops-module'>window.oops='module';</script>",
+    name: "<script id='oops-test'>window.oops='test';</script>"
+  });
+  this.MockQUnit.emit('log', {
+    testId: '00A',
+    message: "<script id='oops-assertion'>window.oops='assertion-pass';</script>",
+    result: true,
+    runtime: 0
+  });
+  this.MockQUnit.emit('log', {
+    testId: '00A',
+    message: "<script id='oops-assertion'>window.oops='assertion-fail';</script>",
+    result: false,
+    actual: false,
+    expected: true,
+    runtime: 1
+  });
+  this.MockQUnit.emit('testDone', {
+    testId: '00A',
+    module: "<script id='oops-module'>window.oops='module';</script>",
+    name: "<script id='oops-test'>window.oops='test';</script>",
+    total: 2,
+    passed: 1,
+    failed: 1,
+    runtime: 1
+  });
+  this.MockQUnit.emit('runEnd', {
+    testCounts: { total: 1, passed: 0, failed: 1, skipped: 0, todo: 0 },
+    status: 'failed',
+    runtime: 2
+  });
+
+  var scriptTagPos = element.innerHTML.indexOf('<script');
+  var scriptTags = scriptTagPos !== -1 ? element.innerHTML.slice(scriptTagPos, scriptTagPos + 20) : '';
+  assert.strictEqual(scriptTags, '', 'escape script tags');
+
+  assert.strictEqual(window.oops, undefined, 'prevent eval');
+
+  var testOutput = element.querySelector('#qunit-test-output-00A');
+  assert.strictEqual(
+    testOutput.textContent,
+    "<script id='oops-module'>window.oops='module';</script>: <script id='oops-test'>window.oops='test';</script> (1, 1, 2)" +
+      'Rerun' +
+      '1 ms' +
+      "<script id='oops-assertion'>window.oops='assertion-pass';</script>@ 0 ms" +
+      "<script id='oops-assertion'>window.oops='assertion-fail';</script>@ 1 ms" +
+      'Expected: true' +
+      'Result: false',
+    'formatting of test output'
+  );
+
+  var oopsModule = element.querySelector('#oops-module') || document.querySelector('#oops-module');
+  var oopsTest = element.querySelector('#oops-test') || document.querySelector('#oops-test');
+  var oopsAssertion = element.querySelector('#oops-assertion') || document.querySelector('#oops-assertion');
+  assert.strictEqual(oopsModule, null, 'escape module name');
+  assert.strictEqual(oopsTest, null, 'escape test name');
+  assert.strictEqual(oopsAssertion, null, 'escape assertion message');
 });
