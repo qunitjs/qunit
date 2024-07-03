@@ -53,8 +53,8 @@ const config = {
   // By default, scroll to top of the page when suite is done
   scrolltop: true,
 
-  // TODO: Make explicit in QUnit 3.
-  // seed: undefined,
+  // Enable randomized ordering of tests.
+  seed: undefined,
 
   // The storage module to use for reordering tests
   storage: sessionStorage,
@@ -247,6 +247,7 @@ readFlatPreconfigBoolean(urlParams.noglobals, 'noglobals');
 readFlatPreconfigBoolean(urlParams.notrycatch, 'notrycatch');
 if (urlParams.seed === true) {
   // Generate a random seed if the option is specified without a value
+  // TODO: Present this in HtmlReporter
   config.seed = Math.random().toString(36).slice(2);
 } else {
   readFlatPreconfigString(urlParams.seed, 'seed');
