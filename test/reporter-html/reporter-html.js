@@ -29,29 +29,6 @@ QUnit.module('HTML Reporter', function () {
     assert.true(true, "<script id='qunit-unescaped-asassertionsert'>'assertion';</script>");
   });
 
-  QUnit.module('Display');
-
-  QUnit.test("use 'running' class", function (assert) {
-    assert.equal(document.querySelectorAll('#qunit-testresult-display.running').length, 1);
-  });
-
-  QUnit.test('running text', function (assert) {
-    var display = document.getElementById('qunit-testresult');
-
-    assert.true(/running text/.test(display.innerHTML), 'test name');
-    assert.true(/Display/.test(display.innerHTML), 'module name');
-  });
-
-  QUnit.test('run progress', function (assert) {
-    var display = document.getElementById('qunit-testresult');
-
-    var expected = /\d+ \/ \d+ tests completed/;
-    assert.true(
-      expected.test(display.innerHTML),
-      'progress found in displayed text'
-    );
-  });
-
   QUnit.module('Duration', {
     getPreviousTest: function (assert) {
       return document.getElementById('qunit-test-output-' + assert.test.testId)

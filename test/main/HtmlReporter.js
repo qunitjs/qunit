@@ -26,7 +26,8 @@
         this.emit('runStart', { testCounts: { total: 0 } });
         this.emit('begin', { modules: [] });
       },
-      _do_mixed_run: function () {
+      // The first 1.5 test.
+      _do_mixed_run_half: function () {
         this.emit('runStart', { testCounts: { total: 4 } });
         this.emit('begin', { modules: [] });
 
@@ -44,6 +45,9 @@
           result: true,
           runtime: 1
         });
+      },
+      _do_mixed_run_full: function () {
+        this._do_mixed_run_half();
         this.emit('testDone', { testId: '00B', name: 'B', total: 1, passed: 1, failed: 0, runtime: 1 });
 
         this.emit('testStart', { testId: '00C', name: 'C' });
@@ -79,6 +83,41 @@
   }
 });
 
+QUnit.test('testresult-display [begin]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_start_empty();
+
+  var testresult = element.querySelector('#qunit-testresult');
+  assert.equal(testresult.className, 'result', 'testresult class');
+  assert.equal(testresult.textContent, 'Running...\u00A0Abort', 'testresult text');
+  var display = element.querySelector('#qunit-testresult-display');
+  assert.equal(display.className, '', 'display class');
+  assert.equal(display.textContent, 'Running...\u00A0', 'display text');
+});
+
+QUnit.test('testresult-display [testStart]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_mixed_run_half();
+
+  var testresult = element.querySelector('#qunit-testresult');
+  assert.equal(testresult.className, 'result', 'testresult class');
+  var display = element.querySelector('#qunit-testresult-display');
+  assert.equal(display.className, 'running', 'display class');
+  assert.equal(display.textContent, '1 / 4 tests completed.Running: B', 'display text');
+});
+
 QUnit.test('appendFilteredTest() [testId]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
@@ -107,7 +146,7 @@ QUnit.test('hidepassed', function (assert) {
       urlConfig: ['hidepassed']
     }
   });
-  this.MockQUnit._do_mixed_run();
+  this.MockQUnit._do_mixed_run_full();
 
   // Of the 5 tests, hide 2 passed and 1 skipped, show 2 failed.
   var tests = element.querySelector('#qunit-tests');
