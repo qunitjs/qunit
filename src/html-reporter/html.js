@@ -138,7 +138,7 @@ const stats = {
       } else {
         urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
           "' title='" + escapedTooltip + "'>" + escapeText(val.label) +
-          ": </label><select id='qunit-urlconfig-" + escaped +
+          ": <select id='qunit-urlconfig-" + escaped +
           "' name='" + escaped + "' title='" + escapedTooltip + "'><option></option>";
 
         if (Array.isArray(val.value)) {
@@ -166,7 +166,7 @@ const stats = {
           urlConfigHtml += "<option value='" + escaped +
             "' selected='selected' disabled='disabled'>" + escaped + '</option>';
         }
-        urlConfigHtml += '</select>';
+        urlConfigHtml += '</select></label>';
       }
     }
 

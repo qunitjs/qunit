@@ -2,10 +2,23 @@
 if (!location.search) {
   location.replace('?implicit&explicit=yes&array=A&array=B&escaped%20name&toString=string&' +
     'module=urlParams+module&filter=urlParams%20module&notrycatch&' +
-    'custom&customArray=a&customArray=b');
+    'custom&customArray=a&customArray=b&customMenu=b&customMenuUnknown=c');
 }
 
-QUnit.config.urlConfig.push('custom', 'customArray');
+QUnit.config.urlConfig.push(
+  'custom',
+  'customArray',
+  {
+    id: 'customMenu',
+    label: 'Menu',
+    value: ['a', 'b']
+  },
+  {
+    id: 'customMenuUnknown',
+    label: 'Menu unknown',
+    value: ['a', 'b']
+  }
+);
 
 // Don't change this module name without also changing the module parameter when loading this suite
 QUnit.module('urlParams module', function () {
