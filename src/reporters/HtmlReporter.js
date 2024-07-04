@@ -70,34 +70,34 @@ function getUrlConfigHtml (config) {
     let escapedTooltip = escapeText(val.tooltip);
 
     if (!val.value || typeof val.value === 'string') {
-      urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
-        "' title='" + escapedTooltip + "'><input id='qunit-urlconfig-" + escaped +
-        "' name='" + escaped + "' type='checkbox'" +
-        (val.value ? " value='" + escapeText(val.value) + "'" : '') +
-        (currentVal ? " checked='checked'" : '') +
-        " title='" + escapedTooltip + "' />" + escapeText(val.label) + '</label>';
+      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped +
+        '" title="' + escapedTooltip + '"><input id="qunit-urlconfig-' + escaped +
+        '" name="' + escaped + '" type="checkbox"' +
+        (val.value ? ' value="' + escapeText(val.value) + '"' : '') +
+        (currentVal ? ' checked="checked"' : '') +
+        ' title="' + escapedTooltip + '" />' + escapeText(val.label) + '</label>';
     } else {
       let selection = false;
-      urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
-        "' title='" + escapedTooltip + "'>" + escapeText(val.label) +
-        ": <select id='qunit-urlconfig-" + escaped +
-        "' name='" + escaped + "' title='" + escapedTooltip + "'><option></option>";
+      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped +
+        '" title="' + escapedTooltip + '">' + escapeText(val.label) +
+        ': <select id="qunit-urlconfig-' + escaped +
+        '" name="' + escaped + '" title="' + escapedTooltip + '"><option></option>';
 
       if (Array.isArray(val.value)) {
         for (let j = 0; j < val.value.length; j++) {
           escaped = escapeText(val.value[j]);
-          urlConfigHtml += "<option value='" + escaped + "'" +
+          urlConfigHtml += '<option value="' + escaped + '"' +
             (currentVal === val.value[j]
-              ? (selection = true) && " selected='selected'"
+              ? (selection = true) && ' selected="selected"'
               : '') +
             '>' + escaped + '</option>';
         }
       } else {
         for (let j in val.value) {
           if (hasOwn.call(val.value, j)) {
-            urlConfigHtml += "<option value='" + escapeText(j) + "'" +
+            urlConfigHtml += '<option value="' + escapeText(j) + '"' +
               (currentVal === j
-                ? (selection = true) && " selected='selected'"
+                ? (selection = true) && ' selected="selected"'
                 : '') +
               '>' + escapeText(val.value[j]) + '</option>';
           }
@@ -105,23 +105,14 @@ function getUrlConfigHtml (config) {
       }
       if (currentVal && !selection) {
         escaped = escapeText(currentVal);
-        urlConfigHtml += "<option value='" + escaped +
-          "' selected='selected' disabled='disabled'>" + escaped + '</option>';
+        urlConfigHtml += '<option value="' + escaped +
+          '" selected="selected" disabled="disabled">' + escaped + '</option>';
       }
       urlConfigHtml += '</select></label>';
     }
   }
 
   return urlConfigHtml;
-}
-
-function getProgressHtml (stats) {
-  return [
-    stats.completed,
-    ' / ',
-    stats.defined,
-    ' tests completed.<br />'
-  ].join('');
 }
 
 function stripHtml (string) {
@@ -196,6 +187,9 @@ export default class HtmlReporter {
     this.dropdownData = null;
 
     this.element = options.element || undefined;
+    this.elementBanner = null;
+    this.elementDisplay = null;
+    this.elementTests = null;
     // TODO: Consider rendering the UI early when possible for improved UX.
 
     // NOTE: Only listen for "error" and "runStart" now.
@@ -251,30 +245,28 @@ export default class HtmlReporter {
       // Set either true or undefined, which will now take precedence over
       // the original urlParams in makeUrl()
       this.hidepassed = value;
-      let tests = this.element.querySelector('#qunit-tests');
-      if (tests) {
-        const length = tests.children.length;
-        const children = tests.children;
+      const tests = this.elementTests;
+      const length = tests.children.length;
+      const children = tests.children;
 
-        if (field.checked) {
-          for (let i = 0; i < length; i++) {
-            const test = children[i];
-            const className = test ? test.className : '';
-            const classNameHasPass = className.indexOf('pass') > -1;
-            const classNameHasSkipped = className.indexOf('skipped') > -1;
+      if (field.checked) {
+        for (let i = 0; i < length; i++) {
+          const test = children[i];
+          const className = test ? test.className : '';
+          const classNameHasPass = className.indexOf('pass') > -1;
+          const classNameHasSkipped = className.indexOf('skipped') > -1;
 
-            if (classNameHasPass || classNameHasSkipped) {
-              this.hiddenTests.push(test);
-            }
+          if (classNameHasPass || classNameHasSkipped) {
+            this.hiddenTests.push(test);
           }
+        }
 
-          for (const hiddenTest of this.hiddenTests) {
-            tests.removeChild(hiddenTest);
-          }
-        } else {
-          while (this.hiddenTests.length) {
-            tests.appendChild(this.hiddenTests.shift());
-          }
+        for (const hiddenTest of this.hiddenTests) {
+          tests.removeChild(hiddenTest);
+        }
+      } else {
+        while (this.hiddenTests.length) {
+          tests.appendChild(this.hiddenTests.shift());
         }
       }
       window.history.replaceState(null, '', updatedUrl);
@@ -330,13 +322,10 @@ export default class HtmlReporter {
   abortTestsButton () {
     const button = document.createElement('button');
     button.id = 'qunit-abort-tests-button';
-    button.innerHTML = 'Abort';
+    button.textContent = 'Abort';
     DOM.on(button, 'click', () => {
-      const abortButton = this.element.querySelector('#qunit-abort-tests-button');
-      if (abortButton) {
-        abortButton.disabled = true;
-        abortButton.innerHTML = 'Aborting...';
-      }
+      button.disabled = true;
+      button.textContent = 'Aborting...';
       this.abort();
       return false;
     });
@@ -348,7 +337,7 @@ export default class HtmlReporter {
     filter.className = 'qunit-filter';
 
     const label = document.createElement('label');
-    label.innerHTML = 'Filter: ';
+    label.textContent = 'Filter: ';
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -359,7 +348,7 @@ export default class HtmlReporter {
     label.appendChild(input);
 
     const button = document.createElement('button');
-    button.innerHTML = 'Go';
+    button.textContent = 'Go';
 
     filter.appendChild(label);
     filter.appendChild(document.createTextNode(' '));
@@ -427,19 +416,23 @@ export default class HtmlReporter {
       return html;
     }
 
+    const label = document.createElement('label');
+    label.htmlFor = 'qunit-modulefilter-search';
+    label.textContent = 'Module:\u00A0 ';
+
+    const searchContainer = document.createElement('span');
+    searchContainer.id = 'qunit-modulefilter-search-container';
+    label.appendChild(searchContainer);
+
     const moduleSearch = document.createElement('input');
+    // Set type=text explicitly for ease of styling
+    moduleSearch.setAttribute('type', 'text');
     moduleSearch.id = 'qunit-modulefilter-search';
     moduleSearch.autocomplete = 'off';
     DOM.on(moduleSearch, 'input', searchInput);
     DOM.on(moduleSearch, 'input', searchFocus);
     DOM.on(moduleSearch, 'focus', searchFocus);
     DOM.on(moduleSearch, 'click', searchFocus);
-
-    const label = document.createElement('label');
-    label.htmlFor = 'qunit-modulefilter-search';
-    label.textContent = 'Module:';
-    const searchContainer = document.createElement('span');
-    searchContainer.id = 'qunit-modulefilter-search-container';
     searchContainer.appendChild(moduleSearch);
 
     const applyButton = document.createElement('button');
@@ -487,8 +480,6 @@ export default class HtmlReporter {
     const moduleFilter = document.createElement('form');
     moduleFilter.id = 'qunit-modulefilter';
     moduleFilter.appendChild(label);
-    moduleFilter.appendChild(document.createTextNode(' '));
-    moduleFilter.appendChild(searchContainer);
     DOM.on(moduleFilter, 'submit', this.onFilterSubmit.bind(this));
     DOM.on(moduleFilter, 'reset', function () {
       dropdownData.selectedMap = new StringMap(initialSelected);
@@ -539,13 +530,13 @@ export default class HtmlReporter {
         // module names, indicating how the interface works. This also makes
         // for a quicker interaction in the common case of small projects.
         // Don't mandate typing just to get the menu.
-        results = dropdownData.options.slice(0, 20).map(obj => {
+        results = dropdownData.options.slice(0, 100).map(obj => {
           // Fake empty results. https://github.com/farzher/fuzzysort/issues/41
           return { obj: obj };
         });
       } else {
         results = fuzzysort.go(searchText, dropdownData.options, {
-          limit: 20,
+          limit: 100,
           key: 'name',
           allowTypo: true
         });
@@ -597,59 +588,28 @@ export default class HtmlReporter {
     return moduleFilter;
   }
 
-  appendToolbar (beginDetails) {
-    const toolbar = this.element.querySelector('#qunit-testrunner-toolbar');
-    if (toolbar) {
+  appendToolbarControls (beginDetails) {
+    const toolbarControls = this.element.querySelector('#qunit-testrunner-toolbar');
+    if (toolbarControls) {
       const urlConfigContainer = document.createElement('span');
+      urlConfigContainer.id = 'qunit-toolbar-urlconfig';
+      urlConfigContainer.className = 'qunit-url-config';
       urlConfigContainer.innerHTML = getUrlConfigHtml(this.config);
-      DOM.addClass(urlConfigContainer, 'qunit-url-config');
       DOM.onEach(urlConfigContainer.getElementsByTagName('input'), 'change', this.onToolbarChanged.bind(this));
       DOM.onEach(urlConfigContainer.getElementsByTagName('select'), 'change', this.onToolbarChanged.bind(this));
-      toolbar.appendChild(urlConfigContainer);
 
       const toolbarFilters = document.createElement('span');
       toolbarFilters.id = 'qunit-toolbar-filters';
       toolbarFilters.appendChild(this.toolbarLooseFilter());
       toolbarFilters.appendChild(this.toolbarModuleFilter(beginDetails));
 
-      const clearfix = document.createElement('div');
-      clearfix.className = 'clearfix';
-
-      toolbar.appendChild(toolbarFilters);
-      toolbar.appendChild(clearfix);
+      toolbarControls.appendChild(urlConfigContainer);
+      toolbarControls.appendChild(toolbarFilters);
     }
   }
 
-  appendHeader () {
-    const header = this.element.querySelector('#qunit-header');
-
-    if (header) {
-      header.innerHTML = "<a href='" + escapeText(this.unfilteredUrl) + "'>" + header.innerHTML +
-      '</a> ';
-    }
-  }
-
-  appendTestResults () {
-    const tests = this.element.querySelector('#qunit-tests');
-    let result = this.element.querySelector('#qunit-testresult');
-    let controls;
-
-    if (result) {
-      result.parentNode.removeChild(result);
-    }
-
-    if (tests) {
-      tests.innerHTML = '';
-      result = document.createElement('div');
-      result.id = 'qunit-testresult';
-      result.className = 'result';
-      tests.parentNode.insertBefore(result, tests);
-      result.innerHTML = '<div id="qunit-testresult-display">Running...<br />&#160;</div>' +
-      '<div id="qunit-testresult-controls"></div>' +
-      '<div class="clearfix"></div>';
-      controls = this.element.querySelector('#qunit-testresult-controls');
-    }
-
+  appendTestResultControls () {
+    const controls = this.element.querySelector('#qunit-testresult-controls');
     if (controls) {
       controls.appendChild(this.abortTestsButton());
     }
@@ -660,52 +620,41 @@ export default class HtmlReporter {
     if (!testId || testId.length <= 0) {
       return '';
     }
-    return "<div id='qunit-filteredTest'>Rerunning selected tests: " +
+    return '<div id="qunit-filteredTest">Rerunning selected tests: ' +
       escapeText(testId.join(', ')) +
-      " <a id='qunit-clearFilter' href='" +
+      ' <a id="qunit-clearFilter" href="' +
       escapeText(this.unfilteredUrl) +
-      "'>Run all tests</a></div>";
-  }
-
-  appendUserAgent () {
-    const userAgent = this.element.querySelector('#qunit-userAgent');
-
-    if (userAgent) {
-      userAgent.innerHTML = '';
-      userAgent.appendChild(
-        document.createTextNode(
-          'QUnit ' + version + '; ' + navigator.userAgent
-        )
-      );
-    }
+      '">Run all tests</a></div>';
   }
 
   appendInterface (beginDetails) {
-    const qunit = this.element;
-
-    qunit.setAttribute('role', 'main');
-
     // Since QUnit 1.3, these are created automatically.
-    qunit.innerHTML =
-      "<h1 id='qunit-header'>" + escapeText(document.title) + '</h1>' +
-      "<div id='qunit-banner'></div>" +
-      "<div id='qunit-testrunner-toolbar' role='navigation'></div>" +
-      this.appendFilteredTest() +
-      "<h2 id='qunit-userAgent'></h2>" +
-      "<ol id='qunit-tests'></ol>";
+    this.element.setAttribute('role', 'main');
+    this.element.innerHTML =
+      '<div id="qunit-header">' +
+        '<h1><a href="' + escapeText(this.unfilteredUrl) + '">' + escapeText(document.title) + '</a></h1> ' +
+        '<div id="qunit-userAgent">' + escapeText('QUnit ' + version + '; ' + navigator.userAgent) + '</div>' +
+      '</div>' +
+      '<div id="qunit-toolbar" role="navigation">' +
+        '<div id="qunit-banner"></div>' +
+        '<div id="qunit-testrunner-toolbar"></div>' +
+        '<div id="qunit-testresult" class="result">' +
+          '<div id="qunit-testresult-controls"></div>' +
+          '<div id="qunit-testresult-display">Running...<br />&#160;</div>' +
+        '</div>' +
+        this.appendFilteredTest() +
+      '</div>' +
+      '<ol id="qunit-tests"></ol>';
 
-    this.appendHeader();
-    this.appendTestResults();
-    this.appendUserAgent();
-    this.appendToolbar(beginDetails);
+    this.elementBanner = this.element.querySelector('#qunit-banner');
+    this.elementDisplay = this.element.querySelector('#qunit-testresult-display');
+    this.elementTests = this.element.querySelector('#qunit-tests');
+
+    this.appendToolbarControls(beginDetails);
+    this.appendTestResultControls();
   }
 
   appendTest (name, testId, moduleName) {
-    const tests = this.element.querySelector('#qunit-tests');
-    if (!tests) {
-      return;
-    }
-
     let title = document.createElement('strong');
     title.innerHTML = getNameHtml(name, moduleName);
 
@@ -715,7 +664,7 @@ export default class HtmlReporter {
     // No ID or rerun link for "global failure" blocks
     if (testId !== undefined) {
       let rerunTrigger = document.createElement('a');
-      rerunTrigger.innerHTML = 'Rerun';
+      rerunTrigger.textContent = 'Rerun';
       rerunTrigger.href = this.makeUrl({ testId: testId });
 
       testBlock.id = 'qunit-test-output-' + testId;
@@ -727,7 +676,7 @@ export default class HtmlReporter {
 
     testBlock.appendChild(assertList);
 
-    tests.appendChild(testBlock);
+    this.elementTests.appendChild(testBlock);
 
     return testBlock;
   }
@@ -764,7 +713,7 @@ export default class HtmlReporter {
 
     const href = this.makeUrl({ testId: failedTests });
     return [
-      "<br /><a href='" + escapeText(href) + "'>",
+      '<br /><a href="' + escapeText(href) + '">',
       failedTests.length === 1
         ? 'Rerun 1 failed test'
         : 'Rerun ' + failedTests.length + ' failed tests',
@@ -782,8 +731,6 @@ export default class HtmlReporter {
       return sec + (sec === 1 ? ' second' : ' seconds');
     }
 
-    const banner = this.element.querySelector('#qunit-banner');
-    const tests = this.element.querySelector('#qunit-tests');
     const abortButton = this.element.querySelector('#qunit-abort-tests-button');
     let html = [
       '<span class="total">', runEnd.testCounts.total, '</span> tests completed in ',
@@ -803,48 +750,47 @@ export default class HtmlReporter {
     if (abortButton && abortButton.disabled) {
       html = 'Tests aborted after ' + msToSec(runEnd.runtime) + '.';
 
-      for (let i = 0; i < tests.children.length; i++) {
-        test = tests.children[i];
+      for (let i = 0; i < this.elementTests.children.length; i++) {
+        test = this.elementTests.children[i];
         if (test.className === '' || test.className === 'running') {
           test.className = 'aborted';
           assertList = test.getElementsByTagName('ol')[0];
           assertLi = document.createElement('li');
           assertLi.className = 'fail';
-          assertLi.innerHTML = 'Test aborted.';
+          assertLi.textContent = 'Test aborted.';
           assertList.appendChild(assertLi);
         }
       }
     }
 
-    if (banner && (!abortButton || abortButton.disabled === false)) {
-      banner.className = runEnd.status === 'failed' ? 'qunit-fail' : 'qunit-pass';
+    if (!abortButton || abortButton.disabled === false) {
+      this.elementBanner.className = runEnd.status === 'failed' ? 'qunit-fail' : 'qunit-pass';
     }
 
     if (abortButton) {
       abortButton.parentNode.removeChild(abortButton);
     }
 
-    if (tests) {
-      this.element.querySelector('#qunit-testresult-display').innerHTML = html;
-    }
+    this.elementDisplay.innerHTML = html;
   }
 
   onTestStart (details) {
     this.appendTest(details.name, details.testId, details.module);
 
-    let running = this.element.querySelector('#qunit-testresult-display');
+    this.elementDisplay.className = 'running';
+    this.elementDisplay.innerHTML = [
+      details.previousFailure
+        ? 'Rerunning previously failed test: <br />'
+        : `Running test ${this.stats.completed} of ${this.stats.defined}: <br />`,
+      getNameHtml(details.name, details.module),
+      this.getRerunFailedHtml(this.stats.failedTests)
+    ].join('');
 
-    if (running) {
-      DOM.addClass(running, 'running');
-
-      running.innerHTML = [
-        getProgressHtml(this.stats),
-        details.previousFailure
-          ? 'Rerunning previously failed test: <br />'
-          : 'Running: ',
-        getNameHtml(details.name, details.module),
-        this.getRerunFailedHtml(this.stats.failedTests)
-      ].join('');
+    if (this.elementBanner.style.setProperty) {
+      this.elementBanner.style.setProperty(
+        '--qunit-progress',
+        Math.ceil(((this.stats.completed + 1) / this.stats.defined) * 100) + '%'
+      );
     }
   }
 
@@ -855,8 +801,8 @@ export default class HtmlReporter {
     }
 
     let message = escapeText(details.message) || (details.result ? 'okay' : 'failed');
-    message = "<span class='test-message'>" + message + '</span>';
-    message += "<span class='runtime'>@ " + details.runtime + ' ms</span>';
+    message = '<span class="test-message">' + message + '</span>';
+    message += '<span class="runtime">@ ' + details.runtime + ' ms</span>';
 
     let expected;
     let actual;
@@ -874,12 +820,12 @@ export default class HtmlReporter {
       }
 
       actual = dump.parse(details.actual);
-      message += "<table><tr class='test-expected'><th>Expected: </th><td><pre>" +
+      message += '<table><tr class="test-expected"><th>Expected: </th><td><pre>' +
       escapeText(expected) +
       '</pre></td></tr>';
 
       if (actual !== expected) {
-        message += "<tr class='test-actual'><th>Result: </th><td><pre>" +
+        message += '<tr class="test-actual"><th>Result: </th><td><pre>' +
           escapeText(actual) + '</pre></td></tr>';
 
         let showDiff = false;
@@ -902,26 +848,26 @@ export default class HtmlReporter {
         }
 
         if (showDiff) {
-          message += "<tr class='test-diff'><th>Diff: </th><td><pre>" +
+          message += '<tr class="test-diff"><th>Diff: </th><td><pre>' +
             diffHtml + '</pre></td></tr>';
         }
       } else if (expected.indexOf('[object Array]') !== -1 ||
         expected.indexOf('[object Object]') !== -1) {
-        message += "<tr class='test-message'><th>Message: </th><td>" +
-        'Diff suppressed as the depth of object is more than current max depth (' +
-        this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
-        " run with a higher max depth or <a href='" +
-        escapeText(this.makeUrl({ maxDepth: -1 })) + "'>" +
-        'Rerun</a> without max depth.</p></td></tr>';
+        message += '<tr class="test-message"><th>Message: </th><td>' +
+          'Diff suppressed as the depth of object is more than current max depth (' +
+          this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
+          ' run with a higher max depth or <a href="' +
+          escapeText(this.makeUrl({ maxDepth: -1 })) + "'>" +
+          'Rerun</a> without max depth.</p></td></tr>';
       } else {
-        message += "<tr class='test-message'><th>Message: </th><td>" +
-        'Diff suppressed as the expected and actual results have an equivalent' +
-        ' serialization</td></tr>';
+        message += '<tr class="test-message"><th>Message: </th><td>' +
+          'Diff suppressed as the expected and actual results have an equivalent' +
+          ' serialization</td></tr>';
       }
 
       if (details.source) {
-        message += "<tr class='test-source'><th>Source: </th><td><pre>" +
-        escapeText(details.source) + '</pre></td></tr>';
+        message += '<tr class="test-source"><th>Source: </th><td><pre>' +
+          escapeText(details.source) + '</pre></td></tr>';
       }
 
       message += '</table>';
@@ -929,9 +875,9 @@ export default class HtmlReporter {
       // This occurs when pushFailure is called and we have an extracted stack trace
     } else if (!details.result && details.source) {
       message += '<table>' +
-      "<tr class='test-source'><th>Source: </th><td><pre>" +
-      escapeText(details.source) + '</pre></td></tr>' +
-      '</table>';
+        '<tr class="test-source"><th>Source: </th><td><pre>' +
+        escapeText(details.source) + '</pre></td></tr>' +
+        '</table>';
     }
 
     let assertList = testItem.getElementsByTagName('ol')[0];
@@ -943,9 +889,8 @@ export default class HtmlReporter {
   }
 
   onTestDone (details) {
-    const tests = this.element.querySelector('#qunit-tests');
-    const testItem = this.element.querySelector('#qunit-test-output-' + details.testId);
-    if (!tests || !testItem) {
+    const testItem = this.elementTests.querySelector('#qunit-test-output-' + details.testId);
+    if (!testItem) {
       return;
     }
 
@@ -988,10 +933,10 @@ export default class HtmlReporter {
     // The testItem.firstChild is the test name
     let testTitle = testItem.firstChild;
     let badGoodCounts = bad
-      ? "<b class='failed'>" + bad + '</b>, ' + "<b class='passed'>" + good + '</b>, '
+      ? '<span class="failed">' + bad + '</span>, ' + '<span class="passed">' + good + '</span>, '
       : '';
 
-    testTitle.innerHTML += " <b class='counts'>(" + badGoodCounts + details.total + ')</b>';
+    testTitle.innerHTML += ' <span class="counts">(' + badGoodCounts + details.total + ')</span>';
 
     this.stats.completed++;
 
@@ -999,8 +944,9 @@ export default class HtmlReporter {
       testItem.className = 'skipped';
       let skipped = document.createElement('em');
       skipped.className = 'qunit-skipped-label';
-      skipped.innerHTML = 'skipped';
+      skipped.textContent = 'skipped';
       testItem.insertBefore(skipped, testTitle);
+      testItem.insertBefore(document.createTextNode(' '), testTitle);
     } else {
       DOM.on(testTitle, 'click', function () {
         DOM.toggleClass(assertList, 'qunit-collapsed');
@@ -1011,14 +957,15 @@ export default class HtmlReporter {
       if (details.todo) {
         const todoLabel = document.createElement('em');
         todoLabel.className = 'qunit-todo-label';
-        todoLabel.innerHTML = 'todo';
+        todoLabel.textContent = 'todo';
         testItem.className += ' todo';
         testItem.insertBefore(todoLabel, testTitle);
+        testItem.insertBefore(document.createTextNode(' '), testTitle);
       }
 
       let time = document.createElement('span');
       time.className = 'runtime';
-      time.innerHTML = details.runtime + ' ms';
+      time.textContent = details.runtime + ' ms';
       testItem.insertBefore(time, assertList);
     }
 
@@ -1041,12 +988,12 @@ export default class HtmlReporter {
       // use removeChild instead of remove because of support
       this.hiddenTests.push(testItem);
 
-      tests.removeChild(testItem);
+      this.elementTests.removeChild(testItem);
     }
   }
 
   onError (error) {
-    const testItem = this.element && this.appendTest('global failure');
+    const testItem = this.elementTests && this.appendTest('global failure');
     if (!testItem) {
       // HTML Reporter is probably disabled or not yet initialized.
       // This kind of early error will be visible in the browser console
@@ -1058,10 +1005,10 @@ export default class HtmlReporter {
 
     // Render similar to a failed assertion (see above QUnit.log callback)
     let message = escapeText(errorString(error));
-    message = "<span class='test-message'>" + message + '</span>';
+    message = '<span class="test-message">' + message + '</span>';
     if (error && error.stack) {
       message += '<table>' +
-        "<tr class='test-source'><th>Source: </th><td><pre>" +
+        '<tr class="test-source"><th>Source: </th><td><pre>' +
         escapeText(error.stack) + '</pre></td></tr>' +
         '</table>';
     }
@@ -1080,10 +1027,10 @@ function getNameHtml (name, module) {
   let nameHtml = '';
 
   if (module) {
-    nameHtml = "<span class='module-name'>" + escapeText(module) + '</span>: ';
+    nameHtml = '<span class="module-name">' + escapeText(module) + '</span>: ';
   }
 
-  nameHtml += "<span class='test-name'>" + escapeText(name) + '</span>';
+  nameHtml += '<span class="test-name">' + escapeText(name) + '</span>';
 
   return nameHtml;
 }

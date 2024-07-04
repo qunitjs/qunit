@@ -107,7 +107,7 @@ QUnit.test('testresult-display [begin]', function (assert) {
 
   var testresult = element.querySelector('#qunit-testresult');
   assert.equal(testresult.className, 'result', 'testresult class');
-  assert.equal(testresult.textContent, 'Running...\u00A0Abort', 'testresult text');
+  assert.equal(testresult.textContent, 'AbortRunning...\u00A0', 'testresult text');
 
   var display = element.querySelector('#qunit-testresult-display');
   assert.equal(display.className, '', 'display class');
@@ -129,7 +129,7 @@ QUnit.test('testresult-display [testStart]', function (assert) {
 
   var display = element.querySelector('#qunit-testresult-display');
   assert.equal(display.className, 'running', 'display class');
-  assert.equal(display.textContent, '1 / 4 tests completed.Running: B', 'display text');
+  assert.equal(display.textContent, 'Running test 1 of 4: B', 'display text');
 
   var testOutput = element.querySelector('#qunit-test-output-00A');
   assert.equal(
