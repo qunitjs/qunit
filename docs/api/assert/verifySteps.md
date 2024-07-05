@@ -28,6 +28,10 @@ Calling `verifySteps()` will clear and reset the internal list of steps. This al
 
 Refer to the below examples and learn how to use the Step API in your test suite.
 
+## Changelog
+
+| UNRELEASED | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
+
 ## Examples
 
 ### Test event-based interface

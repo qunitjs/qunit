@@ -22,7 +22,11 @@ This is most commonly used as `assert.expect(0)`, which indicates that a test ma
 
 This can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.
 
-It is recommended to test asynchronous code with [`assert.step()`](./step.md) or [`assert.async()`](./async.md) instead.
+It is recommended to test asynchronous code with the [`assert.verifySteps()`](./verifySteps.md) or [`assert.async()`](./async.md) methods instead. If you're using these stricter methods already, consider removing the `assert.expect()` call. See also the [require-expect "never-except-zero"](https://github.com/platinumazure/eslint-plugin-qunit/blob/main/docs/rules/require-expect.md) rule of the [eslint-plugin-qunit](https://www.npmjs.com/package/eslint-plugin-qunit) package.
+
+## Changelog
+
+| UNRELEASED | `assert.expect()` now counts [`assert.verifySteps()`](./verifySteps.md) as one assertion. Steps no longer count separately.
 
 ## Examples
 
@@ -63,7 +67,9 @@ QUnit.test('example', function (assert) {
 
 ### Example: Explicit count
 
-Require an explicit assertion count.
+Fail the test if the test did not complete an exact assertion count.
+
+It is recommended to test callback code with [`assert.verifySteps()`](./verifySteps.md) instead, as replacement for relying on `assert.expect()`. See also the [require-expect "never-except-zero"](https://github.com/platinumazure/eslint-plugin-qunit/blob/main/docs/rules/require-expect.md) rule of the [eslint-plugin-qunit](https://www.npmjs.com/package/eslint-plugin-qunit) package.
 
 ```js
 QUnit.test('example', function (assert) {

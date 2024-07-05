@@ -17,9 +17,13 @@ Record a step for later verification.
 |------|-------------|
 | `value` (string) | Relevant string value, or short description, to mark this step. |
 
-This assertion registers a passing assertion with the provided string. This and any other steps should be verified later in the test via [`assert.verifySteps()`](./verifySteps.md).
+This and any later steps must be verified before the end of the test via [`assert.verifySteps()`](./verifySteps.md).
 
 The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.
+
+## Changelog
+
+| UNRELEASED | [assert.expect()](./expect.md) now counts [assert.verifySteps()](./verifySteps.md) as one assertion. Steps no longer count separately.
 
 ## Examples
 

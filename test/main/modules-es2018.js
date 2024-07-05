@@ -13,7 +13,7 @@ QUnit.module('modules [es2018]', function () {
     });
 
     QUnit.test('all hooks', assert => {
-      assert.expect(4);
+      assert.expect(1);
     });
   });
 
@@ -31,6 +31,6 @@ QUnit.module('modules [es2018]', function () {
   });
 
   QUnit.test('async hooks order', assert => {
-    assert.expect(4);
+    assert.expect(1);
   });
 });

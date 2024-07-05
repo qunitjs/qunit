@@ -25,6 +25,9 @@ export default function Test (settings) {
   this.assertions = [];
   this.module = config.currentModule;
   this.steps = [];
+  // Track count in order to detect likely issue when upgrading.
+  // https://github.com/qunitjs/qunit/pull/1775
+  this.stepsCount = 0;
   this.timeout = undefined;
   this.data = undefined;
   this.withData = false;
@@ -342,6 +345,9 @@ Test.prototype = {
     if (config.requireExpects && this.expected === null) {
       this.pushFailure('Expected number of assertions to be defined, but expect() was ' +
         'not called.', this.stack);
+    } else if (this.expected !== null && this.stepsCount && (this.expected === (this.assertions.length + this.stepsCount))) {
+      this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
+        this.assertions.length + ' were run.\nIt looks like you are upgrading from QUnit 2. Steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/', this.stack);
     } else if (this.expected !== null && this.expected !== this.assertions.length) {
       this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
         this.assertions.length + ' were run', this.stack);

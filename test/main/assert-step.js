@@ -1,54 +1,52 @@
 QUnit.module('assert.step', function () {
-  QUnit.test('pushes a failing assertion if no message is given', function (assert) {
-    var original = assert.pushResult;
-    var pushed = null;
-    assert.pushResult = function (resultInfo) {
-      pushed = resultInfo;
-    };
+  QUnit.test('invalid value', function (assert) {
+    assert.throws(
+      function () {
+        assert.step();
+      },
+      new TypeError('You must provide a value to assert.step'),
+      'no value'
+    );
 
-    assert.step();
+    assert.throws(
+      function () {
+        assert.step('');
+      },
+      new TypeError('You must provide a value to assert.step'),
+      'empty value'
+    );
 
-    assert.pushResult = original;
-    assert.false(pushed.result);
-    assert.equal(pushed.message, 'You must provide a message to assert.step');
+    assert.throws(
+      function () {
+        assert.step(1);
+      },
+      new TypeError('You must provide a string value to assert.step'),
+      'number value'
+    );
 
-    assert.verifySteps([undefined]);
-  });
+    assert.throws(
+      function () {
+        assert.step(1);
+      },
+      new TypeError('You must provide a string value to assert.step'),
+      'number value'
+    );
 
-  QUnit.test('pushes a failing assertion if empty message is given', function (assert) {
-    var original = assert.pushResult;
-    var pushed = null;
-    assert.pushResult = function (resultInfo) {
-      pushed = resultInfo;
-    };
+    assert.throws(
+      function () {
+        assert.step(null);
+      },
+      new TypeError('You must provide a string value to assert.step'),
+      'null value'
+    );
 
-    assert.step('');
-
-    assert.pushResult = original;
-    assert.false(pushed.result);
-    assert.equal(pushed.message, 'You must provide a message to assert.step');
-
-    assert.verifySteps(['']);
-  });
-
-  QUnit.test('pushes a failing assertion if a non string message is given', function (assert) {
-    var original = assert.pushResult;
-    var pushed = [];
-    assert.pushResult = function (resultInfo) {
-      pushed.push(resultInfo);
-    };
-
-    assert.step(1);
-    assert.step(null);
-    assert.step(false);
-
-    assert.pushResult = original;
-    assert.deepEqual(pushed, [
-      { result: false, message: 'You must provide a string value to assert.step' },
-      { result: false, message: 'You must provide a string value to assert.step' },
-      { result: false, message: 'You must provide a string value to assert.step' }
-    ]);
-    assert.verifySteps([1, null, false]);
+    assert.throws(
+      function () {
+        assert.step(false);
+      },
+      new TypeError('You must provide a string value to assert.step'),
+      'false value'
+    );
   });
 
   QUnit.test('pushes a passing assertion if a message is given', function (assert) {
@@ -58,8 +56,9 @@ QUnit.module('assert.step', function () {
     assert.verifySteps(['One step', 'Two step']);
   });
 
-  QUnit.test('step() and verifySteps() count as assertions', function (assert) {
-    assert.expect(3);
+  // https://github.com/qunitjs/qunit/issues/1226
+  QUnit.test('step() does not count as assertions', function (assert) {
+    assert.expect(1);
 
     assert.step('One');
     assert.step('Two');
@@ -94,20 +93,6 @@ QUnit.module('assert.step', function () {
     assert.false(pushed.result);
   });
 
-  QUnit.test('verifies the order and value of failed steps', function (assert) {
-    assert.step('One step');
-
-    var original = assert.pushResult;
-    assert.pushResult = function noop () {};
-    assert.step();
-    assert.step('');
-    assert.pushResult = original;
-
-    assert.step('Two step');
-
-    assert.verifySteps(['One step', undefined, '', 'Two step']);
-  });
-
   QUnit.test('resets the step list after verification', function (assert) {
     assert.step('one');
     assert.verifySteps(['one']);
@@ -117,7 +102,7 @@ QUnit.module('assert.step', function () {
   });
 
   QUnit.test('errors if not called when `assert.step` is used', function (assert) {
-    assert.expect(2);
+    assert.expect(1);
     assert.step('one');
 
     var original = assert.test.pushFailure;

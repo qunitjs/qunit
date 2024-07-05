@@ -30,23 +30,15 @@ class Assert {
   }
 
   // Documents a "step", which is a string value, in a test as a passing assertion
-  step (message) {
-    let assertionMessage = message;
-    let result = !!message;
-
-    this.test.steps.push(message);
-
-    if (typeof message === 'undefined' || message === '') {
-      assertionMessage = 'You must provide a message to assert.step';
-    } else if (typeof message !== 'string') {
-      assertionMessage = 'You must provide a string value to assert.step';
-      result = false;
+  step (value) {
+    if (typeof value === 'undefined' || value === '') {
+      throw new TypeError('You must provide a value to assert.step');
+    }
+    if (typeof value !== 'string') {
+      throw new TypeError('You must provide a string value to assert.step');
     }
 
-    this.pushResult({
-      result,
-      message: assertionMessage
-    });
+    this.test.steps.push(value);
   }
 
   // Verifies the steps in a test match a given array of string values
@@ -54,6 +46,7 @@ class Assert {
     // Since the steps array is just string values, we can clone with slice
     const actualStepsClone = this.test.steps.slice();
     this.deepEqual(actualStepsClone, steps, message);
+    this.test.stepsCount += this.test.steps.length;
     this.test.steps.length = 0;
   }
 
