@@ -283,16 +283,18 @@ export default class HtmlReporter {
     }
   }
 
+  /**
+   * @param {Object.<string,boolean|string|string[]>} linkParams
+   * @return string
+   */
   makeUrl (linkParams) {
-    let querystring = '?';
-    const location = window.location;
-
     const params = extend({}, urlParams);
     if (this.hidepassed !== null) {
       params.hidepassed = this.hidepassed;
     }
     extend(params, linkParams);
 
+    let querystring = '?';
     for (let key in params) {
       // Skip inherited or undefined properties
       if (hasOwn.call(params, key) && params[key] !== undefined) {
@@ -308,10 +310,8 @@ export default class HtmlReporter {
         }
       }
     }
-    // TODO: Consider changing HTML to use a relative URL here,
-    // no need for window.location dependency.
-    return location.protocol + '//' + location.host +
-      location.pathname + querystring.slice(0, -1);
+
+    return window.location.pathname + querystring.slice(0, -1);
   }
 
   applyUrlParams () {
