@@ -6,20 +6,31 @@
   function fooParent () {
     return fooCurrent();
   }
+  function fooMain () {
+    return fooParent();
+  }
 
-  function fooInternal () {
+  function barInternal () {
     return QUnit.stack(2);
   }
-  function fooPublic () {
-    return fooInternal();
+  function barPublic () {
+    return barInternal();
   }
-  function barCaller () {
-    return fooPublic();
+  function quuxCaller () {
+    return barPublic();
   }
 
   function norm (str) {
-    // CRLF
+    // Windows path
     return str.replace(/\\/g, '/');
+  }
+
+  function shorten (str) {
+    return norm(str)
+      // Remove browser-specific formatting and line numbers
+      .replace(/^.*((?:foo|bar|quux)[A-z]+).*$/gm, '$1')
+      // Remove anything below our entry point
+      .replace(/(fooMain|quuxCaller)[\s\S\n]*/, '$1');
   }
 
   QUnit.test('QUnit.stack()', function (assert) {
@@ -36,38 +47,18 @@
       message: 'stacktrace cleaning stops before qunit.js'
     });
 
-    var nested = norm(fooParent());
-    assert.pushResult({
-      result: nested.indexOf('fooCurrent') !== -1,
-      actual: nested,
-      message: 'include current function'
-    });
-    assert.pushResult({
-      result: nested.indexOf('fooParent') !== -1,
-      actual: nested,
-      message: 'include parent function'
-    });
+    var fooStack = shorten(fooMain()).split('\n');
+    assert.deepEqual(fooStack, [
+      'fooCurrent',
+      'fooParent',
+      'fooMain'
+    ]);
   });
 
   QUnit.test('QUnit.stack(offset)', function (assert) {
-    var stack = norm(barCaller());
-    var line = stack.split('\n')[0];
+    var barStack = shorten(quuxCaller()).split('\n');
 
-    assert.pushResult({
-      result: line.indexOf('/main/stacktrace.js') !== -1,
-      actual: line,
-      message: 'current file'
-    });
-    assert.pushResult({
-      result: line.indexOf('barCaller') !== -1,
-      actual: line,
-      message: 'start at offset'
-    });
-    assert.pushResult({
-      result: stack.indexOf('fooInternal') === -1,
-      actual: stack,
-      message: 'skip internals'
-    });
+    assert.deepEqual(barStack, ['quuxCaller']);
   });
 
   // Some browsers support 'stack' only when caught (see sourceFromStacktrace).
