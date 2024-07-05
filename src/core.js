@@ -155,7 +155,10 @@ extend(QUnit, {
 
   stack: function (offset) {
     offset = (offset || 0) + 2;
-    return sourceFromStacktrace(offset);
+    // Support Safari: Use temp variable to avoid TCO for consistent cross-browser result
+    // https://bugs.webkit.org/show_bug.cgi?id=276187
+    const source = sourceFromStacktrace(offset);
+    return source;
   }
 });
 
