@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.stack()
-excerpt: Return a single line string representing the stacktrace.
+excerpt: Generate a stacktrace from the current line.
 groups:
   - extension
 redirect_from:
@@ -12,34 +12,51 @@ version_added: "1.19.0"
 
 `QUnit.stack( offset = 0 )`
 
-Return a single line string representing the stacktrace (call stack).
+Generate a stacktrace or (call stack) from the current line.
 
 | name | description |
 |------|-------------|
-| `offset` (number) | Set the stacktrace line offset. Defaults to `0` |
+| `offset` (number) | How many function calls to skip over. Defaults to `0` |
 
-This method returns a single line string representing the stacktrace from where it was called. According to its offset argument, `QUnit.stack()` will return the correspondent line from the call stack.
+QUnit automatically hides its own internal stack from the end of the stacktrace, so the bottom of the stack starts at the user's [`QUnit.test()`](../QUnit/test.md) function.
 
-The default offset is 0 and will return the current location where it was called.
+When called directly in a test function, `QUnit.stack()` neatly returns a single line only, representing the location of the currently executing line of code in the test function.
 
-Not all [browsers support retrieving stracktraces][browsers]. In those, `QUnit.stack()` will return `undefined`.
+If called indirectly by your own helper functions, it is recommended to use the `offset` argument to also exclude most (or all) of your own source code from the top of the stack. That way, it points developers directly at where we are in the test function.
 
-[browsers]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Stack#Browser_compatibility
+In environments where [support for Error.stack][mdn] is lacking, `QUnit.stack()` will return `undefined`.
 
-## Examples
+[mdn]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack#browser_compatibility
 
-The stacktrace line can be used on custom assertions and reporters. The following example [logs](../callbacks/QUnit.log.md) the line of each passing assertion.
+## Example
+
+The stacktrace line can be used on custom assertions and reporters.
 
 ```js
-QUnit.log(function (details) {
-  if (details.result) {
-    // 5 is the line reference for the assertion method, not the following line.
-    console.log(QUnit.stack(5));
-  }
+function addHelper (a, b) {
+  console.log(QUnit.stack());
+  // fooHelper@
+  // foo@
+  // @example.test.js:18 (example A)
+
+  console.log(QUnit.stack(2));
+  // @example.test.js:18 (example A)
+
+  return a + b;
+}
+
+function add (a, b) {
+  return addHelper(a, b);
+}
+
+QUnit.test('example A', assert => {
+  assert.equal(add(2, 3), 5);
 });
 
-QUnit.test('foo', assert => {
-  // the log callback will report the position of the following line.
+QUnit.test('example B', assert => {
   assert.true(true);
+
+  console.log(QUnit.stack());
+  // @example.test.js:24 (example B)
 });
 ```
