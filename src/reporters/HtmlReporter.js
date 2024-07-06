@@ -22,7 +22,7 @@ const DOM = {
     }
   },
   // TODO: Use HTMLElement.classList. IE11+, except toggle(x,y), add(x,y), or remove(x,y).
-  // TODO: Verity that eslint-plugin-compat catches those exceptions.
+  // TODO: Verify that eslint-plugin-compat catches those exceptions.
   hasClass (elem, name) {
     return (' ' + elem.className + ' ').indexOf(' ' + name + ' ') >= 0;
   },
@@ -1046,9 +1046,13 @@ export default class HtmlReporter {
   }
 
   onError (error) {
-    const testItem = this.appendTest('global failure');
+    const testItem = this.element && this.appendTest('global failure');
     if (!testItem) {
       // HTML Reporter is probably disabled or not yet initialized.
+      // This kind of early error will be visible in the browser console
+      // and via window.onerror, but we can't show it in the UI.
+      //
+      // TODO: Consider stashing early error here and replay in UI during onRunStart.
       return;
     }
 
