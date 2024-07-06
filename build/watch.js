@@ -14,12 +14,11 @@ const server = http.createServer((req, res) => {
     const requestedPath = path.join(
       process.cwd(),
 
-      // path.normalize will remove any "..".
-      // Probably useless as at least Chrome resolves any ".."
-      // _before_ sending the request.
-      // Probably still a good idea to avoid accessing anything
-      // _outside_ of process.cwd() anyways.
-      path.normalize(req.url)
+      // * Strip query parameters via URL.pathname.
+      // * Remove ".." via path.normalize before path.join().
+      //   Note most browers already resolve ".." before sending the request.
+      //   Keep as safeguard to avoid access outside process.cwd().
+      path.normalize(new URL(req.url, 'file:').pathname)
     );
     if (fs.existsSync(requestedPath)) {
       return res.end(fs.readFileSync(requestedPath));
