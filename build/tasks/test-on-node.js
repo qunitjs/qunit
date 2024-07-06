@@ -63,8 +63,9 @@ module.exports = function (grunt) {
         return;
       }
       testEnd.errors.forEach((assertion) => {
-        out += `\n\ntest: ${testEnd.name}\n` +
-          `module: ${testEnd.suiteName}\n` +
+        out += `\n\ntest: ${testEnd.fullName.join(' > ')}\n` +
+          `actual  : ${QUnit.dump.parse(assertion.actual)}\n` +
+          `expected: ${QUnit.dump.parse(assertion.expected)}\n` +
           `message: ${assertion.message}\n${assertion.stack || ''}`;
       });
     });
