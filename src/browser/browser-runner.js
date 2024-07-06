@@ -1,5 +1,5 @@
-import initFixture from './fixture';
-import initUrlConfig from './urlparams';
+import initFixture from './fixture.js';
+import initUrlConfig from './urlparams.js';
 
 export function initBrowser (QUnit, window, document) {
   // Report uncaught exceptions to QUnit.

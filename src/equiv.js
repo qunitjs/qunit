@@ -1,5 +1,5 @@
-import { objectType } from './core/utilities';
-import { StringSet } from './globals';
+import { objectType } from './core/utilities.js';
+import { StringSet } from './globals.js';
 
 const BOXABLE_TYPES = new StringSet(['boolean', 'number', 'string']);
 

@@ -1,9 +1,9 @@
-import { extend, errorString, escapeText } from '../core/utilities';
-import diff from '../diff';
-import dump from '../dump';
-import { window, document, navigator, StringMap } from '../globals';
-import { urlParams } from '../urlparams';
-import version from '../version';
+import { extend, errorString, escapeText } from '../core/utilities.js';
+import diff from '../diff.js';
+import dump from '../dump.js';
+import { window, document, navigator, StringMap } from '../globals.js';
+import { urlParams } from '../urlparams.js';
+import version from '../version.js';
 import fuzzysort from 'fuzzysort';
 
 const hasOwn = Object.prototype.hasOwnProperty;

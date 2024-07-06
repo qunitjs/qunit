@@ -1,6 +1,6 @@
-import { globalThis, process, sessionStorage } from '../globals';
-import { urlParams } from '../urlparams';
-import { extend } from './utilities';
+import { globalThis, process, sessionStorage } from '../globals.js';
+import { urlParams } from '../urlparams.js';
+import { extend } from './utilities.js';
 
 /**
  * Config object: Maintain internal state

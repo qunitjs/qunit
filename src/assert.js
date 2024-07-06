@@ -1,10 +1,10 @@
-import dump from './dump';
-import equiv from './equiv';
+import dump from './dump.js';
+import equiv from './equiv.js';
 
-import config from './core/config';
-import { objectType, objectValues, objectValuesSubset, errorString } from './core/utilities';
-import { sourceFromStacktrace } from './core/stacktrace';
-import { clearTimeout } from './globals';
+import config from './core/config.js';
+import { objectType, objectValues, objectValuesSubset, errorString } from './core/utilities.js';
+import { sourceFromStacktrace } from './core/stacktrace.js';
+import { clearTimeout } from './globals.js';
 
 class Assert {
   constructor (testContext) {

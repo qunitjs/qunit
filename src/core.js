@@ -1,25 +1,24 @@
-import { window, document, setTimeout } from './globals';
+import { window, document, setTimeout } from './globals.js';
 
-import equiv from './equiv';
-import dump from './dump';
-import { runSuite, module } from './module';
-import Assert from './assert';
-import Test, { test, pushFailure } from './test';
-import exportQUnit from './export';
-import reporters from './reporters';
+import equiv from './equiv.js';
+import dump from './dump.js';
+import { runSuite, module } from './module.js';
+import Assert from './assert.js';
+import Test, { test, pushFailure } from './test.js';
+import reporters from './reporters.js';
 
-import config from './core/config';
-import hooks from './core/hooks';
-import { extend, objectType, is, performance } from './core/utilities';
-import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging';
-import { sourceFromStacktrace } from './core/stacktrace';
-import ProcessingQueue from './core/processing-queue';
+import config from './core/config.js';
+import hooks from './core/hooks.js';
+import { extend, objectType, is, performance } from './core/utilities.js';
+import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging.js';
+import { sourceFromStacktrace } from './core/stacktrace.js';
+import ProcessingQueue from './core/processing-queue.js';
 
-import { urlParams } from './urlparams';
-import { on, emit } from './events';
-import onUncaughtException from './core/on-uncaught-exception';
-import diff from './diff';
-import version from './version';
+import { urlParams } from './urlparams.js';
+import { on, emit } from './events.js';
+import onUncaughtException from './core/on-uncaught-exception.js';
+import diff from './diff.js';
+import version from './version.js';
 
 const QUnit = {};
 
@@ -143,7 +142,5 @@ function begin () {
     modules: modulesLog
   }).then(unblockAndAdvanceQueue);
 }
-
-exportQUnit(QUnit);
 
 export default QUnit;

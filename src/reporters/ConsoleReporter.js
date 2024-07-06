@@ -1,4 +1,4 @@
-import { console } from '../globals';
+import { console } from '../globals.js';
 
 export default class ConsoleReporter {
   constructor (runner, options = {}) {

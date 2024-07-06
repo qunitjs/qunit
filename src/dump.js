@@ -28,8 +28,8 @@
 // POSSIBILITY OF SUCH DAMAGE.
 // -------
 
-import config from './core/config';
-import { inArray, toString, is } from './core/utilities';
+import config from './core/config.js';
+import { inArray, toString, is } from './core/utilities.js';
 
 export default (function () {
   function quote (str) {

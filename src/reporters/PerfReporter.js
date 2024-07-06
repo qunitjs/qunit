@@ -1,5 +1,5 @@
-import { window } from '../globals';
-import Logger from '../logger';
+import { window } from '../globals.js';
+import Logger from '../logger.js';
 
 // TODO: Consider using globalThis instead of window, so that the reporter
 // works for Node.js as well. As this can add overhead, we should make

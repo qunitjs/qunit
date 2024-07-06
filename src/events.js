@@ -1,5 +1,5 @@
-import { inArray } from './core/utilities';
-import config from './core/config';
+import { inArray } from './core/utilities.js';
+import config from './core/config.js';
 
 const SUPPORTED_EVENTS = [
   'error',

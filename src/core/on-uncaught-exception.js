@@ -1,8 +1,8 @@
-import config from './config';
-import { runSuite } from '../module';
-import { sourceFromStacktrace } from './stacktrace';
-import { errorString } from './utilities';
-import { emit } from '../events';
+import config from './config.js';
+import { runSuite } from '../module.js';
+import { sourceFromStacktrace } from './stacktrace.js';
+import { errorString } from './utilities.js';
+import { emit } from '../events.js';
 
 /**
  * Handle a global error that should result in a failed test run.

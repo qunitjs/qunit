@@ -31,20 +31,43 @@
 //
 // See also:
 // - https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-//
-const fileName = (sourceFromStacktrace(0) || '')
-  // Global replace, because a frame like localhost:4000/lib/qunit.js:1234:50,
-  // would otherwise (harmlessly, but uselessly) remove only the port (first match).
-  // https://github.com/qunitjs/qunit/issues/1769
-  .replace(/(:\d+)+\)?/g, '')
-  // Remove anything prior to the last slash (Unix/Windows) from the last frame,
-  // leaving only "qunit.js".
-  .replace(/.+[/\\]/, '');
+
+function qunitFileName () {
+  let error = new Error();
+  if (!error.stack) {
+    // Copy of sourceFromStacktrace() to avoid circular dependency
+    // Support: IE 11
+    try {
+      throw error;
+    } catch (err) {
+      error = err;
+    }
+  }
+  return (error.stack || '')
+    // Copy of extractStacktrace() to avoid circular dependency
+    // Support: V8/Chrome
+    .replace(/^error$\n/im, '')
+    .split('\n')[0]
+    // Global replace, because a frame like localhost:4000/lib/qunit.js:1234:50,
+    // would otherwise (harmlessly, but uselessly) remove only the port (first match).
+    // https://github.com/qunitjs/qunit/issues/1769
+    .replace(/(:\d+)+\)?/g, '')
+    // Remove anything prior to the last slash (Unix/Windows) from the last frame,
+    // leaving only "qunit.js".
+    .replace(/.+[/\\]/, '');
+}
+
+const fileName = qunitFileName();
+
 export function extractStacktrace (e, offset) {
   offset = offset === undefined ? 4 : offset;
 
   if (e && e.stack) {
     const stack = e.stack.split('\n');
+    // In Firefox and Safari, e.stack starts immediately with the first frame.
+    //
+    // In V8 (Chrome/Node.js), the stack starts first with a stringified error message,
+    // and the real stack starting on line 2.
     if (/^error$/i.test(stack[0])) {
       stack.shift();
     }
@@ -67,7 +90,7 @@ export function extractStacktrace (e, offset) {
 export function sourceFromStacktrace (offset) {
   let error = new Error();
 
-  // Support: Safari <=7, IE 11
+  // Support: IE 11
   // Not all browsers generate the `stack` property for `new Error()`
   // See also https://github.com/qunitjs/qunit/issues/636
   if (!error.stack) {

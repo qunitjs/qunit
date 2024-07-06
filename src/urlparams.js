@@ -1,4 +1,4 @@
-import { window } from './globals';
+import { window } from './globals.js';
 
 function getUrlParams () {
   const urlParams = Object.create(null);

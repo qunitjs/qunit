@@ -1,10 +1,10 @@
-import { globalThis, setTimeout, clearTimeout, StringMap } from './globals';
-import { emit } from './events';
-import Assert from './assert';
-import Logger from './logger';
-import Promise from './promise';
+import { globalThis, setTimeout, clearTimeout, StringMap } from './globals.js';
+import { emit } from './events.js';
+import Assert from './assert.js';
+import Logger from './logger.js';
+import Promise from './promise.js';
 
-import config from './core/config';
+import config from './core/config.js';
 import {
   diff,
   errorString,
@@ -13,12 +13,12 @@ import {
   hasOwn,
   inArray,
   performance
-} from './core/utilities';
-import { runLoggingCallbacks } from './core/logging';
-import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace';
-import dump from './dump';
+} from './core/utilities.js';
+import { runLoggingCallbacks } from './core/logging.js';
+import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace.js';
+import dump from './dump.js';
 
-import TestReport from './reports/test';
+import TestReport from './reports/test.js';
 
 export default function Test (settings) {
   this.expected = null;

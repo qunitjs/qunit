@@ -1,4 +1,4 @@
-import { console } from './globals';
+import { console } from './globals.js';
 
 // Support: SpiderMonkey (mozjs 68+)
 // The console object has a log method, but no warn method.

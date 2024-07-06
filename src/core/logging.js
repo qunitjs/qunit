@@ -1,5 +1,5 @@
-import config from './config';
-import Promise from '../promise';
+import config from './config.js';
+import Promise from '../promise.js';
 
 // Register logging callbacks
 export function registerLoggingCallbacks (obj) {

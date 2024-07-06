@@ -1,5 +1,5 @@
 /* global module, exports */
-import { window, document, globalThis } from './globals';
+import { window, document, globalThis } from './globals.js';
 
 export default function exportQUnit (QUnit) {
   let exportedModule = false;
