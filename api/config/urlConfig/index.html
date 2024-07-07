@@ -92,7 +92,7 @@
 
 <p>Each array item should be an object shaped as follows:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">({</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nf">push</span><span class="p">({</span>
   <span class="na">id</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
   <span class="na">label</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
   <span class="na">tooltip</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="c1">// optional</span>
@@ -108,22 +108,13 @@
 
 <p>Each item may also have a <code class="language-plaintext highlighter-rouge">value</code> property:</p>
 
-<p>If <code class="language-plaintext highlighter-rouge">value</code> is undefined, the option will render as a checkbox. The corresponding URL parameter will be set to “true” when the checkbox is checked, and otherwise will be absent.</p>
+<p>If <code class="language-plaintext highlighter-rouge">value</code> is undefined, the item will render as a checkbox. The corresponding URL parameter will be set to “true” when the checkbox is checked, and otherwise will be absent.</p>
 
-<p>If <code class="language-plaintext highlighter-rouge">value</code> is a string, the option will render as a checkbox. The corresponding URL parameter will be set to the value when the checkbox is checked, and otherwise will be absent.</p>
+<p>If <code class="language-plaintext highlighter-rouge">value</code> is a string, the item will render as a checkbox. The corresponding URL parameter will be set to the value when the checkbox is checked, and otherwise will be absent.</p>
 
-<p>If <code class="language-plaintext highlighter-rouge">value</code> is an array, the option will render as a “select one” menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.</p>
+<p>If <code class="language-plaintext highlighter-rouge">value</code> is an array, the item will render as a “select one” dropdown menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span> <span class="o">=</span> <span class="p">[</span> <span class="dl">'</span><span class="s1">foobar</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">baz</span><span class="dl">'</span> <span class="p">];</span>
-</code></pre></div></div>
-
-<p>If <code class="language-plaintext highlighter-rouge">value</code> is an object, the option will render as a “select one” menu as for an array. The keys will be used as option values, and the values will be used as option display labels. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the object key of the selected property.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">foobar</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo with bar</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">baz</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Baz</span><span class="dl">'</span>
-<span class="p">};</span>
-</code></pre></div></div>
+<p>If <code class="language-plaintext highlighter-rouge">value</code> is an object, the item will render as a dropdown menu. The URL parameter will be set to the key of the selected property, and this will also be available via <code class="language-plaintext highlighter-rouge">QUnit.urlParams[id]</code>. The object values will be used as display label for each option in the dropdown menu. The corresponding URL parameter will be absent when the empty option is selected.</p>
 
 <h2 id="examples">Examples</h2>
 
@@ -144,10 +135,22 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nf">push</span><span class="p">({</span>
   <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jquery</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jQuery version</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jQuery</span><span class="dl">'</span><span class="p">,</span>
   <span class="na">value</span><span class="p">:</span> <span class="p">[</span> <span class="dl">'</span><span class="s1">1.7.2</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1.8.3</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1.9.1</span><span class="dl">'</span> <span class="p">],</span>
-  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Which jQuery version to test against.</span><span class="dl">'</span>
+  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Which version of jQuery to test against.</span><span class="dl">'</span>
 <span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nf">push</span><span class="p">({</span>
+  <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jquery</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">jQuery</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">value</span><span class="p">:</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">1.7.2</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">v1.7.2 (LTS)</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">1.8.3</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">v1.8.3 (Current)</span><span class="dl">'</span> <span class="p">},</span>
+  <span class="na">tooltip</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Which version of jQuery to test against.</span><span class="dl">'</span>
+<span class="p">});</span>
+
+<span class="k">if </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">urlConfig</span><span class="p">.</span><span class="nx">jquery</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Load jQuery</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 </article>
