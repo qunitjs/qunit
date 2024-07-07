@@ -911,7 +911,16 @@ function checkPollution () {
 let focused = false; // indicates that the "only" filter was used
 
 function addTest (settings) {
-  if (focused || config.currentModule.ignored) {
+  if (
+    // Never ignore the internal "No tests" error, as this would infinite loop.
+    // See /test/cli/fixtures/only-test-only-module-mix.tap.txt
+    //
+    // TODO: If we improve HtmlReporter to buffer and replay early errors,
+    // we can change "No tests" to be a global error, and thus get rid of
+    // the "validTest" concept and the ProcessQueue re-entry hack.
+    !(settings.callback && settings.callback.validTest) &&
+    (focused || config.currentModule.ignored)
+  ) {
     return;
   }
 

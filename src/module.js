@@ -144,6 +144,13 @@ module.only = function (...args) {
   if (!focused) {
     // Upon the first module.only() call,
     // delete any and all previously registered modules and tests.
+    //
+    // TODO: This does not clear SuiteReport, which means the empty modules are
+    // left behind and wrongly reported as "skipped" (skipped == total), and
+    // deleted tests wrongly count toward runEnd.testCounts as passing test
+    // (this.getFailedAssertions().length === 0).
+    // This is why /test/cli/fixtures/only-test-only-module-mix.tap.txt reports
+    // 1..3 instead of 1..1.
     config.modules.length = 0;
     config.queue.length = 0;
 

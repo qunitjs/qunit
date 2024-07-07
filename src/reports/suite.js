@@ -29,6 +29,10 @@ export default class SuiteReport {
       tests: this.tests.map(test => test.start()),
       childSuites: this.childSuites.map(suite => suite.start()),
       testCounts: {
+        // TODO: Due to code reuse, this ends up computing getStatus()
+        // for tests that obviously haven't run yet. It's harmless but
+        // quite inefficient recursion, that we repeat many times over
+        // also via test.start() and suite.start() above.
         total: this.getTestCounts().total
       }
     };

@@ -10,7 +10,11 @@ QUnit.module('module A', function () {
     });
   });
 
-  QUnit.test('test A2', function (assert) {
+  QUnit.test.only('test A2', function (assert) {
+    assert.true(false, 'not run');
+  });
+
+  QUnit.test('test A3', function (assert) {
     assert.true(false, 'not run');
   });
 });
