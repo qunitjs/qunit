@@ -137,7 +137,7 @@ const stats = {
           " title='" + escapedTooltip + "' />" + escapeText(val.label) + '</label>';
       } else {
         urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
-          "' title='" + escapedTooltip + "'>" + val.label +
+          "' title='" + escapedTooltip + "'>" + escapeText(val.label) +
           ": </label><select id='qunit-urlconfig-" + escaped +
           "' name='" + escaped + "' title='" + escapedTooltip + "'><option></option>";
 
