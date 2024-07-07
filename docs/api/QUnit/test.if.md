@@ -21,7 +21,7 @@ Add a test that only runs if a condition is true.
 
 If the condition is true, this is equivalent to calling [`QUnit.test()`](./test.md).
 
-If the conditional is false, this is equivalent to calling [`QUnit.test.skip()`](./test.skip.md), and test will not run. Instead, it be listed in the results as a "skipped" test.
+If the conditional is false, this is equivalent to calling [`QUnit.test.skip()`](./test.skip.md), and test will not run. Instead, it will be listed in the results as a "skipped" test.
 
 As a codebase becomes bigger, you may need to conditionally skip an entire group of tests. You can use [`QUnit.module.if()`](./module.md) to recursively skip all tests in a module based on a given condition.
 
