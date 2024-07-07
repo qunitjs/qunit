@@ -79,7 +79,7 @@ function getUrlConfigHtml (config) {
     } else {
       let selection = false;
       urlConfigHtml += "<label for='qunit-urlconfig-" + escaped +
-        "' title='" + escapedTooltip + "'>" + val.label +
+        "' title='" + escapedTooltip + "'>" + escapeText(val.label) +
         ": <select id='qunit-urlconfig-" + escaped +
         "' name='" + escaped + "' title='" + escapedTooltip + "'><option></option>";
 

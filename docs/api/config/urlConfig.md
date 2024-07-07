@@ -28,7 +28,7 @@ This property controls which form controls display in the QUnit toolbar. By defa
 Each array item should be an object shaped as follows:
 
 ```js
-({
+QUnit.config.urlConfig.push({
   id: string,
   label: string,
   tooltip: string, // optional
@@ -42,24 +42,13 @@ Each array item should be an object shaped as follows:
 
 Each item may also have a `value` property:
 
-If `value` is undefined, the option will render as a checkbox. The corresponding URL parameter will be set to "true" when the checkbox is checked, and otherwise will be absent.
+If `value` is undefined, the item will render as a checkbox. The corresponding URL parameter will be set to "true" when the checkbox is checked, and otherwise will be absent.
 
-If `value` is a string, the option will render as a checkbox. The corresponding URL parameter will be set to the value when the checkbox is checked, and otherwise will be absent.
+If `value` is a string, the item will render as a checkbox. The corresponding URL parameter will be set to the value when the checkbox is checked, and otherwise will be absent.
 
-If `value` is an array, the option will render as a "select one" menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.
+If `value` is an array, the item will render as a "select one" dropdown menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.
 
-```js
-value = [ 'foobar', 'baz' ];
-```
-
-If `value` is an object, the option will render as a "select one" menu as for an array. The keys will be used as option values, and the values will be used as option display labels. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the object key of the selected property.
-
-```js
-value = {
-  foobar: 'Foo with bar',
-  baz: 'Baz'
-};
-```
+If `value` is an object, the item will render as a dropdown menu. The URL parameter will be set to the key of the selected property, and this will also be available via `QUnit.urlParams[id]`. The object values will be used as display label for each option in the dropdown menu. The corresponding URL parameter will be absent when the empty option is selected.
 
 ## Examples
 
@@ -82,8 +71,21 @@ Add a dropdown to the toolbar.
 ```js
 QUnit.config.urlConfig.push({
   id: 'jquery',
-  label: 'jQuery version',
+  label: 'jQuery',
   value: [ '1.7.2', '1.8.3', '1.9.1' ],
-  tooltip: 'Which jQuery version to test against.'
+  tooltip: 'Which version of jQuery to test against.'
 });
+```
+
+```js
+QUnit.config.urlConfig.push({
+  id: 'jquery',
+  label: 'jQuery',
+  value: { '1.7.2': 'v1.7.2 (LTS)', '1.8.3': 'v1.8.3 (Current)' },
+  tooltip: 'Which version of jQuery to test against.'
+});
+
+if (QUnit.urlConfig.jquery) {
+  // Load jQuery
+}
 ```
