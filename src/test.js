@@ -177,43 +177,39 @@ Test.prototype = {
   run: function () {
     config.current = this;
 
+    let promise;
     if (config.notrycatch) {
-      runTest(this);
-      return;
-    }
+      promise = (this.withData)
+        ? this.callback.call(this.testEnvironment, this.assert, this.data)
+        : this.callback.call(this.testEnvironment, this.assert);
+    } else {
+      try {
+        promise = (this.withData)
+          ? this.callback.call(this.testEnvironment, this.assert, this.data)
+          : this.callback.call(this.testEnvironment, this.assert);
+      } catch (e) {
+        this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': ' +
+          (e.message || e) + '\n' + this.stack, extractStacktrace(e, 0));
 
-    try {
-      runTest(this);
-    } catch (e) {
-      this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': ' +
-        (e.message || e) + '\n' + this.stack, extractStacktrace(e, 0));
+        // Else next test will carry the responsibility
+        saveGlobal();
 
-      // Else next test will carry the responsibility
-      saveGlobal();
-
-      // Restart the tests if they're blocking
-      if (config.blocking) {
-        internalRecover(this);
+        // Restart the tests if they're blocking
+        if (config.blocking) {
+          internalRecover(this);
+        }
       }
     }
 
-    function runTest (test) {
-      let promise;
-      if (test.withData) {
-        promise = test.callback.call(test.testEnvironment, test.assert, test.data);
-      } else {
-        promise = test.callback.call(test.testEnvironment, test.assert);
-      }
-      test.resolvePromise(promise);
+    this.resolvePromise(promise);
 
-      // If the test has an async "pause" on it, but the timeout is 0, then we push a
-      // failure as the test should be synchronous.
-      if (test.timeout === 0 && test.pauses.size > 0) {
-        pushFailure(
-          'Test did not finish synchronously even though assert.timeout( 0 ) was used.',
-          sourceFromStacktrace(2)
-        );
-      }
+    // If the test has an async "pause" on it, but the timeout is 0, then we push a
+    // failure as the test should be synchronous.
+    if (this.timeout === 0 && this.pauses.size > 0) {
+      pushFailure(
+        'Test did not finish synchronously even though assert.timeout( 0 ) was used.',
+        sourceFromStacktrace(2)
+      );
     }
   },
 
@@ -222,11 +218,10 @@ Test.prototype = {
   },
 
   queueGlobalHook (hook, hookName) {
-    const runHook = () => {
+    const runGlobalHook = () => {
       config.current = this;
 
       let promise;
-
       if (config.notrycatch) {
         promise = hook.call(this.testEnvironment, this.assert);
       } else {
@@ -244,22 +239,10 @@ Test.prototype = {
 
       this.resolvePromise(promise, hookName);
     };
-
-    return runHook;
+    return runGlobalHook;
   },
 
   queueHook (hook, hookName, hookOwner) {
-    const callHook = () => {
-      let promise;
-      if (hookName === 'before' || hookName === 'after') {
-        // before and after hooks are called with the owning module's testEnvironment
-        promise = hook.call(hookOwner.testEnvironment, this.assert);
-      } else {
-        promise = hook.call(this.testEnvironment, this.assert);
-      }
-      this.resolvePromise(promise, hookName);
-    };
-
     const runHook = () => {
       if (hookName === 'before' && hookOwner.testsRun !== 0) {
         return;
@@ -274,25 +257,27 @@ Test.prototype = {
       }
 
       config.current = this;
-      if (config.notrycatch) {
-        callHook();
-        return;
-      }
-      try {
-        // This try-block includes the indirect call to resolvePromise, which shouldn't
-        // have to be inside try-catch. But, since we support any user-provided thenable
-        // object, the thenable might throw in some unexpected way.
-        // This subtle behaviour is undocumented. To avoid new failures in minor releases
-        // we will not change this until QUnit 3.
-        // TODO: In QUnit 3, reduce this try-block to just hook.call(), matching
-        // the simplicity of queueGlobalHook.
-        callHook();
-      } catch (error) {
-        this.pushFailure(hookName + ' failed on ' + this.testName + ': ' +
-        (error.message || error), extractStacktrace(error, 0));
-      }
-    };
 
+      // before and after hooks are called with the owning module's testEnvironment
+      const testEnvironment = (hookName === 'before' || hookName === 'after')
+        ? hookOwner.testEnvironment
+        : this.testEnvironment;
+
+      let promise;
+      if (config.notrycatch) {
+        promise = hook.call(testEnvironment, this.assert);
+      } else {
+        try {
+          promise = hook.call(testEnvironment, this.assert);
+        } catch (error) {
+          this.pushFailure(hookName + ' failed on ' + this.testName + ': ' +
+          (error.message || error), extractStacktrace(error, 0));
+          return;
+        }
+      }
+
+      this.resolvePromise(promise, hookName);
+    };
     return runHook;
   },
 
@@ -757,12 +742,11 @@ Test.prototype = {
   resolvePromise: function (promise, phase) {
     if (promise !== undefined && promise !== null) {
       const test = this;
-      const then = promise.then;
-      if (typeof then === 'function') {
+      if (typeof promise.then === 'function') {
         const resume = test.internalStop();
         const resolve = function () { resume(); };
         if (config.notrycatch) {
-          then.call(promise, resolve);
+          promise.then(resolve);
         } else {
           const reject = function (error) {
             const message = 'Promise rejected ' +
@@ -777,7 +761,11 @@ Test.prototype = {
             // Unblock
             internalRecover(test);
           };
-          then.call(promise, resolve, reject);
+          // Note that `promise` is a user-supplied thenable, not per-se a standard Promise.
+          // This means it can be a "bad thenable" where calling then() can already throw.
+          // We must catch this to avoid breaking the ProcessingQueue. Promise.resolve()
+          // normalizes and catches even these internal errors and sends them to reject.
+          Promise.resolve(promise).then(resolve, reject);
         }
       }
     }

@@ -1,0 +1,77 @@
+# command: ["qunit", "async-test-throw.js"]
+
+TAP version 13
+not ok 1 throw early
+  ---
+  message: "Promise rejected during \"throw early\": boo"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: boo
+        at /qunit/test/cli/fixtures/async-test-throw.js:2:9
+  ...
+not ok 2 throw late
+  ---
+  message: "Promise rejected during \"throw late\": boo"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: boo
+        at /qunit/test/cli/fixtures/async-test-throw.js:8:9
+  ...
+not ok 3 test with bad thenable
+  ---
+  message: "Promise rejected during \"test with bad thenable\": boo"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: boo
+        at /qunit/test/cli/fixtures/async-test-throw.js:20:13
+  ...
+not ok 4 hooks with bad thenable > example
+  ---
+  message: "Promise rejected before \"example\": global brocoli"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: global brocoli
+        at /qunit/test/cli/fixtures/async-test-throw.js:29:13
+  ...
+  ---
+  message: "Promise rejected before \"example\": banana"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: banana
+        at /qunit/test/cli/fixtures/async-test-throw.js:46:15
+  ...
+  ---
+  message: "Promise rejected after \"example\": apple"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: apple
+        at /qunit/test/cli/fixtures/async-test-throw.js:53:15
+  ...
+  ---
+  message: "Promise rejected after \"example\": global artichoke"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: global artichoke
+        at /qunit/test/cli/fixtures/async-test-throw.js:37:13
+  ...
+1..4
+# pass 0
+# skip 0
+# todo 0
+# fail 4
+
+# exit code: 1
