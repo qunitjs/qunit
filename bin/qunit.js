@@ -10,7 +10,7 @@ const pkg = require('../package.json');
 const description = `Runs tests using the QUnit framework.
 
   Files should be a space-separated list of files, directories, or glob expressions.
-  Defaults to 'test/**/*.js'.
+  Defaults to 'test/**/*.{js,mjs,cjs}'.
 
   For more info on working with QUnit, check out https://qunitjs.com.`;
 
