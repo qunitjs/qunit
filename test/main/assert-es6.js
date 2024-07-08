@@ -64,7 +64,7 @@ QUnit.module('assert [es6]', function () {
           resultInfo.result = !resultInfo.result;
         }
 
-        return original.call(this, resultInfo);
+        return original.call(assert, resultInfo);
       };
     });
 
