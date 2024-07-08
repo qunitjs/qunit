@@ -29,8 +29,7 @@ function getFilesFromArgs (args) {
 
   // Default to files in the test directory
   if (!patterns.length) {
-    // TODO: In QUnit 3.0, change the default to {js,mjs}
-    patterns.push('test/**/*.js');
+    patterns.push('test/**/*.{js,mjs,cjs}');
   }
 
   const files = new Set();
@@ -47,8 +46,7 @@ function getFilesFromArgs (args) {
       files.add(pattern);
     } else {
       if (stat && stat.isDirectory()) {
-        // TODO: In QUnit 3.0, change the default to {js,mjs}
-        pattern = `${pattern}/**/*.js`;
+        pattern = `${pattern}/**/*.{js,mjs,cjs}`;
       }
       const results = glob(pattern, {
         cwd: process.cwd(),

@@ -367,7 +367,7 @@ not ok 1 global failure
   });
 
   QUnit.test('--seed=true generates new random seed', async assert => {
-    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/'];
+    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/first.js', 'test/nested/'];
     const execution = await execute(command);
 
     const actualHarness = execution.snapshot

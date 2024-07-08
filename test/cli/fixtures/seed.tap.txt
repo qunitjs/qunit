@@ -4,12 +4,14 @@
 Running tests with seed: s33d
 TAP version 13
 ok 1 Second > 1
-ok 2 Nested-Test > herp
-ok 3 First > 1
-ok 4 A-Test > derp
-ok 5 Single > has a test
-1..5
-# pass 5
+ok 2 Extension MJS > example
+ok 3 Nested-Test > herp
+ok 4 Extension CJS > example
+ok 5 A-Test > derp
+ok 6 First > 1
+ok 7 Single > has a test
+1..7
+# pass 7
 # skip 0
 # todo 0
 # fail 0
