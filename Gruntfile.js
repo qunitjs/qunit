@@ -127,6 +127,7 @@ module.exports = function (grunt) {
         'test/main/each.js',
         'test/main/HtmlReporter.js',
         'test/main/modules.js',
+        'test/main/legacy.js',
         'test/main/onUncaughtException.js',
         'test/main/promise.js',
         'test/main/setTimeout.js',

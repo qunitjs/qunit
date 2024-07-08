@@ -23,6 +23,7 @@ loadRelativeToScript('../test/main/dump.js');
 loadRelativeToScript('../test/main/each.js');
 loadRelativeToScript('../test/main/HtmlReporter.js');
 // loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
+loadRelativeToScript('../test/main/legacy.js');
 loadRelativeToScript('../test/main/onUncaughtException.js');
 loadRelativeToScript('../test/main/promise.js');
 loadRelativeToScript('../test/main/setTimeout.js');

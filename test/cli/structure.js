@@ -27,7 +27,14 @@ QUnit.module('structure', () => {
       });
     });
 
-    QUnit.test('Gruntfile#test-on-node', assert => {
+    QUnit.test('test/index-es5.html', assert => {
+      const contents = fs.readFileSync(path.join(__dirname, '..', 'index-es5.html'), 'utf8');
+      files.forEach(file => {
+        assert.true(contents.includes(file), file);
+      });
+    });
+
+    QUnit.test('Gruntfile.js#test-on-node', assert => {
       const raw = fs.readFileSync(path.join(__dirname, '..', '..', 'Gruntfile.js'), 'utf8');
       const contents = raw.match(/test-on-node.*?\{.*?\}/s)[0];
 
