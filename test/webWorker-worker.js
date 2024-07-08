@@ -17,6 +17,7 @@ importScripts(
   'main/each.js',
   'main/HtmlReporter.js',
   'main/modules.js',
+  'main/modules-es2018.js',
   'main/legacy.js',
   'main/onUncaughtException.js',
   'main/promise.js',

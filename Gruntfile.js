@@ -127,6 +127,7 @@ module.exports = function (grunt) {
         'test/main/each.js',
         'test/main/HtmlReporter.js',
         'test/main/modules.js',
+        'test/main/modules-es2018.js',
         'test/main/legacy.js',
         'test/main/onUncaughtException.js',
         'test/main/promise.js',
@@ -142,9 +143,7 @@ module.exports = function (grunt) {
         'test/module-todo.js',
 
         'test/node/storage-1.js',
-        'test/node/storage-2.js',
-
-        'test/es2018/async-functions.js'
+        'test/node/storage-2.js'
       ]
     }
   });
