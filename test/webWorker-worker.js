@@ -18,6 +18,7 @@ importScripts(
   'main/HtmlReporter.js',
   'main/modules.js',
   'main/modules-es2018.js',
+  // TODO: 'main/modules-esm.mjs',
   'main/legacy.js',
   'main/onUncaughtException.js',
   'main/promise.js',

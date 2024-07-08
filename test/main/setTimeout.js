@@ -1,12 +1,14 @@
-(function (globalThis) {
+(function () {
+  // eslint-disable-next-line no-undef
+  var global = typeof globalThis !== 'undefined' ? globalThis : window;
   QUnit.module('Support for mocked setTimeout', {
     beforeEach: function () {
-      this.setTimeout = globalThis.setTimeout;
-      globalThis.setTimeout = function () {};
+      this.setTimeout = global.setTimeout;
+      global.setTimeout = function () {};
     },
 
     afterEach: function () {
-      globalThis.setTimeout = this.setTimeout;
+      global.setTimeout = this.setTimeout;
     }
   });
 
@@ -17,6 +19,4 @@
   QUnit.test('test two', function (assert) {
     assert.true(true);
   });
-}((function () {
-  return this;
-}())));
+}());

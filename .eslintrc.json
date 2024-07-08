@@ -120,7 +120,7 @@
       }
     },
     {
-      "files": ["test/mozjs.js"],
+      "files": ["test/mozjs.js", "test/mozjs.mjs"],
       "parserOptions": {
         "ecmaVersion": 6
       },
@@ -141,7 +141,7 @@
       }
     },
     {
-      "files": ["test/main/*-es2018.js"],
+      "files": ["test/main/*-es2018.js", "test/main/*-esm.mjs"],
       "env": {
         "es2018": true
       },
@@ -153,7 +153,7 @@
       }
     },
     {
-      "files": ["test/benchmark/**", "test/es2018/**"],
+      "files": ["test/benchmark/**"],
       "env": {
         "es2017": true
       },

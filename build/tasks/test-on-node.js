@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
     const totals = { files: 0, failed: 0 };
     for (const file of this.data) {
-      totals.failed += await new Promise(resolve => runQUnit(file, resolve));
+      totals.failed += await runQUnit(file);
       totals.files++;
     }
 
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
     return require(path);
   }
 
-  function runQUnit (file, runEnd) {
+  async function runQUnit (file) {
     // Resolve current QUnit path and remove it from the require cache
     // to avoid stacking the QUnit logs.
     let QUnit = requireFresh('../../qunit/qunit.js');
@@ -37,9 +37,10 @@ module.exports = function (grunt) {
     global.QUnit = QUnit;
 
     QUnit.config.autostart = false;
-    requireFresh('../../' + file);
-    registerEvents(QUnit, file, runEnd);
+    await import('../../' + file);
+    const runEnd = new Promise(resolve => registerEvents(QUnit, file, resolve));
     QUnit.start();
+    await runEnd;
   }
 
   function registerEvents (QUnit, fileName, callback) {

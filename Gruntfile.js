@@ -128,6 +128,7 @@ module.exports = function (grunt) {
         'test/main/HtmlReporter.js',
         'test/main/modules.js',
         'test/main/modules-es2018.js',
+        'test/main/modules-esm.mjs',
         'test/main/legacy.js',
         'test/main/onUncaughtException.js',
         'test/main/promise.js',

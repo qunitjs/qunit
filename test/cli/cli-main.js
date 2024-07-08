@@ -55,22 +55,6 @@ ok 3 config
   });
 
   // TODO: Move to /test/cli/fixtures/
-  QUnit.test('run ESM test suite with import statement', async assert => {
-    const command = ['qunit', '../../es2018/esm.mjs'];
-    const execution = await execute(command);
-
-    assert.equal(execution.code, 0);
-    assert.equal(execution.stderr, '');
-    assert.equal(execution.stdout, `TAP version 13
-ok 1 ESM test suite > sum()
-1..1
-# pass 1
-# skip 0
-# todo 0
-# fail 0`);
-  });
-
-  // TODO: Move to /test/cli/fixtures/
   QUnit.test('normal trace with native source map', async assert => {
     const command = ['qunit', 'sourcemap/source.js'];
     const execution = await execute(command);

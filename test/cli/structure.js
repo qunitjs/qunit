@@ -7,16 +7,16 @@ const glob = require('tiny-glob/sync');
 // tests, such as checking for fixture files that aren't used or
 // missing from one of the test targets.
 QUnit.module('structure', () => {
-  QUnit.module('test/main/*.js', () => {
+  QUnit.module('test/main/', () => {
     const files = fs.readdirSync(path.join(__dirname, '..', 'main'))
       .map(file => `main/${file}`);
 
     QUnit.test('files', assert => {
       assert.true(files.length > 5, 'found files');
       assert.deepEqual(
-        files.filter(file => file.endsWith('.js')),
+        files.filter(file => file.endsWith('.js') || file.endsWith('.mjs')),
         files,
-        'js files'
+        'JS files only'
       );
     });
 
@@ -43,8 +43,15 @@ QUnit.module('structure', () => {
       });
     });
 
-    QUnit.test('test/mozjs', assert => {
+    QUnit.test('test/mozjs.js', assert => {
       const contents = fs.readFileSync(path.join(__dirname, '..', 'mozjs.js'), 'utf8');
+      files.forEach(file => {
+        assert.true(contents.includes(file), file);
+      });
+    });
+
+    QUnit.test('test/mozjs.mjs', assert => {
+      const contents = fs.readFileSync(path.join(__dirname, '..', 'mozjs.mjs'), 'utf8');
       files.forEach(file => {
         assert.true(contents.includes(file), file);
       });

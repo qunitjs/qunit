@@ -106,8 +106,10 @@ jobs:
           sudo apt-fast install -y libmozjs-68-dev
       - run: npm ci
       - run: npm run build
-      - name: Tests
+      - name: Test mozjs.js
         run: js68 test/mozjs.js
+      - name: Test mozjs.mjs
+        run: js68 -m test/mozjs.mjs
 
   # To reproduce SpiderMonkey 102 builds locally:
   #
@@ -142,8 +144,10 @@ jobs:
           sudo apt-get install -y libmozjs-102-dev
       - run: npm ci
       - run: npm run build
-      - name: Tests
+      - name: Test mozjs.js
         run: js102 test/mozjs.js
+      - name: Test mozjs.mjs
+        run: js102 -m test/mozjs.mjs
 
   # To reproduce SpiderMonkey 115 builds locally:
   #
@@ -178,5 +182,7 @@ jobs:
           sudo apt-get install -y libmozjs-115-dev
       - run: npm ci
       - run: npm run build
-      - name: Tests
+      - name: Test mozjs.js
         run: js115 test/mozjs.js
+      - name: Test mozjs.mjs
+        run: js115 -m test/mozjs.mjs

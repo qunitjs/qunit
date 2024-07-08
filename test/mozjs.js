@@ -24,6 +24,7 @@ loadRelativeToScript('../test/main/each.js');
 loadRelativeToScript('../test/main/HtmlReporter.js');
 // loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
 loadRelativeToScript('../test/main/modules-es2018.js');
+// import('../test/main/modules-esm.mjs').then(…); // Covered by mozjs.mjs
 loadRelativeToScript('../test/main/legacy.js');
 loadRelativeToScript('../test/main/onUncaughtException.js');
 loadRelativeToScript('../test/main/promise.js');
