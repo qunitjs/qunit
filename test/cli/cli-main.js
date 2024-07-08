@@ -175,7 +175,7 @@ Bail out! Error: No tests matched the filter "no matches".
   });
 
   QUnit.test('--seed=true generates new random seed', async assert => {
-    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/'];
+    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/first.js', 'test/nested/'];
     const execution = await execute(command);
 
     const actualHarness = execution.snapshot
