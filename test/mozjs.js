@@ -13,8 +13,8 @@ QUnit.on('runEnd', (suiteEnd) => {
 
 // Sync with test/index.html
 loadRelativeToScript('../test/main/assert.js');
+loadRelativeToScript('../test/main/assert-es6.js');
 loadRelativeToScript('../test/main/assert-step.js');
-loadRelativeToScript('../test/main/assert-throws-es6.js');
 // loadRelativeToScript( "../test/main/assert-timeout.js" ); // Requires setTimeout
 // loadRelativeToScript( "../test/main/async.js" ); // Requires setTimeout
 loadRelativeToScript('../test/main/deepEqual.js');

@@ -1,4 +1,4 @@
-QUnit.module('assert.throws [es6]', function () {
+QUnit.module('assert [es6]', function () {
   function CustomError (message) {
     this.message = message;
   }
@@ -18,6 +18,15 @@ QUnit.module('assert.throws [es6]', function () {
     );
   });
 
+  QUnit.test('rejects [matcher arrow function]', function (assert) {
+    assert.rejects(
+      Promise.reject(new CustomError('some error description')),
+      err => {
+        return err instanceof CustomError && /description/.test(err);
+      }
+    );
+  });
+
   QUnit.test('throws [matcher Error subclass]', function (assert) {
     class CustomError extends Error {}
 
@@ -25,6 +34,15 @@ QUnit.module('assert.throws [es6]', function () {
       function () {
         throw new CustomError('foo');
       },
+      CustomError
+    );
+  });
+
+  QUnit.test('rejects [matcher Error subclass]', function (assert) {
+    class CustomError extends Error {}
+
+    assert.rejects(
+      Promise.reject(new CustomError('foo')),
       CustomError
     );
   });
@@ -64,6 +82,18 @@ QUnit.module('assert.throws [es6]', function () {
       );
     });
 
+    QUnit.test('rejects [matcher arrow fn returns false]', function (assert) {
+      this.expectedFailure = {
+        actual: 'Error: foo',
+        expected: /^null$/
+      };
+
+      assert.rejects(
+        Promise.reject(new Error('foo')),
+        () => false
+      );
+    });
+
     QUnit.test('throws [graceful failure when class given as matcher]', function (assert) {
       // Avoid uncaught "Died on test" and instead report it
       // gracefully as an assertion failure
@@ -81,6 +111,19 @@ QUnit.module('assert.throws [es6]', function () {
         () => {
           throw new Error('foo');
         },
+        CustomError
+      );
+    });
+
+    QUnit.test('rejects [graceful failure when class given as matcher]', function (assert) {
+      this.expectedFailure = {
+        actual: 'Error: foo',
+        expected: /^TypeError: .*[Cc]lass constructors? .*\bnew/
+      };
+
+      class CustomError extends Error {}
+      assert.rejects(
+        Promise.reject(new Error('foo')),
         CustomError
       );
     });

@@ -117,8 +117,8 @@ module.exports = function (grunt) {
 
         // Sync with test/index.html
         'test/main/assert.js',
+        'test/main/assert-es6.js',
         'test/main/assert-step.js',
-        'test/main/assert-throws-es6.js',
         'test/main/assert-timeout.js',
         'test/main/async.js',
         'test/main/deepEqual.js',
@@ -143,8 +143,7 @@ module.exports = function (grunt) {
         'test/node/storage-1.js',
         'test/node/storage-2.js',
 
-        'test/es2018/async-functions.js',
-        'test/es2018/rejects.js'
+        'test/es2018/async-functions.js'
       ]
     }
   });
