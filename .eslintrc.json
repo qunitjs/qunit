@@ -129,6 +129,18 @@
       }
     },
     {
+      "files": ["test/main/*-es6.js"],
+      "env": {
+        "es6": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 6
+      },
+      "rules": {
+        "compat/compat": "off"
+      }
+    },
+    {
       "files": ["test/benchmark/**", "test/es2018/**"],
       "env": {
         "es2017": true

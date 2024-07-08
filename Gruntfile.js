@@ -79,6 +79,7 @@ module.exports = function (grunt) {
             'test/events-filters.html',
             'test/events-in-test.html',
             'test/headless.html',
+            'test/index-es5.html',
             'test/logs.html',
             'test/module-skip.html',
             'test/module-todo.html',
@@ -117,6 +118,7 @@ module.exports = function (grunt) {
         // Sync with test/index.html
         'test/main/assert.js',
         'test/main/assert-step.js',
+        'test/main/assert-throws-es6.js',
         'test/main/assert-timeout.js',
         'test/main/async.js',
         'test/main/deepEqual.js',
@@ -142,8 +144,7 @@ module.exports = function (grunt) {
         'test/node/storage-2.js',
 
         'test/es2018/async-functions.js',
-        'test/es2018/rejects.js',
-        'test/es2018/throws.js'
+        'test/es2018/rejects.js'
       ]
     }
   });

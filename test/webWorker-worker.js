@@ -8,6 +8,7 @@ importScripts(
   // Sync with test/index.html
   'main/assert.js',
   'main/assert-step.js',
+  'main/assert-throws-es6.js',
   'main/assert-timeout.js',
   'main/async.js',
   'main/deepEqual.js',
