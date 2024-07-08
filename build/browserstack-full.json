@@ -40,41 +40,28 @@
       "os_version": "10.0"
     },
     {
+      "os": "android",
+      "os_version": "7.0",
+      "device": "Samsung Galaxy S8",
+      "real_mobile": true
+    },
+    {
       "device": "iPhone 8",
       "real_mobile": true,
       "os": "ios",
       "os_version": "12"
-    }
-  ],
-  "@browsers_disabled": [
-    {
-      "@ref": [
-        "https://github.com/browserstack/browserstack-runner/issues/245",
-        "Android 4, Android 5, Android 6"
-      ]
     },
     {
-      "@ref": [
-        "https://github.com/browserstack/browserstack-runner/issues/226",
-        "Android 7-10",
-        "iOS 13, 14"
-      ]
-    },
-    {
-      "device": "Samsung Galaxy S7",
-      "real_mobile": true,
-      "os": "android",
-      "os_version": "6.0"
-    },
-    {
-      "device": null,
       "os": "ios",
-      "os_version": "13"
+      "os_version": "11.0"
     },
     {
-      "device": null,
       "os": "ios",
-      "os_version": "14"
+      "os_version": "10.3"
+    },
+    {
+      "os": "ios",
+      "os_version": "9.3"
     }
   ]
 }

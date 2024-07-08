@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - .github/workflows/browsers-full.yaml
+      - build/browserstack-full.json
 
 jobs:
   run:

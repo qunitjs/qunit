@@ -95,7 +95,8 @@ extend(QUnit, {
 
   stack: function (offset) {
     offset = (offset || 0) + 2;
-    // Support Safari: Use temp variable to avoid TCO for consistent cross-browser result
+    // Support Safari: Use temp variable to avoid triggering ES6 Proper Tail Calls,
+    // which ensures a consistent cross-browser result.
     // https://bugs.webkit.org/show_bug.cgi?id=276187
     const source = sourceFromStacktrace(offset);
     return source;

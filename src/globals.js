@@ -63,11 +63,7 @@ export const sessionStorage = (function () {
   }
 }());
 
-// Basic fallback for ES6 Map
-// Support: Safari 7; Map is undefined
-// Support: iOS 8; `new Map(iterable)` is not supported
-//
-// Fallback for ES7 Map#keys
+// Fallback for ES6 Map, `new Map(iterable)`, and ES7 Map#keys
 // Support: IE 11; Map#keys is undefined
 export const StringMap = typeof g.Map === 'function' &&
   typeof g.Map.prototype.keys === 'function' &&
