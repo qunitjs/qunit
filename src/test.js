@@ -762,9 +762,15 @@ Test.prototype = {
             internalRecover(test);
           };
           // Note that `promise` is a user-supplied thenable, not per-se a standard Promise.
-          // This means it can be a "bad thenable" where calling then() can already throw.
-          // We must catch this to avoid breaking the ProcessingQueue. Promise.resolve()
-          // normalizes and catches even these internal errors and sends them to reject.
+          // This means it can be a "bad thenable" where calling then() can also throw.
+          // This is not about a rejected Promise or throwing async function.
+          // In those cases, `ret.then(, cb)` will not throw, but inform you via cb(err).
+          // Instead, this is testing a bad Thenable implementation, where then() itself
+          // throws an error. This is not possible with native Promise, but is possible with
+          // custom Promise-compatible libraries.
+          // We must catch this to avoid breaking the ProcessingQueue.
+          // Promise.resolve() normalizes and catches even these internal errors and
+          // sends them to reject.
           Promise.resolve(promise).then(resolve, reject);
         }
       }

@@ -1,0 +1,67 @@
+# command: ["qunit", "hooks-global-throw.js"]
+
+TAP version 13
+not ok 1 global hook throws
+  ---
+  message: Global beforeEach failed on global hook throws: Error: banana
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: banana
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:3:11
+  ...
+  ---
+  message: Global afterEach failed on global hook throws: Error: apple
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: apple
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:17:11
+  ...
+not ok 2 global hook rejects
+  ---
+  message: "Promise rejected before \"global hook rejects\": banana"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: banana
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:5:27
+  ...
+  ---
+  message: "Promise rejected after \"global hook rejects\": apple"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: apple
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:19:27
+  ...
+not ok 3 global hook with bad thenable
+  ---
+  message: "Promise rejected before \"global hook with bad thenable\": global brocoli"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: global brocoli
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:9:15
+  ...
+  ---
+  message: "Promise rejected after \"global hook with bad thenable\": global artichoke"
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+    Error: global artichoke
+        at /qunit/test/cli/fixtures/hooks-global-throw.js:23:15
+  ...
+1..3
+# pass 0
+# skip 0
+# todo 0
+# fail 3
+
+# exit code: 1
