@@ -27,6 +27,10 @@ This test will be listed in the results as a "skipped" test. The callback and th
 
 As a codebase becomes bigger, you may sometimes want to temporarily disable an entire group of tests at once. You can use [`QUnit.module.skip()`](./module.md) to recursively skip all tests in the same module.
 
+## See also
+
+* [`QUnit.test.if( name, condition, callback )`](./test.if.md)
+
 ## Changelog
 
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | The `QUnit.skip()` method was renamed to `QUnit.test.skip()`.<br/>Use of `QUnit.skip()` remains supported as an alias.

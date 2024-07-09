@@ -11,8 +11,9 @@ version_added: "2.16.0"
 
 `QUnit.test.each( name, dataset, callback )`<br>
 `QUnit.test.only.each( name, dataset, callback )`<br>
+`QUnit.test.todo.each( name, dataset, callback )`<br>
 `QUnit.test.skip.each( name, dataset, callback )`<br>
-`QUnit.test.todo.each( name, dataset, callback )`
+`QUnit.test.if.each( name, condition, dataset, callback )`
 
 Add tests using a data provider.
 
@@ -35,7 +36,7 @@ Use this method to add multiple tests that are similar, but with different data 
 
 Each test case is passed one value of your dataset.
 
-The [`only`](./test.only.md), [`skip`](./test.skip.md), and [`todo`](./test.todo.md) variants are also available, as `QUnit.test.only.each`, `QUnit.test.skip.each`, and `QUnit.test.todo.each` respectively.
+The [`only`](./test.only.md), [`todo`](./test.todo.md), [`skip`](./test.skip.md), and [`if`](./test.if.md) variants are also available, as `QUnit.test.only.each`, `QUnit.test.todo.each`, `QUnit.test.skip.each`, and `QUnit.test.if.each` respectively.
 
 ## Examples
 

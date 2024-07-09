@@ -105,7 +105,7 @@ export default function Test (settings) {
   });
 
   if (this.skip) {
-    // Skipped tests will fully ignore any sent callback
+    // Skipped tests will fully ignore (and dereference for garbage collect) any sent callback
     this.callback = function () {};
     this.async = false;
     this.expected = 0;
@@ -970,6 +970,9 @@ extend(test, {
   skip: function (testName) {
     addTest({ testName, skip: true });
   },
+  if: function (testName, condition, callback) {
+    addTest({ testName, callback, skip: !condition });
+  },
   only: function (testName, callback) {
     addOnlyTest({ testName, callback });
   },
@@ -1007,7 +1010,18 @@ test.skip.each = function (testName, dataset) {
     });
   });
 };
-
+test.if.each = function (testName, condition, dataset, callback) {
+  runEach(dataset, (data, testKey) => {
+    addTest({
+      testName: makeEachTestName(testName, testKey),
+      callback,
+      withData: true,
+      stackOffset: 5,
+      skip: !condition,
+      data: condition ? data : undefined
+    });
+  });
+};
 test.only.each = function (testName, dataset, callback) {
   runEach(dataset, (data, testKey) => {
     addOnlyTest({
