@@ -6,7 +6,7 @@ const { execute, concurrentMapKeys } = require('./helpers/execute.js');
 const { readFixtures } = require('./helpers/fixtures.js');
 
 const FIXTURES_DIR = path.join(__dirname, 'fixtures');
-const skipOnWinTest = (process.platform === 'win32' ? 'skip' : 'test');
+const isWindows = (process.platform === 'win32');
 
 QUnit.module('CLI Main', () => {
   QUnit.test.each('fixtures',
@@ -79,16 +79,14 @@ not ok 2 Example > bad
 # exit code: 1`);
   });
 
-  // skip if running in code coverage mode,
-  // as that leads to conflicting maps-on-maps that invalidate this test
-  QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test'](
-    'mapped trace with native source map', async function (assert) {
-      const command = ['qunit', 'sourcemap/source.min.js'];
-      const execution = await execute(command, {
-        env: { NODE_OPTIONS: '--enable-source-maps' }
-      });
+  // Skip in code coverage mode, conflicting maps-on-maps change result
+  QUnit.test.if('trace with native source map', !process.env.NYC_PROCESS_ID, async function (assert) {
+    const command = ['qunit', 'sourcemap/source.min.js'];
+    const execution = await execute(command, {
+      env: { NODE_OPTIONS: '--enable-source-maps' }
+    });
 
-      assert.equal(execution.snapshot, `TAP version 13
+    assert.equal(execution.snapshot, `TAP version 13
 ok 1 Example > good
 not ok 2 Example > bad
   ---
@@ -106,7 +104,7 @@ not ok 2 Example > bad
 # fail 1
 
 # exit code: 1`);
-    });
+  });
 
   // TODO: Move to /test/cli/fixtures/
   QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
@@ -152,7 +150,7 @@ ok 1 test-object > example test
   // https://github.com/nodejs/node/issues/29532
   // Can't trivially quote since that breaks Linux which would interpret quotes
   // as literals.
-  QUnit[skipOnWinTest]('--filter matches nothing', async assert => {
+  QUnit.test.if('--filter matches nothing', !isWindows, async assert => {
     const command = ['qunit', '--filter', 'no matches', 'test'];
     const execution = await execute(command);
 

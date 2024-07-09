@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* eslint-disable new-cap, no-new */
 // Skip in non-browser environment
-(typeof document !== 'undefined' ? QUnit.module : QUnit.module.skip)('HtmlReporter', {
+QUnit.module.if('HtmlReporter', typeof document !== 'undefined', {
   beforeEach: function () {
     this.normHTML = function (html) {
       var div = document.createElement('div');

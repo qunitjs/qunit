@@ -178,7 +178,7 @@ QUnit.module('CLI Watch', function (hooks) {
   });
 
   // Skip in coverage mode since NYC adds non-default extensions
-  QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test']('default file extensions', async assert => {
+  QUnit.test.if('default file extensions', !process.env.NYC_PROCESS_ID, async assert => {
     fixturify.writeSync(fixturePath, {
       tests: {
         'setup.js': "QUnit.on('runEnd', function() { process.send('runEnd'); });",
@@ -227,7 +227,7 @@ QUnit.module('CLI Watch', function (hooks) {
   });
 
   // Skip in coverage mode since NYC adds non-default extensions
-  QUnit[process.env.NYC_PROCESS_ID ? 'skip' : 'test']('TypeScript file extension', async assert => {
+  QUnit.test.if('TypeScript file extension', !process.env.NYC_PROCESS_ID, async assert => {
     fixturify.writeSync(fixturePath, {
 
       // Simulate what ts-node/register does
