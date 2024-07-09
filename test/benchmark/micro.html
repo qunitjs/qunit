@@ -2,13 +2,16 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Benchmark</title>
+  <title>Micro benchmark</title>
 </head>
 <body>
   <script src="../../node_modules/lodash/lodash.js"></script>
   <script src="../../node_modules/benchmark/benchmark.js"></script>
   <script src="./node_modules/qunit/qunit/qunit.js"></script>
-  <script src="./fixture-equiv.js"></script>
-  <script src="./bench.js"></script>
+  <script src="./micro-fixture.js"></script>
+  <script src="./micro-bench.js"></script>
+  <script>
+  QUnit.config.autostart = false;
+  </script>
 </body>
 </html>

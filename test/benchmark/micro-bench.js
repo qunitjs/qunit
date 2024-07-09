@@ -1,46 +1,39 @@
-/* global require, globalThis, QUnitFixtureEquiv, QUnitBenchInject, QUnit, console */
+/* global globalThis, QUnitFixtureEquiv, QUnit, console, require, process */
 
 const Benchmark = typeof require === 'function' ? require('benchmark') : globalThis.Benchmark;
 const suite = new Benchmark.Suite();
-const inject = typeof QUnitBenchInject === 'function' ? QUnitBenchInject : function () {};
-const equiv = QUnit.equiv;
+const filter = typeof process !== 'undefined' ? process.argv[2] : globalThis.location.search.slice(1);
 
 // Check for correctness first, mainly for the return value,
 // but also for any unexpected exceptions as Benchmark will tolerate
 // uncaught exceptions as being benchmarkable behaviour.
 for (const group of QUnitFixtureEquiv) {
-  if (inject('accept', group) === false) {
-    continue;
-  }
   group.pairs.forEach((pair, i) => {
-    const res = equiv(pair.a, pair.b);
+    const res = QUnit.equiv(pair.a, pair.b);
     if (res !== pair.equal) {
       throw new Error(`Unexpected return value in "${group.name}" at pairs[${i}]\n  Expected: ${pair.equal}\n  Actual: ${res}`);
     }
   });
-  inject('test', group);
 }
 
-if (inject('accept', { name: '' }) !== false) {
+if (!filter) {
   suite.add('QUnit.equiv', function () {
     for (const group of QUnitFixtureEquiv) {
       for (const pair of group.pairs) {
-        equiv(pair.a, pair.b);
+        QUnit.equiv(pair.a, pair.b);
       }
     }
   });
 }
 
 for (const group of QUnitFixtureEquiv) {
-  if (inject('accept', group) === false) {
-    continue;
+  if (!filter || group.name.includes(filter)) {
+    suite.add(`QUnit.equiv (${group.name})`, function () {
+      for (const pair of group.pairs) {
+        QUnit.equiv(pair.a, pair.b);
+      }
+    });
   }
-  inject('add', group, suite);
-  suite.add(`QUnit.equiv (${group.name})`, function () {
-    for (const pair of group.pairs) {
-      equiv(pair.a, pair.b);
-    }
-  });
 }
 
 console.log('Running benchmark...');

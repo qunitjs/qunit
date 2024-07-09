@@ -1,38 +1,47 @@
-# Benchmark for QUnit internals
+# Benchmarks
 
-## Usage
+## Setup
 
 The default is to benchmark the local development version of QUnit.
 
-1. Install QUnit for development and generate the release artefact:
-   * `qunit$ npm ci`
-   * `qunit$ npm run build`
-2. Link benchmark to local artefact.
-   NOTE: Alternatively, you can edit benchmark/package.json
-   and change `file:../..` to something like `2.19.1` to
-   benchmark older versions of QUnit.
-   * `qunit/test/benchmark$ npm install`
-3. Run the benchmark
-   * In Node.js:
-     `qunit/test/benchmark$ node index-node.js`
-   * In a browser:
-     * Start a static web server, e.g. using Python
-       `qunit$ python3 -m http.server 4000`
-       or PHP:
-       `php -S localhost:4000`
-     * Open <http://localhost:4000/test/benchmark/index-browser.html>
-     * Check the console output.
+* Install QUnit for development and generate the release artefact:
+  ```
+  qunit$ npm ci
+  qunit$ npm run build
+  ```
+* Link benchmark to local artefact.
+  ```
+  qunit/test/benchmark$ npm install
+  ```
+  NOTE: To benchmark a previous release of QUnit, you can edit
+  `benchmark/package.json` and change `file:../..` to something like `2.19.1`.
+
+## Micro benchmarks
+
+Run all micro benchmarks in Node.js:
+
+```
+qunit/test/benchmark$ node micro.js
+```
+
+Run a subset of benchmarks in Node.js
+```
+qunit/test/benchmark$ node micro.js 'arrays'
+```
+
+In a browser:
+* Start a static web server, e.g. using Python
+  ```
+  python3 -m http.server 4000
+  ```
+  or PHP:
+  ```
+  php -S localhost:4000
+  ```
+* Open <http://localhost:4000/test/benchmark/micro.html>
+
+  Or, run a subset only via the query string:
+  <http://localhost:4000/test/benchmark/micro.html?arrays>
+* Check the console output.
 
 Powered by [Benchmark.js](https://benchmarkjs.com/).
-
-### Compare against `fast-deep-equal`
-
-```
-qunit/test/benchmark$ node index-node.js fast-deep-equal
-```
-
-### Run a subset only
-
-```
-qunit/test/benchmark$ node index-node.js fast-deep-equal 'small array'
-```
