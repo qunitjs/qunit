@@ -109,7 +109,12 @@
 
 <p>Modules can be nested inside other modules via a <a href="#module-scope">module scope</a>. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grandparent &gt; Parent &gt; Child &gt; my test”.</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>, <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code>, and <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> methods are aliases for <code class="language-plaintext highlighter-rouge">QUnit.module()</code> that apply the behaviour of <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only()</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a> or <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a> to all a module’s tests at once.</p>
+<p><code class="language-plaintext highlighter-rouge">QUnit.module.only( name, … )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.module.todo( name, … )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.module.skip( name, … )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.module.if( name, condition, … )</code></p>
+
+<p>These methods are aliases for <code class="language-plaintext highlighter-rouge">QUnit.module()</code> that apply the behaviour of <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only()</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a> or <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a> to all a module’s tests at once.</p>
 
 <p><span id="nested-scope"></span><span id="nested-module-scope"></span></p>
 
@@ -243,20 +248,24 @@
 <table>
   <tbody>
     <tr>
+      <td>UNRELEASED</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code> alias.</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.4.0">QUnit 2.4</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>, <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code>, and <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> aliases were introduced.</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>, <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code>, and <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> aliases.</td>
     </tr>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.0.0">QUnit 2.0</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">after</code> options were introduced.</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">after</code> options.</td>
     </tr>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.20.0">QUnit 1.20</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">scope</code> feature was introduced.</td>
+      <td>Introduce <code class="language-plaintext highlighter-rouge">scope</code> feature.</td>
     </tr>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">QUnit 1.16</a></td>
-      <td>The <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> options were introduced.<br />The <code class="language-plaintext highlighter-rouge">setup</code> and <code class="language-plaintext highlighter-rouge">teardown</code> options were deprecated in QUnit 1.16 and removed in QUnit 2.0.</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> options.<br />The <code class="language-plaintext highlighter-rouge">setup</code> and <code class="language-plaintext highlighter-rouge">teardown</code> options were deprecated in QUnit 1.16 and removed in QUnit 2.0.</td>
     </tr>
   </tbody>
 </table>
@@ -582,6 +591,8 @@ Called on "X", instead of expected "Y".
 		<a href="/api/QUnit/test/">QUnit.test()</a>
 	</li><li class="sidebar-item">
 		<a href="/api/QUnit/test.each/">QUnit.test.each()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/QUnit/test.if/">QUnit.test.if()</a>
 	</li><li class="sidebar-item">
 		<a href="/api/QUnit/test.only/">QUnit.test.only()</a>
 	</li><li class="sidebar-item">

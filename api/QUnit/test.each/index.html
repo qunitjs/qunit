@@ -77,8 +77,9 @@
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.each( name, dataset, callback )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.test.only.each( name, dataset, callback )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.test.todo.each( name, dataset, callback )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each( name, dataset, callback )</code><br />
-<code class="language-plaintext highlighter-rouge">QUnit.test.todo.each( name, dataset, callback )</code></p>
+<code class="language-plaintext highlighter-rouge">QUnit.test.if.each( name, condition, dataset, callback )</code></p>
 
 <p>Add tests using a data provider.</p>
 
@@ -132,7 +133,7 @@
 
 <p>Each test case is passed one value of your dataset.</p>
 
-<p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, and <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code> respectively.</p>
+<p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, and <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">if</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.if.each</code> respectively.</p>
 
 <h2 id="examples">Examples</h2>
 
@@ -218,6 +219,8 @@
 		<a href="/api/QUnit/test/">QUnit.test()</a>
 	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/api/QUnit/test.each/">QUnit.test.each()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/QUnit/test.if/">QUnit.test.if()</a>
 	</li><li class="sidebar-item">
 		<a href="/api/QUnit/test.only/">QUnit.test.only()</a>
 	</li><li class="sidebar-item">
