@@ -496,6 +496,7 @@ export default class HtmlReporter {
 
       // Optimization: Defer rendering options until focussed.
       // https://github.com/qunitjs/qunit/issues/1664
+      // To test or benchmark, use /demos/q4000-qunit.html.
       searchInput();
       dropDown.style.display = 'block';
 
@@ -525,6 +526,8 @@ export default class HtmlReporter {
      */
     function filterModules (searchText) {
       let results;
+      // Optimization: Limit number of results to ensure UI is responsive.
+      // To benchmark typeahead responsiveness, use /demos/q4000-qunit.html.
       if (searchText === '') {
         // Improve on-boarding experience by having an immediate display of
         // module names, indicating how the interface works. This also makes

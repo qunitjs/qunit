@@ -105,7 +105,7 @@ module.exports = function (grunt) {
             'test/urlparams-testId.html',
             'test/webWorker.html',
 
-            'test/reporter-html/dropdown-many.html',
+            'demos/q4000-qunit.html',
             'test/reporter-html/window-onerror-preexisting-handler.html',
             'test/reporter-html/window-onerror.html'
 

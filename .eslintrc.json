@@ -238,9 +238,9 @@
     {
       "files": ["**/*.md/**"],
       "parserOptions": {
-          "ecmaFeatures": {
-              "impliedStrict": true
-          }
+        "ecmaFeatures": {
+          "impliedStrict": true
+        }
       },
       "rules": {
         // https://github.com/eslint/eslint/issues/15732
@@ -261,9 +261,7 @@
       ],
       "parser": "eslint-plugin-json-es",
       "rules": {
-        // https://github.com/zeitport/eslint-plugin-json-es/issues/35
-        // "indent": ["error", 2]
-        "indent": "off"
+        "indent": ["error", 2]
       }
     }
   ]
