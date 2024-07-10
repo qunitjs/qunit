@@ -249,6 +249,7 @@ Demos:
 * [ColorFactory test page](https://krinkle.github.io/node-colorfactory/test/) ([Source code](https://github.com/Krinkle/node-colorfactory/blob/cd79287c09eb0e7118eb4a45811786c65d0640b7/test/testinit.js#L25-L43))
 * [Fabric.js test page](http://fabricjs.com/test/visual/?coverage) ([Source code](https://github.com/fabricjs/fabric.js/blob/v6.0.0-rc5/test/lib/visualCallbackQunit.js#L41))
 
+The test ID can be obtained from [QUnit.config.current](./api/config/current.md).
 
 ```js
 QUnit.hooks.afterEach(function () {
