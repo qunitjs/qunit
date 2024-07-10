@@ -33,6 +33,7 @@ QUnit.on('runStart', runStart => {
   console.log(`Test plan: ${runStart.testCounts.total}`);
 });
 ```
+
 ## The `suiteStart` event
 
 The `suiteStart` event indicates the beginning of a module. It is eventually be followed by a corresponding `suiteEnd` event.
@@ -147,5 +148,21 @@ QUnit.on('runEnd', runEnd => {
   console.log(`Skipped: ${runEnd.skipped}`);
   console.log(`Todo: ${runEnd.todo}`);
   console.log(`Total: ${runEnd.total}`);
+});
+```
+
+## The `error` event
+
+*Version added: [QUnit 2.17.0](https://github.com/qunitjs/qunit/releases/tag/2.17.0)*.
+
+The `error` event notifies plugins of uncaught global errors during a test run.
+
+See also [QUnit.onUncaughtException()](../extension/QUnit.onUncaughtException.md) which is where you can report your own uncaught errors.
+
+| `Error|any` | `error`
+
+```js
+QUnit.on('error', error => {
+  console.error(error);
 });
 ```

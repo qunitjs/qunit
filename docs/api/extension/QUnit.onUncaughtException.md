@@ -28,6 +28,10 @@ In general, you should not use this method and instead throw an error. QUnit aut
 * QUnit CLI: `process.on('unhandledRejection', …)`
 * QUnit CLI: `process.on('uncaughtException', …)`
 
+When QUnit receives report of a global error strictly inside a test (or one of its module hooks), the exception is reported to the currently running test as extra failed assertion, and thus the test will be marked as failed. This means that uncaught exceptions (such as calling an undefined function) during [QUnit.test.todo](../QUnit/test.todo.md) callback count as expected failure and **not** fail the test run.
+
+Errors received before tests (e.g. early event callbacks), internally between tests, or around the [runEnd event](../callbacks/QUnit.on.md#the-runend-event) (if the process is still alive for some reason), are emitted as an ["error" event](../callbacks/QUnit.on.md#the-error-event) to reporters.
+
 ## Examples
 
 ```js
