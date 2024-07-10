@@ -353,6 +353,8 @@ Test JavaScript code in a real browser with QUnit.
   <li><a href="http://fabricjs.com/test/visual/?coverage">Fabric.js test page</a> (<a href="https://github.com/fabricjs/fabric.js/blob/v6.0.0-rc5/test/lib/visualCallbackQunit.js#L41">Source code</a>)</li>
 </ul>
 
+<p>The test ID can be obtained from <a href="/api/config/current/">QUnit.config.current</a>.</p>
+
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">#qunit-test-output-</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">testId</span><span class="p">;</span>
 <span class="p">});</span>
