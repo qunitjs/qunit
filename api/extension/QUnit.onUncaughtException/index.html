@@ -105,6 +105,10 @@
   <li>QUnit CLI: <code class="language-plaintext highlighter-rouge">process.on('uncaughtException', …)</code></li>
 </ul>
 
+<p>When QUnit receives report of a global error strictly inside a test (or one of its module hooks), the exception is reported to the currently running test as extra failed assertion, and thus the test will be marked as failed. This means that uncaught exceptions (such as calling an undefined function) during <a href="/api/QUnit/test.todo/">QUnit.test.todo</a> callback count as expected failure and <strong>not</strong> fail the test run.</p>
+
+<p>Errors received before tests (e.g. early event callbacks), internally between tests, or around the <a href="/api/callbacks/QUnit.on/#the-runend-event">runEnd event</a> (if the process is still alive for some reason), are emitted as an <a href="/api/callbacks/QUnit.on/#the-error-event">“error” event</a> to reporters.</p>
+
 <h2 id="examples">Examples</h2>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Failed to reverse the polarity of the neutron flow</span><span class="dl">'</span><span class="p">);</span>

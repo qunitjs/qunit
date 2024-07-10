@@ -126,6 +126,7 @@
   <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Test plan: </span><span class="p">${</span><span class="nx">runStart</span><span class="p">.</span><span class="nx">testCounts</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
+
 <h2 id="the-suitestart-event">The <code class="language-plaintext highlighter-rouge">suiteStart</code> event</h2>
 
 <p>The <code class="language-plaintext highlighter-rouge">suiteStart</code> event indicates the beginning of a module. It is eventually be followed by a corresponding <code class="language-plaintext highlighter-rouge">suiteEnd</code> event.</p>
@@ -374,6 +375,28 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 <span class="p">});</span>
 </code></pre></div></div>
 
+<h2 id="the-error-event">The <code class="language-plaintext highlighter-rouge">error</code> event</h2>
+
+<p><em>Version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.17.0">QUnit 2.17.0</a></em>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">error</code> event notifies plugins of uncaught global errors during a test run.</p>
+
+<p>See also <a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a> which is where you can report your own uncaught errors.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Error|any</code></td>
+      <td><code class="language-plaintext highlighter-rouge">error</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
 </article>
 </div>
 <aside class="sidebar" role="complementary">
@@ -441,7 +464,7 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#the-runstart-event">The runStart event</a></li><li class="sidebar-item"><a href="#the-suitestart-event">The suiteStart event</a></li><li class="sidebar-item"><a href="#the-suiteend-event">The suiteEnd event</a></li><li class="sidebar-item"><a href="#the-teststart-event">The testStart event</a></li><li class="sidebar-item"><a href="#the-testend-event">The testEnd event</a></li><li class="sidebar-item"><a href="#the-runend-event">The runEnd event</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#the-runstart-event">The runStart event</a></li><li class="sidebar-item"><a href="#the-suitestart-event">The suiteStart event</a></li><li class="sidebar-item"><a href="#the-suiteend-event">The suiteEnd event</a></li><li class="sidebar-item"><a href="#the-teststart-event">The testStart event</a></li><li class="sidebar-item"><a href="#the-testend-event">The testEnd event</a></li><li class="sidebar-item"><a href="#the-runend-event">The runEnd event</a></li><li class="sidebar-item"><a href="#the-error-event">The error event</a></li></ol></div>
 </aside>
 
 </div>
