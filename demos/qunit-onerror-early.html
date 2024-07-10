@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>window-onerror-early</title>
+  <link rel="stylesheet" href="../src/core/qunit.css">
+  <script src="../qunit/qunit.js"></script>
+  <script>
+    QUnit.begin(function () {
+      // eslint-disable-next-line no-undef
+      beginBoom();
+    });
+
+    // eslint-disable-next-line no-undef
+    outerBoom();
+  </script>
+  <script>
+    QUnit.test('example', function (assert) {
+      assert.true(true);
+    });
+  </script>
+</head>
+<body>
+	<div id="qunit"></div>
+</body>
+</html>
