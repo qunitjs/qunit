@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.14.0"
 ---
 
-In browser environments, scrop to the top of the page after the tests are done.
+In browser environments, scroll to the top of the page after the tests are done.
 
 <table>
 <tr>

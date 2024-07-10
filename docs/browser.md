@@ -176,7 +176,7 @@ The "Rerun" link at the end will run that test on its own, skipping all other te
 
 Click anywhere on result to expand the entry, which reveals the message of each assertion.
 
-For failed assertions, the parenthical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.
+For failed assertions, the parenthetical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.
 
 <iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 500px;"></iframe>
 

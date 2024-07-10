@@ -131,7 +131,7 @@ QUnit.test('good example', assert => {
 });
 ```
 
-### Multiple steps verifications in one test
+### Multiple step verifications in one test
 
 The internal buffer of observed steps is automatically reset when calling `verifySteps()`.
 
