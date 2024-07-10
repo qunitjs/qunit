@@ -134,6 +134,7 @@ module.exports = function (grunt) {
         'test/main/promise.js',
         'test/main/setTimeout.js',
         'test/main/stacktrace.js',
+        'test/main/TapReporter.js',
         'test/main/test.js',
         'test/main/utilities.js',
 

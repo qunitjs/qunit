@@ -19,6 +19,7 @@ import '../test/main/onUncaughtException.js';
 import '../test/main/promise.js';
 import '../test/main/setTimeout.js';
 import '../test/main/stacktrace.js';
+import '../test/main/TapReporter.js';
 import '../test/main/test.js';
 import '../test/main/utilities.js';
 

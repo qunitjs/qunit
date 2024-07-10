@@ -24,6 +24,7 @@ importScripts(
   'main/promise.js',
   'main/setTimeout.js',
   'main/stacktrace.js',
+  'main/TapReporter.js',
   'main/test.js',
   'main/utilities.js'
 );
