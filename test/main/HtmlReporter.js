@@ -139,6 +139,42 @@ QUnit.test('testresult-display [testStart]', function (assert) {
   );
 });
 
+QUnit.test.each('testresult-display [runEnd]', {
+  '3ms': [3, '0.003 seconds'],
+  '98ms': [98, '0.1 seconds'],
+  '149ms': [149, '0.1 seconds'],
+  '151ms': [151, '0.2 seconds'],
+  // Support IE11: Number.toPrecision(0.850) is "0.9" in IE11 instead of "0.8"
+  // like modern browsers. Test 849ms instead.
+  '849ms': [849, '0.8 seconds'],
+  '940ms': [940, '0.9 seconds'],
+  '960ms': [960, '1 second'],
+  '1010ms': [1010, '1 second'],
+  '1090ms': [1090, '1 second'],
+  '1590ms': [1590, '2 seconds']
+}, function (assert, data) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_mixed_run_half();
+  this.MockQUnit.emit('runEnd', {
+    testCounts: { total: 5, passed: 4, failed: 0, skipped: 1, todo: 0 },
+    status: 'passed',
+    runtime: data[0]
+  });
+
+  var display = element.querySelector('#qunit-testresult-display');
+  assert.equal(
+    display.textContent,
+    '5 tests completed in ' + data[1] + '.4 passed, 1 skipped, 0 failed, and 0 todo.',
+    'display text'
+  );
+});
+
 QUnit.test('test-output trace', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {

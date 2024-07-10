@@ -723,12 +723,12 @@ export default class HtmlReporter {
 
   onRunEnd (runEnd) {
     function msToSec (milliseconds) {
-      if (milliseconds < 1000) {
-        // Will return e.g. "0.2", "0.03" or "0.004"
-        return (milliseconds / 1000).toPrecision(1) + ' seconds';
-      }
-      const sec = Math.ceil(milliseconds / 1000);
-      return sec + (sec === 1 ? ' second' : ' seconds');
+      // Will return a whole number of seconds,
+      // or e.g. "0.2", "0.03" or "0.004".
+      const sec = (milliseconds > 1000)
+        ? ('' + Math.round(milliseconds / 1000))
+        : (milliseconds / 1000).toPrecision(1);
+      return sec + (sec === '1' ? ' second' : ' seconds');
     }
 
     const abortButton = this.element.querySelector('#qunit-abort-tests-button');
@@ -742,20 +742,17 @@ export default class HtmlReporter {
       'and <span class="todo">', runEnd.testCounts.todo, '</span> todo.',
       this.getRerunFailedHtml(this.stats.failedTests)
     ].join('');
-    let test;
-    let assertLi;
-    let assertList;
 
     // Update remaining tests to aborted
     if (abortButton && abortButton.disabled) {
       html = 'Tests aborted after ' + msToSec(runEnd.runtime) + '.';
 
       for (let i = 0; i < this.elementTests.children.length; i++) {
-        test = this.elementTests.children[i];
+        const test = this.elementTests.children[i];
         if (test.className === '' || test.className === 'running') {
           test.className = 'aborted';
-          assertList = test.getElementsByTagName('ol')[0];
-          assertLi = document.createElement('li');
+          const assertList = test.getElementsByTagName('ol')[0];
+          const assertLi = document.createElement('li');
           assertLi.className = 'fail';
           assertLi.textContent = 'Test aborted.';
           assertList.appendChild(assertLi);
