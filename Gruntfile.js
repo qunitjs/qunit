@@ -82,6 +82,7 @@ module.exports = function (grunt) {
             'test/events-in-test.html',
             'test/headless.html',
             'test/index-es5.html',
+            'test/index-xhtml.xhtml',
             'test/logs.html',
             'test/module-skip.html',
             'test/module-todo.html',
@@ -106,8 +107,7 @@ module.exports = function (grunt) {
 
             'test/reporter-html/dropdown-many.html',
             'test/reporter-html/window-onerror-preexisting-handler.html',
-            'test/reporter-html/window-onerror.html',
-            'test/reporter-html/xhtml-escape-details-source.xhtml'
+            'test/reporter-html/window-onerror.html'
 
           ].map(file => `http://localhost:${connectPort}/${file}`)
         }

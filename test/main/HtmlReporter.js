@@ -259,7 +259,8 @@ QUnit.test('hidepassed', function (assert) {
 
   // Toolbar
   var node = element.querySelector('#qunit-urlconfig-hidepassed');
-  assert.strictEqual(node.nodeName, 'INPUT');
+  // Account for lowercase/case-sensitive node name in XHTML
+  assert.strictEqual(node.nodeName.toUpperCase(), 'INPUT');
   assert.strictEqual(node.checked, true);
 });
 
@@ -295,11 +296,11 @@ QUnit.test('urlConfig', function (assert) {
 
   var node = element.querySelector('.qunit-url-config');
   assert.strictEqual(node.innerHTML, this.normHTML(
-    '<label for="qunit-urlconfig-xid" title=""><input id="qunit-urlconfig-xid" name="xid" type="checkbox" title="">xid</label>' +
-      '<label for="qunit-urlconfig-xmulti" title="Escaped &quot;><i>"><input id="qunit-urlconfig-xmulti" name="xmulti" type="checkbox" title="Escaped &quot;><i>">Multi</label>' +
+    '<label for="qunit-urlconfig-xid" title=""><input id="qunit-urlconfig-xid" name="xid" type="checkbox" title=""/>xid</label>' +
+      '<label for="qunit-urlconfig-xmulti" title="Escaped &quot;&gt;&lt;i&gt;"><input id="qunit-urlconfig-xmulti" name="xmulti" type="checkbox" title="Escaped &quot;&gt;&lt;i&gt;"/>Multi</label>' +
       '<label for="qunit-urlconfig-xmenu" title="My tooltip">Menu: <select id="qunit-urlconfig-xmenu" name="xmenu" title="My tooltip"><option></option><option value="a">a</option><option value="b">b</option></select></label>' +
       '<label for="qunit-urlconfig-xmenulabel" title="">Menu: <select id="qunit-urlconfig-xmenulabel" name="xmenulabel" title=""><option></option><option value="a">AA</option><option value="bbb">B</option></select></label>' +
-      '<label for="qunit-urlconfig-altertitle" title=""><input id="qunit-urlconfig-altertitle" name="altertitle" type="checkbox" title="">altertitle</label>',
+      '<label for="qunit-urlconfig-altertitle" title=""><input id="qunit-urlconfig-altertitle" name="altertitle" type="checkbox" title=""/>altertitle</label>',
     'qunit-url-config HTML'
   ));
 });
@@ -317,7 +318,7 @@ QUnit.test('filter', function (assert) {
 
   // Toolbar
   var node = element.querySelector('#qunit-filter-input');
-  assert.strictEqual(node.nodeName, 'INPUT');
+  assert.strictEqual(node.nodeName.toUpperCase(), 'INPUT');
   assert.strictEqual(node.value, '!/Foo|bar/');
 });
 
@@ -333,6 +334,15 @@ QUnit.test('module selector', function (assert) {
 
   var node = element.querySelector('#qunit-modulefilter-search');
   assert.strictEqual(node.autocomplete, 'off', 'disables autocomplete');
+});
+
+QUnit.test('test name with a <"> special char', function (assert) {
+  // This is a meta-test for test/index-xhtml.xhtml
+  // Regression for:
+  // > XML Parsing Error: not well-formed
+  // > Uncaught DOMException: An invalid or illegal string was specified
+  // https://github.com/qunitjs/qunit/pull/1341
+  assert.true(true);
 });
 
 QUnit.test('overall escaping', function (assert) {

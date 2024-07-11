@@ -10,6 +10,14 @@ const { loadConfigFile } = require('rollup/dist/loadConfigFile.js');
 const { preprocess } = require('./dist-replace.js');
 
 const server = http.createServer((req, res) => {
+  const MIME_MAP = {
+    '.txt': 'text/plain; charset=UTF-8',
+    '.css': 'text/css; charset=UTF-8',
+    '.html': 'text/html',
+    '.xhtml': 'application/xhtml+xml',
+    '.js': 'text/javascript; charset=UTF-8',
+    '.mjs': 'text/javascript; charset=UTF-8'
+  };
   try {
     const requestedPath = path.join(
       process.cwd(),
@@ -21,6 +29,7 @@ const server = http.createServer((req, res) => {
       path.normalize(new URL(req.url, 'file:').pathname)
     );
     if (fs.existsSync(requestedPath)) {
+      res.setHeader('Content-Type', MIME_MAP[path.extname(requestedPath)] || MIME_MAP['.txt']);
       return res.end(fs.readFileSync(requestedPath));
     }
     res.statusCode = 404;

@@ -1,4 +1,11 @@
 QUnit.module('test', function () {
+  function normHTML (html) {
+    var div = document.createElement('div');
+    // Normalize to account for HTML5/XHTML differences, and cross-browser differences
+    div.innerHTML = html;
+    return div.innerHTML;
+  }
+
   QUnit.test('read and change assert.expect() count', function (assert) {
     assert.expect(2);
     assert.true(true);
@@ -10,145 +17,84 @@ QUnit.module('test', function () {
 
   QUnit.module.if('fixture management', typeof document !== 'undefined', function (hooks) {
     /* global document */
-    var failure = false;
-    var values = [
-      // initial value (see unshift below)
-      // initial value (see unshift below)
-      '<b>ar</b>',
-      '<p>bc</p>',
-      undefined
-    ];
-    var originalValue;
+    var originalFixture;
+    var originalOuterHTML;
+    var customFixtureNode;
+    var nextFixtureConfig;
+    var fixture;
 
     hooks.before(function () {
-      originalValue = QUnit.config.fixture;
-      values.unshift(originalValue);
-      values.unshift(originalValue);
+      originalFixture = QUnit.config.fixture;
+      originalOuterHTML = originalFixture.outerHTML;
 
-      var customFixtureNode = document.createElement('span');
+      customFixtureNode = document.createElement('span');
       customFixtureNode.setAttribute('id', 'qunit-fixture');
       customFixtureNode.setAttribute('data-baz', 'huzzah!');
-      values.push(customFixtureNode);
     });
 
-    hooks.beforeEach(function (assert) {
-      assert.fixtureEquals = function fixtureEquals (options) {
-        var expectedTagName = options.tagName || 'div';
-        var expectedAttributes = options.attributes || {};
-        var expectedContent = options.content || '';
-
-        var element = document.getElementById('qunit-fixture');
-
-        this.pushResult({
-          result: element.tagName === expectedTagName.toUpperCase(),
-          actual: element.tagName.toLowerCase(),
-          expected: expectedTagName,
-          message: 'tagName'
-        });
-
-        var actualAttributes = {};
-
-        for (var i = 0, l = element.attributes.length; i < l; i++) {
-          actualAttributes[element.attributes[i].name] = element.attributes[i].value;
-        }
-
-        this.deepEqual(actualAttributes, expectedAttributes, 'attributes');
-        this.strictEqual(element.innerHTML, expectedContent, 'contents');
-      };
-
-      assert.hasFailingAssertions = function () {
-        for (var i = 0; i < this.test.assertions.length; i++) {
-          if (!this.test.assertions[i].result) {
-            return true;
-          }
-        }
-
-        return false;
-      };
+    hooks.beforeEach(function () {
+      fixture = document.getElementById('qunit-fixture');
     });
 
-    // Set QUnit.config.fixture for the next test, propagating failures to recover the sequence
-    hooks.afterEach(function (assert) {
-      failure = failure || assert.hasFailingAssertions();
-      if (failure) {
-        assert.true(false, 'prior failure');
-        QUnit.config.fixture = originalValue;
-      } else {
-        QUnit.config.fixture = values.shift();
-      }
+    hooks.afterEach(function () {
+      QUnit.config.fixture = nextFixtureConfig;
+      nextFixtureConfig = null;
     });
 
-    QUnit.test('setup', function (assert) {
-      assert.equal(values.length, 6, 'proper sequence');
+    hooks.after(function () {
+      QUnit.config.fixture = originalFixture;
+    });
+
+    QUnit.test('default [change children]', function (assert) {
+      assert.strictEqual(fixture.outerHTML, originalOuterHTML, 'reset children');
+
+      // setup for for next test
+      fixture.innerHTML = 'foo';
+      nextFixtureConfig = originalFixture;
+    });
+
+    QUnit.test('default [change attributes]', function (assert) {
+      assert.strictEqual(fixture.outerHTML, originalOuterHTML, 'reset children');
 
       // setup for next test
-      document.getElementById('qunit-fixture').innerHTML = 'foo';
+      fixture.setAttribute('data-foo', 'blah');
+      nextFixtureConfig = originalFixture;
     });
 
-    QUnit.test('automatically reset', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'div',
-        attributes: { id: 'qunit-fixture' },
-        content: originalValue.innerHTML
-      });
-      assert.equal(values.length, 5, 'proper sequence');
+    QUnit.test('default [reset attributes]', function (assert) {
+      assert.equal(fixture.outerHTML, originalOuterHTML, 'reset attributes');
+
+      nextFixtureConfig = '<b>apple</b>';
+    });
+
+    QUnit.test('string [set content]', function (assert) {
+      assert.equal(fixture.outerHTML, normHTML('<div id="qunit-fixture"><b>apple</b></div>'), 'set content');
 
       // setup for next test
-      document.getElementById('qunit-fixture').setAttribute('data-foo', 'blah');
+      fixture.setAttribute('data-foo', 'blah');
+      nextFixtureConfig = '<p>banana</p>';
     });
 
-    QUnit.test('automatically reset after attribute value mutation', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'div',
-        attributes: { id: 'qunit-fixture' },
-        content: originalValue.innerHTML
-      });
-      assert.equal(values.length, 4, 'proper sequence');
-    });
-
-    QUnit.test('user-specified string', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'div',
-        attributes: { id: 'qunit-fixture' },
-        content: '<b>ar</b>'
-      });
-      assert.equal(values.length, 3, 'proper sequence');
+    QUnit.test('string [reset parent attributes]', function (assert) {
+      // When fixture specifies HTML string content,
+      // we still clean up parent attributes as well.
+      assert.equal(fixture.outerHTML, normHTML('<div id="qunit-fixture"><p>banana</p></div>'), 'reset attributes');
 
       // setup for next test
-      document.getElementById('qunit-fixture').setAttribute('data-foo', 'blah');
+      fixture.innerHTML = 'baz';
+      nextFixtureConfig = undefined;
     });
 
-    QUnit.test('user-specified string automatically resets attribute value mutation', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'div',
-        attributes: { id: 'qunit-fixture' },
-        content: '<p>bc</p>'
-      });
-      assert.equal(values.length, 2, 'proper sequence');
+    QUnit.test('undefined [preserve]', function (assert) {
+      assert.equal(fixture.outerHTML, normHTML('<div id="qunit-fixture">baz</div>'), 'unchanged');
 
       // setup for next test
-      document.getElementById('qunit-fixture').innerHTML = 'baz';
+      nextFixtureConfig = customFixtureNode;
     });
 
-    QUnit.test('disabled', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'div',
-        attributes: { id: 'qunit-fixture' },
-        content: 'baz'
-      });
-      assert.equal(values.length, 1, 'proper sequence');
-    });
-
-    QUnit.test('user-specified DOM node', function (assert) {
-      assert.fixtureEquals({
-        tagName: 'span',
-        attributes: {
-          id: 'qunit-fixture',
-          'data-baz': 'huzzah!'
-        },
-        content: ''
-      });
-      assert.equal(values.length, 0, 'proper sequence');
+    QUnit.test('Live DOM node', function (assert) {
+      assert.equal(fixture.tagName.toUpperCase(), 'SPAN', 'replace tagName');
+      assert.equal(fixture.getAttribute('data-baz'), 'huzzah!', 'replace attributes');
     });
   });
 

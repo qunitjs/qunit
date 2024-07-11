@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <title>index-xhtml</title>
+  <link rel="stylesheet" href="../src/qunit.css" />
+  <script src="../qunit/qunit.js"></script>
+  <script>
+    // For main/module.js
+    QUnit.config.reorder = false;
+
+    QUnit.module('index-xhtml', function () {
+      QUnit.test('Is in XML mode', function (assert) {
+        // Check that we're actually in XML mode,
+        // otherwise this test suite has no purpose.
+        //
+        // In HTML5, tagName is normalized to "HTML".
+        // In XML, the case is preserved.
+        assert.equal(document.documentElement.nodeName, 'html');
+      });
+    });
+  </script>
+
+  <script src="main/assert.js"></script>
+  <script src="main/assert-es6.js"></script>
+  <script src="main/assert-step.js"></script>
+  <script src="main/assert-timeout.js"></script>
+  <script src="main/async.js"></script>
+  <script src="main/deepEqual.js"></script>
+  <script src="main/diff.js"></script>
+  <script src="main/dump.js"></script>
+  <script src="main/each.js"></script>
+  <script src="main/HtmlReporter.js"></script>
+  <script src="main/legacy.js"></script>
+  <script src="main/modules-es2018.js"></script>
+  <!-- <script src="main/modules-esm.mjs" type="module"></script> crbug.com/717643 -->
+  <script src="main/modules.js"></script>
+  <script src="main/onUncaughtException.js"></script>
+  <script src="main/promise.js"></script>
+  <script src="main/setTimeout.js"></script>
+  <script src="main/stacktrace.js"></script>
+  <script src="main/TapReporter.js"></script>
+  <script src="main/test.js"></script>
+  <script src="main/utilities.js"></script>
+
+  <script src="reporter-html/unhandled-rejection.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture">test markup</div>
+</body>
+</html>

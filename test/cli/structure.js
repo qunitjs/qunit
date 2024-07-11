@@ -34,6 +34,13 @@ QUnit.module('structure', () => {
       });
     });
 
+    QUnit.test('test/index-xhtml.xhtml', assert => {
+      const contents = fs.readFileSync(path.join(__dirname, '..', 'index-xhtml.xhtml'), 'utf8');
+      files.forEach(file => {
+        assert.true(contents.includes(file), file);
+      });
+    });
+
     QUnit.test('Gruntfile.js#test-on-node', assert => {
       const raw = fs.readFileSync(path.join(__dirname, '..', '..', 'Gruntfile.js'), 'utf8');
       const contents = raw.match(/test-on-node.*?\{.*?\}/s)[0];
