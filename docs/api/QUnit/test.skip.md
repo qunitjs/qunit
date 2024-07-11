@@ -11,15 +11,17 @@ redirect_from:
 version_added: "1.16.0"
 ---
 
+`QUnit.test.skip( name )`<br/>
 `QUnit.test.skip( name, callback )`<br/>
+`QUnit.skip( name )`<br/>
 `QUnit.skip( name, callback )`
 
 Add a test that will be skipped during the run.
 
 | parameter | description |
 |-----------|-------------|
-| `name` (string) | Title of unit being tested |
-| `callback` (function) | Function that performs the test |
+| `name` (string) | Title of unit |
+| `callback` (function) | Optional, function that would perform the test |
 
 Use this method to disable a [`QUnit.test()`](./test.md), as alternative to commenting out the test.
 
@@ -38,7 +40,7 @@ As a codebase becomes bigger, you may sometimes want to temporarily disable an e
 
 ## Examples
 
-How to use `skip` as a placeholder for future or temporarily broken tests.
+How to use `skip` as a placeholder for future tests, or to temporarily skip a broken test.
 
 ```js
 QUnit.module('robot', hooks => {
@@ -55,5 +57,8 @@ QUnit.module('robot', hooks => {
   QUnit.test.skip('laser', assert => {
     assert.true(robot.laser());
   });
+
+  // TODO: Implement this later!
+  QUnit.test.skip('jump');
 });
 ```

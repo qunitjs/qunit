@@ -27,6 +27,8 @@ As a codebase becomes bigger, you may need to conditionally skip an entire group
 
 ## Examples
 
+### Skip a test
+
 ```js
 QUnit.module('MyApp');
 
@@ -35,6 +37,21 @@ QUnit.test.if('render', typeof document !== 'undefined', function (assert) {
   assert.strictEqual(MyApp.render(), '<p>Hello world!</p>');
 });
 ```
+
+This is equivalent to:
+
+```js
+// Skip if executed without a DOM
+if (typeof document !== 'undefined') {
+  QUnit.test('render', function (assert) {
+    assert.strictEqual(MyApp.render(), '<p>Hello world!</p>');
+  });
+} else {
+  QUnit.test.skip('render');
+}
+```
+
+### Conditional module
 
 ```js
 QUnit.module.if('MyApp', typeof document !== 'undefined');
