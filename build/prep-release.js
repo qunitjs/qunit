@@ -8,6 +8,8 @@ const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
 
+const { CommandError } = require('./utils.js');
+
 function parseLineResults (output = '') {
   output = output.trim();
   return !output ? [] : output.split('\n');
@@ -32,7 +34,7 @@ function formatChangelogColumn (version) {
 const Repo = {
   async prep (version) {
     if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
-      throw new Error('Invalid or missing version argument');
+      throw new CommandError('Invalid or missing version argument');
     }
     {
       const UNRELEASED_ADDED = versionAddedString('unreleased');

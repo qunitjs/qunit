@@ -2,6 +2,25 @@ const cp = require('child_process');
 const fs = require('fs');
 const https = require('https');
 
+// Skip distracting trace for simple command-line mistakes.
+// Implement Symbol.for('nodejs.util.inspect.custom'), instead of extending Error,
+// as there appears to be no way to prevent console.error/util.inspect/util.format
+// from appending a stacktrace without causing other unwanted output.
+// https://nodejs.org/api/util.html#utilinspectcustom
+class CommandError {
+  constructor (message) {
+    this.message = message;
+  }
+
+  toString () {
+    return this.message;
+  }
+
+  [Symbol.for('nodejs.util.inspect.custom')] () {
+    return this.message;
+  }
+}
+
 function getDiff (from, to, options = {}) {
   // macOS 10.15+ comes with GNU diff (2.8)
   // https://unix.stackexchange.com/a/338960/37512
@@ -77,6 +96,7 @@ function normalizeEOL (str) {
 }
 
 module.exports = {
+  CommandError,
   getDiff,
   download,
   downloadFile,

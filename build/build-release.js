@@ -12,6 +12,8 @@ const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+const { CommandError } = require('./utils.js');
+
 const cdnRemotes = {
   anonymous: 'https://github.com/jquery/codeorigin.jquery.com.git',
   auth: 'git@github.com:jquery/codeorigin.jquery.com.git'
@@ -25,7 +27,7 @@ const cdnCommitMessage = 'qunit: Added version @VERSION';
 const Repo = {
   buildFiles (version) {
     if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
-      throw new Error('Invalid or missing version argument');
+      throw new CommandError('Invalid or missing version argument');
     }
     {
       const file = 'package.json';
@@ -66,7 +68,7 @@ const Repo = {
   },
   cdnCommit (version) {
     if (!version) {
-      throw new Error('Missing parameters');
+      throw new CommandError('Missing parameters');
     }
     const repoPath = path.join(__dirname, '..', '__codeorigin');
     Repo.cdnClone(repoPath);

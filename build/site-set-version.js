@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+const { CommandError } = require('./utils.js');
+
 const cdnLinks = [
 
   // Match qunit-VERSION.js, qunit-VERSION.css, qunit-VERSION.{css.js}
@@ -16,24 +18,29 @@ const files = {
   'docs/resources/example-index.html': [...cdnLinks]
 };
 
-const version = process.argv[2];
-if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
-  throw new Error('Invalid or missing version argument');
-}
-
-for (const [file, patterns] of Object.entries(files)) {
-  console.log(`... updating ${file}`);
-  for (let pattern of patterns) {
-    const replacement = pattern.replace('VERSION', version);
-    pattern = pattern.replace('VERSION', '\\d+\\.\\d+\\.\\d+');
-    const find = new RegExp(`\\b${pattern}\\b`, 'g');
-    const content = fs.readFileSync(file, 'utf8').toString();
-    fs.writeFileSync(
-      file,
-      content.replace(find, replacement),
-      'utf8'
-    );
+try {
+  const version = process.argv[2];
+  if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
+    throw new CommandError('Invalid or missing version argument');
   }
-}
 
-console.log('Done!');
+  for (const [file, patterns] of Object.entries(files)) {
+    console.log(`... updating ${file}`);
+    for (let pattern of patterns) {
+      const replacement = pattern.replace('VERSION', version);
+      pattern = pattern.replace('VERSION', '\\d+\\.\\d+\\.\\d+');
+      const find = new RegExp(`\\b${pattern}\\b`, 'g');
+      const content = fs.readFileSync(file, 'utf8').toString();
+      fs.writeFileSync(
+        file,
+        content.replace(find, replacement),
+        'utf8'
+      );
+    }
+  }
+
+  console.log('Done!');
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}

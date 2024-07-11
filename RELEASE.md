@@ -16,7 +16,7 @@ QUnit aims for its releases to be reproducible. Recent releases are automaticall
 > * Node.js 18, or later.
 > * Git 2.11, or later.
 
-Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist.
+Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist. Make sure the [full browsers-full job](https://github.com/qunitjs/qunit/actions/workflows/browsers-full.yaml) has run and is passing against the latest commit in the main branch. It runs every few days, but if you've made changes since, you can use "Run workflow" to trigger it now.
 
 ## Preparing the release
 
@@ -32,12 +32,12 @@ Ensure that all changes for this release have been merged into the main branch. 
    git remote update && git checkout -B release -t origin/main
    ```
 
-2. Install dev dependencies:
+1. Install dev dependencies:
    ```
    npm ci
    ```
 
-3. Prepare for the release commit:
+1. Prepare for the release commit:
    ```
    node build/prep-release.js @VERSION
    ```
@@ -46,7 +46,7 @@ Ensure that all changes for this release have been merged into the main branch. 
    * In `AUTHORS.txt`, if you see duplicate entries, then use the `.mailmap` file to normalize them to a canonical name and e-mail address, and then re-run the above command.
    * Edit `History.md` to remove changes not relevant to end-users (e.g. changes relating to tests, build, internal refactoring, doc fixes, etc.).
 
-4. Build the release:
+1. Build the release:
    ```
    node build/build-release.js @VERSION
    ```
