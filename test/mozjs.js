@@ -17,6 +17,7 @@ loadRelativeToScript('../test/main/assert-es6.js');
 loadRelativeToScript('../test/main/assert-step.js');
 // loadRelativeToScript( "../test/main/assert-timeout.js" ); // Requires setTimeout
 // loadRelativeToScript( "../test/main/async.js" ); // Requires setTimeout
+loadRelativeToScript('../test/main/browser-runner.js');
 loadRelativeToScript('../test/main/deepEqual.js');
 loadRelativeToScript('../test/main/diff.js');
 loadRelativeToScript('../test/main/dump.js');
