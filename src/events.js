@@ -28,6 +28,7 @@ const MEMORY_EVENTS = [
  * @return {void}
  */
 export function emit (eventName, data) {
+  /* istanbul ignore if: private function */
   if (typeof eventName !== 'string') {
     throw new TypeError('eventName must be a string when emitting an event');
   }

@@ -128,6 +128,7 @@ module.exports = function (grunt) {
         'test/main/diff.js',
         'test/main/dump.js',
         'test/main/each.js',
+        'test/main/events.js',
         'test/main/HtmlReporter.js',
         'test/main/modules.js',
         'test/main/modules-es2018.js',

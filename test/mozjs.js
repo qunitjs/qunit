@@ -22,6 +22,7 @@ loadRelativeToScript('../test/main/deepEqual.js');
 loadRelativeToScript('../test/main/diff.js');
 loadRelativeToScript('../test/main/dump.js');
 loadRelativeToScript('../test/main/each.js');
+loadRelativeToScript('../test/main/events.js');
 loadRelativeToScript('../test/main/HtmlReporter.js');
 // loadRelativeToScript( "../test/main/modules.js" ); // Requires setTimeout
 loadRelativeToScript('../test/main/modules-es2018.js');

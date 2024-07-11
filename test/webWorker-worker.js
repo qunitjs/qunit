@@ -16,6 +16,7 @@ importScripts(
   'main/diff.js',
   'main/dump.js',
   'main/each.js',
+  'main/events.js',
   'main/HtmlReporter.js',
   'main/modules.js',
   'main/modules-es2018.js',

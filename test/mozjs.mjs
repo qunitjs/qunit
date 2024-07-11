@@ -11,6 +11,7 @@ import '../test/main/deepEqual.js';
 import '../test/main/diff.js';
 import '../test/main/dump.js';
 import '../test/main/each.js';
+import '../test/main/events.js';
 import '../test/main/HtmlReporter.js';
 // import  "../test/main/modules.js"; // Requires setTimeout
 import '../test/main/modules-es2018.js';

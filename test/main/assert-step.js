@@ -116,6 +116,10 @@ QUnit.module('assert.step', function () {
     assert.verifySteps(['two']);
   });
 
+  QUnit.test('empty verifySteps()', function (assert) {
+    assert.verifySteps([]);
+  });
+
   QUnit.test('errors if not called when `assert.step` is used', function (assert) {
     assert.expect(2);
     assert.step('one');
