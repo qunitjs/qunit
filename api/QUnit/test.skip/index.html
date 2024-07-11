@@ -75,7 +75,9 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">1.16.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p><code class="language-plaintext highlighter-rouge">QUnit.test.skip( name, callback )</code><br />
+<p><code class="language-plaintext highlighter-rouge">QUnit.test.skip( name )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.test.skip( name, callback )</code><br />
+<code class="language-plaintext highlighter-rouge">QUnit.skip( name )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.skip( name, callback )</code></p>
 
 <p>Add a test that will be skipped during the run.</p>
@@ -90,11 +92,11 @@
   <tbody>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">name</code> (string)</td>
-      <td>Title of unit being tested</td>
+      <td>Title of unit</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
-      <td>Function that performs the test</td>
+      <td>Optional, function that would perform the test</td>
     </tr>
   </tbody>
 </table>
@@ -128,7 +130,7 @@
 
 <h2 id="examples">Examples</h2>
 
-<p>How to use <code class="language-plaintext highlighter-rouge">skip</code> as a placeholder for future or temporarily broken tests.</p>
+<p>How to use <code class="language-plaintext highlighter-rouge">skip</code> as a placeholder for future tests, or to temporarily skip a broken test.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">robot</span><span class="p">;</span>
@@ -144,6 +146,9 @@
   <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">laser</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">robot</span><span class="p">.</span><span class="nf">laser</span><span class="p">());</span>
   <span class="p">});</span>
+
+  <span class="c1">// TODO: Implement this later!</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">jump</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

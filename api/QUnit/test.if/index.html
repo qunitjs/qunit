@@ -110,6 +110,8 @@
 
 <h2 id="examples">Examples</h2>
 
+<h3 id="skip-a-test">Skip a test</h3>
+
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyApp</span><span class="dl">'</span><span class="p">);</span>
 
 <span class="c1">// Skip if executed without a DOM</span>
@@ -117,6 +119,20 @@
   <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">render</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hello world!&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
+
+<p>This is equivalent to:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Skip if executed without a DOM</span>
+<span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">render</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hello world!&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="conditional-module">Conditional module</h3>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="k">if</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyApp</span><span class="dl">'</span><span class="p">,</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">);</span>
 
@@ -168,7 +184,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#skip-a-test">Skip a test</a></li><li class="sidebar-item"><a href="#conditional-module">Conditional module</a></li></ol></li></ol></div>
 </aside>
 
 </div>
