@@ -74,7 +74,7 @@ export function objectValuesSubset (obj, model) {
   return subset;
 }
 
-// Support: IE 11
+// Support: IE 11, iOS 7-8
 export function extend (a, b, undefOnly, allProperties) {
   for (const prop in b) {
     if (hasOwn.call(b, prop) || allProperties) {

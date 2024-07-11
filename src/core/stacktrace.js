@@ -90,7 +90,7 @@ export function extractStacktrace (e, offset) {
 export function sourceFromStacktrace (offset) {
   let error = new Error();
 
-  // Support: IE 11
+  // Support: IE 11, iOS 7
   // Not all browsers generate the `stack` property for `new Error()`
   // See also https://github.com/qunitjs/qunit/issues/636
   if (!error.stack) {
