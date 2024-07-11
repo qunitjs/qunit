@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.config.fixture
-excerpt: HTML content to render before each test.
+excerpt: Clean HTML playground before each test.
 groups:
   - config
 redirect_from:
@@ -9,7 +9,7 @@ redirect_from:
 version_added: "1.0.0"
 ---
 
-In browser environments, this HTML will be rendered in the `#qunit-fixture` element before each test.
+In browser environments, QUnit can create a safe playground for HTML and DOM manipulation, that is automatically cleaned and restored to the default HTML before each test.
 
 <table>
 <tr>
@@ -24,7 +24,7 @@ In browser environments, this HTML will be rendered in the `#qunit-fixture` elem
 
 QUnit automatically resets the contents of `<div id="qunit-fixture">`. This gives every test a fresh start, and automatically cleans up any additions or other changes from your tests. As long as you append or insert your elements inside the fixture, you will never have to manually clean up after your tests to keep them atomic.
 
-By starting with an empty fixture in your test HTML file, you effectively give each test a clean start, as QUnit will automatically remove anything that was added there before the next test begins.
+By starting with an empty fixture in your test HTML file, you effectively give each test a clean start, as QUnit will automatically remove anything that was added or staged there before the next test begins.
 
 If many of your tests require the same markup, you can also set it inside the fixture ahead of time. This reduces duplication between tests. QUnit guruantees that each test will start with a fresh copy of the original fixture, undoing any changes that happened during any previous tests.
 
@@ -57,14 +57,14 @@ Starting with an empty fixture. Any additions are automatically removed.
 QUnit.test('example [first]', function (assert) {
   const fixture = document.querySelector('#qunit-fixture');
 
-  const resultA = document.querySelectorAll('#first');
+  const resultA = fixture.querySelectorAll('.first');
   assert.strictEqual(resultA.length, 0, 'initial');
 
   const div = document.createElement('div');
-  div.id = 'first';
+  div.className = 'first';
   fixture.append(div);
 
-  const resultB = document.querySelectorAll('#first');
+  const resultB = fixture.querySelectorAll('.first');
   assert.strictEqual(resultB.length, 1, 'after append');
 });
 
@@ -72,13 +72,13 @@ QUnit.test('example [second]', function (assert) {
   const fixture = document.querySelector('#qunit-fixture');
 
   // The previous elements were automatically detached.
-  const result = document.querySelectorAll('#first');
+  const result = fixture.querySelectorAll('.first');
   assert.strictEqual(result.length, 0, 'initial is back to zero');
 });
 ```
 
 
-### qunit-fixture HTML
+### default in HTML
 
 ```html
 <body>
@@ -148,7 +148,7 @@ QUnit.test('findText [em]', function (assert) {
 });
 ```
 
-### dynamic qunit-fixture
+### default in JavaScript
 
 ```html
 <body>

@@ -75,6 +75,8 @@ module.exports = function (grunt) {
 
             'test/amd.html',
             'test/autostart.html',
+            'test/config-fixture-null.html',
+            'test/config-fixture-string.html',
             'test/dynamic-import.html',
             'test/events-filters.html',
             'test/events-in-test.html',
