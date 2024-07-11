@@ -93,7 +93,7 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">condition</code> (string)</td>
-      <td>Expression to decide if the test should be run</td>
+      <td>Expression to decide if the test should run</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
@@ -106,7 +106,7 @@
 
 <p>If the conditional is false, this is equivalent to calling <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a>, and test will not run. Instead, it will be listed in the results as a “skipped” test.</p>
 
-<p>As a codebase becomes bigger, you may need to conditionally skip an entire group of tests. You can use <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.if()</code></a> to recursively skip all tests in a module based on a given condition.</p>
+<p>As a codebase becomes bigger, you may need to conditionally skip an entire group of tests. You can use <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.if()</code></a> to recursively skip all tests in a module based on a given requirement.</p>
 
 <h2 id="examples">Examples</h2>
 
@@ -122,8 +122,7 @@
 
 <p>This is equivalent to:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Skip if executed without a DOM</span>
-<span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">render</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hello world!&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
@@ -138,6 +137,19 @@
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">render</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hello world!&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="legacy-idom">Legacy idom</h3>
+
+<p>Prior to QUnit 3.0, the following shortcuts were sometimes used. This may be replaced by <code class="language-plaintext highlighter-rouge">QUnit.test.if()</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span> <span class="p">?</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span> <span class="p">:</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">skip</span><span class="p">)(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">[</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">test</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">skip</span><span class="dl">'</span><span class="p">](</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strue</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -184,7 +196,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#skip-a-test">Skip a test</a></li><li class="sidebar-item"><a href="#conditional-module">Conditional module</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#skip-a-test">Skip a test</a></li><li class="sidebar-item"><a href="#conditional-module">Conditional module</a></li><li class="sidebar-item"><a href="#legacy-idom">Legacy idom</a></li></ol></li></ol></div>
 </aside>
 
 </div>
