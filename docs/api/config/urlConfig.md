@@ -36,7 +36,7 @@ QUnit.config.urlConfig.push({
 });
 ```
 
-* The `id` property is used as URL query parameter name, and corresponding key under `QUnit.urlParams`.
+* The `id` property is used as URL query parameter name, and corresponding key under [`QUnit.urlParams`](../extension/QUnit.urlParams.md).
 * The `label` property is used as text for the HTML label element in the user interface.
 * The optional `tooltip` property is used as the `title` attribute and should explain what you code will do with this option.
 
@@ -48,7 +48,7 @@ If `value` is a string, the item will render as a checkbox. The corresponding UR
 
 If `value` is an array, the item will render as a "select one" dropdown menu with an empty value as first default option, followed by one option for each item in the array. The corresponding URL parameter will be absent when the empty option is selected, and otherwise will be set to the value of the selected array item.
 
-If `value` is an object, the item will render as a dropdown menu. The URL parameter will be set to the key of the selected property, and this will also be available via `QUnit.urlParams[id]`. The object values will be used as display label for each option in the dropdown menu. The corresponding URL parameter will be absent when the empty option is selected.
+If `value` is an object, the item will render as a dropdown menu. The URL parameter will be set to the key of the selected property, and this will also be available via [`QUnit.urlParams[id]`](../extension/QUnit.urlParams.md). The object values will be used as display label for each option in the dropdown menu. The corresponding URL parameter will be absent when the empty option is selected.
 
 ## Examples
 
