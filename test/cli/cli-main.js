@@ -175,10 +175,43 @@ not ok 1 global failure
 # exit code: 1`);
   });
 
+  QUnit.test('--seed generates new random seed', async assert => {
+    // https://github.com/qunitjs/qunit/issues/1691
+    const command = ['qunit', '--seed', '--', 'basic-one.js', 'test/'];
+    const execution = await execute(command);
+
+    const actualHarness = execution.snapshot
+      .replace(/^(Running tests with seed: )([a-z0-9]{10,20})/g, (_m, m1) => {
+        return m1 + '0000000000';
+      })
+      .split('\n')
+      .filter(line => !line.startsWith('ok '))
+      .join('\n');
+
+    const actualResults = execution.snapshot
+      .replace(/^ok \d/gm, 'ok 0')
+      .split('\n')
+      .filter(line => line.startsWith('ok '))
+      .sort()
+      .join('\n');
+
+    assert.equal(actualHarness, `Running tests with seed: 0000000000
+TAP version 13
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`);
+
+    assert.equal(actualResults, `ok 0 First > 1
+ok 0 Second > 1
+ok 0 Single > has a test`);
+  });
+
   QUnit.test('--require loads unknown module', async assert => {
     const command = ['qunit', 'basic-one.js', '--require', 'does-not-exist-at-all'];
     const execution = await execute(command);
-    // TODO: Change to a generic tap-outputs.js
+    // TODO: Change to a generic .tap.txt fixture
     // https://github.com/qunitjs/qunit/issues/1688
     assert.equal(execution.code, 1);
     assert.true(execution.stderr.includes("Error: Cannot find module 'does-not-exist-at-all'"));

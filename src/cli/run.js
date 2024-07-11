@@ -56,7 +56,8 @@ async function run (args, options) {
   const seed = options.seed;
   if (seed) {
     if (seed === true) {
-      QUnit.config.seed = Math.random().toString(36).slice(2);
+      // Length may vary from 6-14, pad to 10
+      QUnit.config.seed = Math.random().toString(36).slice(2).padEnd(10, '0');
     } else {
       QUnit.config.seed = seed;
     }

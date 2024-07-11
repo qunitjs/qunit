@@ -1,5 +1,5 @@
 # name: --module selects a module (case-insensitive)
-# command: ["qunit","--module","seconD","test/"]
+# command: ["qunit", "--module", "seconD", "test/"]
 
 TAP version 13
 ok 1 Second > 1
