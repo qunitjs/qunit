@@ -89,11 +89,19 @@ head qunit/qunit.js
    ```
 
 6. Publish to npm:
+   * Alpha releases:
+   ```
+   npm publish --tag @VERSION
+   ```
+   This will bundle the current directory and publish it to npm with the name and version specified in `package.json`.
+   Verify that the alpha version is included, but not as the default/latest, at <https://www.npmjs.com/package/qunit?activeTab=versions>. If you accidentally used regular `npm publish`, you can undo this by running `npm dist-tag add qunit@LAST_STABLE_VERSION latest`.
+
+   * Stable releases: Create tag and update 'latest' alias
    ```
    npm publish
    ````
    This will bundle the current directory and publish it to npm with the name and version specified in `package.json`.
-   Verify that the release is displayed at <https://www.npmjs.com/package/qunit>.
+   Verify that the release is displayed at <https://www.npmjs.com/package/qunit?activeTab=versions>.
 
 7. Publish to the jQuery CDN:
    Review the commit and push it:
