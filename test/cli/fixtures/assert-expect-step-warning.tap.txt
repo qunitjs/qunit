@@ -1,0 +1,13 @@
+# command: ["qunit", "assert-expect-step-warning.js"]
+
+TAP version 13
+ok 1 passing [once]
+ok 2 passing [twice]
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
+
+# stderr
+Counting each assert.step() for assert.expect() is changing in QUnit 3.0. You can enable QUnit.config.countStepsAsOne to prepare for the upgrade. https://qunitjs.com/api/assert/expect/

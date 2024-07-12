@@ -154,4 +154,49 @@ QUnit.module('assert.step', function () {
       assert.deepEqual(result, ['step one', 'step two']);
     });
   });
+
+  // Transition for https://github.com/qunitjs/qunit/issues/1226
+  QUnit.module('assert.verifySteps with QUnit.config.countStepsAsOne', function (hooks) {
+    var original;
+    hooks.before(function () {
+      original = QUnit.config.countStepsAsOne;
+      QUnit.config.countStepsAsOne = true;
+    });
+    hooks.after(function () {
+      QUnit.config.countStepsAsOne = original;
+    });
+
+    QUnit.test('empty', function (assert) {
+      assert.expect(1);
+
+      assert.verifySteps([]);
+    });
+
+    QUnit.test('passing [once]', function (assert) {
+      assert.expect(1);
+
+      assert.step('a');
+      assert.step('b');
+      assert.verifySteps(['a', 'b']);
+    });
+
+    QUnit.test('passing [twice]', function (assert) {
+      assert.expect(2);
+
+      assert.step('a');
+      assert.step('b');
+      assert.verifySteps(['a', 'b']);
+
+      assert.step('c');
+      assert.step('d');
+      assert.step('e');
+      assert.verifySteps(['c', 'd', 'e']);
+    });
+
+    QUnit.test('example', function (assert) {
+      // buffer between last test and hooks.after(),
+      // to restore QUnit.config.countStepsAsOne.
+      assert.true(true);
+    });
+  });
 });

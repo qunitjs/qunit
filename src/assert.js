@@ -55,6 +55,7 @@ class Assert {
     // Since the steps array is just string values, we can clone with slice
     const actualStepsClone = this.test.steps.slice();
     this.deepEqual(actualStepsClone, steps, message);
+    this.test.stepsCount += this.test.steps.length;
     this.test.steps.length = 0;
   }
 

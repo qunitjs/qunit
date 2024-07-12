@@ -24,6 +24,9 @@ export default function Test (settings) {
   this.assertions = [];
   this.module = config.currentModule;
   this.steps = [];
+  // This powers the QUnit.config.countStepsAsOne feature.
+  // https://github.com/qunitjs/qunit/pull/1775
+  this.stepsCount = 0;
   this.timeout = undefined;
   this.data = undefined;
   this.withData = false;
@@ -357,13 +360,41 @@ Test.prototype = {
         `after using assert.step(). Unverified steps: ${stepsList}`, this.stack);
     }
 
+    if (
+      !config._deprecated_countEachStep_shown &&
+      !config.countStepsAsOne &&
+      this.expected !== null &&
+      this.stepsCount
+    ) {
+      config._deprecated_countEachStep_shown = true;
+      if (config.requireExpects) {
+        Logger.warn('Counting each assert.step() for assert.expect() is changing in QUnit 3.0. You can enable QUnit.config.countStepsAsOne to prepare for the upgrade. https://qunitjs.com/api/assert/expect/');
+      } else {
+        Logger.warn('Counting each assert.step() for assert.expect() is changing in QUnit 3.0. Omit assert.expect() from tests that use assert.step(), or enable QUnit.config.countStepsAsOne to prepare for the upgrade. https://qunitjs.com/api/assert/expect/');
+      }
+    }
+
+    const actualCountForExpect = config.countStepsAsOne
+      ? (this.assertions.length - this.stepsCount)
+      : this.assertions.length;
+
     if (config.requireExpects && this.expected === null) {
       this.pushFailure('Expected number of assertions to be defined, but expect() was ' +
         'not called.', this.stack);
-    } else if (this.expected !== null && this.expected !== this.assertions.length) {
+    } else if (this.expected !== null && this.expected !== actualCountForExpect &&
+      (this.stepsCount && this.expected === (this.assertions.length - this.stepsCount) && !config.countStepsAsOne)
+    ) {
       this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
-        this.assertions.length + ' were run', this.stack);
-    } else if (this.expected === null && !this.assertions.length) {
+        actualCountForExpect + ' were run\nIt looks like you might prefer to enable QUnit.config.countStepsAsOne, which will become the default in QUnit 3.0. https://qunitjs.com/api/assert/expect/', this.stack);
+    } else if (this.expected !== null && this.expected !== actualCountForExpect &&
+      (this.stepsCount && this.expected === this.assertions.length && config.countStepsAsOne)
+    ) {
+      this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
+        actualCountForExpect + ' were run\nRemember that with QUnit.config.countStepsAsOne and in QUnit 3.0, steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/', this.stack);
+    } else if (this.expected !== null && this.expected !== actualCountForExpect) {
+      this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
+        actualCountForExpect + ' were run', this.stack);
+    } else if (this.expected === null && !actualCountForExpect) {
       this.pushFailure('Expected at least one assertion, but none were run - call ' +
         'expect(0) to accept zero assertions.', this.stack);
     }
