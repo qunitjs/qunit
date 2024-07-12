@@ -36,7 +36,7 @@ QUnit releases are standalone and require no runtime dependencies for use in the
 
 This is typically saved as `/test.html` or `/test/index.html` in your project.
 
-The above example loads QUnit from the jQuery CDN. For improved experience during local or offline development, it is recommended to [install or download QUnit](intro.md#download) within your project. Some [integrations](#integrations), like Web Test Runner and Karma, can auto-create the HTML from a list of JS files or glob pattern.
+The above example loads QUnit from the jQuery CDN. For improved experience during local or offline development, it is recommended to [install or download QUnit](./intro.md#download) within your project. Some [integrations](#integrations), like Web Test Runner and Karma, can auto-create the HTML from a list of JS files or glob pattern.
 
 Let's add the following script, which tests an "add" function that adds two numbers together:
 
@@ -131,7 +131,7 @@ QUnit requires no HTML markup in order to run tests. The above "Getting started"
 
 To display test results, the only markup necessary is a `<div>` with `id="qunit"`. Without this, the tests will run with the [HTML Reporter](#html-reporter) disabled.
 
-[Browser automations](#integrations) that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a TAP reporter, or [`QUnit.on()`](./callbacks/QUnit.on.md) to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).
+[Browser automations](#integrations) that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a TAP reporter, or [`QUnit.on()`](./api/callbacks/QUnit.on.md) to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).
 
 ## HTML Reporter
 

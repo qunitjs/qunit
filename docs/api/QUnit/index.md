@@ -6,4 +6,4 @@ redirect_from:
   - "/QUnit/"
 ---
 
-If you're new to QUnit, check out [Getting Started](../intro.md)!
+If you're new to QUnit, check out [Getting Started](../../intro.md)!

@@ -1,11 +1,13 @@
 {
   "//": [
     "twitter.com broken with redirect-loop",
+    "app.element.io chat rooms render fine but use HTTP 404 for some reason",
     "npmjs.com responds HTTP 429 Too Many Requests too easily",
     ""
   ],
   "exclude_scheme_prefixes": [
     "https://twitter.com/",
+    "https://app.element.io/",
     "https://www.npmjs.com/package/"
   ]
 }
