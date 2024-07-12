@@ -78,6 +78,10 @@ function cleanDir (dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
+function isValidVersion (version) {
+  return /^\d+\.\d+\.\d+(-alpha\.\d+)?$/.test(version);
+}
+
 // Turn invisible chars and non-ASCII chars into escape sequences.
 //
 // This is like `cat --show-nonprinting` and makes diffs easier to understand
@@ -101,6 +105,7 @@ module.exports = {
   download,
   downloadFile,
   cleanDir,
+  isValidVersion,
   verboseNonPrintable,
   normalizeEOL
 };

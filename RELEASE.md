@@ -37,22 +37,18 @@ Ensure that all changes for this release have been merged into the main branch. 
    npm ci
    ```
 
-1. Prepare for the release commit:
+1. Prepare for the release commit, and build release artefacts:
    ```
    node build/prep-release.js @VERSION
    ```
 
+   This script does not need any credentials or permissions, and is compatible with running in an isolated container that only has read-write permissions to the current directory. The script will edit `package.json`, then execute `npm run build` to generate the release artifacts, then create a local clone of [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com), and prepare a local commit for you to later push.
+
    * Use `git add -p` to review the changes.
-   * In `AUTHORS.txt`, if you see duplicate entries, then use the `.mailmap` file to normalize them to a canonical name and e-mail address, and then re-run the above command.
+   * In `AUTHORS.txt`, if you see duplicate entries, then use the `.mailmap` file to normalize them to a canonical name and e-mail address. Then run `git add .mailmap && git checkout .` to save the mailmap changes and undo other. Then re-run the above command.
    * Edit `History.md` to remove changes not relevant to end-users (e.g. changes relating to tests, build, internal refactoring, doc fixes, etc.).
 
-1. Build the release:
-   ```
-   node build/build-release.js @VERSION
-   ```
-   This script does not need any credentials or permissions, and may be run in a container that can only read-write the current directory. This will edit `package.json`, then execute `npm run build` to generate the release artifacts, then create a local clone of [jquery/codeorigin.jquery.com](https://github.com/jquery/codeorigin.jquery.com), and prepare a local commit for you to later push.
-
-   Review the release artifacts, compared to the previous release.
+1.  Review the release artifacts, compared to the previous release.
    ```
    node build/review-package.js @LAST_VERSION
 

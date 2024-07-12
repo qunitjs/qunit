@@ -6,5 +6,3 @@
 *.tap.txt eol=lf
 *.json eol=lf
 *.html eol=lf
-
-/package-lock.json binary

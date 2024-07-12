@@ -1,4 +1,8 @@
-// Helper for the QUnit release preparation commit.
+// Helper to create the QUnit release commit,
+// and prepare a local commit in a codeorigin.git clone.
+//
+// To test the codeorigin step with an alternate remote,
+// pass "test" as the second argument.
 //
 // See also RELEASE.md.
 //
@@ -8,7 +12,17 @@ const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
 
-const { CommandError } = require('./utils.js');
+const { CommandError, isValidVersion } = require('./utils.js');
+
+const cdnRemotes = {
+  anonymous: 'https://github.com/jquery/codeorigin.jquery.com.git',
+  auth: 'git@github.com:jquery/codeorigin.jquery.com.git'
+};
+const cdnFiles = {
+  'qunit/qunit.js': 'cdn/qunit/qunit-@VERSION.js',
+  'qunit/qunit.css': 'cdn/qunit/qunit-@VERSION.css'
+};
+const cdnCommitMessage = 'qunit: Added version @VERSION';
 
 function parseLineResults (output = '') {
   output = output.trim();
@@ -33,10 +47,10 @@ function formatChangelogColumn (version) {
 
 const Repo = {
   async prep (version) {
-    if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
+    if (typeof version !== 'string' || !isValidVersion(version)) {
       throw new CommandError('Invalid or missing version argument');
     }
-    {
+    if (!version.includes('-alpha')) {
       const UNRELEASED_ADDED = versionAddedString('unreleased');
       const UNRELEASED_DEP = versionDeprecatedString('unreleased');
       const UNRELEASED_RM = versionRemovedString('unreleased');
@@ -64,7 +78,7 @@ const Repo = {
 
       const filePath = path.join(__dirname, '..', file);
       const oldContent = fs.readFileSync(filePath, 'utf8');
-      const oldVersion = require('../package.json').version.replace(/-.*$/, '');
+      const oldVersion = require('../package.json').version;
 
       const changeFilter = [
         /^\* Release \d+\./,
@@ -112,21 +126,6 @@ const Repo = {
       fs.writeFileSync(filePath, newSection + changes + oldContent);
     }
     {
-      const file = 'package.json';
-      console.log(`Updating ${file}...`);
-      const filePath = path.join(__dirname, '..', file);
-      const json = fs.readFileSync(filePath, 'utf8');
-      const packageIndentation = json.match(/\n([\t\s]+)/)[1];
-      const data = JSON.parse(json);
-
-      data.version = version;
-
-      fs.writeFileSync(
-        filePath,
-        JSON.stringify(data, null, packageIndentation) + '\n'
-      );
-    }
-    {
       const file = 'package-lock.json';
       console.log(`Updating ${file}...`);
       const filePath = path.join(__dirname, '..', file);
@@ -149,14 +148,107 @@ const Repo = {
         { encoding: 'utf8' }
       );
     }
+  },
+  buildFiles (version) {
+    if (typeof version !== 'string' || !isValidVersion(version)) {
+      throw new CommandError('Invalid or missing version argument');
+    }
+    {
+      const file = 'package.json';
+      console.log(`Updating ${file}...`);
+      const filePath = path.join(__dirname, '..', file);
+      const json = fs.readFileSync(filePath, 'utf8');
+      const packageIndentation = json.match(/\n([\t\s]+)/)[1];
+      const data = JSON.parse(json);
+
+      data.version = version;
+
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify(data, null, packageIndentation) + '\n'
+      );
+    }
+    {
+      console.log('Running `npm run build`...');
+      process.env.QUNIT_BUILD_RELEASE = '1';
+      cp.execFileSync('npm', [
+        'run',
+        'build'
+      ], { encoding: 'utf8' });
+    }
+  },
+  cdnClone (repoPath) {
+    const remote = cdnRemotes.anonymous;
+    console.log('... cloning ' + remote);
+    fs.rmSync(repoPath, { recursive: true, force: true });
+    cp.execFileSync('git', [
+      'clone',
+      '--depth=5',
+      '-q',
+      remote,
+      repoPath
+    ]);
+  },
+  cdnCommit (version) {
+    if (!version) {
+      throw new CommandError('Missing parameters');
+    }
+    const repoPath = path.join(__dirname, '..', '__codeorigin');
+    Repo.cdnClone(repoPath);
+
+    const toCommit = [];
+    for (const src in cdnFiles) {
+      const srcPath = path.join(__dirname, '..', src);
+      const dest = cdnFiles[src].replace('@VERSION', version);
+      const destPath = path.join(repoPath, dest);
+      console.log('... copying ' + src + ' to ' + dest);
+      fs.copyFileSync(srcPath, destPath, fs.constants.COPYFILE_EXCL);
+      toCommit.push(dest);
+    }
+
+    console.log('... creating commit');
+
+    const author = cp.execSync('git log -1 --format=%aN%n%aE',
+      { encoding: 'utf8', cwd: path.join(__dirname, '..') }
+    )
+      .trim()
+      .split('\n');
+
+    cp.execFileSync('git', ['add', ...toCommit],
+      { cwd: repoPath }
+    );
+
+    cp.execFileSync('git',
+      ['commit', '-m', cdnCommitMessage.replace('@VERSION', version)],
+      {
+        cwd: repoPath,
+        env: {
+          GIT_AUTHOR_NAME: author[0],
+          GIT_AUTHOR_EMAIL: author[1],
+          GIT_COMMITTER_NAME: author[0],
+          GIT_COMMITTER_EMAIL: author[1]
+        }
+      }
+    );
+
+    // prepre for user to push from the host shell after review
+    cp.execFileSync('git', ['remote', 'set-url', 'origin', cdnRemotes.auth],
+      { cwd: repoPath }
+    );
   }
 };
 
-const version = process.argv[2];
+const [version, remote] = process.argv.slice(2);
 
 (async function main () {
   await Repo.prep(version);
+  Repo.buildFiles(version);
+  Repo.cdnCommit(version, remote || 'real');
 }()).catch(e => {
+  if (e.stderr) {
+    e.stdout = e.stdout.toString();
+    e.stderr = e.stderr.toString();
+  }
   console.error(e);
   process.exit(1);
 });
