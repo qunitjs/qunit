@@ -6,6 +6,7 @@ groups:
   - assert
   - async
 redirect_from:
+  - "/async/"
   - "/assert/async/"
   - "/QUnit.stop/"
   - "/QUnit/stop/"

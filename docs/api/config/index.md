@@ -11,6 +11,7 @@ redirect_from:
   - "/QUnit.config/"
   - "/config/"
   - "/config/QUnit.config/"
+  - "/category/config/"
 ---
 
 ## Order
