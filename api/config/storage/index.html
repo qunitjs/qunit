@@ -88,7 +88,7 @@
 </tr>
 </table>
 
-<p>This is used to power the <a href="../config.md">reorder feature</a>. In <a href="/browser/">browser environments</a> this will use <code class="language-plaintext highlighter-rouge">sessionStorage</code> if supported by the browser.</p>
+<p>This is used to power the <a href="/api/config/reorder/">reorder feature</a>. In <a href="/browser/">browser environments</a> this will use <code class="language-plaintext highlighter-rouge">sessionStorage</code> if supported by the browser.</p>
 
 <p>In Node.js and other non-browser environments, there is no storage object available for this purpose by default. You can attach your own preferred form of persistence between test runs, by assigning an object to <code class="language-plaintext highlighter-rouge">QUnit.config.storage</code> that implements <code class="language-plaintext highlighter-rouge">getItem</code>, <code class="language-plaintext highlighter-rouge">setItem</code> and <code class="language-plaintext highlighter-rouge">removeItem</code> methods, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">Web Storage API</a>.</p>
 
