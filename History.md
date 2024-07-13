@@ -14,7 +14,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 * Core: Enable a default [test timeout](https://qunitjs.com/api/config/testTimeout/) of 3 seconds. [#1483](https://github.com/qunitjs/qunit/issues/1483)
 * Core: Promote warning "[Cannot add … hook outside the containing module](https://qunitjs.com/api/QUnit/module/#E0002)" to error. (Ray Cohen) [#1576](https://github.com/qunitjs/qunit/issues/1576)
-* Core: Promote warning "QUnit.module() callback must not be async" to error, when passing an async function to `QUnit.module()`. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
+* Core: Promote warning "QUnit.module() callback must not be async" to error. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
 * Core: Promote warning "[Unexpected test after runEnd](https://qunitjs.com/api/config/autostart/#E0001)" to error. [#1377](https://github.com/qunitjs/qunit/issues/1377)
 * Core: Change `before` and `after` hooks to run with module context. This enables inheritence between parent and child modules, and fixes leaks between last test and "after" hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
 * HTML Reporter: Run headless and automatically avoid HTML Reporter overhead if no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
@@ -25,9 +25,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
   * Report time as seconds in the toolbar display. [#1760](https://github.com/qunitjs/qunit/pull/1760)
   * Remove assertion count from toolbar display. [#1760](https://github.com/qunitjs/qunit/pull/1760)
-* Core: Set `QUnit.config.seed = undefined` initial value explicitly.
-* Core: Set `QUnit.config.fixture = undefined` initial value explicitly.
-* Core: Set `QUnit.config.current = undefined` initial value explicitly.
+  * Set `user-select: none;` on "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
 
 ### Fixed
 
