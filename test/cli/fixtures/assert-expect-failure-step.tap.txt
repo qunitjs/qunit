@@ -1,0 +1,56 @@
+# command: ["qunit", "assert-expect-failure-step.js"]
+
+TAP version 13
+ok 1 passing [once]
+ok 2 passing [twice]
+not ok 3 wrong [a little off]
+  ---
+  message: Expected 2 assertions, but 1 were run
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect-failure-step.js:22:7
+        at internal
+  ...
+not ok 4 wrong [way off]
+  ---
+  message: Expected 5 assertions, but 1 were run
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect-failure-step.js:30:7
+        at internal
+  ...
+not ok 5 previously passing [once]
+  ---
+  message: |+
+    Expected 4 assertions, but 2 were run.
+    It looks like you are upgrading from QUnit 2. Steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect-failure-step.js:40:7
+        at internal
+  ...
+not ok 6 previously passing [twice]
+  ---
+  message: |+
+    Expected 9 assertions, but 4 were run.
+    It looks like you are upgrading from QUnit 2. Steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/
+  severity: failed
+  actual  : null
+  expected: undefined
+  stack: |
+        at /qunit/test/cli/fixtures/assert-expect-failure-step.js:49:7
+        at internal
+  ...
+1..6
+# pass 2
+# skip 0
+# todo 0
+# fail 4
+
+# exit code: 1
