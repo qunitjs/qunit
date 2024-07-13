@@ -51,7 +51,7 @@ export default (function () {
     return [pre, inner + arr, base + post].join(s);
   }
   function array (arr, stack) {
-    if (dump.maxDepth && dump.depth > dump.maxDepth) {
+    if (config.maxDepth && dump.depth > config.maxDepth) {
       return '[object Array]';
     }
 
@@ -160,7 +160,16 @@ export default (function () {
     literal: literal,
     join: join,
     depth: 1,
-    maxDepth: config.maxDepth,
+
+    /**
+     * @deprecated since 3.0.0, use QUnit.config.maxDepth instead.
+     */
+    get maxDepth () {
+      return config.maxDepth;
+    },
+    set maxDepth (value) {
+      config.maxDepth = value;
+    },
 
     // This is the list of parsers, to modify them, use dump.setParser
     parsers: {
@@ -195,7 +204,7 @@ export default (function () {
       object: function (map, stack) {
         const ret = [];
 
-        if (dump.maxDepth && dump.depth > dump.maxDepth) {
+        if (config.maxDepth && dump.depth > config.maxDepth) {
           return '[object Object]';
         }
 

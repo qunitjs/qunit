@@ -3,11 +3,11 @@
 QUnit.module('dump', {
   beforeEach: function () {
     // Run most tests without a limit
-    QUnit.dump.maxDepth = 0;
+    QUnit.config.maxDepth = 0;
   },
   afterEach: function () {
     // Restore default
-    QUnit.dump.maxDepth = 5;
+    QUnit.config.maxDepth = 5;
   }
 });
 
@@ -25,25 +25,49 @@ QUnit.test('object [shallow]', function (assert) {
     },
     left: 0
   };
-  QUnit.dump.maxDepth = 1;
+  QUnit.config.maxDepth = 1;
   assert.equal(QUnit.dump.parse(obj), '{\n  "left": 0,\n  "top": [object Object]\n}');
 
-  QUnit.dump.maxDepth = 2;
+  QUnit.config.maxDepth = 2;
   assert.equal(
     QUnit.dump.parse(obj),
     '{\n  "left": 0,\n  "top": {\n    "middle": [object Object]\n  }\n}'
   );
 
-  QUnit.dump.maxDepth = 3;
+  QUnit.config.maxDepth = 3;
   assert.equal(
     QUnit.dump.parse(obj),
     '{\n  "left": 0,\n  "top": {\n    "middle": {\n      "bottom": 0\n    }\n  }\n}'
   );
 
-  QUnit.dump.maxDepth = 5;
+  QUnit.config.maxDepth = 5;
   assert.equal(
     QUnit.dump.parse(obj),
     '{\n  "left": 0,\n  "top": {\n    "middle": {\n      "bottom": 0\n    }\n  }\n}'
+  );
+});
+
+QUnit.test('QUnit.dump.maxDepth alias', function (assert) {
+  assert.strictEqual(QUnit.dump.maxDepth, 0, 'alias matches initial config');
+
+  QUnit.config.maxDepth = 1;
+  assert.strictEqual(QUnit.dump.maxDepth, 1, 'change alias via config');
+
+  QUnit.dump.maxDepth = 2;
+  assert.strictEqual(QUnit.config.maxDepth, 2, 'change config via alias');
+
+  var obj = {
+    top: {
+      middle: {
+        bottom: 0
+      }
+    },
+    left: 0
+  };
+  assert.equal(
+    QUnit.dump.parse(obj),
+    '{\n  "left": 0,\n  "top": {\n    "middle": [object Object]\n  }\n}',
+    'object shallow with effective maxDepth=2'
   );
 });
 
@@ -206,8 +230,6 @@ function chainwrap (depth, first, prev) {
 }
 
 QUnit.test('object [recursion]', function (assert) {
-  // QUnit.dump.maxDepth = 20;
-
   var noref = chainwrap(0);
   var nodump = QUnit.dump.parse(noref);
   assert.equal(nodump, '{\n  "first": true,\n  "wrap": undefined\n}');
@@ -230,8 +252,6 @@ QUnit.test('object [recursion]', function (assert) {
 });
 
 QUnit.test('object equal/deepEqual [recursion]', function (assert) {
-  // QUnit.dump.maxDepth = 20;
-
   var noRecursion = chainwrap(0);
   assert.equal(noRecursion, noRecursion, 'I should be equal to me.');
   assert.deepEqual(noRecursion, noRecursion, '... and so in depth.');
@@ -255,7 +275,7 @@ QUnit.test('array [basic]', function (assert) {
 });
 
 QUnit.test('array [shallow]', function (assert) {
-  QUnit.dump.maxDepth = 1;
+  QUnit.config.maxDepth = 1;
   assert.equal(
     QUnit.dump.parse([[]]),
     '[\n  [object Array]\n]');
