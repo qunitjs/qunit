@@ -325,6 +325,7 @@ body {
 	padding: 0.5em;
 	color: inherit;
 	text-decoration: underline;
+	user-select: none;
 }
 #qunit-tests li a:hover,
 #qunit-tests li a:focus {
@@ -334,6 +335,7 @@ body {
 #qunit-tests li .runtime {
 	float: right;
 	font-size: smaller;
+	user-select: none;
 }
 
 .qunit-assert-list {
