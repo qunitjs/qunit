@@ -29,7 +29,7 @@
 // -------
 
 import config from './core/config.js';
-import { inArray, toString, is } from './core/utilities.js';
+import { inArray, is } from './core/utilities.js';
 
 export default (function () {
   function quote (str) {
@@ -69,7 +69,7 @@ export default (function () {
   function isArray (obj) {
     return (
       // Native Arrays
-      toString.call(obj) === '[object Array]' ||
+      Array.isArray(obj) ||
 
       // NodeList objects
       (typeof obj.length === 'number' && obj.item !== undefined &&
@@ -109,34 +109,31 @@ export default (function () {
       return '[ERROR: Missing QUnit.dump formatter for type ' + objType + ']';
     },
     typeOf: function (obj) {
-      let type;
-
       if (obj === null) {
-        type = 'null';
-      } else if (typeof obj === 'undefined') {
-        type = 'undefined';
+        return 'null';
+      }
+      if (typeof obj === 'undefined') {
+        return 'undefined';
       } else if (is('regexp', obj)) {
-        type = 'regexp';
+        return 'regexp';
       } else if (is('date', obj)) {
-        type = 'date';
+        return 'date';
       } else if (is('function', obj)) {
-        type = 'function';
+        return 'function';
       } else if (obj.setInterval !== undefined &&
           obj.document !== undefined &&
           obj.nodeType === undefined) {
-        type = 'window';
+        return 'window';
       } else if (obj.nodeType === 9) {
-        type = 'document';
+        return 'document';
       } else if (obj.nodeType) {
-        type = 'node';
+        return 'node';
       } else if (isArray(obj)) {
-        type = 'array';
+        return 'array';
       } else if (obj.constructor === Error.prototype.constructor) {
-        type = 'error';
-      } else {
-        type = typeof obj;
+        return 'error';
       }
-      return type;
+      return typeof obj;
     },
 
     separator: function () {
