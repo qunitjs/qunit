@@ -96,13 +96,6 @@ QUnit.test('error [subclass]', function (assert) {
   });
 });
 
-QUnit.test('array [shallow]', function (assert) {
-  QUnit.dump.maxDepth = 1;
-  assert.equal(
-    QUnit.dump.parse([[]]),
-    '[\n  [object Array]\n]');
-});
-
 QUnit.test('regex', function (assert) {
   assert.equal(QUnit.dump.parse(/foo/), '/foo/');
 });
@@ -141,30 +134,6 @@ QUnit.test('function [unnamed]', function (assert) {
   assert.equal(QUnit.dump.parse(f), 'function( a, b ){\n  [code]\n}');
 });
 
-QUnit.test('array [multiline=false]', function (assert) {
-  QUnit.dump.multiline = false;
-
-  assert.equal(QUnit.dump.parse([[]]), '[ [] ]');
-
-  QUnit.dump.multiline = true;
-});
-
-QUnit.test('array [HTML=true]', function (assert) {
-  QUnit.dump.HTML = true;
-
-  assert.equal(
-    QUnit.dump.parse([1, 2]),
-    '[<br />&#160;&#160;1,<br />&#160;&#160;2<br />]');
-
-  QUnit.dump.multiline = false;
-  assert.equal(
-    QUnit.dump.parse([1, 2]),
-    '[&#160;1,&#160;2&#160;]');
-
-  QUnit.dump.multiline = true;
-  QUnit.dump.HTML = false;
-});
-
 QUnit.test('window, document, node [fake]', function (assert) {
   var fakeWindow = {
     setInterval: [],
@@ -184,13 +153,6 @@ QUnit.test('window, document, node [fake]', function (assert) {
   assert.equal(
     QUnit.dump.parse(fakeTextNode),
     '<faketextnode>fakeValue</faketextnode>');
-
-  QUnit.dump.HTML = true;
-  assert.equal(
-    QUnit.dump.parse(fakeTextNode),
-    '&lt;faketextnode&gt;fakeValue&lt;/faketextnode&gt;');
-
-  QUnit.dump.HTML = false;
 });
 
 QUnit.test.if('node [real DOM]', typeof document !== 'undefined', function (assert) {
@@ -277,6 +239,22 @@ QUnit.test('object equal/deepEqual [recursion]', function (assert) {
   var circref = chainwrap(10);
   assert.equal(circref, circref, 'Or hide that through some levels of indirection.');
   assert.deepEqual(circref, circref, '... and checked on all levels!');
+});
+
+QUnit.test('array [basic]', function (assert) {
+  assert.equal(QUnit.dump.parse([[]]), '[\n  []\n]');
+
+  assert.equal(
+    QUnit.dump.parse([1, 2]),
+    '[\n  1,\n  2\n]'
+  );
+});
+
+QUnit.test('array [shallow]', function (assert) {
+  QUnit.dump.maxDepth = 1;
+  assert.equal(
+    QUnit.dump.parse([[]]),
+    '[\n  [object Array]\n]');
 });
 
 QUnit.test('array [recursion]', function (assert) {

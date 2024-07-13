@@ -140,22 +140,12 @@ export default (function () {
     },
 
     separator: function () {
-      if (this.multiline) {
-        return this.HTML ? '<br />' : '\n';
-      } else {
-        return this.HTML ? '&#160;' : ' ';
-      }
+      return '\n';
     },
 
     // Extra can be a number, shortcut for increasing-calling-decreasing
     indent: function (extra) {
-      if (!this.multiline) {
-        return '';
-      }
       let chr = this.indentChar;
-      if (this.HTML) {
-        chr = chr.replace(/\t/g, '   ').replace(/ /g, '&#160;');
-      }
       return new Array(this.depth + (extra || 0)).join(chr);
     },
     up: function (a) {
@@ -237,8 +227,8 @@ export default (function () {
         return join('{', ret, '}');
       },
       node: function (node) {
-        const open = dump.HTML ? '&lt;' : '<';
-        const close = dump.HTML ? '&gt;' : '>';
+        const open = '<';
+        const close = '>';
         const tag = node.nodeName.toLowerCase();
         let ret = open + tag;
         const attrs = node.attributes;
@@ -300,14 +290,8 @@ export default (function () {
       }
     },
 
-    // If true, entities are escaped ( <, >, \t, space and \n )
-    HTML: false,
-
     // Indentation unit
-    indentChar: '  ',
-
-    // If true, items in a collection, are separated by a \n, else just a space.
-    multiline: true
+    indentChar: '  '
   };
 
   return dump;
