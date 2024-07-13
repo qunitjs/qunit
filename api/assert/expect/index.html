@@ -98,7 +98,18 @@
 
 <p>This can also be used to explicitly require a certain number of assertions to be recorded in a given test. If afterwards the number of assertions does not match the expected count, the test will fail.</p>
 
-<p>It is recommended to test asynchronous code with <a href="/api/assert/step/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a> or <a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> instead.</p>
+<p>It is recommended to test asynchronous code with the <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> or <a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> methods instead. If you’re using these stricter methods already, consider removing the <code class="language-plaintext highlighter-rouge">assert.expect()</code> call. See also the <a href="https://github.com/platinumazure/eslint-plugin-qunit/blob/main/docs/rules/require-expect.md">require-expect “never-except-zero”</a> rule of the <a href="https://www.npmjs.com/package/eslint-plugin-qunit">eslint-plugin-qunit</a> package.</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td><code class="language-plaintext highlighter-rouge">assert.expect()</code> now counts <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> as one assertion. Steps no longer count separately.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="examples">Examples</h2>
 
@@ -137,7 +148,9 @@
 
 <h3 id="example-explicit-count">Example: Explicit count</h3>
 
-<p>Require an explicit assertion count.</p>
+<p>Fail the test if the test did not complete an exact assertion count.</p>
+
+<p>It is recommended to test callback code with <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> instead, as replacement for relying on <code class="language-plaintext highlighter-rouge">assert.expect()</code>. See also the <a href="https://github.com/platinumazure/eslint-plugin-qunit/blob/main/docs/rules/require-expect.md">require-expect “never-except-zero”</a> rule of the <a href="https://www.npmjs.com/package/eslint-plugin-qunit">eslint-plugin-qunit</a> package.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
@@ -228,7 +241,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-no-assertions">Example: No assertions</a></li><li class="sidebar-item"><a href="#example-custom-assert">Example: Custom assert</a></li><li class="sidebar-item"><a href="#example-explicit-count">Example: Explicit count</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-no-assertions">Example: No assertions</a></li><li class="sidebar-item"><a href="#example-custom-assert">Example: Custom assert</a></li><li class="sidebar-item"><a href="#example-explicit-count">Example: Explicit count</a></li></ol></li></ol></div>
 </aside>
 
 </div>

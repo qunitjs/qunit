@@ -94,9 +94,20 @@
   </tbody>
 </table>
 
-<p>This assertion registers a passing assertion with the provided string. This and any other steps should be verified later in the test via <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a>.</p>
+<p>This and any later steps must be verified before the end of the test via <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a>.</p>
 
 <p>The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td><a href="/api/assert/expect/">assert.expect()</a> now counts <a href="/api/assert/verifySteps/">assert.verifySteps()</a> as one assertion. Steps no longer count separately.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="examples">Examples</h2>
 
@@ -193,7 +204,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>
