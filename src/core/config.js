@@ -235,6 +235,7 @@ if (preConfig) {
 // Apply QUnit.urlParams
 // in accordance with /docs/api/config.index.md#order
 readFlatPreconfigString(urlParams.filter, 'filter');
+readFlatPreconfigNumber(urlParams.maxDepth, 'maxDepth');
 readFlatPreconfigString(urlParams.module, 'module');
 if (urlParams.moduleId) {
   config.moduleId = [].concat(urlParams.moduleId);

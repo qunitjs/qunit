@@ -1,9 +1,13 @@
 /* globals document, Symbol */
 
 QUnit.module('dump', {
+  beforeEach: function () {
+    // Run most tests without a limit
+    QUnit.dump.maxDepth = 0;
+  },
   afterEach: function () {
     // Restore default
-    QUnit.dump.maxDepth = null;
+    QUnit.dump.maxDepth = 5;
   }
 });
 

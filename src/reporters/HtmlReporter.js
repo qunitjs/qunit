@@ -855,7 +855,7 @@ export default class HtmlReporter {
           'Diff suppressed as the depth of object is more than current max depth (' +
           this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
           ' run with a higher max depth or <a href="' +
-          escapeText(this.makeUrl({ maxDepth: -1 })) + "'>" +
+          escapeText(this.makeUrl({ maxDepth: 0 })) + "'>" +
           'Rerun</a> without max depth.</p></td></tr>';
       } else {
         message += '<tr class="test-message"><th>Message: </th><td>' +
