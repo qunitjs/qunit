@@ -664,6 +664,7 @@ const stats = {
     }
 
     let title = document.createElement('strong');
+    title.className = 'qunit-test-name';
     title.innerHTML = getNameHtml(name, moduleName);
 
     let testBlock = document.createElement('li');
