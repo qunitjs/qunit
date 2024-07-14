@@ -259,10 +259,10 @@ export default class HtmlReporter {
       // the original urlParams in makeUrl()
       this.hidepassed = value;
       const tests = this.elementTests;
-      const length = tests.children.length;
-      const children = tests.children;
 
       if (field.checked) {
+        const length = tests.children.length;
+        const children = tests.children;
         for (let i = 0; i < length; i++) {
           const test = children[i];
           const className = test ? test.className : '';
@@ -274,13 +274,18 @@ export default class HtmlReporter {
           }
         }
 
-        for (const hiddenTest of this.hiddenTests) {
-          tests.removeChild(hiddenTest);
+        // Optimization: Avoid for-of iterator overhead.
+        for (let i = 0; i < this.hiddenTests.length; i++) {
+          tests.removeChild(this.hiddenTests[i]);
         }
       } else {
-        while (this.hiddenTests.length) {
-          tests.appendChild(this.hiddenTests.shift());
+        // Optimization: Avoid Array.shift() which would mutate the array many times.
+        // As of Chrome 126, HTMLElement.append(...hiddenTests) is still slower than
+        // calling appendChild in a loop.
+        for (let i = 0; i < this.hiddenTests.length; i++) {
+          tests.appendChild(this.hiddenTests[i]);
         }
+        this.hiddenTests.length = 0;
       }
       window.history.replaceState(null, '', updatedUrl);
     } else {
