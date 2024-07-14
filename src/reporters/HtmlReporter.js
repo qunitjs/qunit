@@ -660,6 +660,7 @@ export default class HtmlReporter {
     title.innerHTML = getNameHtml(name, moduleName);
 
     let testBlock = document.createElement('li');
+    testBlock.className = 'qunit-test running';
     testBlock.appendChild(title);
 
     // No ID or rerun link for "global failure" blocks
@@ -674,7 +675,6 @@ export default class HtmlReporter {
 
     let assertList = document.createElement('ol');
     assertList.className = 'qunit-assert-list';
-
     testBlock.appendChild(assertList);
 
     this.elementTests.appendChild(testBlock);
@@ -705,6 +705,7 @@ export default class HtmlReporter {
   // https://github.com/qunitjs/qunit/issues/1657
   onBegin (beginDetails) {
     this.appendInterface(beginDetails);
+    this.elementDisplay.className = 'running';
   }
 
   getRerunFailedHtml (failedTests) {
@@ -750,7 +751,7 @@ export default class HtmlReporter {
 
       for (let i = 0; i < this.elementTests.children.length; i++) {
         const test = this.elementTests.children[i];
-        if (test.className === '' || test.className === 'running') {
+        if (DOM.hasClass(test.className, 'running')) {
           test.className = 'aborted';
           const assertList = test.getElementsByTagName('ol')[0];
           const assertLi = document.createElement('li');
@@ -775,7 +776,6 @@ export default class HtmlReporter {
   onTestStart (details) {
     this.appendTest(details.name, details.testId, details.module);
 
-    this.elementDisplay.className = 'running';
     this.elementDisplay.innerHTML = [
       details.previousFailure
         ? 'Rerunning previously failed test: <br />'
@@ -892,71 +892,74 @@ export default class HtmlReporter {
       return;
     }
 
-    DOM.removeClass(testItem, 'running');
-
+    // This test passed if it has no unexpected failed assertions
+    // TODO: Add "status" from TestReport#getStatus() to testDone() and use that.
     let status;
-    if (details.failed > 0) {
-      status = 'failed';
-    } else if (details.todo) {
-      status = 'todo';
+    if (details.skipped) {
+      status = 'skipped';
     } else {
-      status = details.skipped ? 'skipped' : 'passed';
+      const passed = (details.failed > 0 ? details.todo : !details.todo);
+      status = !passed ? 'failed' : (details.todo ? 'todo' : 'passed');
+    }
+    const testPassed = status !== 'failed';
+
+    this.stats.completed++;
+    if (!testPassed) {
+      this.stats.failedTests.push(details.testId);
     }
 
+    // The testItem.firstChild is the test name
+    let testTitle = testItem.firstChild;
+
     let assertList = testItem.getElementsByTagName('ol')[0];
-
-    let good = details.passed;
-    let bad = details.failed;
-
-    // This test passed if it has no unexpected failed assertions
-    const testPassed = details.failed > 0 ? details.todo : !details.todo;
-
+    // Collapse passing tests by default
     if (testPassed) {
-      // Collapse the passing tests
       DOM.addClass(assertList, 'qunit-collapsed');
     } else {
-      this.stats.failedTests.push(details.testId);
-
       if (this.config.collapse) {
         if (!this.collapseNext) {
           // Skip collapsing the first failing test
           this.collapseNext = true;
         } else {
-          // Collapse remaining tests
+          // Collapse subsequent failing tests
           DOM.addClass(assertList, 'qunit-collapsed');
         }
       }
     }
+    if (status !== 'skipped') {
+      DOM.on(testTitle, 'click', function () {
+        DOM.toggleClass(assertList, 'qunit-collapsed');
+      });
+    }
 
-    // The testItem.firstChild is the test name
-    let testTitle = testItem.firstChild;
+    let good = details.passed;
+    let bad = details.failed;
     let badGoodCounts = bad
       ? '<span class="failed">' + bad + '</span>, ' + '<span class="passed">' + good + '</span>, '
       : '';
 
     testTitle.innerHTML += ' <span class="counts">(' + badGoodCounts + details.total + ')</span>';
 
-    this.stats.completed++;
+    DOM.removeClass(testItem, 'running');
 
-    if (details.skipped) {
-      testItem.className = 'skipped';
+    if (status === 'skipped') {
+      DOM.addClass(testItem, 'skipped');
+
       let skipped = document.createElement('em');
       skipped.className = 'qunit-skipped-label';
       skipped.textContent = 'skipped';
       testItem.insertBefore(skipped, testTitle);
       testItem.insertBefore(document.createTextNode(' '), testTitle);
     } else {
-      DOM.on(testTitle, 'click', function () {
-        DOM.toggleClass(assertList, 'qunit-collapsed');
-      });
-
-      testItem.className = testPassed ? 'pass' : 'fail';
+      DOM.addClass(testItem, testPassed ? 'pass' : 'fail');
 
       if (details.todo) {
+        // Add label both for status=todo (passing) and for status=failed on a todo test.
+        DOM.addClass(testItem, 'todo');
+
         const todoLabel = document.createElement('em');
         todoLabel.className = 'qunit-todo-label';
         todoLabel.textContent = 'todo';
-        testItem.className += ' todo';
         testItem.insertBefore(todoLabel, testTitle);
         testItem.insertBefore(document.createTextNode(' '), testTitle);
       }
@@ -983,9 +986,8 @@ export default class HtmlReporter {
 
     const hidepassed = (this.hidepassed !== null ? this.hidepassed : this.config.hidepassed);
     if (hidepassed && (status === 'passed' || details.skipped)) {
-      // use removeChild instead of remove because of support
       this.hiddenTests.push(testItem);
-
+      // use removeChild() instead of remove() for wider browser support
       this.elementTests.removeChild(testItem);
     }
   }

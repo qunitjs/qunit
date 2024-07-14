@@ -235,6 +235,12 @@ The following selectors are considered stable and supported:
 | `#qunit-modulefilter-dropdown` | Module selector, dropdown menu.
 | `#qunit-modulefilter-actions`<br><br>`#qunit-modulefilter-actions button` | Module selector, top area of dropdown menu with "Reset" and "Apply" buttons.
 | `#qunit-modulefilter .clickable`<br><br>`#qunit-modulefilter .clickable.checked` | Module selector, options in the dropdown menu.
+| `#qunit-tests` | List of test items.
+| `#qunit-tests > li`<br><br>QUnit 3:<br>`.qunit-test` | Test item.
+| `#qunit-tests > li:not(.skipped):not(.pass):not(.fail)`<br><br>QUnit 3:<br>`.qunit-test.running`| Currently running test.
+| `#qunit-tests > li.pass`<br>`#qunit-tests > li.fail`<br>`#qunit-tests > li.skipped`<br><br>QUnit 3:<br>`.qunit-test.pass`<br>`.qunit-test.fail`<br>`.qunit-test.skipped` | Test by one of the three mutually-exclusive outcomes (pass, fail, skipped).
+| `#qunit-tests > li.todo`<br><br>QUnit 3:<br>`.qunit-test.todo` | Test was marked as "todo". It will also have the `pass` or `fail` class.
+| `.qunit-assert-list` | List of one assertions under a given test.
 {:class="table-style-api"}
 
 ### HTML API

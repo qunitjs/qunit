@@ -110,7 +110,7 @@ QUnit.test('testresult-display [begin]', function (assert) {
   assert.equal(testresult.textContent, 'AbortRunning...\u00A0', 'testresult text');
 
   var display = element.querySelector('#qunit-testresult-display');
-  assert.equal(display.className, '', 'display class');
+  assert.equal(display.className, 'running', 'display class');
   assert.equal(display.textContent, 'Running...\u00A0', 'display text');
 });
 
