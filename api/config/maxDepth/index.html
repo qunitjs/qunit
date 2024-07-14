@@ -88,9 +88,28 @@
 </tr>
 </table>
 
-<p>To disable the depth limit, use a value of <code class="language-plaintext highlighter-rouge">-1</code>.</p>
+<p>To disable the depth limit and allow infinite depth, use a value of <code class="language-plaintext highlighter-rouge">0</code>.</p>
 
 <p>This is used by <a href="/api/extension/QUnit.dump.parse/"><code class="language-plaintext highlighter-rouge">QUnit.dump.parse()</code></a>.</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td>Make <code class="language-plaintext highlighter-rouge">QUnit.dump.maxDepth</code> an alias for <code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code>, allowing both to be read and changed at runtime.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.18.0">QUnit 1.18</a></td>
+      <td>Introduce <code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code> to enable setting via <a href="/api/config/">preconfig</a>. Temporary changes at runtime must change <code class="language-plaintext highlighter-rouge">QUnit.dump.maxDepth</code> instead.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">QUnit 1.16</a></td>
+      <td>Introduce <code class="language-plaintext highlighter-rouge">QUnit.dump.maxDepth</code>.</td>
+    </tr>
+  </tbody>
+</table>
 
 </article>
 </div>
@@ -163,7 +182,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
 </aside>
 
 </div>

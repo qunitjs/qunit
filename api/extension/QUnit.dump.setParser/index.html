@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=a2f76041" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit.dump.setParser() | QUnit</title>
+<meta property="og:title" content="QUnit.dump.setParser()"><meta name="description" content="Override string serialization for a given data type."><meta property="og:description" content="Override string serialization for a given data type."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><form role="search" class="tsmb-form" data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+
+
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('form[role=search]');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+    <header>
+    <h1>QUnit.dump.setParser()</h1>
+    <p class="post-meta">Categories: <a class="category" href="/api/extension/">Extension interface</a>.</p>
+    </header>
+    <p class="version-details">
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
+    <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
+<p><code class="language-plaintext highlighter-rouge">QUnit.dump.setParser( name, parser )</code></p>
+
+<p>Override string serialization in <a href="/api/extension/QUnit.dump.parse/"><code class="language-plaintext highlighter-rouge">QUnit.dump.parse()</code></a> for a given data type.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">name</code> (string)</td>
+      <td>Value type</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">parser</code> (function)</td>
+      <td>Value formatter callback</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Value type is one of the following:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">array</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bigint</code> (ES2020, determined by native <code class="language-plaintext highlighter-rouge">typeof</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">boolean</code></li>
+  <li><code class="language-plaintext highlighter-rouge">date</code></li>
+  <li><code class="language-plaintext highlighter-rouge">document</code></li>
+  <li><code class="language-plaintext highlighter-rouge">error</code></li>
+  <li><code class="language-plaintext highlighter-rouge">function</code></li>
+  <li><code class="language-plaintext highlighter-rouge">node</code></li>
+  <li><code class="language-plaintext highlighter-rouge">null</code></li>
+  <li><code class="language-plaintext highlighter-rouge">number</code></li>
+  <li><code class="language-plaintext highlighter-rouge">object</code></li>
+  <li><code class="language-plaintext highlighter-rouge">regexp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">string</code></li>
+  <li><code class="language-plaintext highlighter-rouge">symbol</code> (ES2019, determined by native <code class="language-plaintext highlighter-rouge">typeof</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">undefined</code></li>
+  <li><code class="language-plaintext highlighter-rouge">window</code></li>
+</ul>
+
+<p>If your callback allows recursion into arbitrary child value structures, you may call <a href="/api/extension/QUnit.dump.parse/"><code class="language-plaintext highlighter-rouge">QUnit.dump.parse()</code></a> recursively. Recursive callers must pass on the stack, and call <code class="language-plaintext highlighter-rouge">QUnit.dump.up()</code> to increase depth tracking beforehand, and <code class="language-plaintext highlighter-rouge">QUnit.dump.down()</code> to decrease it afterward.</p>
+
+<p>If your value type may contain any number of children (such as an object or array, something not limited to being formatted on a short single line), check the depth against <a href="/api/config/maxDepth/"><code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code></a>, and return a type-specific placeholder value if the depth limit was exceeded.</p>
+
+<p>You may use <code class="language-plaintext highlighter-rouge">QUnit.dump.join()</code> to aid in automatic formatting of indentation based on the current depth. Refer to examples below.</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">QUnit 2.1</a></td>
+      <td>The <code class="language-plaintext highlighter-rouge">QUnit.jsDump</code> alias was removed.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.15.0">QUnit 1.15</a></td>
+      <td>The <code class="language-plaintext highlighter-rouge">QUnit.jsDump</code> interface was renamed to <code class="language-plaintext highlighter-rouge">QUnit.dump</code>.<br />The <code class="language-plaintext highlighter-rouge">QUnit.jsDump</code> alias is deprecated.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="value-formatter">Value formatter</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">setParser</span><span class="p">(</span><span class="dl">'</span><span class="s1">document</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="dl">'</span><span class="s1">[Document </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">]</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">example</span> <span class="o">=</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">)</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">dumped1</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">example</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">dumped1</span><span class="p">);</span>
+<span class="c1">// # Default</span>
+<span class="c1">// {</span>
+<span class="c1">//   "foo": &lt;div&gt;&lt;/div&gt;</span>
+<span class="c1">// }</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">setParser</span><span class="p">(</span><span class="dl">'</span><span class="s1">node</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="dl">'</span><span class="s1">[Node </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">()</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">]</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">dumped2</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">example</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">dumped2</span><span class="p">);</span>
+<span class="c1">// # Custom</span>
+<span class="c1">// {</span>
+<span class="c1">//   "foo": [Node div]</span>
+<span class="c1">// }</span>
+</code></pre></div></div>
+
+<h3 id="deep-formatter">Deep formatter</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">setParser</span><span class="p">(</span><span class="dl">'</span><span class="s1">array</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">stack</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">&amp;&amp;</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">depth</span> <span class="o">&gt;</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">maxDepth</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="dl">'</span><span class="s1">[object Array]</span><span class="dl">'</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">up</span><span class="p">();</span>
+
+  <span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">ret</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="k">while </span><span class="p">(</span><span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ret</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">stack</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">down</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">[</span><span class="dl">'</span><span class="p">,</span> <span class="nx">ret</span><span class="p">,</span> <span class="dl">'</span><span class="s1">]</span><span class="dl">'</span><span class="p">);</span>
+  <span class="c1">// Output:</span>
+  <span class="c1">// 1. 'pre' text.</span>
+  <span class="c1">// 2. for each value:</span>
+  <span class="c1">//    - line break and inner indentation</span>
+  <span class="c1">//    - value as-is</span>
+  <span class="c1">//    - comma (if not last)</span>
+  <span class="c1">// 3. line break and outer indentation (if any)</span>
+  <span class="c1">// 4. 'post' text</span>
+  <span class="c1">//</span>
+  <span class="c1">// [</span>
+  <span class="c1">//   "foo",</span>
+  <span class="c1">//   "bar"</span>
+  <span class="c1">// ]</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+</article>
+</div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/api/QUnit/">Main methods</a></h4>
+	
+
+	<h4><a href="/api/assert/">Assertions</a></h4>
+	
+
+	<h4><a href="/api/callbacks/">Callback events</a></h4>
+	
+
+	<h4><a href="/api/async/">Async control</a></h4>
+	
+
+	<h4><a href="/api/config/">Configuration</a></h4>
+	
+
+	<h4 class="sidebar-title-open"><a href="/api/extension/">Extension interface</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/api/assert/pushResult/">assert.pushResult()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.assert/">QUnit.assert</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/current/">QUnit.config.current</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/modules/">QUnit.config.modules</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/storage/">QUnit.config.storage</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.dump.parse/">QUnit.dump.parse()</a>
+	</li><li class="sidebar-item sidebar-item-active">
+		<a href="/api/extension/QUnit.dump.setParser/">QUnit.dump.setParser()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.extend/">QUnit.extend()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/QUnit/hooks/">QUnit.hooks</a>
+	</li><li class="sidebar-item">
+		<a href="/api/callbacks/QUnit.on/">QUnit.on()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.stack/">QUnit.stack()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.urlParams/">QUnit.urlParams</a>
+	</li></ul>
+
+	<h4><a href="/api/deprecated/">Deprecated methods</a></h4>
+	
+
+	<h4><a href="/api/removed/">Removed methods</a></h4>
+	<hr><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#value-formatter">Value formatter</a></li><li class="sidebar-item"><a href="#deep-formatter">Deep formatter</a></li></ol></li></ol></div>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://app.element.io/#/room/#qunitjs_qunit:gitter.im" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/api/extension/QUnit.dump.setParser.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=3b2a3d2b"></script></body>
+</html>

@@ -96,7 +96,7 @@
 
 <p>This method does string serialization by parsing data structures and objects. It parses DOM elements to a string representation of their outer HTML. By default, nested structures will be displayed up to five levels deep. Anything beyond that is replaced by <code class="language-plaintext highlighter-rouge">[object Object]</code> and <code class="language-plaintext highlighter-rouge">[object Array]</code> placeholders.</p>
 
-<p>If you need more or less output, change the value of <code class="language-plaintext highlighter-rouge">QUnit.dump.maxDepth</code>, representing how deep the elements should be parsed.</p>
+<p>If you need more or less output, change the value of <a href="/api/config/maxDepth/"><code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code></a>, representing how deep the elements should be parsed.</p>
 
 <h2 id="changelog">Changelog</h2>
 
@@ -153,11 +153,11 @@
     <span class="na">back</span><span class="p">:</span> <span class="p">[]</span>
   <span class="p">}</span>
 <span class="p">};</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">input</span><span class="p">));</span>
 <span class="c1">// Logs: { "parts": [object Object] }</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">maxDepth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">.</span><span class="nx">dump</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">input</span><span class="p">));</span>
 <span class="c1">// Logs: { "parts": { "back": [object Array], "front": [object Array] } }</span>
 </code></pre></div></div>
@@ -196,6 +196,8 @@
 		<a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>
 	</li><li class="sidebar-item sidebar-item-active">
 		<a href="/api/extension/QUnit.dump.parse/">QUnit.dump.parse()</a>
+	</li><li class="sidebar-item">
+		<a href="/api/extension/QUnit.dump.setParser/">QUnit.dump.setParser()</a>
 	</li><li class="sidebar-item">
 		<a href="/api/extension/QUnit.extend/">QUnit.extend()</a>
 	</li><li class="sidebar-item">
