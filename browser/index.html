@@ -336,6 +336,30 @@ Test JavaScript code in a real browser with QUnit.
       <td><code class="language-plaintext highlighter-rouge">#qunit-modulefilter .clickable</code><br /><br /><code class="language-plaintext highlighter-rouge">#qunit-modulefilter .clickable.checked</code></td>
       <td>Module selector, options in the dropdown menu.</td>
     </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-tests</code></td>
+      <td>List of test items.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li</code><br /><br />QUnit 3:<br /><code class="language-plaintext highlighter-rouge">.qunit-test</code></td>
+      <td>Test item.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li:not(.skipped):not(.pass):not(.fail)</code><br /><br />QUnit 3:<br /><code class="language-plaintext highlighter-rouge">.qunit-test.running</code></td>
+      <td>Currently running test.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li.pass</code><br /><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li.fail</code><br /><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li.skipped</code><br /><br />QUnit 3:<br /><code class="language-plaintext highlighter-rouge">.qunit-test.pass</code><br /><code class="language-plaintext highlighter-rouge">.qunit-test.fail</code><br /><code class="language-plaintext highlighter-rouge">.qunit-test.skipped</code></td>
+      <td>Test by one of the three mutually-exclusive outcomes (pass, fail, skipped).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">#qunit-tests &gt; li.todo</code><br /><br />QUnit 3:<br /><code class="language-plaintext highlighter-rouge">.qunit-test.todo</code></td>
+      <td>Test was marked as “todo”. It will also have the <code class="language-plaintext highlighter-rouge">pass</code> or <code class="language-plaintext highlighter-rouge">fail</code> class.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">.qunit-assert-list</code></td>
+      <td>List of one assertions under a given test.</td>
+    </tr>
   </tbody>
 </table>
 
