@@ -22,7 +22,7 @@ Extensible data dumping and string serialization.
 
 This method does string serialization by parsing data structures and objects. It parses DOM elements to a string representation of their outer HTML. By default, nested structures will be displayed up to five levels deep. Anything beyond that is replaced by `[object Object]` and `[object Array]` placeholders.
 
-If you need more or less output, change the value of `QUnit.config.maxDepth`, representing how deep the elements should be parsed.
+If you need more or less output, change the value of [`QUnit.config.maxDepth`](../config/maxDepth.md), representing how deep the elements should be parsed.
 
 ## Changelog
 
