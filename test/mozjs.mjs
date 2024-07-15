@@ -7,6 +7,7 @@ import '../test/main/assert-step.js';
 // import  "../test/main/assert-timeout.js"; // Requires setTimeout
 // import  "../test/main/async.js"; // Requires setTimeout
 import '../test/main/browser-runner.js';
+import '../test/main/callbacks.js';
 import '../test/main/deepEqual.js';
 import '../test/main/diff.js';
 import '../test/main/dump.js';

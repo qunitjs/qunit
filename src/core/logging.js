@@ -9,7 +9,7 @@ export function registerLoggingCallbacks (obj) {
   function registerLoggingCallback (key) {
     return function loggingCallback (callback) {
       if (typeof callback !== 'function') {
-        throw new Error('Callback parameter must be a function');
+        throw new TypeError('Callback parameter must be a function');
       }
       config.callbacks[key].push(callback);
     };

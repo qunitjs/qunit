@@ -125,6 +125,7 @@ module.exports = function (grunt) {
         'test/main/assert-timeout.js',
         'test/main/async.js',
         'test/main/browser-runner.js',
+        'test/main/callbacks.js',
         'test/main/deepEqual.js',
         'test/main/diff.js',
         'test/main/dump.js',

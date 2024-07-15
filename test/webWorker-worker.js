@@ -12,6 +12,7 @@ importScripts(
   'main/assert-timeout.js',
   'main/async.js',
   'main/browser-runner.js',
+  'main/callbacks.js',
   'main/deepEqual.js',
   'main/diff.js',
   'main/dump.js',
