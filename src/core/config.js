@@ -1,5 +1,5 @@
-import { globalThis, process, sessionStorage } from '../globals.js';
-import { urlParams } from '../urlparams.js';
+import { globalThis, process, sessionStorage } from './globals.js';
+import { urlParams } from './urlparams.js';
 import { extend } from './utilities.js';
 
 /**

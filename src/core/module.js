@@ -1,6 +1,6 @@
-import config from './core/config.js';
+import config from './config.js';
 import SuiteReport from './reports/suite.js';
-import { extend, generateHash, isAsyncFunction } from './core/utilities.js';
+import { extend, generateHash, isAsyncFunction } from './utilities.js';
 
 const moduleStack = [];
 

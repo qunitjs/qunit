@@ -1,6 +1,7 @@
 import kleur from 'kleur';
-import { errorString } from '../core/utilities.js';
+import { errorString } from '../utilities.js';
 import { console } from '../globals.js';
+
 const hasOwn = Object.prototype.hasOwnProperty;
 
 /**

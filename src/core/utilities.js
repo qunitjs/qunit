@@ -1,4 +1,4 @@
-import { window } from '../globals.js';
+import { window } from './globals.js';
 
 export const toString = Object.prototype.toString;
 export const hasOwn = Object.prototype.hasOwnProperty;

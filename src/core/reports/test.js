@@ -1,4 +1,4 @@
-import { extend, performance } from '../core/utilities.js';
+import { extend, performance } from '../utilities.js';
 
 export default class TestReport {
   constructor (name, suite, options) {

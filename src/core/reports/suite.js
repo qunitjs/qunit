@@ -1,4 +1,4 @@
-import { performance } from '../core/utilities.js';
+import { performance } from '../utilities.js';
 
 export default class SuiteReport {
   constructor (name, parentSuite) {

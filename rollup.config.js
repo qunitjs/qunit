@@ -9,7 +9,7 @@ const { replacements } = require('./build/dist-replace.js');
 const isCoverage = process.env.BUILD_TARGET === 'coverage';
 
 module.exports = {
-  input: 'src/qunit.js',
+  input: 'src/core/qunit.js',
   output: {
     file: 'qunit/qunit.js',
     sourcemap: isCoverage,

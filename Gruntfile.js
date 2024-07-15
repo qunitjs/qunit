@@ -31,7 +31,7 @@ module.exports = function (grunt) {
       options: { process: preprocess },
 
       'src-css': {
-        src: 'src/qunit.css',
+        src: 'src/core/qunit.css',
         dest: 'qunit/qunit.css'
       }
     },

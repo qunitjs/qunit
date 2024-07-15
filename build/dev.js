@@ -88,7 +88,7 @@ async function startRollupWatch () {
 
 async function startCssWatch () {
   const baseDir = process.cwd();
-  const cssInputFile = path.resolve(baseDir, 'src/qunit.css');
+  const cssInputFile = path.resolve(baseDir, 'src/core/qunit.css');
   const cssOutputFile = path.resolve(baseDir, 'qunit/qunit.css');
 
   function copyCss () {

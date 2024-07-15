@@ -3,8 +3,7 @@ import { emit } from './events.js';
 import Assert from './assert.js';
 import Logger from './logger.js';
 import Promise from './promise.js';
-
-import config from './core/config.js';
+import config from './config.js';
 import {
   diff,
   errorString,
@@ -13,11 +12,10 @@ import {
   hasOwn,
   inArray,
   performance
-} from './core/utilities.js';
+} from './utilities.js';
 import { runLoggingCallbacks } from './callbacks.js';
-import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace.js';
+import { extractStacktrace, sourceFromStacktrace } from './stacktrace.js';
 import dump from './dump.js';
-
 import TestReport from './reports/test.js';
 
 export default function Test (settings) {

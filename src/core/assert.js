@@ -1,8 +1,8 @@
 import dump from './dump.js';
 import equiv from './equiv.js';
-import config from './core/config.js';
-import { objectType, objectValues, objectValuesSubset, errorString } from './core/utilities.js';
-import { sourceFromStacktrace } from './core/stacktrace.js';
+import config from './config.js';
+import { objectType, objectValues, objectValuesSubset, errorString } from './utilities.js';
+import { sourceFromStacktrace } from './stacktrace.js';
 import { clearTimeout } from './globals.js';
 
 class Assert {

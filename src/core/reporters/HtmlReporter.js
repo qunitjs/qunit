@@ -1,4 +1,4 @@
-import { extend, errorString, escapeText } from '../core/utilities.js';
+import { extend, errorString, escapeText } from '../utilities.js';
 import diff from '../diff.js';
 import dump from '../dump.js';
 import { window, document, navigator, StringMap } from '../globals.js';

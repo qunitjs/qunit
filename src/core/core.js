@@ -7,16 +7,16 @@ import Assert from './assert.js';
 import Test, { test, pushFailure } from './test.js';
 import reporters from './reporters.js';
 
-import config from './core/config.js';
-import hooks from './core/hooks.js';
-import { objectType, is, performance } from './core/utilities.js';
+import config from './config.js';
+import hooks from './hooks.js';
+import { objectType, is, performance } from './utilities.js';
 import { createRegisterCallbackFunction, runLoggingCallbacks } from './callbacks.js';
-import { sourceFromStacktrace } from './core/stacktrace.js';
-import ProcessingQueue from './core/processing-queue.js';
+import { sourceFromStacktrace } from './stacktrace.js';
+import ProcessingQueue from './processing-queue.js';
 
 import { urlParams } from './urlparams.js';
 import { on, emit } from './events.js';
-import onUncaughtException from './core/on-uncaught-exception.js';
+import onUncaughtException from './on-uncaught-exception.js';
 import diff from './diff.js';
 import version from './version.js';
 
