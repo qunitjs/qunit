@@ -24,7 +24,7 @@ Group related tests under a common label.
 | [`options`](#options-object) (object) | Set hook callbacks. |
 | [`scope`](#module-scope) (function) | A scope for tests, nested modules, and/or hooks. |
 
-All tests inside a module will be grouped under that module. Tests can be added to a module using the [QUnit.test](./test.md) method. Modules help organize, select, and filter tests to run. See [§ Examples](#examples).
+All tests inside a module will be grouped under that module. Tests can be added to a module using the [QUnit.test](./test.md) method. Modules help organize, select, and filter tests to run.
 
 Modules can be nested inside other modules via a [module scope](#module-scope). In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grandparent > Parent > Child > my test".
 
@@ -34,6 +34,30 @@ Modules can be nested inside other modules via a [module scope](#module-scope). 
 `QUnit.module.if( name, condition, … )`
 
 These methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.todo()`](./test.todo.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.if()`](./test.if.md) to all a module's tests at once.
+
+### Organizing your tests
+
+By default, if `QUnit.module` is called without a `scope` callback, all subsequently defined tests are automatically grouped into that module, until the next module is defined.
+
+```js
+QUnit.module('Group A');
+
+QUnit.test('foo', function (assert) {
+  assert.true(true);
+});
+QUnit.test('bar', function (assert) {
+  assert.true(true);
+});
+
+QUnit.module('Group B');
+
+QUnit.test('baz', function (assert) {
+  assert.true(true);
+});
+QUnit.test('quux', function (assert) {
+  assert.true(true);
+});
+```
 
 <span id="nested-scope"></span><span id="nested-module-scope"></span>
 
@@ -50,23 +74,31 @@ The module scope is given a `hooks` object which can be used to add [hooks](#hoo
 Example:
 
 ```js
-QUnit.module('Group A', hooks => {
-  QUnit.test('basic test example', assert => {
-    assert.true(true, 'this is fine');
+QUnit.module('Fruit', function (hooks) {
+  QUnit.module('Berries', function (hooks) {
+    QUnit.test('cranberry', function (assert) {
+      assert.true(true);
+    });
+
+    // ...
   });
 
-  QUnit.test('basic test example 2', assert => {
-    assert.true(true, 'this is also fine');
+  QUnit.module('Melons', function (hooks) {
+    QUnit.test('galia', function (assert) {
+      assert.true(true);
+    });
+
+    // ...
   });
 });
 
-QUnit.module('Group B', hooks => {
-  QUnit.test('basic test example 3', assert => {
-    assert.true(true, 'this is fine');
+QUnit.module('Bread', function (hooks) {
+  QUnit.test('bake', function (assert) {
+    assert.true(true);
   });
 
-  QUnit.test('basic test example 4', assert => {
-    assert.true(true, 'this is also fine');
+  QUnit.test('toast', function (assert) {
+    assert.true(true);
   });
 });
 ```
@@ -131,52 +163,6 @@ Example: [§ Hooks via module options](#hooks-via-module-options).
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `beforeEach` and `afterEach` options.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
 
 ## Examples
-
-### Organizing your tests
-
-By default, if `QUnit.module` is called without a `scope` callback, all subsequently defined tests are automatically grouped into that module, until the next module is defined.
-
-```js
-QUnit.module('Group A');
-
-QUnit.test('foo', function (assert) {
-  assert.true(true);
-});
-QUnit.test('bar', function (assert) {
-  assert.true(true);
-});
-
-QUnit.module('Group B');
-
-QUnit.test('baz', function (assert) {
-  assert.true(true);
-});
-QUnit.test('quux', function (assert) {
-  assert.true(true);
-});
-```
-
-Using modern syntax:
-
-```js
-QUnit.module('Group A');
-
-QUnit.test('foo', assert => {
-  assert.true(true);
-});
-QUnit.test('bar', assert => {
-  assert.true(true);
-});
-
-QUnit.module('Group B');
-
-QUnit.test('baz', assert => {
-  assert.true(true);
-});
-QUnit.test('quux', assert => {
-  assert.true(true);
-});
-```
 
 ### Async hook callback
 
@@ -287,30 +273,10 @@ QUnit.module('module A', {
 
 ### Using the test context
 
-The test context object is exposed to hook callbacks.
+The test context object is also exposed to hook callbacks. Each test starts with a copy of the context object at the module level.
 
 ```js
-QUnit.module('Maker', {
-  beforeEach: function () {
-    this.parts = ['A', 'B'];
-  }
-});
-
-QUnit.test('make alphabet', function (assert) {
-  this.parts.push('C');
-  assert.equal(this.parts.join(''), 'ABC');
-});
-
-QUnit.test('make music', function (assert) {
-  this.parts.push('B', 'A');
-  assert.equal(this.parts.join(''), 'ABBA');
-});
-```
-
-The test context is also available when using a module scope. Beware that use of the `this` binding is not available in arrow functions.
-
-```js
-QUnit.module('Maker', hooks => {
+QUnit.module('Maker', function (hooks) {
   hooks.beforeEach(function () {
     this.parts = ['A', 'B'];
   });
@@ -327,7 +293,7 @@ QUnit.module('Maker', hooks => {
 });
 ```
 
-It might be more convenient to use JavaScript's own lexical scope instead:
+Beware that use of the `this` binding is not available in arrow functions. It might be more convenient to use JavaScript's own lexical scope instead:
 
 ```js
 QUnit.module('Machine Maker', hooks => {
