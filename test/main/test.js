@@ -187,24 +187,39 @@ QUnit.module('test', function () {
     this.push(true, value, expected, message, false);
   };
 
-  QUnit.test('mod2', function (assert) {
-    assert.mod2(2, 0, '2 % 2 == 0');
-    assert.mod2(3, 1, '3 % 2 == 1');
+  QUnit.test('assert.pushResult()', function (assert) {
+    var detail;
+    QUnit.log(function (data) {
+      detail = data;
+    });
+
+    assert.mod2(2, 0, 'two');
+    assert.mod2(3, 1, 'three');
+
+    assert.propContains(detail, {
+      result: true,
+      actual: 1,
+      expected: 1,
+      message: 'three',
+      negative: false
+    });
   });
 
-  QUnit.test('testForPush', function (assert) {
-    QUnit.log(function (detail) {
-      if (detail.message === 'should be call pushResult') {
-        /* eslint-disable qunit/no-conditional-assertions */
-        assert.equal(detail.result, true);
-        assert.equal(detail.actual, 1);
-        assert.equal(detail.expected, 1);
-        assert.equal(detail.message, 'should be call pushResult');
-        assert.equal(detail.negative, false);
-        /* eslint-enable */
-      }
+  QUnit.test('assert.push()', function (assert) {
+    var detail;
+    QUnit.log(function (data) {
+      detail = data;
     });
-    assert.testForPush(1, 1, 'should be call pushResult');
+
+    assert.testForPush(10, 20, 'hello');
+
+    assert.propContains(detail, {
+      result: true,
+      actual: 10,
+      expected: 20,
+      message: 'hello',
+      negative: false
+    });
   });
 
   QUnit.module('aliases');
