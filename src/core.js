@@ -9,8 +9,8 @@ import reporters from './reporters.js';
 
 import config from './core/config.js';
 import hooks from './core/hooks.js';
-import { extend, objectType, is, performance } from './core/utilities.js';
-import { registerLoggingCallbacks, runLoggingCallbacks } from './core/logging.js';
+import { objectType, is, performance } from './core/utilities.js';
+import { createRegisterCallbackFunction, runLoggingCallbacks } from './callbacks.js';
 import { sourceFromStacktrace } from './core/stacktrace.js';
 import ProcessingQueue from './core/processing-queue.js';
 
@@ -19,8 +19,6 @@ import { on, emit } from './events.js';
 import onUncaughtException from './core/on-uncaught-exception.js';
 import diff from './diff.js';
 import version from './version.js';
-
-const QUnit = {};
 
 // The "currentModule" object would ideally be defined using the createModule()
 // function. Since it isn't, add the missing suiteReport property to it now that
@@ -32,13 +30,14 @@ config.currentModule.suiteReport = runSuite;
 
 config._pq = new ProcessingQueue(test);
 
-// Figure out if we're running the tests from a server or not
-QUnit.isLocal = (window && window.location && window.location.protocol === 'file:');
+const QUnit = {
 
-// Expose the current QUnit version
-QUnit.version = version;
+  // Figure out if we're running the tests from a server or not
+  isLocal: (window && window.location && window.location.protocol === 'file:'),
 
-extend(QUnit, {
+  // Expose the current QUnit version
+  version,
+
   config,
   urlParams,
 
@@ -48,10 +47,18 @@ extend(QUnit, {
   reporters,
   hooks,
   is,
-  objectType,
   on,
+  objectType,
   onUncaughtException,
   pushFailure,
+
+  begin: createRegisterCallbackFunction('begin'),
+  done: createRegisterCallbackFunction('done'),
+  log: createRegisterCallbackFunction('log'),
+  moduleDone: createRegisterCallbackFunction('moduleDone'),
+  moduleStart: createRegisterCallbackFunction('moduleStart'),
+  testDone: createRegisterCallbackFunction('testDone'),
+  testStart: createRegisterCallbackFunction('testStart'),
 
   assert: Assert.prototype,
   module,
@@ -81,15 +88,15 @@ extend(QUnit, {
       // still wait for DOM ready to ensure reliable integration of reporters.
       window.addEventListener('load', function () {
         setTimeout(function () {
-          begin();
+          doBegin();
         });
       });
     } else if (setTimeout) {
       setTimeout(function () {
-        begin();
+        doBegin();
       });
     } else {
-      begin();
+      doBegin();
     }
   },
 
@@ -101,16 +108,14 @@ extend(QUnit, {
     const source = sourceFromStacktrace(offset);
     return source;
   }
-});
-
-registerLoggingCallbacks(QUnit);
+};
 
 function unblockAndAdvanceQueue () {
   config.blocking = false;
   config._pq.advance();
 }
 
-function begin () {
+function doBegin () {
   if (config.started) {
     unblockAndAdvanceQueue();
     return;

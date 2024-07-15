@@ -1,6 +1,6 @@
 import config from './config.js';
 import { extend, generateHash, performance } from './utilities.js';
-import { runLoggingCallbacks } from './logging.js';
+import { runLoggingCallbacks } from '../callbacks.js';
 
 import Promise from '../promise.js';
 import { runSuite } from '../module.js';

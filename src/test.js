@@ -14,7 +14,7 @@ import {
   inArray,
   performance
 } from './core/utilities.js';
-import { runLoggingCallbacks } from './core/logging.js';
+import { runLoggingCallbacks } from './callbacks.js';
 import { extractStacktrace, sourceFromStacktrace } from './core/stacktrace.js';
 import dump from './dump.js';
 
