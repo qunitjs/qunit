@@ -2,7 +2,7 @@
   "private": true,
   "devDependencies": {
     "nyc": "15.1.0",
-    "qunit": "file:../../.."
+    "qunit": "file:../.."
   },
   "scripts": {
     "test": "nyc qunit"

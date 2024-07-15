@@ -192,7 +192,7 @@ Generate code coverage reports with [nyc](https://istanbul.js.org/):
 }
 ```
 
-See [/test/integration/nyc/](https://github.com/qunitjs/qunit/tree/main/test/integration/nyc) in the QUnit repo for a minimal example.
+See [/demos/nyc/](https://github.com/qunitjs/qunit/tree/main/demos/nyc) in the QUnit repo for a minimal example.
 
 For a more elaborate example showcasing a unified test coverage report for tests in both Node.js and a headless browser, see [Krinkle/example-node-and-browser-qunit](https://github.com/Krinkle/example-node-and-browser-qunit-ci/).
 

@@ -91,7 +91,7 @@
     "test-cli": "node bin/qunit.js test/main/ test/cli/*.js",
     "test": "npm run lint && npm run build && npm run test-main && npm run test-cli",
     "test-nolint": "npm run build && npm run test-main && npm run test-cli",
-    "test-integration": "npm run build && node bin/qunit.js test/integration/*.js",
+    "test-demos": "npm run build && node bin/qunit.js demos/*.js",
     "browserstack": "browserstack-runner -v",
     "authors": "(echo 'Authors ordered by first contribution\n' && git log --format='%aN <%aE>' --no-merges --reverse | awk '!seen[$0]++') | tee AUTHORS.txt",
     "coverage": "npm run build-coverage && npm run coverage-cli && npm run coverage-main && nyc report",

@@ -72,15 +72,13 @@ Fixes #1.
 The subject line should use the [imperative mood](https://en.wikipedia.org/wiki/Imperative_mood),
 and start with one of the following components:
 
-* `All`
 * `Assert`
 * `Build`
 * `CLI`
 * `Core`
+* `Demos`
 * `Docs`
-* `Dump`
 * `HTML Reporter`
-* `Release`
-* `Tests`
+* `Test`
 
 See also [Commit message guidelines](https://www.mediawiki.org/wiki/Gerrit/Commit_message_guidelines).

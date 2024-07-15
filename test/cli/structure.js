@@ -83,8 +83,7 @@ QUnit.module('structure', () => {
       .map(file => file.replace(/\\/g, '/'))
       // Ignore file names containing "--", which are subresources (e.g. iframes).
       // Ignore test/benchmark, which is unrelated.
-      // Ignore test/integration/grunt-contrib-qunit, which we manage separately.
-      .filter(file => !file.includes('--') && !file.includes('benchmark') && !file.includes('integration'))
+      .filter(file => !file.includes('--') && !file.includes('benchmark'))
       .map(file => `test/${file}`);
 
     QUnit.test('files', assert => {

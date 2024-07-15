@@ -10,11 +10,11 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[demos/grunt-contrib-qunit.js]
+trim_trailing_whitespace = false
+[demos/nyc.js]
+trim_trailing_whitespace = false
 [test/cli/TapReporter.js]
-trim_trailing_whitespace = false
-[test/integration/grunt-contrib-qunit.js]
-trim_trailing_whitespace = false
-[test/integration/nyc.js]
 trim_trailing_whitespace = false
 
 [*.css]

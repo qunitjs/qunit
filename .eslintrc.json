@@ -12,14 +12,14 @@
   "ignorePatterns": [
     "__codeorigin/**",
     "coverage/**",
+    "demos/*/qunit/**",
+    "demos/*/coverage/**",
+    "demos/*/package-lock.json",
     "docs/.jekyll-cache/**",
     "docs/_site/**",
     "lib/**",
     "qunit/**",
     "test/cli/fixtures/sourcemap/*.min.js",
-    "test/integration/*/qunit/**",
-    "test/integration/*/coverage/**",
-    "test/integration/*/package-lock.json",
     "temp/**"
   ],
   "overrides": [
@@ -48,7 +48,7 @@
     // Universal test suites
     // Strictly ES5 syntax for ES5 runtimes.
     {
-      "files": ["test/**"],
+      "files": ["demos/**", "test/**"],
       "extends": [".eslintrc.base.js", "plugin:qunit/recommended"],
       "parserOptions": {
         "ecmaVersion": 5,
@@ -190,7 +190,7 @@
       }
     },
     {
-      "files": ["test/integration/**/*.js"],
+      "files": ["demos/**/*.js"],
       "env": {
         "browser": true,
         "es2017": true,
@@ -204,7 +204,7 @@
       }
     },
     {
-      "files": ["test/**/*.html"],
+      "files": ["demos/**/*.html", "test/**/*.html"],
       "env": {
         "browser": true
       }

@@ -28,10 +28,10 @@ jobs:
             node: 22.x
             script: npm run test
 
-          - name: "Integration"
+          - name: "Demos"
             os: ubuntu-20.04
             node: 18.x
-            script: npm run test-integration
+            script: npm run test-demos
 
           - name: "Windows: Node 18"
             os: windows-latest
