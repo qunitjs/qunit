@@ -636,7 +636,7 @@ export default class HtmlReporter {
     this.element.innerHTML =
       '<div id="qunit-header">' +
         '<h1><a href="' + escapeText(this.unfilteredUrl) + '">' + escapeText(document.title) + '</a></h1> ' +
-        '<div id="qunit-userAgent">' + escapeText('QUnit ' + version + '; ' + navigator.userAgent) + '</div>' +
+        '<div id="qunit-userAgent" tabindex="0"><span class="qunit-version-lib">' + escapeText('QUnit ' + version) + ';</span> <span class="qunit-version-client">' + escapeText(navigator.userAgent) + '</span></div>' +
       '</div>' +
       '<div id="qunit-toolbar" role="navigation">' +
         '<div id="qunit-banner"></div>' +
