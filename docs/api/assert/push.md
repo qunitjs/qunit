@@ -4,14 +4,12 @@ title: assert.push()
 excerpt: Report the result of a custom assertion.
 groups:
   - deprecated
-  - removed
 redirect_from:
   - "/config/QUnit.push/"
   - "/extension/QUnit.push/"
   - "/api/extension/QUnit.push/"
 version_added: "1.0.0"
 version_deprecated: "2.1.1"
-version_removed: "unreleased"
 ---
 
 `push( result, actual, expected, message )`
@@ -35,7 +33,6 @@ To safely report a global error from inside a plugin or other integration layer,
 
 ## Changelog
 
-| UNRELEASED | Removed.
 | [QUnit 2.1.0](https://github.com/qunitjs/qunit/releases/tag/2.1.0) | Deprecated. Use `assert.pushResult` instead.
 | [QUnit 2.0.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0)| Remove `QUnit.push` alias.
 | [QUnit 1.15.0](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | Rename `QUnit.push` to `QUnit.assert.push`, with alias.

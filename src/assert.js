@@ -81,6 +81,17 @@ class Assert {
     });
   }
 
+  push (result, actual, expected, message, negative) {
+    const currentAssert = this instanceof Assert ? this : config.current.assert;
+    return currentAssert.pushResult({
+      result,
+      actual,
+      expected,
+      message,
+      negative
+    });
+  }
+
   // Public API to internal test.pushResult()
   pushResult (resultInfo) {
     // Destructure of resultInfo = { result, actual, expected, message, negative }
