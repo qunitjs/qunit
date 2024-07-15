@@ -73,14 +73,9 @@ module.exports = function (grunt) {
           urls: [
             'test/index.html',
 
-            'test/amd.html',
-            'test/autostart.html',
-            'test/config-fixture-null.html',
-            'test/config-fixture-string.html',
             'test/dynamic-import.html',
             'test/events-filters.html',
             'test/events-in-test.html',
-            'test/headless.html',
             'test/index-es5.html',
             'test/index-xhtml.xhtml',
             'test/logs.html',
@@ -106,8 +101,14 @@ module.exports = function (grunt) {
             'test/webWorker.html',
 
             'demos/q4000-qunit.html',
-            'test/reporter-html/window-onerror-preexisting-handler.html',
-            'test/reporter-html/window-onerror.html'
+
+            'test/browser-runner/amd.html',
+            'test/browser-runner/autostart.html',
+            'test/browser-runner/config-fixture-null.html',
+            'test/browser-runner/config-fixture-string.html',
+            'test/browser-runner/headless.html',
+            'test/browser-runner/window-onerror-preexisting-handler.html',
+            'test/browser-runner/window-onerror.html'
 
           ].map(file => `http://localhost:${connectPort}/${file}`)
         }

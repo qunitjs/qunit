@@ -1,5 +1,5 @@
 /* eslint-env browser */
-QUnit.module('window.onerror (no preexisting handler)', function (hooks) {
+QUnit.module('window.onerror [no preexisting handler]', function (hooks) {
   var originalOnUncaught;
 
   hooks.beforeEach(function () {

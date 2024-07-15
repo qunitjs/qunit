@@ -73,7 +73,7 @@ QUnit.module('structure', () => {
   });
 
   QUnit.module('test/**.html', () => {
-    // Get a list of the HTML files, including in subdirectories (e.g. "test/reporter-html/").
+    // Get a list of the HTML files, including in subdirectories (e.g. "test/browser-runner/").
     const files = glob('**/*.html', {
       cwd: path.join(__dirname, '..'),
       filesOnly: true
