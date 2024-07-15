@@ -18,10 +18,17 @@
     QUnit.assert.raises(function () {
       throw new Error('boo');
     }, /boo/);
+    QUnit.assert.push(true, 1, 1, 'hi');
+    QUnit.assert.pushResult({
+      result: true,
+      actual: 1,
+      expected: 1,
+      message: 'hello'
+    });
   }
 
   QUnit.test('global QUnit.assert calls', function (assert) {
-    assert.expect(12);
+    assert.expect(14);
     helper();
   });
 

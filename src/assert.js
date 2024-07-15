@@ -1,6 +1,5 @@
 import dump from './dump.js';
 import equiv from './equiv.js';
-
 import config from './core/config.js';
 import { objectType, objectValues, objectValuesSubset, errorString } from './core/utilities.js';
 import { sourceFromStacktrace } from './core/stacktrace.js';
@@ -82,8 +81,8 @@ class Assert {
   }
 
   push (result, actual, expected, message, negative) {
-    const currentAssert = this instanceof Assert ? this : config.current.assert;
-    return currentAssert.pushResult({
+    const currentTest = (this instanceof Assert && this.test) || config.current;
+    return currentTest.pushResult({
       result,
       actual,
       expected,
@@ -94,24 +93,18 @@ class Assert {
 
   // Public API to internal test.pushResult()
   pushResult (resultInfo) {
-    // Destructure of resultInfo = { result, actual, expected, message, negative }
-    let assert = this;
-    const currentTest = (assert instanceof Assert && assert.test) || config.current;
+    // Prefer context object when possible, so that test.pushResult() can provide
+    // useful error when producing assertions on a closed test.
+    const currentTest = (this instanceof Assert && this.test) || config.current;
 
-    // Backwards compatibility fix.
-    // Allows the direct use of global exported assertions and QUnit.assert.*
-    // Although, it's use is not recommended as it can leak assertions
-    // to other tests from async tests, because we only get a reference to the current test,
-    // not exactly the test where assertion were intended to be called.
+    // Backwards compatibility for direct use of global QUnit.assert.* methods.
+    // It's use is not recommended as it can leak assertions to other tests from async
+    // tests, because we only get a reference to the current test.
     if (!currentTest) {
       throw new Error('assertion outside test context, in ' + sourceFromStacktrace(2));
     }
 
-    if (!(assert instanceof Assert)) {
-      assert = currentTest.assert;
-    }
-
-    return assert.test.pushResult(resultInfo);
+    return currentTest.pushResult(resultInfo);
   }
 
   ok (result, message) {

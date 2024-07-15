@@ -44,7 +44,6 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove deprecated [`QUnit.extend()`](https://qunitjs.com/api/extension/QUnit.extend/). (Izel Nakri)
 * Core: Remove deprecated [`QUnit.load()`](https://qunitjs.com/api/QUnit/load/). [#1084](https://github.com/qunitjs/qunit/issues/1084)
 * Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [QUnit.onUncaughtException()](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
-* Assert: Remove deprecated [`assert.push()`](https://qunitjs.com/api/assert/push/).
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.
 * HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)

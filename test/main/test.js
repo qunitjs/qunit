@@ -133,12 +133,10 @@ QUnit.module('test', function () {
     this.push(true, value, expected, message, false);
   };
 
-  QUnit.test('mod2', function (assert) {
+  QUnit.test('assert.pushResult()', function (assert) {
     var detail;
     QUnit.log(function (data) {
-      if (data.message === 'three') {
-        detail = data;
-      }
+      detail = data;
     });
 
     assert.mod2(2, 0, 'two');
@@ -149,6 +147,23 @@ QUnit.module('test', function () {
       actual: 1,
       expected: 1,
       message: 'three',
+      negative: false
+    });
+  });
+
+  QUnit.test('assert.push()', function (assert) {
+    var detail;
+    QUnit.log(function (data) {
+      detail = data;
+    });
+
+    assert.testForPush(10, 20, 'hello');
+
+    assert.propContains(detail, {
+      result: true,
+      actual: 10,
+      expected: 20,
+      message: 'hello',
       negative: false
     });
   });
