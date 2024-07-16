@@ -217,9 +217,33 @@ Test JavaScript code in a real browser with QUnit.
 
 <p><a href="/api/config/noglobals/">Check for globals</a> detects if a test creates or removes  global variable is. QUnit keeps a list of properties found on the <code class="language-plaintext highlighter-rouge">window</code> object. If properties were added or removed, the test fails.</p>
 
-<p><a href="/api/config/notrycatch/">No try-catch</a> instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging.</p>
+<p><a href="/api/config/notrycatch/">No try-catch</a> instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging with browser devtools.</p>
 
 <p>You can extend the toolbar via <a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>.</p>
+
+<h3 id="test-results-explained">Test results explained</h3>
+
+<p>Each result is displayed in a numbered list.</p>
+
+<blockquote>
+  <p><strong>MyApp: example</strong> (3) <em>Rerun</em></p>
+</blockquote>
+
+<p>After the name of the module and test, in parentheses, is the total number of assertions.</p>
+
+<p>The “Rerun” link at the end will reload the page and quickly run the test again in isolation, skipping all other tests.</p>
+
+<p>Click on the test name to expand the entry, which reveals the message of each assertion.</p>
+
+<p>For failed assertions:</p>
+<ul>
+  <li>The parenthetical reports the “failed, passed, and total” number of assertions.</li>
+  <li>The expanded view displays the expected and actual asserted value, with a diff to highlight the difference between the two values.</li>
+  <li>The source where the failing assertion is performed. The stack trace indicates the test file path and line number.</li>
+  <li>The source where the test is defined.</li>
+</ul>
+
+<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 600px;"></iframe>
 
 <h3 id="filter">Filter</h3>
 
@@ -231,27 +255,9 @@ Test JavaScript code in a real browser with QUnit.
 
 <p>To quickly re-run one or more modules of tests, select them from the module selector and press “Apply”.</p>
 
-<p>You can use the input field to quickly find a module, even if you have many modules. The input field performs <a href="https://github.com/farzher/fuzzysort">fuzzy matching</a>, so don’t worry about getting it exactly right! <code class="language-plaintext highlighter-rouge">baor game</code> and <code class="language-plaintext highlighter-rouge">boar dame</code> finds “board game”. This is similar to how “Quick Open” works in modern text editors.</p>
+<p>You can use the input field to quickly find a module, even if you have many modules. The input field performs <a href="https://github.com/farzher/fuzzysort">fuzzy matching</a>, so don’t worry about getting it exactly right! For example, typing <code class="language-plaintext highlighter-rouge">bor game</code> or <code class="language-plaintext highlighter-rouge">abGame</code> will find <code class="language-plaintext highlighter-rouge">awesome board games</code>. This is similar to how “Quick Open” works in modern text editors.</p>
 
 <p>When selecting a parent module, which contains <a href="/api/QUnit/module/">nested modules</a>, the nested modules and their tests will also be run.</p>
-
-<h3 id="test-results">Test results</h3>
-
-<p>Each result is displayed in a numbered list.</p>
-
-<blockquote>
-  <p><strong>MyApp: example</strong> (3) <em>Rerun</em></p>
-</blockquote>
-
-<p>After the name of the module and test, in parentheses, is the total number of assertions.</p>
-
-<p>The “Rerun” link at the end will run that test on its own, skipping all other tests.</p>
-
-<p>Click anywhere on result to expand the entry, which reveals the message of each assertion.</p>
-
-<p>For failed assertions, the parenthetical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.</p>
-
-<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 500px;"></iframe>
 
 <h3 id="theme-api">Theme API</h3>
 
@@ -393,7 +399,7 @@ Test JavaScript code in a real browser with QUnit.
 <p>It is recommended to extend the toolbar declaratively via <a href="/api/config/urlConfig/">QUnit.config.urlConfig</a>. Modifying the toolbar elements directly may work at your own risk.</p>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#test-results">Test results</a></li><li class="sidebar-item"><a href="#theme-api">Theme API</a></li><li class="sidebar-item"><a href="#html-api">HTML API</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#getting-started">Getting started</a></li><li class="sidebar-item"><a href="#fixture">Fixture</a></li><li class="sidebar-item"><a href="#efficient-development">Efficient development</a></li><li class="sidebar-item"><a href="#browser-support">Browser support</a></li><li class="sidebar-item"><a href="#integrations">Integrations</a><ol><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#browser-automation">Browser automation</a></li></ol></li><li class="sidebar-item"><a href="#url-parameters">URL parameters</a></li><li class="sidebar-item"><a href="#markup">Markup</a></li><li class="sidebar-item"><a href="#html-reporter">HTML Reporter</a><ol><li class="sidebar-item"><a href="#toolbar">Toolbar</a></li><li class="sidebar-item"><a href="#test-results-explained">Test results explained</a></li><li class="sidebar-item"><a href="#filter">Filter</a></li><li class="sidebar-item"><a href="#module-selector">Module selector</a></li><li class="sidebar-item"><a href="#theme-api">Theme API</a></li><li class="sidebar-item"><a href="#html-api">HTML API</a></li></ol></li></ol></div>
 </aside>
 
 </div>
