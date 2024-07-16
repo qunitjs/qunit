@@ -17,6 +17,8 @@ const config = {
   // If false, all failing tests will be expanded
   collapse: true,
 
+  countStepsAsOne: false,
+
   // TODO: Make explicit in QUnit 3.
   // current: undefined,
 
@@ -128,6 +130,7 @@ const config = {
 
   // Internal state
   _deprecated_timeout_shown: false,
+  _deprecated_countEachStep_shown: false,
   blocking: true,
   callbacks: {},
   modules: [],
