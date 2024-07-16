@@ -8,10 +8,19 @@
   <div id="qunit-fixture"></div>
   <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
   <script>
-  QUnit.test('example', function (assert) {
+  QUnit.test('apple', function (assert) {
+    assert.equal('this is expected', 'this is expected', 'example');
+    assert.true(true);
+  });
+  QUnit.test('banana', function (assert) {
     assert.true(true, 'foo');
     assert.equal('this is actual', 'this is expected', 'bar');
     assert.true(true, 'baz');
+    assert.true(true, 'quux');
+  });
+  QUnit.test('citron', function (assert) {
+    assert.equal('this is expected', 'this is expected', 'example');
+    assert.true(true);
   });
   </script>
 </body>

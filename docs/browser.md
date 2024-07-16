@@ -146,9 +146,29 @@ The header of the report displays:
 
 [Check for globals](./api/config/noglobals.md) detects if a test creates or removes  global variable is. QUnit keeps a list of properties found on the `window` object. If properties were added or removed, the test fails.
 
-[No try-catch](./api/config/notrycatch.md) instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging.
+[No try-catch](./api/config/notrycatch.md) instructs QUnit to run your tests without a try-catch block. In this mode, if your test throws an error it will interrupt QUnit, which may ease debugging with browser devtools.
 
 You can extend the toolbar via [QUnit.config.urlConfig](./api/config/urlConfig.md).
+
+### Test results explained
+
+Each result is displayed in a numbered list.
+
+> **MyApp: example** (3) _Rerun_
+
+After the name of the module and test, in parentheses, is the total number of assertions.
+
+The "Rerun" link at the end will reload the page and quickly run the test again in isolation, skipping all other tests.
+
+Click on the test name to expand the entry, which reveals the message of each assertion.
+
+For failed assertions:
+* The parenthetical reports the "failed, passed, and total" number of assertions.
+* The expanded view displays the expected and actual asserted value, with a diff to highlight the difference between the two values.
+* The source where the failing assertion is performed. The stack trace indicates the test file path and line number.
+* The source where the test is defined.
+
+<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 600px;"></iframe>
 
 ### Filter
 
@@ -160,25 +180,9 @@ Find examples and learn more at [QUnit.config.filter](./api/config/filter.md).
 
 To quickly re-run one or more modules of tests, select them from the module selector and press "Apply".
 
-You can use the input field to quickly find a module, even if you have many modules. The input field performs [fuzzy matching](https://github.com/farzher/fuzzysort), so don't worry about getting it exactly right! `baor game` and `boar dame` finds "board game". This is similar to how "Quick Open" works in modern text editors.
+You can use the input field to quickly find a module, even if you have many modules. The input field performs [fuzzy matching](https://github.com/farzher/fuzzysort), so don't worry about getting it exactly right! For example, typing `bor game` or `abGame` will find `awesome board games`. This is similar to how "Quick Open" works in modern text editors.
 
 When selecting a parent module, which contains [nested modules](./api/QUnit/module.md), the nested modules and their tests will also be run.
-
-### Test results
-
-Each result is displayed in a numbered list.
-
-> **MyApp: example** (3) _Rerun_
-
-After the name of the module and test, in parentheses, is the total number of assertions.
-
-The "Rerun" link at the end will run that test on its own, skipping all other tests.
-
-Click anywhere on result to expand the entry, which reveals the message of each assertion.
-
-For failed assertions, the parenthetical reports the failed, passed, and total number of assertions. The expanded view also displays the expected and actual asserted value, with a diff to highlight the difference between the two values.
-
-<iframe loading="lazy" title="Example failure" src="/resources/example-fail.html" style="height: 500px;"></iframe>
 
 ### Theme API
 
