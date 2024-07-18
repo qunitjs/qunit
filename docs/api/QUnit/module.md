@@ -74,13 +74,20 @@ The module scope is given a `hooks` object which can be used to add [hooks](#hoo
 Example:
 
 ```js
+// Fruit > Berries > cowberry.
+// Fruit > Berries > cranberry.
+// Fruit > Melons > galia.
+// Bread > bake.
+// Bread > toast.
 QUnit.module('Fruit', function (hooks) {
   QUnit.module('Berries', function (hooks) {
-    QUnit.test('cranberry', function (assert) {
+    QUnit.test('cowberry', function (assert) {
       assert.true(true);
     });
 
-    // ...
+    QUnit.test('cranberry', function (assert) {
+      assert.true(true);
+    });
   });
 
   QUnit.module('Melons', function (hooks) {
