@@ -322,6 +322,23 @@ QUnit.test('options [urlConfig]', function (assert) {
   ));
 });
 
+QUnit.test('disable [via options.element=null]', function (assert) {
+  this.MockQUnit.on = function (type) {
+    assert.step('listen on-' + type);
+  };
+  this.MockQUnit.emit = function () {};
+
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: null,
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_mixed_run_full();
+
+  assert.verifySteps([], 'zero listeners when disabled');
+});
+
 QUnit.test('module selector', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
