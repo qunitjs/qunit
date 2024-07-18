@@ -158,6 +158,18 @@ qunit test.js
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">qunit_config_filter</span><span class="o">=</span>foo <span class="nv">qunit_config_testtimeout</span><span class="o">=</span>1000 qunit test.js
 </code></pre></div></div>
 
+<p>The environment variables can also make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several <code class="language-plaintext highlighter-rouge">npm run</code> shortcuts in <code class="language-plaintext highlighter-rouge">package.json</code>, like so:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test-something"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qunit_config_filter=something npm run test"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run lint &amp;&amp; qunit"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eslint --cache ."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lint-fix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eslint --cache --fix ."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
 <p>Configuration options that are read-only, internal/undocumented, or that require an object value (such as <a href="/api/config/storage/"><code class="language-plaintext highlighter-rouge">QUnit.config.storage</code></a>) cannot be set via environment variables. Options that require an array of strings will be converted to an array holding the given string.</p>
 
 <h3 id="object-preconfig">Object preconfig</h3>
