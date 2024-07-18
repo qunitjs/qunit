@@ -25,7 +25,8 @@ jobs:
 
           - name: "Linux: Node 22"
             os: ubuntu-24.04
-            node: 22.x
+            # Pinned because of https://github.com/npm/cli/issues/7657
+            node: 22.4
             script: npm run test
 
           - name: "Demos"
