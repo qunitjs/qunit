@@ -103,6 +103,19 @@ Or:
 qunit_config_filter=foo qunit_config_testtimeout=1000 qunit test.js
 ```
 
+The environment variables can also make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several `npm run` shortcuts in `package.json`, like so:
+
+```json
+{
+  "scripts": {
+    "test-something": "qunit_config_filter=something npm run test",
+    "test": "npm run lint && qunit",
+    "lint": "eslint --cache .",
+    "lint-fix": "eslint --cache --fix ."
+  }
+}
+```
+
 Configuration options that are read-only, internal/undocumented, or that require an object value (such as [`QUnit.config.storage`](./storage.md)) cannot be set via environment variables. Options that require an array of strings will be converted to an array holding the given string.
 
 ### Object preconfig
