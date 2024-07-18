@@ -23,16 +23,16 @@ QUnit.module.if('HtmlReporter', typeof document !== 'undefined', {
         this.on[event](data);
       },
       begin: function (fn) {
-        this.on.begin = fn;
+        this.on('begin', fn);
       },
       testStart: function (fn) {
-        this.on.testStart = fn;
+        this.on('testStart', fn);
       },
       log: function (fn) {
-        this.on.log = fn;
+        this.on('log', fn);
       },
       testDone: function (fn) {
-        this.on.testDone = fn;
+        this.on('testDone', fn);
       },
       _do_start_empty: function () {
         this.emit('runStart', { testCounts: { total: 0 } });
@@ -175,7 +175,7 @@ QUnit.test.each('testresult-display [runEnd]', {
   );
 });
 
-QUnit.test('test-output trace', function (assert) {
+QUnit.test('test-output [trace]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
@@ -223,7 +223,7 @@ QUnit.test('test-output trace', function (assert) {
   );
 });
 
-QUnit.test('appendFilteredTest() [testId]', function (assert) {
+QUnit.test('appendFilteredTest()', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
@@ -242,7 +242,7 @@ QUnit.test('appendFilteredTest() [testId]', function (assert) {
   );
 });
 
-QUnit.test('hidepassed', function (assert) {
+QUnit.test('config [hidepassed]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
@@ -264,7 +264,24 @@ QUnit.test('hidepassed', function (assert) {
   assert.strictEqual(node.checked, true);
 });
 
-QUnit.test('urlConfig', function (assert) {
+QUnit.test('config [filter]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: [],
+      filter: '!/Foo|bar/'
+    }
+  });
+  this.MockQUnit._do_start_empty();
+
+  // Toolbar
+  var node = element.querySelector('#qunit-filter-input');
+  assert.strictEqual(node.nodeName.toUpperCase(), 'INPUT');
+  assert.strictEqual(node.value, '!/Foo|bar/');
+});
+
+QUnit.test('options [urlConfig]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
@@ -303,23 +320,6 @@ QUnit.test('urlConfig', function (assert) {
       '<label for="qunit-urlconfig-altertitle" title=""><input id="qunit-urlconfig-altertitle" name="altertitle" type="checkbox" title=""/>altertitle</label>',
     'qunit-url-config HTML'
   ));
-});
-
-QUnit.test('filter', function (assert) {
-  var element = document.createElement('div');
-  new QUnit.reporters.html(this.MockQUnit, {
-    element: element,
-    config: {
-      urlConfig: [],
-      filter: '!/Foo|bar/'
-    }
-  });
-  this.MockQUnit._do_start_empty();
-
-  // Toolbar
-  var node = element.querySelector('#qunit-filter-input');
-  assert.strictEqual(node.nodeName.toUpperCase(), 'INPUT');
-  assert.strictEqual(node.value, '!/Foo|bar/');
 });
 
 QUnit.test('module selector', function (assert) {
