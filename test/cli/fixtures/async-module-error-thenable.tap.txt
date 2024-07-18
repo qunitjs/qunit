@@ -1,6 +1,7 @@
 # name: module() with promise return value
 # command: ["qunit","async-module-error-thenable.js"]
 
+TAP version 13
 not ok 1 global failure
   ---
   message: |+
@@ -13,7 +14,6 @@ not ok 1 global failure
         at internal
   ...
 Bail out! Error: Failed to load file async-module-error-thenable.js
-TAP version 13
 ok 2 module manually returning a thenable > has a test
 1..2
 # pass 1

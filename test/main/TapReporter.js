@@ -50,6 +50,9 @@ QUnit.module('TapReporter', function (hooks) {
       },
       emit: function (event, data) {
         this.on[event](data);
+      },
+      clear: function () {
+        buffer = '';
       }
     };
     last = undefined;
@@ -161,6 +164,8 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output global failure (string)', function (assert) {
+    emitter.emit('runStart');
+    emitter.clear();
     emitter.emit('error', 'Boo');
 
     assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n' +
@@ -175,6 +180,8 @@ QUnit.module('TapReporter', function (hooks) {
   QUnit.test('output global failure (Error)', function (assert) {
     var err = new ReferenceError('Boo is not defined');
     mockStack(err);
+    emitter.emit('runStart');
+    emitter.clear();
     emitter.emit('error', err);
 
     assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n' +

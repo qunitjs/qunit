@@ -3,15 +3,12 @@
 TAP version 13
 not ok 1 global failure
   ---
-  message: No tests were run.
+  message: Error: No tests were run.
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests were run.
-        at qunit.js
-        at internal
   ...
+Bail out! Error: No tests were run.
 1..3
 # pass 2
 # skip 0

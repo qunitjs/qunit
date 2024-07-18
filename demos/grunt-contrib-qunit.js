@@ -21,11 +21,7 @@ QUnit.test.each('failing tests', {
 >> Actual: false
 >> Expected: true
 >>   at `],
-  'no-tests': ['fail-no-tests', `Testing fail-no-tests.html F
->> global failure
->> Message: No tests were run.
->> Actual: undefined
->> Expected: undefined
+  'no-tests': ['fail-no-tests', `Testing fail-no-tests.html 
 >> Error: No tests were run.
 >>     at `],
   uncaught: ['fail-uncaught', `Testing fail-uncaught.html \n\

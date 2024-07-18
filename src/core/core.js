@@ -26,7 +26,7 @@ import { createStartFunction } from './start.js';
 // rather than partly in config.js and partly here.
 config.currentModule.suiteReport = runSuite;
 
-config._pq = new ProcessingQueue(test);
+config._pq = new ProcessingQueue();
 
 const QUnit = {
 
