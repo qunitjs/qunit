@@ -84,4 +84,5 @@ These are the official release channels for QUnit releases:
 
 ## Further reading
 
-* [Introdution to JavaScript Unit Testing](https://coding.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/), Jörn Zaefferer (2012).
+* [Rad QUnit documentation offline](https://devdocs.io/qunit/), via DevDocs.
+* [Introduction to JavaScript Unit Testing](https://coding.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/), Jörn Zaefferer (2012).
