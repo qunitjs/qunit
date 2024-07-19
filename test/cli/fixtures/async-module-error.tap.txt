@@ -9,7 +9,6 @@ not ok 1 global failure
   severity: failed
   stack: |
     TypeError: QUnit.module() callback must not be async. For async module setup, use hooks. https://qunitjs.com/api/QUnit/module/#hooks
-        at qunit.js
         at /qunit/test/cli/fixtures/async-module-error.js:2:7
         at internal
   ...

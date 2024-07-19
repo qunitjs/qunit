@@ -59,6 +59,40 @@ function qunitFileName () {
 
 const fileName = qunitFileName();
 
+/**
+ * - For internal errors from QUnit itself, remove the first qunit.js frames.
+ * - For errors in Node.js, format any remaining qunit.js and node:internal
+ *   frames as internal (i.e. grey out).
+ */
+export function annotateStacktrace (e, formatInternal) {
+  if (!e || !e.stack) {
+    return String(e);
+  }
+  const frames = e.stack.split('\n');
+  const annotated = [];
+  if (e.toString().indexOf(frames[0]) !== -1) {
+    // In Firefox and Safari e.stack starts with frame 0, but in V8 (Chrome/Node.js),
+    // e.stack starts first stringified message. Preserve this separately,
+    // so that, below, we can distinguish between internal frames on top
+    // (to remove) vs later internal frames (to format differently).
+    annotated.push(frames.shift());
+  }
+  let initialInternal = true;
+  for (let i = 0; i < frames.length; i++) {
+    const frame = frames[i];
+    const isInternal = (frame.indexOf(fileName) !== -1 || frame.indexOf('node:internal/') !== -1);
+    if (!isInternal) {
+      initialInternal = false;
+    }
+    // Remove initial internal frames entirely.
+    if (!initialInternal) {
+      annotated.push(isInternal ? formatInternal(frame) : frame);
+    }
+  }
+
+  return annotated.join('\n');
+}
+
 export function extractStacktrace (e, offset) {
   offset = offset === undefined ? 4 : offset;
 
