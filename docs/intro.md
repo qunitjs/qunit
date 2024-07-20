@@ -41,6 +41,8 @@ The [eslint-plugin-qunit](https://github.com/platinumazure/eslint-plugin-qunit) 
 
 ---
 
+<span id="release-channels"></span>
+
 ## Download
 
 These are the official release channels for QUnit releases:
