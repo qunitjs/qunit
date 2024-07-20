@@ -2,7 +2,7 @@
 
 'use strict';
 
-const program = require('commander');
+const { program } = require('commander');
 const run = require('../src/cli/run');
 const { displayAvailableReporters } = require('../src/cli/find-reporter');
 const pkg = require('../package.json');
