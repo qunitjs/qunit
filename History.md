@@ -7,8 +7,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 * CLI: Add `.mjs` and `.cjs` to default test file extensions.
 * Core: Add [`QUnit.test.if()`](https://qunitjs.com/api/QUnit/test.if/) and `QUnit.module.if()`. (Timo Tijhof) [#1772](https://github.com/qunitjs/qunit/pull/1772)
-* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This should ease development of basic [browser integrations](https://qunitjs.com/browser/#integrations) that only relay the end report.
-* Core: Expose [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally.
+* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This should ease development of basic [browser integrations](https://qunitjs.com/browser/#integrations) that only relay the end report. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
+* Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 
 ### Changed
 
@@ -17,24 +17,27 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Promote warning "QUnit.module() callback must not be async" to error. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
 * Core: Promote warning "[Unexpected test after runEnd](https://qunitjs.com/api/config/autostart/#E0001)" to error. [#1377](https://github.com/qunitjs/qunit/issues/1377)
 * Core: Change `before` and `after` hooks to run with module context. This enables inheritence between parent and child modules, and fixes leaks between last test and "after" hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
-* HTML Reporter: Run headless and automatically avoid HTML Reporter overhead if no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
-* HTML Reporter: QUnit 3.0 theme.
-  * Theme design, layout, and structure changes. Before/after demo in [#1774](https://github.com/qunitjs/qunit/pull/1774).
-  * Address scrollbar overflow issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
+* Core: Change QUnit.dump.maxDepth to become a live alias to [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/). [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
+* Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` calls from count. [#1226](https://github.com/qunitjs/qunit/issues/1226)
+* CLI: Upgrade `commander` dependency from 7 to 12. (Timo Tijhof) [#1781](https://github.com/qunitjs/qunit/pull/1781)
+* HTML Reporter: Run headless and fully disable HTML Reporter if no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
+* HTML Reporter: New theme design and structure. Before and after demo in [#1774](https://github.com/qunitjs/qunit/pull/1774).
+  * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
-  * Report time as seconds in the toolbar display. [#1760](https://github.com/qunitjs/qunit/pull/1760)
-  * Remove assertion count from toolbar display. [#1760](https://github.com/qunitjs/qunit/pull/1760)
-  * Set `user-select: none;` on "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
+  * Change `#qunit-userAgent` to clip on one line until focussed. [d8c2a3ac18](https://github.com/qunitjs/qunit/commit/d8c2a3ac18b35a8d601fd7d863bdcc86ff45c9c8)
+  * Change report time in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Remove assertion count from toolbar display, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Add `user-select: none;` to "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
+  * Add "running" class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
 
 ### Fixed
 
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
-* Core: Fix missing second frame in `QUnit.stack()` in Safari. [#1776](https://github.com/qunitjs/qunit/pull/1776)
-* Core: Fix stacktrace cleaner to also support clean traces on URLs with host ports. [#1769](https://github.com/qunitjs/qunit/issues/1769)
 * HTML Reporter: Fix `<label>` to wrap `<select>` for multi-value urlConfig item. [#1773](https://github.com/qunitjs/qunit/pull/1773)
-* HTML Reporter: Fix reversed order after clicking "Hide passed". [#1763](https://github.com/qunitjs/qunit/pull/1763)
+* HTML Reporter: Fix broken "Rerun without max depth" link. [91db92dbc5](https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289)
+* HTML Reporter: Fix unexpected pointer cursor on "Source:" label. [52bfa69645](https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249)
 
 ### Removed
 
@@ -45,6 +48,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove deprecated [`QUnit.load()`](https://qunitjs.com/api/QUnit/load/). [#1084](https://github.com/qunitjs/qunit/issues/1084)
 * Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [QUnit.onUncaughtException()](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.
+* Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
@@ -57,8 +61,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Fixed
 
-* Core: Fix missing second frame in QUnit.stack() in Safari. [#1776](https://github.com/qunitjs/qunit/pull/1776)
-* Core: Fix stacktrace cleaner to support URLs with host ports. [#1769](https://github.com/qunitjs/qunit/issues/1769)
+* Core: Fix missing second frame in `QUnit.stack()` in Safari. [#1776](https://github.com/qunitjs/qunit/pull/1776)
+* Core: Fix stacktrace cleaner to also support clean traces on URLs with host ports. [#1769](https://github.com/qunitjs/qunit/issues/1769)
 * HTML Reporter: Fix reversed order after clicking "Hide passed". [#1763](https://github.com/qunitjs/qunit/pull/1763)
 * HTML Reporter: Fix encoding of label for urlConfig multi-value item.
 
