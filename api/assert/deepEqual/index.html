@@ -112,12 +112,70 @@
 
 <h2 id="examples">Examples</h2>
 
-<p>Validate the properties and values of a given object.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">makeComplexObject</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">extra</span><span class="p">,</span> <span class="nx">country</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Set</span><span class="p">();</span>
+  <span class="nx">children</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">Alice</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">children</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nx">extra</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">countryToCapital</span> <span class="o">=</span> <span class="p">{</span> <span class="na">UK</span><span class="p">:</span> <span class="dl">'</span><span class="s1">London</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
+    <span class="na">children</span><span class="p">:</span> <span class="nx">children</span><span class="p">,</span>
+    <span class="na">location</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">country</span><span class="p">:</span> <span class="nx">country</span><span class="p">,</span>
+      <span class="na">nearestCapital</span><span class="p">:</span> <span class="nx">countryToCapital</span><span class="p">[</span><span class="nx">country</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">passing example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">};</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">object example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nf">makeComplexObject</span><span class="p">(</span><span class="dl">'</span><span class="s1">Marty</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Bob</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">UK</span><span class="dl">'</span><span class="p">);</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
+  <span class="c1">// Succeeds!</span>
+  <span class="c1">// While each object is distinct by strict equality (identity),</span>
+  <span class="c1">// every property, array, object, etc has equal values.</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Marty</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">children</span><span class="p">:</span> <span class="k">new</span> <span class="nc">Set</span><span class="p">([</span><span class="dl">'</span><span class="s1">Alice</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Bob</span><span class="dl">'</span><span class="p">]),</span>
+    <span class="na">location</span><span class="p">:</span> <span class="p">{</span> <span class="na">country</span><span class="p">:</span> <span class="dl">'</span><span class="s1">UK</span><span class="dl">'</span><span class="p">,</span> <span class="na">nearestCapital</span><span class="p">:</span> <span class="dl">'</span><span class="s1">London</span><span class="dl">'</span> <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">date example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">timeCircuit</span><span class="p">.</span><span class="nf">getLastDeparted</span><span class="p">();</span>
+
+  <span class="c1">// succeeds</span>
+  <span class="c1">// - object is instance of same Date class</span>
+  <span class="c1">// - internal timestamp is equal</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="dl">'</span><span class="s1">1985-10-26T01:20-07:00</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="dl">'</span><span class="s1">1985-10-26T08:20Z</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="c1">// fails, because the internal timestamp differs.</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="dl">'</span><span class="s1">1985-10-26T01:21-07:00</span><span class="dl">'</span><span class="p">));</span>
+  <span class="c1">// Actual:   Sat Oct 26 1985 08:20:00 GMT+0000 (UTC)</span>
+  <span class="c1">// Expected: Sat Oct 26 1985 08:21:00 GMT+0000 (UTC)</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BaseCoord</span> <span class="p">{</span>
+  <span class="nf">constructor </span><span class="p">(</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">long</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">lat</span> <span class="o">=</span> <span class="nx">long</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">long</span> <span class="o">=</span> <span class="nx">long</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">class</span> <span class="nc">PrimaryDimensionCoord</span> <span class="kd">extends</span> <span class="nc">BaseCoord</span> <span class="p">{}</span>
+<span class="kd">class</span> <span class="nc">UpsideDownCoord</span> <span class="kd">extends</span> <span class="nc">BaseCoord</span> <span class="p">{}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">class example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">eleven</span><span class="p">.</span><span class="nf">goto</span><span class="p">(</span><span class="dl">'</span><span class="s1">Enschede</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">eleven</span><span class="p">.</span><span class="nf">enterGate</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">loc</span> <span class="o">=</span> <span class="nx">eleven</span><span class="p">.</span><span class="nf">getLocation</span><span class="p">();</span>
+
+  <span class="c1">// succeeds</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">loc</span><span class="p">,</span> <span class="k">new</span> <span class="nc">UpsideDownCoord</span><span class="p">(</span><span class="mf">52.2206</span><span class="p">,</span> <span class="mf">6.8960</span><span class="p">));</span>
+
+  <span class="c1">// fails, because loc is an instance of a different class.</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">loc</span><span class="p">,</span> <span class="k">new</span> <span class="nc">PrimaryDimensionCoord</span><span class="p">(</span><span class="mf">52.2206</span><span class="p">,</span> <span class="mf">6.8960</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -128,12 +186,16 @@
     <span class="na">num</span><span class="p">:</span> <span class="mi">123</span>
   <span class="p">};</span>
 
-  <span class="c1">// fails because the number 123 is not strictly equal to the string "123".</span>
+  <span class="c1">// fails ,because the number 123 is not strictly equal to the string "123".</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">a</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Albert</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">b</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Berta</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">num</span><span class="p">:</span> <span class="dl">'</span><span class="s1">123</span><span class="dl">'</span>
   <span class="p">});</span>
+  <span class="c1">// Actual:</span>
+  <span class="c1">//           num: 123</span>
+  <span class="c1">// Expected:</span>
+  <span class="c1">//           num: "123"</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
