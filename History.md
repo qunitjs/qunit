@@ -48,6 +48,20 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
+2.21.1 / 2024-07-20
+==================
+
+### Deprecated
+
+* Assert: Add notice about upcoming change in how [`assert.expect()`](https://qunitjs.com/api/assert/expect/) counts steps for `assert.verifySteps()`. [#1226](https://github.com/qunitjs/qunit/issues/1226)
+
+### Fixed
+
+* Core: Fix missing second frame in QUnit.stack() in Safari. [#1776](https://github.com/qunitjs/qunit/pull/1776)
+* Core: Fix stacktrace cleaner to support URLs with host ports. [#1769](https://github.com/qunitjs/qunit/issues/1769)
+* HTML Reporter: Fix reversed order after clicking "Hide passed". [#1763](https://github.com/qunitjs/qunit/pull/1763)
+* HTML Reporter: Fix encoding of label for urlConfig multi-value item.
+
 2.21.0 / 2024-05-29
 ==================
 
