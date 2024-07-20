@@ -30,13 +30,73 @@ To assert strict equality on own properties only, refer to [`assert.propEqual()`
 
 ## Examples
 
-Validate the properties and values of a given object.
+```js
+function makeComplexObject (name, extra, country) {
+  var children = new Set();
+  children.add('Alice');
+  children.add(extra);
+  var countryToCapital = { UK: 'London' };
+  return {
+    name: name,
+    children: children,
+    location: {
+      country: country,
+      nearestCapital: countryToCapital[country]
+    }
+  };
+}
+
+QUnit.test('object example', function (assert) {
+  var result = makeComplexObject('Marty', 'Bob', 'UK');
+
+  // Succeeds!
+  // While each object is distinct by strict equality (identity),
+  // every property, array, object, etc has equal values.
+  assert.deepEqual(result, {
+    name: 'Marty',
+    children: new Set(['Alice', 'Bob']),
+    location: { country: 'UK', nearestCapital: 'London' }
+  });
+});
+```
 
 ```js
-QUnit.test('passing example', assert => {
-  const result = { foo: 'bar' };
+QUnit.test('date example', function (assert) {
+  const result = timeCircuit.getLastDeparted();
 
-  assert.deepEqual(result, { foo: 'bar' });
+  // succeeds
+  // - object is instance of same Date class
+  // - internal timestamp is equal
+  assert.deepEqual(result, new Date('1985-10-26T01:20-07:00'));
+  assert.deepEqual(result, new Date('1985-10-26T08:20Z'));
+
+  // fails, because the internal timestamp differs.
+  assert.deepEqual(result, new Date('1985-10-26T01:21-07:00'));
+  // Actual:   Sat Oct 26 1985 08:20:00 GMT+0000 (UTC)
+  // Expected: Sat Oct 26 1985 08:21:00 GMT+0000 (UTC)
+});
+```
+
+```js
+class BaseCoord {
+  constructor (lat, long) {
+    this.lat = long;
+    this.long = long;
+  }
+}
+class PrimaryDimensionCoord extends BaseCoord {}
+class UpsideDownCoord extends BaseCoord {}
+
+QUnit.test('class example', assert => {
+  eleven.goto('Enschede');
+  eleven.enterGate();
+  const loc = eleven.getLocation();
+
+  // succeeds
+  assert.deepEqual(loc, new UpsideDownCoord(52.2206, 6.8960));
+
+  // fails, because loc is an instance of a different class.
+  assert.deepEqual(loc, new PrimaryDimensionCoord(52.2206, 6.8960));
 });
 ```
 
@@ -48,11 +108,15 @@ QUnit.test('failing example', assert => {
     num: 123
   };
 
-  // fails because the number 123 is not strictly equal to the string "123".
+  // fails ,because the number 123 is not strictly equal to the string "123".
   assert.deepEqual(result, {
     a: 'Albert',
     b: 'Berta',
     num: '123'
   });
+  // Actual:
+  //           num: 123
+  // Expected:
+  //           num: "123"
 });
 ```
