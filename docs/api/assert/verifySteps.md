@@ -39,7 +39,24 @@ Refer to the below examples and learn how to use the Step API in your test suite
 This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one provided by Node.js and other environments:
 
 ```js
-QUnit.test('good example', async assert => {
+QUnit.test('good example', async function (assert) {
+  MyWordParser.on('noun', function (word) {
+    assert.step(word);
+  });
+  const song = await MyWordParser.sing('My Favorite Things', { lines: 1 });
+
+  assert.true(song.finished, 'finished');
+  assert.verifySteps([
+    'Raindrops',
+    'roses',
+    'whiskers',
+    'kittens'
+  ]);
+});
+```
+
+```js
+QUnit.test('good example', async function (assert) {
   const maker = new WordMaker();
   maker.on('start', () => {
     assert.step('start');
@@ -60,11 +77,11 @@ QUnit.test('good example', async assert => {
 });
 ```
 
-When approaching this scenario **without the Step API** one might be tempted to place comparison checks directly inside event callbacks. It is considered an anti-pattern to make dummy assertions in callbacks that the test does not have control over. This creates loose assurances, and can easily cause false positives (a callback might not run, run out of order, or run multiple times). It also offers rather limited debugging information.
+If you approach this scenario *without* the Step API, one might be tempted to place assertions directly inside event callbacks. This is **risky**, because it assumes the code you're testing has no bugs. For example, some callbacks might not run, or run multiple times, or run out of order. It is therefore generally recommended to only run assertions directly in the test function. Avoid assertions in callbacks that the test does not have control over. Such loose assurances easily produce false positives (because the subset of assertions that *did* run, passed!). It also offers virtually no debugging information during failures.
 
 ```js
 // WARNING: This is a BAD example
-QUnit.test('bad example 1', async assert => {
+QUnit.test('bad example 1', async function (assert) {
   const maker = new WordMaker();
   maker.on('start', () => {
     assert.true(true, 'start');
@@ -83,10 +100,10 @@ QUnit.test('bad example 1', async assert => {
 });
 ```
 
-A less fragile approach could involve a local array that we check afterwards with [`deepEqual`](./deepEqual.md). This catches out-of-order issues, unexpected values, and duplicate values. It also provides detailed debugging information in case of problems. The below is in essence how the Step API works:
+A less fragile approach could involve a local array that we check afterwards with [`deepEqual`](./deepEqual.md). This catches out-of-order issues, unexpected values, and duplicate values. It also places the assertion under the test's direct control, leaving no room for it to be skipped, run too early, too late, or multiple times. The array approach also provides ample debugging information during failures. The below is in essence how the Step API works:
 
 ```js
-QUnit.test('manual example without Step API', async assert => {
+QUnit.test('manual example without Step API', async function (assert) {
   const values = [];
 
   const maker = new WordMaker();
@@ -114,7 +131,7 @@ QUnit.test('manual example without Step API', async assert => {
 Use the **Step API** to verify messages received in a Pub-Sub channel or topic.
 
 ```js
-QUnit.test('good example', assert => {
+QUnit.test('good example', function (assert) {
   const publisher = new Publisher();
 
   const subscriber1 = (message) => assert.step(`Sub 1: ${message}`);
@@ -140,7 +157,7 @@ QUnit.test('good example', assert => {
 The internal buffer of observed steps is automatically reset when calling `verifySteps()`.
 
 ```js
-QUnit.test('multiple verifications example', assert => {
+QUnit.test('multiple verifications example', function (assert) {
   assert.step('one');
   assert.step('two');
   assert.verifySteps(['one', 'two']);
