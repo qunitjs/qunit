@@ -15,6 +15,7 @@ const files = {
   ],
   'docs/intro.md': [...cdnLinks],
   'docs/resources/example-add.html': [...cdnLinks],
+  'docs/resources/example-fail.html': [...cdnLinks],
   'docs/resources/example-index.html': [...cdnLinks]
 };
 
