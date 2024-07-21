@@ -53,6 +53,7 @@ module.exports = function (grunt) {
       all: {
         options: {
           timeout: 30000,
+          console: false,
           puppeteer: {
             args: isCI
 
@@ -73,6 +74,7 @@ module.exports = function (grunt) {
           urls: [
             'test/index.html',
 
+            'test/config-reporters.html',
             'test/dynamic-import.html',
             'test/events-filters.html',
             'test/events-in-test.html',
@@ -84,6 +86,7 @@ module.exports = function (grunt) {
             'test/only-each.html',
             'test/overload.html',
             'test/performance-mark.html',
+            'test/preconfig-flat-reporters.html',
             'test/preconfig-flat-testId.html',
             'test/preconfig-flat.html',
             'test/preconfig-object.html',

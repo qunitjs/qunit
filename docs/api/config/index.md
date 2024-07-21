@@ -49,7 +49,7 @@ You can configure the test run via the `QUnit.config` object. In the HTML Runner
 
 If you have custom plugins or want to re-use your configuration across multiple HTML test suites, you can also configure your project from an external `/test/bootstrap.js` script. Make sure to place this script before your other test files.
 
-When using the [QUnit CLI](https://qunitjs.com/cli/), you can setup your project and configure QUnit via [`--require`](https://qunitjs.com/cli/#--require).
+When using the [QUnit CLI](../../cli.md), you can setup your project and configure QUnit via [`--require`](../../cli.md#--require).
 
 ```bash
 qunit --require ./test/bootstrap.js

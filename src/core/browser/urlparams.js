@@ -18,7 +18,7 @@ export default function initUrlConfig (QUnit) {
       // already set. This prevents internal TypeError from bad urls where keys
       // could otherwise unexpectedly be set to type string or array.
       //
-      // Given that HTML Reporter renders checkboxes based on QUnit.config
+      // Given that HTML Reporter sets checkbox state based on QUnit.config,
       // instead of QUnit.urlParams, this also helps make sure that checkboxes
       // for built-in keys are correctly shown as off if a urlParams value exists
       // but was invalid and discarded by config.js.

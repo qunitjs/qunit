@@ -1,14 +1,10 @@
 import { window } from '../globals.js';
+import { prioritySymbol } from '../events.js';
 import Logger from '../logger.js';
 
-// TODO: Consider using globalThis instead of window, so that the reporter
-// works for Node.js as well. As this can add overhead, we should make
-// this opt-in before we enable it for CLI.
-//
-// QUnit 3 will switch from `window` to `globalThis` and then make it
-// no longer an implicit feature of the HTML Reporter, but rather let
-// it be opt-in via `QUnit.config.reporters = ['perf']` or something
-// like that.
+// TODO: Change from window to globalThis in QUnit 3.0, so that the reporter
+// works for Node.js as well. As this can add overhead, we should keep
+// this opt-in on the CLI.
 const nativePerf = (
   window &&
     typeof window.performance !== 'undefined' &&
@@ -39,11 +35,11 @@ export default class PerfReporter {
   constructor (runner, options = {}) {
     this.perf = options.perf || perf;
 
-    runner.on('runStart', this.onRunStart.bind(this));
+    runner.on('runStart', this.onRunStart.bind(this), prioritySymbol);
     runner.on('runEnd', this.onRunEnd.bind(this));
-    runner.on('suiteStart', this.onSuiteStart.bind(this));
+    runner.on('suiteStart', this.onSuiteStart.bind(this), prioritySymbol);
     runner.on('suiteEnd', this.onSuiteEnd.bind(this));
-    runner.on('testStart', this.onTestStart.bind(this));
+    runner.on('testStart', this.onTestStart.bind(this), prioritySymbol);
     runner.on('testEnd', this.onTestEnd.bind(this));
   }
 

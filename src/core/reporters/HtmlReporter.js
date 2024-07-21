@@ -1,6 +1,7 @@
 import { extend, errorString, escapeText } from '../utilities.js';
 import diff from '../diff.js';
 import dump from '../dump.js';
+import { prioritySymbol } from '../events.js';
 import { window, document, navigator, StringMap } from '../globals.js';
 import { urlParams } from '../urlparams.js';
 import version from '../version.js';
@@ -198,14 +199,16 @@ export default class HtmlReporter {
     // potential internal errors when the HTML Reporter is disabled.
     this.listen = function () {
       this.listen = null;
-      QUnit.begin(this.onBegin.bind(this));
-      QUnit.testStart(this.onTestStart.bind(this));
-      QUnit.log(this.onLog.bind(this));
+      QUnit.begin(this.onBegin.bind(this), prioritySymbol);
+      // Use prioritySignal for testStart() to increase availability
+      // of the HTML API for TESTID elements toward other event listeners.
+      QUnit.testStart(this.onTestStart.bind(this), prioritySymbol);
+      QUnit.log(this.onLog.bind(this), prioritySymbol);
       QUnit.testDone(this.onTestDone.bind(this));
       QUnit.on('runEnd', this.onRunEnd.bind(this));
     };
-    QUnit.on('error', this.onError.bind(this));
-    QUnit.on('runStart', this.onRunStart.bind(this));
+    QUnit.on('error', this.onError.bind(this), prioritySymbol);
+    QUnit.on('runStart', this.onRunStart.bind(this), prioritySymbol);
   }
 
   // Handle "submit" event from "filter" or "moduleFilter" field.

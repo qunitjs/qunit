@@ -75,11 +75,19 @@ export function initBrowser (QUnit, window, document) {
 
   initFixture(QUnit, document);
   initUrlConfig(QUnit);
-  QUnit.reporters.perf.init(QUnit);
-  QUnit.reporters.html.init(QUnit);
+
+  // NOTE:
+  // * It is important to attach error handlers (above) before setting up reporters,
+  //   to ensure reliable reporting of error events.
+  // * Is is important to set up HTML Reporter (if enabled) before calling QUnit.start(),
+  //   as otherwise it will miss the first few or even all synchronous events.
+  //
+  // Priot to QUnit 3.0, the reporter was initialised here, between error handler (above),
+  // and start (below). As of QUnit 3.0, reporters are initialized by doBegin() within
+  // QUnit.start(), which is logically the same place, but decoupled from initBrowser().
 
   function autostart () {
-    // Check as late as possible because if projecst set autostart=false,
+    // Check as late as possible because if projects set autostart=false,
     // they generally do so in their own scripts, after qunit.js.
     if (QUnit.config.autostart) {
       QUnit.start();

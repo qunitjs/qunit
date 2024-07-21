@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>preconfig-flat-reporters</title>
+  <link rel="stylesheet" href="../src/core/qunit.css">
+  <script>
+  /* eslint-disable camelcase, no-undef */
+  // headless
+  qunit_config_reporters_html = false;
+  // enable TAP
+  qunit_config_reporters_tap = true;
+  </script>
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  QUnit.module('QUnit.config [preconfig reporters]');
+
+  QUnit.test('read config', function (assert) {
+    assert.deepEqual(QUnit.config.reporters, {
+      html: false,
+      tap: true
+    });
+  });
+
+  QUnit.test('HtmlReporter disabled', function (assert) {
+    var children = [].slice.call(document.querySelectorAll('#qunit > *'));
+    assert.deepEqual(children, [], '#qunit element is empty');
+  });
+
+  (function () {
+    var log = console.log;
+    console.log = function (str) {
+      if (!window.firstConsoleMessage) {
+        window.firstConsoleMessage = str;
+      }
+      log.apply(this, arguments);
+    };
+  }());
+
+  QUnit.test('TapReporter enabled', function (assert) {
+    assert.strictEqual(window.firstConsoleMessage, 'TAP version 13', 'first console message');
+  });
+  </script>
+</head>
+<body>
+  <div id="qunit"></div>
+</body>
+</html>

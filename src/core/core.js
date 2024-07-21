@@ -16,7 +16,7 @@ import { on } from './events.js';
 import onUncaughtException from './on-uncaught-exception.js';
 import diff from './diff.js';
 import version from './version.js';
-import { start } from './start.js';
+import { createStartFunction } from './start.js';
 
 // The "currentModule" object would ideally be defined using the createModule()
 // function. Since it isn't, add the missing suiteReport property to it now that
@@ -61,7 +61,6 @@ const QUnit = {
 
   assert: Assert.prototype,
   module,
-  start,
   test,
 
   // alias other test flavors for easy access
@@ -69,5 +68,6 @@ const QUnit = {
   skip: test.skip,
   only: test.only
 };
+QUnit.start = createStartFunction(QUnit);
 
 export default QUnit;

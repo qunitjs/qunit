@@ -46,6 +46,8 @@ export function emit (eventName, data) {
   }
 }
 
+export const prioritySymbol = {};
+
 /**
  * Registers a callback as a listener to the specified event.
  *
@@ -53,23 +55,33 @@ export function emit (eventName, data) {
  * @method on
  * @param {string} eventName
  * @param {Function} callback
+ * @param {Object} [priority] Internal parameter for PerfReporter
  * @return {void}
  */
-export function on (eventName, callback) {
+export function on (eventName, callback, priority = null) {
   if (typeof eventName !== 'string') {
     throw new TypeError('eventName must be a string when registering a listener');
-  } else if (!inArray(eventName, SUPPORTED_EVENTS)) {
+  }
+  if (!inArray(eventName, SUPPORTED_EVENTS)) {
     const events = SUPPORTED_EVENTS.join(', ');
     throw new Error(`"${eventName}" is not a valid event; must be one of: ${events}.`);
-  } else if (typeof callback !== 'function') {
+  }
+  if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function when registering a listener');
+  }
+  if (priority && priority !== prioritySymbol) {
+    throw new TypeError('invalid priority parameter');
   }
 
   const listeners = config._event_listeners[eventName] || (config._event_listeners[eventName] = []);
 
   // Don't register the same callback more than once
   if (!inArray(callback, listeners)) {
-    listeners.push(callback);
+    if (priority === prioritySymbol) {
+      listeners.unshift(callback);
+    } else {
+      listeners.push(callback);
+    }
 
     if (config._event_memory[eventName] !== undefined) {
       callback(config._event_memory[eventName]);

@@ -127,8 +127,15 @@ Check [`QUnit.config.module`](./api/config/module.md) for more information.
 
 ### `--reporter`
 
-By default, the TAP reporter is used. This allows you to pair QUnit with any [TAP-compatible reporter](https://github.com/sindresorhus/awesome-tap#reporters), by piping the output. For example:
+Built-in reporters:
 
+* `tap`
+* `console`
+* `perf`
+
+Check [`QUnit.config.reporters`](./api/config/reporters.md) for more information.
+
+By default, the TAP reporter is used. This allows you to pair QUnit with many [TAP-based reporters](https://github.com/sindresorhus/awesome-tap#reporters), by piping the output. For example:
 ```sh
 qunit test/ | tap-min
 ```
@@ -144,11 +151,6 @@ qunit --reporter tap
 qunit --reporter qunit-reporter-example
 ```
 
-Built-in reporters:
-
-* `tap`: [TAP compliant](https://testanything.org/) reporter.
-* `console`: Log the JSON object for each reporter event from [`QUnit.on`](./api/callbacks/QUnit.on.md). Use this to explore or debug the Reporter API.
-
 ### `--require`
 
 These modules or scripts will be required before any tests begin running.
@@ -163,10 +165,10 @@ qunit --require ./test/setup.js
 
 ```js
 // test/setup.js
+require('../build/my-custom-reporter.js').init(QUnit);
+
 QUnit.config.noglobals = true;
 QUnit.config.notrycatch = true;
-
-require('../build/my-custom-reporter.js').init(QUnit);
 
 global.MyApp = require('./index');
 ```
