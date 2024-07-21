@@ -103,3 +103,12 @@ export function sourceFromStacktrace (offset) {
 
   return extractStacktrace(error, offset);
 }
+
+export function stack (offset) {
+  offset = (offset || 0) + 2;
+  // Support Safari: Use temp variable to avoid triggering ES6 Proper Tail Calls,
+  // which ensures a consistent cross-browser result.
+  // https://bugs.webkit.org/show_bug.cgi?id=276187
+  const source = sourceFromStacktrace(offset);
+  return source;
+}
