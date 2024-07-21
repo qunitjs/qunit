@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { CommandError } = require('./utils.js');
+const { CommandError, isValidVersion } = require('./utils.js');
 
 const cdnLinks = [
 
@@ -21,7 +21,7 @@ const files = {
 
 try {
   const version = process.argv[2];
-  if (typeof version !== 'string' || !/^\d+\.\d+\.\d+$/.test(version)) {
+  if (typeof version !== 'string' || !isValidVersion(version)) {
     throw new CommandError('Invalid or missing version argument');
   }
 
