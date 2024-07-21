@@ -1,7 +1,6 @@
 /**
  * This test file verifies the execution order and contents of events emitted
- * by QUnit during the test run. They are expected to adhere to the js-reporters
- * standard.
+ * by QUnit during the test run.
  */
 
 // These tests are order-dependent

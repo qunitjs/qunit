@@ -245,6 +245,7 @@
       "rules": {
         // https://github.com/eslint/eslint/issues/15732
         "array-bracket-spacing": "off",
+        "n/handle-callback-err": "off",
         "no-labels": "off",
         "no-undef": "off",
         "no-unused-expressions": "off",

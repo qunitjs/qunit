@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-const { execute, concurrentMapKeys } = require('./helpers/execute.js');
+const { execute, executeRaw, concurrentMapKeys } = require('./helpers/execute.js');
 const { readFixtures } = require('./helpers/fixtures.js');
 
 const FIXTURES_DIR = path.join(__dirname, 'fixtures');
@@ -144,6 +144,51 @@ ok 1 test-object > example test
 # skip 0
 # todo 0
 # fail 0`);
+  });
+
+  QUnit.test.if('tap pipe [pass]', !isWindows, async assert => {
+    const command = 'qunit basic-one.js | ../../../node_modules/.bin/tap-min';
+    const execution = await executeRaw(command);
+    assert.equal(execution.snapshot.trim(), '1 test complete (1ms)');
+  });
+
+  QUnit.test.if('tap pipe [fail]', !isWindows, async assert => {
+    const command = 'qunit basic-fail.js | ../../../node_modules/.bin/tap-min';
+    const execution = await executeRaw(command);
+    assert.equal(execution.snapshot.trim(), `bar
+\tat:       undefined
+\toperator: undefined
+\texpected: true
+\tactual:   false
+
+at /qunit/test/cli/fixtures/basic-fail.js:5:14
+
+
+
+3 tests complete (1ms)
+
+# exit code: 1`);
+  });
+
+  QUnit.test.if('tap pipe [error]', !isWindows, async assert => {
+    assert.timeout(10000);
+    const command = 'qunit syntax-error.js | ../../../node_modules/.bin/tap-min';
+    const execution = await executeRaw(command);
+    assert.equal(execution.snapshot.trim(), `global failure
+\tat:       undefined
+\toperator: undefined
+\texpected: undefined
+\tactual:   undefined
+
+ReferenceError: varIsNotDefined is not defined
+    at /qunit/test/cli/fixtures/syntax-error.js:1:1
+    at internal
+
+
+
+1 test complete (1ms)
+
+# exit code: 1`);
   });
 
   // TODO: Workaround fact that child_process.spawn() args array is a lie on Windows.

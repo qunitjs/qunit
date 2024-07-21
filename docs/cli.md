@@ -127,14 +127,18 @@ Check [`QUnit.config.module`](./api/config/module.md) for more information.
 
 ### `--reporter`
 
-By default, the TAP reporter is used.
+By default, the TAP reporter is used. This allows you to pair QUnit with any [TAP-compatible reporter](https://github.com/sindresorhus/awesome-tap#reporters), by piping the output. For example:
 
-Run `qunit --reporter <name>` to use a different reporter, where `<name>` can be the name of a built-in reporter, or an Node module that implements the [js-reporters](https://github.com/js-reporters/js-reporters) spec. The reporter will be loaded and initialised automatically.
+```sh
+qunit test/ | tap-min
+```
+
+To change the reporting from QUnit itself, use `qunit --reporter <name>` to set a different reporter, where `<name>` can be the name of a built-in reporter, or an Node module that implements the [QUnit Reporter API](./api/callbacks/QUnit.on.md#reporter-api). The reporter will be loaded and initialised automatically.
 
 Built-in reporters:
 
 * `tap`: [TAP compliant](https://testanything.org/) reporter.
-* `console`: Log the JSON object for each reporter event from [`QUnit.on`](./api/callbacks/QUnit.on.md). Use this to explore or debug the reporter interface.
+* `console`: Log the JSON object for each reporter event from [`QUnit.on`](./api/callbacks/QUnit.on.md). Use this to explore or debug the Reporter API.
 
 ### `--require`
 

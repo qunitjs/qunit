@@ -14,7 +14,7 @@ version_added: "2.2.0"
 
 Register a callback that will be invoked after the specified event is emitted.
 
-This API is the primary interface for QUnit plugins, continuous integration support, and other reporters. It is based on the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc).
+This API is the primary interface for QUnit reporters, plugins, and continuous integration support. It is based on the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc).
 
 | type | parameter | description
 |--|--|--
@@ -165,4 +165,60 @@ See also [QUnit.onUncaughtException()](../extension/QUnit.onUncaughtException.md
 QUnit.on('error', error => {
   console.error(error);
 });
+```
+
+## Reporter API
+
+The QUnit CLI accepts a [`--reporter` option](../../cli.md#--reporter) that loads a reporter from a Node module (e.g. npm package). Such module must export an `init` function, which QUnit will call and pass the `QUnit` object, which you can then use to call `QUnit.on()`. This contract is known as the *Reporter API*.
+
+You can implement your reporter either as simply an exported function, or as a class with a static `init` method.
+
+### Example: Reporter class
+
+```js
+class MyReporter {
+  static init (QUnit) {
+    return new MyReporter(QUnit);
+  }
+
+  constructor (QUnit) {
+    QUnit.on('error', this.onError.bind(this));
+    QUnit.on('testEnd', this.onTestEnd.bind(this));
+    QUnit.on('runEnd', this.onRunEnd.bind(this));
+  }
+
+  onError (error) {
+  }
+
+  onTestEnd (testEnd) {
+  }
+
+  onRunEnd (runEnd) {
+  }
+}
+
+// CommonJS, or ES Module
+module.exports = MyReporter;
+export default MyReporter;
+```
+
+### Example: Reporter function
+
+```js
+function init (QUnit) {
+  QUnit.on('error', onError);
+  QUnit.on('testEnd', onTestEnd);
+  QUnit.on('runEnd', onRunEnd);
+
+  function onError (error) {
+  }
+  function onTestEnd (testEnd) {
+  }
+  function onRunEnd (runEnd) {
+  }
+}
+
+// CommonJS, or ES Module
+module.exports.init = init;
+export { init };
 ```

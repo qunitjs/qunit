@@ -78,7 +78,8 @@
     "nyc": "^17.0.0",
     "proxyquire": "^1.8.0",
     "requirejs": "^2.3.6",
-    "rollup": "^4.18.0"
+    "rollup": "^4.18.0",
+    "tap-min": "^3.0.0"
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",

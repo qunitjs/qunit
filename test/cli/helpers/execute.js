@@ -54,7 +54,10 @@ function normalize (actual) {
     // Consolidate subsequent qunit.js frames
     .replace(/^(\s+at qunit\.js$)(\n\s+at qunit\.js$)+/gm, '$1')
     // Consolidate subsequent internal frames
-    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1');
+    .replace(/^(\s+at internal$)(\n\s+at internal$)+/gm, '$1')
+
+    // Normalize tap-min time duration
+    .replace(/\(\d+ms\)/g, '(1ms)');
 }
 
 /**
@@ -97,6 +100,37 @@ async function execute (command, options = {}, hook) {
     hook(spawned);
   }
 
+  return await getProcessResult(spawned);
+}
+
+/**
+ * Executes the provided command from within the fixtures directory.
+ *
+ * This variation of execute() exists to allow for pipes.
+ *
+ * @param {string} command
+ */
+async function executeRaw (command, options = {}) {
+  options.cwd = path.join(__dirname, '..', 'fixtures');
+  options.env = {
+    PATH: process.env.PATH
+  };
+
+  const parts = command.split(' ');
+  if (parts[0] === 'qunit') {
+    parts[0] = JSON.stringify(process.execPath) + ' ../../../bin/qunit.js';
+  }
+  if (parts[0] === 'node') {
+    parts[0] = JSON.stringify(process.execPath);
+  }
+
+  const cmd = parts.join(' ');
+  const spawned = cp.exec(cmd, options);
+
+  return await getProcessResult(spawned);
+}
+
+async function getProcessResult (spawned) {
   const result = {
     code: null,
     stdout: '',
@@ -144,7 +178,6 @@ async function execute (command, options = {}, hook) {
   if (result.code) {
     result.snapshot += (result.snapshot ? '\n\n' : '') + '# exit code: ' + result.code;
   }
-  result.command = command;
 
   return result;
 }
@@ -207,6 +240,7 @@ function concurrentMapKeys (input, concurrency, asyncFn) {
 module.exports = {
   normalize,
   execute,
+  executeRaw,
   concurrentMap,
   concurrentMapKeys
 };

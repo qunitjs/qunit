@@ -1,7 +1,6 @@
 /**
  * This test file verifies the execution order and contents of events emitted
- * by QUnit after the test run finishes. They are expected to adhere to the
- * js-reporters standard.
+ * by QUnit after the test run finishes.
  */
 
 function removeUnstableProperties (obj) {

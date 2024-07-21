@@ -170,7 +170,7 @@ Early alpha releases of QUnit 0.x required property assignments to register call
 
 <p class="note" markdown="1">
 
-See also [`QUnit.on()`](./api/callbacks/QUnit.on.md), which implements the [js-reporters spec](https://github.com/js-reporters/js-reporters) since QUnit 2.2.
+See also [`QUnit.on()`](./api/callbacks/QUnit.on.md).
 
 </p>
 
