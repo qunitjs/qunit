@@ -191,7 +191,15 @@ Options:
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit <span class="nb">test</span>/ | tap-min
 </code></pre></div></div>
 
-<p>To change the reporting from QUnit itself, use <code class="language-plaintext highlighter-rouge">qunit --reporter &lt;name&gt;</code> to set a different reporter, where <code class="language-plaintext highlighter-rouge">&lt;name&gt;</code> can be the name of a built-in reporter, or an Node module that implements the <a href="/api/callbacks/QUnit.on/#reporter-api">QUnit Reporter API</a>. The reporter will be loaded and initialised automatically.</p>
+<p>To change the reporting from QUnit itself, use <code class="language-plaintext highlighter-rouge">qunit --reporter &lt;name&gt;</code> to set a different reporter, where <code class="language-plaintext highlighter-rouge">&lt;name&gt;</code> can be the name of a built-in reporter, or a Node module (e.g. npm package) that implements the <a href="/api/callbacks/QUnit.on/#reporter-api">QUnit Reporter API</a>. The reporter will be loaded and initialised automatically.</p>
+
+<p>To load a reporter from a local Node.js script, use <code class="language-plaintext highlighter-rouge">--require</code> instead.</p>
+
+<p>Example:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit <span class="nt">--reporter</span> tap
+qunit <span class="nt">--reporter</span> qunit-reporter-example
+</code></pre></div></div>
 
 <p>Built-in reporters:</p>
 
@@ -214,6 +222,8 @@ Options:
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// test/setup.js</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">noglobals</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">notrycatch</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">../build/my-custom-reporter.js</span><span class="dl">'</span><span class="p">).</span><span class="nf">init</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">);</span>
 
 <span class="nb">global</span><span class="p">.</span><span class="nx">MyApp</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./index</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></div>
