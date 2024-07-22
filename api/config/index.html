@@ -109,7 +109,7 @@
 
 <p>If you have custom plugins or want to re-use your configuration across multiple HTML test suites, you can also configure your project from an external <code class="language-plaintext highlighter-rouge">/test/bootstrap.js</code> script. Make sure to place this script before your other test files.</p>
 
-<p>When using the <a href="https://qunitjs.com/cli/">QUnit CLI</a>, you can setup your project and configure QUnit via <a href="https://qunitjs.com/cli/#--require"><code class="language-plaintext highlighter-rouge">--require</code></a>.</p>
+<p>When using the <a href="/cli/">QUnit CLI</a>, you can setup your project and configure QUnit via <a href="/cli/#--require"><code class="language-plaintext highlighter-rouge">--require</code></a>.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit <span class="nt">--require</span> ./test/bootstrap.js
 </code></pre></div></div>
@@ -265,6 +265,9 @@ qunit test.js
 <h2 id="qunit-config-reorder"><a href="/api/config/reorder/">QUnit.config.reorder</a></h2>
 <p>Prioritize re-running previously failed tests.</p>
 
+<h2 id="qunit-config-reporters"><a href="/api/config/reporters/">QUnit.config.reporters</a></h2>
+<p>Control which reporters to enable or disable.</p>
+
 <h2 id="qunit-config-requireexpects"><a href="/api/config/requireExpects/">QUnit.config.requireExpects</a></h2>
 <p>Fail tests that don't specify how many assertions they expect.</p>
 
@@ -336,6 +339,8 @@ qunit test.js
 		<a href="/api/config/notrycatch/">QUnit.config.notrycatch</a>
 	</li><li class="sidebar-item">
 		<a href="/api/config/reorder/">QUnit.config.reorder</a>
+	</li><li class="sidebar-item">
+		<a href="/api/config/reporters/">QUnit.config.reporters</a>
 	</li><li class="sidebar-item">
 		<a href="/api/config/requireExpects/">QUnit.config.requireExpects</a>
 	</li><li class="sidebar-item">
