@@ -1,7 +1,9 @@
 {
   "version": "1.0.0",
   "name": "npm-reporter",
+  "private": true,
   "keywords": [
+    "qunit-plugin",
     "js-reporter"
   ]
 }

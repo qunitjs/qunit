@@ -133,7 +133,16 @@ By default, the TAP reporter is used. This allows you to pair QUnit with any [TA
 qunit test/ | tap-min
 ```
 
-To change the reporting from QUnit itself, use `qunit --reporter <name>` to set a different reporter, where `<name>` can be the name of a built-in reporter, or an Node module that implements the [QUnit Reporter API](./api/callbacks/QUnit.on.md#reporter-api). The reporter will be loaded and initialised automatically.
+To change the reporting from QUnit itself, use `qunit --reporter <name>` to set a different reporter, where `<name>` can be the name of a built-in reporter, or a Node module (e.g. npm package) that implements the [QUnit Reporter API](./api/callbacks/QUnit.on.md#reporter-api). The reporter will be loaded and initialised automatically.
+
+To load a reporter from a local Node.js script, use `--require` instead.
+
+Example:
+
+```sh
+qunit --reporter tap
+qunit --reporter qunit-reporter-example
+```
 
 Built-in reporters:
 
@@ -156,6 +165,8 @@ qunit --require ./test/setup.js
 // test/setup.js
 QUnit.config.noglobals = true;
 QUnit.config.notrycatch = true;
+
+require('../build/my-custom-reporter.js').init(QUnit);
 
 global.MyApp = require('./index');
 ```
