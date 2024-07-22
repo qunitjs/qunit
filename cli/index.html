@@ -186,15 +186,18 @@ Options:
 
 <h3 id="--reporter"><code class="language-plaintext highlighter-rouge">--reporter</code></h3>
 
-<p>By default, the TAP reporter is used.</p>
+<p>By default, the TAP reporter is used. This allows you to pair QUnit with any <a href="https://github.com/sindresorhus/awesome-tap#reporters">TAP-compatible reporter</a>, by piping the output. For example:</p>
 
-<p>Run <code class="language-plaintext highlighter-rouge">qunit --reporter &lt;name&gt;</code> to use a different reporter, where <code class="language-plaintext highlighter-rouge">&lt;name&gt;</code> can be the name of a built-in reporter, or an Node module that implements the <a href="https://github.com/js-reporters/js-reporters">js-reporters</a> spec. The reporter will be loaded and initialised automatically.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit <span class="nb">test</span>/ | tap-min
+</code></pre></div></div>
+
+<p>To change the reporting from QUnit itself, use <code class="language-plaintext highlighter-rouge">qunit --reporter &lt;name&gt;</code> to set a different reporter, where <code class="language-plaintext highlighter-rouge">&lt;name&gt;</code> can be the name of a built-in reporter, or an Node module that implements the <a href="/api/callbacks/QUnit.on/#reporter-api">QUnit Reporter API</a>. The reporter will be loaded and initialised automatically.</p>
 
 <p>Built-in reporters:</p>
 
 <ul>
   <li><code class="language-plaintext highlighter-rouge">tap</code>: <a href="https://testanything.org/">TAP compliant</a> reporter.</li>
-  <li><code class="language-plaintext highlighter-rouge">console</code>: Log the JSON object for each reporter event from <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on</code></a>. Use this to explore or debug the reporter interface.</li>
+  <li><code class="language-plaintext highlighter-rouge">console</code>: Log the JSON object for each reporter event from <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on</code></a>. Use this to explore or debug the Reporter API.</li>
 </ul>
 
 <h3 id="--require"><code class="language-plaintext highlighter-rouge">--require</code></h3>

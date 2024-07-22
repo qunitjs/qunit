@@ -79,7 +79,7 @@
 
 <p>Register a callback that will be invoked after the specified event is emitted.</p>
 
-<p>This API is the primary interface for QUnit plugins, continuous integration support, and other reporters. It is based on the <a href="https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc">js-reporters CRI standard</a>.</p>
+<p>This API is the primary interface for QUnit reporters, plugins, and continuous integration support. It is based on the <a href="https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc">js-reporters CRI standard</a>.</p>
 
 <table>
   <thead>
@@ -397,6 +397,60 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 <span class="p">});</span>
 </code></pre></div></div>
 
+<h2 id="reporter-api">Reporter API</h2>
+
+<p>The QUnit CLI accepts a <a href="/cli/#--reporter"><code class="language-plaintext highlighter-rouge">--reporter</code> option</a> that loads a reporter from a Node module (e.g. npm package). Such module must export an <code class="language-plaintext highlighter-rouge">init</code> function, which QUnit will call and pass the <code class="language-plaintext highlighter-rouge">QUnit</code> object, which you can then use to call <code class="language-plaintext highlighter-rouge">QUnit.on()</code>. This contract is known as the <em>Reporter API</em>.</p>
+
+<p>You can implement your reporter either as simply an exported function, or as a class with a static <code class="language-plaintext highlighter-rouge">init</code> method.</p>
+
+<h3 id="example-reporter-class">Example: Reporter class</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyReporter</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="nf">init </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">MyReporter</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nf">constructor </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onError</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+    <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">testEnd</span><span class="dl">'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onTestEnd</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+    <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onRunEnd</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="nf">onError </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+
+  <span class="nf">onTestEnd </span><span class="p">(</span><span class="nx">testEnd</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+
+  <span class="nf">onRunEnd </span><span class="p">(</span><span class="nx">runEnd</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// CommonJS, or ES Module</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">MyReporter</span><span class="p">;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyReporter</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="example-reporter-function">Example: Reporter function</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">init</span> <span class="p">(</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">onError</span><span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">testEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nx">onTestEnd</span><span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nx">onRunEnd</span><span class="p">);</span>
+
+  <span class="kd">function</span> <span class="nf">onError</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nf">onTestEnd</span> <span class="p">(</span><span class="nx">testEnd</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nf">onRunEnd</span> <span class="p">(</span><span class="nx">runEnd</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// CommonJS, or ES Module</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
+<span class="k">export</span> <span class="p">{</span> <span class="nx">init</span> <span class="p">};</span>
+</code></pre></div></div>
+
 </article>
 </div>
 <aside class="sidebar" role="complementary">
@@ -468,7 +522,7 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#the-runstart-event">The runStart event</a></li><li class="sidebar-item"><a href="#the-suitestart-event">The suiteStart event</a></li><li class="sidebar-item"><a href="#the-suiteend-event">The suiteEnd event</a></li><li class="sidebar-item"><a href="#the-teststart-event">The testStart event</a></li><li class="sidebar-item"><a href="#the-testend-event">The testEnd event</a></li><li class="sidebar-item"><a href="#the-runend-event">The runEnd event</a></li><li class="sidebar-item"><a href="#the-error-event">The error event</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#the-runstart-event">The runStart event</a></li><li class="sidebar-item"><a href="#the-suitestart-event">The suiteStart event</a></li><li class="sidebar-item"><a href="#the-suiteend-event">The suiteEnd event</a></li><li class="sidebar-item"><a href="#the-teststart-event">The testStart event</a></li><li class="sidebar-item"><a href="#the-testend-event">The testEnd event</a></li><li class="sidebar-item"><a href="#the-runend-event">The runEnd event</a></li><li class="sidebar-item"><a href="#the-error-event">The error event</a></li><li class="sidebar-item"><a href="#reporter-api">Reporter API</a><ol><li class="sidebar-item"><a href="#example-reporter-class">Example: Reporter class</a></li><li class="sidebar-item"><a href="#example-reporter-function">Example: Reporter function</a></li></ol></li></ol></div>
 </aside>
 
 </div>

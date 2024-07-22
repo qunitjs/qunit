@@ -90,7 +90,49 @@
 
 <p>This is used to power the <a href="/api/config/reorder/">reorder feature</a>. In <a href="/browser/">browser environments</a> this will use <code class="language-plaintext highlighter-rouge">sessionStorage</code> if supported by the browser.</p>
 
-<p>In Node.js and other non-browser environments, there is no storage object available for this purpose by default. You can attach your own preferred form of persistence between test runs, by assigning an object to <code class="language-plaintext highlighter-rouge">QUnit.config.storage</code> that implements <code class="language-plaintext highlighter-rouge">getItem</code>, <code class="language-plaintext highlighter-rouge">setItem</code> and <code class="language-plaintext highlighter-rouge">removeItem</code> methods, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">Web Storage API</a>.</p>
+<p>In Node.js and other non-browser environments, there is no storage object available for this purpose by default. You can attach your own preferred form of persistence between test runs, by assigning an object to <code class="language-plaintext highlighter-rouge">QUnit.config.storage</code> that implements at least the below subset of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">Web Storage API</a>.</p>
+
+<h2 id="storage-interface">Storage interface</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">storage</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="cm">/**
+   * @param {string} key
+   * @param {string} value
+   */</span>
+  <span class="nf">setItem </span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="cm">/**
+   * @param {string} key
+   * @return {string|null}
+   */</span>
+  <span class="nf">getItem </span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="cm">/**
+   * @param {string} key
+   */</span>
+  <span class="nf">removeItem </span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="cm">/**
+   * Get name of key at given offset, e.g. by iterating from 0 to `length`.
+   *
+   * @param {number} index
+   * @return {string|null}
+   */</span>
+  <span class="nf">key </span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="cm">/**
+   * How many keys exist.
+   *
+   * @type {number}
+   */</span>
+  <span class="kd">get</span> <span class="nf">length </span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
 
 </article>
 </div>
@@ -193,7 +235,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#storage-interface">Storage interface</a></li></ol></div>
 </aside>
 
 </div>
