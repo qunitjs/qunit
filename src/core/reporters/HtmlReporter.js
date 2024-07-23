@@ -441,7 +441,7 @@ export default class HtmlReporter {
     const applyButton = document.createElement('button');
     applyButton.textContent = 'Apply';
     applyButton.title = 'Re-run the selected test modules';
-    DOM.on(applyButton, 'click', this.applyUrlParams);
+    DOM.on(applyButton, 'click', this.applyUrlParams.bind(this));
 
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Reset';
