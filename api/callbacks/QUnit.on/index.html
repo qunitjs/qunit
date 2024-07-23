@@ -317,7 +317,7 @@
 
 <p class="note">
 
-Unlike other events, the <code class="language-plaintext highlighter-rouge">runEnd</code> event has <strong>memory</strong> (since QUnit 3.0). This means listening for the event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the <code class="language-plaintext highlighter-rouge">runEnd</code> event. These will be invoked immediately in that case. This removes the need for HTML scraping.
+The <code class="language-plaintext highlighter-rouge">runEnd</code> event has <strong>memory</strong> (since QUnit 3.0). This means listening for this event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the <code class="language-plaintext highlighter-rouge">runEnd</code> event. These will be invoked immediately in that case. This removes the need for HTML scraping.
 
 </p>
 
@@ -382,6 +382,12 @@ Unlike other events, the <code class="language-plaintext highlighter-rouge">runE
 <p>The <code class="language-plaintext highlighter-rouge">error</code> event notifies plugins of uncaught global errors during a test run.</p>
 
 <p>See also <a href="/api/extension/QUnit.onUncaughtException/">QUnit.onUncaughtException()</a> which is where you can report your own uncaught errors.</p>
+
+<p class="note">
+
+The <code class="language-plaintext highlighter-rouge">error</code> event has <strong>memory</strong> (since QUnit 3.0). This means listening for this event is possible, even if the event already fired. This improves reliability of reporters in browser automations, where it might be difficult to reliably inject a listener between qunit.js and anything else.
+
+</p>
 
 <table>
   <tbody>
