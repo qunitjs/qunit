@@ -12,6 +12,7 @@ const SUPPORTED_EVENTS = [
   'runEnd'
 ];
 const MEMORY_EVENTS = [
+  'error',
   'runEnd'
 ];
 
@@ -41,7 +42,7 @@ export function emit (eventName, data) {
     callbacks[i](data);
   }
 
-  if (inArray(MEMORY_EVENTS, eventName)) {
+  if (inArray(eventName, MEMORY_EVENTS)) {
     config._event_memory[eventName] = data;
   }
 }
@@ -69,6 +70,7 @@ export function on (eventName, callback, priority = null) {
   if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function when registering a listener');
   }
+  /* istanbul ignore if: internal argument */
   if (priority && priority !== prioritySymbol) {
     throw new TypeError('invalid priority parameter');
   }

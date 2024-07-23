@@ -128,7 +128,7 @@ The `runEnd` event indicates the end of a test run. It is emitted exactly once.
 
 <p class="note" markdown="1">
 
-Unlike other events, the `runEnd` event has **memory** (since QUnit 3.0). This means listening for the event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the `runEnd` event. These will be invoked immediately in that case. This removes the need for HTML scraping.
+The `runEnd` event has **memory** (since QUnit 3.0). This means listening for this event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the `runEnd` event. These will be invoked immediately in that case. This removes the need for HTML scraping.
 
 </p>
 
@@ -158,6 +158,12 @@ QUnit.on('runEnd', runEnd => {
 The `error` event notifies plugins of uncaught global errors during a test run.
 
 See also [QUnit.onUncaughtException()](../extension/QUnit.onUncaughtException.md) which is where you can report your own uncaught errors.
+
+<p class="note" markdown="1">
+
+The `error` event has **memory** (since QUnit 3.0). This means listening for this event is possible, even if the event already fired. This improves reliability of reporters in browser automations, where it might be difficult to reliably inject a listener between qunit.js and anything else.
+
+</p>
 
 | `Error|any` | `error`
 

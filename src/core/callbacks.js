@@ -1,4 +1,5 @@
 import config from './config.js';
+import { prioritySymbol } from './events.js';
 import Promise from './promise.js';
 
 export function createRegisterCallbackFunction (key) {
@@ -7,11 +8,19 @@ export function createRegisterCallbackFunction (key) {
     config.callbacks[key] = [];
   }
 
-  return function registerCallback (callback) {
+  return function registerCallback (callback, priority = null) {
     if (typeof callback !== 'function') {
       throw new TypeError('Callback parameter must be a function');
     }
-    config.callbacks[key].push(callback);
+    /* istanbul ignore if: internal argument */
+    if (priority && priority !== prioritySymbol) {
+      throw new TypeError('invalid priority parameter');
+    }
+    if (priority === prioritySymbol) {
+      config.callbacks[key].unshift(callback);
+    } else {
+      config.callbacks[key].push(callback);
+    }
   };
 }
 

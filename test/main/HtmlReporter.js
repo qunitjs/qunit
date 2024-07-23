@@ -38,11 +38,14 @@ QUnit.module.if('HtmlReporter', typeof document !== 'undefined', {
         this.emit('runStart', { testCounts: { total: 0 } });
         this.emit('begin', { modules: [] });
       },
-      // The first 1.5 test.
-      _do_mixed_run_half: function () {
+      // The first 1 test.
+      _do_start_with_one: function () {
         this.emit('runStart', { testCounts: { total: 4 } });
         this.emit('begin', { modules: [] });
 
+        this._do_one_test();
+      },
+      _do_one_test: function () {
         this.emit('testStart', { testId: '00A', name: 'A' });
         this.emit('log', {
           testId: '00A',
@@ -50,6 +53,10 @@ QUnit.module.if('HtmlReporter', typeof document !== 'undefined', {
           runtime: 0
         });
         this.emit('testDone', { testId: '00A', name: 'A', total: 1, passed: 1, failed: 0, runtime: 0 });
+      },
+      // The first 1.5 test.
+      _do_mixed_run_half: function () {
+        this._do_start_with_one();
 
         this.emit('testStart', { testId: '00B', name: 'B' });
         this.emit('log', {
@@ -92,6 +99,11 @@ QUnit.module.if('HtmlReporter', typeof document !== 'undefined', {
         });
       }
     };
+  },
+  afterEach: function () {
+    if (this.restoreQUnitElement) {
+      this.restoreQUnitElement.id = 'qunit';
+    }
   }
 });
 
@@ -223,6 +235,75 @@ QUnit.test('test-output [trace]', function (assert) {
   );
 });
 
+QUnit.test('onError [early]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  var err = new Error('boo');
+  err.stack = 'bar@example.js\nfoo@example.js\n@foo.test.js';
+
+  this.MockQUnit._do_start_empty();
+  this.MockQUnit.emit('error', err);
+  this.MockQUnit._do_one_test();
+
+  var testItem = element.querySelector('#qunit-test-output-00A');
+  assert.strictEqual(
+    testItem.textContent,
+    'A (1)' + 'Rerun' + '0 ms' +
+      'okay' + '@ 0 ms',
+    'test item (normal)'
+  );
+
+  // first child
+  var errorItem = element.querySelector('#qunit-tests > li:first-child');
+  assert.strictEqual(errorItem.id, '', 'error item, ID');
+  assert.strictEqual(
+    errorItem.textContent,
+    'global failure' +
+      'Error: boo' +
+      'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
+    'error item, text'
+  );
+});
+
+QUnit.test('onError [mid-run]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+  var err = new Error('boo');
+  err.stack = 'bar@example.js\nfoo@example.js\n@foo.test.js';
+
+  this.MockQUnit._do_start_with_one();
+  this.MockQUnit.emit('error', err);
+
+  var testItem = element.querySelector('#qunit-test-output-00A');
+  assert.strictEqual(
+    testItem.textContent,
+    'A (1)' + 'Rerun' + '0 ms' +
+      'okay' + '@ 0 ms',
+    'test item (normal)'
+  );
+
+  // last child
+  var errorItem = element.querySelector('#qunit-tests > li:last-child');
+  assert.strictEqual(errorItem.id, '', 'error item, ID');
+  assert.strictEqual(
+    errorItem.textContent,
+    'global failure' +
+      'Error: boo' +
+      'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
+    'error item, text'
+  );
+});
+
 QUnit.test('appendFilteredTest()', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
@@ -322,7 +403,7 @@ QUnit.test('options [urlConfig]', function (assert) {
   ));
 });
 
-QUnit.test('disable [via options.element=null]', function (assert) {
+QUnit.test('listen [disable via options.element=null]', function (assert) {
   this.MockQUnit.on = function (type) {
     assert.step('listen on-' + type);
   };
@@ -336,7 +417,74 @@ QUnit.test('disable [via options.element=null]', function (assert) {
   });
   this.MockQUnit._do_mixed_run_full();
 
-  assert.verifySteps([], 'zero listeners when disabled');
+  assert.verifySteps([], 'listeners');
+});
+
+QUnit.test('listen [disable via no qunit element]', function (assert) {
+  // Temporarily hide the global #qunit element
+  var globalElement = document.querySelector('#qunit');
+  if (globalElement) {
+    globalElement.id = 'not-qunit';
+    this.restoreQUnitElement = globalElement;
+  }
+
+  this.MockQUnit.on = function (type) {
+    assert.step('listen on-' + type);
+  };
+  this.MockQUnit.emit = function () {};
+
+  new QUnit.reporters.html(this.MockQUnit, {
+    config: {
+      urlConfig: []
+    }
+  });
+  this.MockQUnit._do_mixed_run_full();
+
+  var newElement = document.querySelector('#qunit');
+  assert.strictEqual(newElement, null, 'no automatic element created');
+
+  assert.verifySteps(
+    [
+      'listen on-runStart'
+    ],
+    'listeners'
+  );
+});
+
+QUnit.test('listen [enable via options.element]', function (assert) {
+  this.MockQUnit.on = function (event, fn) {
+    assert.step('listen on-' + event);
+    this.on[event] = fn;
+  };
+
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      urlConfig: []
+    }
+  });
+
+  assert.verifySteps(
+    [
+      'listen on-runStart'
+    ],
+    'listeners after construction'
+  );
+
+  this.MockQUnit._do_start_empty();
+
+  assert.verifySteps(
+    [
+      'listen on-begin',
+      'listen on-testStart',
+      'listen on-log',
+      'listen on-testDone',
+      'listen on-runEnd',
+      'listen on-error'
+    ],
+    'listeners after start'
+  );
 });
 
 QUnit.test('module selector', function (assert) {
