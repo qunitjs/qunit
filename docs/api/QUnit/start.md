@@ -15,7 +15,7 @@ version_added: "1.0.0"
 
 Call this method to start the test runner. This indicates that all relevant source code has been loaded and all tests have been defined.
 
-In most environments this is **automatically called** and you do not need to call it. This includes testing via the HTML Runner and the QUnit CLI.
+In most environments this is **automatically called** and you do not need to call it. This includes testing in a browser environment, and the QUnit CLI.
 
 If you build a custom test runner (such in SpiderMonkey or Node.js), or if you disable `QUnit.config.autostart` and load test files asynchronously (with AMD, RequireJS, or ESM dynamic imports), then you need to call this once after your test files have been loaded.
 

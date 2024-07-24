@@ -23,8 +23,8 @@ This method can be safely called at any time, including between or outside tests
 
 In general, you should not use this method and instead throw an error. QUnit automatically finds and reports uncaught errors. The following are handled by default and should not be connected to `QUnit.onUncaughtException()` a second time:
 
-* HTML Runner: `window.onerror`
-* HTML Runner: `window.addEventListener('unhandledrejection', …)`
+* Browser Runner: `window.onerror`
+* Browser Runner: `window.addEventListener('unhandledrejection', …)`
 * QUnit CLI: `process.on('unhandledRejection', …)`
 * QUnit CLI: `process.on('uncaughtException', …)`
 

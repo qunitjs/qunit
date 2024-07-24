@@ -21,12 +21,12 @@ Configurations are read in the following order:
 1. Default values
 2. Flat preconfig
 3. Object preconfig
-4. Runner options (URL parameters in the HTML Reporter, or CLI options in the QUnit CLI)
+4. Runner options (URL parameters in a browser, or CLI options in the QUnit CLI)
 5. Set `QUnit.config` from your own inline or bootstrap script.
 
 ## Set configuration
 
-You can configure the test run via the `QUnit.config` object. In the HTML Runner, you can set the configuration from any script after qunit.js:
+You can configure the test run via the `QUnit.config` object. For browser environments, you can configure QUnit from any script after qunit.js:
 
 ```html
 <!DOCTYPE html>
@@ -47,7 +47,7 @@ You can configure the test run via the `QUnit.config` object. In the HTML Runner
 </body>
 ```
 
-If you have custom plugins or want to re-use your configuration across multiple HTML test suites, you can also configure your project from an external `/test/bootstrap.js` script. Make sure to place this script before your other test files.
+If you have custom plugins or want to re-use your configuration across multiple HTML files, you can also configure your project from an external `/test/bootstrap.js` script. Make sure to place this script before your other test files.
 
 When using the [QUnit CLI](../../cli.md), you can setup your project and configure QUnit via [`--require`](../../cli.md#--require).
 
@@ -77,7 +77,7 @@ Preconfig allows integrations to declare configuration without needing to embed,
 
 Flat preconfig allows multiple integrations to seemlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).
 
-In the browser context (HTML Runner), global variables that start with `qunit_config_` may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting `QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;`
+In browser environments, global variables that start with `qunit_config_` may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting `QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;`
 
 ```html
 <script>
