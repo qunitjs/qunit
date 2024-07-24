@@ -30,7 +30,7 @@ As of [QUnit 2.1.1](https://github.com/qunitjs/qunit/releases/tag/2.1.1), calls 
 
 ## Migration guide
 
-If you still call `QUnit.load()` with QUnit 2.2 or later, the call is usually redundant and safe to remove.
+If you still call `QUnit.load()` with QUnit 2.1.1 or later, the call is usually redundant and safe to remove.
 
 ### If you call both `QUnit.load()` and `QUnit.start()`
 
@@ -40,7 +40,7 @@ This is no longer needed since [QUnit 2.1.1](https://github.com/qunitjs/qunit/re
 
 ### If you call `QUnit.load()`
 
-Prior to QUnit 2.21, the built-in HTML Reporter called `QUnit.load()` from the window.onload event, which in turn gracefully calls `QUnit.start()` if it has not been called already.
+Prior to QUnit 2.21.0, the built-in HTML Reporter called `QUnit.load()` from the window.onload event, which in turn gracefully calls `QUnit.start()` if it has not been called already.
 
 If your test runner works in a similar way, call [`QUnit.start()`](./start.md) instead of `QUnit.load()`. This will solve the deprecation warning and prepares you for QUnit 3.
 
