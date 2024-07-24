@@ -87,7 +87,7 @@ qunit_config_testtimeout = 1000;
 </script>
 ```
 
-For the [QUnit CLI](../../cli.md) and other Node.js runners, the same can also be done via environment variables. Environment variables must be set in the shell before running the `qunit` or `node` command. The variable names are case-sensitive and must be in lowercase. You may set boolean configuration variables using the string `true` or `false`.
+For the [QUnit CLI](../../cli.md) and other Node.js runners, the same can also be done via environment variables. Environment variables must be set in the shell before running the `qunit` or `node` command. The variable names are case-sensitive and must be in **lowercase**. You may set boolean configuration variables using the string `true` or `false`.
 
 ```bash
 export qunit_config_noglobals=true
@@ -103,7 +103,7 @@ Or:
 qunit_config_filter=foo qunit_config_testtimeout=1000 qunit test.js
 ```
 
-The environment variables can also make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several `npm run` shortcuts in `package.json`, like so:
+The environment variables make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several `npm run` shortcuts in `package.json`, like so:
 
 ```json
 {
