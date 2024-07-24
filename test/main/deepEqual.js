@@ -1849,7 +1849,7 @@ QUnit.test.if('Sets', hasES6Set, function (assert) {
   s2 = new Set([2, 3]);
   assert.equal(QUnit.equiv(s1, s2), false, "Sets can 'short-circuit' for early failure");
 
-  // Sets Containing objects
+  // Sets containing the same by-ref objects
   o1 = { foo: 0, bar: true };
   o2 = { foo: 0, bar: true };
   o3 = { foo: 1, bar: true };
@@ -1866,6 +1866,13 @@ QUnit.test.if('Sets', hasES6Set, function (assert) {
   s1 = new Set([o1]);
   s2 = new Set([o3]);
   assert.equal(QUnit.equiv(s1, s2), false, 'Sets containing different objects');
+
+  // Sets containing the same by-ref array
+  // Inspired by https://github.com/nodejs/node/issues/53423
+  var a1 = ['x'];
+  s1 = new Set([a1, ['y']]);
+  s2 = new Set([a1, ['y']]);
+  assert.equal(QUnit.equiv(s1, s2), true, 'Sets containing the same by-ref array');
 
   // Sets containing sets
   s1 = new Set([1, 2, 3]);
