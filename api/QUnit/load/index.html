@@ -108,7 +108,7 @@
 
 <h2 id="migration-guide">Migration guide</h2>
 
-<p>If you still call <code class="language-plaintext highlighter-rouge">QUnit.load()</code> with QUnit 2.2 or later, the call is usually redundant and safe to remove.</p>
+<p>If you still call <code class="language-plaintext highlighter-rouge">QUnit.load()</code> with QUnit 2.1.1 or later, the call is usually redundant and safe to remove.</p>
 
 <h3 id="if-you-call-both-qunitload-and-qunitstart">If you call both <code class="language-plaintext highlighter-rouge">QUnit.load()</code> and <code class="language-plaintext highlighter-rouge">QUnit.start()</code></h3>
 
@@ -118,7 +118,7 @@
 
 <h3 id="if-you-call-qunitload">If you call <code class="language-plaintext highlighter-rouge">QUnit.load()</code></h3>
 
-<p>Prior to QUnit 2.21, the built-in HTML Reporter called <code class="language-plaintext highlighter-rouge">QUnit.load()</code> from the window.onload event, which in turn gracefully calls <code class="language-plaintext highlighter-rouge">QUnit.start()</code> if it has not been called already.</p>
+<p>Prior to QUnit 2.21.0, the built-in HTML Reporter called <code class="language-plaintext highlighter-rouge">QUnit.load()</code> from the window.onload event, which in turn gracefully calls <code class="language-plaintext highlighter-rouge">QUnit.start()</code> if it has not been called already.</p>
 
 <p>If your test runner works in a similar way, call <a href="/api/QUnit/start/"><code class="language-plaintext highlighter-rouge">QUnit.start()</code></a> instead of <code class="language-plaintext highlighter-rouge">QUnit.load()</code>. This will solve the deprecation warning and prepares you for QUnit 3.</p>
 

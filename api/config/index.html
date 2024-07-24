@@ -81,13 +81,13 @@
   <li>Default values</li>
   <li>Flat preconfig</li>
   <li>Object preconfig</li>
-  <li>Runner options (URL parameters in the HTML Reporter, or CLI options in the QUnit CLI)</li>
+  <li>Runner options (URL parameters in a browser, or CLI options in the QUnit CLI)</li>
   <li>Set <code class="language-plaintext highlighter-rouge">QUnit.config</code> from your own inline or bootstrap script.</li>
 </ol>
 
 <h2 id="set-configuration">Set configuration</h2>
 
-<p>You can configure the test run via the <code class="language-plaintext highlighter-rouge">QUnit.config</code> object. In the HTML Runner, you can set the configuration from any script after qunit.js:</p>
+<p>You can configure the test run via the <code class="language-plaintext highlighter-rouge">QUnit.config</code> object. For browser environments, you can configure QUnit from any script after qunit.js:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
@@ -107,7 +107,7 @@
 <span class="nt">&lt;/body&gt;</span>
 </code></pre></div></div>
 
-<p>If you have custom plugins or want to re-use your configuration across multiple HTML test suites, you can also configure your project from an external <code class="language-plaintext highlighter-rouge">/test/bootstrap.js</code> script. Make sure to place this script before your other test files.</p>
+<p>If you have custom plugins or want to re-use your configuration across multiple HTML files, you can also configure your project from an external <code class="language-plaintext highlighter-rouge">/test/bootstrap.js</code> script. Make sure to place this script before your other test files.</p>
 
 <p>When using the <a href="/cli/">QUnit CLI</a>, you can setup your project and configure QUnit via <a href="/cli/#--require"><code class="language-plaintext highlighter-rouge">--require</code></a>.</p>
 
@@ -135,7 +135,7 @@
 
 <p>Flat preconfig allows multiple integrations to seemlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).</p>
 
-<p>In the browser context (HTML Runner), global variables that start with <code class="language-plaintext highlighter-rouge">qunit_config_</code> may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting <code class="language-plaintext highlighter-rouge">QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;</code></p>
+<p>In browser environments, global variables that start with <code class="language-plaintext highlighter-rouge">qunit_config_</code> may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting <code class="language-plaintext highlighter-rouge">QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;</code></p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
 <span class="nx">qunit_config_hidepassed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
@@ -144,7 +144,7 @@
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<p>For the <a href="/cli/">QUnit CLI</a> and other Node.js runners, the same can also be done via environment variables. Environment variables must be set in the shell before running the <code class="language-plaintext highlighter-rouge">qunit</code> or <code class="language-plaintext highlighter-rouge">node</code> command. The variable names are case-sensitive and must be in lowercase. You may set boolean configuration variables using the string <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</p>
+<p>For the <a href="/cli/">QUnit CLI</a> and other Node.js runners, the same can also be done via environment variables. Environment variables must be set in the shell before running the <code class="language-plaintext highlighter-rouge">qunit</code> or <code class="language-plaintext highlighter-rouge">node</code> command. The variable names are case-sensitive and must be in <strong>lowercase</strong>. You may set boolean configuration variables using the string <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">qunit_config_noglobals</span><span class="o">=</span><span class="nb">true
 export </span><span class="nv">qunit_config_filter</span><span class="o">=</span>foo
@@ -158,7 +158,7 @@ qunit test.js
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">qunit_config_filter</span><span class="o">=</span>foo <span class="nv">qunit_config_testtimeout</span><span class="o">=</span>1000 qunit test.js
 </code></pre></div></div>
 
-<p>The environment variables can also make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several <code class="language-plaintext highlighter-rouge">npm run</code> shortcuts in <code class="language-plaintext highlighter-rouge">package.json</code>, like so:</p>
+<p>The environment variables make it easy to pass a parameter to QUnit from a child or nested command. For example, if you have several <code class="language-plaintext highlighter-rouge">npm run</code> shortcuts in <code class="language-plaintext highlighter-rouge">package.json</code>, like so:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">

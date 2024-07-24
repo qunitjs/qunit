@@ -99,8 +99,8 @@
 <p>In general, you should not use this method and instead throw an error. QUnit automatically finds and reports uncaught errors. The following are handled by default and should not be connected to <code class="language-plaintext highlighter-rouge">QUnit.onUncaughtException()</code> a second time:</p>
 
 <ul>
-  <li>HTML Runner: <code class="language-plaintext highlighter-rouge">window.onerror</code></li>
-  <li>HTML Runner: <code class="language-plaintext highlighter-rouge">window.addEventListener('unhandledrejection', …)</code></li>
+  <li>Browser Runner: <code class="language-plaintext highlighter-rouge">window.onerror</code></li>
+  <li>Browser Runner: <code class="language-plaintext highlighter-rouge">window.addEventListener('unhandledrejection', …)</code></li>
   <li>QUnit CLI: <code class="language-plaintext highlighter-rouge">process.on('unhandledRejection', …)</code></li>
   <li>QUnit CLI: <code class="language-plaintext highlighter-rouge">process.on('uncaughtException', …)</code></li>
 </ul>
