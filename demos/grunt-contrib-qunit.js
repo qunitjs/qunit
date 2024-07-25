@@ -2,10 +2,14 @@ const cp = require('child_process');
 const path = require('path');
 const DIR = path.join(__dirname, 'grunt-contrib-qunit');
 
+// Fast re-runs
+process.env.npm_config_prefer_offline = 'true';
+process.env.npm_config_update_notifier = 'false';
+process.env.npm_config_audit = 'false';
+
 QUnit.module('grunt-contrib-qunit', {
   before: () => {
-    // Let this be quick for re-runs
-    cp.execSync('npm install --prefer-offline --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install', { cwd: DIR, encoding: 'utf8' });
   }
 });
 
@@ -29,15 +33,10 @@ QUnit.test.each('failing tests', {
 >>     at file:fail-uncaught.html:16`]
 }, (assert, [command, expected]) => {
   try {
+    // This will use env CI, CHROMIUM_FLAGS, and PUPPETEER_DOWNLOAD_PATH
     const ret = cp.execSync('node_modules/.bin/grunt qunit:' + command, {
       cwd: DIR,
-      encoding: 'utf8',
-      env: {
-        CHROMIUM_FLAGS: process.env.CHROMIUM_FLAGS,
-        CI: process.env.CI,
-        PATH: process.env.PATH,
-        PUPPETEER_DOWNLOAD_PATH: process.env.PUPPETEER_DOWNLOAD_PATH
-      }
+      encoding: 'utf8'
     });
     assert.equal(ret, null);
   } catch (e) {

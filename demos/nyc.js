@@ -2,9 +2,14 @@ const cp = require('child_process');
 const path = require('path');
 const DIR = path.join(__dirname, 'nyc');
 
+// Fast re-runs
+process.env.npm_config_prefer_offline = 'true';
+process.env.npm_config_update_notifier = 'false';
+process.env.npm_config_audit = 'false';
+
 QUnit.module('nyc', {
   before: () => {
-    cp.execSync('npm install --prefer-offline --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install', { cwd: DIR, encoding: 'utf8' });
   }
 });
 
@@ -29,6 +34,12 @@ All files     |   85.71 |      100 |      50 |   85.71 |
 --------------|---------|----------|---------|---------|-------------------
 `.trim();
 
-  const actual = cp.execSync('npm test', { cwd: DIR, env: { PATH: process.env.PATH }, encoding: 'utf8' });
+  const actual = cp.execSync('npm test', {
+    cwd: DIR,
+    env: Object.assign({}, process.env, {
+      FORCE_COLOR: '0'
+    }),
+    encoding: 'utf8'
+  });
   assert.pushResult({ result: actual.includes(expected), actual, expected });
 });

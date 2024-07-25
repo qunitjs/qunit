@@ -11,9 +11,14 @@ function normalize (str) {
     .replace(/^\s+/gm, '  ');
 }
 
+// Fast re-runs
+process.env.npm_config_prefer_offline = 'true';
+process.env.npm_config_update_notifier = 'false';
+process.env.npm_config_audit = 'false';
+
 QUnit.module('karma-qunit', {
   before: () => {
-    cp.execSync('npm install --prefer-offline --no-audit --omit=dev --legacy-peer-deps --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install --omit=dev --legacy-peer-deps', { cwd: DIR, encoding: 'utf8' });
   }
 });
 
@@ -40,11 +45,10 @@ Firefox: Executed 1 of 1 SUCCESS`, { KARMA_QUNIT_CONFIG: '1' }
   try {
     ret = cp.execSync('npm test', {
       cwd: DIR,
-      env: {
-        PATH: process.env.PATH,
+      env: Object.assign({}, process.env, {
         KARMA_FILES: file,
         ...env
-      },
+      }),
       encoding: 'utf8'
     });
   } catch (e) {
@@ -73,10 +77,9 @@ Firefox  example FAILED
   try {
     const ret = cp.execSync('npm test', {
       cwd: DIR,
-      env: {
-        PATH: process.env.PATH,
+      env: Object.assign({}, process.env, {
         KARMA_FILES: file
-      },
+      }),
       encoding: 'utf8'
     });
     assert.equal(ret, null);
