@@ -45,13 +45,13 @@ QUnit.test('different strings', function (assert) {
 
   assert.equal(
     QUnit.diff(a, 'a<b/>cd'),
-    '<span>a</span><ins>&lt;</ins><span>b</span><ins>/&gt;</ins><span>cd</span>',
+    '<span>a</span><del>b</del><ins>&lt;b/></ins><span>cd</span>',
     "QUnit.diff( 'abcd', 'a<b/>cd' )"
   );
 
   assert.equal(
     QUnit.diff(a, 'a&lt;b/&gt;cd'),
-    '<span>a</span><ins>&amp;lt;</ins><span>b</span><ins>/&amp;gt;</ins><span>cd</span>',
+    '<span>a</span><del>b</del><ins>&amp;lt;b/&amp;gt;</ins><span>cd</span>',
     "QUnit.diff( 'abcd', 'a&lt;b/&gt;cd' )"
   );
 });
@@ -104,7 +104,7 @@ QUnit.test('test with line mode on long strings', function (assert) {
   assert.equal(
     QUnit.diff(a, b),
     '<span>QUnit is a </span><ins>very </ins><span>powerful, easy-to-use ' +
-    'JavaScript unit testing framework. It&#039;s used by the jQuery</span><ins> ' +
+    'JavaScript unit testing framework. It\'s used by the jQuery</span><ins> ' +
     'Core</ins><span>, jQuery UI and jQuery Mobile projects and is capable of' +
     ' testing any </span><del>generic </del><span>JavaScript code, including ' +
     'itself!</span>' +
@@ -158,7 +158,7 @@ QUnit.test('simplified diffs', function (assert) {
       '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
       '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
       '<span>foobarbaz more than 100 chars\n</span>' +
-      '<del>secon</del><span>d</span><del>_l</del><span>i</span><ins>ffere</ins><span>n</span><ins>t_</ins><span>e</span><ins>nd</ins>',
+      '<del>second_line</del><ins>different_end</ins>',
     'simplify longer multi-line diffs'
   );
 });
@@ -188,9 +188,10 @@ QUnit.test('Edge cases', function (assert) {
   assert.equal(
     QUnit.diff(
       'A\nB\n' + X + '\nD',
-      'A\nCCC\nB\nCCC\n' + Y + '\nD'),
-    '<span>A\n</span><ins>CCC\n</ins><span>B\n</span>' +
-    '<del>' + X + '</del><ins>CCC\n' + Y + '</ins>' +
+      'A\nCCC\nB\nCCC\n' + Y + '\nD'
+    ),
+    '<span>A\n</span><del>B\n' + X + '</del>' +
+    '<ins>CCC\nB\nCCC\n' + Y + '</ins>' +
     '<span>\nD</span>');
 
   function repeat (substr, n) {

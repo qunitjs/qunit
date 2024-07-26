@@ -6,7 +6,7 @@ function mockStack (error) {
   return error;
 }
 
-function makeFailingTestEnd (actualValue) {
+function makeFailingTestEnd (actualValue, expectedValue) {
   return {
     name: 'Failing',
     suiteName: null,
@@ -16,7 +16,7 @@ function makeFailingTestEnd (actualValue) {
     errors: [{
       passed: false,
       actual: actualValue,
-      expected: 'expected'
+      expected: expectedValue || 'expected'
     }],
     assertions: null
   };
@@ -414,6 +414,37 @@ QUnit.module('TapReporter', function (hooks) {
 '  "c": "unique"\n' +
 '}\n' +
 '  expected: expected\n' +
+'  ...'
+    );
+  });
+
+  QUnit.test('output diff for non-trivial differences', function (assert) {
+    emitter.emit('testEnd', makeFailingTestEnd(
+      { a: true, b: 'x' },
+      { c: false, b: 'x' }
+    ));
+    // eslint-disable-next-line no-control-regex
+    var lastDekleur = last.replace(/\x1b\[\d+m/g, '');
+    assert.strictEqual(lastDekleur, '  ---\n' +
+'  message: failed\n' +
+'  severity: failed\n' +
+'  actual  : {\n' +
+'  "a": true,\n' +
+'  "b": "x"\n' +
+'}\n' +
+'  expected: {\n' +
+'  "c": false,\n' +
+'  "b": "x"\n' +
+'}\n' +
+'  diff: |\n' +
+'    --- expected\n' +
+'    +++ actual\n' +
+'     {\n' +
+'    -  "b": "x",\n' +
+'    -  "c": false\n' +
+'    +  "a": true,\n' +
+'    +  "b": "x"\n' +
+'     }\n' +
 '  ...'
     );
   });
