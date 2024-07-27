@@ -15,8 +15,8 @@ function isParentModuleInQueue () {
 
 function createModule (name, testEnvironment, modifiers) {
   const parentModule = moduleStack.length ? moduleStack.slice(-1)[0] : null;
+  const parentReport = parentModule ? parentModule.suiteReport : runSuite;
   const moduleName = parentModule !== null ? [parentModule.name, name].join(' > ') : name;
-  const parentSuite = parentModule ? parentModule.suiteReport : runSuite;
 
   const skip = (parentModule !== null && parentModule.skip) || modifiers.skip;
   const todo = (parentModule !== null && parentModule.todo) || modifiers.todo;
@@ -42,7 +42,7 @@ function createModule (name, testEnvironment, modifiers) {
     testsRun: 0,
     testsIgnored: 0,
     childModules: [],
-    suiteReport: new SuiteReport(name, parentSuite),
+    suiteReport: new SuiteReport(name, parentReport),
 
     // Initialised by test.js when the module start executing,
     // i.e. before the first test in this module (or a child).
