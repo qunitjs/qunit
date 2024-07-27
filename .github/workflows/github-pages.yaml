@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     name: Deploy
+    if: ${{ github.repository == 'qunitjs/qunit' }} # skip noisy cron on forks
     runs-on: ubuntu-20.04
     env:
       DEPLOY_DIR: docs/_site/
