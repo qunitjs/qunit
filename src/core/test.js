@@ -87,12 +87,6 @@ export default function Test (settings) {
 
   ++Test.count;
   this.errorForStack = new Error();
-  if (this.callback && this.callback.validTest) {
-    // Omit the test-level trace for the internal "No tests" test failure,
-    // There is already an assertion-level trace, and that's noisy enough
-    // as it is.
-    this.errorForStack.stack = undefined;
-  }
   this.testReport = new TestReport(this.testName, this.module.suiteReport, {
     todo: this.todo,
     skip: this.skip,
@@ -782,11 +776,6 @@ Test.prototype = {
   },
 
   valid: function () {
-    // Internally-generated tests are always valid
-    if (this.callback && this.callback.validTest) {
-      return true;
-    }
-
     function moduleChainIdMatch (testModule, selectedId) {
       return (
         // undefined or empty array
@@ -909,16 +898,7 @@ function checkPollution () {
 let focused = false; // indicates that the "only" filter was used
 
 function addTest (settings) {
-  if (
-    // Never ignore the internal "No tests" error, as this would infinite loop.
-    // See /test/cli/fixtures/only-test-only-module-mix.tap.txt
-    //
-    // TODO: If we improve HtmlReporter to buffer and replay early errors,
-    // we can change "No tests" to be a global error, and thus get rid of
-    // the "validTest" concept and the ProcessQueue re-entry hack.
-    !(settings.callback && settings.callback.validTest) &&
-    (focused || config.currentModule.ignored)
-  ) {
+  if (focused || config.currentModule.ignored) {
     return;
   }
 

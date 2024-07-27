@@ -1,6 +1,7 @@
 # name: module() with async function
 # command: ["qunit","async-module-error.js"]
 
+TAP version 13
 not ok 1 global failure
   ---
   message: |+
@@ -13,18 +14,6 @@ not ok 1 global failure
         at internal
   ...
 Bail out! Error: Failed to load file async-module-error.js
-TAP version 13
-not ok 2 global failure
-  ---
-  message: No tests were run.
-  severity: failed
-  actual  : undefined
-  expected: undefined
-  stack: |
-    Error: No tests were run.
-        at qunit.js
-        at internal
-  ...
 1..2
 # pass 0
 # skip 0

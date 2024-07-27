@@ -1,8 +1,9 @@
 import config from './config.js';
-import { extend, generateHash, performance } from './utilities.js';
+import { generateHash, performance } from './utilities.js';
 import { runLoggingCallbacks } from './callbacks.js';
 import Promise from './promise.js';
 import { runSuite } from './module.js';
+import onUncaughtException from './on-uncaught-exception.js';
 import { emit } from './events.js';
 import { setTimeout } from './globals.js';
 
@@ -28,11 +29,7 @@ function unitSamplerGenerator (seed) {
 }
 
 class ProcessingQueue {
-  /**
-   * @param {Function} test Reference to the QUnit.test() method
-   */
-  constructor (test) {
-    this.test = test;
+  constructor () {
     this.priorityCount = 0;
     this.unitSampler = null;
 
@@ -168,7 +165,7 @@ class ProcessingQueue {
   done () {
     // We have reached the end of the processing queue and are about to emit the
     // "runEnd" event after which reporters typically stop listening and exit
-    // the process. First, check if we need to emit one final test.
+    // the process. First, check if we need to emit an error event.
     if (config.stats.testCount === 0 && config.failOnZeroTests === true) {
       let error;
       if (config.filter && config.filter.length) {
@@ -183,19 +180,7 @@ class ProcessingQueue {
         error = new Error('No tests were run.');
       }
 
-      this.test('global failure', extend(function (assert) {
-        assert.pushResult({
-          result: false,
-          message: error.message,
-          source: error.stack
-        });
-      }, { validTest: true }));
-
-      // We do need to call `advance()` in order to resume the processing queue.
-      // Once this new test is finished processing, we'll reach `done` again, and
-      // that time the above condition will evaluate to false.
-      this.advance();
-      return;
+      onUncaughtException(error);
     }
 
     const storage = config.storage;

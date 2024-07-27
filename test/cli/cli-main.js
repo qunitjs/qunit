@@ -202,15 +202,12 @@ ReferenceError: varIsNotDefined is not defined
     assert.equal(execution.snapshot, `TAP version 13
 not ok 1 global failure
   ---
-  message: "No tests matched the filter \\"no matches\\"."
+  message: "Error: No tests matched the filter \\"no matches\\"."
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".
-        at qunit.js
-        at internal
   ...
+Bail out! Error: No tests matched the filter "no matches".
 1..1
 # pass 0
 # skip 0
