@@ -244,14 +244,14 @@ export default class TapReporter {
     }
   }
 
-  onRunEnd (runSuite) {
+  onRunEnd (runEnd) {
     this.ended = true;
 
-    this.log(`1..${runSuite.testCounts.total}`);
-    this.log(`# pass ${runSuite.testCounts.passed}`);
-    this.log(kleur.yellow(`# skip ${runSuite.testCounts.skipped}`));
-    this.log(kleur.cyan(`# todo ${runSuite.testCounts.todo}`));
-    this.log(kleur.red(`# fail ${runSuite.testCounts.failed}`));
+    this.log(`1..${runEnd.testCounts.total}`);
+    this.log(`# pass ${runEnd.testCounts.passed}`);
+    this.log(kleur.yellow(`# skip ${runEnd.testCounts.skipped}`));
+    this.log(kleur.cyan(`# todo ${runEnd.testCounts.todo}`));
+    this.log(kleur.red(`# fail ${runEnd.testCounts.failed}`));
   }
 
   logAssertion (error, severity) {

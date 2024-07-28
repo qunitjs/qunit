@@ -97,57 +97,28 @@ const config = {
   // List of defined modules (read-only).
   modules: [],
 
-  // Internal: The first unnamed module
-  //
-  // By being defined as the intial value for currentModule, it is the
-  // receptacle and implied parent for any global tests. It is as if we
-  // called `QUnit.module( "" );` before any other tests were defined.
-  //
-  // If we reach begin() and no tests were put in it, we dequeue it as if it
-  // never existed, and in that case never expose it to the events and
-  // callbacks API.
-  //
-  // When global tests are defined, then this unnamed module will execute
-  // as any other module, including moduleStart/moduleDone events etc.
-  //
-  // Since this module isn't explicitly created by the user, they have no
-  // access to add hooks for it. The hooks object is defined to comply
-  // with internal expectations of test.js, but they will be empty.
-  // To apply hooks, place tests explicitly in a QUnit.module(), and use
-  // its hooks accordingly.
-  //
-  // For global hooks that apply to all tests and all modules, use QUnit.hooks.
-  //
-  // NOTE: This is *not* a "global module". It is not an ancestor of all modules
-  // and tests. It is merely the parent for any tests defined globally,
-  // before the first QUnit.module(). As such, the events for this unnamed
-  // module will fire as normal, right after its last test, and *not* at
-  // the end of the test run.
-  //
-  // NOTE: This also should probably also not become a global module, unless
-  // we keep it out of the public API. For example, it would likely not
-  // improve the user interface and plugin behaviour if all modules became
-  // wrapped between the start and end events of this module, and thus
-  // needlessly add indentation, indirection, or other visible noise.
-  // Unit tests for the callbacks API would detect that as a regression.
-  currentModule: {
-    name: '',
-    tests: [],
-    childModules: [],
-    testsRun: 0,
-    testsIgnored: 0,
-    hooks: {
-      before: [],
-      beforeEach: [],
-      afterEach: [],
-      after: []
-    }
-  },
-
   // Semi-internal state.
   //
   // These are undocumented but defacto stable for certain limited use cases,
   // in order to maintain ecosystem compat with popular QUnit 2.x plugins and integrations.
+  //
+  // - currentModule: This object represents the most recent `QUnit.module()` call,
+  //   and is used by functions like `QUnit.test()` to determine their module parent.
+  //   It is also referred to from `config.modules` and `config._moduleStack`.
+  //
+  //   This starts out with an unnamed placeholder module to hold any "global" tests.
+  //   The unnamed module was introduced in QUnit 1.16. When we reach doStart() in start.js,
+  //   if no global tests exist, the unnamed module will be removed `config.modules`, as if
+  //   it never existed, and thus never exposed to the events and callbacks API.
+  //
+  //   Note that this unnamed initial module is not a "root" module, it is not an ancestor
+  //   to any other modules. Doing so would negatively impact developer experience by ading
+  //   needless indentation, indirection, and other visible noise in test results (or require
+  //   workarounds to prevent that). Since the unnamed module is a regular module, it will
+  //   "end" after the last global test (i.e. before the first named module), and not e.g.
+  //   at the end of the test run.
+  //   To set global hooks, use `QUnit.hooks` instead.
+  //   To listen for the end of the run, handle the "runEnd" event from `QUnit.on()`.
   //
   // - blocking: Whether new tests will be defined and queued, or executed immediately.
   //   In other words, whether QUnit.start() has been called yet.
@@ -160,6 +131,8 @@ const config = {
   // - stats: Internal assertion counts. Use `QUnit.on('runEnd')` instead.
   //   These are discouraged per the notice at https://qunitjs.com/api/callbacks/QUnit.done/.
   //   https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event
+  //
+  currentModule: null, // initial unnamed module for "global tests" assigned in core.js.
   blocking: true,
   started: 0,
   callbacks: {},
@@ -168,8 +141,9 @@ const config = {
 
   // Internal state, exposed to ease in-process resets
   // Ref https://github.com/qunitjs/qunit/pull/1598
+  _moduleStack: [],
   _globalHooks: {},
-  _pq: null, // ProcessingQueue singleton, assigned in /src/core.js
+  _pq: null, // ProcessingQueue singleton, assigned in core.js
   _runStarted: false,
   _event_listeners: Object.create(null),
   _event_memory: {}
@@ -270,8 +244,5 @@ if (urlParams.seed === true) {
 } else {
   readFlatPreconfigString(urlParams.seed, 'seed');
 }
-
-// Push a loose unnamed module to the modules collection
-config.modules.push(config.currentModule);
 
 export default config;

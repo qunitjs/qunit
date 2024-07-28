@@ -1,5 +1,5 @@
 import config from './config.js';
-import { runSuite } from './module.js';
+import { globalSuiteReport } from './module.js';
 import { sourceFromStacktrace } from './stacktrace.js';
 import { errorString } from './utilities.js';
 import { emit } from './events.js';
@@ -42,7 +42,7 @@ export default function onUncaughtException (error) {
     // Increase "bad assertion" stats despite no longer pushing an assertion in this case.
     // This ensures "runEnd" and "QUnit.done()" handlers behave as expected, since the "bad"
     // count is typically how reporters decide on the boolean outcome of the test run.
-    runSuite.globalFailureCount++;
+    globalSuiteReport.globalFailureCount++;
     config.stats.bad++;
     config.stats.all++;
     emit('error', error);

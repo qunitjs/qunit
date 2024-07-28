@@ -2,30 +2,44 @@ import config from './config.js';
 import SuiteReport from './reports/suite.js';
 import { extend, generateHash, isAsyncFunction } from './utilities.js';
 
-const moduleStack = [];
+export const globalSuiteReport = new SuiteReport();
 
-export const runSuite = new SuiteReport();
+// This also pushes the unnamed module to config.modules.
+// It is important that we not push this into the moduleStack,
+// since it is not meant to be a parent to any other modules.
+export const unnamedModule = createModule('', {}, {}, globalSuiteReport);
 
 function isParentModuleInQueue () {
   const modulesInQueue = config.modules
     .filter(module => !module.ignored)
     .map(module => module.moduleId);
-  return moduleStack.some(module => modulesInQueue.includes(module.moduleId));
+  return config._moduleStack.some(module => modulesInQueue.includes(module.moduleId));
 }
 
-function createModule (name, testEnvironment, modifiers) {
-  const parentModule = moduleStack.length ? moduleStack.slice(-1)[0] : null;
-  const parentReport = parentModule ? parentModule.suiteReport : runSuite;
+/**
+ * This does:
+ * - Create a module object
+ * - Link it to and from a parent module (if one is on the stack)
+ * - Link it to a parent SuiteReport (if one is on the stack)
+ * - Push it to `config.modules`
+ *
+ * It does NOT push it to config._moduleStack. That's only relevant for
+ * scoped modules, and is the responsibility of processModule().
+ *
+ * @param {string} name
+ * @param {Object} testEnvironment
+ * @param {Object} modifiers
+ * @param {SuiteReport} suiteReport Force the report, for use by the initial unnamedModule
+ * @return {Object}
+ */
+function createModule (name, testEnvironment, modifiers, suiteReport) {
+  const parentModule = config._moduleStack.length
+    ? config._moduleStack[config._moduleStack.length - 1]
+    : null;
   const moduleName = parentModule !== null ? [parentModule.name, name].join(' > ') : name;
 
   const skip = (parentModule !== null && parentModule.skip) || modifiers.skip;
   const todo = (parentModule !== null && parentModule.todo) || modifiers.todo;
-
-  let env = {};
-  if (parentModule) {
-    env = Object.create(parentModule.testEnvironment || {});
-  }
-  extend(env, testEnvironment);
 
   const module = {
     name: moduleName,
@@ -36,13 +50,20 @@ function createModule (name, testEnvironment, modifiers) {
       afterEach: [],
       after: []
     },
-    testEnvironment: env,
+    testEnvironment: extend(
+      // Live inheritence as of QUnit 3. https://github.com/qunitjs/qunit/pull/1762
+      (parentModule ? Object.create(parentModule.testEnvironment || {}) : {}),
+      testEnvironment
+    ),
     tests: [],
     moduleId: generateHash(moduleName),
     testsRun: 0,
     testsIgnored: 0,
     childModules: [],
-    suiteReport: new SuiteReport(name, parentReport),
+    suiteReport: suiteReport || new SuiteReport(
+      name,
+      parentModule ? parentModule.suiteReport : globalSuiteReport
+    ),
 
     // Initialised by test.js when the module start executing,
     // i.e. before the first test in this module (or a child).
@@ -62,10 +83,11 @@ function createModule (name, testEnvironment, modifiers) {
   }
 
   config.modules.push(module);
+
   return module;
 }
 
-function setHookFromEnvironment (hooks, environment, name) {
+function setHookFromEnvironment (environment, hooks, name) {
   const potentialHook = environment[name];
   if (typeof potentialHook === 'function') {
     hooks[name].push(potentialHook);
@@ -97,11 +119,10 @@ function processModule (name, options, scope, modifiers = {}) {
   // Transfer any initial hooks from the options object to the 'hooks' object
   const testEnvironment = module.testEnvironment;
   const hooks = module.hooks;
-
-  setHookFromEnvironment(hooks, testEnvironment, 'before');
-  setHookFromEnvironment(hooks, testEnvironment, 'beforeEach');
-  setHookFromEnvironment(hooks, testEnvironment, 'afterEach');
-  setHookFromEnvironment(hooks, testEnvironment, 'after');
+  setHookFromEnvironment(testEnvironment, hooks, 'before');
+  setHookFromEnvironment(testEnvironment, hooks, 'beforeEach');
+  setHookFromEnvironment(testEnvironment, hooks, 'afterEach');
+  setHookFromEnvironment(testEnvironment, hooks, 'after');
 
   const moduleFns = {
     before: makeSetHook(module, 'before'),
@@ -114,7 +135,7 @@ function processModule (name, options, scope, modifiers = {}) {
   config.currentModule = module;
 
   if (typeof scope === 'function') {
-    moduleStack.push(module);
+    config._moduleStack.push(module);
 
     try {
       const cbReturnValue = scope.call(module.testEnvironment, moduleFns);
@@ -126,7 +147,7 @@ function processModule (name, options, scope, modifiers = {}) {
       // we let this bubble up to global error handlers. But, not until after
       // we teardown internal state to ensure correct module nesting.
       // Ref https://github.com/qunitjs/qunit/issues/1478.
-      moduleStack.pop();
+      config._moduleStack.pop();
       config.currentModule = module.parentModule || prevModule;
     }
   }

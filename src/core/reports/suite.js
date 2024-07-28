@@ -7,7 +7,7 @@ export default class SuiteReport {
 
     // When an "error" event is emitted from onUncaughtException(), the
     // "runEnd" event should report the status as failed. The "runEnd" event data
-    // is tracked through this property (via the "runSuite" instance).
+    // is tracked through this property (via the "globalSuiteReport" instance).
     this.globalFailureCount = 0;
 
     this.tests = [];

@@ -2,7 +2,7 @@ import config from './config.js';
 import { generateHash, performance } from './utilities.js';
 import { runLoggingCallbacks } from './callbacks.js';
 import Promise from './promise.js';
-import { runSuite } from './module.js';
+import { globalSuiteReport } from './module.js';
 import onUncaughtException from './on-uncaught-exception.js';
 import { emit } from './events.js';
 import { setTimeout } from './globals.js';
@@ -67,7 +67,7 @@ class ProcessingQueue {
 
   /**
    * Process the first task on the taskQueue as a promise.
-   * Each task is a function added by Test#queue() in /src/test.js
+   * Each task is a function added by Test#queue() in test.js
    */
   processTaskQueue (start) {
     if (this.taskQueue.length && !config.blocking) {
@@ -187,7 +187,7 @@ class ProcessingQueue {
 
     this.finished = true;
 
-    const runEnd = runSuite.end(true);
+    const runEnd = globalSuiteReport.end(true);
     emit('runEnd', runEnd);
 
     runLoggingCallbacks('done', {

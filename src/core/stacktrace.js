@@ -2,8 +2,8 @@
 //
 // This should reduce a raw stack trace like this:
 //
-// > foo.broken()@/src/foo.js
-// > Bar@/src/bar.js
+// > foo.broken()@/example/foo.js
+// > Bar@/example/bar.js
 // > @/test/bar.test.js
 // > @/lib/qunit.js:500:12
 // > @/lib/qunit.js:100:28
@@ -13,8 +13,8 @@
 //
 // and shorten it to show up until the end of the user's bar.test.js code.
 //
-// > foo.broken()@/src/foo.js
-// > Bar@/src/bar.js
+// > foo.broken()@/example/foo.js
+// > Bar@/example/bar.js
 // > @/test/bar.test.js
 //
 // QUnit will obtain one example trace (once per process/pageload suffices),

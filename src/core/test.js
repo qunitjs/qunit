@@ -111,8 +111,8 @@ export default function Test (settings) {
 
 Test.count = 0;
 
-function getNotStartedModules (startModule) {
-  let module = startModule;
+function getModulesForStartEvent (startingModule) {
+  let module = startingModule;
   const modules = [];
 
   while (module && module.testsRun === 0) {
@@ -120,8 +120,8 @@ function getNotStartedModules (startModule) {
     module = module.parentModule;
   }
 
-  // The above push modules from the child to the parent
-  // return a reversed order with the top being the top most parent module
+  // The above starts from the child and moves up to the parent.
+  // Return this in reversed order, such that we start with top-most parent.
   return modules.reverse();
 }
 
@@ -136,7 +136,7 @@ Test.prototype = {
 
   before: function () {
     const module = this.module;
-    const notStartedModules = getNotStartedModules(module);
+    const notStartedModules = getModulesForStartEvent(module);
 
     // ensure the callbacks are executed serially for each module
     let moduleStartChain = Promise.resolve();
@@ -243,7 +243,7 @@ Test.prototype = {
         return;
       }
 
-      // The 'after' hook should only execute when there are not tests left and
+      // The 'after' hook should only execute when there are no tests left and
       // when the 'after' and 'finish' tasks are the only tasks left to process
       if (hookName === 'after' &&
         !lastTestWithinModuleExecuted(hookOwner) &&
@@ -417,39 +417,36 @@ Test.prototype = {
       // generating stack trace is expensive, so using a getter will help defer this until we need it
       get source () { return test.stack; }
     }).then(function () {
-      if (allTestsExecuted(module)) {
-        const completedModules = [module];
-
-        // Check if the parent modules, iteratively, are done. If that the case,
-        // we emit the `suiteEnd` event and trigger `moduleDone` callback.
-        let parent = module.parentModule;
-        while (parent && allTestsExecuted(parent)) {
-          completedModules.push(parent);
-          parent = parent.parentModule;
-        }
-
-        let moduleDoneChain = Promise.resolve();
-        completedModules.forEach(completedModule => {
-          moduleDoneChain = moduleDoneChain.then(() => {
-            return logSuiteEnd(completedModule);
-          });
-        });
-        return moduleDoneChain;
+      // Emit the `suiteEnd` event and `moduleDone` callbacks for modules
+      // that are completed as of now.
+      const completedModules = [];
+      let parent = module;
+      while (parent && allTestsExecuted(parent)) {
+        completedModules.push(parent);
+        parent = parent.parentModule;
       }
+
+      let moduleDoneChain = Promise.resolve();
+      completedModules.forEach(completedModule => {
+        moduleDoneChain = moduleDoneChain.then(() => {
+          return logSuiteEnd(completedModule);
+        });
+      });
+      return moduleDoneChain;
     }).then(function () {
       config.current = undefined;
     });
 
     function logSuiteEnd (module) {
-      // Reset `module.hooks` to ensure that anything referenced in these hooks
+      // Empty `module.hooks` to ensure that anything referenced in these hooks
       // has been released to be garbage collected. Descendant modules that were
       // entirely skipped, e.g. due to filtering, will never have this method
-      // called for them, but might have hooks with references pinning data in
-      // memory (even if the hooks weren't actually executed), so we reset the
+      // called for them, but might have hooks with references that hold data in
+      // memory (even if the hooks were never executed), so we empty the
       // hooks on all descendant modules here as well. This is safe because we
       // will never call this as long as any descendant modules still have tests
-      // to run. This also means that in multi-tiered nesting scenarios we might
-      // reset the hooks multiple times on some modules, but that's harmless.
+      // to run. This also means that for deeply nested modules, we might empty
+      // the hooks on completed child modules multiple times. That's harmless.
       const modules = [module];
       while (modules.length) {
         const nextModule = modules.shift();

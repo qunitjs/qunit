@@ -2,7 +2,7 @@ import { runLoggingCallbacks } from './callbacks.js';
 import config from './config.js';
 import { emit } from './events.js';
 import { window, document, setTimeout } from './globals.js';
-import { runSuite } from './module.js';
+import { globalSuiteReport } from './module.js';
 import Test from './test.js';
 import reporters from './reporters.js';
 import { performance } from './utilities.js';
@@ -14,7 +14,7 @@ function unblockAndAdvanceQueue () {
 
 // Inject the complete QUnit API for use by reporters
 export function createStartFunction (QUnit) {
-  function doBegin () {
+  function doStart () {
     if (config.started) {
       unblockAndAdvanceQueue();
       return;
@@ -39,14 +39,18 @@ export function createStartFunction (QUnit) {
     // Record the time of the test run's beginning
     config.started = performance.now();
 
-    // Delete the loose unnamed module if unused.
+    // Delete the unnamed module if no global tests were defined (see config.js)
     if (config.modules[0].name === '' && config.modules[0].tests.length === 0) {
       config.modules.shift();
     }
 
+    // Create a list of simplified and independent module descriptor objects for
+    // the QUnit.begin callbacks. This prevents plugins from relying on reading
+    // from (or writing!) to internal state.
     const modulesLog = [];
     for (let i = 0; i < config.modules.length; i++) {
-      // Don't expose the unnamed global test module to plugins.
+      // Always omit the unnamed module from the list of module names
+      // for UI plugins, even if there were glboal tests defined.
       if (config.modules[i].name !== '') {
         modulesLog.push({
           name: config.modules[i].name,
@@ -56,7 +60,7 @@ export function createStartFunction (QUnit) {
     }
 
     // The test run is officially beginning now
-    emit('runStart', runSuite.start(true));
+    emit('runStart', globalSuiteReport.start(true));
     runLoggingCallbacks('begin', {
       totalTests: Test.count,
       modules: modulesLog
@@ -82,15 +86,15 @@ export function createStartFunction (QUnit) {
       // still wait for DOM ready to ensure reliable integration of reporters.
       window.addEventListener('load', function () {
         setTimeout(function () {
-          doBegin();
+          doStart();
         });
       });
     } else if (setTimeout) {
       setTimeout(function () {
-        doBegin();
+        doStart();
       });
     } else {
-      doBegin();
+      doStart();
     }
   };
 }

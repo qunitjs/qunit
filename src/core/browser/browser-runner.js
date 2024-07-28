@@ -83,7 +83,7 @@ export function initBrowser (QUnit, window, document) {
   //   as otherwise it will miss the first few or even all synchronous events.
   //
   // Priot to QUnit 3.0, the reporter was initialised here, between error handler (above),
-  // and start (below). As of QUnit 3.0, reporters are initialized by doBegin() within
+  // and start (below). As of QUnit 3.0, reporters are initialized by doStart() within
   // QUnit.start(), which is logically the same place, but decoupled from initBrowser().
 
   function autostart () {

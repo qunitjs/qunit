@@ -1,7 +1,7 @@
 import { window } from './globals.js';
 import equiv from './equiv.js';
 import dump from './dump.js';
-import { runSuite, module } from './module.js';
+import { unnamedModule, module } from './module.js';
 import Assert from './assert.js';
 import { test, pushFailure } from './test.js';
 import reporters from './reporters.js';
@@ -18,14 +18,7 @@ import diff from './diff.js';
 import version from './version.js';
 import { createStartFunction } from './start.js';
 
-// The "currentModule" object would ideally be defined using the createModule()
-// function. Since it isn't, add the missing suiteReport property to it now that
-// we have loaded all source code required to do so.
-//
-// TODO: Consider defining currentModule in core.js or module.js in its entirely
-// rather than partly in config.js and partly here.
-config.currentModule.suiteReport = runSuite;
-
+config.currentModule = unnamedModule;
 config._pq = new ProcessingQueue();
 
 const QUnit = {
