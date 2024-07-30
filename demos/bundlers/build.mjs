@@ -52,6 +52,11 @@ const rollupOutputs = [
     dir: tmpDir,
     entryFileNames: '[name].[format].js',
     format: 'umd',
+    // For ".cjs" input files, Rollup assumes there are exports
+    // (it doesn't look for module.exports). When combined with the UMD
+    // output format, this means Rollup requires a name for UMD's
+    // global variable. There are no exports in our input, so this
+    // is merely storing an unused and empty object.
     name: 'UNUSED'
   }
 ];
@@ -108,6 +113,9 @@ await (async function main () {
     console.log('... built ' + fileName);
 
     if (fileName.endsWith('.cjs.js')) {
+      // Skip the CJS output format when testing in browsers
+      // (depends on require+module.exports). These are
+      // tested in Node.js by /demos/bundlers.js instead.
       continue;
     }
 
