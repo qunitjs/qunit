@@ -16,25 +16,24 @@ module.exports = function (grunt) {
       grunt.log.ok(`Ran ${totals.files} files`);
     }
 
-    // Refresh the QUnit global to be used in other tests
-    global.QUnit = requireFresh('../../qunit/qunit.js');
-
     done(!totals.failed);
   });
 
-  function requireFresh (path) {
-    let resolvedPath = require.resolve(path);
+  function requireFreshQUnit () {
+    // Resolve current QUnit path and remove it from the require cache
+    // to avoid stacking the QUnit logs.
+    const path = '../../qunit/qunit.js';
+    const resolvedPath = require.resolve(path);
     delete require.cache[resolvedPath];
+
+    // Clear any QUnit global from a previous test
+    delete globalThis.QUnit;
+
     return require(path);
   }
 
   async function runQUnit (file) {
-    // Resolve current QUnit path and remove it from the require cache
-    // to avoid stacking the QUnit logs.
-    let QUnit = requireFresh('../../qunit/qunit.js');
-
-    // Expose QUnit to the global scope to be seen on the other tests.
-    global.QUnit = QUnit;
+    const QUnit = requireFreshQUnit();
 
     QUnit.config.autostart = false;
     await import('../../' + file);
