@@ -55,6 +55,6 @@ Jörn is a freelance web developer, consultant, and trainer, residing in Cologne
 
 ## History
 
-QUnit was originally developed by John Resig as part of [jQuery](https://jquery.com/). In 2008 it got its own home, name, and API documentation, allowing others to use it for their unit testing as well. At the time it still depended on jQuery. A rewrite in 2009 fixed that and QUnit has been an independent project ever since.
+QUnit was originally developed by John Resig as part of [jQuery](https://jquery.com/). In 2008 it got its own home, name, and API documentation, allowing anyone to use it for their unit testing. The 2009 rewrite, leading up to the QUnit 1.0 release, removed the dependency on jQuery. QUnit has been an independent project ever since.
 
-QUnit's assertion methods follow the [CommonJS Unit Testing](http://wiki.commonjs.org/wiki/Unit_Testing/1.0) specification (which in turn was influenced by QUnit itself) and have since expanded to include a wider variety of assertions.
+The QUnit API design and terminology [formed the basis](https://groups.google.com/g/commonjs/c/d6v2ETPSbCI) of the [CommonJS Unit Testing](http://wiki.commonjs.org/wiki/Unit_Testing/1.0) specification, and has since expanded it to include a wide variety of [assertions](./api/assert/index.md). The CommonJS specification has been adopted across the JavaScript ecosystem, such in [Node.js assert](https://nodejs.org/api/assert.html), [node-tap](https://node-tap.org/), and [tape](https://github.com/tape-testing/tape).
