@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "grunt": "1.6.1",
+    "grunt-contrib-connect": "^5.0.0",
+    "grunt-contrib-qunit": "10.1.1",
+    "qunit": "file:../..",
+    "rollup": "^4.18.0",
+    "webpack": "^5.92.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "grunt test"
+  }
+}

@@ -9,10 +9,14 @@ function normalize (str) {
     .replace(/(\d+ ms)/g, '0 ms');
 }
 
+// Fast re-runs
+process.env.npm_config_prefer_offline = 'true';
+process.env.npm_config_update_notifier = 'false';
+process.env.npm_config_audit = 'false';
+
 QUnit.module('testem', {
   before: () => {
-    // Let this be quick for re-runs
-    cp.execSync('npm install --prefer-offline --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+    cp.execSync('npm install', { cwd: DIR, encoding: 'utf8' });
   }
 });
 

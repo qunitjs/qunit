@@ -14,6 +14,7 @@
     "coverage/**",
     "demos/*/qunit/**",
     "demos/*/coverage/**",
+    "demos/*/tmp/**",
     "demos/*/package-lock.json",
     "docs/.jekyll-cache/**",
     "docs/_site/**",
@@ -191,14 +192,14 @@
       }
     },
     {
-      "files": ["demos/**/*.js"],
+      "files": ["demos/**/*.js", "demos/**/*.mjs"],
       "env": {
         "browser": true,
         "es2017": true,
         "node": true
       },
       "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2022
       },
       "rules": {
         "compat/compat": "off"
