@@ -1,7 +1,7 @@
-const outerQUnit = global.QUnit;
-delete global.QUnit;
+const outerQUnit = globalThis.QUnit;
+delete globalThis.QUnit;
 const myQUnit = require('../../../src/cli/require-qunit')();
-global.QUnit = outerQUnit;
+globalThis.QUnit = outerQUnit;
 
 const data = [];
 myQUnit.on('runStart', function () {

@@ -94,6 +94,7 @@
         "sourceType": "script"
       },
       "env": {
+        "es2020": true,
         "node": true
       },
       "rules": {
@@ -109,11 +110,11 @@
     {
       "files": ["test/cli/**"],
       "env": {
-        "es2017": true,
+        "es2020": true,
         "node": true
       },
       "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2020
       },
       "rules": {
         "compat/compat": "off"
