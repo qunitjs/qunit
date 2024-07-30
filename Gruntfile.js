@@ -7,8 +7,6 @@ const { preprocess } = require('./build/dist-replace.js');
 let isCI = process.env.CI;
 
 module.exports = function (grunt) {
-  let connectPort = Number(grunt.option('connect-port')) || 4000;
-
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-qunit');
@@ -18,11 +16,7 @@ module.exports = function (grunt) {
     connect: {
       base: {
         options: {
-
-          // grunt-contrib-connect supports 'useAvailablePort' which
-          // automatically finds a suitable port, but we can't use that here because
-          // the grunt-contrib-qunit task needs to know the url ahead of time.
-          port: connectPort,
+          useAvailablePort: true,
           base: '.'
         }
       }
@@ -50,72 +44,68 @@ module.exports = function (grunt) {
       ]
     },
     qunit: {
-      all: {
-        options: {
-          timeout: 30000,
-          console: false,
-          puppeteer: {
-            args: isCI
+      options: {
+        timeout: 30000,
+        console: false,
+        puppeteer: {
+          args: isCI
 
-            // For CI
-              ? ['--no-sandbox']
+          // For CI
+            ? ['--no-sandbox']
 
-            // For local development
-            // Allow Docker-based developer environmment to
-            // inject --no-sandbox as-needed for Chrome.
-              : (process.env.CHROMIUM_FLAGS || '').split(' ')
-          },
-          inject: [
-            path.resolve('./build/coverage-bridge.js'),
-            require.resolve('grunt-contrib-qunit/chrome/bridge')
-          ],
+          // For local development
+          // Allow Docker-based developer environmment to
+          // inject --no-sandbox as-needed for Chrome.
+            : (process.env.CHROMIUM_FLAGS || '').split(' ')
+        },
+        inject: [
+          path.resolve('./build/coverage-bridge.js'),
+          require.resolve('grunt-contrib-qunit/chrome/bridge')
+        ]
+      },
+      // @HTML_FILES
+      all: [
+        'test/index.html',
 
-          // @HTML_FILES
-          urls: [
-            'test/index.html',
+        'test/config-reporters.html',
+        'test/dynamic-import.html',
+        'test/events-filters.html',
+        'test/events-in-test.html',
+        'test/index-es5.html',
+        'test/index-xhtml.xhtml',
+        'test/logs.html',
+        'test/module-skip.html',
+        'test/module-todo.html',
+        'test/only-each.html',
+        'test/overload.html',
+        'test/performance-mark.html',
+        'test/preconfig-flat-reporters.html',
+        'test/preconfig-flat-testId.html',
+        'test/preconfig-flat.html',
+        'test/preconfig-object.html',
+        'test/reorder.html',
+        'test/reorderError1.html',
+        'test/reorderError2.html',
+        'test/reporter-urlparams.html',
+        'test/sandboxed-iframe.html',
+        'test/seed.html',
+        'test/startError.html',
+        'test/urlparams-filter.html',
+        'test/urlparams-module.html',
+        'test/urlparams-moduleId.html',
+        'test/urlparams-testId.html',
+        'test/webWorker.html',
 
-            'test/config-reporters.html',
-            'test/dynamic-import.html',
-            'test/events-filters.html',
-            'test/events-in-test.html',
-            'test/index-es5.html',
-            'test/index-xhtml.xhtml',
-            'test/logs.html',
-            'test/module-skip.html',
-            'test/module-todo.html',
-            'test/only-each.html',
-            'test/overload.html',
-            'test/performance-mark.html',
-            'test/preconfig-flat-reporters.html',
-            'test/preconfig-flat-testId.html',
-            'test/preconfig-flat.html',
-            'test/preconfig-object.html',
-            'test/reorder.html',
-            'test/reorderError1.html',
-            'test/reorderError2.html',
-            'test/reporter-urlparams.html',
-            'test/sandboxed-iframe.html',
-            'test/seed.html',
-            'test/startError.html',
-            'test/urlparams-filter.html',
-            'test/urlparams-module.html',
-            'test/urlparams-moduleId.html',
-            'test/urlparams-testId.html',
-            'test/webWorker.html',
+        'demos/q4000-qunit.html',
 
-            'demos/q4000-qunit.html',
-
-            'test/browser-runner/amd.html',
-            'test/browser-runner/autostart.html',
-            'test/browser-runner/config-fixture-null.html',
-            'test/browser-runner/config-fixture-string.html',
-            'test/browser-runner/headless.html',
-            'test/browser-runner/window-onerror-preexisting-handler.html',
-            'test/browser-runner/window-onerror.html'
-
-          ].map(file => `http://localhost:${connectPort}/${file}`)
-        }
-      }
+        'test/browser-runner/amd.html',
+        'test/browser-runner/autostart.html',
+        'test/browser-runner/config-fixture-null.html',
+        'test/browser-runner/config-fixture-string.html',
+        'test/browser-runner/headless.html',
+        'test/browser-runner/window-onerror-preexisting-handler.html',
+        'test/browser-runner/window-onerror.html'
+      ]
     },
 
     'test-on-node': {
@@ -157,6 +147,11 @@ module.exports = function (grunt) {
         'test/node/storage-2.js'
       ]
     }
+  });
+
+  grunt.event.once('connect.base.listening', function (_host, port) {
+    grunt.config('qunit.options.httpBase', `http://localhost:${port}`);
+    // console.log(grunt.config()); // DEBUG
   });
 
   grunt.event.on('qunit.coverage', function (file, coverage) {
