@@ -1,6 +1,19 @@
-const cp = require('child_process');
-const path = require('path');
-const DIR = path.join(__dirname, 'bundlers');
+import cp from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import url from 'node:url';
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const DIR = path.join(dirname, 'bundlers');
+
+// Prepare
+// cp.execSync('npm install --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+await import('./bundlers/build.mjs');
+
+const tmpJsFiles = fs.readdirSync(path.join(DIR, 'tmp'))
+  .filter(name => name.endsWith('.js') || name.endsWith('.mjs'));
+const directFiles = tmpJsFiles.filter(name => !name.includes('-indirect'));
+const indirectFiles = tmpJsFiles.filter(name => name.includes('-indirect'));
 
 function normalize (str) {
   return str
@@ -8,26 +21,14 @@ function normalize (str) {
     .replace(/\b\d+ms\b/g, '42ms');
 }
 
-QUnit.module('bundlers', {
-  before: async (assert) => {
-    assert.timeout(60_000);
+QUnit.module('bundlers');
 
-    cp.execSync('npm install --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
-
-    await import('./bundlers/build.mjs');
-  }
-});
-
-QUnit.test.each('test in Node.js [direct]', [
-  './tmp/import-default.cjs.js',
-  './tmp/import-named.cjs.js',
-  './tmp/require-default.cjs.js'
-], function (assert, fileName) {
+QUnit.test.each('test in Node.js [direct]', directFiles, function (assert, fileName) {
   const actual = cp.execFileSync(process.execPath,
     [
       '--input-type=module',
       '-e',
-      `import ${JSON.stringify(fileName)}; QUnit.start();`
+      `import ${JSON.stringify('./tmp/' + fileName)}; QUnit.start();`
     ],
     { cwd: DIR, env: { qunit_config_reporters_tap: 'true' }, encoding: 'utf8' }
   );
@@ -41,15 +42,12 @@ QUnit.test.each('test in Node.js [direct]', [
   assert.pushResult({ result: actual.includes(expected), actual, expected }, 'stdout');
 });
 
-QUnit.test.each('test in Node.js [indirect]', [
-  './tmp/import-indirect.cjs.js',
-  './tmp/require-indirect.cjs.js'
-], function (assert, fileName) {
+QUnit.test.each('test in Node.js [indirect]', indirectFiles, function (assert, fileName) {
   const actual = cp.execFileSync(process.execPath,
     [
       '--input-type=module',
       '-e',
-      `import ${JSON.stringify(fileName)}; QUnit.start();`
+      `import ${JSON.stringify('./tmp/' + fileName)}; QUnit.start();`
     ],
     { cwd: DIR, env: { qunit_config_reporters_tap: 'true' }, encoding: 'utf8' }
   );
@@ -64,6 +62,8 @@ QUnit.test.each('test in Node.js [indirect]', [
 });
 
 QUnit.test('test in browser', function (assert) {
+  assert.timeout(60_000);
+
   const expected = `Running "connect:all" (connect) task
 Started connect web server on http://localhost:8000
 

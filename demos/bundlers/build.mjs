@@ -35,7 +35,7 @@ const htmlTemplate = `<!DOCTYPE html>
 const rollupOutputs = [
   {
     dir: tmpDir,
-    entryFileNames: '[name].[format].js',
+    entryFileNames: '[name].[format].mjs',
     format: 'es'
   },
   {
@@ -107,20 +107,22 @@ await (async function main () {
   for await (const fileName of gRollup) {
     console.log('... built ' + fileName);
 
-    if (!fileName.endsWith('.cjs.js')) {
-      const html = htmlTemplate
-        .replace('{{title}}', fileName)
-        .replace('{{scriptTag}}', (
-          fileName.endsWith('.es.js')
-            ? `<script src="./${fileName}" type="module"></script>`
-            : `<script src="./${fileName}"></script>`
-        ));
-
-      fs.writeFileSync(
-        `${tmpDir}/test-${fileName.replace('.js', '')}.html`,
-        html
-      );
+    if (fileName.endsWith('.cjs.js')) {
+      continue;
     }
+
+    const html = htmlTemplate
+      .replace('{{title}}', fileName)
+      .replace('{{scriptTag}}', (
+        fileName.endsWith('.mjs')
+          ? `<script src="./${fileName}" type="module"></script>`
+          : `<script src="./${fileName}"></script>`
+      ));
+
+    fs.writeFileSync(
+      `${tmpDir}/test-${fileName.replace(/\.(js|mjs)$/, '')}.html`,
+      html
+    );
   }
   for await (const fileName of gWebpack) {
     console.log('... built ' + fileName);
