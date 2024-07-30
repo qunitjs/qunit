@@ -7,7 +7,7 @@ const dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const DIR = path.join(dirname, 'bundlers');
 
 // Prepare
-// cp.execSync('npm install --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
+cp.execSync('npm install --no-audit --update-notifier=false', { cwd: DIR, encoding: 'utf8' });
 await import('./bundlers/build.mjs');
 
 const tmpJsFiles = fs.readdirSync(path.join(DIR, 'tmp'))
