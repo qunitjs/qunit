@@ -3,7 +3,6 @@ import diff from '../diff.js';
 import dump from '../dump.js';
 import { prioritySymbol } from '../events.js';
 import { window, document, navigator, StringMap } from '../globals.js';
-import { urlParams } from '../urlparams.js';
 import version from '../version.js';
 import fuzzysort from 'fuzzysort';
 
@@ -52,70 +51,6 @@ const DOM = {
   }
 };
 
-function getUrlConfigHtml (config) {
-  const urlConfig = config.urlConfig;
-  let urlConfigHtml = '';
-
-  for (let i = 0; i < urlConfig.length; i++) {
-    // Options can be either strings or objects with nonempty "id" properties
-    let val = urlConfig[i];
-    if (typeof val === 'string') {
-      val = {
-        id: val,
-        label: val
-      };
-    }
-    const currentVal = config[val.id];
-
-    let escaped = escapeText(val.id);
-    let escapedTooltip = escapeText(val.tooltip);
-
-    if (!val.value || typeof val.value === 'string') {
-      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
-        + '" title="' + escapedTooltip + '"><input id="qunit-urlconfig-' + escaped
-        + '" name="' + escaped + '" type="checkbox"'
-        + (val.value ? ' value="' + escapeText(val.value) + '"' : '')
-        + (currentVal ? ' checked="checked"' : '')
-        + ' title="' + escapedTooltip + '" />' + escapeText(val.label) + '</label>';
-    } else {
-      let selection = false;
-      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
-        + '" title="' + escapedTooltip + '">' + escapeText(val.label)
-        + ': <select id="qunit-urlconfig-' + escaped
-        + '" name="' + escaped + '" title="' + escapedTooltip + '"><option></option>';
-
-      if (Array.isArray(val.value)) {
-        for (let j = 0; j < val.value.length; j++) {
-          escaped = escapeText(val.value[j]);
-          urlConfigHtml += '<option value="' + escaped + '"'
-            + (currentVal === val.value[j]
-              ? (selection = true) && ' selected="selected"'
-              : '')
-            + '>' + escaped + '</option>';
-        }
-      } else {
-        for (let j in val.value) {
-          if (hasOwn.call(val.value, j)) {
-            urlConfigHtml += '<option value="' + escapeText(j) + '"'
-              + (currentVal === j
-                ? (selection = true) && ' selected="selected"'
-                : '')
-              + '>' + escapeText(val.value[j]) + '</option>';
-          }
-        }
-      }
-      if (currentVal && !selection) {
-        escaped = escapeText(currentVal);
-        urlConfigHtml += '<option value="' + escaped
-          + '" selected="selected" disabled="disabled">' + escaped + '</option>';
-      }
-      urlConfigHtml += '</select></label>';
-    }
-  }
-
-  return urlConfigHtml;
-}
-
 function stripHtml (string) {
   // Strip tags, html entity and whitespaces
   return string
@@ -131,6 +66,7 @@ export default class HtmlReporter {
    */
   static init (QUnit, options = {}) {
     return new HtmlReporter(QUnit, extend(options, {
+      urlParams: QUnit.urlParams,
       // This must use a live reference (i.e. not store a copy), because
       // users may apply their settings to QUnit.config anywhere between
       // loading qunit.js and the last QUnit.begin() listener finishing.
@@ -146,13 +82,14 @@ export default class HtmlReporter {
    *
    * @param {QUnit} QUnit
    * @param {Object} options
+   * @param {Object} options.urlParams
    * @param {Object} options.config
-   * @param {boolean} options.config.hidepassed
-   * @param {boolean} options.config.collapse For test result
-   * @param {string} options.config.filter
-   * @param {?string} options.config.moduleId For module selector
-   * @param {?string} options.config.testId For test result, rerun link
-   * @param {number} options.config.maxDepth For test result, error message
+   * - `boolean` options.config.hidepassed
+   * - `boolean` options.config.collapse For test result
+   * - `string` options.config.filter
+   * - `?string` options.config.moduleId For module selector
+   * - `?string` options.config.testId For test result, rerun link
+   * - `number` options.config.maxDepth For test result, error message
    * @param {Function} options.abort
    * @param {HTMLElement|undefined|null} options.element Output element
    * If set to HTMLElement, the report will be written to this element.
@@ -170,6 +107,7 @@ export default class HtmlReporter {
       defined: 0,
       completed: 0
     };
+    this.urlParams = options.urlParams;
     this.config = options.config;
     this.abort = options.abort;
     this.hiddenTests = [];
@@ -201,11 +139,10 @@ export default class HtmlReporter {
     // potential internal errors when the HTML Reporter is disabled.
     this.listen = function () {
       this.listen = null;
-      // Use prioritySignal for begin() to ensure the UI shows up
-      // reliably to render errors from onError.
-      // Without this, user-defined "QUnit.begin()" callbacks will end
-      // up in the queue before ours, and if those throw an error,
-      // then this handler will never run, thus leaving the page blank.
+      // It's important that we're in the callback queue before any user-defined
+      // "QUnit.begin()", because, if those may throw, ours wouldn't run and
+      // the UI would remain blank or incomplete.
+      // https://github.com/qunitjs/qunit/issues/1792
       QUnit.begin(this.onBegin.bind(this), prioritySymbol);
       // Use prioritySignal for testStart() to increase availability
       // of the HTML API for TESTID elements toward other event listeners.
@@ -256,7 +193,7 @@ export default class HtmlReporter {
     // Check if we can apply the change without a page refresh
     if (field.name === 'hidepassed' && 'replaceState' in window.history) {
       // Set either true or undefined, which will now take precedence over
-      // the original urlParams in makeUrl()
+      // the original QUnit.urlParams in makeUrl()
       this.hidepassed = value;
       const tests = this.elementTests;
 
@@ -298,7 +235,7 @@ export default class HtmlReporter {
    * @return string
    */
   makeUrl (linkParams) {
-    const params = extend({}, urlParams);
+    const params = extend({}, this.urlParams);
     if (this.hidepassed !== null) {
       params.hidepassed = this.hidepassed;
     }
@@ -609,13 +546,81 @@ export default class HtmlReporter {
     return moduleFilter;
   }
 
+  getUrlConfigHtml () {
+    const urlConfig = this.config.urlConfig;
+    let urlConfigHtml = '';
+
+    for (let i = 0; i < urlConfig.length; i++) {
+      // Options can be either strings or objects with nonempty "id" properties
+      let val = urlConfig[i];
+      if (typeof val === 'string') {
+        val = {
+          id: val,
+          label: val
+        };
+      }
+
+      // https://github.com/qunitjs/qunit/issues/1792
+      const currentVal = this.config[val.id] !== undefined
+        ? this.config[val.id]
+        : this.urlParams[val.id];
+
+      let escaped = escapeText(val.id);
+      let escapedTooltip = escapeText(val.tooltip);
+
+      if (!val.value || typeof val.value === 'string') {
+        urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
+          + '" title="' + escapedTooltip + '"><input id="qunit-urlconfig-' + escaped
+          + '" name="' + escaped + '" type="checkbox"'
+          + (val.value ? ' value="' + escapeText(val.value) + '"' : '')
+          + (currentVal ? ' checked="checked"' : '')
+          + ' title="' + escapedTooltip + '" />' + escapeText(val.label) + '</label>';
+      } else {
+        let selection = false;
+        urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
+          + '" title="' + escapedTooltip + '">' + escapeText(val.label)
+          + ': <select id="qunit-urlconfig-' + escaped
+          + '" name="' + escaped + '" title="' + escapedTooltip + '"><option></option>';
+
+        if (Array.isArray(val.value)) {
+          for (let j = 0; j < val.value.length; j++) {
+            escaped = escapeText(val.value[j]);
+            urlConfigHtml += '<option value="' + escaped + '"'
+              + (currentVal === val.value[j]
+                ? (selection = true) && ' selected="selected"'
+                : '')
+              + '>' + escaped + '</option>';
+          }
+        } else {
+          for (let j in val.value) {
+            if (hasOwn.call(val.value, j)) {
+              urlConfigHtml += '<option value="' + escapeText(j) + '"'
+                + (currentVal === j
+                  ? (selection = true) && ' selected="selected"'
+                  : '')
+                + '>' + escapeText(val.value[j]) + '</option>';
+            }
+          }
+        }
+        if (currentVal && !selection) {
+          escaped = escapeText(currentVal);
+          urlConfigHtml += '<option value="' + escaped
+            + '" selected="selected" disabled="disabled">' + escaped + '</option>';
+        }
+        urlConfigHtml += '</select></label>';
+      }
+    }
+
+    return urlConfigHtml;
+  }
+
   appendToolbarControls (beginDetails) {
     const toolbarControls = this.element.querySelector('#qunit-testrunner-toolbar');
     if (toolbarControls) {
       const urlConfigContainer = document.createElement('span');
       urlConfigContainer.id = 'qunit-toolbar-urlconfig';
       urlConfigContainer.className = 'qunit-url-config';
-      urlConfigContainer.innerHTML = getUrlConfigHtml(this.config);
+      urlConfigContainer.innerHTML = this.getUrlConfigHtml();
       DOM.onEach(urlConfigContainer.getElementsByTagName('input'), 'change', this.onToolbarChanged.bind(this));
       DOM.onEach(urlConfigContainer.getElementsByTagName('select'), 'change', this.onToolbarChanged.bind(this));
 

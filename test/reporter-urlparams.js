@@ -75,4 +75,26 @@ QUnit.module('urlParams module', function () {
 
     assert.strictEqual(QUnit.config.collapse, true, 'conflicting key preserves default');
   });
+
+  QUnit.test.each('HtmlReporter integration checkbox', {
+    notrycatch: ['notrycatch', true],
+    custom: ['custom', true],
+    customArray: ['customArray', true],
+    altertitle: ['altertitle', true]
+  }, function (assert, dataset) {
+    var element = document.querySelector('#qunit');
+    var node = element.querySelector('#qunit-urlconfig-' + dataset[0]);
+    assert.strictEqual(node.nodeName.toUpperCase(), 'INPUT');
+    assert.strictEqual(node.checked, dataset[1]);
+  });
+
+  QUnit.test.each('HtmlReporter integration select', {
+    customMenu: ['customMenu', 'b'],
+    customMenuUnknown: ['customMenuUnknown', 'c']
+  }, function (assert, dataset) {
+    var element = document.querySelector('#qunit');
+    var node = element.querySelector('#qunit-urlconfig-' + dataset[0]);
+    assert.strictEqual(node.nodeName.toUpperCase(), 'SELECT');
+    assert.strictEqual(node.value, dataset[1]);
+  });
 });

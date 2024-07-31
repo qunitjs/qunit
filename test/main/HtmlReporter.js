@@ -366,6 +366,7 @@ QUnit.test('options [urlConfig]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
+    urlParams: {},
     config: {
       urlConfig: [
         'xid',
@@ -514,6 +515,7 @@ QUnit.test('overall escaping', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
     element: element,
+    urlParams: {},
     config: {
       urlConfig: [
         {
