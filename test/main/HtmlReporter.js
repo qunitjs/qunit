@@ -226,11 +226,11 @@ QUnit.test('test-output [trace]', function (assert) {
   var testOutput = element.querySelector('#qunit-test-output-00A');
   assert.strictEqual(
     testOutput.textContent,
-    'A (1)' + 'Rerun' + '2 ms' + 'boo' + '@ 1 ms' +
-      'Expected: true' +
-      'Result: false' +
-      'Source: bar@example.js\nfoo@example.js\n@foo.test.js' +
-      'Source: @foo.test.js',
+    'A (1)' + 'Rerun' + '2 ms' + 'boo' + '@ 1 ms'
+      + 'Expected: true'
+      + 'Result: false'
+      + 'Source: bar@example.js\nfoo@example.js\n@foo.test.js'
+      + 'Source: @foo.test.js',
     'test output'
   );
 });
@@ -253,8 +253,8 @@ QUnit.test('onError [early]', function (assert) {
   var testItem = element.querySelector('#qunit-test-output-00A');
   assert.strictEqual(
     testItem.textContent,
-    'A (1)' + 'Rerun' + '0 ms' +
-      'okay' + '@ 0 ms',
+    'A (1)' + 'Rerun' + '0 ms'
+      + 'okay' + '@ 0 ms',
     'test item (normal)'
   );
 
@@ -263,9 +263,9 @@ QUnit.test('onError [early]', function (assert) {
   assert.strictEqual(errorItem.id, '', 'error item, ID');
   assert.strictEqual(
     errorItem.textContent,
-    'global failure' +
-      'Error: boo' +
-      'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
+    'global failure'
+      + 'Error: boo'
+      + 'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
     'error item, text'
   );
 });
@@ -287,8 +287,8 @@ QUnit.test('onError [mid-run]', function (assert) {
   var testItem = element.querySelector('#qunit-test-output-00A');
   assert.strictEqual(
     testItem.textContent,
-    'A (1)' + 'Rerun' + '0 ms' +
-      'okay' + '@ 0 ms',
+    'A (1)' + 'Rerun' + '0 ms'
+      + 'okay' + '@ 0 ms',
     'test item (normal)'
   );
 
@@ -297,9 +297,9 @@ QUnit.test('onError [mid-run]', function (assert) {
   assert.strictEqual(errorItem.id, '', 'error item, ID');
   assert.strictEqual(
     errorItem.textContent,
-    'global failure' +
-      'Error: boo' +
-      'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
+    'global failure'
+      + 'Error: boo'
+      + 'Source: bar@example.js\nfoo@example.js\n@foo.test.js',
     'error item, text'
   );
 });
@@ -394,11 +394,11 @@ QUnit.test('options [urlConfig]', function (assert) {
 
   var node = element.querySelector('.qunit-url-config');
   assert.strictEqual(node.innerHTML, this.normHTML(
-    '<label for="qunit-urlconfig-xid" title=""><input id="qunit-urlconfig-xid" name="xid" type="checkbox" title=""/>xid</label>' +
-      '<label for="qunit-urlconfig-xmulti" title="Escaped &quot;&gt;&lt;i&gt;"><input id="qunit-urlconfig-xmulti" name="xmulti" type="checkbox" title="Escaped &quot;&gt;&lt;i&gt;"/>Multi</label>' +
-      '<label for="qunit-urlconfig-xmenu" title="My tooltip">Menu: <select id="qunit-urlconfig-xmenu" name="xmenu" title="My tooltip"><option></option><option value="a">a</option><option value="b">b</option></select></label>' +
-      '<label for="qunit-urlconfig-xmenulabel" title="">Menu: <select id="qunit-urlconfig-xmenulabel" name="xmenulabel" title=""><option></option><option value="a">AA</option><option value="bbb">B</option></select></label>' +
-      '<label for="qunit-urlconfig-altertitle" title=""><input id="qunit-urlconfig-altertitle" name="altertitle" type="checkbox" title=""/>altertitle</label>',
+    '<label for="qunit-urlconfig-xid" title=""><input id="qunit-urlconfig-xid" name="xid" type="checkbox" title=""/>xid</label>'
+      + '<label for="qunit-urlconfig-xmulti" title="Escaped &quot;&gt;&lt;i&gt;"><input id="qunit-urlconfig-xmulti" name="xmulti" type="checkbox" title="Escaped &quot;&gt;&lt;i&gt;"/>Multi</label>'
+      + '<label for="qunit-urlconfig-xmenu" title="My tooltip">Menu: <select id="qunit-urlconfig-xmenu" name="xmenu" title="My tooltip"><option></option><option value="a">a</option><option value="b">b</option></select></label>'
+      + '<label for="qunit-urlconfig-xmenulabel" title="">Menu: <select id="qunit-urlconfig-xmenulabel" name="xmenulabel" title=""><option></option><option value="a">AA</option><option value="bbb">B</option></select></label>'
+      + '<label for="qunit-urlconfig-altertitle" title=""><input id="qunit-urlconfig-altertitle" name="altertitle" type="checkbox" title=""/>altertitle</label>',
     'qunit-url-config HTML'
   ));
 });
@@ -590,13 +590,13 @@ QUnit.test('overall escaping', function (assert) {
   var testOutput = element.querySelector('#qunit-test-output-00A');
   assert.strictEqual(
     testOutput.textContent,
-    "<script id='oops-module'>window.oops='module';</script>: <script id='oops-test'>window.oops='test';</script> (1, 1, 2)" +
-      'Rerun' +
-      '1 ms' +
-      "<script id='oops-assertion'>window.oops='assertion-pass';</script>@ 0 ms" +
-      "<script id='oops-assertion'>window.oops='assertion-fail';</script>@ 1 ms" +
-      'Expected: true' +
-      'Result: false',
+    "<script id='oops-module'>window.oops='module';</script>: <script id='oops-test'>window.oops='test';</script> (1, 1, 2)"
+      + 'Rerun'
+      + '1 ms'
+      + "<script id='oops-assertion'>window.oops='assertion-pass';</script>@ 0 ms"
+      + "<script id='oops-assertion'>window.oops='assertion-fail';</script>@ 1 ms"
+      + 'Expected: true'
+      + 'Result: false',
     'formatting of test output'
   );
 

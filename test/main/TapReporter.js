@@ -1,8 +1,8 @@
 function mockStack (error) {
-  error.stack = '' +
-    '    at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n' +
-    '    at require (internal/helpers.js:22:18)\n' +
-    '    at /dev/null/src/example/foo.js:220:27';
+  error.stack = ''
+    + '    at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
+    + '    at require (internal/helpers.js:22:18)\n'
+    + '    at /dev/null/src/example/foo.js:220:27';
   return error;
 }
 
@@ -143,23 +143,23 @@ QUnit.module('TapReporter', function (hooks) {
       assertions: []
     });
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 name') + '\n' +
-'  ---\n' +
-'  message: first error\n' +
-'  severity: failed\n' +
-'  stack: |\n' +
-'        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n' +
-'        at require (internal/helpers.js:22:18)\n' +
-'        at /dev/null/src/example/foo.js:220:27\n' +
-'  ...\n' +
-'  ---\n' +
-'  message: second error\n' +
-'  severity: failed\n' +
-'  stack: |\n' +
-'        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n' +
-'        at require (internal/helpers.js:22:18)\n' +
-'        at /dev/null/src/example/foo.js:220:27\n' +
-'  ...\n'
+    assert.strictEqual(buffer, kleur.red('not ok 1 name') + '\n'
++ '  ---\n'
++ '  message: first error\n'
++ '  severity: failed\n'
++ '  stack: |\n'
++ '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
++ '        at require (internal/helpers.js:22:18)\n'
++ '        at /dev/null/src/example/foo.js:220:27\n'
++ '  ...\n'
++ '  ---\n'
++ '  message: second error\n'
++ '  severity: failed\n'
++ '  stack: |\n'
++ '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
++ '        at require (internal/helpers.js:22:18)\n'
++ '        at /dev/null/src/example/foo.js:220:27\n'
++ '  ...\n'
     );
   });
 
@@ -168,12 +168,12 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.clear();
     emitter.emit('error', 'Boo');
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n' +
-'  ---\n' +
-'  message: Boo\n' +
-'  severity: failed\n' +
-'  ...\n' +
-'Bail out! Boo\n'
+    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n'
++ '  ---\n'
++ '  message: Boo\n'
++ '  severity: failed\n'
++ '  ...\n'
++ 'Bail out! Boo\n'
     );
   });
 
@@ -184,16 +184,16 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.clear();
     emitter.emit('error', err);
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n' +
-'  ---\n' +
-'  message: ReferenceError: Boo is not defined\n' +
-'  severity: failed\n' +
-'  stack: |\n' +
-'        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n' +
-'        at require (internal/helpers.js:22:18)\n' +
-'        at /dev/null/src/example/foo.js:220:27\n' +
-'  ...\n' +
-'Bail out! ReferenceError: Boo is not defined\n'
+    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n'
++ '  ---\n'
++ '  message: ReferenceError: Boo is not defined\n'
++ '  severity: failed\n'
++ '  stack: |\n'
++ '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
++ '        at require (internal/helpers.js:22:18)\n'
++ '        at /dev/null/src/example/foo.js:220:27\n'
++ '  ...\n'
++ 'Bail out! ReferenceError: Boo is not defined\n'
     );
   });
 
@@ -211,34 +211,34 @@ QUnit.module('TapReporter', function (hooks) {
       }],
       assertions: null
     });
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : actual\n' +
-'  expected: Infinity\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : actual\n'
++ '  expected: Infinity\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual value of undefined', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd(undefined));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : undefined\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : undefined\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual value of Infinity', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd(Infinity));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : Infinity\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : Infinity\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -246,38 +246,38 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.emit('testEnd', makeFailingTestEnd('abc'));
 
     // No redundant quotes
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : abc\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : abc\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual value with one trailing line break', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd('abc\n'));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : |\n' +
-'    abc\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : |\n'
++ '    abc\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual value with two trailing line breaks', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd('abc\n\n'));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : |+\n' +
-'    abc\n' +
-'    \n' +
-'    \n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : |+\n'
++ '    abc\n'
++ '    \n'
++ '    \n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -285,12 +285,12 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.emit('testEnd', makeFailingTestEnd('2'));
 
     // Quotes required to disambiguate YAML value
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : "2"\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : "2"\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -298,34 +298,34 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.emit('testEnd', makeFailingTestEnd('true'));
 
     // Quotes required to disambiguate YAML value
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : "true"\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : "true"\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual value of 0', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd(0));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : 0\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : 0\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
   QUnit.test('output actual assertion value of empty array', function (assert) {
     emitter.emit('testEnd', makeFailingTestEnd([]));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : []\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : []\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -337,15 +337,15 @@ QUnit.module('TapReporter', function (hooks) {
       return cyclical;
     }
     emitter.emit('testEnd', makeFailingTestEnd(createCyclical()));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : {\n' +
-'  "a": "example",\n' +
-'  "cycle": "[Circular]"\n' +
-'}\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '  "a": "example",\n'
++ '  "cycle": "[Circular]"\n'
++ '}\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -357,17 +357,17 @@ QUnit.module('TapReporter', function (hooks) {
       return cyclical;
     }
     emitter.emit('testEnd', makeFailingTestEnd(createSubobjectCyclical()));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : {\n' +
-'  "a": "example",\n' +
-'  "sub": {\n' +
-'    "cycle": "[Circular]"\n' +
-'  }\n' +
-'}\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '  "a": "example",\n'
++ '  "sub": {\n'
++ '    "cycle": "[Circular]"\n'
++ '  }\n'
++ '}\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -379,18 +379,18 @@ QUnit.module('TapReporter', function (hooks) {
       return cyclical;
     }
     emitter.emit('testEnd', makeFailingTestEnd(createCyclicalArray()));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : {\n' +
-'  "sub": [\n' +
-'    "example",\n' +
-'    "[Circular]",\n' +
-'    "[Circular]"\n' +
-'  ]\n' +
-'}\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '  "sub": [\n'
++ '    "example",\n'
++ '    "[Circular]",\n'
++ '    "[Circular]"\n'
++ '  ]\n'
++ '}\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -408,20 +408,20 @@ QUnit.module('TapReporter', function (hooks) {
       };
     }
     emitter.emit('testEnd', makeFailingTestEnd(createDuplicateAcyclical()));
-    assert.strictEqual(last, '  ---\n' +
-'  message: failed\n' +
-'  severity: failed\n' +
-'  actual  : {\n' +
-'  "a": {\n' +
-'    "example": "value"\n' +
-'  },\n' +
-'  "b": {\n' +
-'    "example": "value"\n' +
-'  },\n' +
-'  "c": "unique"\n' +
-'}\n' +
-'  expected: expected\n' +
-'  ...'
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '  "a": {\n'
++ '    "example": "value"\n'
++ '  },\n'
++ '  "b": {\n'
++ '    "example": "value"\n'
++ '  },\n'
++ '  "c": "unique"\n'
++ '}\n'
++ '  expected: expected\n'
++ '  ...'
     );
   });
 
@@ -436,8 +436,8 @@ QUnit.module('TapReporter', function (hooks) {
       }
     });
 
-    assert.strictEqual(buffer, '1..6\n' +
-'# pass 3\n' + kleur.yellow('# skip 1') + '\n' + kleur.cyan('# todo 0') + '\n' + kleur.red('# fail 2') + '\n'
+    assert.strictEqual(buffer, '1..6\n'
++ '# pass 3\n' + kleur.yellow('# skip 1') + '\n' + kleur.cyan('# todo 0') + '\n' + kleur.red('# fail 2') + '\n'
     );
   });
 });

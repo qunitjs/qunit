@@ -71,43 +71,43 @@ function getUrlConfigHtml (config) {
     let escapedTooltip = escapeText(val.tooltip);
 
     if (!val.value || typeof val.value === 'string') {
-      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped +
-        '" title="' + escapedTooltip + '"><input id="qunit-urlconfig-' + escaped +
-        '" name="' + escaped + '" type="checkbox"' +
-        (val.value ? ' value="' + escapeText(val.value) + '"' : '') +
-        (currentVal ? ' checked="checked"' : '') +
-        ' title="' + escapedTooltip + '" />' + escapeText(val.label) + '</label>';
+      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
+        + '" title="' + escapedTooltip + '"><input id="qunit-urlconfig-' + escaped
+        + '" name="' + escaped + '" type="checkbox"'
+        + (val.value ? ' value="' + escapeText(val.value) + '"' : '')
+        + (currentVal ? ' checked="checked"' : '')
+        + ' title="' + escapedTooltip + '" />' + escapeText(val.label) + '</label>';
     } else {
       let selection = false;
-      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped +
-        '" title="' + escapedTooltip + '">' + escapeText(val.label) +
-        ': <select id="qunit-urlconfig-' + escaped +
-        '" name="' + escaped + '" title="' + escapedTooltip + '"><option></option>';
+      urlConfigHtml += '<label for="qunit-urlconfig-' + escaped
+        + '" title="' + escapedTooltip + '">' + escapeText(val.label)
+        + ': <select id="qunit-urlconfig-' + escaped
+        + '" name="' + escaped + '" title="' + escapedTooltip + '"><option></option>';
 
       if (Array.isArray(val.value)) {
         for (let j = 0; j < val.value.length; j++) {
           escaped = escapeText(val.value[j]);
-          urlConfigHtml += '<option value="' + escaped + '"' +
-            (currentVal === val.value[j]
+          urlConfigHtml += '<option value="' + escaped + '"'
+            + (currentVal === val.value[j]
               ? (selection = true) && ' selected="selected"'
-              : '') +
-            '>' + escaped + '</option>';
+              : '')
+            + '>' + escaped + '</option>';
         }
       } else {
         for (let j in val.value) {
           if (hasOwn.call(val.value, j)) {
-            urlConfigHtml += '<option value="' + escapeText(j) + '"' +
-              (currentVal === j
+            urlConfigHtml += '<option value="' + escapeText(j) + '"'
+              + (currentVal === j
                 ? (selection = true) && ' selected="selected"'
-                : '') +
-              '>' + escapeText(val.value[j]) + '</option>';
+                : '')
+              + '>' + escapeText(val.value[j]) + '</option>';
           }
         }
       }
       if (currentVal && !selection) {
         escaped = escapeText(currentVal);
-        urlConfigHtml += '<option value="' + escaped +
-          '" selected="selected" disabled="disabled">' + escaped + '</option>';
+        urlConfigHtml += '<option value="' + escaped
+          + '" selected="selected" disabled="disabled">' + escaped + '</option>';
       }
       urlConfigHtml += '</select></label>';
     }
@@ -382,8 +382,8 @@ export default class HtmlReporter {
       options: beginDetails.modules.slice(),
       selectedMap: new StringMap(),
       isDirty: function () {
-        return [...dropdownData.selectedMap.keys()].sort().join(',') !==
-          [...initialSelected.keys()].sort().join(',');
+        return [...dropdownData.selectedMap.keys()].sort().join(',')
+          !== [...initialSelected.keys()].sort().join(',');
       }
     };
 
@@ -406,10 +406,10 @@ export default class HtmlReporter {
     initialSelected = new StringMap(dropdownData.selectedMap);
 
     function createModuleListItem (moduleId, name, checked) {
-      return '<li><label class="clickable' + (checked ? ' checked' : '') +
-        '"><input type="checkbox" ' + 'value="' + escapeText(moduleId) + '"' +
-        (checked ? ' checked="checked"' : '') + ' />' +
-        escapeText(name) + '</label></li>';
+      return '<li><label class="clickable' + (checked ? ' checked' : '')
+        + '"><input type="checkbox" ' + 'value="' + escapeText(moduleId) + '"'
+        + (checked ? ' checked="checked"' : '') + ' />'
+        + escapeText(name) + '</label></li>';
     }
 
     /**
@@ -641,31 +641,31 @@ export default class HtmlReporter {
     if (!testId || testId.length <= 0) {
       return '';
     }
-    return '<div id="qunit-filteredTest">Rerunning selected tests: ' +
-      escapeText(testId.join(', ')) +
-      ' <a id="qunit-clearFilter" href="' +
-      escapeText(this.unfilteredUrl) +
-      '">Run all tests</a></div>';
+    return '<div id="qunit-filteredTest">Rerunning selected tests: '
+      + escapeText(testId.join(', '))
+      + ' <a id="qunit-clearFilter" href="'
+      + escapeText(this.unfilteredUrl)
+      + '">Run all tests</a></div>';
   }
 
   appendInterface (beginDetails) {
     // Since QUnit 1.3, these are created automatically.
     this.element.setAttribute('role', 'main');
     this.element.innerHTML =
-      '<div id="qunit-header">' +
-        '<h1><a href="' + escapeText(this.unfilteredUrl) + '">' + escapeText(document.title) + '</a></h1> ' +
-        '<div id="qunit-userAgent" tabindex="0"><span class="qunit-version-lib">' + escapeText('QUnit ' + version) + ';</span> <span class="qunit-version-client">' + escapeText(navigator.userAgent) + '</span></div>' +
-      '</div>' +
-      '<div id="qunit-toolbar" role="navigation">' +
-        '<div id="qunit-banner"></div>' +
-        '<div id="qunit-testrunner-toolbar"></div>' +
-        '<div id="qunit-testresult" class="result">' +
-          '<div id="qunit-testresult-controls"></div>' +
-          '<div id="qunit-testresult-display">Running...<br />&#160;</div>' +
-        '</div>' +
-        this.appendFilteredTest() +
-      '</div>' +
-      '<ol id="qunit-tests"></ol>';
+      '<div id="qunit-header">'
+        + '<h1><a href="' + escapeText(this.unfilteredUrl) + '">' + escapeText(document.title) + '</a></h1> '
+        + '<div id="qunit-userAgent" tabindex="0"><span class="qunit-version-lib">' + escapeText('QUnit ' + version) + ';</span> <span class="qunit-version-client">' + escapeText(navigator.userAgent) + '</span></div>'
+      + '</div>'
+      + '<div id="qunit-toolbar" role="navigation">'
+        + '<div id="qunit-banner"></div>'
+        + '<div id="qunit-testrunner-toolbar"></div>'
+        + '<div id="qunit-testresult" class="result">'
+          + '<div id="qunit-testresult-controls"></div>'
+          + '<div id="qunit-testresult-display">Running...<br />&#160;</div>'
+        + '</div>'
+        + this.appendFilteredTest()
+      + '</div>'
+      + '<ol id="qunit-tests"></ol>';
 
     this.elementBanner = this.element.querySelector('#qunit-banner');
     this.elementDisplay = this.element.querySelector('#qunit-testresult-display');
@@ -849,13 +849,13 @@ export default class HtmlReporter {
       }
 
       actual = dump.parse(details.actual);
-      message += '<table><tr class="test-expected"><th>Expected: </th><td><pre>' +
-      escapeText(expected) +
-      '</pre></td></tr>';
+      message += '<table><tr class="test-expected"><th>Expected: </th><td><pre>'
+        + escapeText(expected)
+        + '</pre></td></tr>';
 
       if (actual !== expected) {
-        message += '<tr class="test-actual"><th>Result: </th><td><pre>' +
-          escapeText(actual) + '</pre></td></tr>';
+        message += '<tr class="test-actual"><th>Result: </th><td><pre>'
+          + escapeText(actual) + '</pre></td></tr>';
 
         let showDiff = false;
         let diffHtml;
@@ -865,48 +865,49 @@ export default class HtmlReporter {
             const numDiff = (details.actual - details.expected);
             diffHtml = (numDiff > 0 ? '+' : '') + numDiff;
           }
-        } else if (typeof details.actual !== 'boolean' &&
-              typeof details.expected !== 'boolean'
+        } else if (
+          typeof details.actual !== 'boolean'
+          && typeof details.expected !== 'boolean'
         ) {
           diffHtml = diff(expected, actual);
 
           // don't show diff if there is zero overlap
-          showDiff = stripHtml(diffHtml).length !==
-            stripHtml(expected).length +
-            stripHtml(actual).length;
+          showDiff = stripHtml(diffHtml).length
+            !== stripHtml(expected).length
+            + stripHtml(actual).length;
         }
 
         if (showDiff) {
-          message += '<tr class="test-diff"><th>Diff: </th><td><pre>' +
-            diffHtml + '</pre></td></tr>';
+          message += '<tr class="test-diff"><th>Diff: </th><td><pre>'
+            + diffHtml + '</pre></td></tr>';
         }
-      } else if (expected.indexOf('[object Array]') !== -1 ||
-        expected.indexOf('[object Object]') !== -1) {
-        message += '<tr class="test-message"><th>Message: </th><td>' +
-          'Diff suppressed as the depth of object is more than current max depth (' +
-          this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
-          ' run with a higher max depth or <a href="' +
-          escapeText(this.makeUrl({ maxDepth: 0 })) + "'>" +
-          'Rerun</a> without max depth.</p></td></tr>';
+      } else if (expected.indexOf('[object Array]') !== -1
+        || expected.indexOf('[object Object]') !== -1) {
+        message += '<tr class="test-message"><th>Message: </th><td>'
+          + 'Diff suppressed as the depth of object is more than current max depth ('
+          + this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to '
+          + ' run with a higher max depth or <a href="'
+          + escapeText(this.makeUrl({ maxDepth: 0 })) + "'>"
+          + 'Rerun</a> without max depth.</p></td></tr>';
       } else {
-        message += '<tr class="test-message"><th>Message: </th><td>' +
-          'Diff suppressed as the expected and actual results have an equivalent' +
-          ' serialization</td></tr>';
+        message += '<tr class="test-message"><th>Message: </th><td>'
+          + 'Diff suppressed as the expected and actual results have an equivalent'
+          + ' serialization</td></tr>';
       }
 
       if (details.source) {
-        message += '<tr class="test-source"><th>Source: </th><td><pre>' +
-          escapeText(details.source) + '</pre></td></tr>';
+        message += '<tr class="test-source"><th>Source: </th><td><pre>'
+          + escapeText(details.source) + '</pre></td></tr>';
       }
 
       message += '</table>';
 
       // This occurs when pushFailure is called and we have an extracted stack trace
     } else if (!details.result && details.source) {
-      message += '<table>' +
-        '<tr class="test-source"><th>Source: </th><td><pre>' +
-        escapeText(details.source) + '</pre></td></tr>' +
-        '</table>';
+      message += '<table>'
+        + '<tr class="test-source"><th>Source: </th><td><pre>'
+        + escapeText(details.source) + '</pre></td></tr>'
+        + '</table>';
     }
 
     let assertList = testItem.getElementsByTagName('ol')[0];
@@ -1030,10 +1031,10 @@ export default class HtmlReporter {
     let message = escapeText(errorString(error));
     message = '<span class="test-message">' + message + '</span>';
     if (error && error.stack) {
-      message += '<table>' +
-        '<tr class="test-source"><th>Source: </th><td><pre>' +
-        escapeText(error.stack) + '</pre></td></tr>' +
-        '</table>';
+      message += '<table>'
+        + '<tr class="test-source"><th>Source: </th><td><pre>'
+        + escapeText(error.stack) + '</pre></td></tr>'
+        + '</table>';
     }
     const assertList = testItem.getElementsByTagName('ol')[0];
     const assertLi = document.createElement('li');

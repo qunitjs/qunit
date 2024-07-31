@@ -224,9 +224,9 @@ QUnit.module('test', function () {
     });
 
     QUnit.test('assertions after test finishes throws an error - part 2', function (assert) {
-      var error = 'Assertion occurred after test finished.\n' +
-        '> Test: ' + firstTestName + '\n' +
-        '> Message: message here\n';
+      var error = 'Assertion occurred after test finished.\n'
+        + '> Test: ' + firstTestName + '\n'
+        + '> Message: message here\n';
 
       assert.throws(function () {
         previousTestAssert.true(true, 'message here');

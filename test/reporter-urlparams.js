@@ -1,8 +1,8 @@
 /* eslint-env browser */
 if (!location.search) {
-  location.replace('?implicit&explicit=yes&array=A&array=B&escaped%20name&toString=string&' +
-    'module=urlParams+module&filter=urlParams%20module&notrycatch&' +
-    'custom&customArray=a&customArray=b&customMenu=b&customMenuUnknown=c&altertitle=x&collapse=x');
+  location.replace('?implicit&explicit=yes&array=A&array=B&escaped%20name&toString=string&'
+    + 'module=urlParams+module&filter=urlParams%20module&notrycatch&'
+    + 'custom&customArray=a&customArray=b&customMenu=b&customMenuUnknown=c&altertitle=x&collapse=x');
 }
 
 QUnit.config.urlConfig.push(

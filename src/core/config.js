@@ -84,8 +84,8 @@ const config = {
     {
       id: 'noglobals',
       label: 'Check for globals',
-      tooltip: 'Enabling this will test if any test introduces new properties on the ' +
-        'global object (e.g. `window` in browsers). Stored as query string.'
+      tooltip: 'Enabling this will test if any test introduces new properties on the '
+        + 'global object (e.g. `window` in browsers). Stored as query string.'
     },
     {
       id: 'notrycatch',

@@ -82,12 +82,12 @@ function prettyYamlValue (value, indent = 4) {
 
     // Is this a complex string?
     if (
-      value === '' ||
-        rSpecialJson.test(value) ||
-        rSpecialYaml.test(value[0]) ||
-        rUntrimmed.test(value) ||
-        rNumerical.test(value) ||
-        rBool.test(value)
+      value === ''
+        || rSpecialJson.test(value)
+        || rSpecialYaml.test(value[0])
+        || rUntrimmed.test(value)
+        || rNumerical.test(value)
+        || rBool.test(value)
     ) {
       if (!/\n/.test(value)) {
         // Complex one-line string, use JSON (quoted string)

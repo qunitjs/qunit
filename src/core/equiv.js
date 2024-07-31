@@ -46,9 +46,9 @@ const objTypeCallbacks = {
   boolean: useObjectValueEquality,
   number (a, b) {
     // Handle NaN and boxed number
-    return a === b ||
-      a.valueOf() === b.valueOf() ||
-      (isNaN(a.valueOf()) && isNaN(b.valueOf()));
+    return a === b
+      || a.valueOf() === b.valueOf()
+      || (isNaN(a.valueOf()) && isNaN(b.valueOf()));
   },
   // Handle boxed string
   string: useObjectValueEquality,
@@ -60,10 +60,10 @@ const objTypeCallbacks = {
   },
 
   regexp (a, b) {
-    return a.source === b.source &&
+    return a.source === b.source
 
       // Include flags in the comparison
-      getRegExpFlags(a) === getRegExpFlags(b);
+      && getRegExpFlags(a) === getRegExpFlags(b);
   },
 
   // identical reference only
@@ -230,11 +230,11 @@ const entryTypeCallbacks = {
 
       // Skip OOP methods that look the same
       if (
-        a.constructor !== Object &&
-        typeof a.constructor !== 'undefined' &&
-        typeof a[i] === 'function' &&
-        typeof b[i] === 'function' &&
-        a[i].toString() === b[i].toString()
+        a.constructor !== Object
+        && typeof a.constructor !== 'undefined'
+        && typeof a[i] === 'function'
+        && typeof b[i] === 'function'
+        && a[i].toString() === b[i].toString()
       ) {
         continue;
       }
@@ -263,8 +263,8 @@ function typeEquiv (a, b) {
   if (aType !== bType) {
     // Support comparing primitive to boxed primitives
     // Try again after possibly unwrapping one
-    return (aType === 'object' && BOXABLE_TYPES.has(objectType(a)) ? a.valueOf() : a) ===
-      (bType === 'object' && BOXABLE_TYPES.has(objectType(b)) ? b.valueOf() : b);
+    return (aType === 'object' && BOXABLE_TYPES.has(objectType(a)) ? a.valueOf() : a)
+      === (bType === 'object' && BOXABLE_TYPES.has(objectType(b)) ? b.valueOf() : b);
   }
 
   return entryTypeCallbacks[aType](a, b);

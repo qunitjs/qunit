@@ -278,8 +278,8 @@ class Assert {
       currentTest.assert.pushResult({
         result: false,
         actual: block,
-        message: 'The value provided to `assert.throws` in ' +
-          '"' + currentTest.testName + '" was not a function.'
+        message: 'The value provided to `assert.throws` in '
+          + '"' + currentTest.testName + '" was not a function.'
       });
 
       return;
@@ -319,8 +319,8 @@ class Assert {
     if (typeof then !== 'function') {
       currentTest.assert.pushResult({
         result: false,
-        message: 'The value provided to `assert.rejects` in ' +
-          '"' + currentTest.testName + '" was not a promise.',
+        message: 'The value provided to `assert.rejects` in '
+          + '"' + currentTest.testName + '" was not a promise.',
         actual: promise
       });
 
@@ -334,8 +334,8 @@ class Assert {
       function handleFulfillment () {
         currentTest.assert.pushResult({
           result: false,
-          message: 'The promise returned by the `assert.rejects` callback in ' +
-            '"' + currentTest.testName + '" did not reject.',
+          message: 'The promise returned by the `assert.rejects` callback in '
+            + '"' + currentTest.testName + '" did not reject.',
           actual: promise
         });
 
@@ -371,23 +371,21 @@ function validateExpectedExceptionArgs (expected, message, assertionMethod) {
       return [expected, message];
     } else {
       throw new Error(
-        'assert.' + assertionMethod +
-        ' does not accept a string value for the expected argument.\n' +
-        'Use a non-string object value (e.g. RegExp or validator function) ' +
-        'instead if necessary.'
+        'assert.' + assertionMethod + ' does not accept a string value for the expected argument.\n'
+          + 'Use a non-string object value (e.g. RegExp or validator function) instead if necessary.'
       );
     }
   }
 
   const valid =
-    !expected || // TODO: be more explicit here
-    expectedType === 'regexp' ||
-    expectedType === 'function' ||
-    expectedType === 'object';
+    !expected // TODO: be more explicit here
+    || expectedType === 'regexp'
+    || expectedType === 'function'
+    || expectedType === 'object';
 
   if (!valid) {
-    throw new Error('Invalid expected value type (' + expectedType + ') ' +
-      'provided to assert.' + assertionMethod + '.');
+    throw new Error('Invalid expected value type (' + expectedType + ') '
+      + 'provided to assert.' + assertionMethod + '.');
   }
 
   return [expected, message];
@@ -413,15 +411,15 @@ function validateException (actual, expected, message) {
     // Expected is a constructor, maybe an Error constructor.
     // Note the extra check on its prototype - this is an implicit
     // requirement of "instanceof", else it will throw a TypeError.
-  } else if (expectedType === 'function' &&
-    expected.prototype !== undefined && actual instanceof expected) {
+  } else if (expectedType === 'function'
+    && expected.prototype !== undefined && actual instanceof expected) {
     result = true;
 
     // Expected is an Error object
   } else if (expectedType === 'object') {
-    result = actual instanceof expected.constructor &&
-      actual.name === expected.name &&
-      actual.message === expected.message;
+    result = actual instanceof expected.constructor
+      && actual.name === expected.name
+      && actual.message === expected.message;
 
     // Log the string form of the Error object
     expected = errorString(expected);

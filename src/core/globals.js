@@ -68,10 +68,10 @@ export const sessionStorage = (function () {
 // Support: Safari 7; Map is undefined
 // Support: iOS 8; `new Map(iterable)` is not supported
 // Support: IE 11; Map#keys is undefined
-export const StringMap = typeof g.Map === 'function' &&
-  typeof g.Map.prototype.keys === 'function' &&
-  typeof g.Symbol === 'function' &&
-  typeof g.Symbol.iterator === 'symbol'
+export const StringMap = typeof g.Map === 'function'
+  && typeof g.Map.prototype.keys === 'function'
+  && typeof g.Symbol === 'function'
+  && typeof g.Symbol.iterator === 'symbol'
   ? g.Map
   : function StringMap (input) {
     let store = Object.create(null);
@@ -119,8 +119,8 @@ export const StringMap = typeof g.Map === 'function' &&
 // Basic fallback for ES6 Set
 // Support: IE 11, `new Set(iterable)` parameter not yet implemented
 // Test for Set#values() which came after Set(iterable).
-export const StringSet = typeof g.Set === 'function' &&
-  typeof g.Set.prototype.values === 'function'
+export const StringSet = typeof g.Set === 'function'
+  && typeof g.Set.prototype.values === 'function'
   ? g.Set
   : function (input) {
     const set = Object.create(null);

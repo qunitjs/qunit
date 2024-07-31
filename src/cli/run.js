@@ -30,9 +30,9 @@ function onExit () {
     const currentTest = QUnit.config.current;
     if (currentTest && currentTest.pauses.size > 0) {
       const name = currentTest.testName;
-      console.error('Last test to run (' + name + ') has an async hold. ' +
-        'Ensure all assert.async() callbacks are invoked and Promises resolve. ' +
-        'You should also set a standard timeout via QUnit.config.testTimeout.');
+      console.error('Last test to run (' + name + ') has an async hold. '
+        + 'Ensure all assert.async() callbacks are invoked and Promises resolve. '
+        + 'You should also set a standard timeout via QUnit.config.testTimeout.');
     }
   }
 }
@@ -104,10 +104,10 @@ async function run (args, options) {
         require(filePath);
       } catch (e) {
         if (
-          (e.code === 'ERR_REQUIRE_ESM' ||
-          (e instanceof SyntaxError &&
-            e.message === 'Cannot use import statement outside a module')) &&
-          (!nodeVint || nodeVint >= 72)
+          (e.code === 'ERR_REQUIRE_ESM'
+          || (e instanceof SyntaxError
+            && e.message === 'Cannot use import statement outside a module'))
+          && (!nodeVint || nodeVint >= 72)
         ) {
           // filePath is an absolute file path here (per path.resolve above).
           // On Windows, Node.js enforces that absolute paths via ESM use valid URLs,
@@ -211,8 +211,8 @@ run.watch = function watch (args, options) {
     // Bare minimum delay, we have another debounce in restart().
     delay: DEBOUNCE_WATCH_LENGTH,
     filter: (fullpath, skip) => {
-      if (/\/node_modules\//.test(fullpath) ||
-        ignoreDirs.includes(path.basename(fullpath))
+      if (/\/node_modules\//.test(fullpath)
+        || ignoreDirs.includes(path.basename(fullpath))
       ) {
         return skip;
       }

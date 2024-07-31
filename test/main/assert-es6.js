@@ -53,9 +53,9 @@ QUnit.module('assert [es6]', function () {
     hooks.beforeEach(function (assert) {
       const original = assert.pushResult;
       assert.pushResult = (resultInfo) => {
-        if (this.expectedFailure &&
-          this.expectedFailure.actual === resultInfo.actual &&
-          this.expectedFailure.expected.test(resultInfo.expected)
+        if (this.expectedFailure
+          && this.expectedFailure.actual === resultInfo.actual
+          && this.expectedFailure.expected.test(resultInfo.expected)
         ) {
           // Restore
           assert.pushResult = original;

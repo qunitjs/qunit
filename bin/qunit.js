@@ -26,13 +26,20 @@ program
   .description(description)
   .option('-f, --filter <filter>', 'run only matching module or test names')
   .option('-m, --module <name>', 'run only the specified module')
-  .option('-r, --reporter [name]', 'specify the reporter to use; ' +
-    'if no match is found or no name is provided, a list of available ' +
-    'reporters will be displayed')
-  .option('--require <module>', 'specify a module or script to include before running ' +
-    'any tests.', collect, [])
-  .option('--seed [value]', 'specify a seed to re-order your tests; ' +
-    'if specified without a value, a seed will be generated')
+  .option('-r, --reporter [name]',
+    'specify the reporter to use; '
+    + 'if no match is found or no name is provided, a list of available '
+    + 'reporters will be displayed'
+  )
+  .option('--require <module>',
+    'specify a module or script to include before running any tests.',
+    collect,
+    []
+  )
+  .option('--seed [value]',
+    'specify a seed to re-order your tests; '
+    + 'if specified without a value, a seed will be generated'
+  )
   .option('-w, --watch', 'watch files for changes and re-run the test suite')
   .parse(process.argv);
 

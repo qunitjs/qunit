@@ -89,30 +89,30 @@ QUnit.test('equality shifts', function (assert) {
 });
 
 QUnit.test('test with line mode on long strings', function (assert) {
-  var a = 'QUnit is a powerful, easy-to-use JavaScript unit testing framework. ' +
-    "It's used by the jQuery, jQuery UI and jQuery Mobile projects and is " +
-    'capable of testing any generic JavaScript code, including itself!';
+  var a = 'QUnit is a powerful, easy-to-use JavaScript unit testing framework. '
+    + "It's used by the jQuery, jQuery UI and jQuery Mobile projects and is "
+    + 'capable of testing any generic JavaScript code, including itself!';
 
-  var b = 'QUnit is a very powerful, easy-to-use JavaScript unit testing framework. ' +
-    "It's used by the jQuery Core, jQuery UI and jQuery Mobile projects and is " +
-    'capable of testing any JavaScript code, including itself!' +
-    'QUnit was originally developed by John Resig as part of jQuery. In 2008 ' +
-    'it got its own home, name and API documentation, allowing others to use it ' +
-    'for their unit testing as well. At the time it still depended on jQuery. ' +
-    'A rewrite in 2009 fixed that, and now QUnit runs completely standalone. ';
+  var b = 'QUnit is a very powerful, easy-to-use JavaScript unit testing framework. '
+    + "It's used by the jQuery Core, jQuery UI and jQuery Mobile projects and is "
+    + 'capable of testing any JavaScript code, including itself!'
+    + 'QUnit was originally developed by John Resig as part of jQuery. In 2008 '
+    + 'it got its own home, name and API documentation, allowing others to use it '
+    + 'for their unit testing as well. At the time it still depended on jQuery. '
+    + 'A rewrite in 2009 fixed that, and now QUnit runs completely standalone. ';
 
   assert.equal(
     QUnit.diff(a, b),
-    '<span>QUnit is a </span><ins>very </ins><span>powerful, easy-to-use ' +
-    'JavaScript unit testing framework. It&#039;s used by the jQuery</span><ins> ' +
-    'Core</ins><span>, jQuery UI and jQuery Mobile projects and is capable of' +
-    ' testing any </span><del>generic </del><span>JavaScript code, including ' +
-    'itself!</span>' +
-    '<ins>QUnit was originally developed by John Resig as part of jQuery. In ' +
-    '2008 it got its own home, name and API documentation, allowing others to' +
-    ' use it for their unit testing as well. At the time it still depended on' +
-    ' jQuery. A rewrite in 2009 fixed that, and now QUnit runs completely ' +
-    'standalone. </ins>'
+    '<span>QUnit is a </span><ins>very </ins><span>powerful, easy-to-use '
+    + 'JavaScript unit testing framework. It&#039;s used by the jQuery</span><ins> '
+    + 'Core</ins><span>, jQuery UI and jQuery Mobile projects and is capable of'
+    + ' testing any </span><del>generic </del><span>JavaScript code, including '
+    + 'itself!</span>'
+    + '<ins>QUnit was originally developed by John Resig as part of jQuery. In '
+    + '2008 it got its own home, name and API documentation, allowing others to'
+    + ' use it for their unit testing as well. At the time it still depended on'
+    + ' jQuery. A rewrite in 2009 fixed that, and now QUnit runs completely '
+    + 'standalone. </ins>'
   );
 });
 
@@ -150,15 +150,15 @@ QUnit.test('simplified diffs', function (assert) {
       'before 0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz0foobarbaz more than 100 chars\nsecond_line',
       'after 1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz1foobarbaz more than 100 chars\ndifferent_end'
     ),
-    '<del>before 0</del><ins>after 1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz</span><del>0</del><ins>1</ins>' +
-      '<span>foobarbaz more than 100 chars\n</span>' +
-      '<del>secon</del><span>d</span><del>_l</del><span>i</span><ins>ffere</ins><span>n</span><ins>t_</ins><span>e</span><ins>nd</ins>',
+    '<del>before 0</del><ins>after 1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz</span><del>0</del><ins>1</ins>'
+      + '<span>foobarbaz more than 100 chars\n</span>'
+      + '<del>secon</del><span>d</span><del>_l</del><span>i</span><ins>ffere</ins><span>n</span><ins>t_</ins><span>e</span><ins>nd</ins>',
     'simplify longer multi-line diffs'
   );
 });
@@ -189,9 +189,9 @@ QUnit.test('Edge cases', function (assert) {
     QUnit.diff(
       'A\nB\n' + X + '\nD',
       'A\nCCC\nB\nCCC\n' + Y + '\nD'),
-    '<span>A\n</span><ins>CCC\n</ins><span>B\n</span>' +
-    '<del>' + X + '</del><ins>CCC\n' + Y + '</ins>' +
-    '<span>\nD</span>');
+    '<span>A\n</span><ins>CCC\n</ins><span>B\n</span>'
+    + '<del>' + X + '</del><ins>CCC\n' + Y + '</ins>'
+    + '<span>\nD</span>');
 
   function repeat (substr, n) {
     if (substr.repeat) {

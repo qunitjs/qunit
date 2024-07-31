@@ -69,11 +69,11 @@ export default (function () {
   function isArray (obj) {
     return (
       // Native Arrays
-      Array.isArray(obj) ||
+      Array.isArray(obj)
 
       // NodeList objects
-      (typeof obj.length === 'number' && obj.item !== undefined &&
-        (obj.length
+      || (typeof obj.length === 'number' && obj.item !== undefined
+        && (obj.length
           ? obj.item(0) === obj[0]
           : (obj.item(0) === null && obj[0] === undefined)
         )
@@ -120,9 +120,9 @@ export default (function () {
         return 'date';
       } else if (is('function', obj)) {
         return 'function';
-      } else if (obj.setInterval !== undefined &&
-          obj.document !== undefined &&
-          obj.nodeType === undefined) {
+      } else if (obj.setInterval !== undefined
+          && obj.document !== undefined
+          && obj.nodeType === undefined) {
         return 'window';
       } else if (obj.nodeType === 9) {
         return 'document';
@@ -226,8 +226,8 @@ export default (function () {
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
           const val = map[key];
-          ret.push(dump.parse(key, 'key') + ': ' +
-            dump.parse(val, undefined, stack));
+          ret.push(dump.parse(key, 'key') + ': '
+            + dump.parse(val, undefined, stack));
         }
         dump.down();
         return join('{', ret, '}');
@@ -247,8 +247,8 @@ export default (function () {
             // set. Those have values like undefined, null, 0, false, "" or
             // "inherit".
             if (val && val !== 'inherit') {
-              ret += ' ' + attrs[i].nodeName + '=' +
-                dump.parse(val, 'attribute');
+              ret += ' ' + attrs[i].nodeName + '='
+                + dump.parse(val, 'attribute');
             }
           }
         }

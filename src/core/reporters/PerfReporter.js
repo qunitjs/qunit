@@ -6,12 +6,12 @@ import Logger from '../logger.js';
 // works for Node.js as well. As this can add overhead, we should keep
 // this opt-in on the CLI.
 const nativePerf = (
-  window &&
-    typeof window.performance !== 'undefined' &&
+  window
+    && typeof window.performance !== 'undefined'
     // eslint-disable-next-line compat/compat -- Checked
-    typeof window.performance.mark === 'function' &&
+    && typeof window.performance.mark === 'function'
     // eslint-disable-next-line compat/compat -- Checked
-    typeof window.performance.measure === 'function'
+    && typeof window.performance.measure === 'function'
 )
   ? window.performance
   : undefined;

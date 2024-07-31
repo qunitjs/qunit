@@ -162,9 +162,9 @@ import { escapeText } from './utilities.js';
          * <ins>A</del>X<ins>C</ins><del>D</del>
          * <ins>A</ins><del>B</del>X<del>C</del>
          */
-        if (lastequality && ((preIns && preDel && postIns && postDel) ||
-            ((lastequality.length < 2) &&
-            (preIns + preDel + postIns + postDel) === 3))) {
+        if (lastequality && ((preIns && preDel && postIns && postDel)
+            || ((lastequality.length < 2)
+            && (preIns + preDel + postIns + postDel) === 3))) {
           // Duplicate record.
           diffs.splice(
             equalities[equalitiesLength - 1],
@@ -244,8 +244,7 @@ import { escapeText } from './utilities.js';
     pointermid = pointermax;
     pointerstart = 0;
     while (pointermin < pointermid) {
-      if (text1.substring(pointerstart, pointermid) ===
-          text2.substring(pointerstart, pointermid)) {
+      if (text1.substring(pointerstart, pointermid) === text2.substring(pointerstart, pointermid)) {
         pointermin = pointermid;
         pointerstart = pointermin;
       } else {
@@ -266,9 +265,10 @@ import { escapeText } from './utilities.js';
     let pointermid, pointermax, pointermin, pointerend;
 
     // Quick check for common null cases.
-    if (!text1 ||
-        !text2 ||
-        text1.charAt(text1.length - 1) !== text2.charAt(text2.length - 1)) {
+    if (!text1
+      || !text2
+      || text1.charAt(text1.length - 1) !== text2.charAt(text2.length - 1)
+    ) {
       return 0;
     }
 
@@ -279,8 +279,10 @@ import { escapeText } from './utilities.js';
     pointermid = pointermax;
     pointerend = 0;
     while (pointermin < pointermid) {
-      if (text1.substring(text1.length - pointermid, text1.length - pointerend) ===
-          text2.substring(text2.length - pointermid, text2.length - pointerend)) {
+      if (
+        text1.substring(text1.length - pointermid, text1.length - pointerend)
+          === text2.substring(text2.length - pointermid, text2.length - pointerend)
+      ) {
         pointermin = pointermid;
         pointerend = pointermin;
       } else {
@@ -425,8 +427,8 @@ import { escapeText } from './utilities.js';
         suffixLength = dmp.diffCommonSuffix(longtext.substring(0, i),
           shorttext.substring(0, j));
         if (bestCommon.length < suffixLength + prefixLength) {
-          bestCommon = shorttext.substring(j - suffixLength, j) +
-            shorttext.substring(j, j + prefixLength);
+          bestCommon = shorttext.substring(j - suffixLength, j)
+            + shorttext.substring(j, j + prefixLength);
           bestLongtextA = longtext.substring(0, i - suffixLength);
           bestLongtextB = longtext.substring(i + prefixLength);
           bestShorttextA = shorttext.substring(0, j - suffixLength);
@@ -608,8 +610,10 @@ import { escapeText } from './utilities.js';
           x1 = v1[k1Offset - 1] + 1;
         }
         y1 = x1 - k1;
-        while (x1 < text1Length && y1 < text2Length &&
-          text1.charAt(x1) === text2.charAt(y1)) {
+        while (
+          x1 < text1Length && y1 < text2Length
+          && text1.charAt(x1) === text2.charAt(y1)
+        ) {
           x1++;
           y1++;
         }
@@ -642,9 +646,11 @@ import { escapeText } from './utilities.js';
           x2 = v2[k2Offset - 1] + 1;
         }
         y2 = x2 - k2;
-        while (x2 < text1Length && y2 < text2Length &&
-          text1.charAt(text1Length - x2 - 1) ===
-          text2.charAt(text2Length - y2 - 1)) {
+        while (
+          x2 < text1Length
+          && y2 < text2Length
+          && text1.charAt(text1Length - x2 - 1) === text2.charAt(text2Length - y2 - 1)
+        ) {
           x2++;
           y2++;
         }
@@ -743,10 +749,10 @@ import { escapeText } from './utilities.js';
 
         // Eliminate an equality that is smaller or equal to the edits on both
         // sides of it.
-        if (lastequality && (lastequality.length <=
-            Math.max(lengthInsertions1, lengthDeletions1)) &&
-            (lastequality.length <= Math.max(lengthInsertions2,
-              lengthDeletions2))) {
+        if (lastequality
+          && (lastequality.length <= Math.max(lengthInsertions1, lengthDeletions1))
+          && (lastequality.length <= Math.max(lengthInsertions2, lengthDeletions2))
+        ) {
           // Duplicate record.
           diffs.splice(
             equalities[equalitiesLength - 1],
@@ -791,15 +797,16 @@ import { escapeText } from './utilities.js';
     // Only extract an overlap if it is as big as the edit ahead or behind it.
     pointer = 1;
     while (pointer < diffs.length) {
-      if (diffs[pointer - 1][0] === DIFF_DELETE &&
-          diffs[pointer][0] === DIFF_INSERT) {
+      if (
+        diffs[pointer - 1][0] === DIFF_DELETE
+        && diffs[pointer][0] === DIFF_INSERT
+      ) {
         deletion = diffs[pointer - 1][1];
         insertion = diffs[pointer][1];
         overlapLength1 = this.diffCommonOverlap(deletion, insertion);
         overlapLength2 = this.diffCommonOverlap(insertion, deletion);
         if (overlapLength1 >= overlapLength2) {
-          if (overlapLength1 >= deletion.length / 2 ||
-              overlapLength1 >= insertion.length / 2) {
+          if (overlapLength1 >= deletion.length / 2 || overlapLength1 >= insertion.length / 2) {
             // Overlap found.  Insert an equality and trim the surrounding edits.
             diffs.splice(
               pointer,
@@ -812,8 +819,7 @@ import { escapeText } from './utilities.js';
             pointer++;
           }
         } else {
-          if (overlapLength2 >= deletion.length / 2 ||
-              overlapLength2 >= insertion.length / 2) {
+          if (overlapLength2 >= deletion.length / 2 || overlapLength2 >= insertion.length / 2) {
             // Reverse overlap found.
             // Insert an equality and swap and trim the surrounding edits.
             diffs.splice(
@@ -823,11 +829,9 @@ import { escapeText } from './utilities.js';
             );
 
             diffs[pointer - 1][0] = DIFF_INSERT;
-            diffs[pointer - 1][1] =
-              insertion.substring(0, insertion.length - overlapLength2);
+            diffs[pointer - 1][1] = insertion.substring(0, insertion.length - overlapLength2);
             diffs[pointer + 1][0] = DIFF_DELETE;
-            diffs[pointer + 1][1] =
-              deletion.substring(overlapLength2);
+            diffs[pointer + 1][1] = deletion.substring(overlapLength2);
             pointer++;
           }
         }
@@ -880,8 +884,10 @@ import { escapeText } from './utilities.js';
         return best;
       }
       length += found;
-      if (found === 0 || text1.substring(textLength - length) ===
-          text2.substring(0, length)) {
+      if (
+        found === 0
+        || text1.substring(textLength - length) === text2.substring(0, length)
+      ) {
         best = length;
         length++;
       }
@@ -1005,11 +1011,12 @@ import { escapeText } from './utilities.js';
               // Factor out any common prefixes.
               let commonlength = this.diffCommonPrefix(textInsert, textDelete);
               if (commonlength !== 0) {
-                if ((pointer - countDelete - countInsert) > 0 &&
-                  diffs[pointer - countDelete - countInsert - 1][0] ===
-                  DIFF_EQUAL) {
+                if (
+                  (pointer - countDelete - countInsert) > 0
+                  && diffs[pointer - countDelete - countInsert - 1][0] === DIFF_EQUAL
+                ) {
                   diffs[pointer - countDelete - countInsert - 1][1] +=
-                  textInsert.substring(0, commonlength);
+                    textInsert.substring(0, commonlength);
                 } else {
                   diffs.splice(0, 0, [DIFF_EQUAL,
                     textInsert.substring(0, commonlength)
@@ -1023,22 +1030,25 @@ import { escapeText } from './utilities.js';
               // Factor out any common suffixies.
               commonlength = this.diffCommonSuffix(textInsert, textDelete);
               if (commonlength !== 0) {
-                diffs[pointer][1] = textInsert.substring(textInsert.length -
-                  commonlength) + diffs[pointer][1];
-                textInsert = textInsert.substring(0, textInsert.length -
-                commonlength);
-                textDelete = textDelete.substring(0, textDelete.length -
-                commonlength);
+                diffs[pointer][1] = textInsert.substring(textInsert.length - commonlength) + diffs[pointer][1];
+                textInsert = textInsert.substring(0, textInsert.length - commonlength);
+                textDelete = textDelete.substring(0, textDelete.length - commonlength);
               }
             }
 
             // Delete the offending records and add the merged ones.
             if (countDelete === 0) {
-              diffs.splice(pointer - countInsert,
-                countDelete + countInsert, [DIFF_INSERT, textInsert]);
+              diffs.splice(
+                pointer - countInsert,
+                countDelete + countInsert,
+                [DIFF_INSERT, textInsert]
+              );
             } else if (countInsert === 0) {
-              diffs.splice(pointer - countDelete,
-                countDelete + countInsert, [DIFF_DELETE, textDelete]);
+              diffs.splice(
+                pointer - countDelete,
+                countDelete + countInsert,
+                [DIFF_DELETE, textDelete]
+              );
             } else {
               diffs.splice(
                 pointer - countDelete - countInsert,
@@ -1046,8 +1056,10 @@ import { escapeText } from './utilities.js';
                 [DIFF_DELETE, textDelete], [DIFF_INSERT, textInsert]
               );
             }
-            pointer = pointer - countDelete - countInsert +
-            (countDelete ? 1 : 0) + (countInsert ? 1 : 0) + 1;
+            pointer = pointer - countDelete - countInsert
+              + (countDelete ? 1 : 0)
+              + (countInsert ? 1 : 0)
+              + 1;
           } else if (pointer !== 0 && diffs[pointer - 1][0] === DIFF_EQUAL) {
             // Merge this equality with the previous one.
             diffs[pointer - 1][1] += diffs[pointer][1];
@@ -1074,8 +1086,10 @@ import { escapeText } from './utilities.js';
 
     // Intentionally ignore the first and last element (don't need checking).
     while (pointer < diffs.length - 1) {
-      if (diffs[pointer - 1][0] === DIFF_EQUAL &&
-          diffs[pointer + 1][0] === DIFF_EQUAL) {
+      if (
+        diffs[pointer - 1][0] === DIFF_EQUAL
+        && diffs[pointer + 1][0] === DIFF_EQUAL
+      ) {
         const diffPointer = diffs[pointer][1];
         const position = diffPointer.substring(
           diffPointer.length - diffs[pointer - 1][1].length
@@ -1084,20 +1098,15 @@ import { escapeText } from './utilities.js';
         // This is a single edit surrounded by equalities.
         if (position === diffs[pointer - 1][1]) {
           // Shift the edit over the previous equality.
-          diffs[pointer][1] = diffs[pointer - 1][1] +
-            diffs[pointer][1].substring(0, diffs[pointer][1].length -
-              diffs[pointer - 1][1].length);
-          diffs[pointer + 1][1] =
-            diffs[pointer - 1][1] + diffs[pointer + 1][1];
+          diffs[pointer][1] = diffs[pointer - 1][1] + diffs[pointer][1].substring(0, diffs[pointer][1].length - diffs[pointer - 1][1].length);
+          diffs[pointer + 1][1] = diffs[pointer - 1][1] + diffs[pointer + 1][1];
           diffs.splice(pointer - 1, 1);
           changes = true;
-        } else if (diffPointer.substring(0, diffs[pointer + 1][1].length) ===
-            diffs[pointer + 1][1]) {
+        } else if (diffPointer.substring(0, diffs[pointer + 1][1].length) === diffs[pointer + 1][1]) {
           // Shift the edit over the next equality.
           diffs[pointer - 1][1] += diffs[pointer + 1][1];
           diffs[pointer][1] =
-            diffs[pointer][1].substring(diffs[pointer + 1][1].length) +
-            diffs[pointer + 1][1];
+            diffs[pointer][1].substring(diffs[pointer + 1][1].length) + diffs[pointer + 1][1];
           diffs.splice(pointer + 1, 1);
           changes = true;
         }

@@ -183,8 +183,8 @@ Test.prototype = {
           ? this.callback.call(this.testEnvironment, this.assert, this.data)
           : this.callback.call(this.testEnvironment, this.assert);
       } catch (e) {
-        this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': ' +
-          (e.message || e) + '\n' + this.stack, extractStacktrace(e, 0));
+        this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': '
+          + (e.message || e) + '\n' + this.stack, extractStacktrace(e, 0));
 
         // Else next test will carry the responsibility
         saveGlobal();
@@ -224,8 +224,8 @@ Test.prototype = {
           promise = hook.call(this.testEnvironment, this.assert);
         } catch (error) {
           this.pushFailure(
-            'Global ' + hookName + ' failed on ' + this.testName +
-              ': ' + errorString(error),
+            'Global ' + hookName + ' failed on ' + this.testName
+              + ': ' + errorString(error),
             extractStacktrace(error, 0)
           );
           return;
@@ -245,9 +245,9 @@ Test.prototype = {
 
       // The 'after' hook should only execute when there are no tests left and
       // when the 'after' and 'finish' tasks are the only tasks left to process
-      if (hookName === 'after' &&
-        !lastTestWithinModuleExecuted(hookOwner) &&
-        (config.queue.length > 0 || config._pq.taskCount() > 2)) {
+      if (hookName === 'after'
+        && !lastTestWithinModuleExecuted(hookOwner)
+        && (config.queue.length > 0 || config._pq.taskCount() > 2)) {
         return;
       }
 
@@ -265,8 +265,10 @@ Test.prototype = {
         try {
           promise = hook.call(testEnvironment, this.assert);
         } catch (error) {
-          this.pushFailure(hookName + ' failed on ' + this.testName + ': ' +
-          (error.message || error), extractStacktrace(error, 0));
+          this.pushFailure(
+            hookName + ' failed on ' + this.testName + ': '
+              + (error.message || error), extractStacktrace(error, 0)
+          );
           return;
         }
       }
@@ -282,8 +284,8 @@ Test.prototype = {
 
     function processGlobalhooks (test) {
       if (
-        (handler === 'beforeEach' || handler === 'afterEach') &&
-        config._globalHooks[handler]
+        (handler === 'beforeEach' || handler === 'afterEach')
+        && config._globalHooks[handler]
       ) {
         for (let i = 0; i < config._globalHooks[handler].length; i++) {
           hooks.push(
@@ -330,22 +332,23 @@ Test.prototype = {
 
     if (this.steps.length) {
       const stepsList = this.steps.join(', ');
-      this.pushFailure('Expected assert.verifySteps() to be called before end of test ' +
-        `after using assert.step(). Unverified steps: ${stepsList}`, this.stack);
+      this.pushFailure(`Expected assert.verifySteps() to be called before end of test after using assert.step(). Unverified steps: ${stepsList}`,
+        this.stack
+      );
     }
 
     if (config.requireExpects && this.expected === null) {
-      this.pushFailure('Expected number of assertions to be defined, but expect() was ' +
-        'not called.', this.stack);
+      this.pushFailure('Expected number of assertions to be defined, but expect() was not called.', this.stack);
     } else if (this.expected !== null && this.stepsCount && (this.expected === (this.assertions.length + this.stepsCount))) {
-      this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
-        this.assertions.length + ' were run.\nIt looks like you are upgrading from QUnit 2. Steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/', this.stack);
+      this.pushFailure('Expected ' + this.expected + ' assertions, but ' + this.assertions.length + ' were run.\nIt looks like you are upgrading from QUnit 2. Steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/',
+        this.stack
+      );
     } else if (this.expected !== null && this.expected !== this.assertions.length) {
-      this.pushFailure('Expected ' + this.expected + ' assertions, but ' +
-        this.assertions.length + ' were run', this.stack);
+      this.pushFailure('Expected ' + this.expected + ' assertions, but ' + this.assertions.length + ' were run',
+        this.stack
+      );
     } else if (this.expected === null && !this.assertions.length) {
-      this.pushFailure('Expected at least one assertion, but none were run - call ' +
-        'expect(0) to accept zero assertions.', this.stack);
+      this.pushFailure('Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.', this.stack);
     }
 
     const module = this.module;
@@ -505,8 +508,8 @@ Test.prototype = {
       ];
     }
 
-    const previousFailCount = config.storage &&
-        +config.storage.getItem('qunit-test-' + this.module.name + '-' + this.testName);
+    const previousFailCount = config.storage
+        && +config.storage.getItem('qunit-test-' + this.module.name + '-' + this.testName);
 
     // Prioritize previously failed tests, detected from storage
     const prioritize = config.reorder && !!previousFailCount;
@@ -520,9 +523,9 @@ Test.prototype = {
     if (this !== config.current) {
       const message = (resultInfo && resultInfo.message) || '';
       const testName = (this && this.testName) || '';
-      const error = 'Assertion occurred after test finished.\n' +
-        '> Test: ' + testName + '\n' +
-        '> Message: ' + message + '\n';
+      const error = 'Assertion occurred after test finished.\n'
+        + '> Test: ' + testName + '\n'
+        + '> Message: ' + message + '\n';
 
       throw new Error(error);
     }
@@ -562,8 +565,8 @@ Test.prototype = {
 
   pushFailure: function (message, source) {
     if (!(this instanceof Test)) {
-      throw new Error('pushFailure() assertion outside test context, was ' +
-        sourceFromStacktrace(2));
+      throw new Error('pushFailure() assertion outside test context, was '
+        + sourceFromStacktrace(2));
     }
 
     this.pushResult({
@@ -676,16 +679,16 @@ Test.prototype = {
         return;
       }
       if (config.current === undefined) {
-        throw new Error('Unexpected release of async pause after tests finished.\n' +
-          `> Test: ${test.testName} [async #${pauseId}]`);
+        throw new Error('Unexpected release of async pause after tests finished.\n'
+          + `> Test: ${test.testName} [async #${pauseId}]`);
       }
       if (config.current !== test) {
-        throw new Error('Unexpected release of async pause during a different test.\n' +
-          `> Test: ${test.testName} [async #${pauseId}]`);
+        throw new Error('Unexpected release of async pause during a different test.\n'
+          + `> Test: ${test.testName} [async #${pauseId}]`);
       }
       if (pause.remaining <= 0) {
-        throw new Error('Tried to release async pause that was already released.\n' +
-          `> Test: ${test.testName} [async #${pauseId}]`);
+        throw new Error('Tried to release async pause that was already released.\n'
+          + `> Test: ${test.testName} [async #${pauseId}]`);
       }
 
       // The `requiredCalls` parameter exists to support `assert.async(count)`
@@ -744,10 +747,10 @@ Test.prototype = {
           promise.then(resolve);
         } else {
           const reject = function (error) {
-            const message = 'Promise rejected ' +
-              (!phase ? 'during' : phase.replace(/Each$/, '')) +
-              ' "' + test.testName + '": ' +
-              ((error && error.message) || error);
+            const message = 'Promise rejected '
+              + (!phase ? 'during' : phase.replace(/Each$/, ''))
+              + ' "' + test.testName + '": '
+              + ((error && error.message) || error);
             test.pushFailure(message, extractStacktrace(error, 0));
 
             // Else next test will carry the responsibility
@@ -776,8 +779,8 @@ Test.prototype = {
     function moduleChainIdMatch (testModule, selectedId) {
       return (
         // undefined or empty array
-        !selectedId || !selectedId.length ||
-        inArray(testModule.moduleId, selectedId) || (
+        !selectedId || !selectedId.length
+        || inArray(testModule.moduleId, selectedId) || (
           testModule.parentModule && moduleChainIdMatch(testModule.parentModule, selectedId)
         )
       );
@@ -850,8 +853,8 @@ Test.prototype = {
 
 export function pushFailure () {
   if (!config.current) {
-    throw new Error('pushFailure() assertion outside test context, in ' +
-      sourceFromStacktrace(2));
+    throw new Error('pushFailure() assertion outside test context, in '
+      + sourceFromStacktrace(2));
   }
 
   // Gets current test obj
