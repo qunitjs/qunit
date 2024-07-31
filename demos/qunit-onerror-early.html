@@ -6,9 +6,12 @@
   <link rel="stylesheet" href="../src/core/qunit.css">
   <script src="../qunit/qunit.js"></script>
   <script>
+    QUnit.config.urlConfig.push('beginBoom');
     QUnit.begin(function () {
-      // eslint-disable-next-line no-undef
-      beginBoom();
+      if (QUnit.config.beginBoom) {
+        // eslint-disable-next-line no-undef
+        beginBoom();
+      }
     });
 
     // eslint-disable-next-line no-undef
