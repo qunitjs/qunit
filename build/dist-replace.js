@@ -10,7 +10,8 @@ let distVersion = require('../package.json').version;
 
 if (!process.env.QUNIT_BUILD_RELEASE) {
   // During development, include a timestamp.
-  distVersion += '-dev ' + (new Date()).toISOString().replace(/:\d+\.\d+Z$/, 'Z');
+  distVersion = distVersion.replace(/-.+$/, '')
+    + '-dev ' + (new Date()).toISOString().replace(/:\d+\.\d+Z$/, 'Z');
 }
 
 const replacements = {
