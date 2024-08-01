@@ -1,4 +1,4 @@
-/*! https://github.com/jquery/typesense-minibar 1.2.0 */
+/*! https://github.com/jquery/typesense-minibar 1.3.1 */
 globalThis.tsminibar = function tsminibar (form) {
   const { origin, collection } = form.dataset;
   const group = !!form.dataset.group;
@@ -42,7 +42,7 @@ globalThis.tsminibar = function tsminibar (form) {
   input.addEventListener('input', async function () {
     const query = state.query = input.value;
     if (!query) {
-      state.hits = []; // don't leak old hits on focus
+      state.hits = [];
       state.cursor = -1;
       return close();
     }
@@ -72,7 +72,7 @@ globalThis.tsminibar = function tsminibar (form) {
     }
   });
   form.addEventListener('submit', function (e) {
-    e.preventDefault(); // disable fallback
+    e.preventDefault();
   });
   form.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 12 12" width="20" height="20" aria-hidden="true" class="tsmb-icon-close" style="display: none;"><path d="M9 3L3 9M3 3L9 9"/></svg>');
   form.querySelector('.tsmb-icon-close').addEventListener('click', function () {
@@ -151,9 +151,7 @@ globalThis.tsminibar = function tsminibar (form) {
   function render () {
     listbox.hidden = !state.open;
     form.classList.toggle('tsmb-form--open', state.open);
-    if (state.open) {
-      listbox.innerHTML = (state.hits.map((hit, i) => `<div role="option"${i === state.cursor ? ' aria-selected="true"' : ''}>${hit.lvl0 ? `<div class="tsmb-suggestion_group">${hit.lvl0}</div>` : ''}<a href="${hit.url}" tabindex="-1"><div class="tsmb-suggestion_title">${hit.title}</div><div class="tsmb-suggestion_content">${hit.content}</div></a></div>`).join('') || `<div class="tsmb-empty">${noResults.replace('{}', escape(state.query))}</div>`) + (form.dataset.foot ? '<a href="https://typesense.org" class="tsmb-foot" title="Search by Typesense"></a>' : '');
-    }
+    listbox.innerHTML = (state.hits.map((hit, i) => `<div role="option"${i === state.cursor ? ' aria-selected="true"' : ''}>${hit.lvl0 ? `<div class="tsmb-suggestion_group">${hit.lvl0}</div>` : ''}<a href="${hit.url}" tabindex="-1"><div class="tsmb-suggestion_title">${hit.title}</div><div class="tsmb-suggestion_content">${hit.content}</div></a></div>`).join('') || `<div class="tsmb-empty">${noResults.replace('{}', escape(state.query))}</div>`) + (form.dataset.foot ? '<a href="https://typesense.org" class="tsmb-foot" title="Search by Typesense"></a>' : '');
   }
 
   function moveCursor (offset) {
@@ -166,4 +164,10 @@ globalThis.tsminibar = function tsminibar (form) {
 
   return { form, connect, disconnect };
 };
-document.querySelectorAll('.tsmb-form[data-origin]').forEach(form => tsminibar(form));
+document.querySelectorAll('.tsmb-form[data-origin]').forEach(tsminibar);
+window.customElements.define('typesense-minibar', class extends HTMLElement {
+  connectedCallback () {
+    const form = this.querySelector('form');
+    if (form) tsminibar(form);
+  }
+});
