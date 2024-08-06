@@ -37,7 +37,7 @@ QUnit.module('game', (hooks) => {
       assert.false(board.find(bob));
     });
 
-    QUnit.test('move', (assert) => {
+    QUnit.test('moveRight', (assert) => {
       const alice = new game.Robot();
       board.add(alice);
 
@@ -55,6 +55,14 @@ QUnit.module('game', (hooks) => {
       assert.throws(() => {
         board.moveRight(bob);
       }, board.BoardObjectError, 'not on board');
+    });
+
+    QUnit.test('moveLeft', (assert) => {
+      const alice = new game.Robot();
+      board.add(alice);
+
+      board.moveLeft(alice);
+      assert.propContains(board.find(alice), { x: 2, y: 0 }, 'teleport to far end');
     });
   });
 });
