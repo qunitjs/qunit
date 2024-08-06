@@ -9,20 +9,24 @@
   <script src="https://code.jquery.com/qunit/qunit-3.0.0-alpha.2.js"></script>
   <script>
   QUnit.test('apple', function (assert) {
-    assert.equal('this is expected', 'this is expected', 'example');
-    assert.true(true);
+    assert.true(true, 'stem');
+    assert.true(true, 'skin');
   });
   QUnit.test('banana', function (assert) {
     assert.true(true, 'foo');
-    assert.equal('this is actual', 'this is expected', 'bar');
+    var sentence = 'This is actual.';
+    assert.equal(sentence, 'This is expected.', 'example sentence');
+    assert.true(true, 'bar');
     assert.true(true, 'baz');
-    assert.true(true, 'quux');
   });
-  QUnit.test('citron', function (assert) {
-    assert.equal('this is expected', 'this is expected', 'example');
-    assert.true(true);
+  QUnit.test('sauerkraut', function (assert) {
+    assert.true(true, 'acid rock');
+    assert.true(true, 'kraut rock');
+  });
+  QUnit.test('dampfnudel', function (assert) {
+    assert.true(true, 'stream');
+    assert.true(true, 'bun');
   });
   </script>
 </body>
 </html>
-<!-- This is the demo on the home page. -->
