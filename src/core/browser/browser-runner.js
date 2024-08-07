@@ -76,6 +76,28 @@ export function initBrowser (QUnit, window, document) {
   initFixture(QUnit, document);
   initUrlConfig(QUnit);
 
+  // Unless explicitly disabled via preconfig, initialize HtmlReporter now
+  // (i.e. QUnit.config.reporters.html is undefined or true).
+  //
+  // This allows the UI to render instantly (since QUnit 3.0) for cases where the
+  // qunit.js script is after `<div id="qunit">`, which is recommended.
+  //
+  // Otherwise, we'll fallback to waiting with a blank page until window.onload,
+  // which is how it's always been in QUnit 1 and QUnit 2.
+  //
+  // Note that HtmlReporter constructor will only render an initial layout and
+  // listen to 1 event. The final decision on whether to attach event handlers
+  // and render the interactive UI is made from HtmlReporter#onRunStart, which
+  // is also where it will honor QUnit.config.reporters.html if it was set to
+  // false between qunit.js (here) and onRunStart.
+  //
+  // If someone explicitly sets QUnit.config.reporters.html to false via preconfig,
+  // but then changes it at runtime to true, that is unsupported and the reporter
+  // will remain disabled.
+  if (QUnit.config.reporters.html !== false) {
+    QUnit.reporters.html.init(QUnit);
+  }
+
   // NOTE:
   // * It is important to attach error handlers (above) before setting up reporters,
   //   to ensure reliable reporting of error events.

@@ -22,11 +22,11 @@ export function createStartFunction (QUnit) {
 
     // QUnit.config.reporters is considered writable between qunit.js and QUnit.start().
     // Now, it is time to decide which reporters we'll load.
+    //
+    // For config.reporters.html, refer to browser-runner.js and HtmlReporter#onRunStart.
+    //
     if (config.reporters.console) {
       reporters.console.init(QUnit);
-    }
-    if (config.reporters.html || (config.reporters.html === undefined && window && document)) {
-      reporters.html.init(QUnit);
     }
     if (config.reporters.perf || (config.reporters.perf === undefined && window && document)) {
       reporters.perf.init(QUnit);

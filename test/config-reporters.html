@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>config-reporters</title>
   <link rel="stylesheet" href="../src/core/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
   <script src="../qunit/qunit.js"></script>
   <script>
   QUnit.config.reporters.html = false;
@@ -37,8 +40,5 @@
     assert.strictEqual(window.firstConsoleMessage, 'TAP version 13', 'first console message');
   });
   </script>
-</head>
-<body>
-  <div id="qunit"></div>
 </body>
 </html>
