@@ -10,8 +10,6 @@ not ok 1 Test A
         at /qunit/test/cli/fixtures/too-many-done-calls.js:1:7
         at internal
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: Tried to release async pause that was already released.
     > Test: Test A [async #1]

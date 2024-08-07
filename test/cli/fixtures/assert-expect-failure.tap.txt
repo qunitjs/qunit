@@ -6,8 +6,6 @@ not ok 1 failing test
   ---
   message: Expected 2 assertions, but 1 were run
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-failure.js:1:7
         at internal

@@ -18,8 +18,6 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
   ---
   message: global failure: Error: Error thrown in non-returned promise!
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: Error thrown in non-returned promise!
         at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13

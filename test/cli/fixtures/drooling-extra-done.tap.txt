@@ -11,8 +11,6 @@ not ok 2 Test B
         at /qunit/test/cli/fixtures/drooling-extra-done.js:13:7
         at internal
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: Unexpected release of async pause during a different test.
     > Test: Test A [async #1]

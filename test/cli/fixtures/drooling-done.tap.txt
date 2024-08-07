@@ -9,8 +9,6 @@ not ok 1 Test A
         at /qunit/test/cli/fixtures/drooling-done.js:5:7
         at internal
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: this is an intentional error
         at /qunit/test/cli/fixtures/drooling-done.js:8:9

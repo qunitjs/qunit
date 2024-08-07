@@ -1,13 +1,11 @@
 # name: test that hangs
-# command: ["qunit","hanging-test.js"]
+# command: ["qunit", "hanging-test.js"]
 
 TAP version 13
 not ok 1 hanging
   ---
   message: Test took longer than 3000ms; test timed out.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at internal
   ...
