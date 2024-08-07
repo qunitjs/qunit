@@ -572,7 +572,6 @@ Test.prototype = {
     this.pushResult({
       result: false,
       message: message || 'error',
-      actual: null,
       source
     });
   },

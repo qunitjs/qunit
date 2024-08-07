@@ -6,16 +6,12 @@ not ok 1 example > returns a rejected promise
   ---
   message: global failure: bad things happen
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
         at internal
   ...
   ---
   message: Test took longer than 1000ms; test timed out.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at internal
   ...

@@ -5,8 +5,6 @@ not ok 1 throw early
   ---
   message: "Promise rejected during \"throw early\": boo"
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: boo
         at /qunit/test/cli/fixtures/async-test-throw.js:2:9
@@ -15,8 +13,6 @@ not ok 2 throw late
   ---
   message: "Promise rejected during \"throw late\": boo"
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: boo
         at /qunit/test/cli/fixtures/async-test-throw.js:8:9
@@ -25,8 +21,6 @@ not ok 3 test with bad thenable
   ---
   message: "Promise rejected during \"test with bad thenable\": boo"
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: boo
         at /qunit/test/cli/fixtures/async-test-throw.js:16:13

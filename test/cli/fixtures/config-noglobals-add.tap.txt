@@ -6,8 +6,6 @@ not ok 1 adds global var
   ---
   message: Introduced global variable(s): dummyGlobal
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at qunit.js
   ...

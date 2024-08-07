@@ -18,8 +18,8 @@ Report the result of a custom assertion.
 | name | description |
 |------|-------------|
 | `data.result` (boolean) | Result of the assertion |
-| `data.actual` | Expression being tested |
-| `data.expected` | Known comparison value |
+| `data.actual` | Expression being tested (optional) |
+| `data.expected` | Known comparison value (optional) |
 | `data.message` (string or undefined) | Short description of the assertion |
 
 ## Examples
