@@ -6,8 +6,6 @@ not ok 1 times out before scheduled done is called
   ---
   message: Test took longer than 10ms; test timed out.
   severity: failed
-  stack: |
-        at internal
   ...
 1..1
 # pass 0

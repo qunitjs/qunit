@@ -6,8 +6,6 @@ not ok 1 timeout > first
   ---
   message: Test took longer than 10ms; test timed out.
   severity: failed
-  stack: |
-        at internal
   ...
 ok 2 timeout > second
 1..2

@@ -269,7 +269,10 @@ export default class TapReporter {
     if (error.stack) {
       // Since stacks aren't user generated, take a bit of liberty by
       // adding a trailing new line to allow a straight-forward YAML Blocks.
-      out += `\n  stack: ${prettyYamlValue(error.stack + '\n')}`;
+      const fmtStack = annotateStacktrace(error.stack, kleur.grey);
+      if (fmtStack.length) {
+        out += `\n  stack: ${prettyYamlValue(fmtStack + '\n')}`;
+      }
     }
 
     out += '\n  ...';
@@ -281,7 +284,10 @@ export default class TapReporter {
     out += `\n  message: ${prettyYamlValue(errorString(error))}`;
     out += `\n  severity: ${prettyYamlValue('failed')}`;
     if (error && error.stack) {
-      out += `\n  stack: ${prettyYamlValue(annotateStacktrace(error, kleur.grey) + '\n')}`;
+      const fmtStack = annotateStacktrace(error.stack, kleur.grey, error.toString());
+      if (fmtStack.length) {
+        out += `\n  stack: ${prettyYamlValue(fmtStack + '\n')}`;
+      }
     }
     out += '\n  ...';
     this.log(out);

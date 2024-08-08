@@ -12,8 +12,6 @@ not ok 1 example > returns a rejected promise
   ---
   message: Test took longer than 1000ms; test timed out.
   severity: failed
-  stack: |
-        at internal
   ...
 1..1
 # pass 0
