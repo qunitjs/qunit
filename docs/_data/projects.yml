@@ -76,6 +76,14 @@ orgs:
       - name: kiwix-js
         href: https://github.com/kiwix/kiwix-js
 
+  - name: SAP
+    href: https://github.com/SAP
+    sub:
+      - name: OpenUI5
+        href: https://github.com/SAP/openui5
+      - name: ui5-tooling
+        href: https://github.com/SAP/ui5-tooling
+
   - name: Square
     href: https://github.com/square/
     sub:
