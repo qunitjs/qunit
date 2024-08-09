@@ -6,8 +6,6 @@ not ok 1 deletes global var
   ---
   message: Deleted global variable(s): dummyGlobal
   severity: failed
-  stack: |
-        at qunit.js
   ...
 1..1
 # pass 0
