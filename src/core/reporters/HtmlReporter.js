@@ -126,12 +126,24 @@ export default class HtmlReporter {
     this.dropdownData = null;
 
     // We must not fallback to creating `<div id="qunit">` ourselves if it
-    // does not exist, because not having id="qunit" is how projects indicate
-    // that they wish to run QUnit headless, with their own reporters.
-    this.element = options.element || undefined;
+    // does not exist, because not having `<div id="qunit">` is how projects
+    // indicate that they wish to run QUnit headless, and do their own reporter.
+    //
+    // If options.element was set to HTMLElement, or if `<div id="qunit">` already
+    // exists (i.e. qunit.js script is placed at end of `<body>`), then we render
+    // an initial layout now (which is mostly inert).
+    // Otherwise, we wait until QUnit.start and the onRunStart event, which by
+    // default is called from window.onload.
+    //
+    // If no element is found now, leave this.element as undefined (unchanged).
+    // We will try again at onRunStart().
+    this.element = options.element || document.querySelector('#qunit') || undefined;
     this.elementBanner = null;
     this.elementDisplay = null;
     this.elementTests = null;
+    if (this.element) {
+      this.appendInterface();
+    }
 
     // NOTE: Only listen for "runStart" now.
     // Other event handlers are added via listen() from onRunStart,
@@ -150,9 +162,12 @@ export default class HtmlReporter {
       QUnit.log(this.onLog.bind(this), prioritySymbol);
       QUnit.testDone(this.onTestDone.bind(this));
       QUnit.on('runEnd', this.onRunEnd.bind(this));
-    };
-    this.listenError = function () {
-      this.listenError = null;
+
+      // It's important that we don't listen for onError until after
+      // this.element is found and populated by appendInterface(), as
+      // otherwise it will fail in appendTest() to display error details.
+      // We've given on() a memory for "error" events to accomodate
+      // late listening.
       QUnit.on('error', this.onError.bind(this), prioritySymbol);
     };
     QUnit.on('runStart', this.onRunStart.bind(this), prioritySymbol);
@@ -653,7 +668,7 @@ export default class HtmlReporter {
       + '">Run all tests</a></div>';
   }
 
-  appendInterface (beginDetails) {
+  appendInterface () {
     // Since QUnit 1.3, these are created automatically.
     this.element.setAttribute('role', 'main');
     this.element.innerHTML =
@@ -675,9 +690,6 @@ export default class HtmlReporter {
     this.elementBanner = this.element.querySelector('#qunit-banner');
     this.elementDisplay = this.element.querySelector('#qunit-testresult-display');
     this.elementTests = this.element.querySelector('#qunit-tests');
-
-    this.appendToolbarControls(beginDetails);
-    this.appendTestResultControls();
   }
 
   appendTest (name, testId, moduleName) {
@@ -710,11 +722,21 @@ export default class HtmlReporter {
 
   // HTML Reporter initialization and load
   onRunStart (runStart) {
-    if (this.element === undefined) {
-      this.element = document.querySelector('#qunit') || null;
-    }
-    if (this.element === null) {
+    if (this.config.reporters && this.config.reporters.html === false) {
+      // If QUnit.config.reporters.html was set to false after loading QUnit,
+      // then undo the initial layout (created from browser-runnner.js)
+      if (this.element) {
+        this.element.innerHTML = '';
+        this.element = null;
+      }
       return;
+    }
+    if (!this.element) {
+      this.element = document.querySelector('#qunit') || null;
+      if (!this.element) {
+        return;
+      }
+      this.appendInterface();
     }
 
     this.stats.defined = runStart.testCounts.total;
@@ -730,18 +752,9 @@ export default class HtmlReporter {
   // add entries to QUnit.config.urlConfig, which may be done asynchronously.
   // https://github.com/qunitjs/qunit/issues/1657
   onBegin (beginDetails) {
-    this.appendInterface(beginDetails);
+    this.appendToolbarControls(beginDetails);
+    this.appendTestResultControls();
     this.elementDisplay.className = 'running';
-
-    // TODO: We render the UI late here from onBegin because the toolbar and module
-    // dropdown rely on user-defined information. If we refactor the UI to render
-    // most of it earlier (from the constructor if possible, with last retry during
-    // runStart), then we can move this listener to the listen() function. We separate it
-    // so that onError can safely call appendTest() and rely on `this.element` and
-    // `this.elementTests` being set. We could instead add the "error" listener in
-    // the constructor, and buffer "early error" event inside this class until the
-    // UI is ready, but we instead rely on QUnit.on's built-in memory for "error".
-    this.listenError();
   }
 
   getRerunFailedHtml (failedTests) {
