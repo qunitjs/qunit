@@ -6,7 +6,7 @@ groups:
   - main
 redirect_from:
   - "/QUnit/test.if/"
-version_added: "unreleased"
+version_added: "2.22.0"
 ---
 
 `QUnit.test.if( name, condition, callback )`
@@ -62,7 +62,7 @@ QUnit.test('render', function (assert) {
 
 ### Legacy idom
 
-Prior to QUnit 3.0, the following shortcuts were sometimes used. This may be replaced by `QUnit.test.if()`.
+Prior to QUnit 2.22, the following shortcuts were sometimes used. This may be replaced by `QUnit.test.if()`.
 
 ```js
 (typeof document !== 'undefined' ? QUnit.test : QUnit.skip)('example', function (assert) {

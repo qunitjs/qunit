@@ -163,7 +163,7 @@ Example: [§ Hooks via module options](#hooks-via-module-options).
 
 ## Changelog
 
-| UNRELEASED | Added `QUnit.module.if()` alias.
+| [QUnit 2.22](https://github.com/qunitjs/qunit/releases/tag/2.22.0) | Added `QUnit.module.if()` alias.
 | [QUnit 2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0) | Added `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` aliases.
 | [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | Added `before` and `after` options.
 | [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | Introduce `scope` feature.

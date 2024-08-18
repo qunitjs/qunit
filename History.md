@@ -6,7 +6,6 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Added
 
 * CLI: Add `.mjs` and `.cjs` to default test file extensions.
-* Core: Add [`QUnit.test.if()`](https://qunitjs.com/api/QUnit/test.if/) and `QUnit.module.if()`. (Timo Tijhof) [#1772](https://github.com/qunitjs/qunit/pull/1772)
 * Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This should ease development of basic [browser integrations](https://qunitjs.com/browser/#integrations) that only relay the end report. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 
@@ -51,6 +50,13 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
+
+2.22.0 / 2024-08-18
+==================
+
+### Added
+
+* Core: Add [`QUnit.test.if()`](https://qunitjs.com/api/QUnit/test.if/) and `QUnit.module.if()`. (Timo Tijhof) [#1772](https://github.com/qunitjs/qunit/pull/1772)
 
 2.21.1 / 2024-07-20
 ==================
