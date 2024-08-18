@@ -29,19 +29,14 @@ const Repo = {
     }
     {
       const file = 'package.json';
-      console.log(`Updating ${file}...`);
+      console.log(`Checking ${file}...`);
       const filePath = path.join(__dirname, '..', file);
       const json = fs.readFileSync(filePath, 'utf8');
-      const packageIndentation = json.match(/\n([\t\s]+)/)[1];
       const data = JSON.parse(json);
 
-      data.version = version;
-      data.author.url = data.author.url.replace('main', version);
-
-      fs.writeFileSync(
-        filePath,
-        JSON.stringify(data, null, packageIndentation) + '\n'
-      );
+      if (data.version !== version) {
+        throw new Error('Must run build-release on release commit, found package.version at ' + data.version);
+      }
     }
     {
       console.log('Running `npm run build`...');

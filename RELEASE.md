@@ -4,7 +4,6 @@ This guide walks you through the QUnit release.
 
 QUnit aims for its releases to be reproducible. Recent releases are automatically verified on a regular basis ([reproducible builds status](https://github.com/qunitjs/qunit/actions/workflows/reproducible.yaml)). Read more on [Wikipedia](https://en.wikipedia.org/wiki/Reproducible_builds), and [reproducible-builds.org](https://reproducible-builds.org/).
 
-
 ⚠️ **WARNING** ⚠️
 
 > Before starting, make sure you have:
@@ -14,12 +13,14 @@ QUnit aims for its releases to be reproducible. Recent releases are automaticall
 >
 > System prerequisites:
 >
-> * Node.js 14, or later.
+> * Node.js 18, or later.
 > * Git 2.11, or later.
 
 Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist.
 
-1. Create a local  `release` branch, and ensure it is up-to-date:
+## Preparing the release
+
+1. Create a local `release` branch, and ensure it is up-to-date:
    Verify that the canonical repository is cloned (not a fork):
    ```
    git remote -v
@@ -36,7 +37,7 @@ Ensure that all changes for this release have been merged into the main branch. 
    npm ci
    ```
 
-3. Create the release preparation commit:
+3. Prepare for the release commit:
    ```
    node build/prep-release.js @VERSION
    ```
@@ -44,24 +45,6 @@ Ensure that all changes for this release have been merged into the main branch. 
    * Use `git add -p` to review the changes.
    * In `AUTHORS.txt`, if you see duplicate entries, then use the `.mailmap` file to normalize them to a canonical name and e-mail address, and then re-run the above command.
    * Edit `History.md` to remove changes not relevant to end-users (e.g. changes relating to tests, build, internal refactoring, doc fixes, etc.).
-
-  Commit your changes with the following message (replace `@VERSION` with the release version):
-  ```
-  Build: Prepare @VERSION release
-  ```
-
-  Push the `release` branch to GitHub.
-  Once CI is passing, push again, this time to the (protected) `main` branch.
-
-## Performing the release
-
-Verify that your local repo is at the release preparation commit:
-
-```
-git show
-# Build: Prepare x.y.z release
-# …
-```
 
 4. Build the release:
    ```
@@ -73,13 +56,38 @@ git show
    ```
    node build/review-package.js @LAST_VERSION
 
-   # … reviews package.json, qunit.js, and qunit.css
+   # … review package.json, qunit.js, and qunit.css
    ```
 
-5. Publish to GitHub.<br>⚠️ Do not push to the main branch!
+   Commit your changes with the following message (replace `@VERSION` with the release version):
    ```
-   git add -f package.json qunit/
-   git commit -m "Release @VERSION"
+   Release @VERSION
+   ```
+
+   Push a `release` branch to GitHub.
+   Once CI is passing, push again, this time to the (protected) `stable-2.x` branch.
+
+## Publish the release
+
+Verify that your local repo is on a clean checkout with HEAD at the release commit:
+
+```
+git show
+# Release x.y.z
+# …
+```
+
+And that you have release artefacts from the previous step in your working directory (i.e. same version, and not a "dev" version). If you don't have this, go back to step 4 "Build the release".
+
+```
+head qunit/qunit.js
+# /*!
+#  * QUnit x.y.z
+# …
+```
+
+5. Publish tag to GitHub.
+   ```
    git tag -s "@VERSION" -m "Release @VERSION"
    git push --tags
    ```
@@ -99,24 +107,6 @@ git show
    git push
    ```
    Verify that the release is listed at <https://code.jquery.com/qunit/> and that you can open the JS/CSS files.
-
-## Updating the website
-
-After the release is published, we need to update the website.
-
-Check out the main branch of the [qunitjs/qunit](https://github.com/qunitjs/qunit) repository, and ensure it is clean and up-to-date. Run the following script, which will update release links and demos to use the new version:
-
-```
-qunit$ node build/site-set-version.js VERSION
-```
-
-Stage the changes it made, and commit with the following message:
-
-```
-Docs: Update url and version to VERSION
-```
-
-Push the commit to a branch on origin, wait CI checks to complete, then re-push to the main branch. Check the website in a few minutes to verify the change ([deployment log](https://github.com/qunitjs/qunit/deployments/activity_log?environment=github-pages)).
 
 ## Final steps
 

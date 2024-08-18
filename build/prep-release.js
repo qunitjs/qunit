@@ -111,7 +111,7 @@ const Repo = {
       const packageIndentation = json.match(/\n([\t\s]+)/)[1];
       const data = JSON.parse(json);
 
-      data.version = `${version}-pre`;
+      data.version = version;
 
       fs.writeFileSync(
         filePath,
@@ -126,7 +126,7 @@ const Repo = {
       const packageIndentation = json.match(/\n([\t\s]+)/)[1];
       const data = JSON.parse(json);
 
-      data.version = data.packages[''].version = `${version}-pre`;
+      data.version = data.packages[''].version = version;
 
       fs.writeFileSync(
         filePath,
