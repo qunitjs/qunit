@@ -34,7 +34,7 @@ qunit test/ | tap-min
 
 ### console
 
-The **console** reporter logs a JSON object for each reporter event from [`QUnit.on`](./api/callbacks/QUnit.on.md). Use this to explore or debug the Reporter API.
+The **console** reporter logs a JSON object for each reporter event from [`QUnit.on`](../callbacks/QUnit.on.md). Use this to explore or debug the Reporter API.
 
 ```
 runStart {…}
@@ -81,22 +81,20 @@ The **html** reporter renders a toolbar and visualizes test results. This is the
 
 By default, the [HTML Reporter](../../browser.md) is automatically enabled in browser environments if a `<div id="qunit">` element exists, and it remains disabled ("headless") if such element doesn't exist. You can override this to disable the HTML Reporter even if the element does exist.
 
-For example, you can share the same HTML file for both manual testing and CI test runs, and have the CI test run disable the HTML Reporter for improved performance.
+For example, this lets you share the same HTML file for manual testing, debugging, and CI runs; and yet disable the HTML Reporter in CI for improved performance.
 
 ```js
-// Set preconfig before loading qunit.js.
+// Declare as preconfig, before loading qunit.js
 qunit_config_reporters_html = false;
-qunit_config_reporters_perf = false;
 
-// Or, disable at runtime (after qunit.js, but before the first test, i.e. runStart event).
+// Set at runtime, after loading qunit.js (but before QUnit.begin)
 QUnit.config.reporters.html = false;
-QUnit.config.reporters.perf = false;
 ```
 
 Declaratively enable the TAP reporter in a browser environment:
 
 ```js
-// Set preconfig before loading qunit.js.
+// Declare preconfig, before loading qunit.js
 qunit_config_reporters_tap = true;
 ```
 

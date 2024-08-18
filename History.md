@@ -6,8 +6,14 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Added
 
 * CLI: Add `.mjs` and `.cjs` to default test file extensions.
-* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This should ease development of basic [browser integrations](https://qunitjs.com/browser/#integrations) that only relay the end report. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
+* CLI: Add stacktrace cleaning by greying out or removing internal QUnit or Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
+* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
+* Core: Add support for late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
+* Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)
+* Core: Add [`QUnit.config.reporters`](https://qunitjs.com/api/config/reporters/) to enable TAP via preconfig, or to declaratively disable HTML Reporter for headless CI. [#1711](https://github.com/qunitjs/qunit/issues/1711)
+* HTML Reporter: Allow instant rendering before DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
+* HTML Reporter: Add display for early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 
 ### Changed
 
@@ -17,30 +23,35 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Promote warning "[Unexpected test after runEnd](https://qunitjs.com/api/config/autostart/#E0001)" to error. [#1377](https://github.com/qunitjs/qunit/issues/1377)
 * Core: Change `before` and `after` hooks to run with module context. This enables inheritence between parent and child modules, and fixes leaks between last test and "after" hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
 * Core: Change QUnit.dump.maxDepth to become a live alias to [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/). [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
+* Core: Change "No tests were run." from fake test to native error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
+* Core: Change internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` calls from count. [#1226](https://github.com/qunitjs/qunit/issues/1226)
-* CLI: Upgrade `commander` dependency from 7 to 12. (Timo Tijhof) [#1781](https://github.com/qunitjs/qunit/pull/1781)
-* HTML Reporter: Run headless and fully disable HTML Reporter if no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
+* CLI: Upgrade `commander` dependency from 7 to 12. [#1781](https://github.com/qunitjs/qunit/pull/1781)
+* HTML Reporter: Automatically disable HTML Reporter when no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
 * HTML Reporter: New theme design and structure. Before and after demo in [#1774](https://github.com/qunitjs/qunit/pull/1774).
   * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
   * Change `#qunit-userAgent` to clip on one line until focussed. [d8c2a3ac18](https://github.com/qunitjs/qunit/commit/d8c2a3ac18b35a8d601fd7d863bdcc86ff45c9c8)
   * Change report time in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
-  * Remove assertion count from toolbar display, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
   * Add `user-select: none;` to "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
-  * Add "running" class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
+  * Add `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
+  * Remove assertion count from toolbar display, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
 
 ### Fixed
 
+* CLI: Fix confusing `expected: undefined` under error messages in TAP reporter. [#1794](https://github.com/qunitjs/qunit/pull/1794)
+* CLI: Fix confusing "No tests" message after an early uncaught error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
 * HTML Reporter: Fix `<label>` to wrap `<select>` for multi-value urlConfig item. [#1773](https://github.com/qunitjs/qunit/pull/1773)
 * HTML Reporter: Fix broken "Rerun without max depth" link. [91db92dbc5](https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289)
 * HTML Reporter: Fix unexpected pointer cursor on "Source:" label. [52bfa69645](https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249)
+* HTML Reporter: Faster "Hide passed" toggling on large test suites. [a729421411](https://github.com/qunitjs/qunit/commit/a7294214116ab5ec0e111b37c00cc7e2c16b4e1b)
 
 ### Removed
 
-* Core: Remove support for IE 9 and IE 10 (IE 11 is supported). [#1725](https://github.com/qunitjs/qunit/issues/1725)
+* Core: Remove support for IE 9 and IE 10. IE 11 remains supported. [#1725](https://github.com/qunitjs/qunit/issues/1725)
 * Core: Remove support for PhantomJS.
 * Core: Remove built-in AMD export. (NullVoxPopuli) [#1729](https://github.com/qunitjs/qunit/issues/1729)
 * Core: Remove deprecated [`QUnit.extend()`](https://qunitjs.com/api/extension/QUnit.extend/). (Izel Nakri)
