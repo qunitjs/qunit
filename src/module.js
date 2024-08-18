@@ -87,9 +87,9 @@ function makeSetHook (module, hookName) {
   };
 }
 
-function processModule (name, options, executeNow, modifiers = {}) {
+function processModule (name, options, scope, modifiers = {}) {
   if (typeof options === 'function') {
-    executeNow = options;
+    scope = options;
     options = undefined;
   }
 
@@ -114,11 +114,11 @@ function processModule (name, options, executeNow, modifiers = {}) {
   const prevModule = config.currentModule;
   config.currentModule = module;
 
-  if (typeof executeNow === 'function') {
+  if (typeof scope === 'function') {
     moduleStack.push(module);
 
     try {
-      const cbReturnValue = executeNow.call(module.testEnvironment, moduleFns);
+      const cbReturnValue = scope.call(module.testEnvironment, moduleFns);
       if (cbReturnValue && typeof cbReturnValue.then === 'function') {
         Logger.warn('Returning a promise from a module callback is not supported. ' +
           'Instead, use hooks for async behavior. ' +
@@ -137,10 +137,10 @@ function processModule (name, options, executeNow, modifiers = {}) {
 
 let focused = false; // indicates that the "only" filter was used
 
-export function module (name, options, executeNow) {
+export function module (name, options, scope) {
   const ignored = focused && !isParentModuleInQueue();
 
-  processModule(name, options, executeNow, { ignored });
+  processModule(name, options, scope, { ignored });
 }
 
 module.only = function (...args) {
@@ -159,18 +159,18 @@ module.only = function (...args) {
   processModule(...args);
 };
 
-module.skip = function (name, options, executeNow) {
+module.skip = function (name, options, scope) {
   if (focused) {
     return;
   }
 
-  processModule(name, options, executeNow, { skip: true });
+  processModule(name, options, scope, { skip: true });
 };
 
-module.todo = function (name, options, executeNow) {
+module.todo = function (name, options, scope) {
   if (focused) {
     return;
   }
 
-  processModule(name, options, executeNow, { todo: true });
+  processModule(name, options, scope, { todo: true });
 };
