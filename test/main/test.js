@@ -8,7 +8,7 @@ QUnit.module('test', function () {
     assert.true(true);
   });
 
-  (typeof document !== 'undefined' ? QUnit.module : QUnit.module.skip)('fixture management', function (hooks) {
+  QUnit.module.if('fixture management', typeof document !== 'undefined', function (hooks) {
     /* global document */
     var failure = false;
     var values = [
