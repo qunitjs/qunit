@@ -73,7 +73,7 @@
     <p class="post-meta">Categories: <a class="category" href="/api/QUnit/">Main methods</a>.</p>
     </header>
     <p class="version-details">
-            not yet released<span class="sep">.</span></p>
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.22.0">2.22.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.if( name, condition, callback )</code></p>
 
@@ -142,7 +142,7 @@
 
 <h3 id="legacy-idom">Legacy idom</h3>
 
-<p>Prior to QUnit 3.0, the following shortcuts were sometimes used. This may be replaced by <code class="language-plaintext highlighter-rouge">QUnit.test.if()</code>.</p>
+<p>Prior to QUnit 2.22, the following shortcuts were sometimes used. This may be replaced by <code class="language-plaintext highlighter-rouge">QUnit.test.if()</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span> <span class="p">?</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span> <span class="p">:</span> <span class="nx">QUnit</span><span class="p">.</span><span class="nx">skip</span><span class="p">)(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
