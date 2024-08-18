@@ -1,4 +1,11 @@
 
+2.22.0 / 2024-08-18
+==================
+
+### Added
+
+* Core: Add [`QUnit.test.if()`](https://qunitjs.com/api/QUnit/test.if/) and `QUnit.module.if()`. (Timo Tijhof) [#1772](https://github.com/qunitjs/qunit/pull/1772)
+
 2.21.1 / 2024-07-20
 ==================
 
