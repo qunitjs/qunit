@@ -99,7 +99,7 @@
 
 <h3 id="console">console</h3>
 
-<p>The <strong>console</strong> reporter logs a JSON object for each reporter event from <a href="./api/callbacks/QUnit.on.md"><code class="language-plaintext highlighter-rouge">QUnit.on</code></a>. Use this to explore or debug the Reporter API.</p>
+<p>The <strong>console</strong> reporter logs a JSON object for each reporter event from <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on</code></a>. Use this to explore or debug the Reporter API.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runStart {…}
 testStart {…}
@@ -142,20 +142,18 @@ runEnd {…}
 
 <p>By default, the <a href="/browser/">HTML Reporter</a> is automatically enabled in browser environments if a <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> element exists, and it remains disabled (“headless”) if such element doesn’t exist. You can override this to disable the HTML Reporter even if the element does exist.</p>
 
-<p>For example, you can share the same HTML file for both manual testing and CI test runs, and have the CI test run disable the HTML Reporter for improved performance.</p>
+<p>For example, this lets you share the same HTML file for manual testing, debugging, and CI runs; and yet disable the HTML Reporter in CI for improved performance.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Set preconfig before loading qunit.js.</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Declare as preconfig, before loading qunit.js</span>
 <span class="nx">qunit_config_reporters_html</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="nx">qunit_config_reporters_perf</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
-<span class="c1">// Or, disable at runtime (after qunit.js, but before the first test, i.e. runStart event).</span>
+<span class="c1">// Set at runtime, after loading qunit.js (but before QUnit.begin)</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">reporters</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">reporters</span><span class="p">.</span><span class="nx">perf</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 </code></pre></div></div>
 
 <p>Declaratively enable the TAP reporter in a browser environment:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Set preconfig before loading qunit.js.</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Declare preconfig, before loading qunit.js</span>
 <span class="nx">qunit_config_reporters_tap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 </code></pre></div></div>
 
