@@ -82,6 +82,8 @@ function isValidVersion (version) {
   return /^\d+\.\d+\.\d+(-alpha\.\d+)?$/.test(version);
 }
 
+const versionAnywhereRegPattern = '\\d+\\.\\d+\\.\\d+(-alpha\\.\\d+)?';
+
 // Turn invisible chars and non-ASCII chars into escape sequences.
 //
 // This is like `cat --show-nonprinting` and makes diffs easier to understand
@@ -106,6 +108,7 @@ module.exports = {
   downloadFile,
   cleanDir,
   isValidVersion,
+  versionAnywhereRegPattern,
   verboseNonPrintable,
   normalizeEOL
 };

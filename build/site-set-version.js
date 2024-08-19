@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { CommandError, isValidVersion } = require('./utils.js');
+const { CommandError, isValidVersion, versionAnywhereRegPattern } = require('./utils.js');
 
 const cdnLinks = [
 
@@ -29,7 +29,7 @@ try {
     console.log(`... updating ${file}`);
     for (let pattern of patterns) {
       const replacement = pattern.replace('VERSION', version);
-      pattern = pattern.replace('VERSION', '\\d+\\.\\d+\\.\\d+');
+      pattern = pattern.replace('VERSION', versionAnywhereRegPattern);
       const find = new RegExp(`\\b${pattern}\\b`, 'g');
       const content = fs.readFileSync(file, 'utf8').toString();
       fs.writeFileSync(
