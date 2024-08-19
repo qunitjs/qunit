@@ -52,6 +52,7 @@ async function buildRelease (version, cacheDir = null) {
     npm_config_cache: cacheDir,
     npm_config_update_notifier: 'false',
     PATH: process.env.PATH,
+    QUNIT_BUILD_RELEASE: '1',
     PUPPETEER_DOWNLOAD_PATH: path.join(cacheDir, 'puppeteer_download')
   };
   // Use sync for npm-ci to avoid concurrency bugs with shared cache
