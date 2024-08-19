@@ -24,11 +24,11 @@ QUnit releases are standalone and require no runtime dependencies for use in the
 <html>
 <meta charset="utf-8">
 <title>QUnit</title>
-<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.21.0.css">
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.22.0.css">
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
-  <script src="https://code.jquery.com/qunit/qunit-2.21.0.js"></script>
+  <script src="https://code.jquery.com/qunit/qunit-2.22.0.js"></script>
   <!-- <script src="your_app.test.js"></script> -->
 </body>
 </html>
