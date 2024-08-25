@@ -32,11 +32,10 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
   * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
-  * Change `#qunit-userAgent` to clip on one line until focussed. [d8c2a3ac18](https://github.com/qunitjs/qunit/commit/d8c2a3ac18b35a8d601fd7d863bdcc86ff45c9c8)
   * Change report time in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
   * Add `user-select: none;` to "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
   * Add `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
-  * Remove assertion count from toolbar display, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Remove assertion count from toolbar, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
 
 ### Fixed
 

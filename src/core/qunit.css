@@ -76,32 +76,8 @@ body {
 	color: #FFF;
 }
 
-#qunit-userAgent {
-	white-space: nowrap;
-	overflow: hidden;
-	display: flex;
-	gap: 7px;
-}
-.qunit-version-client {
-	overflow: hidden;
-	/* prioritize end of the string */
-	display: inline-flex;
-	justify-content: flex-end;
-}
-#qunit-userAgent:focus {
-	white-space: initial;
-	display: block;
-}
-#qunit-userAgent:focus .qunit-version-client {
-	display: inline;
-}
-@media (max-width: 600px) {
-	#qunit-userAgent {
-		cursor: pointer;
-	}
-	#qunit-userAgent:focus {
-		cursor: initial;
-	}
+#qunit-userAgent:after {
+	content: '; ' attr(data-useragent);
 }
 
 #qunit-banner {
