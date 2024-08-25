@@ -16,7 +16,7 @@ import { on } from './events.js';
 import onUncaughtException from './on-uncaught-exception.js';
 import diff from './diff.js';
 import version from './version.js';
-import { createStartFunction } from './start.js';
+import { start } from './start.js';
 
 config.currentModule = unnamedModule;
 config._pq = new ProcessingQueue();
@@ -54,6 +54,7 @@ const QUnit = {
 
   assert: Assert.prototype,
   module,
+  start,
   test,
 
   // alias other test flavors for easy access
@@ -61,6 +62,8 @@ const QUnit = {
   skip: test.skip,
   only: test.only
 };
-QUnit.start = createStartFunction(QUnit);
+
+// Inject the exported QUnit API for use by reporters in start()
+config._QUnit = QUnit;
 
 export default QUnit;

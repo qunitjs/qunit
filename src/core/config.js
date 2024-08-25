@@ -132,7 +132,7 @@ const config = {
   //   These are discouraged per the notice at https://qunitjs.com/api/callbacks/QUnit.done/.
   //   https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event
   //
-  currentModule: null, // initial unnamed module for "global tests" assigned in core.js.
+  currentModule: null, // initial unnamed module for "global tests", assigned in core.js.
   blocking: true,
   started: 0,
   callbacks: {},
@@ -144,6 +144,7 @@ const config = {
   _moduleStack: [],
   _globalHooks: {},
   _pq: null, // ProcessingQueue singleton, assigned in core.js
+  _QUnit: null, // Self-reference to the exported QUnit API, for start.js
   _runStarted: false,
   _event_listeners: Object.create(null),
   _event_memory: {}
