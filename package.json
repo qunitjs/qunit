@@ -37,6 +37,21 @@
     "LICENSE.txt"
   ],
   "main": "qunit/qunit.js",
+  "exports": {
+    ".": {
+      "node": {
+        "import": "./qunit/esm/qunit-wrapper-nodejs-module.js",
+        "default": "./qunit/qunit.js"
+      },
+      "module": {
+        "import": "./qunit/esm/qunit.module.js",
+        "default": "./qunit/qunit-wrapper-bundler-require.js"
+      },
+      "import": "./qunit/esm/qunit.module.js",
+      "default": "./qunit/qunit.js"
+    },
+    "./qunit/qunit.css": "./qunit/qunit.css"
+  },
   "engines": {
     "node": ">=18"
   },
@@ -82,8 +97,8 @@
     "tap-min": "^3.0.0"
   },
   "scripts": {
-    "build": "rollup -c && grunt copy:src-css",
-    "build-coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy:src-css",
+    "build": "rollup -c && grunt copy",
+    "build-coverage": "rollup -c --environment BUILD_TARGET:coverage && grunt copy",
     "build-dev": "node build/dev.js",
     "benchmark": "npm install --silent --no-audit --prefix test/benchmark/ && node test/benchmark/micro.js",
     "lint": "eslint --cache .",
