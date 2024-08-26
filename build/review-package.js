@@ -44,8 +44,13 @@ const ReleaseAssets = {
       fs.writeFileSync(tempPrevPath, prevContent);
 
       const currentPath = path.join(__dirname, '..', file);
-      process.stdout.write(getDiff(tempPrevPath, currentPath));
-      await confirm(`Accept ${file}?`);
+      const diff = getDiff(tempPrevPath, currentPath, { allowUnchanged: true });
+      if (diff === null) {
+        console.log(`${file} was unchanged...`);
+      } else {
+        process.stdout.write(diff);
+        await confirm(`Accept ${file}?`);
+      }
     }
     {
       const file = 'qunit.js';

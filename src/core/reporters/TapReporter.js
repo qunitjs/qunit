@@ -1,7 +1,7 @@
-import kleur from 'kleur';
-import { errorString } from '../utilities.js';
 import { console } from '../globals.js';
 import { annotateStacktrace } from '../stacktrace.js';
+import { errorString } from '../utilities.js';
+import kleur from 'kleur';
 
 /**
  * Format a given value into YAML.

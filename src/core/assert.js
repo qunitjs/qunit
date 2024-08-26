@@ -1,6 +1,6 @@
+import config from './config.js';
 import dump from './dump.js';
 import equiv from './equiv.js';
-import config from './config.js';
 import { objectType, objectValues, objectValuesSubset, errorString } from './utilities.js';
 import { sourceFromStacktrace } from './stacktrace.js';
 import { clearTimeout } from './globals.js';

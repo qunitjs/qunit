@@ -42,6 +42,9 @@ function getDiff (from, to, options = {}) {
     // Expected, `diff` command yields non-zero exit status if files differ
     return e.stdout;
   }
+  if (options.allowUnchanged) {
+    return null;
+  }
   throw new Error(`Unable to diff between ${from} and ${to}`);
 }
 

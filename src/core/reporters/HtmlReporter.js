@@ -1,8 +1,8 @@
-import { extend, errorString, escapeText } from '../utilities.js';
 import diff from '../diff.js';
 import dump from '../dump.js';
 import { prioritySymbol } from '../events.js';
 import { window, document, navigator, StringMap } from '../globals.js';
+import { extend, errorString, escapeText } from '../utilities.js';
 import version from '../version.js';
 import fuzzysort from 'fuzzysort';
 

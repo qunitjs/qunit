@@ -1,11 +1,11 @@
 import config from './config.js';
-import { generateHash, performance } from './utilities.js';
 import { runLoggingCallbacks } from './callbacks.js';
-import Promise from './promise.js';
-import { globalSuiteReport } from './module.js';
-import onUncaughtException from './on-uncaught-exception.js';
 import { emit } from './events.js';
 import { setTimeout } from './globals.js';
+import { globalSuiteReport } from './module.js';
+import onUncaughtException from './on-uncaught-exception.js';
+import Promise from './promise.js';
+import { generateHash, performance } from './utilities.js';
 
 /**
  * Creates a seeded "sample" generator which is used for randomizing tests.
