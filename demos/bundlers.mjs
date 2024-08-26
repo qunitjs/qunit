@@ -52,8 +52,8 @@ QUnit.test.each('test in Node.js [indirect]', indirectFiles, function (assert, f
     { cwd: DIR, env: { qunit_config_reporters_tap: 'true' }, encoding: 'utf8' }
   );
   const expected = `
-1..4
-# pass 4
+1..5
+# pass 5
 # skip 0
 # todo 0
 # fail 0`.trim();
@@ -76,25 +76,29 @@ Testing http://localhost:8000/tmp/test-import-default.umd.html .OK
 >> passed test "import-default"
 Testing http://localhost:8000/tmp/test-import-default.webpack.html .OK
 >> passed test "import-default"
-Testing http://localhost:8000/tmp/test-import-indirect.es.html ....OK
+Testing http://localhost:8000/tmp/test-import-indirect.es.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "import-indirect"
-Testing http://localhost:8000/tmp/test-import-indirect.iife.html ....OK
+Testing http://localhost:8000/tmp/test-import-indirect.iife.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "import-indirect"
-Testing http://localhost:8000/tmp/test-import-indirect.umd.html ....OK
+Testing http://localhost:8000/tmp/test-import-indirect.umd.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "import-indirect"
-Testing http://localhost:8000/tmp/test-import-indirect.webpack.html ....OK
+Testing http://localhost:8000/tmp/test-import-indirect.webpack.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "import-indirect"
 Testing http://localhost:8000/tmp/test-import-named.es.html .OK
 >> passed test "import-named"
@@ -112,27 +116,39 @@ Testing http://localhost:8000/tmp/test-require-default.umd.html .OK
 >> passed test "require-default"
 Testing http://localhost:8000/tmp/test-require-default.webpack.html .OK
 >> passed test "require-default"
-Testing http://localhost:8000/tmp/test-require-indirect.es.html ....OK
+Testing http://localhost:8000/tmp/test-require-indirect.es.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "require-indirect"
-Testing http://localhost:8000/tmp/test-require-indirect.iife.html ....OK
+Testing http://localhost:8000/tmp/test-require-indirect.iife.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "require-indirect"
-Testing http://localhost:8000/tmp/test-require-indirect.umd.html ....OK
+Testing http://localhost:8000/tmp/test-require-indirect.umd.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "require-indirect"
-Testing http://localhost:8000/tmp/test-require-indirect.webpack.html ....OK
+Testing http://localhost:8000/tmp/test-require-indirect.webpack.html .....OK
 >> passed test "import-default"
 >> passed test "import-named"
 >> passed test "require-default"
+>> passed test "require-sub"
 >> passed test "require-indirect"
->> 44 tests completed in 42ms, with 0 failed, 0 skipped, and 0 todo.
+Testing http://localhost:8000/tmp/test-require-sub.es.html .OK
+>> passed test "require-sub"
+Testing http://localhost:8000/tmp/test-require-sub.iife.html .OK
+>> passed test "require-sub"
+Testing http://localhost:8000/tmp/test-require-sub.umd.html .OK
+>> passed test "require-sub"
+Testing http://localhost:8000/tmp/test-require-sub.webpack.html .OK
+>> passed test "require-sub"
+>> 56 tests completed in 42ms, with 0 failed, 0 skipped, and 0 todo.
 
 Done.`;
 

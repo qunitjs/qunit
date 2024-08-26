@@ -15,6 +15,7 @@ const inputs = [
   `${dirname}/test/import-named.js`,
   `${dirname}/test/import-indirect.js`,
   `${dirname}/test/require-default.cjs`,
+  `${dirname}/test/require-sub.cjs`,
   `${dirname}/test/require-indirect.cjs`
 ];
 

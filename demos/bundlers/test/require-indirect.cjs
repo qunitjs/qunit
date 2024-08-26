@@ -4,6 +4,7 @@ const QUnit = require('qunit');
 require('./import-default.js');
 require('./import-named.js');
 require('./require-default.cjs');
+require('./require-sub.cjs');
 
 QUnit.test('require-indirect', function (assert) {
   assert.strictEqual(TEST_OBJECTS.import_default, QUnit, 'identity');
@@ -17,4 +18,8 @@ QUnit.test('require-indirect', function (assert) {
   assert.strictEqual(TEST_OBJECTS.require_default, QUnit, 'identity');
   assert.strictEqual(QUnit.hello_require_default, 'require-default', 'extend QUnit');
   assert.strictEqual(assert.hello_require_default, 'require-default', 'extend assert');
+
+  assert.strictEqual(TEST_OBJECTS.require_sub, QUnit, 'identity');
+  assert.strictEqual(QUnit.hello_require_sub, 'require-sub', 'extend QUnit');
+  assert.strictEqual(assert.hello_require_sub, 'require-sub', 'extend assert');
 });
