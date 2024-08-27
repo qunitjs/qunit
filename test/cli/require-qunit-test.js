@@ -18,20 +18,20 @@ QUnit.module('requireQUnit', function (hooks) {
     const requireQUnit = require('../../src/cli/require-qunit');
     process.chdir(path.join(__dirname, './fixtures/require-from-cwd'));
 
-    assert.propEqual(requireQUnit(), { version: 'from-cwd' });
+    assert.strictEqual(requireQUnit().version, 'from-cwd');
   });
 
   // For development mode invoked locally,
   // or for global install without local dependency installed.
   QUnit.test('finds relative self', function (assert) {
-    const globalQUnit = {
-      version: 'from-global'
+    const fakeQUnit = {
+      version: 'from-fake'
     };
     const requireQUnit = proxyquire('../../src/cli/require-qunit', {
       qunit: null,
-      '../../qunit/qunit': globalQUnit
+      '../../qunit/qunit': fakeQUnit
     });
-    assert.strictEqual(requireQUnit(resolveStub), globalQUnit);
+    assert.strictEqual(requireQUnit(resolveStub).version, 'from-fake');
   });
 
   QUnit.test('throws error if none of the modules are found', function (assert) {
