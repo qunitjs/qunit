@@ -57,7 +57,7 @@ QUnit.module('requireQUnit', function (hooks) {
     };
     const requireQUnit = proxyquire('../../src/cli/require-qunit.js', {
       qunit: null,
-      '../../qunit/qunit': fakeQUnit
+      '../../qunit/qunit.js': fakeQUnit
     });
     assert.strictEqual(requireQUnit(resolveStub).version, 'from-fake');
   });
@@ -65,7 +65,7 @@ QUnit.module('requireQUnit', function (hooks) {
   QUnit.test('throw if none found', function (assert) {
     const requireQUnit = proxyquire('../../src/cli/require-qunit.js', {
       qunit: null,
-      '../../qunit/qunit': null
+      '../../qunit/qunit.js': null
     });
 
     assert.throws(requireQUnit, /Cannot find module/);
