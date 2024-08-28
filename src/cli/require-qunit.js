@@ -38,8 +38,8 @@ module.exports = function requireQUnit (resolve = require.resolve) {
       //   If you get "Error: Cannot find module ../../qunit/qunit", it probably
       //   means you haven't yet run "npm run build".
       //
-      delete require.cache[resolve('../../qunit/qunit')];
-      return require('../../qunit/qunit');
+      delete require.cache[resolve('../../qunit/qunit.js')];
+      return require('../../qunit/qunit.js');
     }
 
     throw e;
