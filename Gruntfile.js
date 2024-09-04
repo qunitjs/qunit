@@ -28,6 +28,18 @@ module.exports = function (grunt) {
       'src-css': {
         src: 'src/core/qunit.css',
         dest: 'qunit/qunit.css'
+      },
+      'src-export-cjs-wrappers': {
+        src: 'src/core/qunit-wrapper-bundler-require.js',
+        expand: true,
+        flatten: true,
+        dest: 'qunit/'
+      },
+      'src-export-esm-wrappers': {
+        src: 'src/core/qunit-wrapper-nodejs-module.js',
+        expand: true,
+        flatten: true,
+        dest: 'qunit/esm/'
       }
     },
     search: {

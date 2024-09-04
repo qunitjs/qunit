@@ -1,5 +1,8 @@
 'use strict';
 
+const path = require('path');
+const { Module } = require('module');
+
 /**
  * Depending on the exact usage, QUnit could be in one of several places, this
  * function handles finding it.
@@ -19,12 +22,30 @@ module.exports = function requireQUnit (resolve = require.resolve) {
     //   If the user (accidentally) ran the CLI command from their global
     //   install, then we prefer to stil use the qunit library file from the
     //   current project's dependency.
-    const localQUnitPath = resolve('qunit', {
+    //
+    // NOTE: We can't use require.resolve() because, despite it taking a 'paths'
+    // option, the resolution algorithm [1] is poisoned by current filename (i.e.
+    // this src/cli/require-qunit.js file). The documentation doesn't say it,
+    // but in practice the "paths" option only overrides how step 6 (LOAD_NODE_MODULES)
+    // traverses directories. It does not influence step 5 (LOAD_PACKAGE_SELF) which
+    // looks explicilty relative to the current file (regardless of `process.cwd`,
+    // and regardless of `paths` passed to require.resolve). This wasn't an issue
+    // until QUnit 3.0 because LOAD_PACKAGE_SELF only looks for cases where
+    // package.json uses "exports", which QUnit 3.0 adopted for ESM support.
+    //
+    // If this uses `requires.resolve(, paths:[cwd])` instead of
+    // `Module.createRequire(cwd).resolve()`, then this would always return
+    // the 'qunit' copy that this /src/cli/require-qunit.js file came from,
+    // regardless of the process.cwd(), which defeats the purpose of looking
+    // relative to process.cwd().
+    //
+    // This is covered by /test/cli/require-qunit-test.js
+    //
+    // [1]: https://nodejs.org/docs/latest-v18.x/api/modules.html#all-together
+    const localQUnitPath = Module.createRequire(
+      path.join(process.cwd(), 'fake.js')
+    ).resolve('qunit');
 
-      // Support: Node 10. Explicitly check "node_modules" to avoid a bug.
-      // Fixed in Node 12+. See https://github.com/nodejs/node/issues/35367.
-      paths: [process.cwd() + '/node_modules', process.cwd()]
-    });
     delete require.cache[localQUnitPath];
     return require(localQUnitPath);
   } catch (e) {
