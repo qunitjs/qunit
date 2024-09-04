@@ -2,13 +2,17 @@
 
 const cp = require('child_process');
 const fs = require('fs');
-const https = require('https');
+const stream = require('stream');
 
-// Skip distracting trace for simple command-line mistakes.
-// Implement Symbol.for('nodejs.util.inspect.custom'), instead of extending Error,
-// as there appears to be no way to prevent console.error/util.inspect/util.format
-// from appending a stacktrace without causing other unwanted output.
-// https://nodejs.org/api/util.html#utilinspectcustom
+/**
+ * Skip distracting trace for simple command-line mistakes.
+ *
+ * Implement Symbol.for('nodejs.util.inspect.custom'), instead of extending Error,
+ * as there appears to be no way to prevent console.error/util.inspect/util.format
+ * from appending a stacktrace without causing other unwanted output.
+ *
+ * @see https://nodejs.org/api/util.html#utilinspectcustom
+ */
 class CommandError {
   constructor (message) {
     this.message = message;
@@ -51,28 +55,18 @@ function getDiff (from, to, options = {}) {
 }
 
 async function download (url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, async resp => {
-      try {
-        const chunks = [];
-        for await (const chunk of resp) {
-          chunks.push(Buffer.from(chunk));
-        }
-        resolve(Buffer.concat(chunks).toString('utf8'));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
+  const resp = await fetch(url);
+  return await resp.text();
 }
 
 async function downloadFile (url, dest) {
   const fileStr = fs.createWriteStream(dest);
-  return new Promise((resolve, reject) => {
-    https.get(url, resp => {
-      resp.pipe(fileStr);
-      fileStr.on('finish', () => fileStr.close(resolve));
-    }).on('error', err => reject(err));
+
+  const resp = await fetch(url);
+  const respStr = stream.Readable.fromWeb(resp.body);
+  respStr.pipe(fileStr);
+  return new Promise((resolve) => {
+    fileStr.on('finish', () => fileStr.close(resolve));
   });
 }
 
