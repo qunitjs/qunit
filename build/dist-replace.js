@@ -5,6 +5,7 @@
 // If a date or timestamp is used, then honour SOURCE_DATE_EPOCH
 // and update RELEASE.md as needed.
 // <https://reproducible-builds.org/docs/source-date-epoch/>.
+'use strict';
 
 let distVersion = require('../package.json').version;
 

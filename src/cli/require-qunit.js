@@ -1,5 +1,9 @@
-// Depending on the exact usage, QUnit could be in one of several places, this
-// function handles finding it.
+'use strict';
+
+/**
+ * Depending on the exact usage, QUnit could be in one of several places, this
+ * function handles finding it.
+ */
 module.exports = function requireQUnit (resolve = require.resolve) {
   try {
     // For:

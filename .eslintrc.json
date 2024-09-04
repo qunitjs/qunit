@@ -81,7 +81,7 @@
     {
       "files": [
         "bin/**",
-        "build/**",
+        "build/**/*.js",
         "src/cli/**",
         "Gruntfile.js",
         "rollup.config.js"
@@ -99,6 +99,7 @@
         "node": true
       },
       "rules": {
+        "strict": "error",
         "compat/compat": "off",
         "no-console": "off",
         "no-process-exit": "off",

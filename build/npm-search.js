@@ -1,27 +1,20 @@
+'use strict';
+
+const NPM_REGISTRY_URL = 'https://registry.npmjs.org/';
+
 /**
- * npm-search.js is based on npm-keyword v6.1.0 by @sindresorhus,
+ * This is based on npm-keyword v6.1.0 by @sindresorhus,
  * but simplified to not have 32 needless dependencies.
  *
  * - <https://github.com/sindresorhus/npm-keyword/tree/v6.1.0>
  * - <https://snyk.io/test/npm/npm-keyword/6.1.0?tab=dependencies>
+ *
+ * @param {string} keyword
+ * @return {Object[]} List of package objects
  */
-'use strict';
-const https = require('https');
-const registryUrl = 'https://registry.npmjs.org/';
-
-function fetch (url) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, (resp) => {
-      let data = '';
-      resp.on('data', (chunk) => {
-        data += chunk;
-      });
-      resp.on('end', () => {
-        resolve(data);
-      });
-    });
-    req.on('error', reject);
-  });
+async function keyword (keyword) {
+  const { objects } = await search('keywords:' + keyword, { size: 250 });
+  return objects.map(element => element.package);
 }
 
 async function search (phrase, options) {
@@ -32,17 +25,9 @@ async function search (phrase, options) {
   }
 
   phrase = encodeURIComponent(phrase).replace('%2C', '+');
-  const url = `${registryUrl}-/v1/search?text=${phrase}&size=${options.size}`;
-  return JSON.parse(await fetch(url));
-}
-
-/**
- * @param {string} keyword
- * @return {Object[]} List of package objects
- */
-async function keyword (keyword) {
-  const { objects } = await search('keywords:' + keyword, { size: 250 });
-  return objects.map(element => element.package);
+  const url = `${NPM_REGISTRY_URL}-/v1/search?text=${phrase}&size=${options.size}`;
+  const resp = await fetch(url);
+  return await resp.json();
 }
 
 module.exports = { search, keyword };

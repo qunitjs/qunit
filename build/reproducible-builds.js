@@ -4,6 +4,7 @@
 // * Node.js 18+, npm 10+
 // * Git 2.11+
 // * tar, shasum, gunzip (preinstalled on Linux/macOS)
+'use strict';
 
 const cp = require('child_process');
 const fs = require('fs');

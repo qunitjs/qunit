@@ -7,6 +7,7 @@
 // See also RELEASE.md.
 //
 // Inspired by <https://github.com/jquery/jquery-release>.
+'use strict';
 
 const fs = require('fs');
 const path = require('path');

@@ -1,8 +1,8 @@
 // Helper for reviewing build artefacts against a past release.
 //
 // See also RELEASE.md.
-
 /* eslint-env node */
+'use strict';
 
 const cp = require('child_process');
 const fs = require('fs');
