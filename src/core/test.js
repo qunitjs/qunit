@@ -929,10 +929,56 @@ function makeEachTestName (testName, argument) {
   return `${testName} [${argument}]`;
 }
 
+// Characters to avoid in test names especially CLI/AP output:
+// * x00-1F: e.g. NULL, backspace (\b), line breaks (\r\n), ESC.
+// * x74: DEL.
+// * xA0: non-breaking space.
+//
+// See https://en.wikipedia.org/wiki/ASCII#Character_order
+//
+// eslint-disable-next-line no-control-regex
+const rNonObviousStr = /[\x00-\x1F\x7F\xA0]/;
 function runEach (data, eachFn) {
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i++) {
-      eachFn(data[i], i);
+      const value = data[i];
+
+      // Create automatic labels for primitive data in arrays passed to test.each().
+      // We want to avoid the default "example [0], example [1]" where possible since
+      // these are not self-explanatory in results, and are also tedious to locate
+      // the source of since the numerical key of an array isn't literally in the
+      // code (you have to count).
+      //
+      // Design requirements:
+      // * Unique. Each label must be unique and correspond 1:1 with a data value.
+      //   This way each test name will hash to a unique testId with Rerun link,
+      //   without having to rely on Test class enforcing uniqueness with invisible
+      //   space hack.
+      // * Unambigious. While technical uniqueness is a hard requirement above,
+      //   we also want the labels to be obvious and unambiguous to humans.
+      //   For example, abbrebating "foobar" and "foobaz" to "f" and "fo" is
+      //   technically unique, but ambigious to humans which one is which.
+      // * Short and readable. Where possible we omit the array index numbers
+      //   so that in most cases, the value is simply shown as-is.
+      //   We prefer "example [foo], example [bar]"
+      //   over "example [0: foo], example [2: bar]".
+      //   This also has the benefit of being stable and robust against e.g.
+      //   re-ordering data or adding new items during development, without
+      //   invalidating a previous filter or rerun link immediately.
+      const valueType = typeof value;
+      let testKey = i;
+      if (valueType === 'string' && value.length <= 40 && !rNonObviousStr.test(value) && !/\s*\d+: /.test(value)) {
+        testKey = value;
+      } else if (valueType === 'string' || valueType === 'number' || valueType === 'boolean' || valueType === 'undefined' || value === null) {
+        const valueForName = String(value);
+        if (!rNonObviousStr.test(valueForName)) {
+          testKey = i + ': ' + (valueForName.length <= 30
+            ? valueForName
+            : valueForName.slice(0, 29) + '…'
+          );
+        }
+      }
+      eachFn(value, testKey);
     }
   } else if (typeof data === 'object' && data !== null) {
     for (let key in data) {

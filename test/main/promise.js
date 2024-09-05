@@ -247,21 +247,21 @@ QUnit.module('Support for Promise', function () {
     }
   });
 
-  QUnit.test.each('fulfilled Promise', [1], function (assert, _data) {
+  QUnit.test.each('fulfilled Promise', ['x'], function (assert, _data) {
     assert.expect(1);
 
     // Adds 1 assertion
     return createMockPromise(assert);
   });
 
-  QUnit.test.each('rejected Promise with Error', [1], function (assert, _data) {
+  QUnit.test.each('rejected Promise with Error', ['x'], function (assert, _data) {
     assert.expect(2);
 
     this.pushFailure = assert.test.pushFailure;
     assert.test.pushFailure = function (message) {
       assert.strictEqual(
         message,
-        'Promise rejected during "rejected Promise with Error [0]": this is an error'
+        'Promise rejected during "rejected Promise with Error [x]": this is an error'
       );
     };
 

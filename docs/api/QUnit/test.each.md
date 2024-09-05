@@ -38,6 +38,11 @@ Each test case is passed one value of your dataset.
 
 The [`only`](./test.only.md), [`todo`](./test.todo.md), [`skip`](./test.skip.md), and [`if`](./test.if.md) variants are also available, as `QUnit.test.only.each`, `QUnit.test.todo.each`, `QUnit.test.skip.each`, and `QUnit.test.if.each` respectively.
 
+## Changelog
+
+| UNRELEASED | Add [automatic labels](https://github.com/qunitjs/qunit/issues/1733) for primitive values in arrays.
+| [QUnit 2.16.0](https://github.com/qunitjs/qunit/releases/tag/2.16.0) | Introduce `QUnit.test.each()`.
+
 ## Examples
 
 ### Basic data provider
@@ -49,6 +54,14 @@ function isEven (x) {
 
 QUnit.test.each('isEven()', [2, 4, 6], (assert, data) => {
   assert.true(isEven(data), `${data} is even`);
+});
+
+QUnit.test.each('truthy', ['a', 42, true, Infinity], (assert, data) => {
+  assert.true(!!data);
+});
+
+QUnit.test.each('falsy', [false, null], (assert, data) => {
+  assert.false(!!data);
 });
 ```
 
