@@ -11,7 +11,7 @@ QUnit.module('test.each', function () {
   QUnit.test.each('test.each fails with non-array input', ['something', 1, undefined, null], function (assert, value) {
     assert.throws(function () {
       QUnit.test.each('test.each 1D', value, function () { });
-    });
+    }, TypeError);
   });
 
   // Promise support for test.each() is tested in test/main/promise.js.

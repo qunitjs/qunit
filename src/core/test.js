@@ -38,7 +38,7 @@ export default function Test (settings) {
   // - 2: QUnit.test
   // - 3: user file
   //
-  // This needs is customised by test.each()
+  // A notable exception is test.each(), which overrides this.
   this.stackOffset = 3;
   extend(this, settings);
 
@@ -939,7 +939,7 @@ function runEach (data, eachFn) {
       eachFn(data[key], key);
     }
   } else {
-    throw new Error(
+    throw new TypeError(
       `test.each() expects an array or object as input, but
 found ${typeof data} instead.`
     );
