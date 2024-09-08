@@ -135,6 +135,21 @@
 
 <p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, and <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">if</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.if.each</code> respectively.</p>
 
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>UNRELEASED</td>
+      <td>Add <a href="https://github.com/qunitjs/qunit/issues/1733">automatic labels</a> for primitive values in arrays.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.16.0">QUnit 2.16.0</a></td>
+      <td>Introduce <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="examples">Examples</h2>
 
 <h3 id="basic-data-provider">Basic data provider</h3>
@@ -145,6 +160,14 @@
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">isEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">truthy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">Infinity</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="o">!!</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">falsy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="kc">false</span><span class="p">,</span> <span class="kc">null</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="o">!!</span><span class="nx">data</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -249,7 +272,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#basic-data-provider">Basic data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#basic-data-provider">Basic data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
 </aside>
 
 </div>
