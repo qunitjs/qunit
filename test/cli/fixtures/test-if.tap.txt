@@ -5,10 +5,10 @@ TAP version 13
 ok 1 # SKIP skip me
 ok 2 keep me
 ok 3 regular
-ok 4 # SKIP skip dataset [0]
-ok 5 # SKIP skip dataset [1]
-ok 6 keep dataset [0]
-ok 7 keep dataset [1]
+ok 4 # SKIP skip dataset [a]
+ok 5 # SKIP skip dataset [b]
+ok 6 keep dataset [a]
+ok 7 keep dataset [b]
 ok 8 # SKIP skip group > skipper
 ok 9 keep group > keeper
 1..9

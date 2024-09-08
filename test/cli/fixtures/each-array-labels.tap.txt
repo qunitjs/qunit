@@ -1,0 +1,36 @@
+# command: ["qunit", "each-array-labels.js"]
+
+TAP version 13
+ok 1 array of arrays [0]
+ok 2 array of arrays [1]
+ok 3 array of simple strings [foo]
+ok 4 array of simple strings [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+ok 5 array of simple strings [$]
+ok 6 array of simple strings [http://example.org]
+ok 7 array of simple strings [ ]
+ok 8 array of simple strings []
+ok 9 array of mixed [0: undefined]
+ok 10 array of mixed [1: null]
+ok 11 array of mixed [2: false]
+ok 12 array of mixed [3: true]
+ok 13 array of mixed [4: 0]
+ok 14 array of mixed [5: 1]
+ok 15 array of mixed [6: -10]
+ok 16 array of mixed [7: 3.3333333333333335]
+ok 17 array of mixed [8: 1e+43]
+ok 18 array of mixed [9: Infinity]
+ok 19 array of mixed [10: NaN]
+ok 20 array of mixed [11]
+ok 21 array of mixed [12]
+ok 22 array of mixed [13: 999: example]
+ok 23 array of mixed [simple string]
+ok 24 array of mixed [15]
+ok 25 array of mixed [16]
+ok 26 array of mixed [17: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy…]
+ok 27 keyed objects [caseFoo]
+ok 28 keyed objects [caseBar]
+1..28
+# pass 28
+# skip 0
+# todo 0
+# fail 0
