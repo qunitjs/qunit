@@ -13,3 +13,4 @@
 /qunit/
 /temp/
 /.eslintcache
+/package-lock.json

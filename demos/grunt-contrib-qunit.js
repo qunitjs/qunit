@@ -33,7 +33,7 @@ QUnit.test.each('failing tests', {
 >>     at file:fail-uncaught.html:16`]
 }, (assert, [command, expected]) => {
   try {
-    // This will use env CI, CHROMIUM_FLAGS, and PUPPETEER_DOWNLOAD_PATH
+    // This will use env CI, CHROMIUM_FLAGS, and PUPPETEER_CACHE_DIR
     const ret = cp.execSync('node_modules/.bin/grunt qunit:' + command, {
       cwd: DIR,
       encoding: 'utf8'

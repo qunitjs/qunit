@@ -51,7 +51,7 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env:
-      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+      PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
       FORCE_COLOR: "1"
     steps:
       - uses: actions/checkout@v4
@@ -62,14 +62,14 @@ jobs:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
 
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
-      - run: npm ci
+      - run: npm install
 
       - name: Tests
         run: ${{ matrix.script }}
@@ -89,7 +89,7 @@ jobs:
     name: SpiderMonkey 68
     runs-on: ubuntu-20.04
     env:
-      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+      PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -97,7 +97,7 @@ jobs:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -105,7 +105,7 @@ jobs:
       - name: Install mozjs
         run: |
           sudo apt-fast install -y libmozjs-68-dev
-      - run: npm ci
+      - run: npm install
       - run: npm run build
       - name: Test mozjs.js
         run: js68 test/mozjs.js
@@ -127,7 +127,7 @@ jobs:
     name: SpiderMonkey 102
     runs-on: ubuntu-24.04
     env:
-      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+      PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -135,7 +135,7 @@ jobs:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -143,7 +143,7 @@ jobs:
       - name: Install mozjs
         run: |
           sudo apt-get install -y libmozjs-102-dev
-      - run: npm ci
+      - run: npm install
       - run: npm run build
       - name: Test mozjs.js
         run: js102 test/mozjs.js
@@ -165,7 +165,7 @@ jobs:
     name: SpiderMonkey 115
     runs-on: ubuntu-24.04
     env:
-      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
+      PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -173,7 +173,7 @@ jobs:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -181,7 +181,7 @@ jobs:
       - name: Install mozjs
         run: |
           sudo apt-get install -y libmozjs-115-dev
-      - run: npm ci
+      - run: npm install
       - run: npm run build
       - name: Test mozjs.js
         run: js115 test/mozjs.js

@@ -152,10 +152,14 @@ Testing http://localhost:8000/tmp/test-require-sub.webpack.html .OK
 
 Done.`;
 
-  const actual = cp.execSync('node_modules/.bin/grunt test', {
-    cwd: DIR,
-    env: { PATH: process.env.PATH },
-    encoding: 'utf8'
-  });
-  assert.equal(normalize(actual).trim(), expected);
+  try {
+    // This will use env CI, CHROMIUM_FLAGS, and PUPPETEER_CACHE_DIR
+    const actual = cp.execSync('node_modules/.bin/grunt test', {
+      cwd: DIR,
+      encoding: 'utf8'
+    });
+    assert.equal(normalize(actual).trim(), expected);
+  } catch (e) {
+    assert.equal(e.stdout || e.stderr, '', 'error');
+  }
 });
