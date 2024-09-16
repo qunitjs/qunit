@@ -156,6 +156,12 @@ function readFlatPreconfigString (val, dest) {
   }
 }
 
+function readFlatPreconfigStringOrBoolean (val, dest) {
+  if (typeof val === 'boolean' || (typeof val === 'string' && val !== '')) {
+    config[dest] = val;
+  }
+}
+
 function readFlatPreconfigStringArray (val, dest) {
   if (typeof val === 'string' && val !== '') {
     config[dest] = [val];
@@ -178,7 +184,7 @@ function readFlatPreconfig (obj) {
   readFlatPreconfigBoolean(obj.qunit_config_reorder, 'reorder');
   readFlatPreconfigBoolean(obj.qunit_config_requireexpects, 'requireExpects');
   readFlatPreconfigBoolean(obj.qunit_config_scrolltop, 'scrolltop');
-  readFlatPreconfigString(obj.qunit_config_seed, 'seed');
+  readFlatPreconfigStringOrBoolean(obj.qunit_config_seed, 'seed');
   readFlatPreconfigStringArray(obj.qunit_config_testid, 'testId');
   readFlatPreconfigNumber(obj.qunit_config_testtimeout, 'testTimeout');
 }
@@ -200,4 +206,10 @@ if (preConfig) {
 // Push a loose unnamed module to the modules collection
 config.modules.push(config.currentModule);
 
+if (config.seed === 'true' || config.seed === true) {
+  // Generate a random seed
+  // Length of `Math.random()` fraction, in base 36, may vary from 6-14.
+  // Pad and take slice to a consistent 10-digit value.
+  config.seed = (Math.random().toString(36) + '0000000000').slice(2, 12);
+}
 export default config;

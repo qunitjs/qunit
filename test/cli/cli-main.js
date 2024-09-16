@@ -31,7 +31,8 @@ QUnit.module('CLI Main', () => {
         qunit_config_testtimeout: '7'
       }
     });
-    assert.equal(execution.snapshot, `TAP version 13
+    assert.equal(execution.snapshot, `Running tests with seed: dummyfirstyes
+TAP version 13
 ok 1 dummy
 not ok 2 slow
   ---
@@ -365,6 +366,38 @@ not ok 1 global failure
 # fail 1
 
 # exit code: 1`);
+  });
+
+  QUnit.test('--seed=true generates new random seed', async assert => {
+    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/'];
+    const execution = await execute(command);
+
+    const actualHarness = execution.snapshot
+      .replace(/^(Running tests with seed: )([a-z0-9]{10,20})/g, (_m, m1) => {
+        return m1 + '0000000000';
+      })
+      .split('\n')
+      .filter(line => !line.startsWith('ok '))
+      .join('\n');
+
+    const actualResults = execution.snapshot
+      .replace(/^ok \d/gm, 'ok 0')
+      .split('\n')
+      .filter(line => line.startsWith('ok '))
+      .sort()
+      .join('\n');
+
+    assert.equal(actualHarness, `Running tests with seed: 0000000000
+TAP version 13
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0`);
+
+    assert.equal(actualResults, `ok 0 First > 1
+ok 0 Second > 1
+ok 0 Single > has a test`);
   });
 
   QUnit.test('--require loads unknown module', async assert => {

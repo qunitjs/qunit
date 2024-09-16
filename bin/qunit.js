@@ -31,8 +31,8 @@ program
     'reporters will be displayed')
   .option('--require <module>', 'specify a module or script to include before running ' +
     'any tests.', collect, [])
-  .option('--seed [value]', 'specify a seed to re-order your tests; ' +
-    'if specified without a value, a seed will be generated')
+  .option('--seed <value>', 'specify a seed to re-order your tests; ' +
+    'set to "true" to generate a new seed')
   .option('-w, --watch', 'watch files for changes and re-run the test suite')
   .parse(process.argv);
 

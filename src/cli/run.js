@@ -55,12 +55,15 @@ async function run (args, options) {
 
   const seed = options.seed;
   if (seed) {
-    if (seed === true) {
-      QUnit.config.seed = Math.random().toString(36).slice(2);
+    if (seed === 'true' || seed === true) {
+      // NOTE: QUnit 3 will set preconfig qunit_config_seed from here.
+      // NOTE: This duplicates logic from /src/core/config.js. Consolidated in QUnit 3.
+      QUnit.config.seed = (Math.random().toString(36) + '0000000000').slice(2, 12);
     } else {
       QUnit.config.seed = seed;
     }
-
+  }
+  if (QUnit.config.seed) {
     console.log(`Running tests with seed: ${QUnit.config.seed}`);
   }
 

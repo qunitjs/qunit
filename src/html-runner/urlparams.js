@@ -26,9 +26,11 @@ import { window } from '../globals';
   QUnit.config.testId = [].concat(urlParams.testId || []);
 
   // Test order randomization
-  if (urlParams.seed === true) {
-    // Generate a random seed if the option is specified without a value
-    QUnit.config.seed = Math.random().toString(36).slice(2);
+  // Generate a random seed if `?seed` is specified without a value (boolean true),
+  // or when set to the string "true".
+  if (urlParams.seed === 'true' || urlParams.seed === true) {
+    // NOTE: This duplicates logic from /src/core/config.js. Consolidated in QUnit 3.
+    QUnit.config.seed = (Math.random().toString(36) + '0000000000').slice(2, 12);
   } else if (urlParams.seed) {
     QUnit.config.seed = urlParams.seed;
   }
