@@ -33,7 +33,8 @@ QUnit.module('CLI Main', () => {
         qunit_config_notrycatch: 'false'
       }
     });
-    assert.equal(execution.snapshot, `TAP version 13
+    assert.equal(execution.snapshot, `Running tests with seed: dummyfirstyes
+TAP version 13
 ok 1 dummy
 not ok 2 slow
   ---
@@ -213,9 +214,8 @@ Bail out! Error: No tests matched the filter "no matches".
 # exit code: 1`);
   });
 
-  QUnit.test('--seed generates new random seed', async assert => {
-    // https://github.com/qunitjs/qunit/issues/1691
-    const command = ['qunit', '--seed', '--', 'basic-one.js', 'test/'];
+  QUnit.test('--seed=true generates new random seed', async assert => {
+    const command = ['qunit', '--seed', 'true', 'basic-one.js', 'test/'];
     const execution = await execute(command);
 
     const actualHarness = execution.snapshot

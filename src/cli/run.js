@@ -43,26 +43,20 @@ async function run (args, options) {
 
   const files = utils.getFilesFromArgs(args);
 
+  if (options.filter) {
+    globalThis.qunit_config_filter = options.filter;
+  }
+  if (options.module) {
+    globalThis.qunit_config_module = options.module;
+  }
+  if (options.seed) {
+    globalThis.qunit_config_seed = options.seed;
+  }
+
   // Replace any previous instance, e.g. in watch mode
   QUnit = globalThis.QUnit = requireQUnit();
 
-  if (options.filter) {
-    QUnit.config.filter = options.filter;
-  }
-
-  if (options.module) {
-    QUnit.config.module = options.module;
-  }
-
-  const seed = options.seed;
-  if (seed) {
-    if (seed === true) {
-      // Length may vary from 6-14, pad to 10
-      QUnit.config.seed = Math.random().toString(36).slice(2).padEnd(10, '0');
-    } else {
-      QUnit.config.seed = seed;
-    }
-
+  if (QUnit.config.seed) {
     console.log(`Running tests with seed: ${QUnit.config.seed}`);
   }
 

@@ -34,7 +34,7 @@ The provided string will be used as the seed in a pseudo-random number generator
 
 Randomly ordering your tests can help identify non-atomic tests which either depend on a previous test or are leaking state to subsequent tests.
 
-If `seed` is boolean true (or set as URL query parameter without a value), then QUnit will generate on-demand a new random value to use as seed. You can then read the seed at runtime from the configuration value, and use it to reproduce the same test sequence later.
+If `seed` is boolean true (or set as URL query parameter without a value), then QUnit will generate on-demand a new random value to use as seed. You can then read the seed from `QUnit.config.seed` at runtime, and use it to reproduce the same test sequence later.
 
 ## See also
 

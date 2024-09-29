@@ -36,9 +36,9 @@ program
     collect,
     []
   )
-  .option('--seed [value]',
-    'specify a seed to re-order your tests; '
-    + 'if specified without a value, a seed will be generated'
+  .option('--seed <value>',
+    'specify a seed to enable randomized ordering of tests.\n'
+    + 'set to "true" to generate a new seed.'
   )
   .option('-w, --watch', 'watch files for changes and re-run the test suite')
   .parse(process.argv);
