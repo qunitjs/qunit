@@ -85,7 +85,7 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output ok for a skipped test', function (assert) {
-    var expected = kleur.yellow('ok 1 # SKIP name');
+    var expected = 'ok 1 ' + kleur.yellow('# SKIP name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -100,7 +100,7 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output not ok for a todo test', function (assert) {
-    var expected = kleur.cyan('not ok 1 # TODO name');
+    var expected = 'not ok 1 ' + kleur.cyan('# TODO name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -115,7 +115,7 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output not ok for a failing test', function (assert) {
-    var expected = kleur.red('not ok 1 name');
+    var expected = 'not ok 1 ' + kleur.red('name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -143,7 +143,7 @@ QUnit.module('TapReporter', function (hooks) {
       assertions: []
     });
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 name') + '\n'
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('name') + '\n'
 + '  ---\n'
 + '  message: first error\n'
 + '  severity: failed\n'
@@ -168,7 +168,7 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.clear();
     emitter.emit('error', 'Boo');
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n'
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + '\n'
 + '  ---\n'
 + '  message: Boo\n'
 + '  severity: failed\n'
@@ -184,7 +184,7 @@ QUnit.module('TapReporter', function (hooks) {
     emitter.clear();
     emitter.emit('error', err);
 
-    assert.strictEqual(buffer, kleur.red('not ok 1 global failure') + '\n'
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + '\n'
 + '  ---\n'
 + '  message: ReferenceError: Boo is not defined\n'
 + '  severity: failed\n'
@@ -437,7 +437,7 @@ QUnit.module('TapReporter', function (hooks) {
     });
 
     assert.strictEqual(buffer, '1..6\n'
-+ '# pass 3\n' + kleur.yellow('# skip 1') + '\n' + kleur.cyan('# todo 0') + '\n' + kleur.red('# fail 2') + '\n'
++ '# pass 3\n# ' + kleur.yellow('skip 1') + '\n# ' + kleur.cyan('todo 0') + '\n# ' + kleur.red('fail 2') + '\n'
     );
   });
 });
