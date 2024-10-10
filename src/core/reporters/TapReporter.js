@@ -210,7 +210,7 @@ export default class TapReporter {
     if (!this.ended) {
       this.onRunStart();
       this.testCount = this.testCount + 1;
-      this.log(kleur.red(`not ok ${this.testCount} global failure`));
+      this.log(`not ok ${this.testCount} ${kleur.red('global failure')}`);
       this.logError(error);
     }
 
@@ -227,16 +227,16 @@ export default class TapReporter {
       this.log(`ok ${this.testCount} ${test.fullName.join(' > ')}`);
     } else if (test.status === 'skipped') {
       this.log(
-        kleur.yellow(`ok ${this.testCount} # SKIP ${test.fullName.join(' > ')}`)
+        `ok ${this.testCount} ${kleur.yellow(`# SKIP ${test.fullName.join(' > ')}`)}`
       );
     } else if (test.status === 'todo') {
       this.log(
-        kleur.cyan(`not ok ${this.testCount} # TODO ${test.fullName.join(' > ')}`)
+        `not ok ${this.testCount} ${kleur.cyan(`# TODO ${test.fullName.join(' > ')}`)}`
       );
       test.errors.forEach((error) => this.logAssertion(error, 'todo'));
     } else {
       this.log(
-        kleur.red(`not ok ${this.testCount} ${test.fullName.join(' > ')}`)
+        `not ok ${this.testCount} ${kleur.red(test.fullName.join(' > '))}`
       );
       test.errors.forEach((error) => this.logAssertion(error));
     }
@@ -247,9 +247,9 @@ export default class TapReporter {
 
     this.log(`1..${runEnd.testCounts.total}`);
     this.log(`# pass ${runEnd.testCounts.passed}`);
-    this.log(kleur.yellow(`# skip ${runEnd.testCounts.skipped}`));
-    this.log(kleur.cyan(`# todo ${runEnd.testCounts.todo}`));
-    this.log(kleur.red(`# fail ${runEnd.testCounts.failed}`));
+    this.log(`# ${kleur.yellow(`skip ${runEnd.testCounts.skipped}`)}`);
+    this.log(`# ${kleur.cyan(`todo ${runEnd.testCounts.todo}`)}`);
+    this.log(`# ${kleur.red(`fail ${runEnd.testCounts.failed}`)}`);
   }
 
   logAssertion (error, severity) {
