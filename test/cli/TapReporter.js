@@ -66,7 +66,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output ok for a skipped test', assert => {
-    const expected = kleur.yellow('ok 1 # SKIP name');
+    const expected = 'ok 1 ' + kleur.yellow('# SKIP name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -81,7 +81,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output not ok for a todo test', assert => {
-    const expected = kleur.cyan('not ok 1 # TODO name');
+    const expected = 'not ok 1 ' + kleur.cyan('# TODO name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -96,7 +96,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output not ok for a failing test', assert => {
-    const expected = kleur.red('not ok 1 name');
+    const expected = 'not ok 1 ' + kleur.red('name');
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -124,7 +124,7 @@ QUnit.module('TapReporter', hooks => {
       assertions: []
     });
 
-    assert.strictEqual(buffer, `${kleur.red('not ok 1 name')}
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('name') + `
   ---
   message: first error
   severity: failed
@@ -148,7 +148,7 @@ QUnit.module('TapReporter', hooks => {
   QUnit.test('output global failure (string)', assert => {
     emitter.emit('error', 'Boo');
 
-    assert.strictEqual(buffer, `${kleur.red('not ok 1 global failure')}
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + `
   ---
   message: Boo
   severity: failed
@@ -163,7 +163,7 @@ Bail out! Boo
     mockStack(err);
     emitter.emit('error', err);
 
-    assert.strictEqual(buffer, `${kleur.red('not ok 1 global failure')}
+    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + `
   ---
   message: ReferenceError: Boo is not defined
   severity: failed
@@ -418,9 +418,9 @@ Bail out! ReferenceError: Boo is not defined
 
     assert.strictEqual(buffer, `1..6
 # pass 3
-${kleur.yellow('# skip 1')}
-${kleur.cyan('# todo 0')}
-${kleur.red('# fail 2')}
+# ${kleur.yellow('skip 1')}
+# ${kleur.cyan('todo 0')}
+# ${kleur.red('fail 2')}
 `
     );
   });
