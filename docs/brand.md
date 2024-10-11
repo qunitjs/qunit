@@ -83,3 +83,7 @@ You can browse the [2013 version of the website](https://web.archive.org/web/201
 In 2018, Trent Willis [designed](https://github.com/qunitjs/qunitjs.com/issues/151#issuecomment-655154878) a new homepage for QUnit. In 2020, Timo Tijhof [launched](https://github.com/qunitjs/qunit/issues/1458#issuecomment-661576550) the redesign with a matching redesign of the API documentation. The QUnit site framework is published as [jekyll-theme-amethyst](https://github.com/qunitjs/jekyll-theme-amethyst).
 
 ![](/img/2020-website-qunit.png)
+
+## Tested with QUnit Badge
+
+Refer to [Badge](./badge.md) for markup to embed in your README.
