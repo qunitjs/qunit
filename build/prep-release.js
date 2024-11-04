@@ -21,6 +21,7 @@ const cdnRemotes = {
 };
 const cdnFiles = {
   'qunit/qunit.js': 'cdn/qunit/qunit-@VERSION.js',
+  'qunit/esm/qunit.module.js': 'cdn/qunit/qunit-@VERSION.module.js',
   'qunit/qunit.css': 'cdn/qunit/qunit-@VERSION.css'
 };
 const cdnCommitMessage = 'qunit: Added version @VERSION';

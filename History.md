@@ -5,15 +5,18 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Added
 
-* CLI: Add `.mjs` and `.cjs` to default test file extensions.
-* CLI: Add stacktrace cleaning by greying out or removing internal QUnit or Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
+* Release: Add native ESM distribution, used automatically by Node.js when using the `import` keyword. [#1551](https://github.com/qunitjs/qunit/issues/1551)
+* Core: Add automatic labels in [`QUnit.test.each()`](https://qunitjs.com/api/QUnit/test.each/) to simple array values. [#1733](https://github.com/qunitjs/qunit/issues/1733)
 * Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
 * Core: Add support for late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
+* Core: Add [`QUnit.config.reporters`](https://qunitjs.com/api/config/reporters/) to enable TAP via preconfig, or to declaratively disable HTML Reporter for headless CI. [#1711](https://github.com/qunitjs/qunit/issues/1711)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 * Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)
-* Core: Add [`QUnit.config.reporters`](https://qunitjs.com/api/config/reporters/) to enable TAP via preconfig, or to declaratively disable HTML Reporter for headless CI. [#1711](https://github.com/qunitjs/qunit/issues/1711)
-* HTML Reporter: Allow instant rendering before DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
-* HTML Reporter: Add display for early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
+* CLI: Add `.mjs` and `.cjs` to the default file extensions when reading a test directory.
+* CLI: Add stacktrace cleaning by omitting or greying out internal QUnit or Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
+* CLI: Add `--seed=true` to generate a new seed. [#1691](https://github.com/qunitjs/qunit/issues/1691)
+* HTML Reporter: Enable UI rendering before DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
+* HTML Reporter: Add support for displaying early errors in the UI. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 
 ### Changed
 
@@ -39,6 +42,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 * CLI: Fix confusing `expected: undefined` under error messages in TAP reporter. [#1794](https://github.com/qunitjs/qunit/pull/1794)
 * CLI: Fix confusing "No tests" message after an early uncaught error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
+* CLI: Fix confusing `--seed` eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
+* CLI: Fix support for strict TAP parsers by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
 * Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
