@@ -34,7 +34,7 @@ Ensure that all changes for this release have been merged into the main branch. 
 
 1. Install dev dependencies:
    ```
-   npm ci
+   npm install
    ```
 
 1. Prepare for the release commit, and build release artefacts:

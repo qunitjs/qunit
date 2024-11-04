@@ -6,7 +6,7 @@ The default is to benchmark the local development version of QUnit.
 
 * Install QUnit for development and generate the release artefact:
   ```
-  qunit$ npm ci
+  qunit$ npm install
   qunit$ npm run build
   ```
 * Link benchmark to local artefact.

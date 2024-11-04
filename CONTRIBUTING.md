@@ -32,7 +32,7 @@ Foundation's [CLA for QUnit](https://cla.js.foundation/qunitjs/qunit).
 
 For code changes, you'll need to have [Node.js](https://nodejs.org/en/) installed.
 
-Install dependencies in the repository via `npm ci`. Make your code
+Install dependencies in the repository via `npm install`. Make your code
 changes and run `npm test` which will validate the syntax and coding style,
 and run unit and integration tests.
 

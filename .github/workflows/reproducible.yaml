@@ -5,10 +5,6 @@ on:
     - cron: '30 0 * * 1'
   # Or manually
   workflow_dispatch:
-  # Or when developing this workflow
-  push:
-    paths:
-      - .github/workflows/reproducible.yaml
 
 jobs:
   run:
