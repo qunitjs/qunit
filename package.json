@@ -32,8 +32,7 @@
   "files": [
     "bin/",
     "src/cli/",
-    "qunit/qunit.js",
-    "qunit/qunit.css",
+    "qunit/",
     "LICENSE.txt"
   ],
   "main": "qunit/qunit.js",
