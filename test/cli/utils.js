@@ -1,7 +1,7 @@
 const path = require('path');
 
-const { getIgnoreList } = require('../../src/cli/utils');
-const { normalize, concurrentMap, concurrentMapKeys } = require('./helpers/execute');
+const { getIgnoreList } = require('../../src/cli/utils.js');
+const { normalize, concurrentMap, concurrentMapKeys } = require('./helpers/execute.js');
 
 QUnit.module('CLI utils', function () {
   QUnit.test('getIgnoreList()', function (assert) {

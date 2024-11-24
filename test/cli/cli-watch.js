@@ -4,29 +4,14 @@ const fs = require('fs');
 const path = require('path');
 const fixturify = require('fixturify');
 
-const expectedWatchOutput = require('./fixtures/expected/watch-tap-outputs');
-const { execute } = require('./helpers/execute');
-
-// Executes the provided command from within the fixtures directory
-function executeIpc (command, hook) {
-  return execute(command, { stdio: [null, null, null, 'ipc'] }, hook);
-}
+const expectedWatchOutput = require('./fixtures/expected/watch-tap-outputs.js');
+const { executeIpc } = require('./helpers/execute.js');
 
 const fixturePath = path.join(__dirname, 'fixtures', 'watching');
-
-// Kills the provided executing process, handling differences in platforms
-function kill (execution, signal) {
-  const sig = signal || 'SIGINT';
-
-  process.kill(execution.pid, sig);
-}
+const isWindows = (process.platform === 'win32');
 
 // TODO: Make watch tests work on Windows. https://github.com/qunitjs/qunit/issues/1359
-if (process.platform === 'win32') {
-  return;
-}
-
-QUnit.module('CLI Watch', function (hooks) {
+QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
   hooks.before(function () {
     fs.rmSync(fixturePath, { recursive: true, force: true });
   });
@@ -53,7 +38,7 @@ QUnit.module('CLI Watch', function (hooks) {
       execution => {
         execution.on('message', data => {
           assert.step(data);
-          kill(execution, 'SIGTERM');
+          process.kill(execution.pid, 'SIGTERM');
         });
       }
     );
@@ -75,7 +60,7 @@ QUnit.module('CLI Watch', function (hooks) {
       execution => {
         execution.on('message', data => {
           assert.step(data);
-          kill(execution);
+          process.kill(execution.pid);
         });
       }
     );
@@ -103,7 +88,7 @@ QUnit.module('CLI Watch', function (hooks) {
 
           execution.once('message', data => {
             assert.step(data);
-            kill(execution);
+            process.kill(execution.pid);
           });
         });
       }
@@ -132,7 +117,7 @@ QUnit.module('CLI Watch', function (hooks) {
 
           execution.once('message', data => {
             assert.step(data);
-            kill(execution);
+            process.kill(execution.pid);
           });
         });
       }
@@ -165,7 +150,7 @@ QUnit.module('CLI Watch', function (hooks) {
 
           execution.once('message', data => {
             assert.step(data);
-            kill(execution);
+            process.kill(execution.pid);
           });
         });
       }
@@ -214,7 +199,7 @@ QUnit.module('CLI Watch', function (hooks) {
           execution.once('message', data => {
             // Ignore other re-runs
             if (data === 'runEnd2') {
-              kill(execution);
+              process.kill(execution.pid);
             }
           });
         });
@@ -253,7 +238,7 @@ QUnit.module('CLI Watch', function (hooks) {
           });
 
           execution.once('message', () => {
-            kill(execution);
+            process.kill(execution.pid);
           });
         });
       }
@@ -311,7 +296,7 @@ QUnit.module('CLI Watch', function (hooks) {
               assert.step(data);
 
               if (data === 'runEnd') {
-                kill(execution);
+                process.kill(execution.pid);
               }
             });
           }
@@ -386,7 +371,7 @@ QUnit.module('CLI Watch', function (hooks) {
             }
 
             if (count === 3) {
-              kill(execution);
+              process.kill(execution.pid);
             }
           }
         });

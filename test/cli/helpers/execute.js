@@ -104,6 +104,15 @@ async function execute (command, options = {}, hook) {
 }
 
 /**
+ * Execute the provided command with IPC enabled, from within the fixtures directory
+ *
+ * @see #execute()
+ */
+async function executeIpc (command, hook) {
+  return await execute(command, { stdio: [null, null, null, 'ipc'] }, hook);
+}
+
+/**
  * Executes the provided command from within the fixtures directory.
  *
  * This variation of execute() exists to allow for pipes.
@@ -240,6 +249,7 @@ function concurrentMapKeys (input, concurrency, asyncFn) {
 module.exports = {
   normalize,
   execute,
+  executeIpc,
   executeRaw,
   concurrentMap,
   concurrentMapKeys
