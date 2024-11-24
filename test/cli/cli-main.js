@@ -103,46 +103,6 @@ not ok 2 Example > bad
 # exit code: 1`);
   });
 
-  // TODO: Move to /test/cli/fixtures/
-  QUnit.test('memory-leak/module-closure [unfiltered]', async assert => {
-    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/module-closure.js'];
-    const execution = await execute(command);
-    assert.equal(execution.snapshot, `TAP version 13
-ok 1 module-closure > example test
-ok 2 module-closure > example child module > example child module test
-ok 3 module-closure check > memory release
-1..3
-# pass 3
-# skip 0
-# todo 0
-# fail 0`);
-  });
-
-  QUnit.test('memory-leak/module-closure [filtered module]', async assert => {
-    const command = ['node', '--expose-gc', '../../../bin/qunit.js', '--filter', '!child', 'memory-leak/module-closure.js'];
-    const execution = await execute(command);
-    assert.equal(execution.snapshot, `TAP version 13
-ok 1 module-closure > example test
-ok 2 module-closure check > memory release
-1..2
-# pass 2
-# skip 0
-# todo 0
-# fail 0`);
-  });
-
-  QUnit.test('memory-leak/test-object', async assert => {
-    const command = ['node', '--expose-gc', '../../../bin/qunit.js', 'memory-leak/test-object.js'];
-    const execution = await execute(command);
-    assert.equal(execution.snapshot, `TAP version 13
-ok 1 test-object > example test
-1..1
-# pass 1
-# skip 0
-# todo 0
-# fail 0`);
-  });
-
   QUnit.test.if('tap pipe [pass]', !isWindows, async assert => {
     const command = 'qunit basic-one.js | ../../../node_modules/.bin/tap-min';
     const execution = await executeRaw(command);

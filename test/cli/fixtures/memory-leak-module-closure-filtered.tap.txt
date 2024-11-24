@@ -1,0 +1,11 @@
+# name: memory leak module-closure filtered
+# command: ["node", "--expose-gc", "../../../bin/qunit.js", "--filter", "!child", "memory-leak-module-closure.js"]
+
+TAP version 13
+ok 1 module-closure > example test
+ok 2 module-closure check > memory release
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
