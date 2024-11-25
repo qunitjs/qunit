@@ -4,13 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const fixturify = require('fixturify');
 
-const expectedWatchOutput = require('./fixtures/expected/watch-tap-outputs.js');
 const { executeIpc } = require('./helpers/execute.js');
 
 const fixturePath = path.join(__dirname, 'fixtures', 'watching');
 const isWindows = (process.platform === 'win32');
 
-// TODO: Make watch tests work on Windows. https://github.com/qunitjs/qunit/issues/1359
+// TODO: Make watch tests pass on Windows. https://github.com/qunitjs/qunit/issues/1359
 QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
   hooks.before(function () {
     fs.rmSync(fixturePath, { recursive: true, force: true });
@@ -27,7 +26,10 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     fs.rmSync(fixturePath, { recursive: true, force: true });
   });
 
-  QUnit.test('runs tests and waits until SIGTERM', async assert => {
+  QUnit.test.each('no change', [
+    'SIGTERM',
+    'SIGINT'
+  ], async (assert, signal) => {
     fixturify.writeSync(fixturePath, {
       'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });"
     });
@@ -38,7 +40,7 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
       execution => {
         execution.on('message', data => {
           assert.step(data);
-          process.kill(execution.pid, 'SIGTERM');
+          process.kill(execution.pid, signal);
         });
       }
     );
@@ -46,32 +48,17 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     assert.verifySteps(['runEnd']);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['no-change']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
-  QUnit.test('runs tests and waits until SIGINT', async assert => {
-    fixturify.writeSync(fixturePath, {
-      'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });"
-    });
-
-    const command = ['qunit', '--watch', 'watching'];
-    const result = await executeIpc(
-      command,
-      execution => {
-        execution.on('message', data => {
-          assert.step(data);
-          process.kill(execution.pid);
-        });
-      }
-    );
-
-    assert.verifySteps(['runEnd']);
-    assert.equal(result.code, 0);
-    assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['no-change']);
-  });
-
-  QUnit.test('re-runs tests on file changed', async assert => {
+  QUnit.test('change file once', async assert => {
     fixturify.writeSync(fixturePath, {
       'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });"
     });
@@ -97,10 +84,26 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     assert.verifySteps(['runEnd', 'runEnd']);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['change-file']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/foo.js
+Restarting...
+TAP version 13
+ok 1 bar
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
-  QUnit.test('re-runs tests on file added', async assert => {
+  QUnit.test('add file once [js]', async assert => {
     fixturify.writeSync(fixturePath, {
       'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });"
     });
@@ -126,13 +129,29 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     assert.verifySteps(['runEnd', 'runEnd']);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['add-file']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/bar.js
+Restarting...
+TAP version 13
+ok 1 bar
+ok 2 foo
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
-  // NOTE: This is known to fail on Linux with Node.js 20.12.
-  // The regression was fixed in Node.js 20.13.
+  // NOTE: This is known to fail on Linux with Node.js 20.12. Fixed in Node.js 20.13.
   // https://github.com/nodejs/node/issues/52018
-  QUnit.test('re-runs tests on file removed', async assert => {
+  QUnit.test('remove file', async assert => {
     fixturify.writeSync(fixturePath, {
       'foo.js': "QUnit.test('foo', function(assert) { assert.true(true); });",
       'bar.js': "QUnit.test('bar', function(assert) { assert.true(true); });"
@@ -159,11 +178,28 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     assert.verifySteps(['runEnd', 'runEnd']);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['remove-file']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 bar
+ok 2 foo
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
+File remove: watching/bar.js
+Restarting...
+TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
   // Skip in coverage mode since NYC adds non-default extensions
-  QUnit.test.if('default file extensions', !process.env.NYC_PROCESS_ID, async assert => {
+  QUnit.test.if('add file once [other file extensions]', !process.env.NYC_PROCESS_ID, async assert => {
     fixturify.writeSync(fixturePath, {
       tests: {
         'setup.js': "QUnit.on('runEnd', function() { process.send('runEnd'); });",
@@ -208,11 +244,32 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
 
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['file-extensions']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/x.cjs
+File update: watching/x.js
+File update: watching/x.json
+File update: watching/x.mjs
+File update: watching/tests/foo.js
+File update: watching/tests/setup.js
+Restarting...
+TAP version 13
+ok 1 foo2
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
   // Skip in coverage mode since NYC adds non-default extensions
-  QUnit.test.if('TypeScript file extension', !process.env.NYC_PROCESS_ID, async assert => {
+  QUnit.test.if('add file once [TypeScript]', !process.env.NYC_PROCESS_ID, async assert => {
     fixturify.writeSync(fixturePath, {
 
       // Simulate what ts-node/register does
@@ -246,12 +303,32 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
 
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['file-extension-ts']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 foo
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/x.js
+File update: watching/x.ts
+File update: watching/tests/foo.js
+File update: watching/tests/setup.js
+Restarting...
+TAP version 13
+ok 1 foo2
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
-  QUnit.test('aborts and restarts when in middle of run', async assert => {
-    // A proper abort finishes the currently running test and runs any remaining
-    // afterEach/after hooks to ensure cleanup happens.
+  QUnit.test('change file', async assert => {
+    // An abort should finish the currently running test and any afterEach/after
+    // hooks to ensure cleanup. It then ends in the middle of run, skipping any
+    // other tests.
 
     fixturify.writeSync(fixturePath, {
       tests: {
@@ -324,10 +401,27 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     ]);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['change-file-mid-run']);
+    assert.equal(result.stdout, `TAP version 13
+File update: watching/bar.js
+Finishing current test and restarting...
+ok 1 Foo > one
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
+TAP version 13
+ok 1 Foo > one
+ok 2 Foo > two
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 
-  QUnit.test('properly watches files after initial run', async assert => {
+  QUnit.test('add file then change newly added file', async assert => {
     fixturify.writeSync(fixturePath, {
       tests: {
         'setup.js': "QUnit.on('runEnd', function() { process.send('runEnd'); });",
@@ -387,6 +481,32 @@ QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
     ]);
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
-    assert.equal(result.stdout, expectedWatchOutput['add-file-after-run']);
+    assert.equal(result.stdout, `TAP version 13
+ok 1 Module > Test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/tests/foo.js
+File update: watching/bar.js
+Restarting...
+TAP version 13
+ok 1 Module > Test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+File update: watching/bar.js
+Restarting...
+TAP version 13
+ok 1 Module > Test
+1..1
+# pass 1
+# skip 0
+# todo 0
+# fail 0
+Stopping QUnit...`);
   });
 });
