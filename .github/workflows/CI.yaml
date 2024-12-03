@@ -51,12 +51,8 @@ jobs:
             node: 16.x
             script: npm run test-nolint
 
-          # use macos-12 instead of macos-latest
-          # as proxy for Intel instead of ARM
-          # because the older Puppeteer/Chromr for Node 10 compat
-          # didn't support ARM yet.
           - name: "macOS: Node 16"
-            os: macos-12
+            os: macos-13
             node: 16.x
             script: npm run test-nolint
 
