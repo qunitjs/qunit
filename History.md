@@ -1,4 +1,11 @@
 
+2.23.0 / 2024-12-03
+==================
+
+### Added
+
+* Core: Add automatic labels in [`QUnit.test.each()`](https://qunitjs.com/api/QUnit/test.each/) to simple array values. [#1733](https://github.com/qunitjs/qunit/issues/1733)
+
 2.22.0 / 2024-08-18
 ==================
 
