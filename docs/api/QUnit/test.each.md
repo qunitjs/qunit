@@ -40,7 +40,7 @@ The [`only`](./test.only.md), [`todo`](./test.todo.md), [`skip`](./test.skip.md)
 
 ## Changelog
 
-| UNRELEASED | Add [automatic labels](https://github.com/qunitjs/qunit/issues/1733) for primitive values in arrays.
+| [QUnit 2.23.0](https://github.com/qunitjs/qunit/releases/tag/2.23.0) | Add [automatic labels](https://github.com/qunitjs/qunit/issues/1733) for primitive values in arrays.
 | [QUnit 2.16.0](https://github.com/qunitjs/qunit/releases/tag/2.16.0) | Introduce `QUnit.test.each()`.
 
 ## Examples

@@ -6,7 +6,6 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Added
 
 * Release: Add native ESM distribution, used automatically by Node.js when using the `import` keyword. [#1551](https://github.com/qunitjs/qunit/issues/1551)
-* Core: Add automatic labels in [`QUnit.test.each()`](https://qunitjs.com/api/QUnit/test.each/) to simple array values. [#1733](https://github.com/qunitjs/qunit/issues/1733)
 * Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [8f25f26264](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)
 * Core: Add support for late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 * Core: Add [`QUnit.config.reporters`](https://qunitjs.com/api/config/reporters/) to enable TAP via preconfig, or to declaratively disable HTML Reporter for headless CI. [#1711](https://github.com/qunitjs/qunit/issues/1711)
@@ -24,19 +23,17 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Promote warning "[Cannot add … hook outside the containing module](https://qunitjs.com/api/QUnit/module/#E0002)" to error. (Ray Cohen) [#1576](https://github.com/qunitjs/qunit/issues/1576)
 * Core: Promote warning "QUnit.module() callback must not be async" to error. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
 * Core: Promote warning "[Unexpected test after runEnd](https://qunitjs.com/api/config/autostart/#E0001)" to error. [#1377](https://github.com/qunitjs/qunit/issues/1377)
+* Core: Promote "No tests were run." from fake test to native error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
 * Core: Change `before` and `after` hooks to run with module context. This enables inheritence between parent and child modules, and fixes leaks between last test and "after" hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
-* Core: Change "No tests were run." from fake test to native error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
-* Core: Change internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` calls from count. [#1226](https://github.com/qunitjs/qunit/issues/1226)
-* CLI: Upgrade `commander` dependency from 7 to 12. [#1781](https://github.com/qunitjs/qunit/pull/1781)
 * HTML Reporter: New theme design and structure. Before and after demo in [#1774](https://github.com/qunitjs/qunit/pull/1774).
   * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
-  * Change report time in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Change run time in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
   * Add `user-select: none;` to "Rerun" link and "runtime" indicator. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
   * Add `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
-  * Remove assertion count from toolbar, in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Remove assertion count from toolbar in favor of test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
 
 ### Fixed
 
@@ -44,6 +41,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * CLI: Fix confusing "No tests" message after an early uncaught error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
 * CLI: Fix confusing `--seed` eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
 * CLI: Fix support for strict TAP parsers by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
+* Core: Fix internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
 * Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
@@ -65,6 +63,13 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
+
+2.23.0 / 2024-12-03
+==================
+
+### Added
+
+* Core: Add automatic labels in [`QUnit.test.each()`](https://qunitjs.com/api/QUnit/test.each/) to simple array values. [#1733](https://github.com/qunitjs/qunit/issues/1733)
 
 2.22.0 / 2024-08-18
 ==================
