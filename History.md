@@ -53,14 +53,15 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Removed
 
+* Core: Remove support for Node.js 10-16. Node.js 18 or later is required. [#1727](https://github.com/qunitjs/qunit/issues/1727)
 * Core: Remove support for IE 9 and IE 10. IE 11 remains supported. [#1725](https://github.com/qunitjs/qunit/issues/1725)
 * Core: Remove support for PhantomJS.
-* Core: Remove built-in AMD export. (NullVoxPopuli) [#1729](https://github.com/qunitjs/qunit/issues/1729)
+* Core: Remove built-in export for AMD. You can still load your application and your QUnit tests with AMD/RequireJS. This only affects the loading of the qunit.js file itself. [Example: Loading with RequireJS](https://qunitjs.com/api/config/autostart/#loading-with-requirejs). (NullVoxPopuli) [#1729](https://github.com/qunitjs/qunit/issues/1729)
 * Core: Remove deprecated [`QUnit.load()`](https://qunitjs.com/api/QUnit/load/). [#1084](https://github.com/qunitjs/qunit/issues/1084)
 * Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [QUnit.onUncaughtException()](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
-* HTML Reporter: Remove support for legacy markup, use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
+* HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
 2.23.0 / 2024-12-03
