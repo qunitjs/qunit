@@ -97,7 +97,7 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">dataset</code> (array or object)</td>
-      <td>Array or object of data values passed to each test case</td>
+      <td>Array or object of data items passed to each test case</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">callback</code> (function)</td>
@@ -122,7 +122,7 @@
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">data</code> (any)</td>
-      <td>Data value</td>
+      <td>Data item</td>
     </tr>
   </tbody>
 </table>
@@ -131,7 +131,7 @@
 
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> generates multiple calls to <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> internally, and has all the same capabilities such support for async functions, returning a Promise, and the <code class="language-plaintext highlighter-rouge">assert</code> argument.</p>
 
-<p>Each test case is passed one value of your dataset.</p>
+<p>Each test case is passed one item from your dataset.</p>
 
 <p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, and <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">if</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.if.each</code> respectively.</p>
 
@@ -152,49 +152,116 @@
 
 <h2 id="examples">Examples</h2>
 
-<h3 id="basic-data-provider">Basic data provider</h3>
+<h3 id="data-provider">Data provider</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">isEven</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+<p>Each item in the dataset is passed to the callback. In the case of an array holding basic primitives (string, number, boolean, null, or undefined) these receive an automatic label, based on the string representation of the value.</p>
+
+<p>When using an array data provider with complex values, the array index in the dataset is added to the test name.</p>
+
+<p>You can also use an object instead of an array, to give each item a descriptive label, including for nested arrays, objects, and other complex values.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// isReserved [Admin]</span>
+<span class="c1">// isReserved [root]</span>
+<span class="c1">// isReserved [ADMIN]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isReserved</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">ADMIN</span><span class="dl">'</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">isReserved</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="c1">// isReserved [Alice]</span>
+<span class="c1">// isReserved [Bob]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isReserved</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Alice</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Bob</span><span class="dl">'</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="nf">isReserved</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="kd">function</span> <span class="nf">isReserved</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">].</span><span class="nf">includes</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">());</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">isEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
+<span class="c1">// truthy [0: true]</span>
+<span class="c1">// truthy [1: 42]</span>
+<span class="c1">// truthy [2: Infinity]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">truthy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="kc">Infinity</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nc">Boolean</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">truthy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">Infinity</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="o">!!</span><span class="nx">data</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">falsy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="kc">false</span><span class="p">,</span> <span class="kc">null</span><span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="o">!!</span><span class="nx">data</span><span class="p">);</span>
+<span class="c1">// falsy [0: false]</span>
+<span class="c1">// falsy [1: null]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">falsy</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="kc">false</span><span class="p">,</span> <span class="kc">null</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="nc">Boolean</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <h3 id="array-data-provider">Array data provider</h3>
 
-<p>The original array is passed to your callback. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">Array destructuring</a> can be used to unpack the data array, directly from the callback signature.</p>
+<p>Each item is passed to the callback These can be primitive values as demonstrated above. But they can also be nested arrays. With <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">JavaScript array destructuring</a>, you can also unpack the array and give multiple values their own variable names.</p>
+
+<p>For example, you can let each test case provide both an <code class="language-plaintext highlighter-rouge">input</code> and an <code class="language-plaintext highlighter-rouge">expected</code> value via an array.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">square</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+<span class="c1">// square [0]</span>
+<span class="c1">// square [1]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
   <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
   <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">square</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="nx">expected</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">value</span><span class="p">}</span><span class="s2"> squared`</span><span class="p">);</span>
+<span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">square</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nx">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="c1">// With array destructuring</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">square</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="nx">expected</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// With array destructuring and arrow functions</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">],</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">square</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="nx">expected</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <h3 id="object-data-provider">Object data provider</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">caseEven</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">true</span><span class="p">],</span>
-  <span class="na">caseNotEven</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="kc">false</span><span class="p">]</span>
-<span class="p">},</span> <span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">value</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nf">isEven</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="nx">expected</span><span class="p">);</span>
+<p>You can give each item in your data set a custom name, by wrapping the data in an object instead of an array. The object key becomes the test case name.</p>
+
+<p>For example, you can self-document each item to more cleary convey what aspect or behavior you want to cover with that test.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">square</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// square [even]</span>
+<span class="c1">// square [odd]</span>
+<span class="c1">// square [fraction]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">even</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="na">odd</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+  <span class="na">fraction</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.14</span><span class="p">,</span> <span class="mf">9.8596</span><span class="p">]</span>
+<span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nf">square</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="nx">expected</span><span class="p">);</span>
 <span class="p">});</span>
+
+<span class="c1">// isReserved [title case]</span>
+<span class="c1">// isReserved [lower case]</span>
+<span class="c1">// isReserved [all caps]</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isReserved</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="dl">'</span><span class="s1">title case</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">lower case</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">all caps</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ADMIN</span><span class="dl">'</span>
+<span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">isReserved</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="kd">function</span> <span class="nf">isReserved</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">].</span><span class="nf">includes</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">());</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h3 id="async-functions-with-each">Async functions with <code class="language-plaintext highlighter-rouge">each()</code></h3>
@@ -207,7 +274,7 @@
   <span class="k">return</span> <span class="nf">isEven</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="k">async </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="k">async </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">isAsyncEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -222,7 +289,7 @@
   <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nf">isEven</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven()</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nf">isAsyncEven</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">data</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> is even</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
@@ -272,7 +339,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#basic-data-provider">Basic data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#data-provider">Data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
 </aside>
 
 </div>
