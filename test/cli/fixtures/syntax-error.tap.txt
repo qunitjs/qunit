@@ -18,8 +18,6 @@ not ok 2 global failure
   ---
   message: No tests were run.
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests were run.
         at qunit.js

@@ -25,6 +25,7 @@ import { emit } from '../events';
  */
 export default function onUncaughtException (error) {
   if (config.current) {
+    // This omits 'actual' and 'expected' (undefined)
     config.current.assert.pushResult({
       result: false,
       message: `global failure: ${errorString(error)}`,

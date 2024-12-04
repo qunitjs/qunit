@@ -6,8 +6,6 @@ not ok 3 wrong [a little off]
   ---
   message: Expected 2 assertions, but 1 were run
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-failure-step.js:25:7
         at internal
@@ -16,8 +14,6 @@ not ok 4 wrong [way off]
   ---
   message: Expected 5 assertions, but 1 were run
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-failure-step.js:33:7
         at internal
@@ -28,8 +24,6 @@ not ok 5 previously passing [once]
     Expected 4 assertions, but 2 were run
     Remember that with QUnit.config.countStepsAsOne and in QUnit 3.0, steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-failure-step.js:43:7
         at internal
@@ -40,8 +34,6 @@ not ok 6 previously passing [twice]
     Expected 9 assertions, but 4 were run
     Remember that with QUnit.config.countStepsAsOne and in QUnit 3.0, steps no longer count as separate assertions. https://qunitjs.com/api/assert/expect/
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-failure-step.js:52:7
         at internal

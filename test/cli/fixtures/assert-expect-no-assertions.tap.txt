@@ -6,8 +6,6 @@ not ok 1 no assertions
   ---
   message: Expected at least one assertion, but none were run - call expect(0) to accept zero assertions.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/assert-expect-no-assertions.js:1:7
         at internal

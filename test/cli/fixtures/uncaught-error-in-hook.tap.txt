@@ -6,8 +6,6 @@ not ok 1 contains a hard error in hook > contains a hard error
   ---
   message: before failed on contains a hard error: expected error thrown in hook
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: expected error thrown in hook
         at /qunit/test/cli/fixtures/uncaught-error-in-hook.js:3:11

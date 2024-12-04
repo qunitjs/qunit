@@ -1,7 +1,6 @@
 import kleur from 'kleur';
 import { errorString } from '../core/utilities';
 import { console } from '../globals';
-const hasOwn = Object.prototype.hasOwnProperty;
 
 /**
  * Format a given value into YAML.
@@ -253,11 +252,12 @@ export default class TapReporter {
     out += `\n  message: ${prettyYamlValue(error.message || 'failed')}`;
     out += `\n  severity: ${prettyYamlValue(severity || 'failed')}`;
 
-    if (hasOwn.call(error, 'actual')) {
+    // When pushFailure() is used, actual/expected are initially unset but
+    // eventually in Test#logAssertion, for testReport#pushAssertion, these are
+    // forged into existence as undefined.
+    const hasAny = (error.expected !== undefined || error.actual !== undefined);
+    if (hasAny) {
       out += `\n  actual  : ${prettyYamlValue(error.actual)}`;
-    }
-
-    if (hasOwn.call(error, 'expected')) {
       out += `\n  expected: ${prettyYamlValue(error.expected)}`;
     }
 

@@ -9,8 +9,6 @@ not ok 1 contains a hard error after using assert.async()
         at /qunit/test/cli/fixtures/uncaught-error-after-assert-async.js:1:7
         at internal
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
     Error: expected error thrown in test
         at /qunit/test/cli/fixtures/uncaught-error-after-assert-async.js:4:9

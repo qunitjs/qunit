@@ -37,8 +37,6 @@ not ok 2 slow
   ---
   message: Test took longer than 7ms; test timed out.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at internal
   ...
@@ -355,8 +353,6 @@ not ok 1 global failure
   ---
   message: "No tests matched the filter \\"no matches\\"."
   severity: failed
-  actual  : undefined
-  expected: undefined
   stack: |
     Error: No tests matched the filter "no matches".
         at qunit.js

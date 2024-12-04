@@ -6,8 +6,6 @@ not ok 1 slow
   ---
   message: Test took longer than 10ms; test timed out.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at internal
   ...

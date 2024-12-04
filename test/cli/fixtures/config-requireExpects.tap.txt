@@ -6,8 +6,6 @@ not ok 1 passing test
   ---
   message: Expected number of assertions to be defined, but expect() was not called.
   severity: failed
-  actual  : null
-  expected: undefined
   stack: |
         at /qunit/test/cli/fixtures/config-requireExpects.js:3:7
         at internal

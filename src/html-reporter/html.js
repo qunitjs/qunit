@@ -861,10 +861,13 @@ const stats = {
     let diff;
     let showDiff = false;
 
-    // The pushFailure doesn't provide details.expected
-    // when it calls, it's implicit to also not show expected and diff stuff
-    // Also, we need to check details.expected existence, as it can exist and be undefined
-    if (!details.result && hasOwn.call(details, 'expected')) {
+    // When pushFailure() is called, it is implied that no expected value
+    // or diff should be shown, because both expected and actual as undefined.
+    //
+    // This must check details.expected existence. If it exists as undefined,
+    // that's a regular assertion for which to render actual/expected and a diff.
+    const showAnyValues = !details.result && (details.expected !== undefined || details.actual !== undefined);
+    if (showAnyValues) {
       if (details.negative) {
         expected = 'NOT ' + QUnit.dump.parse(details.expected);
       } else {
