@@ -56,7 +56,6 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove support for IE 9 and IE 10. IE 11 remains supported. [#1725](https://github.com/qunitjs/qunit/issues/1725)
 * Core: Remove support for PhantomJS.
 * Core: Remove built-in AMD export. (NullVoxPopuli) [#1729](https://github.com/qunitjs/qunit/issues/1729)
-* Core: Remove deprecated [`QUnit.extend()`](https://qunitjs.com/api/extension/QUnit.extend/). (Izel Nakri)
 * Core: Remove deprecated [`QUnit.load()`](https://qunitjs.com/api/QUnit/load/). [#1084](https://github.com/qunitjs/qunit/issues/1084)
 * Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [QUnit.onUncaughtException()](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.

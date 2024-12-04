@@ -16,7 +16,7 @@ import { stack } from './stacktrace.js';
 import { start } from './start.js';
 import { urlParams } from './urlparams.js';
 import { test, pushFailure } from './test.js';
-import { objectType, is } from './utilities.js';
+import { extend, objectType, is } from './utilities.js';
 import version from './version.js';
 
 // Imports that help with init
@@ -73,6 +73,7 @@ export {
   done,
   dump,
   equiv,
+  extend,
   hooks,
   is,
   isLocal,
@@ -105,6 +106,7 @@ const QUnit = {
   done,
   dump,
   equiv,
+  extend,
   hooks,
   is,
   isLocal,
