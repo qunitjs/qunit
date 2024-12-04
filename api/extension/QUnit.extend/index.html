@@ -70,18 +70,16 @@
 <article>
     <header>
     <h1>QUnit.extend()</h1>
-    <p class="post-meta">Categories: <a class="category" href="/api/extension/">Extension interface</a>, <a class="category" href="/api/deprecated/">Deprecated methods</a>, <a class="category" href="/api/removed/">Removed methods</a>.</p>
+    <p class="post-meta">Categories: <a class="category" href="/api/extension/">Extension interface</a>.</p>
     </header>
     <p class="version-details">
-            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span>
-            deprecated: <a href="https://github.com/qunitjs/qunit/releases/tag/2.12.0">2.12.0</a><span class="sep">.</span>
-            removed: unreleased<span class="sep">.</p>
+            version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.extend( target, mixin )</code></p>
 
 <p>Copy the properties defined by a mixin object into a target object.</p>
 
-<p class="note note--warning">This method is <strong>deprecated</strong> and it’s recommended to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign"><code class="language-plaintext highlighter-rouge">Object.assign()</code></a> instead.</p>
+<p class="note note--warning">It is recommended to use the built-in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign"><code class="language-plaintext highlighter-rouge">Object.assign()</code></a> instead.</p>
 
 <table>
   <thead>
@@ -103,21 +101,6 @@
 </table>
 
 <p>This method will modify the <code class="language-plaintext highlighter-rouge">target</code> object to contain the “own” properties defined by the <code class="language-plaintext highlighter-rouge">mixin</code>. If the <code class="language-plaintext highlighter-rouge">mixin</code> object specifies the value of any attribute as <code class="language-plaintext highlighter-rouge">undefined</code>, this property will instead be removed from the <code class="language-plaintext highlighter-rouge">target</code> object.</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<table>
-  <tbody>
-    <tr>
-      <td>UNRELEASED</td>
-      <td>Removed.</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.12.0">QUnit 2.12.0</a></td>
-      <td>Deprecated. Use <code class="language-plaintext highlighter-rouge">Object.assign()</code> instead.</td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="examples">Examples</h2>
 
@@ -197,7 +180,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div>
 </aside>
 
 </div>
