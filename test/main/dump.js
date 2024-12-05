@@ -2,9 +2,12 @@
 /* eslint-disable qunit/no-conditional-assertions */
 
 QUnit.module('dump', {
+  beforeEach: function () {
+    QUnit.dump.maxDepth = 0;
+  },
   afterEach: function () {
     // Restore default
-    QUnit.dump.maxDepth = null;
+    QUnit.dump.maxDepth = 5;
   }
 });
 

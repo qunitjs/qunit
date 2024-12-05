@@ -17,6 +17,10 @@ import { window } from '../globals';
   // TODO: Move to /src/core/config.js in QUnit 3,
   // in accordance with /docs/api/config.index.md#order
   QUnit.config.filter = urlParams.filter;
+  // NOTE: Based on readFlatPreconfigNumber from QUnit 3.
+  if (/^[0-9]+$/.test(urlParams.maxDepth)) {
+    QUnit.config.maxDepth = QUnit.dump.maxDepth = +urlParams.maxDepth;
+  }
   QUnit.config.module = urlParams.module;
   QUnit.config.moduleId = [].concat(urlParams.moduleId || []);
   QUnit.config.testId = [].concat(urlParams.testId || []);

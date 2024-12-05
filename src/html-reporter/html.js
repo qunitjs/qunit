@@ -907,10 +907,10 @@ const stats = {
         expected.indexOf('[object Object]') !== -1) {
         message += "<tr class='test-message'><th>Message: </th><td>" +
         'Diff suppressed as the depth of object is more than current max depth (' +
-        QUnit.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
+        QUnit.dump.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to ' +
         " run with a higher max depth or <a href='" +
-        escapeText(setUrl({ maxDepth: -1 })) + "'>" +
-        'Rerun</a> without max depth.</p></td></tr>';
+        escapeText(setUrl({ maxDepth: 0 })) + "'>" +
+        'Rerun without max depth</a>.</p></td></tr>';
       } else {
         message += "<tr class='test-message'><th>Message: </th><td>" +
         'Diff suppressed as the expected and actual results have an equivalent' +
