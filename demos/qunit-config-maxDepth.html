@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>qunit-config-maxDepth</title>
+  <link rel="stylesheet" href="../src/core/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  QUnit.test('example', function (assert) {
+    // Assume default of QUnit.config.maxDepth of 5.
+    assert.deepEqual(
+      {
+        one: {
+          two: {
+            three: {
+              four: {
+                five: {
+                  six: true
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        one: {
+          two: {
+            three: {
+              four: {
+                five: {
+                  six: false
+                }
+              }
+            }
+          }
+        }
+      }
+    );
+  });
+  </script>
+</body>
+</html>

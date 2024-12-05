@@ -900,14 +900,17 @@ export default class HtmlReporter {
           message += '<tr class="test-diff"><th>Diff: </th><td><pre>'
             + diffHtml + '</pre></td></tr>';
         }
-      } else if (expected.indexOf('[object Array]') !== -1
-        || expected.indexOf('[object Object]') !== -1) {
+      } else if (
+        expected.indexOf('[object Array]') !== -1
+        || expected.indexOf('[object Object]') !== -1
+      ) {
+        // To test this interatively, use /demos/qunit-config-maxDepth.html
         message += '<tr class="test-message"><th>Message: </th><td>'
-          + 'Diff suppressed as the depth of object is more than current max depth ('
-          + this.config.maxDepth + ').<p>Hint: Use <code>QUnit.dump.maxDepth</code> to '
-          + ' run with a higher max depth or <a href="'
-          + escapeText(this.makeUrl({ maxDepth: 0 })) + "'>"
-          + 'Rerun</a> without max depth.</p></td></tr>';
+          + 'Diff suppressed because the object is more than ' + this.config.maxDepth
+          + ' levels deep.<p>Hint: Use <code>QUnit.config.maxDepth</code> to '
+          + 'set a higher limit, or <a href="'
+          + escapeText(this.makeUrl({ maxDepth: 0 })) + '">Rerun without a depth limit</a>'
+          + '.</p><br/></td></tr>';
       } else {
         message += '<tr class="test-message"><th>Message: </th><td>'
           + 'Diff suppressed as the expected and actual results have an equivalent'

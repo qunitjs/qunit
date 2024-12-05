@@ -235,6 +235,68 @@ QUnit.test('test-output [trace]', function (assert) {
   );
 });
 
+// For an interative test, refer to /demos/qunit-config-maxDepth.html
+QUnit.test('test-output [maxDepth exceeded]', function (assert) {
+  var element = document.createElement('div');
+  new QUnit.reporters.html(this.MockQUnit, {
+    element: element,
+    config: {
+      maxDepth: 2,
+      urlConfig: []
+    }
+  });
+  QUnit.dump.maxDepth = 2;
+
+  this.MockQUnit.emit('runStart', { testCounts: { total: 1 } });
+  this.MockQUnit.emit('begin', { modules: [] });
+  this.MockQUnit.emit('testStart', { testId: '00A', name: 'A' });
+  this.MockQUnit.emit('log', {
+    testId: '00A',
+    message: 'boo',
+    result: false,
+    actual: {
+      one: {
+        two: {
+          three: 1
+        }
+      }
+    },
+    expected: {
+      one: {
+        two: {
+          three: 2
+        }
+      }
+    },
+    runtime: 1
+  });
+  this.MockQUnit.emit('testDone', {
+    testId: '00A',
+    name: 'A',
+    total: 1,
+    passed: 1,
+    failed: 0,
+    runtime: 2
+  });
+
+  var testOutput = element.querySelector('#qunit-test-output-00A');
+  assert.strictEqual(
+    testOutput.textContent,
+    'A (1)' + 'Rerun' + '2 ms' + 'boo' + '@ 1 ms'
+      + 'Expected: {\n'
+      + '  "one": {\n'
+      + '    "two": [object Object]\n'
+      + '  }\n'
+      + '}'
+      + 'Message: Diff suppressed because the object is more than 2 levels deep.'
+      + 'Hint: Use QUnit.config.maxDepth to set a higher limit, or Rerun without a depth limit.',
+    'test output'
+  );
+
+  // Restore default
+  QUnit.dump.maxDepth = 5;
+});
+
 QUnit.test('onError [early]', function (assert) {
   var element = document.createElement('div');
   new QUnit.reporters.html(this.MockQUnit, {
