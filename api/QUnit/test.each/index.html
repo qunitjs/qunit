@@ -127,13 +127,79 @@
   </tbody>
 </table>
 
-<p>Use this method to add multiple tests that are similar, but with different data passed in.</p>
+<p>Use this method to define many similar tests, with different data passed in.</p>
 
-<p><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> generates multiple calls to <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> internally, and has all the same capabilities such support for async functions, returning a Promise, and the <code class="language-plaintext highlighter-rouge">assert</code> argument.</p>
+<p><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> generates multiple calls to <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>, and provides the same features, such as support for async functions and test context.</p>
 
 <p>Each test case is passed one item from your dataset.</p>
 
 <p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, and <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">if</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.if.each</code> respectively.</p>
+
+<h3 id="reduce-code-duplication">Reduce code duplication</h3>
+
+<p>You can use <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> to write a single test, run once for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.</p>
+
+<p>This tends to cut unintentional, unimportant, or undocumented differences. That in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be <em>intentional</em> and <em>unintentional</em> differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The <em>unintentional</em> difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is “safe” to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?</p>
+
+<p>By writing your tests with <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code>, you write shared code only once. Any intentional differences are clearly visible through a declarative dataset. By writing it only once, it also encourages writing of code comments as you won’t have to duplicate and maintain these across multiple tests.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Without QUnit.test.each()</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">mockPage1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="dl">'</span>
+  <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockUser1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
+  <span class="p">};</span>
+  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage1</span><span class="p">,</span> <span class="nx">mockUser1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage1</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="se">\n\n</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">mockUser2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1963-06-09T03:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
+  <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockPage2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="p">};</span>
+  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage2</span><span class="p">,</span> <span class="nx">mockUser2</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage2</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Compared to:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="c1">// Expect an empty line between existing content and appendage.</span>
+  <span class="dl">'</span><span class="s1">existing content</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Foo.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Foo.</span><span class="se">\n\n</span><span class="s1">Added text.</span><span class="dl">'</span><span class="p">],</span>
+
+  <span class="c1">// No extra lines if the page started empty.</span>
+  <span class="dl">'</span><span class="s1">empty content</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">]</span>
+
+<span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">appendage</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">mockPage</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="nx">input</span>
+  <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockUser</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
+    <span class="c1">// Roles are always lowercase</span>
+    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
+  <span class="p">};</span>
+  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage</span><span class="p">,</span> <span class="nx">mockUser</span><span class="p">,</span> <span class="nx">appendage</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="nx">expected</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
 <h2 id="changelog">Changelog</h2>
 
@@ -339,7 +405,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#data-provider">Data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li><li class="sidebar-item"><a href="#reduce-code-duplication">Reduce code duplication</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#data-provider">Data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div>
 </aside>
 
 </div>
