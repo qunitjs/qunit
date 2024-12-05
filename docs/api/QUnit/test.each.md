@@ -30,13 +30,81 @@ Add tests using a data provider.
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 | `data` (any) | Data item |
 
-Use this method to add multiple tests that are similar, but with different data passed in.
+Use this method to define many similar tests, with different data passed in.
 
-`QUnit.test.each()` generates multiple calls to [`QUnit.test()`](./test.md) internally, and has all the same capabilities such support for async functions, returning a Promise, and the `assert` argument.
+`QUnit.test.each()` generates multiple calls to [`QUnit.test()`](./test.md), and provides the same features, such as support for async functions and test context.
 
 Each test case is passed one item from your dataset.
 
 The [`only`](./test.only.md), [`todo`](./test.todo.md), [`skip`](./test.skip.md), and [`if`](./test.if.md) variants are also available, as `QUnit.test.only.each`, `QUnit.test.todo.each`, `QUnit.test.skip.each`, and `QUnit.test.if.each` respectively.
+
+### Reduce code duplication
+
+You can use `QUnit.test.each()` to write a single test, run once for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.
+
+This tends to cut unintentional, unimportant, or undocumented differences. That in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be _intentional_ and _unintentional_ differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The _unintentional_ difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is "safe" to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?
+
+By writing your tests with `QUnit.test.each()`, you write shared code only once. Any intentional differences are clearly visible through a declarative dataset. By writing it only once, it also encourages writing of code comments as you won’t have to duplicate and maintain these across multiple tests.
+
+```js
+// Without QUnit.test.each()
+
+QUnit.test('example', function (assert) {
+  const mockPage1 = {
+    title: 'Example',
+    lastModified: '2011-04-01T12:00:00Z',
+    content: 'Foo bar.'
+  };
+  const mockUser1 = {
+    name: 'Admin',
+    registered: '1991-10-18T12:00:00Z',
+    role: 'administrator'
+  };
+  APP.appendToPage(mockPage1, mockUser1, 'Added text here.');
+  assert.equal(mockPage1.content, 'Foo bar.\n\nAdded text here.');
+
+  const mockUser2 = {
+    name: 'root',
+    registered: '1963-06-09T03:00:00Z',
+    role: 'administrator'
+  };
+  const mockPage2 = {
+    title: 'Example',
+    lastModified: '2011-04-01T12:00:00Z',
+    content: ''
+  };
+  APP.appendToPage(mockPage2, mockUser2, 'Added text here.');
+  assert.equal(mockPage2.content, 'Added text here.');
+});
+```
+
+Compared to:
+
+```js
+QUnit.test.each('example', {
+  // Expect an empty line between existing content and appendage.
+  'existing content': ['Foo.', 'Added text.', 'Foo.\n\nAdded text.'],
+
+  // No extra lines if the page started empty.
+  'empty content': ['', 'Added text here.', 'Added text here.']
+
+}, function (assert, [input, appendage, expected]) {
+  const mockPage = {
+    title: 'Example',
+    lastModified: '2011-04-01T12:00:00Z',
+    content: input
+  };
+  const mockUser = {
+    name: 'Admin',
+    registered: '1991-10-18T12:00:00Z',
+    // Roles are always lowercase
+    role: 'administrator'
+  };
+  APP.appendToPage(mockPage, mockUser, appendage);
+
+  assert.equal(mockPage.content, expected);
+});
+```
 
 ## Changelog
 
