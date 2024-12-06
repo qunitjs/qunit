@@ -13,7 +13,6 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)
 * CLI: Add `.mjs` and `.cjs` to the default file extensions when reading a test directory.
 * CLI: Add stacktrace cleaning by omitting or greying out internal QUnit or Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
-* CLI: Add `--seed=true` to generate a new seed. [#1691](https://github.com/qunitjs/qunit/issues/1691)
 * HTML Reporter: Enable UI rendering before DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
 * HTML Reporter: Add support for displaying early errors in the UI. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 
@@ -37,16 +36,11 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Fixed
 
-* CLI: Fix confusing `expected: undefined` under error messages in TAP reporter. [#1794](https://github.com/qunitjs/qunit/pull/1794)
 * CLI: Fix confusing "No tests" message after an early uncaught error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
-* CLI: Fix confusing `--seed` eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
-* CLI: Fix support for strict TAP parsers by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
 * Core: Fix internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
 * Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
-* HTML Reporter: Fix `<label>` to wrap `<select>` for multi-value urlConfig item. [#1773](https://github.com/qunitjs/qunit/pull/1773)
-* HTML Reporter: Fix broken "Rerun without max depth" link. [91db92dbc5](https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289)
 * HTML Reporter: Fix unexpected pointer cursor on "Source:" label. [52bfa69645](https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249)
 * HTML Reporter: Faster "Hide passed" toggling on large test suites. [a729421411](https://github.com/qunitjs/qunit/commit/a7294214116ab5ec0e111b37c00cc7e2c16b4e1b)
 * HTML Reporter: Avoid HTML Reporter overhead when no [`id=qunit` element](https://qunitjs.com/browser/) exists. [#1711](https://github.com/qunitjs/qunit/issues/1711)
@@ -63,6 +57,17 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
+
+2.23.1 / 2024-12-06
+==================
+
+### Fixed
+
+* CLI: Fix support for strict TAP parsers by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
+* CLI: Fix confusing `--seed` eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
+* CLI: Remove confusing `expected: undefined` under error messages in TAP reporter. [#1794](https://github.com/qunitjs/qunit/pull/1794)
+* HTML Reporter: Fix broken "Rerun without max depth" link. [da0c59e101](https://github.com/qunitjs/qunit/commit/da0c59e1016685ecd2b813bba914d33170e7bf98) (see also [91db92dbc5](https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289), [73c03cf277](https://github.com/qunitjs/qunit/commit/73c03cf27745e179396a6d7c9af011a20d3b9082))
+* HTML Reporter: Fix `<label>` to wrap `<select>` for multi-value urlConfig item. [#1773](https://github.com/qunitjs/qunit/pull/1773)
 
 2.23.0 / 2024-12-03
 ==================

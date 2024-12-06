@@ -161,9 +161,6 @@ export default (function () {
     join: join,
     depth: 1,
 
-    /**
-     * @deprecated since 3.0.0, use QUnit.config.maxDepth instead.
-     */
     get maxDepth () {
       return config.maxDepth;
     },
