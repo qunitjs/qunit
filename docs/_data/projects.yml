@@ -35,7 +35,7 @@ orgs:
         href: https://github.com/discourse/discourse-subscriptions
 
   - name: DocumentCloud
-    href: https://www.documentcloud.org/opensource
+    href: https://www.muckrock.com/news/archives/2016/nov/29/muckrock-goes-open-source/
     sub:
       - name: Underscore.js
         href: https://github.com/jashkenas/underscore
