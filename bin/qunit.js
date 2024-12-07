@@ -38,7 +38,7 @@ program
   )
   .option('--seed <value>',
     'specify a seed to enable randomized ordering of tests.\n'
-    + 'set to "true" to generate a new seed.'
+    + 'set to "true" to generate a new random seed.'
   )
   .option('-w, --watch', 'watch files for changes and re-run the test suite')
   .parse(process.argv);

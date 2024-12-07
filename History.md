@@ -63,8 +63,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Fixed
 
-* CLI: Fix support for strict TAP parsers by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
-* CLI: Fix confusing `--seed` eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
+* CLI: Fix support for strict [TAP parsers](https://qunitjs.com/api/config/reporters/#tap) by limiting colors to test names. [#1801](https://github.com/qunitjs/qunit/pull/1801)
+* CLI: Fix confusing [`--seed` option](https://qunitjs.com/api/config/seed/) eating the file argument. [#1691](https://github.com/qunitjs/qunit/issues/1691)
 * CLI: Remove confusing `expected: undefined` under error messages in TAP reporter. [#1794](https://github.com/qunitjs/qunit/pull/1794)
 * HTML Reporter: Fix broken "Rerun without max depth" link. [da0c59e101](https://github.com/qunitjs/qunit/commit/da0c59e1016685ecd2b813bba914d33170e7bf98) (see also [91db92dbc5](https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289), [73c03cf277](https://github.com/qunitjs/qunit/commit/73c03cf27745e179396a6d7c9af011a20d3b9082))
 * HTML Reporter: Fix `<label>` to wrap `<select>` for multi-value urlConfig item. [#1773](https://github.com/qunitjs/qunit/pull/1773)
@@ -741,7 +741,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Reintroduce `QUnit.config.module`.
 * Core: Stop splitting URL parameter values by commas.
 * Core: New `moduleId`-based filtering.
-* Core: Support running tests in pseudo-random order.
+* Core: Introduce `QUnit.config.seed` for running tests in pseudo-random order.
 * Dump: Fix asymmetrical function dump argument spacing.
 * HTML Reporter: Fix escaping of diffs.
 * HTML Reporter: Add message explaining missing diff.

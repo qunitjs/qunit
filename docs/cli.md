@@ -104,7 +104,8 @@ Options:
   -m, --module <name>    run only the specified module
   -r, --reporter [name]  specify the reporter to use
   --require <module>     specify a module or script to include before running any tests
-  --seed [value]         specify a seed to re-order your tests
+  --seed <value>         specify a seed to enable randomized ordering of tests.
+                         set to "true" to generate a new random seed.
   -w, --watch            watch files for changes and re-run the test suite
   -h, --help             display help for command
 ```
