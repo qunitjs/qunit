@@ -94,13 +94,40 @@ This option is also available as <a href="/cli/">CLI option</a>, and as URL quer
 
 </p>
 
-<p>When set to boolean true, or a string, QUnit will run tests in a <a href="https://en.wikipedia.org/wiki/Random_seed">seeded-random order</a>.</p>
-
-<p>The provided string will be used as the seed in a pseudo-random number generator to ensure that results are reproducible. The randomization will also respect the <a href="/api/config/reorder/">reorder</a> option if enabled and re-run failed tests first without randomizing them.</p>
+<p>When enabled QUnit will run tests in a <a href="https://en.wikipedia.org/wiki/Random_seed">seeded-random order</a>.</p>
 
 <p>Randomly ordering your tests can help identify non-atomic tests which either depend on a previous test or are leaking state to subsequent tests.</p>
 
-<p>If <code class="language-plaintext highlighter-rouge">seed</code> is boolean true (or set as URL query parameter without a value), then QUnit will generate on-demand a new random value to use as seed. You can then read the seed from <code class="language-plaintext highlighter-rouge">QUnit.config.seed</code> at runtime, and use it to reproduce the same test sequence later.</p>
+<p>The provided string will be used as the seed in a pseudo-random number generator to ensure that results are reproducible. The randomization will respect the <a href="/api/config/reorder/">reorder</a> option if enabled, such that previously failed tests still run first instead of being shuffled.</p>
+
+<p>If <code class="language-plaintext highlighter-rouge">seed</code> is set to <code class="language-plaintext highlighter-rouge">true</code> (or add <code class="language-plaintext highlighter-rouge">?seed</code> to the URL, without any value), then QUnit will generate a new random seed every time you run the tests. To reproduce a specific random sequence, access the seed from <code class="language-plaintext highlighter-rouge">QUnit.config.seed</code> via the console.</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.23.1">QUnit 2.23.1</a></td>
+      <td>Add support for CLI <code class="language-plaintext highlighter-rouge">--seed=true</code>, URL <code class="language-plaintext highlighter-rouge">?seed=true</code>, and <a href="/api/config/#preconfiguration">flat preconfig</a> <code class="language-plaintext highlighter-rouge">qunit_config_seed=true</code>.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.0">QUnit 2.21.0</a></td>
+      <td>Introduce <a href="/api/config/#preconfiguration">flat preconfig</a>, including <code class="language-plaintext highlighter-rouge">qunit_config_seed=&lt;value&gt;</code>.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.3.0">QUnit 2.3.0</a></td>
+      <td>Introduce <a href="/cli/">QUnit CLI</a>, including <code class="language-plaintext highlighter-rouge">--seed &lt;value&gt;</code>.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.1.0">QUnit 2.1.0</a></td>
+      <td>Introduce <a href="/api/config/#preconfiguration">object preconfig</a>, including <code class="language-plaintext highlighter-rouge">QUnit.config.seed = true</code>.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/1.23.0">QUnit 1.23.0</a></td>
+      <td>Introduce <code class="language-plaintext highlighter-rouge">QUnit.config.seed</code>, with <code class="language-plaintext highlighter-rouge">?seed</code> as way to generate a new random seed.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="see-also">See also</h2>
 
@@ -183,7 +210,7 @@ This option is also available as <a href="/cli/">CLI option</a>, and as URL quer
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li></ol></div>
 </aside>
 
 </div>
