@@ -980,11 +980,6 @@ export default class HtmlReporter {
         }
       }
     }
-    if (status !== 'skipped') {
-      DOM.on(testTitle, 'click', function () {
-        DOM.toggleClass(assertList, 'qunit-collapsed');
-      });
-    }
 
     let good = details.passed;
     let bad = details.failed;
@@ -999,13 +994,17 @@ export default class HtmlReporter {
     if (status === 'skipped') {
       DOM.addClass(testItem, 'skipped');
 
-      let skipped = document.createElement('em');
-      skipped.className = 'qunit-skipped-label';
-      skipped.textContent = 'skipped';
-      testItem.insertBefore(skipped, testTitle);
+      const skippedLabel = document.createElement('em');
+      skippedLabel.className = 'qunit-skipped-label';
+      skippedLabel.textContent = 'skipped';
+      testItem.insertBefore(skippedLabel, testTitle);
       testItem.insertBefore(document.createTextNode(' '), testTitle);
     } else {
       DOM.addClass(testItem, testPassed ? 'pass' : 'fail');
+
+      DOM.on(testTitle, 'click', function () {
+        DOM.toggleClass(assertList, 'qunit-collapsed');
+      });
 
       if (details.todo) {
         // Add label both for status=todo (passing) and for status=failed on a todo test.
