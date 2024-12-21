@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QUnit</title>
+  <link rel="stylesheet" href="../src/core/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  QUnit.config.collapse = false;
+  QUnit.test('apple', function (assert) {
+    assert.true(true, 'stem');
+    assert.true(true, 'skin');
+  });
+  QUnit.test('banana', function (assert) {
+    assert.true(true, 'foo');
+    var sentence = 'This is actual.';
+    assert.equal(sentence, 'This is expected.', 'example sentence');
+    assert.true(true, 'bar');
+    assert.true(true, 'baz');
+  });
+  QUnit.test('sauerkraut', function (assert) {
+    assert.true(true, 'acid rock');
+    assert.true(true, 'kraut rock');
+  });
+  QUnit.test.todo('Käsesuppe', function (assert) {
+    assert.true(true, 'foo');
+    var sentence = 'This is actual.';
+    assert.equal(sentence, 'This is expected.', 'example sentence');
+    assert.true(true, 'bar');
+    assert.true(true, 'baz');
+  });
+  QUnit.test('dampfnudel', function (assert) {
+    assert.true(true, 'stream');
+    assert.true(true, 'bun');
+  });
+  QUnit.test.skip('Kassler');
+  QUnit.test('pumpernickel', function (assert) {
+    assert.true(true, 'stream');
+    assert.true(true, 'bun');
+  });
+  </script>
+</body>
+</html>
