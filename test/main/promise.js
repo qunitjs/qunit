@@ -1,3 +1,4 @@
+// Support IE 9: Promise not supported.
 // Support SpiderMonkey: setTimeout is not supported, but native Promise is.
 var defer = typeof setTimeout !== 'undefined'
   // eslint-disable-next-line no-undef

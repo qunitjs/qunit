@@ -47,9 +47,17 @@ const DOM = {
     }
 
     // Trim for prettiness
-    elem.className = set.trim();
+    elem.className = trim(set);
   }
 };
+
+function trim (string) {
+  if (typeof string.trim === 'function') {
+    return string.trim();
+  } else {
+    return string.replace(/^\s+|\s+$/g, '');
+  }
+}
 
 function stripHtml (string) {
   // Strip tags, html entity and whitespaces
@@ -177,7 +185,7 @@ export default class HtmlReporter {
   onFilterSubmit (ev) {
     // Trim potential accidental whitespace so that QUnit doesn't throw an error about no tests matching the filter.
     const filterInputElem = this.element.querySelector('#qunit-filter-input');
-    filterInputElem.value = filterInputElem.value.trim();
+    filterInputElem.value = trim(filterInputElem.value);
 
     this.applyUrlParams();
 

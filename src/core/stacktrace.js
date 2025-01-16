@@ -36,7 +36,7 @@ function qunitFileName () {
   let error = new Error();
   if (!error.stack) {
     // Copy of sourceFromStacktrace() to avoid circular dependency
-    // Support: IE 11
+    // Support: IE 9-11
     try {
       throw error;
     } catch (err) {
@@ -83,7 +83,7 @@ export function annotateStacktrace (stack, formatInternal, eToString = null) {
   let initialInternal = true;
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[i];
-    const isInternal = (frame.indexOf(fileName) !== -1 || frame.indexOf('node:internal/') !== -1);
+    const isInternal = ((fileName && frame.indexOf(fileName) !== -1) || frame.indexOf('node:internal/') !== -1);
     if (!isInternal) {
       initialInternal = false;
     }
@@ -127,7 +127,7 @@ export function extractStacktrace (e, offset) {
 export function sourceFromStacktrace (offset) {
   let error = new Error();
 
-  // Support: IE 11, iOS 7
+  // Support: IE 9-11, iOS 7
   // Not all browsers generate the `stack` property for `new Error()`
   // See also https://github.com/qunitjs/qunit/issues/636
   if (!error.stack) {
