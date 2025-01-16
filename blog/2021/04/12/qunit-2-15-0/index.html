@@ -16,24 +16,6 @@
     <input type="hidden" name="sites" value="qunitjs.com">
 </form>
 </typesense-minibar>
-<script type="module">
-/* global Response, URL */
-const parent = Response.prototype.json;
-Response.prototype.json = function () {
-  return parent.call(this).then(function (obj) {
-    if (obj && obj.grouped_hits) {
-      for (const group of obj.grouped_hits) {
-        for (const hit of group.hits) {
-          // Render results with a URL relative to localhost,
-          // by replacing "https://production.example/path" with "/path"
-          hit.document.url = new URL(hit.document.url).pathname;
-        }
-      }
-    }
-    return obj;
-  });
-};
-</script>
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
@@ -87,7 +69,7 @@ Response.prototype.json = function () {
 <div class="content" role="main">
 <article>
 	<header>
-		<h1>QUnit 2.15.0 Released</h1><p class="post-meta byline">Posted on <a href="/blog/2021/04/12/qunit-2-15-0/" rel="bookmark"><time itemprop="pubdate" datetime="2021-04-12T00:00:00+00:00">12 April 2021</time></a> by <span class="vcard"><span class="fn n" rel="author"><a href="/author/krinkle">Timo Tijhof</a></span></span></p>
+		<h1>QUnit 2.15.0 Released</h1><p class="post-meta byline">Posted on <a href="/blog/2021/04/12/qunit-2-15-0/" rel="bookmark"><time itemprop="pubdate" datetime="2021-04-12T00:00:00+00:00">12 April 2021</time></a> by <span class="vcard"><span class="fn n" rel="author"><a href="/blog/author/krinkle/">Timo Tijhof</a></span></span></p>
 	</header>
 	<h2 id="changelog">Changelog</h2>
 
@@ -132,13 +114,13 @@ Response.prototype.json = function () {
 
 	<h4 class="sidebar-title-open">Recent posts</h4>
 	<ul class="sidebar-list"><li class="sidebar-item">
-		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1 Bug fixes</a>
+		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1: Bug fixes</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/12/03/qunit-2-23-0/">QUnit 2.23.0: Automatic labels</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/08/18/qunit-2-22-0/">QUnit 2.22.0: QUnit.test.if</a>
 	</li><li class="sidebar-item">
-		<a href="/blog/2024/07/20/qunit-2-21-1/">QUnit 2.21.1 Bug fixes</a>
+		<a href="/blog/2024/07/20/qunit-2-21-1/">QUnit 2.21.1: Bug fixes</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/05/29/qunit-2-21-0/">QUnit 2.21.0: assert.closeTo</a>
 	</li></ul>

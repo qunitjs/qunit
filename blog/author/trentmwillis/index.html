@@ -5,8 +5,8 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=29980d90" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>Jörn Zaefferer | QUnit</title>
-<meta property="og:title" content="Jörn Zaefferer"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="noindex,follow"><meta name="docsearch:amethyst_pagetype_navigation" content="1">
+<title>Trent Willis | QUnit</title>
+<meta property="og:title" content="Trent Willis"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="noindex,follow"><meta name="docsearch:amethyst_pagetype_navigation" content="1">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -16,24 +16,6 @@
     <input type="hidden" name="sites" value="qunitjs.com">
 </form>
 </typesense-minibar>
-<script type="module">
-/* global Response, URL */
-const parent = Response.prototype.json;
-Response.prototype.json = function () {
-  return parent.call(this).then(function (obj) {
-    if (obj && obj.grouped_hits) {
-      for (const group of obj.grouped_hits) {
-        for (const hit of group.hits) {
-          // Render results with a URL relative to localhost,
-          // by replacing "https://production.example/path" with "/path"
-          hit.document.url = new URL(hit.document.url).pathname;
-        }
-      }
-    }
-    return obj;
-  });
-};
-</script>
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
@@ -84,9 +66,9 @@ Response.prototype.json = function () {
         </div>
     </header>
     <div class="main main--columns wrapper"><div class="posts content">
-	<h1>Author: Jörn Zaefferer</h1>
+	<h1>Author: Trent Willis</h1>
 	<ul>
-	<li><a href="/blog/2015/04/03/qunit-1-18-0/">QUnit 1.18.0 Released</a>, <time datetime="2015-04-03T00:00:00+00:00">April 2015</time></li><li><a href="/blog/2015/01/19/qunit-1-17-0/">QUnit 1.17.0 Released</a>, <time datetime="2015-01-19T00:00:00+00:00">January 2015</time></li><li><a href="/blog/2014/12/03/qunit-1-16-0/">QUnit 1.16.0: Async testing</a>, <time datetime="2014-12-03T00:00:00+00:00">December 2014</time></li><li><a href="/blog/2014/08/08/qunit-1-15-0/">QUnit 1.15.0 Released</a>, <time datetime="2014-08-08T00:00:00+00:00">August 2014</time></li><li><a href="/blog/2014/01/31/qunit-1-14-0/">QUnit 1.14.0 Released</a>, <time datetime="2014-01-31T00:00:00+00:00">January 2014</time></li><li><a href="/blog/2014/01/04/qunit-1-13-0/">QUnit 1.13.0 Released</a>, <time datetime="2014-01-04T00:00:00+00:00">January 2014</time></li><li><a href="/blog/2013/01/20/qunit-1-11-0/">QUnit 1.11.0: New assert.propEqual</a>, <time datetime="2013-01-20T00:00:00+00:00">January 2013</time></li><li><a href="/blog/2012/08/30/qunit-1-10-0/">QUnit 1.10.0 Released</a>, <time datetime="2012-08-30T00:00:00+00:00">August 2012</time></li><li><a href="/blog/2012/07/11/qunit-1-9-0/">QUnit 1.9.0 Released</a>, <time datetime="2012-07-11T00:00:00+00:00">July 2012</time></li><li><a href="/blog/2012/06/14/qunit-1-8-0/">QUnit 1.8.0 Released</a>, <time datetime="2012-06-14T00:00:00+00:00">June 2012</time></li><li><a href="/blog/2012/06/07/qunit-1-7-0/">QUnit 1.7.0 Released</a>, <time datetime="2012-06-07T00:00:00+00:00">June 2012</time></li><li><a href="/blog/2012/05/04/qunit-1-6-0/">QUnit 1.6.0 Released</a>, <time datetime="2012-05-04T00:00:00+00:00">May 2012</time></li><li><a href="/blog/2012/04/04/qunit-1-5-0/">QUnit 1.5.0 Released</a>, <time datetime="2012-04-04T00:00:00+00:00">April 2012</time></li><li><a href="/blog/2012/03/10/qunit-1-4-0/">QUnit 1.4.0 Released</a>, <time datetime="2012-03-10T00:00:00+00:00">March 2012</time></li><li><a href="/blog/2012/02/26/qunit-1-3-0/">QUnit 1.3.0: JUnit addon and new themes</a>, <time datetime="2012-02-26T00:00:00+00:00">February 2012</time></li><li><a href="/blog/2011/11/24/qunit-1-2-0/">QUnit 1.2.0 Released</a>, <time datetime="2011-11-24T00:00:00+00:00">November 2011</time></li><li><a href="/blog/2011/10/11/qunit-1-1-0/">QUnit 1.1.0 Released</a>, <time datetime="2011-10-11T00:00:00+00:00">October 2011</time></li><li><a href="/blog/2011/10/06/qunit-1-0-0/">QUnit 1.0.0 Released</a>, <time datetime="2011-10-06T00:00:00+00:00">October 2011</time></li></ul>
+	<li><a href="/blog/2020/05/02/qunit-2-10-0/">QUnit 2.10.0 Released</a>, <time datetime="2020-05-02T00:00:00+00:00">May 2020</time></li><li><a href="/blog/2019/10/08/qunit-2-9-3/">QUnit 2.9.3: Faster CLI startup</a>, <time datetime="2019-10-08T00:00:00+00:00">October 2019</time></li><li><a href="/blog/2019/02/21/qunit-2-9-2/">QUnit 2.9.2 Released</a>, <time datetime="2019-02-21T00:00:00+00:00">February 2019</time></li><li><a href="/blog/2019/01/07/qunit-2-9-1/">QUnit 2.9.1 Released</a>, <time datetime="2019-01-07T00:00:00+00:00">January 2019</time></li><li><a href="/blog/2018/11/02/qunit-2-8-0/">QUnit 2.8.0: Async events</a>, <time datetime="2018-11-02T00:00:00+00:00">November 2018</time></li><li><a href="/blog/2018/10/17/qunit-2-7-1/">QUnit 2.7.1 Released</a>, <time datetime="2018-10-17T00:00:00+00:00">October 2018</time></li><li><a href="/blog/2018/10/10/qunit-2-7-0/">QUnit 2.7.0 Released</a>, <time datetime="2018-10-10T00:00:00+00:00">October 2018</time></li><li><a href="/blog/2018/08/19/qunit-2-6-2/">QUnit 2.6.2 Released</a>, <time datetime="2018-08-19T00:00:00+00:00">August 2018</time></li><li><a href="/blog/2018/05/15/qunit-2-6-1/">QUnit 2.6.1 Released</a>, <time datetime="2018-05-15T00:00:00+00:00">May 2018</time></li><li><a href="/blog/2018/03/26/qunit-2-6-0/">QUnit 2.6.0 Released</a>, <time datetime="2018-03-26T00:00:00+00:00">March 2018</time></li><li><a href="/blog/2018/02/27/qunit-2-5-1/">QUnit 2.5.1 Released</a>, <time datetime="2018-02-27T00:00:00+00:00">February 2018</time></li><li><a href="/blog/2018/01/09/qunit-2-5-0/">QUnit 2.5.0: assert.rejects</a>, <time datetime="2018-01-09T00:00:00+00:00">January 2018</time></li><li><a href="/blog/2017/10/21/qunit-2-4-1/">QUnit 2.4.1 Released</a>, <time datetime="2017-10-21T00:00:00+00:00">October 2017</time></li><li><a href="/blog/2017/07/08/qunit-2-4-0/">QUnit 2.4.0: assert.timeout</a>, <time datetime="2017-07-08T00:00:00+00:00">July 2017</time></li><li><a href="/blog/2017/06/02/qunit-2-3-3/">QUnit 2.3.3: Web Workers support</a>, <time datetime="2017-06-02T00:00:00+00:00">June 2017</time></li><li><a href="/blog/2017/04/17/qunit-2-3-2/">QUnit 2.3.2 Released</a>, <time datetime="2017-04-17T00:00:00+00:00">April 2017</time></li><li><a href="/blog/2017/04/10/qunit-2-3-1/">QUnit 2.3.1 Released</a>, <time datetime="2017-04-10T00:00:00+00:00">April 2017</time></li><li><a href="/blog/2017/03/29/qunit-2-3-0/">QUnit 2.3.0: QUnit CLI</a>, <time datetime="2017-03-29T00:00:00+00:00">March 2017</time></li><li><a href="/blog/2017/03/19/qunit-2-2-1/">QUnit 2.2.1 Released</a>, <time datetime="2017-03-19T00:00:00+00:00">March 2017</time></li><li><a href="/blog/2017/03/11/qunit-2-2-0/">QUnit 2.2.0: assert.step &amp; New event emitter</a>, <time datetime="2017-03-11T00:00:00+00:00">March 2017</time></li><li><a href="/blog/2016/07/23/qunit-2-0-1/">QUnit 2.0.1 Released</a>, <time datetime="2016-07-23T00:00:00+00:00">July 2016</time></li></ul>
 </div>
 <aside class="sidebar" role="complementary">
 
@@ -100,13 +82,13 @@ Response.prototype.json = function () {
 
 	<h4 class="sidebar-title-open">Recent posts</h4>
 	<ul class="sidebar-list"><li class="sidebar-item">
-		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1 Bug fixes</a>
+		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1: Bug fixes</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/12/03/qunit-2-23-0/">QUnit 2.23.0: Automatic labels</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/08/18/qunit-2-22-0/">QUnit 2.22.0: QUnit.test.if</a>
 	</li><li class="sidebar-item">
-		<a href="/blog/2024/07/20/qunit-2-21-1/">QUnit 2.21.1 Bug fixes</a>
+		<a href="/blog/2024/07/20/qunit-2-21-1/">QUnit 2.21.1: Bug fixes</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2024/05/29/qunit-2-21-0/">QUnit 2.21.0: assert.closeTo</a>
 	</li></ul>
