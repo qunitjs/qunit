@@ -1,1 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-12-21T18:24:01+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-01-16T22:41:20+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.23.1 Bug fixes</title><link href="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/" rel="alternate" type="text/html" title="QUnit 2.23.1 Bug fixes" /><published>2024-12-06T00:00:00+00:00</published><updated>2024-12-06T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/12/06/qunit-2-23-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>CLI: Fix support for strict <a href="https://qunitjs.com/api/config/reporters/#tap">TAP parsers</a> by limiting colors to test names. <a href="https://github.com/qunitjs/qunit/pull/1801">#1801</a></li>
+  <li>CLI: Fix confusing <a href="https://qunitjs.com/api/config/seed/"><code class="language-plaintext highlighter-rouge">--seed</code> option</a> eating the file argument. <a href="https://github.com/qunitjs/qunit/issues/1691">#1691</a></li>
+  <li>CLI: Remove confusing <code class="language-plaintext highlighter-rouge">expected: undefined</code> under error messages in TAP reporter. <a href="https://github.com/qunitjs/qunit/pull/1794">#1794</a></li>
+  <li>HTML Reporter: Fix broken “Rerun without max depth” link. <a href="https://github.com/qunitjs/qunit/commit/da0c59e1016685ecd2b813bba914d33170e7bf98">da0c59e101</a> (see also <a href="https://github.com/qunitjs/qunit/commit/91db92dbc50bbbc41c5060a27e7aafd4e073e289">91db92dbc5</a>, <a href="https://github.com/qunitjs/qunit/commit/73c03cf27745e179396a6d7c9af011a20d3b9082">73c03cf277</a>)</li>
+  <li>HTML Reporter: Fix <code class="language-plaintext highlighter-rouge">&lt;label&gt;</code> to wrap <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> for multi-value urlConfig item. <a href="https://github.com/qunitjs/qunit/pull/1773">#1773</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.23.1">Git tag: 2.23.1</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.23.0: Automatic labels</title><link href="https://qunitjs.com/blog/2024/12/03/qunit-2-23-0/" rel="alternate" type="text/html" title="QUnit 2.23.0: Automatic labels" /><published>2024-12-03T00:00:00+00:00</published><updated>2024-12-03T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/12/03/qunit-2-23-0</id><content type="html" xml:base="https://qunitjs.com/blog/2024/12/03/qunit-2-23-0/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>Core: Add automatic labels in <a href="https://qunitjs.com/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> to simple array values. <a href="https://github.com/qunitjs/qunit/issues/1733">#1733</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.23.0">Git tag: 2.23.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.22.0: QUnit.test.if</title><link href="https://qunitjs.com/blog/2024/08/18/qunit-2-22-0/" rel="alternate" type="text/html" title="QUnit 2.22.0: QUnit.test.if" /><published>2024-08-18T00:00:00+00:00</published><updated>2024-08-18T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/08/18/qunit-2-22-0</id><content type="html" xml:base="https://qunitjs.com/blog/2024/08/18/qunit-2-22-0/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>Core: Add <a href="https://qunitjs.com/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a> and <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/pull/1772">#1772</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.22.0">Git tag: 2.22.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.21.1 Bug fixes</title><link href="https://qunitjs.com/blog/2024/07/20/qunit-2-21-1/" rel="alternate" type="text/html" title="QUnit 2.21.1 Bug fixes" /><published>2024-07-20T00:00:00+00:00</published><updated>2024-07-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/07/20/qunit-2-21-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/07/20/qunit-2-21-1/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="deprecated">Deprecated</h3>
+
+<ul>
+  <li>Assert: Add notice about upcoming change in how <a href="https://qunitjs.com/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect()</code></a> counts steps for <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code>. <a href="https://github.com/qunitjs/qunit/issues/1226">#1226</a></li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Core: Fix missing second frame in <code class="language-plaintext highlighter-rouge">QUnit.stack()</code> in Safari. <a href="https://github.com/qunitjs/qunit/pull/1776">#1776</a></li>
+  <li>Core: Fix stacktrace cleaner to also support clean traces on URLs with host ports. <a href="https://github.com/qunitjs/qunit/issues/1769">#1769</a></li>
+  <li>HTML Reporter: Fix reversed order after clicking “Hide passed”. <a href="https://github.com/qunitjs/qunit/pull/1763">#1763</a></li>
+  <li>HTML Reporter: Fix encoding of label for urlConfig multi-value item.</li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.1">Git tag: 2.21.1</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.21.0: assert.closeTo</title><link href="https://qunitjs.com/blog/2024/05/29/qunit-2-21-0/" rel="alternate" type="text/html" title="QUnit 2.21.0: assert.closeTo" /><published>2024-05-29T00:00:00+00:00</published><updated>2024-05-29T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/05/29/qunit-2-21-0</id><content type="html" xml:base="https://qunitjs.com/blog/2024/05/29/qunit-2-21-0/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>Assert: Add <a href="https://qunitjs.com/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1735">#1735</a></li>
+  <li>Core: Add support for <a href="https://qunitjs.com/api/config/">flat preconfig</a> via environment/global variables. (Timo Tijhof)</li>
+</ul>
+
+<h3 id="deprecated">Deprecated</h3>
+
+<ul>
+  <li>Core: Deprecate <code class="language-plaintext highlighter-rouge">QUnit.load()</code> and document migration path at <a href="https://qunitjs.com/api/QUnit/load/">https://qunitjs.com/api/QUnit/load/</a>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/pull/1743">#1743</a></li>
+  <li>Core: Deprecate unset <a href="https://qunitjs.com/api/config/testTimeout/">testTimeout</a> for tests taking longer than 3 seconds. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1483">#1483</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.0">Git tag: 2.21.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.20.1 Released</title><link href="https://qunitjs.com/blog/2024/02/15/qunit-2-20-1/" rel="alternate" type="text/html" title="QUnit 2.20.1 Released" /><published>2024-02-15T00:00:00+00:00</published><updated>2024-02-15T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/02/15/qunit-2-20-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/02/15/qunit-2-20-1/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Core: Fix compatibility with <code class="language-plaintext highlighter-rouge">sinon.useFakeTimers</code> in IE 10 and IE 11. (Timmy Willison) <a href="https://github.com/qunitjs/qunit/pull/1738">#1738</a></li>
+  <li>Core: Fix hanging <code class="language-plaintext highlighter-rouge">assert.async()</code> after <code class="language-plaintext highlighter-rouge">assert.timeout()</code>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1705">#1705</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.1">Git tag: 2.20.1</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.20.0 Released</title><link href="https://qunitjs.com/blog/2023/09/23/qunit-2-20-0/" rel="alternate" type="text/html" title="QUnit 2.20.0 Released" /><published>2023-09-23T00:00:00+00:00</published><updated>2023-09-23T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2023/09/23/qunit-2-20-0</id><content type="html" xml:base="https://qunitjs.com/blog/2023/09/23/qunit-2-20-0/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>Core: Add <code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/pull/1714">#1714</a></li>
+</ul>
+
+<h3 id="changed">Changed</h3>
+
+<ul>
+  <li>Assert: Add type check for <code class="language-plaintext highlighter-rouge">assert.async()</code> parameter. (Zixin Yin) <a href="https://github.com/qunitjs/qunit/issues/1721">#1721</a></li>
+  <li>HTML Reporter: Remove units for 0 values in qunit.css. (Hareesh) <a href="https://github.com/qunitjs/qunit/pull/1715">#1715</a></li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Core: Faster <code class="language-plaintext highlighter-rouge">inArray</code> by using Array.prototype.includes when possible. (Izel Nakri)</li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.0">Git tag: 2.20.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.19.4 Released</title><link href="https://qunitjs.com/blog/2023/01/23/qunit-2-19-4/" rel="alternate" type="text/html" title="QUnit 2.19.4 Released" /><published>2023-01-23T00:00:00+00:00</published><updated>2023-01-23T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2023/01/23/qunit-2-19-4</id><content type="html" xml:base="https://qunitjs.com/blog/2023/01/23/qunit-2-19-4/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Core: Fix memory leak via <code class="language-plaintext highlighter-rouge">config.timeoutHandler</code> from last async test. (Sergey Astapov)</li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.4">Git tag: 2.19.4</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.19.3 Released</title><link href="https://qunitjs.com/blog/2022/10/22/qunit-2-19-3/" rel="alternate" type="text/html" title="QUnit 2.19.3 Released" /><published>2022-10-22T00:00:00+00:00</published><updated>2022-10-22T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2022/10/22/qunit-2-19-3</id><content type="html" xml:base="https://qunitjs.com/blog/2022/10/22/qunit-2-19-3/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Assert: Restore how deepEqual treats imposter objects. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1706">#1706</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.3">Git tag: 2.19.3</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.19.2: Faster deepEqual</title><link href="https://qunitjs.com/blog/2022/10/17/qunit-2-19-2/" rel="alternate" type="text/html" title="QUnit 2.19.2: Faster deepEqual" /><published>2022-10-17T00:00:00+00:00</published><updated>2022-10-17T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2022/10/17/qunit-2-19-2</id><content type="html" xml:base="https://qunitjs.com/blog/2022/10/17/qunit-2-19-2/"><![CDATA[<h2 id="changelog">Changelog</h2>
+
+<h3 id="changed">Changed</h3>
+
+<ul>
+  <li>Core: Faster diffing for <code class="language-plaintext highlighter-rouge">config.noglobals</code> by refactoring slow mutations. (Izel Nakri) <a href="https://github.com/qunitjs/qunit/pull/1697">#1697</a></li>
+  <li>Assert: Improve performance of <code class="language-plaintext highlighter-rouge">assert.deepEqual()</code> and <code class="language-plaintext highlighter-rouge">QUnit.equiv()</code>. (Izel Nakri) <a href="https://github.com/qunitjs/qunit/pull/1700">#1700</a></li>
+  <li>Assert: Faster deepEqual for Map values by avoiding typeEquiv calls. (Timo Tijhof)</li>
+  <li>Assert: Faster deepEqual by reducing internal objectType checks. (Timo Tijhof)</li>
+  <li>Assert: Faster deepEqual by using re-assignment for internal pairs. (Timo Tijhof)</li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>Core: Fix inaccurate count in reporter output after re-run. <a href="https://github.com/qunitjs/qunit/issues/1687">#1687</a></li>
+  <li>CLI: Fix MaxListeners warning in long-running watch mode. <a href="https://github.com/qunitjs/qunit/issues/1692">#1692</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.2">Git tag: 2.19.2</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry></feed>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=29980d90" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit 2.14.0: SpiderMonkey support | QUnit</title>
+<meta property="og:title" content="QUnit 2.14.0: SpiderMonkey support"><meta name="description" content="Changelog"><meta property="og:description" content="Changelog"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image"><meta property="og:type" content="article"><meta property="article:published_time" content="2021-01-12T00:00:00+00:00"><meta name="author" content="Timo Tijhof">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><typesense-minibar data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true">
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+</typesense-minibar>
+<script type="module">
+/* global Response, URL */
+const parent = Response.prototype.json;
+Response.prototype.json = function () {
+  return parent.call(this).then(function (obj) {
+    if (obj && obj.grouped_hits) {
+      for (const group of obj.grouped_hits) {
+        for (const hit of group.hits) {
+          // Render results with a URL relative to localhost,
+          // by replacing "https://production.example/path" with "/path"
+          hit.document.url = new URL(hit.document.url).pathname;
+        }
+      }
+    }
+    return obj;
+  });
+};
+</script>
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">About</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('typesense-minibar');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+	<header>
+		<h1>QUnit 2.14.0: SpiderMonkey support</h1><p class="post-meta byline">Posted on <a href="/blog/2021/01/12/qunit-2-14-0/" rel="bookmark"><time itemprop="pubdate" datetime="2021-01-12T00:00:00+00:00">12 January 2021</time></a> by <span class="vcard"><span class="fn n" rel="author"><a href="/author/krinkle">Timo Tijhof</a></span></span></p>
+	</header>
+	<h2 id="changelog">Changelog</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>HTML Reporter: Use a fixed header with scrollable test results. (Bryan Crotaz) <a href="https://github.com/qunitjs/qunit/pull/1513">#1513</a></li>
+  <li>Core: Add official support for SpiderMonkey runtime. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1535">#1535</a></li>
+</ul>
+
+<h3 id="changed">Changed</h3>
+
+<ul>
+  <li>CLI: Update and re-audit <code class="language-plaintext highlighter-rouge">tiny-glob</code> and <code class="language-plaintext highlighter-rouge">node-watch</code>  dependencies. <a href="https://github.com/qunitjs/qunit/issues/1522">#1522</a>, <a href="https://github.com/qunitjs/qunit/issues/1524">#1524</a></li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>HTML Reporter: Set <code class="language-plaintext highlighter-rouge">main</code> and <code class="language-plaintext highlighter-rouge">navigation</code> ARIA roles. (Steve McClure) <a href="https://github.com/qunitjs/qunit/issues/1427">#1427</a></li>
+  <li>Core: Fix <code class="language-plaintext highlighter-rouge">QUnit.module.only</code> logic for unscoped modules. (Steve McClure) <a href="https://github.com/qunitjs/qunit/issues/1272">#1272</a></li>
+  <li>Assert: Fix <code class="language-plaintext highlighter-rouge">assert.timeout()</code> bug causing a non-async test to fail. <a href="https://github.com/qunitjs/qunit/issues/1539">#1539</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.14.0">Git tag: 2.14.0</a></li>
+</ul>
+
+</article></div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/blog/">QUnit Blog</a></h4>
+	
+
+	<h4 class="sidebar-title-open">Tags</h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/tag/release/">Release</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open">Recent posts</h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1 Bug fixes</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/12/03/qunit-2-23-0/">QUnit 2.23.0: Automatic labels</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/08/18/qunit-2-22-0/">QUnit 2.22.0: QUnit.test.if</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/07/20/qunit-2-21-1/">QUnit 2.21.1 Bug fixes</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/05/29/qunit-2-21-0/">QUnit 2.21.0: assert.closeTo</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open"><a href="/blog/archive/">Archives</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item"><a href="/blog/archive/#2024">2024</a></li><li class="sidebar-item"><a href="/blog/archive/#2023">2023</a></li><li class="sidebar-item"><a href="/blog/archive/#2022">2022</a></li><li class="sidebar-item"><a href="/blog/archive/#2021">2021</a></li><li class="sidebar-item"><a href="/blog/archive/#2020">2020</a></li><li class="sidebar-item"><a href="/blog/archive/#2019">2019</a></li><li class="sidebar-item"><a href="/blog/archive/#2018">2018</a></li><li class="sidebar-item"><a href="/blog/archive/#2017">2017</a></li><li class="sidebar-item"><a href="/blog/archive/#2016">2016</a></li><li class="sidebar-item"><a href="/blog/archive/#2015">2015</a></li><li class="sidebar-item"><a href="/blog/archive/#2014">2014</a></li><li class="sidebar-item"><a href="/blog/archive/#2013">2013</a></li><li class="sidebar-item"><a href="/blog/archive/#2012">2012</a></li><li class="sidebar-item"><a href="/blog/archive/#2011">2011</a></li></ul>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                
+                <a href="https://app.element.io/#/room/#qunitjs_qunit:gitter.im" target="_blank" rel="noopener">Chat</a>
+            </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/_posts/2021-01-12-qunit-2-14-0.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
+</html>

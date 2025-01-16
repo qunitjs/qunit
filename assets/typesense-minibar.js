@@ -1,4 +1,4 @@
-/*! https://github.com/jquery/typesense-minibar 1.3.2 */
+/*! https://github.com/jquery/typesense-minibar 1.3.4 */
 globalThis.tsminibar = function tsminibar (form, dataset = form.dataset) {
   const cache = new Map();
   const state = { query: '', cursor: -1, open: false, hits: [] };
@@ -41,7 +41,6 @@ globalThis.tsminibar = function tsminibar (form, dataset = form.dataset) {
     const query = state.query = input.value;
     if (!query) {
       state.hits = [];
-      state.cursor = -1;
       return close();
     }
     const hits = await search(query);
@@ -62,7 +61,10 @@ globalThis.tsminibar = function tsminibar (form, dataset = form.dataset) {
     if (!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
       if (e.code === 'ArrowDown') moveCursor(1);
       if (e.code === 'ArrowUp') moveCursor(-1);
-      if (e.code === 'Escape') close();
+      if (e.code === 'Escape') {
+        close();
+        input.blur();
+      }
       if (e.code === 'Enter') {
         const url = state.hits[state.cursor]?.url;
         if (url) location.href = url;
@@ -72,11 +74,12 @@ globalThis.tsminibar = function tsminibar (form, dataset = form.dataset) {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
   });
-  form.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 12 12" width="20" height="20" aria-hidden="true" class="tsmb-icon-close" style="display: none;"><path d="M9 3L3 9M3 3L9 9"/></svg>');
+  form.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 12 12" width="20" height="20" aria-hidden="true" tabindex="-1" class="tsmb-icon-close"><path d="M9 3L3 9M3 3L9 9"/></svg>');
   form.querySelector('.tsmb-icon-close').addEventListener('click', function () {
     input.value = '';
-    input.focus();
+    state.hits = [];
     close();
+    input.focus();
   });
   connect();
 
@@ -117,7 +120,7 @@ globalThis.tsminibar = function tsminibar (form, dataset = form.dataset) {
     let hits = cache.get(query);
     if (hits) {
       cache.delete(query);
-      cache.set(query, hits); // LRU
+      cache.set(query, hits);
       return hits;
     }
     searchParams.set('q', query);
