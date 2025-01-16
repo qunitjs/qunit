@@ -47,6 +47,7 @@ amethyst:
     height: 72
   edituri_base: https://github.com/qunitjs/qunit/blob/main/docs/
   release_base: https://github.com/qunitjs/qunit/releases/tag/
+  author_permalink: /blog/author/:author/
   mastodon: https://fosstodon.org/@qunit
   twitter: qunitjs
   github: qunitjs
