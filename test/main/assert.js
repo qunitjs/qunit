@@ -504,14 +504,14 @@ QUnit.test('throws', function (assert) {
     'custom validation function'
   );
 
+  // https://github.com/qunitjs/qunit/issues/217
   this.CustomError = CustomError;
-
   assert.throws(
     function () {
       throw new this.CustomError('some error description');
     },
     /description/,
-    "throw error from property of 'this' context"
+    "throws() has access to 'this' test context"
   );
 
   // the following are nested assertions, validating that it

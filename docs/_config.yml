@@ -4,8 +4,10 @@
 title: QUnit
 description: The powerful, easy-to-use JavaScript testing framework.
 url: "https://qunitjs.com"
-# For pages (not blog posts) this is equivalant to /:title/
-permalink: /:year/:month/:day/:title/
+permalink: /:title/
+collections:
+  posts:
+    permalink: /blog/:year/:month/:day/:title/
 lang: en
 timezone: UTC
 highlighter: rouge
@@ -17,6 +19,8 @@ sass:
   # https://jekyllrb.com/docs/assets/#sassscss
   style: compressed
   sourcemap: never
+  quiet_deps: true
+  silence_deprecations: [import]
 exclude:
   # Don't include these files in the website
   - Gemfile
@@ -59,6 +63,7 @@ amethyst:
 jekyll-archives:
   enabled:
     - year
-  layout: posts-year
+  layouts:
+    year: posts-year
   permalinks:
-    year: "/:year/"
+    year: "/blog/:year/"

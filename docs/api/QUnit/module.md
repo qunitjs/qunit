@@ -165,7 +165,7 @@ Example: [§ Hooks via module options](#hooks-via-module-options).
 
 | [QUnit 2.22](https://github.com/qunitjs/qunit/releases/tag/2.22.0) | Added `QUnit.module.if()` alias.
 | [QUnit 2.4](https://github.com/qunitjs/qunit/releases/tag/2.4.0) | Added `QUnit.module.only()`, `QUnit.module.skip()`, and `QUnit.module.todo()` aliases.
-| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | Added `before` and `after` options.
+| [QUnit 2.0](https://github.com/qunitjs/qunit/releases/tag/2.0.0) | Added `before` and `after` options.<br/>The deprecated `setup` and `teardown` options were removed.
 | [QUnit 1.20](https://github.com/qunitjs/qunit/releases/tag/1.20.0) | Introduce `scope` feature.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `beforeEach` and `afterEach` options.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
 

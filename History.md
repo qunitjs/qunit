@@ -154,7 +154,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Changed
 
 * Core: Faster diffing for `config.noglobals` by refactoring slow mutations. (Izel Nakri) [#1697](https://github.com/qunitjs/qunit/pull/1697)
-* Assert: Improve performance of `QUnit.equiv()`. (Izel Nakri) [#1700](https://github.com/qunitjs/qunit/pull/1700)
+* Assert: Improve performance of `assert.deepEqual()` and `QUnit.equiv()`. (Izel Nakri) [#1700](https://github.com/qunitjs/qunit/pull/1700)
 * Assert: Faster deepEqual for Map values by avoiding typeEquiv calls. (Timo Tijhof)
 * Assert: Faster deepEqual by reducing internal objectType checks. (Timo Tijhof)
 * Assert: Faster deepEqual by using re-assignment for internal pairs. (Timo Tijhof)
@@ -183,7 +183,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 * Core: Fix event "runtime" data to be rounded to milliseconds.
 * Core: Fix pretty stacktrace shortening to work on Windows.
-* HTML Reporter: Faster toolbar setup by reusing `beginDetails.modules`.
+* HTML Reporter: Faster toolbar setup by reusing `beginDetails.modules`. [e31c8d37b6](https://github.com/qunitjs/qunit/commit/e31c8d37b678ad2892abd4064f1d6dd1d42c858e)
 
 2.18.2 / 2022-04-17
 ==================
@@ -475,8 +475,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Fixed
 
+* CLI: Reduce size of the npm package and dependency tree, from 142 dependencies, to 9 dependencies. (Timo Tijhof) [#1342](https://github.com/qunitjs/qunit/issues/1342)
 * Assert: Report errors from `assert.throws()` as strings. [#1333](https://github.com/qunitjs/qunit/issues/1333)
-* CLI: Reduce size of the npm package dependency tree. (Timo Tijhof) [#1342](https://github.com/qunitjs/qunit/issues/1342)
 * HTML Reporter: Fix an unescaped `details.source`. (Shlomi Fish) [#1341](https://github.com/qunitjs/qunit/pull/1341)
 
 2.8.0 / 2018-11-02
@@ -586,8 +586,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 2.4.0 / 2017-07-08
 ==================
 
+* Assert: New [`assert.timeout()`](http://localhost:4000/api/assert/timeout/) for setting per-test timeout durations. (Trent Willis) [#1165](https://github.com/qunitjs/qunit/pull/1165)
 * Assert: Fix assert.push deprecation link.
-* Assert: New `assert.timeout()` for setting per-test timeout durations.
 * CLI: Better messaging on early exits.
 * CLI: Default to non-zero exit code.
 * CLI: Exit with non-zero status when no tests are run.
@@ -603,7 +603,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Added
 
-* Core: Support running in Web Workers. (Marten Schilstra) [#1171](https://github.com/qunitjs/qunit/pull/1171)
+* Core: Support running in Web Worker threads. (Marten Schilstra) [#1171](https://github.com/qunitjs/qunit/pull/1171)
 
 ### Changed
 
@@ -612,8 +612,8 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 2.3.2 / 2017-04-17
 ==================
 
-* HTML Reporter: Add specific diff for number types instead of str-diff. #1155
-* Core: Fix bug calling hooks with skipped tests. #1156
+* HTML Reporter: Add specific diff for number types instead of str-diff. [#1155](https://github.com/qunitjs/qunit/issues/1155)
+* Core: Fix bug calling hooks with skipped tests. [#1156](https://github.com/qunitjs/qunit/issues/1156)
 
 2.3.1 / 2017-04-10
 ==================
@@ -621,7 +621,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Assert: Allow assertions after async.
 * Assert: Throw if async callback invoked after test finishes.
 * Core: Ensure assertions occur while test is running.
-* Core: Fix test instance memory leak. #1138
+* Core: Fix test instance memory leak. [#1138](https://github.com/qunitjs/qunit/issues/1138)
 * Core: Slim assertions after reporting them.
 
 2.3.0 / 2017-03-29
@@ -662,11 +662,11 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Fixed
 
 * HTML Reporter: Ensure window.onerror return values are correct.
-* Core: Fix start on Node when autostart is not set to true. #1105
+* Core: Fix start on Node when autostart is not set to true. [#1105](https://github.com/qunitjs/qunit/issues/1105)
 * Core: Fix double begin when calling start in Node.
 * Core: Rewrite QUnit.equiv to be breadth-first.
 * Core: Optimize the "set" and "map" callbacks.
-* Core: Fix console error in IE9. #1093
+* Core: Fix console error in IE9. [#1093](https://github.com/qunitjs/qunit/issues/1093)
 
 2.1.1 / 2017-01-05
 ==================
@@ -684,7 +684,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Always report if test previously failed.
 * Core: New `config.storage` option.
 * Core: Load the onerror module.
-* Core: Fix QUnit.equiv object methods comparison.
+* Core: Fix `QUnit.equiv` object methods comparison.
 * Core: Support multiple nested modules hooks properly.
 * Core: Fire moduleStart only when starting module for the first time.
 * Core: Fire moduleDone when actually finished with module.
@@ -751,14 +751,14 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 1.22.0 / 2016-02-23
 ==================
 
-* Assert: New `assert.pushResult()` method.
+* Assert: New [`assert.pushResult()`](http://localhost:4000/api/assert/pushResult/) method. (YongWoo Jeon) [#920](https://github.com/qunitjs/qunit/pull/920)
 * Assert: Extend Assert methods to QUnit for backwards compatibility.
 * HTML Reporter: Escape setUrl output.
 
 1.21.0 / 2016-02-01
 ==================
 
-* Assert: Improve speed of QUnit.equiv.
+* Assert: Improve speed of `assert.deepEqual()` and `QUnit.equiv()`.
 * Assert: Fully support Object-wrapped primitives in `assert.deepEqual()`.
 * Assert: Register notOk as a non-negative assertion.
 * Core: Improve regular expression comparisons.
@@ -791,7 +791,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 1.18.0 / 2015-04-03
 ==================
 
-* Assert: New `assert.notOk()` for asserting falsy values.
+* Assert: New `assert.notOk()` for asserting falsy values. [#745](https://github.com/qunitjs/qunit/pull/745)
 * Core: Expose Dump `maxDepth` property.
 * Core: Expose QUnit version as `QUnit.version` property.
 * Dump: Fix .name/.property doublettes.
@@ -823,11 +823,11 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 ### Added
 
+* Assert: New `assert.async()`  method. (James M. Greene) [#534](https://github.com/qunitjs/qunit/issues/534)
 * Assert: Add alias for throws called `assert.raises()`.
-* Assert: New `assert.async()`  method.
+* Core: New `QUnit.skip()` method. (Leo Balter) [#637](https://github.com/qunitjs/qunit/issues/637)
 * Core: Add runtime property to `QUnit.moduleDone()` data.
-* Core: New `QUnit.skip()` method.
-* Core: `QUnit.test()` now supports returning Promise and async functions.
+* Core: `QUnit.test()` now supports returning Promise and async functions. (James M. Greene) [#632](https://github.com/qunitjs/qunit/issues/632)
 * HTML Reporter: Add runtime of each assertion to result output.
 
 ### Changed
@@ -848,7 +848,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 1.15.0 / 2014-08-08
 ==================
 
-* Assert: Introduce Assert constructor with test context. This heavily improves debugging of async tests, as assertions can't leak into other tests anymore. Use the new `assert` argument in your test to get the full benefit of this.
+* Assert: Introduce Assert constructor with test context. This heavily improves debugging of async tests, as assertions can't leak into other tests anymore. Use the new `assert` argument in your test to get the full benefit of this. (Leo Balter) [#374](https://github.com/qunitjs/qunit/issues/374)
 * Assert: Improve the default message from `assert.ok()`  to include the exact received value.
 * Assert: Removal of deprecated `raises`, `same`, and `equals` methods. Use `throws`, `deepEqual`, and `equal` instead.
 * Core: Add `totalTests` for total number of tests to `QUnit.begin()`  data.
@@ -880,19 +880,19 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Properly check for existence of document.
 * Core: Remove triggerEvent, which isn't used or documented anywhere.
 * Core: Silence addEvent in non-browser env.
-* HTML Reporter: Use `id` function for selection elements in two places that were not using it. #463
-* Release: Add bower.json. #461
+* HTML Reporter: Use `id` function for selection elements in two places that were not using it. [#463](https://github.com/qunitjs/qunit/issues/463)
+* Release: Add bower.json. [#461](https://github.com/qunitjs/qunit/issues/461)
 
 1.12.0 / 2013-06-21
 ===================
 
-* Addons/Canvas: Show how to test with images. #438
-* Addons/JUnitLogger: Add a `name` property to the test run. #389
-* Addons/PhantomJS: Added optional timeout. Closes #415.
-* Addons/PhantomJS: Include stack trace for all failed tests. #416.
+* Addons/Canvas: Show how to test with images. [#438](https://github.com/qunitjs/qunit/issues/438)
+* Addons/JUnitLogger: Add a `name` property to the test run. [#389](https://github.com/qunitjs/qunit/issues/389)
+* Addons/PhantomJS: Added optional timeout. [#415](https://github.com/qunitjs/qunit/issues/415)
+* Addons/PhantomJS: Include stack trace for all failed tests. [#416](https://github.com/qunitjs/qunit/issues/416)
 * Addons: Move 'addons/canvas' to 'JamesMGreene/qunit-assert-canvas.git'. Tree: https://github.com/JamesMGreene/qunit-assert-canvas/tree/v1.0.0.
 * Addons: Move 'addons/close-enough' to 'JamesMGreene/qunit-assert-close.git'. Tree: https://github.com/JamesMGreene/qunit-assert-close/tree/v1.0.0.
-* Addons: Move 'addons/composite' to 'jquery/qunit-composite.git'. Tree: https://github.com/jquery/qunit-composite/tree/v1.0.0. #419.
+* Addons: Move 'addons/composite' to 'jquery/qunit-composite.git'. Tree: https://github.com/jquery/qunit-composite/tree/v1.0.0. [#419](https://github.com/qunitjs/qunit/issues/419)
 * Addons: Move 'addons/junitlogger' to 'jquery/qunit-reporter-junit.git'.
 * Addons: Move 'addons/step' to 'JamesMGreene/qunit-assert-step.git'. Tree: https://github.com/JamesMGreene/qunit-assert-step/tree/v1.0.0.
 * Addons: Move 'addons/themes/gabe' to 'Krinkle/qunit-theme-gabe.git'.
@@ -902,11 +902,11 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 * Core: Deprecate QUnit.current_testEnvironment in favour of config.current.testEnvironment.
 * Core: Emit moduleStart before testStart even if test isn't in a module.
 * Core: Fix mismatch between moduleStart and moduleDone events.
-* Core: Improve circular reference logic in equiv. #397
-* Core: Removed jQuery.trim optimization. #424
-* Core: Sort the module names so we no longer rely on implicit ordering. #391, #392
-* Core: Use a local setTimeout reference for internal reference to failures if later stubbed. #432, #433.
-* HTML Reporter: Clear filter and testNumber when choosing a module. #442
+* Core: Improve circular reference logic in equiv. [#397](https://github.com/qunitjs/qunit/issues/397)
+* Core: Removed jQuery.trim optimization. [#424](https://github.com/qunitjs/qunit/issues/424)
+* Core: Sort the module names so we no longer rely on implicit ordering. [#391](https://github.com/qunitjs/qunit/issues/391), [#392](https://github.com/qunitjs/qunit/issues/392)
+* Core: Use a local setTimeout reference for internal reference to failures if later stubbed. [#432](https://github.com/qunitjs/qunit/issues/432), [#433](https://github.com/qunitjs/qunit/issues/433)
+* HTML Reporter: Clear filter and testNumber when choosing a module. [#442](https://github.com/qunitjs/qunit/issues/442)
 
 1.11.0 / 2013-01-20
 ==================
@@ -914,143 +914,143 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 ### Added
 
 * Addons: New "Ninja" theme.
-* Assert: New `assert.propEqual()` and `assert.notPropEqual()`. (Timo Tijhof) [#317](https://github.com/qunitjs/qunit/issues/317)
-* HTML Reporter: Capture and show each test's runtime duration. #344
+* Assert: New [`assert.propEqual()`](https://qunitjs.com/api/assert/propEqual/) and `assert.notPropEqual()`. (Timo Tijhof) [#317](https://github.com/qunitjs/qunit/issues/317)
+* HTML Reporter: Capture and show each test's runtime duration. [#344](https://github.com/qunitjs/qunit/issues/344)
 
 ### Changed
 
-* Addons/Composite: Test suites can be named by including an obj with name & path props within array param for `.testSuites()`.
+* Addons/Composite: Test suites can be named by including an object with name & path props within array param for `.testSuites()`.
 * Addons/PhantomJS: Include source in assertion details.
 * Core: Apply the same exception handling for test and teardown try/catch as for setup.
 
 ### Fixed
 
-* Addons/Canvas: Use 0.6 as alpha value to avoid inconsistencies between browsers. #342
+* Addons/Canvas: Use 0.6 as alpha value to avoid inconsistencies between browsers. [#342](https://github.com/qunitjs/qunit/issues/342)
 * Addons/JUnitLogger: Rewrite as it was in bad shape (unused vars, duplicate internal code, sub-optimal XmlWriter logic).
 * Addons/PhantomJS: Removed the polling mechanism in favor of PhantomJS 1.6+'s `WebPage#onCallback`.
 * Assert: Make `throws` ES3 compatible. (Mathias Bynens)
 * Core: Fix URL generator to take protocol and host into account to fix usage with file protocol in IE7/8.
 * Core: Fix issue with Error.prototype.toString in IE 7.
 * Core: Improve start()-called-too-often fix, initialize semaphore at 1, fixes autostart=false case. Also provide stack for the offending start() call.
-* Core: Push a failing assertion when calling start() while already running. Resets anyway to keep other tests going. #314
-* Core: Remove global variable "assert". #341
-* Core: There's type-free objects in Firefox, extend objectType() to allow null match. #315
-* Dump: Extend jsdump to output Error objects as such, including the message property. Extend throws to provide 'expected' value when possible. #307
-* Dump: Include contents of text nodes in `jsDump.node`. (Timo Tijhof) #380
-* HTML Reporter: Delay start until `QUnit.init` happened. #358
-* HTML Reporter: Change summary text to use the word "assertions" instead of "tests". #336
-* HTML Reporter: Fix exception from Diff on property "constructor". #394
-* HTML Reporter: Fix module picker for old IE. #366.
-* HTML Reporter: Fix urlConfig checkbox event for old IE. #369
-* HTML Reporter: Use classes to collapse assertion groups. #269
+* Core: Push a failing assertion when calling start() while already running. Resets anyway to keep other tests going. [#314](https://github.com/qunitjs/qunit/issues/314)
+* Core: Remove global variable "assert". [#341](https://github.com/qunitjs/qunit/issues/341)
+* Core: There's type-free objects in Firefox, extend objectType() to allow null match. [#315](https://github.com/qunitjs/qunit/issues/315)
+* Dump: Extend jsdump to output Error objects as such, including the message property. Extend throws to provide 'expected' value when possible. [#307](https://github.com/qunitjs/qunit/issues/307)
+* Dump: Include contents of text nodes in `jsDump.node`. (Timo Tijhof) [#380](https://github.com/qunitjs/qunit/issues/380)
+* HTML Reporter: Delay start until `QUnit.init` happened. [#358](https://github.com/qunitjs/qunit/issues/358)
+* HTML Reporter: Change summary text to use the word "assertions" instead of "tests". [#336](https://github.com/qunitjs/qunit/issues/336)
+* HTML Reporter: Fix exception from Diff on property "constructor". [#394](https://github.com/qunitjs/qunit/issues/394)
+* HTML Reporter: Fix module picker for old IE. [#366](https://github.com/qunitjs/qunit/issues/366)
+* HTML Reporter: Fix urlConfig checkbox event for old IE. [#369](https://github.com/qunitjs/qunit/issues/369)
+* HTML Reporter: Use classes to collapse assertion groups. [#269](https://github.com/qunitjs/qunit/issues/269)
 
 1.10.0 / 2012-08-30
 ==================
 
 * All: Simplify licensing to only MIT, no more MIT/GPL dual licensing.
-* Assert: Equiv for `assert.deepEqual()` now recognizes the ES6 sticky "y" flag for RegExp objects. #284
-* Assert: Make `QUnit.expect()` without arguments behave as a getter. #226
-* Core: Add module and test name to the data provided via `QUnit.log()`. #296
-* Core: Keep a local reference to Date for internal use. #283
+* Assert: Equiv for `assert.deepEqual()` now recognizes the ES6 sticky "y" flag for RegExp objects. [#284](https://github.com/qunitjs/qunit/issues/284)
+* Assert: Make `QUnit.expect()` without arguments behave as a getter. [#226](https://github.com/qunitjs/qunit/issues/226)
+* Core: Add module and test name to the data provided via `QUnit.log()`. [#296](https://github.com/qunitjs/qunit/issues/296)
+* Core: Keep a local reference to Date for internal use. [#283](https://github.com/qunitjs/qunit/issues/283)
 * HTML Reporter: Add a UI for the module filter.
-* HTML Reporter: Always display of global errors regardless of filtering URL parameters. #288
-* HTML Reporter: Scroll the window back to top after tests finished running. #304
+* HTML Reporter: Always display of global errors regardless of filtering URL parameters. [#288](https://github.com/qunitjs/qunit/issues/288)
+* HTML Reporter: Scroll the window back to top after tests finished running. [#304](https://github.com/qunitjs/qunit/issues/304)
 
 1.9.0 / 2012-07-11
 ==================
 
-* Assert: Rename `assert.raises()` to `assert.throws()`, keeping an alias for compat. #267
-* Core: Make the module filter case-insensitive. #252
-* HTML Reporter: Link should ignore "testNumber" and "module". #270
-* HTML Reporter: Move checkboxes into toolbar and give them labels and tooltip descriptions. #274
+* Assert: Rename `assert.raises()` to `assert.throws()`, keeping an alias for compat. [#267](https://github.com/qunitjs/qunit/issues/267)
+* Core: Make the module filter case-insensitive. [#252](https://github.com/qunitjs/qunit/issues/252)
+* HTML Reporter: Link should ignore "testNumber" and "module". [#270](https://github.com/qunitjs/qunit/issues/270)
+* HTML Reporter: Move checkboxes into toolbar and give them labels and tooltip descriptions. [#274](https://github.com/qunitjs/qunit/issues/274)
 * HTML Reporter: Remove use of shadows and change border radius to 5px for pass/error.
 * Release: Start publishing to npm under the `qunitjs` package name.
 
 1.8.0 / 2012-06-14
 ==================
 
-* Assert: Avoid global eval error from `assert.raises()` being reported as global exception in IE. #257
-* Core: Reset config.current at the right time. #260
+* Assert: Avoid global eval error from `assert.raises()` being reported as global exception in IE. [#257](https://github.com/qunitjs/qunit/issues/257)
+* Core: Reset config.current at the right time. [#260](https://github.com/qunitjs/qunit/issues/260)
 * HTML Reporter: Improve window.onerror handling.
-* HTML Reporter: New `module` url parameter. #252
+* HTML Reporter: New `module` url parameter. [#252](https://github.com/qunitjs/qunit/issues/252)
 
 1.7.0 / 2012-06-07
 ==================
 
 * Addons: Add CLI runner for Phantomjs.
-* Assert: Refactor assertion helper functions into a new extensible `QUnit.assert` object, globals remain for compat.
-* Core: Fix confusion of Date type as Object in `assert.deepEqual()`. #250
-* Core: Improve extractStacktrace logic. #254
-* Core: Make "Rerun" link only run one test by tracking execution order. #241
-* Core: Make filters case-insensitive. #252
-* Core: New `config.requireExpects` option. #207
-* HTML Reporter: Add Rerun link to placeholders. #240
+* Assert: Refactor assertion helper functions into a new extensible `QUnit.assert` object, globals remain for compat. (Timo Tijhof) [#244](https://github.com/qunitjs/qunit/pull/244)
+* Core: Fix confusion of Date type as Object in `assert.deepEqual()`. [#250](https://github.com/qunitjs/qunit/issues/250)
+* Core: Improve extractStacktrace logic. [#254](https://github.com/qunitjs/qunit/issues/254)
+* Core: Make "Rerun" link only run one test by tracking execution order. [#241](https://github.com/qunitjs/qunit/issues/241)
+* Core: Make filters case-insensitive. [#252](https://github.com/qunitjs/qunit/issues/252)
+* Core: New [`config.requireExpects`](https://qunitjs.com/api/config/requireExpects/) option. [#207](https://github.com/qunitjs/qunit/issues/207)
+* HTML Reporter: Add Rerun link to placeholders. [#240](https://github.com/qunitjs/qunit/issues/240)
 
 1.6.0 / 2012-05-04
 ==================
 
 * Addons/Composite: Double clicking on composite test rows opens individual test page.
-* Core: Only check for an `exports` object to detect a CommonJS environment, fixes compat with RequireJS. #237
-* HTML Reporter: Prefix test-output id and ignore that in noglobals check. #212
+* Core: Only check for an `exports` object to detect a CommonJS environment, fixes compat with RequireJS. [#237](https://github.com/qunitjs/qunit/issues/237)
+* HTML Reporter: Prefix test-output id and ignore that in noglobals check. [#212](https://github.com/qunitjs/qunit/issues/212)
 
 1.5.0 / 2012-04-04
 ==================
 
-* Core: Add stats results to data. QUnit.jUnitReport function take one argument `{   xml:'<?xml ...',   results:{failed:0, passed:0, total:0, time:0} }`.
-* Core: Call test "block" with config.current.testEnvironment. #217
+* Addons/JUnitLogger: Add `results` data to `QUnit.jUnitReport` callback argument. The function accepts one argument shaped as `{ xml: '<?xml ...', results: { failed: 0, passed: 0, total: 0, time: 0 } }`. (Jonathan Sanchez) [#216](https://github.com/qunitjs/qunit/pull/216)
+* Assert: Provide `this` test context to [`assert.raises()`](https://qunitjs.com/api/assert/throws/) block. (Keith Cirkel) [#217](https://github.com/qunitjs/qunit/issues/217)
 * Core: Fix clearing of sessionStorage in Firefox 3.6.
-* HTML Reporter: Modify "Running..." to display test name. #220
+* HTML Reporter: Modify "Running..." to display test name. [#220](https://github.com/qunitjs/qunit/issues/220)
 
 1.4.0 / 2012-03-10
 ==================
 
-* Core: Add QUnit.pushFailure to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). Remove old `fail()` function that would just log to console, not useful anymore as regular test output is much more useful by now. Move up `QUnit.reset()` call to just make that another failed assertion. Used to not make a test fail. #210
-* Core: Apply "notrycatch" option to setup and teardown callbacks. #203, #204
+* Core: A test without any assertions now fails by default, unless [`assert.expect(0)`](https://qunitjs.com/api/assert/expect/) is called. [#178](https://github.com/qunitjs/qunit/issues/178)
+* Core: Add `QUnit.pushFailure` to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). [#210](https://github.com/qunitjs/qunit/issues/210)
+* Core: Apply [`notrycatch` option](http://localhost:4000/api/config/notrycatch/) to setup and teardown hooks. [#203](https://github.com/qunitjs/qunit/issues/203) [#204](https://github.com/qunitjs/qunit/issues/204)
 * Core: Extend exports object with QUnit properties at the end of the file to export everything.
-* Core: Make test fail if no assertions run. #178
-* Core: Prefix test-related session-storage items to make removal more specific. #213
-* HTML Reporter: Sort objects in value dumps alphabetically to improve diffs. #206
+* Core: Prefix test-related session-storage items to make removal more specific. [#213](https://github.com/qunitjs/qunit/issues/213)
+* HTML Reporter: Sort objects in value dumps alphabetically to improve diffs. [#206](https://github.com/qunitjs/qunit/issues/206)
 
 1.3.0 / 2012-02-26
 ==================
 
 * Addons: New Gabe theme by Gabe Hendry. [#188](https://github.com/qunitjs/qunit/pull/188)
 * Addons: New NV theme by NV. [#62](https://github.com/qunitjs/qunit/pull/62)
-* Addons: New junitlogger addon.
-* Core: Catch assertions running outside of `test()` context, make sure source is provided even for `ok()`. #98
+* Addons: New JUnitLogger addon.
+* Core: Catch assertions running outside of `test()` context, make sure source is provided even for `ok()`. [#98](https://github.com/qunitjs/qunit/issues/98)
 * Core: Check for global object to find setTimeout in Node.js.
-* Core: Clear all sessionStorage entries once all tests passed. Helps getting rid of items from renamed tests. #101
+* Core: Clear all sessionStorage entries once all tests passed. Helps getting rid of items from renamed tests. [#101](https://github.com/qunitjs/qunit/issues/101)
 * Core: Fix sourceFromsStacktrace to get the right line in Firefox. Shift the 'error' line away in Chrome to get a match.
-* Core: Generate more base markup, but allow the user to exclude that completely or choose their own. #127
-* Core: In autorun mode, moduleDone is called without matching moduleStart. #184
-* Core: Remove the testEnvironmentArg to `test()`. Most obscure, never used anywhere. `test()` is still heavily overloaded with argument shifting, this makes it a little more sane. #172
+* Core: Generate more base markup, but allow the user to exclude that completely or choose their own. [#127](https://github.com/qunitjs/qunit/issues/127)
+* Core: In autorun mode, moduleDone is called without matching moduleStart. [#184](https://github.com/qunitjs/qunit/issues/184)
+* Core: Remove the testEnvironmentArg to `test()`. Most obscure, never used anywhere. `test()` is still heavily overloaded with argument shifting, this makes it a little more sane. [#172](https://github.com/qunitjs/qunit/issues/172)
 * Core: Replace deprecated same and equals aliases with placeholders that just throw errors, providing a hint at what to use instead. Rename test file to match that.
-* Core: Serialize expected and actual values only when test fails to improve testing speed for passing tests. #183
+* Core: Serialize expected and actual values only when test fails to improve testing speed for passing tests. [#183](https://github.com/qunitjs/qunit/issues/183)
 * Core: Update sessionStorage support test to avoid QUOTA_EXCEEDED_EXCEPTION.
 * HTML Reporter: Avoid `outerHTML` for Firefox < 11. Use cloneNode instead.
-* HTML Reporter: Escape `document.title` before inserting into markup. #127
+* HTML Reporter: Escape `document.title` before inserting into markup. [#127](https://github.com/qunitjs/qunit/issues/127)
 * HTML Reporter: Fix the fixture reset to not break if the element is not present on the page.
 * HTML Reporter: Keep label and checkbox together.
-* HTML Reporter: Set fixed CSS dimensions on `#qunit-fixture`. #114
+* HTML Reporter: Set fixed CSS dimensions on `#qunit-fixture`. [#114](https://github.com/qunitjs/qunit/issues/114)
 * HTML Reporter: Show exception stack when test failed.
 
 1.2.0 / 2011-11-24
 ==================
 
-* Core: Allow objects with no prototype to tested against object literals.
-* Core: Fix IE8 "Member not found" error.
-* Core: Export `QUnit.start()` as alias for global `start()` for use in CommonJS runtimes, such as Node.js.
+* Assert: Allow [`deepEqual`](https://qunitjs.com/api/assert/deepEqual/) to test objects with null prototype against object literals. (Domenic Denicola) [#170](https://github.com/qunitjs/qunit/pull/170)
+* Core: Fix IE8 "Member not found" error. (Jimmy Mabey) [#154](https://github.com/qunitjs/qunit/issues/154)
+* Core: Fix internal `start()` call to use `QUnit.start()`, since global is not exported in CommonJS runtimes, such as Node.js. (Antoine Musso) [#168](https://github.com/qunitjs/qunit/pull/168)
 
 1.1.0 / 2011-10-11
 ==================
 
-* Core: Check if setTimeout is available before trying to delay running the next task. #160
+* Core: Check if setTimeout is available before trying to delay running the next task. [#160](https://github.com/qunitjs/qunit/issues/160)
 * Core: Default 'expected' to null in `asyncTest()`, same as in `test()`.
 * Core: Avoid treating random objects with `length` properties as empty arrays in comparisons. (Trevor Parscal) [#164](https://github.com/qunitjs/qunit/pull/164)
 * Core: Fix IE 6-8 compat with comparisons of NodeList objects. (Trevor Parscal) [#166](https://github.com/qunitjs/qunit/pull/166)
-* Core: Fix a bug where after an async test, assertions could move between test cases because of internal state (config.current) being incorrectly set
-* Core: Handle `expect(0)` as expected, i.e. `expect(0); ok(true, foo);` will cause a test to fail. (mmchaney) [#158](https://github.com/qunitjs/qunit/pull/158)
-* HTML Reporter: Add a window.onerror handler. Makes uncaught errors actually fail the tests. #134
+* Core: Fix a bug where after an async test, assertions could move between test cases because of internal state (config.current) being incorrectly set.
+* Core: Handle `expect(0)` as expected, i.e. `expect(0); ok(true, foo);` will cause a test to fail. (Markus Messner-Chaney) [#158](https://github.com/qunitjs/qunit/pull/158)
+* HTML Reporter: Add a window.onerror handler. Makes uncaught errors actually fail the tests. [#134](https://github.com/qunitjs/qunit/issues/134)
 * HTML Reporter: Avoid internal exception if user extends Object.prototype object with non-standard properties.
 
 1.0.0 / 2011-10-06

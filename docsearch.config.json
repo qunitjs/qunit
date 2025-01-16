@@ -1,7 +1,8 @@
 {
   "index_name": "qunitjs_com",
   "start_urls": [
-    "https://qunitjs.com"
+    { "url": "https://qunitjs.com", "page_rank": 20 },
+    { "url": "https://qunitjs.com/blog/", "selectors_key": "blog", "page_rank": 1 }
   ],
   "selectors": {
     "lvl0": "h1",

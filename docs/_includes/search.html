@@ -1,0 +1,26 @@
+<typesense-minibar{% if site.amethyst.typesense.search_only_api_key %} data-origin="{{ site.amethyst.typesense.origin | escape }}" data-collection="{{ site.amethyst.typesense.collection | escape }}" data-key="{{ site.amethyst.typesense.search_only_api_key | escape }}" data-foot="true"{% endif %}>
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="{{ site.url | remove_first: 'http://' | remove_first: 'https://' }}">
+</form>
+</typesense-minibar>
+{%- if jekyll.environment == "development" %}
+<script type="module">
+/* global Response, URL */
+const parent = Response.prototype.json;
+Response.prototype.json = function () {
+  return parent.call(this).then(function (obj) {
+    if (obj && obj.grouped_hits) {
+      for (const group of obj.grouped_hits) {
+        for (const hit of group.hits) {
+          // Render results with a URL relative to localhost,
+          // by replacing "https://production.example/path" with "/path"
+          hit.document.url = new URL(hit.document.url).pathname;
+        }
+      }
+    }
+    return obj;
+  });
+};
+</script>
+{%- endif %}

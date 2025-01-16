@@ -1,0 +1,15 @@
+- type: link
+  title: QUnit Blog
+  url: /blog/
+
+- type: tags
+  title: Tags
+  expand: true
+
+- type: recent
+  title: Recent posts
+  expand: true
+
+- type: archive-flat
+  title: Archives
+  expand: true

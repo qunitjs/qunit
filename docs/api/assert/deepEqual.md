@@ -28,6 +28,10 @@ To assert strict equality on own properties only, refer to [`assert.propEqual()`
 
 [`assert.notDeepEqual()`](./notDeepEqual.md) can be used to check for inequality instead.
 
+## Changelog
+
+| [QUnit 1.2.0](https://github.com/qunitjs/qunit/releases/tag/1.2.0) | Objects with null prototypes can now be tested via object literals.
+
 ## Examples
 
 ```js
