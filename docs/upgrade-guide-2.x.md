@@ -216,7 +216,7 @@ QUnit.assert.mod2 = function (value, expected, message) {
 
 ### Removed `QUnit.init` without replacement
 
-This method used to reinitialize the test runner. It should never have been exposed as a public method and is now gone, without replacement. If you've built an integration or runner framework that requires the use of `QUnit.init`, reach out in our [Chat room](https://gitter.im/qunitjs/qunit), or contact us in the [issue tracker](https://github.com/qunitjs/qunit/issues) to help find a replacement.
+This method used to reinitialize the test runner. It should never have been exposed as a public method and is now gone, without replacement. If you've built an integration or runner framework that requires the use of `QUnit.init`, reach out in our [Chat room](https://app.element.io/#/room/#qunitjs_qunit:gitter.im), or contact us in the [issue tracker](https://github.com/qunitjs/qunit/issues) to help find a replacement.
 
 ### Removed `QUnit.reset`
 

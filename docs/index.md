@@ -86,7 +86,7 @@ These are the official [release channels](intro.md#download) for QUnit:
 
 ## Join the Community
 
-<p class="lead lead--center" markdown="1">Join us on [Mastodon](https://fosstodon.org/@qunit), [Twitter](https://twitter.com/qunitjs), or [Matrix chat](https://gitter.im/qunitjs/qunit).</p>
+<p class="lead lead--center" markdown="1">Join us on [Mastodon](https://fosstodon.org/@qunit), [Twitter](https://twitter.com/qunitjs), or [Matrix chat](https://app.element.io/#/room/#qunitjs_qunit:gitter.im).</p>
 
 To contribute:
 

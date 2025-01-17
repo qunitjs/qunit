@@ -9,7 +9,7 @@ anything should be added or clarified, definitely let us know.
 If this is your first time contributing to open-source software, you might want
 to take a look at the [GitHub Guides](https://guides.github.com/).
 
-If you get stuck or need help, you can always [chat with us](https://gitter.im/qunitjs/qunit).
+If you get stuck or need help, you can always [chat with us](https://app.element.io/#/room/#qunitjs_qunit:gitter.im).
 
 ## Where to begin
 
