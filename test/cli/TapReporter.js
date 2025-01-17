@@ -169,7 +169,7 @@ Bail out! Boo
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-        at require (internal/helpers.js:22:18)
+    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
         at /dev/null/src/example/foo.js:220:27
   ...
 Bail out! ReferenceError: Boo is not defined

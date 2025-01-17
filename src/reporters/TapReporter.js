@@ -1,6 +1,7 @@
 import kleur from 'kleur';
 import { errorString } from '../core/utilities';
 import { console } from '../globals';
+import { annotateStacktrace } from '../core/stacktrace';
 
 /**
  * Format a given value into YAML.
@@ -276,7 +277,7 @@ export default class TapReporter {
     out += `\n  message: ${prettyYamlValue(errorString(error))}`;
     out += `\n  severity: ${prettyYamlValue('failed')}`;
     if (error && error.stack) {
-      out += `\n  stack: ${prettyYamlValue(error.stack + '\n')}`;
+      out += `\n  stack: ${prettyYamlValue(annotateStacktrace(error, kleur.grey) + '\n')}`;
     }
     out += '\n  ...';
     this.log(out);

@@ -2,8 +2,8 @@
 //
 // This should reduce a raw stack trace like this:
 //
-// > foo.broken()@/src/foo.js
-// > Bar@/src/bar.js
+// > foo.broken()@/example/foo.js
+// > Bar@/example/bar.js
 // > @/test/bar.test.js
 // > @/lib/qunit.js:500:12
 // > @/lib/qunit.js:100:28
@@ -13,8 +13,8 @@
 //
 // and shorten it to show up until the end of the user's bar.test.js code.
 //
-// > foo.broken()@/src/foo.js
-// > Bar@/src/bar.js
+// > foo.broken()@/example/foo.js
+// > Bar@/example/bar.js
 // > @/test/bar.test.js
 //
 // QUnit will obtain one example trace (once per process/pageload suffices),
@@ -31,15 +31,80 @@
 //
 // See also:
 // - https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error/Stack
-//
-const fileName = (sourceFromStacktrace(0) || '')
-  // Global replace, because a frame like localhost:4000/lib/qunit.js:1234:50,
-  // would otherwise (harmlessly, but uselessly) remove only the port (first match).
-  // https://github.com/qunitjs/qunit/issues/1769
-  .replace(/(:\d+)+\)?/g, '')
-  // Remove anything prior to the last slash (Unix/Windows) from the last frame,
-  // leaving only "qunit.js".
-  .replace(/.+[/\\]/, '');
+
+function qunitFileName () {
+  let error = new Error();
+  if (!error.stack) {
+    // Copy of sourceFromStacktrace() to avoid circular dependency
+    // Support: IE 9-11
+    try {
+      throw error;
+    } catch (err) {
+      error = err;
+    }
+  }
+  return (error.stack || '')
+    // Copy of extractStacktrace() to avoid circular dependency
+    // Support: V8/Chrome
+    .replace(/^error$\n/im, '')
+    .split('\n')[0]
+    // Global replace, because a frame like localhost:4000/lib/qunit.js:1234:50,
+    // would otherwise (harmlessly, but uselessly) remove only the port (first match).
+    // https://github.com/qunitjs/qunit/issues/1769
+    .replace(/(:\d+)+\)?/g, '')
+    // Remove anything prior to the last slash (Unix/Windows) from the last frame,
+    // leaving only "qunit.js".
+    .replace(/.+[/\\]/, '');
+}
+
+const fileName = qunitFileName();
+
+/**
+ * - For internal errors from QUnit itself, remove the first qunit.js frames.
+ * - For errors in Node.js, format any remaining qunit.js and node:internal
+ *   frames as internal (i.e. grey out).
+ */
+export function annotateStacktrace (e, formatInternal) {
+  if (!e || !e.stack) {
+    return String(e);
+  }
+  const frames = e.stack.split('\n');
+  const annotated = [];
+  if (e.toString().indexOf(frames[0]) !== -1) {
+    // In Firefox and Safari e.stack starts with frame 0, but in V8 (Chrome/Node.js),
+    // e.stack starts first stringified message. Preserve this separately,
+    // so that, below, we can distinguish between internal frames on top
+    // (to remove) vs later internal frames (to format differently).
+    annotated.push(frames.shift());
+  }
+  let initialInternal = true;
+  for (let i = 0; i < frames.length; i++) {
+    const frame = frames[i];
+    const isInternal = (
+      (fileName && frame.indexOf(fileName) !== -1) ||
+      // Support Node 16+: ESM-style
+      // "at wrap (node:internal/modules/cjs/loader:1)"
+      frame.indexOf('node:internal/') !== -1 ||
+      // Support Node 12-14 (CJS-style)
+      // "at load (internal/modules/cjs/loader.js:7)"
+      frame.match(/^\s+at .+\(internal[^)]*\)$/) ||
+      // Support Node 10
+      // "at listOnTimeout (timers.js:263)"
+      // Avoid matching "(C:)" on Windows
+      // Avoid matching "(http:)"
+      frame.match(/^\s+at .+\([a-z]+\.js[:\d]*\)$/)
+    );
+    if (!isInternal) {
+      initialInternal = false;
+    }
+    // Remove initial internal frames entirely.
+    if (!initialInternal) {
+      annotated.push(isInternal ? formatInternal(frame) : frame);
+    }
+  }
+
+  return annotated.join('\n');
+}
 
 export function extractStacktrace (e, offset) {
   offset = offset === undefined ? 4 : offset;
@@ -47,6 +112,10 @@ export function extractStacktrace (e, offset) {
   // Support: IE9, e.stack is not supported, we will return undefined
   if (e && e.stack) {
     const stack = e.stack.split('\n');
+    // In Firefox and Safari, e.stack starts immediately with the first frame.
+    //
+    // In V8 (Chrome/Node.js), the stack starts first with a stringified error message,
+    // and the real stack starting on line 2.
     if (/^error$/i.test(stack[0])) {
       stack.shift();
     }
@@ -69,8 +138,9 @@ export function extractStacktrace (e, offset) {
 export function sourceFromStacktrace (offset) {
   let error = new Error();
 
-  // Support: Safari <=7 only, IE <=10 - 11 only
-  // Not all browsers generate the `stack` property for `new Error()`, see also #636
+  // Support: IE 9-11, iOS 7
+  // Not all browsers generate the `stack` property for `new Error()`
+  // See also https://github.com/qunitjs/qunit/issues/636
   if (!error.stack) {
     try {
       throw error;
