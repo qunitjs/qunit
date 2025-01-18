@@ -1,7 +1,7 @@
 function mockStack (error) {
   error.stack = ''
     + '    at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
-    + '    at require (internal/helpers.js:22:18)\n'
+    + '    at require (node:internal/helpers.js:22:18)\n'
     + '    at /dev/null/src/example/foo.js:220:27';
   return error;
 }
@@ -35,6 +35,9 @@ QUnit.module('TapReporter', function (hooks) {
     },
     cyan: function (txt) {
       return '\x1B[36m' + txt + '\x1B[39m';
+    },
+    grey: function (txt) {
+      return '\x1B[90m' + txt + '\x1B[39m';
     }
   };
 
@@ -149,7 +152,7 @@ QUnit.module('TapReporter', function (hooks) {
 + '  severity: failed\n'
 + '  stack: |\n'
 + '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
-+ '        at require (internal/helpers.js:22:18)\n'
++ '    ' + kleur.grey('    at require (node:internal/helpers.js:22:18)') + '\n'
 + '        at /dev/null/src/example/foo.js:220:27\n'
 + '  ...\n'
 + '  ---\n'
@@ -157,7 +160,7 @@ QUnit.module('TapReporter', function (hooks) {
 + '  severity: failed\n'
 + '  stack: |\n'
 + '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
-+ '        at require (internal/helpers.js:22:18)\n'
++ '    ' + kleur.grey('    at require (node:internal/helpers.js:22:18)') + '\n'
 + '        at /dev/null/src/example/foo.js:220:27\n'
 + '  ...\n'
     );
@@ -190,7 +193,7 @@ QUnit.module('TapReporter', function (hooks) {
 + '  severity: failed\n'
 + '  stack: |\n'
 + '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
-+ '        at require (internal/helpers.js:22:18)\n'
++ '    ' + kleur.grey('    at require (node:internal/helpers.js:22:18)') + '\n'
 + '        at /dev/null/src/example/foo.js:220:27\n'
 + '  ...\n'
 + 'Bail out! ReferenceError: Boo is not defined\n'

@@ -65,7 +65,7 @@ const fileName = qunitFileName();
  * - For errors in Node.js, format any remaining qunit.js and node:internal
  *   frames as internal (i.e. grey out).
  *
- * @param {string} Error#stack
+ * @param {string} stack Error#stack
  * @param {Function} formatInternal Format a string in an "internal" color
  * @param {string|null} [eToString] Error#toString() to help remove
  *  noise from Node.js/V8 stack traces.
@@ -83,6 +83,8 @@ export function annotateStacktrace (stack, formatInternal, eToString = null) {
   let initialInternal = true;
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[i];
+    // Example of internal stack trace (Node 16+)
+    // "at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)"
     const isInternal = ((fileName && frame.indexOf(fileName) !== -1) || frame.indexOf('node:internal/') !== -1);
     if (!isInternal) {
       initialInternal = false;
@@ -99,6 +101,7 @@ export function annotateStacktrace (stack, formatInternal, eToString = null) {
 export function extractStacktrace (e, offset) {
   offset = offset === undefined ? 4 : offset;
 
+  // Support: IE9, e.stack is not supported, we will return undefined
   if (e && e.stack) {
     const stack = e.stack.split('\n');
     // In Firefox and Safari, e.stack starts immediately with the first frame.
