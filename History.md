@@ -585,7 +585,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 2.4.0 / 2017-07-08
 ==================
 
-* Assert: New [`assert.timeout()`](http://localhost:4000/api/assert/timeout/) for setting per-test timeout durations. (Trent Willis) [#1165](https://github.com/qunitjs/qunit/pull/1165)
+* Assert: New [`assert.timeout()`](https://qunitjs.com/api/assert/timeout/) for setting per-test timeout durations. (Trent Willis) [#1165](https://github.com/qunitjs/qunit/pull/1165)
 * Assert: Fix assert.push deprecation link.
 * CLI: Better messaging on early exits.
 * CLI: Default to non-zero exit code.
@@ -750,7 +750,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 1.22.0 / 2016-02-23
 ==================
 
-* Assert: New [`assert.pushResult()`](http://localhost:4000/api/assert/pushResult/) method. (YongWoo Jeon) [#920](https://github.com/qunitjs/qunit/pull/920)
+* Assert: New [`assert.pushResult()`](https://qunitjs.com/api/assert/pushResult/) method. (YongWoo Jeon) [#920](https://github.com/qunitjs/qunit/pull/920)
 * Assert: Extend Assert methods to QUnit for backwards compatibility.
 * HTML Reporter: Escape setUrl output.
 
@@ -1005,7 +1005,7 @@ QUnit 3.0 Roadmap and feedback: https://github.com/qunitjs/qunit/issues/1498
 
 * Core: A test without any assertions now fails by default, unless [`assert.expect(0)`](https://qunitjs.com/api/assert/expect/) is called. [#178](https://github.com/qunitjs/qunit/issues/178)
 * Core: Add `QUnit.pushFailure` to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). [#210](https://github.com/qunitjs/qunit/issues/210)
-* Core: Apply [`notrycatch` option](http://localhost:4000/api/config/notrycatch/) to setup and teardown hooks. [#203](https://github.com/qunitjs/qunit/issues/203) [#204](https://github.com/qunitjs/qunit/issues/204)
+* Core: Apply [`notrycatch` option](https://qunitjs.com/api/config/notrycatch/) to setup and teardown hooks. [#203](https://github.com/qunitjs/qunit/issues/203) [#204](https://github.com/qunitjs/qunit/issues/204)
 * Core: Extend exports object with QUnit properties at the end of the file to export everything.
 * Core: Prefix test-related session-storage items to make removal more specific. [#213](https://github.com/qunitjs/qunit/issues/213)
 * HTML Reporter: Sort objects in value dumps alphabetically to improve diffs. [#206](https://github.com/qunitjs/qunit/issues/206)

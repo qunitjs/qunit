@@ -1,13 +1,17 @@
 {
   "//": [
-    "twitter.com broken with redirect-loop",
+    "twitter.com serves broken redirect-loop",
     "app.element.io chat rooms render fine but use HTTP 404 for some reason",
     "npmjs.com responds HTTP 429 Too Many Requests too easily",
+    "Skip trivial github.com links to hopefully avoid HTTP 429 Too Many Requests",
     ""
   ],
   "exclude_scheme_prefixes": [
     "https://twitter.com/",
     "https://app.element.io/",
-    "https://www.npmjs.com/package/"
+    "https://www.npmjs.com/package/",
+    "https://github.com/qunitjs/qunit/issues/",
+    "https://github.com/qunitjs/qunit/pull/",
+    "https://github.com/qunitjs/qunit/blob/main/docs/_posts/"
   ]
 }

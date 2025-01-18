@@ -4,7 +4,7 @@ group: config
 title: QUnit.config
 excerpt: General configuration options for QUnit.
 amethyst:
-  # Override inherited "pagetype: navigation" to enable TypeSense indexing
+  # Override inherited "pagetype: navigation" to enable Typesense indexing
   pagetype: custom
   robots: index
 redirect_from:
