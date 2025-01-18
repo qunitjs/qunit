@@ -130,7 +130,7 @@ QUnit.module('TapReporter', hooks => {
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-        at require (internal/helpers.js:22:18)
+    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
         at /dev/null/src/example/foo.js:220:27
   ...
   ---
@@ -138,7 +138,7 @@ QUnit.module('TapReporter', hooks => {
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-        at require (internal/helpers.js:22:18)
+    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
         at /dev/null/src/example/foo.js:220:27
   ...
 `

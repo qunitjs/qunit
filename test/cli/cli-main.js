@@ -38,8 +38,6 @@ not ok 2 slow
   ---
   message: Test took longer than 7ms; test timed out.
   severity: failed
-  stack: |
-        at internal
   ...
 ok 3 config
 1..3
