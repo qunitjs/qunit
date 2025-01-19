@@ -30,9 +30,28 @@ Check these QUnit tutorials and examples, to make the most of your unit tests!
 
 ## Support
 
-To report a bug or request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
+To report a bug, request a new feature, or ask a question [open an issue](https://github.com/qunitjs/qunit/issues) on GitHub.
 
-If you need help using QUnit, join us in the [Matrix chat](https://app.element.io/#/room/#qunitjs_qunit:gitter.im)!
+You can also find support on StackOverflow. Use the ["qunit" hashtag on StackOverflow](https://stackoverflow.com/questions/tagged/qunit) to search existing questions or ask your own question.
+
+## Chat
+
+If you need help, join us in our chat room on Matrix at `#qunitjs_qunit:gitter.im`:
+
+* **[Gitter web client](https://app.gitter.im/#/room/#qunitjs_qunit:gitter.im)**, browse the room as guest.
+* [Element web client](https://app.element.io/#/room/#qunitjs_qunit:gitter.im), join and log in (with GitHub, GitLab, Google, or Apple ID), or sign up.
+* [matrix.to link](https://matrix.to/#/#qunitjs_qunit:gitter.im?web-instance[element.io]=app.gitter.im), join with the Element native app or other Matrix client.
+
+## Social media
+
+Follow us:
+* [Mastodon: @qunit@fosstodon.org](https://fosstodon.org/@qunit)
+* [Bluesky: @qunitjs.com](https://bsky.app/profile/qunitjs.com)
+
+Hashtags:
+* [Mastodon: #qunit](https://mastodon.social/tags/qunit)
+* [Bluesky: #qunit](https://bsky.app/hashtag/qunit)
+* [Threads: #qunit](https://www.threads.net/search?q=%23qunit&serp_type=default)
 
 ---
 

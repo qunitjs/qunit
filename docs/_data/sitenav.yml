@@ -5,6 +5,8 @@
       href: /intro/
     - name: Browser Runner
       href: /browser/
+    - name: Browser Support
+      href: /browser/#browser-support
     - name: Command-line Interface
       href: /cli/
     - name: Download
@@ -17,13 +19,13 @@
   href: /api/
 - name: Blog
   href: /blog/
-- name: About
+- name: Community
   href: /about/
   sub:
+    - name: Support & Chat
+      href: /intro/#support
     - name: Who's using QUnit?
       href: /projects/
-    - name: Browser Support
-      href: /browser/#browser-support
     - name: About QUnit
       href: /about/
     - name: Badge

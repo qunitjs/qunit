@@ -52,9 +52,10 @@ amethyst:
   release_base: https://github.com/qunitjs/qunit/releases/tag/
   author_permalink: /blog/author/:author/
   mastodon: https://fosstodon.org/@qunit
+  bluesky: https://bsky.app/profile/qunitjs.com
   twitter: qunitjs
   github: qunitjs
-  chat: https://app.element.io/#/room/#qunitjs_qunit:gitter.im
+  chat: /intro/#support
   # https://github.com/qunitjs/jekyll-theme-amethyst/blob/main/docs/getting-started.md#enable-typesense
   typesense:
     origin: https://typesense.jquery.com
