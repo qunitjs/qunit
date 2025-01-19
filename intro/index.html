@@ -5,8 +5,7 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=29980d90" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>Getting Started | QUnit</title>
-<meta property="og:title" content="Getting Started"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
+<title>Getting Started | QUnit</title><meta property="og:title" content="Getting Started"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:creator" content="@qunitjs"><meta name="twitter:site" content="@qunitjs"><meta name="twitter:card" content="summary_large_image">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -92,6 +91,7 @@
   <li><a href="/api/assert/">Assertions</a>: Partial object comparison, expected exceptions, and much more.</li>
   <li><a href="/browser/">Browser</a>: Productivity tricks, Browser automation, What can the toolbar do?</li>
   <li><a href="/cli/">CLI</a>: Productivity tricks, Code coverage.</li>
+  <li><a href="./callbacks/QUnit.on.md#reporter-api">Reporter API</a>: Event emitter, Create your own reporter.</li>
 </ol>
 
 <h2 id="support">Support</h2>
@@ -130,7 +130,7 @@ curl <span class="nt">-o</span> qunit.js <span class="s1">'https://code.jquery.c
   <li>
     <p>npm Registry:</p>
 
-    <p>If your development workflow uses <a href="https://nodejs.org/en/">Node.js</a>, you can install the <a href="https://www.npmjs.com/package/qunit">qunit</a> package the npm Registry, using the <code class="language-plaintext highlighter-rouge">npm</code> CLI:</p>
+    <p>If your development workflow uses <a href="https://nodejs.org/en/">Node.js</a>, you can install the <a href="https://www.npmjs.com/package/qunit">qunit</a> package from the npm Registry, using the <code class="language-plaintext highlighter-rouge">npm</code> CLI:</p>
 
     <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save-dev</span> qunit
 </code></pre></div>    </div>
@@ -139,9 +139,12 @@ curl <span class="nt">-o</span> qunit.js <span class="s1">'https://code.jquery.c
     <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add <span class="nt">--dev</span> qunit
 </code></pre></div>    </div>
 
-    <p>You can then reference <code class="language-plaintext highlighter-rouge">node_modules/qunit/qunit/qunit.css</code> and <code class="language-plaintext highlighter-rouge">node_modules/qunit/qunit/qunit.js</code> in your HTML.</p>
+    <p>You can then reference these in your HTML:</p>
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"./node_modules/qunit/qunit/qunit.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"./node_modules/qunit/qunit/qunit.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>    </div>
 
-    <p>If your project uses a custom npm frontend that locates packages elsewhere, you may need to generate the HTML dynamically and use <a href="https://nodejs.org/api/modules.html#modules_require_resolve_request_options"><code class="language-plaintext highlighter-rouge">require.resolve()</code></a> to locate <code class="language-plaintext highlighter-rouge">qunit/qunit/qunit.js</code> and <code class="language-plaintext highlighter-rouge">qunit/qunit/qunit.css</code>. Alternatively, use one of the <a href="/browser/#integrations">Integrations</a> such as karma-qunit which can do this for you.</p>
+    <p>If your project uses an npm alternative that locates packages elsewhere, you may need to generate the HTML dynamically and use <a href="https://nodejs.org/api/modules.html#modules_require_resolve_request_options"><code class="language-plaintext highlighter-rouge">require.resolve()</code></a> to locate <code class="language-plaintext highlighter-rouge">qunit/qunit/qunit.js</code> and <code class="language-plaintext highlighter-rouge">qunit/qunit/qunit.css</code>. Alternatively, use one of the <a href="/browser/#integrations">Integrations</a> such as karma-qunit which can do this for you.</p>
   </li>
   <li>
     <p>Bower:</p>
