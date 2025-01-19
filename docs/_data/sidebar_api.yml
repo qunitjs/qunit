@@ -15,6 +15,9 @@
 - title: Configuration
   group: config
 
+- title: Reporters
+  group: reporters
+
 - group: extension
 
 - group: deprecated

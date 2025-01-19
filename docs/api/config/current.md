@@ -26,7 +26,7 @@ This object is not a configuration option, but is exposed under `QUnit.config` f
 | name | description |
 |------|-------------|
 | `testName` (string) | Name of the currently-running test, as passed to [QUnit.test](../QUnit/test.md).
-| `testId` (string) | Internal ID, used by [QUnit.config.testId](./testId.md) to power "Rerun" links and the HTML API in the [HTML Reporter](../../browser.md#html-reporter).
+| `testId` (string) | Internal ID, used by [QUnit.config.testId](./testId.md) to power "Rerun" links and the HTML API in the [HTML Reporter](../../browser.md).
 
 Other properties may change without notice. When possible, use [QUnit.on](../callbacks/QUnit.on.md) or [event callbacks](../callbacks/index.md) instead.
 

@@ -15,6 +15,9 @@ markdown: kramdown
 kramdown:
   input: GFM
   toc_levels: "1,2"
+  # Disable automatic conversion, messes with headings like "--reporter".
+  typographic_symbols:
+    ndash: '--'
 sass:
   # https://jekyllrb.com/docs/assets/#sassscss
   style: compressed

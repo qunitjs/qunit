@@ -18,4 +18,5 @@ QUnit is a powerful, easy-to-use JavaScript unit test suite. QUnit has no depend
 * [Assertions](./assert/)
 * [Callback events](./callbacks/)
 * [Configuration options](./config/)
+* [Reporters](./reporters/)
 * [Extension interface](./extension/)

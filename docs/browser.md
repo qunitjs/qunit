@@ -8,7 +8,7 @@ redirect_from:
   - "/cookbook/"
 ---
 
-<p class="lead" markdown="1">
+<p class="lead" markdown="1" id="lead">
 
 Test JavaScript code in a real browser with QUnit.
 
@@ -131,7 +131,7 @@ QUnit requires no HTML markup in order to run tests. The above "Getting started"
 
 To display test results, the only markup necessary is a `<div>` with `id="qunit"`. Without this, the tests will run with the [HTML Reporter](#html-reporter) disabled.
 
-[Browser automations](#integrations) that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a TAP reporter, or [`QUnit.on()`](./api/callbacks/QUnit.on.md) to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).
+[Browser automations](#integrations) that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a [TAP reporter](./api/reporters/tap.md), or [`QUnit.on()`](./api/callbacks/QUnit.on.md) to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).
 
 ## HTML Reporter
 

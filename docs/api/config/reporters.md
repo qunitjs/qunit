@@ -24,81 +24,22 @@ Control which reporters to enable or disable.
 
 ## Built-in reporters
 
-### tap
+* [`tap`](../reporters/tap.md)
+* [`console`](../reporters/console.md)
+* [`perf`](../reporters/perf.md)
+* [`html`](../reporters/html.md)
 
-The **tap** reporter is a [TAP compliant](https://testanything.org/) reporter. This is the default in the [QUnit CLI](../../cli.md). This allows you to pair QUnit with many [TAP-based reporters](https://github.com/sindresorhus/awesome-tap#reporters), by piping the output. For example:
+## Example
 
-```sh
-qunit test/ | tap-min
-```
-
-### console
-
-The **console** reporter logs a JSON object for each reporter event from [`QUnit.on`](../callbacks/QUnit.on.md). Use this to explore or debug the Reporter API.
-
-```
-runStart {…}
-testStart {…}
-testEnd {…}
-testStart {…}
-testEnd {…}
-runEnd {…}
-```
-
-### perf
-
-The **perf** reporter emits measures for the duration of each QUnit test and each module via the Web Performance API. This allows you to visualize where time is spent during your test run. This uses the [performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) method internally. QUnit enables the perf reporter by default in [Browser](../../browser.md) environments. The measures are included in Firefox Profiler and Chrome DevTools (Safari is pending [WebKit #213870](https://bugs.webkit.org/show_bug.cgi?id=213870)).
-
-```
-QUnit Test Run
-└── QUnit Test Suite: Example
-    ├── QUnit Test: apple
-    ├── QUnit Test: banana
-    └── QUnit Test: citron
-```
-
-<figure>
-  <img alt="QUnit profiling in Chrome DevTools Performance tab" src="/resources/perf-chrome.png">
-  <figcaption>Chrome</figcaption>
-</figure>
-
--------
-
-<figure>
-  <img alt="QUnit performance in Firefox Profiler" src="/resources/perf-firefox.png">
-  <figcaption>Firefox</figcaption>
-</figure>
-
-
-The Web Performance API is also [available in Node.js](https://nodejs.org/docs/latest/api/perf_hooks.html) and the QUnit perf reporter can be enabled in Node.js. You can enable it in the QUnit CLI via `--reporter perf`. Note that the [Node.js inspector](https://nodejs.org/docs/latest/api/debugger.html#v8-inspector-integration-for-nodejs) does not yet send these to Chrome DevTools ([upstream nodejs/node#47813](https://github.com/nodejs/node/issues/47813)).
-
-
-### html
-
-The **html** reporter renders a toolbar and visualizes test results. This is the default in [Browser](../../browser.md) environments, and is documented at [HTML Reporter](../../browser.md#markup).
-
-## Examples
-
-By default, the [HTML Reporter](../../browser.md) is automatically enabled in browser environments if a `<div id="qunit">` element exists, and it remains disabled ("headless") if such element doesn't exist. You can override this to disable the HTML Reporter even if the element does exist.
-
-For example, this lets you share the same HTML file for manual testing, debugging, and CI runs; and yet disable the HTML Reporter in CI for improved performance.
-
+Enable TAP in the browser via [preconfig](./index.md#preconfiguration):
 ```js
-// Declare as preconfig, before loading qunit.js
-qunit_config_reporters_html = false;
-
-// Set at runtime, after loading qunit.js (but before QUnit.begin)
-QUnit.config.reporters.html = false;
-```
-
-Declaratively enable the TAP reporter in a browser environment:
-
-```js
-// Declare preconfig, before loading qunit.js
+// Set as global variable before loading qunit.js
 qunit_config_reporters_tap = true;
 ```
 
-## See also
+Or, via [QUnit.config](../config/index.md):
 
-* [Preconfig](./index.md#preconfiguration)
-* [QUnit Reporter API](../callbacks/QUnit.on.md#reporter-api)
+```js
+// Set from any inline script or JS file after qunit.js
+QUnit.config.reporters.tap = true;
+```

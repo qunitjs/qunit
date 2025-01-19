@@ -26,6 +26,7 @@ Check these QUnit tutorials and examples, to make the most of your unit tests!
 1. [Assertions](./api/assert/index.md): Partial object comparison, expected exceptions, and much more.
 1. [Browser](./browser.md): Productivity tricks, Browser automation, What can the toolbar do?
 1. [CLI](./cli.md): Productivity tricks, Code coverage.
+1. [Reporter API](./callbacks/QUnit.on.md#reporter-api): Event emitter, Create your own reporter.
 
 ## Support
 
@@ -61,7 +62,7 @@ These are the official release channels for QUnit releases:
 
 * npm Registry:
 
-  If your development workflow uses [Node.js](https://nodejs.org/en/), you can install the [qunit](https://www.npmjs.com/package/qunit) package the npm Registry, using the `npm` CLI:
+  If your development workflow uses [Node.js](https://nodejs.org/en/), you can install the [qunit](https://www.npmjs.com/package/qunit) package from the npm Registry, using the `npm` CLI:
 
   ```bash
   npm install --save-dev qunit
@@ -72,9 +73,13 @@ These are the official release channels for QUnit releases:
   yarn add --dev qunit
   ```
 
-  You can then reference `node_modules/qunit/qunit/qunit.css` and `node_modules/qunit/qunit/qunit.js` in your HTML.
+  You can then reference these in your HTML:
+  ```html
+  <link rel="stylesheet" href="./node_modules/qunit/qunit/qunit.css">
+  <script src="./node_modules/qunit/qunit/qunit.js"></script>
+  ```
 
-  If your project uses a custom npm frontend that locates packages elsewhere, you may need to generate the HTML dynamically and use [`require.resolve()`](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to locate `qunit/qunit/qunit.js` and `qunit/qunit/qunit.css`. Alternatively, use one of the [Integrations](./browser.md#integrations) such as karma-qunit which can do this for you.
+  If your project uses an npm alternative that locates packages elsewhere, you may need to generate the HTML dynamically and use [`require.resolve()`](https://nodejs.org/api/modules.html#modules_require_resolve_request_options) to locate `qunit/qunit/qunit.js` and `qunit/qunit/qunit.css`. Alternatively, use one of the [Integrations](./browser.md#integrations) such as karma-qunit which can do this for you.
 
 * Bower:
 

@@ -7,6 +7,7 @@ amethyst:
   # Override inherited "pagetype: navigation" to enable Typesense indexing
   pagetype: custom
   robots: index
+  toc: true
 redirect_from:
   - "/QUnit.config/"
   - "/config/"

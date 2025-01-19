@@ -14,7 +14,7 @@ version_added: "2.2.0"
 
 Register a callback that will be invoked after the specified event is emitted.
 
-This API is the primary interface for QUnit reporters, plugins, and continuous integration support. It is based on the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc).
+This event emitter is the primary interface for QUnit reporters, plugins, and continuous integration support. It is based on the [js-reporters CRI standard](https://github.com/js-reporters/js-reporters/blob/v2.1.0/spec/cri-draft.adoc), and includes a [Reporter API](#reporter-api).
 
 | type | parameter | description
 |--|--|--
