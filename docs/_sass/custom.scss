@@ -32,6 +32,15 @@ h3 a {
   }
 }
 
+/* Browser */
+
+// Discourage selecting to copy/paste because this demonstrates
+// HTML that QUnit generates at runtime.
+// Not HTML to place in a test.html file.
+.code-no-select {
+  user-select: none;
+}
+
 /* Plugins */
 #plugins {
     list-style: none;

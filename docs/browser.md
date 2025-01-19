@@ -186,7 +186,7 @@ When selecting a parent module, which contains [nested modules](./api/QUnit/modu
 
 ### Theme API
 
-The HTML Reporter populates the `<div id="qunit">` element with the following structure:
+The HTML Reporter generates the following HTML inside the `<div id="qunit">` element:
 
 QUnit 1.x, 2.x:
 
@@ -200,6 +200,7 @@ QUnit 1.x, 2.x:
   <ol id="qunit-tests"></ol>
 </div>
 ```
+{:class="code-no-select"}
 
 <details markdown="1">
 <summary>As of QUnit 3.0</summary>
@@ -218,6 +219,7 @@ QUnit 1.x, 2.x:
   <ol id="qunit-tests"></ol>
 </div>
 ```
+{:class="code-no-select"}
 
 </details>
 
