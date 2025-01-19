@@ -188,6 +188,16 @@ export function begin () {
     return;
   }
 
+  // QUnit.config.reporters is considered writable between qunit.js and QUnit.start().
+  // Now that QUnit.start() has been called, it is time to decide which built-in reporters
+  // to load.
+  if (config.reporters.console) {
+    reporters.console.init(QUnit);
+  }
+  if (config.reporters.tap) {
+    reporters.tap.init(QUnit);
+  }
+
   // The test run hasn't officially begun yet
   // Record the time of the test run's beginning
   config.started = performance.now();

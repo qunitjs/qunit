@@ -45,6 +45,8 @@ const config = {
   // very useful in combination with "Hide passed tests" checked
   reorder: true,
 
+  reporters: {},
+
   // When enabled, all tests must call expect()
   requireExpects: false,
 
@@ -187,6 +189,19 @@ function readFlatPreconfig (obj) {
   readFlatPreconfigStringOrBoolean(obj.qunit_config_seed, 'seed');
   readFlatPreconfigStringArray(obj.qunit_config_testid, 'testId');
   readFlatPreconfigNumber(obj.qunit_config_testtimeout, 'testTimeout');
+
+  const reporterKeys = {
+    qunit_config_reporters_console: 'console',
+    qunit_config_reporters_tap: 'tap'
+  };
+  for (const key in reporterKeys) {
+    const val = obj[key];
+    // Based on readFlatPreconfigBoolean
+    if (typeof val === 'boolean' || (typeof val === 'string' && val !== '')) {
+      const dest = reporterKeys[key];
+      config.reporters[dest] = (val === true || val === 'true' || val === '1');
+    }
+  }
 }
 
 if (process && 'env' in process) {

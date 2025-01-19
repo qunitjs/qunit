@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>config-reporters</title>
+  <link rel="stylesheet" href="../qunit/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <script src="../qunit/qunit.js"></script>
+  <script>
+  QUnit.config.reporters.tap = true;
+
+  QUnit.module('QUnit.config [reporters]');
+
+  QUnit.test('read config', function (assert) {
+    assert.deepEqual(QUnit.config.reporters, {
+      tap: true
+    });
+  });
+
+  (function () {
+    var log = console.log;
+    console.log = function (str) {
+      if (!window.firstConsoleMessage) {
+        window.firstConsoleMessage = str;
+      }
+      log.apply(this, arguments);
+    };
+  }());
+
+  QUnit.test('TapReporter enabled', function (assert) {
+    assert.strictEqual(window.firstConsoleMessage, 'TAP version 13', 'first console message');
+  });
+  </script>
+</body>
+</html>
