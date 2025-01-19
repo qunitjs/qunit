@@ -38,10 +38,10 @@ Before, on QUnit 2.x without [QUnit.config.countStepsAsOne](../config/countSteps
 QUnit.test('example', async function (assert) {
   assert.expect(6);
 
-  MyWordParser.on('noun', function (word) {
+  MyVoice.on('noun', function (word) {
     assert.step(word); // 1, 2, 3, 4
   });
-  var song = await MyWordParser.sing('My Favorite Things', { lines: 1 });
+  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
 
   assert.true(song.finished, 'finished'); // 5
   assert.verifySteps([ // 6
@@ -59,10 +59,10 @@ After:
 QUnit.test('example', async function (assert) {
   assert.expect(2);
 
-  MyWordParser.on('noun', function (word) {
+  MyVoice.on('noun', function (word) {
     assert.step(word);
   });
-  var song = await MyWordParser.sing('My Favorite Things', { lines: 1 });
+  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
 
   assert.true(song.finished, 'finished'); // 1
   assert.verifySteps([ // 2

@@ -40,13 +40,13 @@ runEnd {…}
 qunit --reporter console test/
 ```
 
-Enable manually in JavaScript code (since QUnit 2.16):
+Enable manually in JavaScript code:
 
 ```js
 QUnit.reporters.console.init(QUnit);
 ```
 
-Enable declaratively via [QUnit.config](../config/index.md) (since QUnit 3.0):
+Enable declaratively via [QUnit.config](../config/index.md):
 
 ```js
 // Preconfig:

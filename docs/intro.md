@@ -20,13 +20,14 @@ redirect_from:
 Check these QUnit tutorials and examples, to make the most of your unit tests!
 
 1. [QUnit.module](./api/QUnit/module.md#organizing-your-tests): How to group related tests.
-1. [QUnit.test](./api/QUnit/test.md#examples): Define tests, How to wait for async code
+1. [QUnit.test](./api/QUnit/test.md#examples): Define tests, How to wait for async code.
 1. [Fixture feature](./browser.md#fixture): Keeping your DOM tests atomic.
 1. [Step API](./api/assert/verifySteps.md): Testing asynchronous callbacks or event listeners.
 1. [Assertions](./api/assert/index.md): Partial object comparison, expected exceptions, and much more.
 1. [Browser](./browser.md): Productivity tricks, Browser automation, What can the toolbar do?
 1. [CLI](./cli.md): Productivity tricks, Code coverage.
 1. [Reporter API](./callbacks/QUnit.on.md#reporter-api): Event emitter, Create your own reporter.
+1. [Theme API](./browser.md#theme-api): Create your own theme.
 
 ## Support
 

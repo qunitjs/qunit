@@ -22,11 +22,11 @@ The Step API provides an easy way to verify execution logic to a high degree of 
 
 For example, you can mark steps to observe and validate whether parts of your code are reached correctly, or to check the frequency (how often) an asynchronous code path is executed. You can also capture any unexpected steps, which are automatically detected and shown as part of the test failure.
 
-This assertion compares a given array of string values to a list of previously recorded steps, as marked via previous calls to [`assert.step()`](./step.md).
+This assertion compares a given array of string values to a list of steps recorded via calls to [`assert.step()`](./step.md).
 
-Calling `verifySteps()` will clear and reset the internal list of steps. This allows multiple independent sequences of `assert.step()` to exist within the same test.
+Calling `assert.verifySteps()` will clear and reset the internal list of steps. This allows multiple independent sequences of `assert.step()` to exist within the same test.
 
-Refer to the below examples and learn how to use the Step API in your test suite.
+Refer to the below examples to learn how to use the Step API in your test suite.
 
 ## Changelog
 
@@ -36,14 +36,14 @@ Refer to the below examples and learn how to use the Step API in your test suite
 
 ### Test event-based interface
 
-This example uses a class based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one provided by Node.js and other environments:
+These two examples test classes that emits event via an `on()` method. It might be based on an [`EventEmitter`](https://nodejs.org/api/events.html), such as the one found in Node.js and in other environments:
 
 ```js
 QUnit.test('good example', async function (assert) {
-  MyWordParser.on('noun', function (word) {
+  MyVoice.on('noun', function (word) {
     assert.step(word);
   });
-  const song = await MyWordParser.sing('My Favorite Things', { lines: 1 });
+  const song = await MyVoice.sing('My Favorite Things', { lines: 1 });
 
   assert.true(song.finished, 'finished');
   assert.verifySteps([
@@ -57,23 +57,23 @@ QUnit.test('good example', async function (assert) {
 
 ```js
 QUnit.test('good example', async function (assert) {
-  const maker = new WordMaker();
-  maker.on('start', () => {
+  const finder = new WordFinder();
+  finder.on('start', () => {
     assert.step('start');
   });
-  maker.on('data', (word) => {
+  finder.on('data', (word) => {
     assert.step(word);
   });
-  maker.on('end', () => {
+  finder.on('end', () => {
     assert.step('end');
   });
-  maker.on('error', message => {
+  finder.on('error', message => {
     assert.step('error: ' + message);
   });
 
-  await maker.process('3.1');
+  await finder.process('Hello, 3.1. Great!');
 
-  assert.verifySteps(['start', '3', 'point', '1', 'end']);
+  assert.verifySteps(['start', 'Hello', 'Great', 'end']);
 });
 ```
 
@@ -82,17 +82,17 @@ If you approach this scenario *without* the Step API, one might be tempted to pl
 ```js
 // WARNING: This is a BAD example
 QUnit.test('bad example 1', async function (assert) {
-  const maker = new WordMaker();
-  maker.on('start', () => {
+  const finder = new WordFinder();
+  finder.on('start', () => {
     assert.true(true, 'start');
   });
-  maker.on('middle', () => {
+  finder.on('middle', () => {
     assert.true(true, 'middle');
   });
-  maker.on('end', () => {
+  finder.on('end', () => {
     assert.true(true, 'end');
   });
-  maker.on('error', () => {
+  finder.on('error', () => {
     assert.true(false, 'error');
   });
 
@@ -106,21 +106,21 @@ A less fragile approach could involve a local array that we check afterwards wit
 QUnit.test('manual example without Step API', async function (assert) {
   const values = [];
 
-  const maker = new WordMaker();
-  maker.on('start', () => {
+  const finder = new WordFinder();
+  finder.on('start', () => {
     values.push('start');
   });
-  maker.on('middle', () => {
+  finder.on('middle', () => {
     values.push('middle');
   });
-  maker.on('end', () => {
+  finder.on('end', () => {
     values.push('end');
   });
-  maker.on('error', () => {
+  finder.on('error', () => {
     values.push('error');
   });
 
-  await maker.process();
+  await finder.process();
 
   assert.deepEqual(values, ['start', 'middle', 'end']);
 });

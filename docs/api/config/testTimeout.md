@@ -28,15 +28,9 @@ Individual tests can override the default `testTimeout` config via [assert.timeo
 
 It is recommended to set the default at `3000` or higher (3 seconds). A lower timeout may cause intermittent failures due to unrelated infrastructure delays that are known to sometimes occur inside CI services and other virtual servers.
 
-## Introducing a default timeout
+## Deprecated: No timeout set
 
-Prior to QUnit 3, there has not been a default timeout. This meant that a test hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).
-
-QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.
-
-### Deprecated: No timeout set
-
-Starting in QUnit 2.21, a deprecation warning will be logged if a test takes longer than 3 seconds, when there is no timeout set.
+Starting in QUnit 2.21, a deprecation warning is logged if a test takes longer than 3 seconds, and there is no timeout set.
 
 ```
 Test {name} took longer than 3000ms, but no timeout was set.
@@ -63,7 +57,7 @@ You can address this warning before upgrading to QUnit 3 as follows:
 
 * Or, your test runner of choice may offer other ways to set configuration.
 
-  For example, to set `testTimeout` via [karma-qunit](https://github.com/karma-runner/karma-qunit/#readme):
+  For example, set `testTimeout` via [karma-qunit](https://github.com/karma-runner/karma-qunit/#readme):
 
   ```js
   config.set({
@@ -76,6 +70,12 @@ You can address this warning before upgrading to QUnit 3 as follows:
     }
   });
   ```
+
+## Introducing a default timeout
+
+Prior to QUnit 3.0, there has not been a default timeout. This meant that a test could hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).
+
+QUnit 3.0 changes the default timeout from undefined (Infinity) to 3 seconds.
 
 ## Changelog
 

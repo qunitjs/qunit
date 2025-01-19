@@ -29,20 +29,23 @@ The Step API provides an easy way to verify execution logic to a high degree of 
 
 ```js
 QUnit.test('example', function (assert) {
-  var maker = new WordMaker();
-  maker.on('start', () => {
+  const finder = new WordFinder();
+  finder.on('start', () => {
     assert.step('start');
   });
-  maker.on('data', (word) => {
+  finder.on('data', (word) => {
     assert.step(word);
   });
-  maker.on('end', () => {
+  finder.on('end', () => {
     assert.step('end');
   });
+  finder.on('error', message => {
+    assert.step('error: ' + message);
+  });
 
-  maker.process('3.1');
+  finder.process('Hello, 3.1. Great!');
 
-  assert.verifySteps([ 'start', '3', 'point', '1', 'end' ]);
+  assert.verifySteps(['start', 'Hello', 'Great', 'end']);
 });
 ```
 
