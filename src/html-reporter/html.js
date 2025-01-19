@@ -196,10 +196,9 @@ const stats = {
       config[field.name] = value || false;
       let tests = id('qunit-tests');
       if (tests) {
-        const length = tests.children.length;
-        const children = tests.children;
-
         if (field.checked) {
+          const length = tests.children.length;
+          const children = tests.children;
           for (let i = 0; i < length; i++) {
             const test = children[i];
             const className = test ? test.className : '';
@@ -211,13 +210,18 @@ const stats = {
             }
           }
 
-          for (const hiddenTest of hiddenTests) {
-            tests.removeChild(hiddenTest);
+          // Optimization: Avoid `for-of` iterator overhead.
+          for (let i = 0; i < hiddenTests.length; i++) {
+            tests.removeChild(hiddenTests[i]);
           }
         } else {
-          while (hiddenTests.length) {
-            tests.appendChild(hiddenTests.shift());
+          // Optimization: Avoid `while (arr.length) arr.shift()` which would mutate the array many times.
+          // As of Chrome 126, HTMLElement.append(...hiddenTests) is still slower than
+          // calling appendChild in a loop.
+          for (let i = 0; i < hiddenTests.length; i++) {
+            tests.appendChild(hiddenTests[i]);
           }
+          hiddenTests.length = 0;
         }
       }
       window.history.replaceState(null, '', updatedUrl);
