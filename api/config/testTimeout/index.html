@@ -93,15 +93,9 @@
 
 <p>It is recommended to set the default at <code class="language-plaintext highlighter-rouge">3000</code> or higher (3 seconds). A lower timeout may cause intermittent failures due to unrelated infrastructure delays that are known to sometimes occur inside CI services and other virtual servers.</p>
 
-<h2 id="introducing-a-default-timeout">Introducing a default timeout</h2>
+<h2 id="deprecated-no-timeout-set">Deprecated: No timeout set</h2>
 
-<p>Prior to QUnit 3, there has not been a default timeout. This meant that a test hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
-
-<p>QUnit 3.0 will change the default timeout from undefined (Infinity) to 3 seconds.</p>
-
-<h3 id="deprecated-no-timeout-set">Deprecated: No timeout set</h3>
-
-<p>Starting in QUnit 2.21, a deprecation warning will be logged if a test takes longer than 3 seconds, when there is no timeout set.</p>
+<p>Starting in QUnit 2.21, a deprecation warning is logged if a test takes longer than 3 seconds, and there is no timeout set.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test {name} took longer than 3000ms, but no timeout was set.
 </code></pre></div></div>
@@ -130,7 +124,7 @@
   <li>
     <p>Or, your test runner of choice may offer other ways to set configuration.</p>
 
-    <p>For example, to set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:</p>
+    <p>For example, set <code class="language-plaintext highlighter-rouge">testTimeout</code> via <a href="https://github.com/karma-runner/karma-qunit/#readme">karma-qunit</a>:</p>
 
     <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">config</span><span class="p">.</span><span class="nf">set</span><span class="p">({</span>
   <span class="na">frameworks</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">qunit</span><span class="dl">'</span><span class="p">],</span>
@@ -144,6 +138,12 @@
 </code></pre></div>    </div>
   </li>
 </ul>
+
+<h2 id="introducing-a-default-timeout">Introducing a default timeout</h2>
+
+<p>Prior to QUnit 3.0, there has not been a default timeout. This meant that a test could hang silently for many seconds or minutes before diagnostic details are presented (e.g. after a CI job reaches the maximum run time).</p>
+
+<p>QUnit 3.0 changes the default timeout from undefined (Infinity) to 3 seconds.</p>
 
 <h2 id="changelog">Changelog</h2>
 
@@ -234,7 +234,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#introducing-a-default-timeout">Introducing a default timeout</a><ol><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#deprecated-no-timeout-set">Deprecated: No timeout set</a></li><li class="sidebar-item"><a href="#introducing-a-default-timeout">Introducing a default timeout</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li></ol></div>
 </aside>
 
 </div>
