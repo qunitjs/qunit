@@ -1,3 +1,31 @@
+2.24.0 / 2025-01-19
+==================
+
+FYI:
+* ✨ There is a new **[QUnit Blog](https://qunitjs.com/blog/)** on qunitjs.com.
+  We're also on [Mastodon](https://fosstodon.org/@qunit) and [Bluesky](https://bsky.app/profile/qunitjs.com).
+* 📗 There are [new Guides, Support, and Chat sections](https://qunitjs.com/intro/) on qunitjs.com.
+  Including best practices and examples for async tests, callbacks, and event-based code.
+
+### Added
+
+* CLI: Add `.mjs` and `.cjs` to the default file extensions when reading a test directory.
+
+  These have been monitored by watch mode since QUnit 2.18, but were not loaded or executed
+  unless you passed them as individual files, or used your own glob like `test/*.{js,mjs,cjs}`.
+
+  If you currently pass a directory to the QUnit CLI and have matching `.mjs` or `.cjs`
+  files that should not be executed, you can opt-out by passing `test/*.js` or
+  `test/**/*.js` explicitly instead of `test/`.
+
+* CLI: Add stacktrace cleaning by omitting or greying out internal QUnit and Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
+* Core: Add [`QUnit.config.reporters.tap`](https://qunitjs.com/api/config/reporters/) for enabling TAP via preconfig. [#1711](https://github.com/qunitjs/qunit/issues/1711)
+* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [27a33d1593](https://github.com/qunitjs/qunit/commit/27a33d15938a601716a81a638882a16c1bd7f2b9)
+
+### Fixed
+
+* HTML Reporter: Fix unexpected pointer cursor on "Source:" label. [f8cce2bb06](https://github.com/qunitjs/qunit/commit/f8cce2bb06396561e0cdcbf58c4e83ddf7a1f27f)
+* HTML Reporter: Faster "Hide passed" toggling on large test suites. [b13ade0fd7](https://github.com/qunitjs/qunit/commit/b13ade0fd7c3baf4d0e68abe04f7d1609f686877)
 
 2.23.1 / 2024-12-06
 ==================
