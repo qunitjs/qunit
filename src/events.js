@@ -1,6 +1,6 @@
 import { inArray } from './core/utilities';
+import config from './core/config';
 
-const LISTENERS = Object.create(null);
 const SUPPORTED_EVENTS = [
   'error',
   'runStart',
@@ -9,6 +9,9 @@ const SUPPORTED_EVENTS = [
   'assertion',
   'testEnd',
   'suiteEnd',
+  'runEnd'
+];
+const MEMORY_EVENTS = [
   'runEnd'
 ];
 
@@ -30,11 +33,15 @@ export function emit (eventName, data) {
   }
 
   // Clone the callbacks in case one of them registers a new callback
-  const originalCallbacks = LISTENERS[eventName];
+  const originalCallbacks = config._event_listeners[eventName];
   const callbacks = originalCallbacks ? [...originalCallbacks] : [];
 
   for (let i = 0; i < callbacks.length; i++) {
     callbacks[i](data);
+  }
+
+  if (inArray(MEMORY_EVENTS, eventName)) {
+    config._event_memory[eventName] = data;
   }
 }
 
@@ -57,12 +64,14 @@ export function on (eventName, callback) {
     throw new TypeError('callback must be a function when registering a listener');
   }
 
-  if (!LISTENERS[eventName]) {
-    LISTENERS[eventName] = [];
-  }
+  const listeners = config._event_listeners[eventName] || (config._event_listeners[eventName] = []);
 
   // Don't register the same callback more than once
-  if (!inArray(callback, LISTENERS[eventName])) {
-    LISTENERS[eventName].push(callback);
+  if (!inArray(callback, listeners)) {
+    listeners.push(callback);
+
+    if (config._event_memory[eventName] !== undefined) {
+      callback(config._event_memory[eventName]);
+    }
   }
 }

@@ -131,6 +131,8 @@ const config = {
   // started: 0,
 
   // Internal state
+  _event_listeners: Object.create(null),
+  _event_memory: {},
   _deprecated_timeout_shown: false,
   _deprecated_countEachStep_shown: false,
   blocking: true,
