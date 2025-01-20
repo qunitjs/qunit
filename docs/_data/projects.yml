@@ -26,6 +26,12 @@ orgs:
       - name: ember-table
         href: https://github.com/Addepar/ember-table
 
+  - name: Basecamp
+    href: https://github.com/basecamp
+    sub:
+      - name: trix
+        href: https://github.com/basecamp/trix/
+
   - name: Discourse
     href: https://github.com/discourse
     sub:
@@ -75,6 +81,12 @@ orgs:
     sub:
       - name: kiwix-js
         href: https://github.com/kiwix/kiwix-js
+
+  - name: Ruby on Rails
+    href: https://github.com/rails
+    sub:
+      - name: rails
+        href: https://github.com/rails/rails
 
   - name: SAP
     href: https://github.com/SAP
