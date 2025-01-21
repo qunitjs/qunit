@@ -3,7 +3,7 @@
 # Docs: https://jekyllrb.com/docs/configuration/
 title: QUnit
 description: The powerful, easy-to-use JavaScript testing framework.
-url: "https://qunitjs.com"
+url: 'https://qunitjs.com'
 permalink: /:title/
 collections:
   posts:
@@ -14,10 +14,11 @@ highlighter: rouge
 markdown: kramdown
 kramdown:
   input: GFM
-  toc_levels: "1,2"
-  # Disable automatic conversion, messes with headings like "--reporter".
+  toc_levels: '1,2'
+  # Disable automatic conversion, messes with headings like `--reporter`.
   typographic_symbols:
     ndash: '--'
+  footnote_link_text: '[%s]'
 sass:
   # https://jekyllrb.com/docs/assets/#sassscss
   style: compressed
@@ -71,4 +72,4 @@ jekyll-archives:
   layouts:
     year: posts-year
   permalinks:
-    year: "/blog/:year/"
+    year: '/blog/:year/'

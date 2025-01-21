@@ -32,6 +32,53 @@ h3 a {
   }
 }
 
+.main img {
+  // Use max-width to scale down images from the declared <img width> on
+  // narrow viewports to avoid overflow.
+  max-width: 100%;
+  // Use max-height to scale down tall images to fit within the viewport.
+  max-height: 100vh;
+  // Free up the declared <img height> so that scaling down maintains aspect ratio.
+  // We must not set `width: auto` as otherwise images may also get scaled up
+  // instead of only scaled down. This way, the declared <img> width/height remain
+  // effective as the true maximum, especially for 2dppx images or other images
+  // where content author has declared preferred dimensions.
+  height: auto;
+}
+
+.main figure {
+  text-align: center;
+  margin: $size-spacing 0;
+}
+
+@media (max-width: 768px) {
+  // The negative margins are "pop out"
+  // and must match the padding on `.main-columns`
+  .main figure,
+  .main pre.highlight {
+    margin-left: (-$size-spacing);
+    margin-right: (-$size-spacing);
+  }
+}
+
+// Prefer these figures in a row if they fit,
+// collapse as-needed on narow viewports.
+@media (min-width: 768px) {
+  .figure-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: $box-spacing;
+    // "pop out"
+    margin: $size-spacing (-$size-spacing);
+  }
+  .figure-row figure {
+    margin: 0;
+    width: calc(50% - ($box-spacing/2) - 1px);
+  }
+}
+
 /* Browser */
 
 // Discourage selecting to copy/paste because this demonstrates
@@ -61,12 +108,4 @@ h3 a {
 .q-color-block {
     display: block;
     padding: 1em;
-}
-
-.main img {
-    max-width: 100%;
-    max-height: 100vh;
-}
-.main figure {
-    text-align: center;
 }
