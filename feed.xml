@@ -1,4 +1,200 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-01-20T03:23:12+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.23.1: Bug fixes</title><link href="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/" rel="alternate" type="text/html" title="QUnit 2.23.1: Bug fixes" /><published>2024-12-06T00:00:00+00:00</published><updated>2024-12-06T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/12/06/qunit-2-23-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/"><![CDATA[<h2 id="changelog">Changelog</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-01-21T04:57:20+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.24.0: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
+<ul>
+  <li>✨ There is a new <a href="https://qunitjs.com/blog/">QUnit Blog</a>.
+We’re also on <a href="https://fosstodon.org/@qunit">Mastodon</a> and <a href="https://bsky.app/profile/qunitjs.com">Bluesky</a>.</li>
+  <li>📗 There are <a href="https://qunitjs.com/intro/">new Guides, Support, and Chat sections</a>. <br />Including best practices and examples for async tests, callbacks, and event-based code.</li>
+</ul>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>
+    <p>CLI: Add <code class="language-plaintext highlighter-rouge">.mjs</code> and <code class="language-plaintext highlighter-rouge">.cjs</code> to the default file extensions when reading a test directory.</p>
+
+    <p>These have been monitored by watch mode since QUnit 2.18, but were not loaded or executed
+unless you passed them as individual files, or used your own glob like <code class="language-plaintext highlighter-rouge">test/*.{js,mjs,cjs}</code>.</p>
+
+    <p>If you currently pass a directory to the QUnit CLI and have matching <code class="language-plaintext highlighter-rouge">.mjs</code> or <code class="language-plaintext highlighter-rouge">.cjs</code>
+files that should not be executed, you can opt-out by passing <code class="language-plaintext highlighter-rouge">test/*.js</code> or
+<code class="language-plaintext highlighter-rouge">test/**/*.js</code> explicitly instead of <code class="language-plaintext highlighter-rouge">test/</code>.</p>
+  </li>
+  <li>
+    <p>CLI: Add stacktrace cleaning by omitting or greying out internal QUnit and Node.js frames in TAP reporter. <a href="https://github.com/qunitjs/qunit/pull/1795">#1795</a>. <a href="https://github.com/qunitjs/qunit/pull/1789">#1789</a></p>
+
+    <p>Learn more about <a href="https://qunitjs.com//blog/2025/01/20/qunit-2-24-0/">Cleaner stack traces</a> on the QUnit Blog.</p>
+  </li>
+  <li>Core: Add <a href="https://qunitjs.com/api/config/reporters/"><code class="language-plaintext highlighter-rouge">QUnit.config.reporters.tap</code></a> for enabling TAP via preconfig. <a href="https://github.com/qunitjs/qunit/issues/1711">#1711</a></li>
+  <li>Core: Add memory to the <a href="https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event"><code class="language-plaintext highlighter-rouge">runEnd</code> event</a> to allow late listeners. This helps <a href="https://qunitjs.com/browser/#integrations">browser integrations</a> that only relay a summary. <a href="https://github.com/qunitjs/qunit/commit/27a33d15938a601716a81a638882a16c1bd7f2b9">27a33d1593</a></li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>HTML Reporter: Fix unexpected pointer cursor on “Source:” label. <a href="https://github.com/qunitjs/qunit/commit/f8cce2bb06396561e0cdcbf58c4e83ddf7a1f27f">f8cce2bb06</a></li>
+  <li>HTML Reporter: Faster “Hide passed” toggling on large test suites. <a href="https://github.com/qunitjs/qunit/commit/b13ade0fd7c3baf4d0e68abe04f7d1609f686877">b13ade0fd7</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.0">Git tag: 2.24.0</a></li>
+  <li><a href="/blog/2025/01/19/stacktrace-cleaner/">Blog: Cleaner stack traces in QUnit</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[New stacktrace cleaning, CLI file extensions, and various performance improvements and bug fixes.]]></summary></entry><entry><title type="html">Cleaner stack traces in QUnit</title><link href="https://qunitjs.com/blog/2025/01/19/stacktrace-cleaner/" rel="alternate" type="text/html" title="Cleaner stack traces in QUnit" /><published>2025-01-19T00:00:00+00:00</published><updated>2025-01-19T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/19/stacktrace-cleaner</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/19/stacktrace-cleaner/"><![CDATA[<p>Stack traces shown in the QUnit CLI now remove or grey out internal calls by Node.js and QUnit.</p>
+
+<h2 id="background">Background</h2>
+
+<p>QUnit has always omitted its own source lines from stack traces when showing assertion failures. <sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">[1]</a></sup></p>
+
+<p>This means we can report assertion failures with a stack that is just one level deep, pointing directly at your test file, to the line where the assertion happens.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">banana</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">This is actual.</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">actual</span><span class="p">,</span> <span class="dl">'</span><span class="s1">This is expected.</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-tap highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gr">not ok</span> <span class="mi">2</span> banana
+  ---
+  actual  : This is actual.
+  expected: This is expected.
+  stack: |
+        at /test/example.js:3:10
+</code></pre></div></div>
+
+<figure><img src="/resources/2025-stacktrace-assert-html.png" width="560" height="244" alt="Screenshot of QUnit test results in a web browser.
+1) apple
+2) banana
+Expected: This is expected.
+Result    This is actual.
+Source:   @/test/example.js:3:10
+" /></figure>
+
+<p>The “real” stack trace is actually quite a bit longer, but we rebase it to become trace for your assertion. We remove lines before your assertion point (i.e. QUnit calling your test function), and remove any calls after that point (i.e. code inside an assert function).</p>
+
+<p>This works well in browsers. But, when it comes to Node.js, we can do better!</p>
+
+<h2 id="nodejs-runtime-internals">Node.js runtime internals</h2>
+
+<p>Web browsers generally don’t expose their own internals to stack traces at all. For example, the internals of <code class="language-plaintext highlighter-rouge">fetch()</code>, or <code class="language-plaintext highlighter-rouge">setTimeout()</code>. <sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">[2]</a></sup> Node.js implements many of its internals in JavaScript, which are sometimes visible in a stack trace.</p>
+
+<p>Let’s look a slow example test:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">slow example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
+  <span class="c1">// Never done()</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Status quo with QUnit 2.23.1:</p>
+
+<div class="language-tap highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">TAP version 13
+</span><span class="gr">not ok</span> <span class="mi">1</span> slow example
+  ---
+  message: Test took longer than 100ms; test timed out.
+  severity: failed
+  stack: |
+        at listOnTimeout (node:internal/timers:573:17)
+        at process.processTimers (node:internal/timers:514:7)
+  ...
+<span class="kd">1..1</span><span class="c">
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+</span></code></pre></div></div>
+
+<p>Notice the function calls inside the virtual <code class="language-plaintext highlighter-rouge">note:internal</code> module?</p>
+
+<h3 id="hide-internal-frames">Hide internal frames</h3>
+
+<p>While these functions are not called inside QUnit, we hide them because this timer is scheduled by QUnit. In this case, there are other stack frames and we can omit the trace entirely, for an even cleaner result. The same result in QUnit 2.24.0:</p>
+
+<div class="language-tap highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">TAP version 13
+</span><span class="gr">not ok</span> <span class="mi">1</span> slow example
+  ---
+  message: Test took longer than 100ms; test timed out.
+  severity: failed
+  ...
+<span class="kd">1..1</span><span class="c">
+# pass 0
+# skip 0
+# todo 0
+# fail 1
+</span></code></pre></div></div>
+
+<h3 id="grey-out-nodejs-internals">Grey out Node.js internals</h3>
+
+<p>Let’s look at a slightly more involved example, where your own code schedules a timer.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">assert example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
+  <span class="nf">setTimeout</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nf">done</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<div class="figure-row">
+<figure><img src="/resources/2025-stacktrace-assert-tap-before.png" width="463" height="241" alt="not ok 1 assert example. actual: true. expected: false. stack: at assert-example.js, at node:internal/timers, at node:internal/timers" /><figcaption>QUnit 2.23.0</figcaption></figure>
+<figure><img src="/resources/2025-stacktrace-assert-tap-after.png" width="463" height="241" alt="" /><figcaption>QUnit 2.24.0</figcaption></figure>
+</div>
+
+<p>In this case, we can’t remove any frames. We should report errors from user code with the same level of detail as Node.js would, if you ran it outside a test. But, what we can do is grey out these <code class="language-plaintext highlighter-rouge">node:internal</code> frames, and draw attention to what is most likely of interest.</p>
+
+<h2 id="uncaught-exceptions">Uncaught exceptions</h2>
+
+<p>The above examples were about stack traces that originate from inside a test case.</p>
+
+<p>We also format stack traces when reporting uncaught exceptions (a.k.a. “global failure”). This includes errors that bubble up to <code class="language-plaintext highlighter-rouge">window.onerror</code> or <code class="language-plaintext highlighter-rouge">process.on('uncaughtException', …)</code>, as received by <a href="/api/extension/QUnit.onUncaughtException/"><code class="language-plaintext highlighter-rouge">QUnit.onUncaughtException</code></a>.</p>
+
+<p>As of QUnit 2.24 we now apply the same stack trace cleaner when formatting uncaught exceptions.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// example.js</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</code></pre></div></div>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qunit example.js
+</code></pre></div></div>
+
+<div class="figure-row">
+<figure><img src="/resources/2025-stacktrace-error-before.png" width="540" height="302" alt="Failed to load file example.js. TypeError: eventName must be a string. at qunit.js, at example.js, at node:internal/cjs/loader." /><figcaption>QUnit 2.23.1</figcaption></figure>
+<figure><img src="/resources/2025-stacktrace-error-after.png" width="540" height="288" alt="Failed to load file example.js. TypeError: eventName must be a string. at example.js, at node:internal/cjs/loader." /><figcaption>QUnit 2.24.0</figcaption></figure>
+</div>
+
+<p>Notice the removal of the first <code class="language-plaintext highlighter-rouge">qunit.js</code> call, which lets the trace starts cleanly at <code class="language-plaintext highlighter-rouge">example.js</code>. The other internal calls are greyed out.</p>
+
+<h3 id="trimming-traces">Trimming traces</h3>
+
+<p>For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happend, and would cause confusion among developers. Instead, frames we can’t trim, are greyed out instead. This is similar to Node.js’s own error formatter does.</p>
+
+<h2 id="tap-reporter">TAP reporter</h2>
+
+<p>These changes are applied to the TAP reporter, which the QUnit CLI uses by default. If you use the TAP reporter in browser environments, the same improvements apply there as well.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1789">Exclude or grey internal frames in error stacks · Pull Request #1789</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1795">Apply trace cleaning to assertion stack as well · Pull Request #1795</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1794">Remove confusing “expected: undefined” under errors · Pull Request #1794</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1801">Limit colors in TAP reporter to test names · Pull Request #1801</a></li>
+  <li><a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1 Release</a></li>
+  <li><a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0 Release</a></li>
+</ul>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>This was released with QUnit 1.7 back in 2012 (<a href="https://github.com/qunitjs/qunit/commit/171ad8f042007e795766893a701d9315bdedeef1">commit</a>). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>This is in part because native browser code isn’t written in JavaScript, so the JavaScript stack is naturally limited to your code only. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Stack traces shown in the QUnit CLI now remove or grey out internal calls by Node.js and QUnit.]]></summary></entry><entry><title type="html">QUnit 2.23.1: Bug fixes</title><link href="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/" rel="alternate" type="text/html" title="QUnit 2.23.1: Bug fixes" /><published>2024-12-06T00:00:00+00:00</published><updated>2024-12-06T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/12/06/qunit-2-23-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/12/06/qunit-2-23-1/"><![CDATA[<h2 id="changelog">Changelog</h2>
 
 <h3 id="fixed">Fixed</h3>
 
@@ -129,39 +325,4 @@
 
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.4">Git tag: 2.19.4</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.19.3 Released</title><link href="https://qunitjs.com/blog/2022/10/22/qunit-2-19-3/" rel="alternate" type="text/html" title="QUnit 2.19.3 Released" /><published>2022-10-22T00:00:00+00:00</published><updated>2022-10-22T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2022/10/22/qunit-2-19-3</id><content type="html" xml:base="https://qunitjs.com/blog/2022/10/22/qunit-2-19-3/"><![CDATA[<h2 id="changelog">Changelog</h2>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>Assert: Restore how deepEqual treats imposter objects. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1706">#1706</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.3">Git tag: 2.19.3</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry><entry><title type="html">QUnit 2.19.2: Faster deepEqual</title><link href="https://qunitjs.com/blog/2022/10/17/qunit-2-19-2/" rel="alternate" type="text/html" title="QUnit 2.19.2: Faster deepEqual" /><published>2022-10-17T00:00:00+00:00</published><updated>2022-10-17T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2022/10/17/qunit-2-19-2</id><content type="html" xml:base="https://qunitjs.com/blog/2022/10/17/qunit-2-19-2/"><![CDATA[<h2 id="changelog">Changelog</h2>
-
-<h3 id="changed">Changed</h3>
-
-<ul>
-  <li>Core: Faster diffing for <code class="language-plaintext highlighter-rouge">config.noglobals</code> by refactoring slow mutations. (Izel Nakri) <a href="https://github.com/qunitjs/qunit/pull/1697">#1697</a></li>
-  <li>Assert: Improve performance of <code class="language-plaintext highlighter-rouge">assert.deepEqual()</code> and <code class="language-plaintext highlighter-rouge">QUnit.equiv()</code>. (Izel Nakri) <a href="https://github.com/qunitjs/qunit/pull/1700">#1700</a></li>
-  <li>Assert: Faster deepEqual for Map values by avoiding typeEquiv calls. (Timo Tijhof)</li>
-  <li>Assert: Faster deepEqual by reducing internal objectType checks. (Timo Tijhof)</li>
-  <li>Assert: Faster deepEqual by using re-assignment for internal pairs. (Timo Tijhof)</li>
-</ul>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>Core: Fix inaccurate count in reporter output after re-run. <a href="https://github.com/qunitjs/qunit/issues/1687">#1687</a></li>
-  <li>CLI: Fix MaxListeners warning in long-running watch mode. <a href="https://github.com/qunitjs/qunit/issues/1692">#1692</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.2">Git tag: 2.19.2</a></li>
 </ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Changelog]]></summary></entry></feed>
