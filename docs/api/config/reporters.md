@@ -6,7 +6,7 @@ groups:
   - config
 redirect_from:
   - "/config/reporters/"
-version_added: "unreleased"
+version_added: "2.24.0"
 ---
 
 Control which reporters to enable or disable.

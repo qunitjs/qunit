@@ -60,6 +60,6 @@ QUnit.config.reporters.console = true;
 
 ## Changelog
 
-| UNRELEASED | Enable declaratively via [`QUnit.config.reporters`](../config/reporters.md).
+| [QUnit 2.24.0](https://github.com/qunitjs/qunit/releases/tag/2.24.0) | Enable declaratively via [`QUnit.config.reporters`](../config/reporters.md).
 | [QUnit 2.16.0](https://github.com/qunitjs/qunit/releases/tag/2.16.0) | Exposed as `QUnit.reporters.perf` for programmatic usage.
 | [QUnit 2.3.0](https://github.com/qunitjs/qunit/releases/tag/2.3.0) | Introduced as part of the QUnit CLI and `--reporter console`.
