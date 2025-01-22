@@ -29,11 +29,11 @@ All tests inside a module will be grouped under that module. Tests can be added 
 Modules can be nested inside other modules via a [module scope](#module-scope). In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grandparent > Parent > Child > my test".
 
 `QUnit.module.only( name, … )`<br>
-`QUnit.module.todo( name, … )`<br>
 `QUnit.module.skip( name, … )`<br>
+`QUnit.module.todo( name, … )`<br>
 `QUnit.module.if( name, condition, … )`
 
-These methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md), [`QUnit.test.todo()`](./test.todo.md), [`QUnit.test.skip()`](./test.skip.md) or [`QUnit.test.if()`](./test.if.md) to all a module's tests at once.
+These methods are aliases for `QUnit.module()` that apply the behaviour of [`QUnit.test.only()`](./test.only.md),  [`QUnit.test.skip()`](./test.skip.md), [`QUnit.test.todo()`](./test.todo.md), or [`QUnit.test.if()`](./test.if.md) to all a module's tests at once.
 
 ### Organizing your tests
 

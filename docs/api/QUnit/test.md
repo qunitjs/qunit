@@ -37,6 +37,7 @@ See also:
 * [`QUnit.test.only()`](./test.only.md)
 * [`QUnit.test.skip()`](./test.skip.md)
 * [`QUnit.test.todo()`](./test.todo.md)
+* [`QUnit.test.if()`](./test.if.md)
 
 ## Changelog
 
