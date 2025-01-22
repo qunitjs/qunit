@@ -46,16 +46,34 @@ h3 a {
   height: auto;
 }
 
-.main figure {
-  text-align: center;
+.content figure {
   margin: $size-spacing 0;
+  text-align: center;
+  font-size: $size-sm;
+}
+.content figcaption {
+  padding: 0.1em 0.4em 0.3em  0.3em;
+}
+
+.content figure:has(figcaption:first-child) {
+  border: 1px solid $color-off-white;
+}
+.content figure figcaption:first-child {
+  padding: 0.3em 0.4em;
+  border-bottom: 1px solid $color-off-white;
+  background: $color-light;
+}
+
+.content figure img {
+  // Avoid gap at the bottom due to line-height
+  vertical-align: middle;
 }
 
 @media (max-width: 768px) {
   // The negative margins are "pop out"
   // and must match the padding on `.main-columns`
-  .main figure,
-  .main pre.highlight {
+  .content figure,
+  .content pre.highlight {
     margin-left: (-$size-spacing);
     margin-right: (-$size-spacing);
   }
@@ -73,10 +91,19 @@ h3 a {
     // "pop out"
     margin: $size-spacing (-$size-spacing);
   }
+  .figure-row:has(figcaption:first-child) {
+    align-items: stretch;
+    gap: $box-spacing 1px;
+  }
   .figure-row figure {
+    flex-grow: 1;
     margin: 0;
     width: calc(50% - ($box-spacing/2) - 1px);
   }
+}
+
+.content a.footnote {
+  text-decoration: none;
 }
 
 /* Browser */
