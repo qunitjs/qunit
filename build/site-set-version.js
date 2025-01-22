@@ -19,7 +19,8 @@ const files = {
   'docs/browser.md': [...cdnLinks],
   'docs/resources/example-add.html': [...cdnLinks],
   'docs/resources/example-fail.html': [...cdnLinks],
-  'docs/resources/example-index.html': [...cdnLinks]
+  'docs/resources/example-index.html': [...cdnLinks],
+  'docs/resources/q4000.html': [...cdnLinks]
 };
 
 try {
