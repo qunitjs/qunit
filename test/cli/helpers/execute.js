@@ -38,6 +38,11 @@ function normalize (actual) {
     // ESM-style internal traces from Node 14+:
     // Convert "at wrap (node:internal/modules/cjs/loader:1)" to "at internal"
     .replace(/^(\s+at ).+\([^/)][^)]*\)$/gm, '$1internal')
+    // ESM-style internal traces from Node 22+ that NYC corrupts
+    // https://github.com/istanbuljs/nyc/issues/1589
+    // from "at Object..js (node:internal/modules/cjs/loader:1904:10)"
+    // to "at node:internal/modules/cjs/loader:1904:10"
+    .replace(/^(\s+at )node:[^) ]+$/gm, '$1internal')
 
     // Convert /bin/qunit and /src/cli to internal as well
     // Because there are differences between Node 10 and Node 12 in terms
