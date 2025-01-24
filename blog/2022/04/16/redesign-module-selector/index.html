@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=8679f7e0" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>Redesign module selector - Fast &amp; Fuzzy | QUnit</title><meta property="og:title" content="Redesign module selector - Fast &amp; Fuzzy"><meta name="description" content="The typeahead field for the module dropdown menu is now faster, fuzzier, and fully keyboard accessible!"><meta property="og:description" content="The typeahead field for the module dropdown menu is now faster, fuzzier, and fully keyboard accessible!"><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:card" content="summary_large_image"><meta property="og:type" content="article"><meta property="article:published_time" content="2022-04-16T00:00:00+00:00"><meta name="author" content="Timo Tijhof">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><typesense-minibar data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true">
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+</typesense-minibar>
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('typesense-minibar');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+	<header>
+		<h1>Redesign module selector - Fast &amp; Fuzzy</h1><p class="post-meta byline">Posted on <a href="/blog/2022/04/16/redesign-module-selector/" rel="bookmark"><time itemprop="pubdate" datetime="2022-04-16T00:00:00+00:00">16 April 2022</time></a> by <span class="vcard"><span class="fn n" rel="author"><a href="/blog/author/krinkle/">Timo Tijhof</a></span></span></p>
+	</header>
+	<p>The typeahead field for the module dropdown menu is now faster, fuzzier, and fully keyboard accessible!</p>
+
+<h2 id="faster-startup">Faster startup</h2>
+
+<p>Matthew Beale <a href="https://github.com/qunitjs/qunit/issues/1664">noticed</a> that on test suites with 800 modules, test startup was sometimes delayed by ~5 seconds in Chrome 95.</p>
+
+<p>In previous QUnit versions, we eagerly rendered the dropdown menu with options for all module names. (The menu is only shown on focus.) The JavaScript code for this only takes about 5-10ms (0.005 seconds), even on very large projects. But, every so often there is an unexplained slow task right after this function. This performance issue did not affect Firefox and Safari.</p>
+
+<p>Whatever the cause may be, we’ve cut this cost by lazily rendering the menu when the module field is first focussed.</p>
+
+<figure>
+<img alt="Chrome DevTools shows 3ms spent in native parseHTML, as part of the moduleListHtml() function. The next task is an unexplained grey box, 5 seconds wide. Its type is unknown, and has no children or parent associations." src="https://user-images.githubusercontent.com/8752/140397773-5780d375-c731-4111-b703-bb76815c63ea.png" />
+<figcaption>After a few milliseconds in our moduleListHtml function, Chrome spends 5 seconds in an unknown task.</figcaption>
+</figure>
+
+<ul>
+  <li><a href="https://codepen.io/Krinkle/full/MYgqNpQ">q4000 Benchmark on QUnit 2.18.1</a></li>
+  <li><a href="https://codepen.io/Krinkle/full/gbYdVRr">q4000 Benchmark on QUnit 2.18.2</a></li>
+</ul>
+
+<h2 id="instant-typeahead">Instant typeahead</h2>
+
+<div class="figure-row">
+<figure>
+<figcaption>Before (QUnit 2.18.1)</figcaption>
+<img alt="Before: While typing a word, the module list remains unchanged. One beat after you stop typing, the results appear at once. (GIF animation)" src="https://user-images.githubusercontent.com/156867/162635920-a167c006-0130-4a42-a903-0a6d70e464d9.gif" />
+</figure>
+<figure>
+<figcaption>After (QUnit 2.18.2)</figcaption>
+<img alt="After: While typing a word, the module list updates in real-time on each keystroke. (GIF animation)" src="https://user-images.githubusercontent.com/156867/162635924-ddaacfc5-4817-46ea-81a8-024048954668.gif" />
+</figure>
+</div>
+
+<p>We previously applied a 200 ms input debounce on filtering the dropdown menu. It seems a lot people type <em>just</em> fast enough for the menu to sit idle until you stop typing. This provides a subpar user experience, because the you won’t know if what you typed will find what you’re looking for, until you stop typing.</p>
+
+<p>The module selector in QUnit is powered by the super fast <a href="https://github.com/farzher/fuzzysort">fuzzysort.js</a> library. Fuzzysearch actually takes only ~1ms, so it should be able to keep up in real-time, even for projects with hundreds of QUnit modules defined. I considered removing this debounce entirely, but that risks causing a different kind of lag instead.</p>
+
+<p>The new design lowers the debounce to a delay of 0 ms.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">[1]</a></sup> The module selector now feels smooth as butter, with an instant response on every key stroke.</p>
+
+<p><a href="/resources/q4000.html" target="_blank">Try it here: <strong>q4000 Benchmark</strong></a></p>
+
+<h3 id="whats-the-difference-between-a-0-ms-debounce-and-no-debounce">What’s the difference between a 0 ms debounce, and no debounce?</h3>
+
+<p>Consider what happens if you type faster than the browser rendering can keep up with. For example, rendering may take longer in some cases. The event handler will be running and, meanwhile, another character is typed.</p>
+
+<p>Without a debounce, these keyboard events will pile up. Each one will be honoured and diligently played back-to-back and in order. Each event callback will <em>begin</em> its rendering long after other keystrokes were already sent. It will feel akin to acting on a remote server over bad WiFi, with an ever-growing backlog of unprocessed input events.</p>
+
+<p>With 0 ms debounce, we queue up at most 1 render callback, and that “next” render will always be for the then-current value of the input field. Another way to look at it: It is as if, whenever we finish a rendering, we will cancel all-except-the-last pending callbacks.</p>
+
+<p>For the common case where rendering is quick enough to keep up with keystrokes, both ways improve what we had before. Both ways will render results immediately on every keystroke, with no delay. Check <a href="https://codepen.io/Krinkle/pen/wvpXxwM?editors=0010">Debounce demo on CodePen</a> to experience the difference.</p>
+
+<h2 id="accessibility">Accessibility</h2>
+
+<p>The redesign includes various usability and accessibility improvements for the module dropdown menu.</p>
+
+<p>Highlights:</p>
+
+<ul>
+  <li>Currently selected choices are now hoisted to the top and always visible, even if not matched by the current filter.</li>
+  <li>There is no longer a “dead” tab target between the action buttons and the first menu option (see below animation).</li>
+  <li>The focus ring for the “Apply” button is no longer clipped on two sides by overflow (see below animation).</li>
+  <li>More breathable design for options and buttons. Toolbar buttons have a solid outline and no longer lost in a sea of greyness.</li>
+</ul>
+
+<div class="figure-row">
+<figure>
+<img alt="" width="530" src="https://user-images.githubusercontent.com/156867/163740098-26e9bfde-cdac-4035-99b9-19146b2d63e4.gif" />
+<figcaption>Keyboard navigation (before)</figcaption>
+</figure>
+<figure>
+<img alt="" width="530" src="https://user-images.githubusercontent.com/156867/163740122-e1af8c35-35c8-4596-a367-1f7d2f904e75.gif" />
+<figcaption>Keyboard navigation (after)</figcaption>
+</figure>
+
+<figure>
+<img alt="" width="748" src="https://user-images.githubusercontent.com/156867/163740197-abcf8f9a-f440-4a02-ac3e-d345b38268c3.png" />
+<figcaption>Button and list design (before)</figcaption>
+</figure>
+<figure>
+<img alt="" width="748" src="https://user-images.githubusercontent.com/156867/163740193-df44e637-dab4-4915-aec4-dd02905914ec.png" />
+<figcaption>Button and list design (after)</figcaption>
+</figure>
+
+<figure>
+<img alt="" width="455" src="https://user-images.githubusercontent.com/156867/163740288-d0e45308-d714-43a9-bf9c-1c198b5e55ba.png" />
+<figcaption>Selection and cursor (before)</figcaption>
+</figure>
+<figure>
+<img alt="" width="458" src="https://user-images.githubusercontent.com/156867/163740299-9fb2b8ee-02ab-4dc3-993b-0d70daca8005.png" />
+<figcaption>Selection and cursor (after)</figcaption>
+</figure>
+
+<figure>
+<img alt="" width="467" src="https://user-images.githubusercontent.com/156867/163740326-4254ef7b-0ced-424a-a2ae-2f209a65f0b8.png" />
+<figcaption>Placeholder (before)</figcaption>
+</figure>
+<figure>
+<img alt="" width="467" src="https://user-images.githubusercontent.com/156867/163740324-dd5f9b8c-913f-493c-be0d-a58b9a9641f2.png" />
+<figcaption>Placeholder (after)</figcaption>
+</figure>
+</div>
+
+<h2 id="love-the-fuzz">Love The Fuzz</h2>
+
+<p>In <a href="https://github.com/farzher/fuzzysort">fuzzysort.js</a>, each result is internally ranked on a range from several thousands points below zero (worst) upto 1.0 (perfect match).</p>
+
+<p>One of the Fuzzysort features is the “threshold” option, which omits results below a certain score. We previously had this to <code class="language-plaintext highlighter-rouge">-1000</code>, which sounds like it should let most results through.</p>
+
+<div class="figure-row">
+<figure>
+<figcaption>Before</figcaption>
+<img alt="Before: No results for 'support for pomise'" src="https://user-images.githubusercontent.com/156867/162635139-3f3bd458-e322-4479-b5a2-cab8cff22751.png" width="479" />
+</figure>
+<figure>
+<figcaption>After</figcaption>
+<img alt="After: Various results even for 'suortprose eachwhit'" src="https://user-images.githubusercontent.com/156867/162635233-70105acc-114e-4e9b-a9b3-d7d7ffcf68e0.png" width="470" />
+</figure>
+</div>
+
+<p>In practice, it corresponded to tolerating a few missing letters in the first word. For example, <code class="language-plaintext highlighter-rouge">suort for promise</code> did find <code class="language-plaintext highlighter-rouge">support for promise</code>. But, <code class="language-plaintext highlighter-rouge">support for pomise</code> already yielded zero results, despite only missing one letter!</p>
+
+<p>This is counter-intuitive and contrary to how fuzzy search works in text editors. For example, in Sublime Text, all files of which you have typed a subset of the name, are included. It is only when you type a character that isn’t in an entry’s name, that it is removed from the options.</p>
+
+<p>In this redesign, I’ve disabled the “threshold”, which achieves the desired effect.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/issues/1664">HTML Reporter: Faster startup and improved usability of module filter · Issue #1664</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1685">HTML Reporter: Faster and fuzzier module dropdown · Pull Request #1685</a></li>
+  <li><a href="/blog/2022/04/17/qunit-2-18-2/">QUnit 2.18.2 Release</a></li>
+  <li><a href="/blog/2016/04/21/introduce-multi-select-module-picker/">Blog: Introduce mult-select module picker</a>, April 2016.</li>
+</ul>
+
+<hr />
+
+<p>Footnotes:</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Note that timers from <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout">setTimeout</a> have a minimum delay of 4ms in practice, which is close enough to zero. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</article></div>
+<aside class="sidebar" role="complementary">
+
+	<h4><a href="/blog/">QUnit Blog</a></h4>
+	
+
+	<h4 class="sidebar-title-open">Tags</h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/tag/feature/">Feature</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/tag/release/">Release</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open">Recent posts</h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0: Cleaner traces and new CLI file extensions</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2025/01/19/stacktrace-cleaner/">Cleaner stack traces in QUnit</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/12/06/qunit-2-23-1/">QUnit 2.23.1: Bug fixes</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/12/03/qunit-2-23-0/">QUnit 2.23.0: Automatic labels</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/08/18/qunit-2-22-0/">QUnit 2.22.0: QUnit.test.if</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open"><a href="/blog/archive/">Archives</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item"><a href="/blog/archive/#2025">2025</a></li><li class="sidebar-item"><a href="/blog/archive/#2024">2024</a></li><li class="sidebar-item"><a href="/blog/archive/#2023">2023</a></li><li class="sidebar-item"><a href="/blog/archive/#2022">2022</a></li><li class="sidebar-item"><a href="/blog/archive/#2021">2021</a></li><li class="sidebar-item"><a href="/blog/archive/#2020">2020</a></li><li class="sidebar-item"><a href="/blog/archive/#2019">2019</a></li><li class="sidebar-item"><a href="/blog/archive/#2018">2018</a></li><li class="sidebar-item"><a href="/blog/archive/#2017">2017</a></li><li class="sidebar-item"><a href="/blog/archive/#2016">2016</a></li><li class="sidebar-item"><a href="/blog/archive/#2015">2015</a></li><li class="sidebar-item"><a href="/blog/archive/#2014">2014</a></li><li class="sidebar-item"><a href="/blog/archive/#2013">2013</a></li><li class="sidebar-item"><a href="/blog/archive/#2012">2012</a></li><li class="sidebar-item"><a href="/blog/archive/#2011">2011</a></li></ul>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="/intro/#support" target="_blank" rel="noopener">Chat</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://bsky.app/profile/qunitjs.com" target="_blank" rel="noopener">Bluesky</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/_posts/2022-04-16-redesign-module-selector.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
+</html>
