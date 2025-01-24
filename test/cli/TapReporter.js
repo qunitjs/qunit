@@ -66,7 +66,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output ok for a skipped test', assert => {
-    const expected = 'ok 1 ' + kleur.yellow('# SKIP name');
+    const expected = 'ok 1 ' + kleur.yellow('name') + ' # SKIP';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -81,7 +81,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output not ok for a todo test', assert => {
-    const expected = 'not ok 1 ' + kleur.cyan('# TODO name');
+    const expected = 'not ok 1 ' + kleur.cyan('name') + ' # TODO';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -321,9 +321,9 @@ Bail out! ReferenceError: Boo is not defined
   message: failed
   severity: failed
   actual  : {
-  "a": "example",
-  "cycle": "[Circular]"
-}
+    "a": "example",
+    "cycle": "[Circular]"
+  }
   expected: expected
   ...`
     );
@@ -341,11 +341,11 @@ Bail out! ReferenceError: Boo is not defined
   message: failed
   severity: failed
   actual  : {
-  "a": "example",
-  "sub": {
-    "cycle": "[Circular]"
+    "a": "example",
+    "sub": {
+      "cycle": "[Circular]"
+    }
   }
-}
   expected: expected
   ...`
     );
@@ -363,12 +363,12 @@ Bail out! ReferenceError: Boo is not defined
   message: failed
   severity: failed
   actual  : {
-  "sub": [
-    "example",
-    "[Circular]",
-    "[Circular]"
-  ]
-}
+    "sub": [
+      "example",
+      "[Circular]",
+      "[Circular]"
+    ]
+  }
   expected: expected
   ...`
     );
@@ -392,14 +392,14 @@ Bail out! ReferenceError: Boo is not defined
   message: failed
   severity: failed
   actual  : {
-  "a": {
-    "example": "value"
-  },
-  "b": {
-    "example": "value"
-  },
-  "c": "unique"
-}
+    "a": {
+      "example": "value"
+    },
+    "b": {
+      "example": "value"
+    },
+    "c": "unique"
+  }
   expected: expected
   ...`
     );

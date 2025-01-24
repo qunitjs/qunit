@@ -80,7 +80,8 @@
     "requirejs": "^2.3.6",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.1",
-    "semver": "^7.6.2"
+    "semver": "^7.6.2",
+    "tap-parser": "11.0.2"
   },
   "scripts": {
     "build": "rollup -c && grunt copy:src-css",
