@@ -2,7 +2,7 @@
 # command: ["qunit", "only-module.js"]
 
 TAP version 13
-not ok 1 # TODO module B > Only this module should run > a todo test
+not ok 1 module B > Only this module should run > a todo test # TODO
   ---
   message: not implemented yet
   severity: todo
@@ -11,7 +11,7 @@ not ok 1 # TODO module B > Only this module should run > a todo test
   stack: |
         at /qunit/test/cli/fixtures/only-module.js:16:18
   ...
-ok 2 # SKIP module B > Only this module should run > implicitly skipped test
+ok 2 module B > Only this module should run > implicitly skipped test # SKIP
 ok 3 module B > Only this module should run > normal test
 ok 4 module D > test D
 ok 5 module E > module F > test F

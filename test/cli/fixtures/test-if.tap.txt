@@ -2,14 +2,14 @@
 # command: ["qunit", "test-if.js"]
 
 TAP version 13
-ok 1 # SKIP skip me
+ok 1 skip me # SKIP
 ok 2 keep me
 ok 3 regular
-ok 4 # SKIP skip dataset [a]
-ok 5 # SKIP skip dataset [b]
+ok 4 skip dataset [a] # SKIP
+ok 5 skip dataset [b] # SKIP
 ok 6 keep dataset [a]
 ok 7 keep dataset [b]
-ok 8 # SKIP skip group > skipper
+ok 8 skip group > skipper # SKIP
 ok 9 keep group > keeper
 1..9
 # pass 5

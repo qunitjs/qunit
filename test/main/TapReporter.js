@@ -88,7 +88,7 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output ok for a skipped test', function (assert) {
-    var expected = 'ok 1 ' + kleur.yellow('# SKIP name');
+    var expected = 'ok 1 ' + kleur.yellow('name') + ' # SKIP';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -103,7 +103,7 @@ QUnit.module('TapReporter', function (hooks) {
   });
 
   QUnit.test('output not ok for a todo test', function (assert) {
-    var expected = 'not ok 1 ' + kleur.cyan('# TODO name');
+    var expected = 'not ok 1 ' + kleur.cyan('name') + ' # TODO';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -344,9 +344,9 @@ QUnit.module('TapReporter', function (hooks) {
 + '  message: failed\n'
 + '  severity: failed\n'
 + '  actual  : {\n'
-+ '  "a": "example",\n'
-+ '  "cycle": "[Circular]"\n'
-+ '}\n'
++ '    "a": "example",\n'
++ '    "cycle": "[Circular]"\n'
++ '  }\n'
 + '  expected: expected\n'
 + '  ...'
     );
@@ -364,11 +364,11 @@ QUnit.module('TapReporter', function (hooks) {
 + '  message: failed\n'
 + '  severity: failed\n'
 + '  actual  : {\n'
-+ '  "a": "example",\n'
-+ '  "sub": {\n'
-+ '    "cycle": "[Circular]"\n'
++ '    "a": "example",\n'
++ '    "sub": {\n'
++ '      "cycle": "[Circular]"\n'
++ '    }\n'
 + '  }\n'
-+ '}\n'
 + '  expected: expected\n'
 + '  ...'
     );
@@ -386,12 +386,12 @@ QUnit.module('TapReporter', function (hooks) {
 + '  message: failed\n'
 + '  severity: failed\n'
 + '  actual  : {\n'
-+ '  "sub": [\n'
-+ '    "example",\n'
-+ '    "[Circular]",\n'
-+ '    "[Circular]"\n'
-+ '  ]\n'
-+ '}\n'
++ '    "sub": [\n'
++ '      "example",\n'
++ '      "[Circular]",\n'
++ '      "[Circular]"\n'
++ '    ]\n'
++ '  }\n'
 + '  expected: expected\n'
 + '  ...'
     );
@@ -415,14 +415,14 @@ QUnit.module('TapReporter', function (hooks) {
 + '  message: failed\n'
 + '  severity: failed\n'
 + '  actual  : {\n'
-+ '  "a": {\n'
-+ '    "example": "value"\n'
-+ '  },\n'
-+ '  "b": {\n'
-+ '    "example": "value"\n'
-+ '  },\n'
-+ '  "c": "unique"\n'
-+ '}\n'
++ '    "a": {\n'
++ '      "example": "value"\n'
++ '    },\n'
++ '    "b": {\n'
++ '      "example": "value"\n'
++ '    },\n'
++ '    "c": "unique"\n'
++ '  }\n'
 + '  expected: expected\n'
 + '  ...'
     );

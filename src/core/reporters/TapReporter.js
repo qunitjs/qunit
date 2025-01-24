@@ -35,7 +35,7 @@ import kleur from 'kleur';
  * Objects with cyclical references will be stringifed as
  * "[Circular]" as they cannot otherwise be represented.
  */
-function prettyYamlValue (value, indent = 4) {
+function prettyYamlValue (value, indent = 2) {
   if (value === undefined) {
     // Not supported in JSON/YAML, turn into string
     // and let the below output it as bare string.
@@ -94,7 +94,7 @@ function prettyYamlValue (value, indent = 4) {
 
       // See also <https://yaml-multiline.info/>
       // Support IE 9-11: Avoid ES6 String#repeat
-      const prefix = (new Array(indent + 1)).join(' ');
+      const prefix = (new Array((indent * 2) + 1)).join(' ');
 
       const trailingLinebreakMatch = value.match(/\n+$/);
       const trailingLinebreaks = trailingLinebreakMatch
@@ -126,8 +126,13 @@ function prettyYamlValue (value, indent = 4) {
     }
   }
 
+  const prefix = (new Array(indent + 1)).join(' ');
+
   // Handle null, boolean, array, and object
-  return JSON.stringify(decycledShallowClone(value), null, 2);
+  return JSON.stringify(decycledShallowClone(value), null, 2)
+    .split('\n')
+    .map((line, i) => i === 0 ? line : prefix + line)
+    .join('\n');
 }
 
 /**
@@ -228,11 +233,11 @@ export default class TapReporter {
       this.log(`ok ${this.testCount} ${test.fullName.join(' > ')}`);
     } else if (test.status === 'skipped') {
       this.log(
-        `ok ${this.testCount} ${kleur.yellow(`# SKIP ${test.fullName.join(' > ')}`)}`
+        `ok ${this.testCount} ${kleur.yellow(test.fullName.join(' > '))} # SKIP`
       );
     } else if (test.status === 'todo') {
       this.log(
-        `not ok ${this.testCount} ${kleur.cyan(`# TODO ${test.fullName.join(' > ')}`)}`
+        `not ok ${this.testCount} ${kleur.cyan(test.fullName.join(' > '))} # TODO`
       );
       test.errors.forEach((error) => this.logAssertion(error, 'todo'));
     } else {
