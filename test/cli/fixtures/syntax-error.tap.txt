@@ -1,6 +1,7 @@
 # name: load file with syntax error
 # command: ["qunit", "syntax-error.js"]
 
+TAP version 13
 not ok 1 global failure
   ---
   message: |+
@@ -13,7 +14,6 @@ not ok 1 global failure
         at internal
   ...
 Bail out! Error: Failed to load file syntax-error.js
-TAP version 13
 not ok 2 global failure
   ---
   message: No tests were run.
@@ -21,7 +21,6 @@ not ok 2 global failure
   stack: |
     Error: No tests were run.
         at qunit.js
-        at internal
   ...
 1..2
 # pass 0

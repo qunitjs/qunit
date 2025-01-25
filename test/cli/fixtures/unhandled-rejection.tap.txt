@@ -1,6 +1,7 @@
 # name: unhandled rejection
 # command: ["qunit","unhandled-rejection.js"]
 
+TAP version 13
 not ok 1 global failure
   ---
   message: Error: outside of a test context
@@ -13,7 +14,6 @@ not ok 1 global failure
         at internal
   ...
 Bail out! Error: outside of a test context
-TAP version 13
 not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promise
   ---
   message: global failure: Error: Error thrown in non-returned promise!
@@ -21,7 +21,6 @@ not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promis
   stack: |
     Error: Error thrown in non-returned promise!
         at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13
-        at internal
   ...
 1..2
 # pass 0

@@ -183,6 +183,7 @@ export default class TapReporter {
     this.log = options.log || Function.prototype.bind.call(console.log, console);
 
     this.testCount = 0;
+    this.started = false;
     this.ended = false;
     this.bailed = false;
 
@@ -197,7 +198,10 @@ export default class TapReporter {
   }
 
   onRunStart (_runSuite) {
-    this.log('TAP version 13');
+    if (!this.started) {
+      this.log('TAP version 13');
+      this.started = true;
+    }
   }
 
   onError (error) {
@@ -210,6 +214,7 @@ export default class TapReporter {
     // Imitate onTestEnd
     // Skip this if we're past "runEnd" as it would look odd
     if (!this.ended) {
+      this.onRunStart();
       this.testCount = this.testCount + 1;
       this.log(`not ok ${this.testCount} ${kleur.red('global failure')}`);
       this.logError(error);

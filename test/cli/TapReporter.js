@@ -36,6 +36,9 @@ QUnit.module('TapReporter', hooks => {
 
   hooks.beforeEach(function () {
     emitter = new EventEmitter();
+    emitter.clear = function () {
+      buffer = '';
+    };
     last = undefined;
     buffer = '';
     QUnit.reporters.tap.init(emitter, {
@@ -146,6 +149,9 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output global failure (string)', assert => {
+    emitter.emit('runStart');
+    emitter.clear();
+
     emitter.emit('error', 'Boo');
 
     assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + `
@@ -159,6 +165,9 @@ Bail out! Boo
   });
 
   QUnit.test('output global failure (Error)', assert => {
+    emitter.emit('runStart');
+    emitter.clear();
+
     const err = new ReferenceError('Boo is not defined');
     mockStack(err);
     emitter.emit('error', err);
