@@ -70,14 +70,14 @@ These are the official release channels for QUnit releases:
 
 * Download:
 
-  You can save the [`qunit-2.24.0.js`](https://code.jquery.com/qunit/qunit-2.24.0.js) and [`qunit-2.24.0.css`](https://code.jquery.com/qunit/qunit-2.24.0.css) files directly from the jQuery CDN.
+  You can save the [`qunit-2.24.1.js`](https://code.jquery.com/qunit/qunit-2.24.1.js) and [`qunit-2.24.1.css`](https://code.jquery.com/qunit/qunit-2.24.1.css) files directly from the jQuery CDN.
   For older versions, browse the [release archives](https://releases.jquery.com/qunit/).
 
   Or download them via the terminal, and save them in your Git repository.
 
   ```bash
-  curl -o qunit.css 'https://code.jquery.com/qunit/qunit-2.24.0.css'
-  curl -o qunit.js 'https://code.jquery.com/qunit/qunit-2.24.0.js'
+  curl -o qunit.css 'https://code.jquery.com/qunit/qunit-2.24.1.css'
+  curl -o qunit.js 'https://code.jquery.com/qunit/qunit-2.24.1.js'
   ```
 
 * npm Registry:

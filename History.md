@@ -4,7 +4,6 @@
 ### Added
 
 * Core: Add module context to `before` and `after` hooks. This enables inheritence between parent and child modules, and fixes leaks between last test and `after` hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
-* Core: Add support for late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
 * Core: Add [`QUnit.config.reporters.html`](https://qunitjs.com/api/config/reporters/) for disabling the HTML Reporter. [#1711](https://github.com/qunitjs/qunit/issues/1711)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 * Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)
@@ -55,6 +54,15 @@
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
+
+2.24.1 / 2025-01-25
+==================
+
+### Fixed
+
+* CLI: Fix TAP compliance for actual/expected indent and skip/todo colors. [b4d48fc710](https://github.com/qunitjs/qunit/commit/b4d48fc7107936b26d84b632b2c2782e368ea64c)
+* CLI: Fix TAP compliance for early errors (e.g. syntax error in test file). [01f7780bd8](https://github.com/qunitjs/qunit/commit/01f7780bd8df3c21667e3920e0a4187cdf986c35)
+* Core: Add memory to late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [7c2f871ac3](https://github.com/qunitjs/qunit/commit/7c2f871ac339710845cee925207f5d6a62a8ad0e)
 
 2.24.0 / 2025-01-19
 ==================
