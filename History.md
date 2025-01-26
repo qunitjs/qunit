@@ -1,3 +1,12 @@
+2.24.1 / 2025-01-25
+==================
+
+### Fixed
+
+* CLI: Fix TAP compliance for actual/expected indent and skip/todo colors. [b4d48fc710](https://github.com/qunitjs/qunit/commit/b4d48fc7107936b26d84b632b2c2782e368ea64c)
+* CLI: Fix TAP compliance for early errors (e.g. syntax error in test file). [01f7780bd8](https://github.com/qunitjs/qunit/commit/01f7780bd8df3c21667e3920e0a4187cdf986c35)
+* Core: Add memory to late [`error` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event) listeners, to improve reporting of early errors. [7c2f871ac3](https://github.com/qunitjs/qunit/commit/7c2f871ac339710845cee925207f5d6a62a8ad0e)
+
 2.24.0 / 2025-01-19
 ==================
 
@@ -17,10 +26,11 @@ FYI:
   If you currently pass a directory to the QUnit CLI and have matching `.mjs` or `.cjs`
   files that should not be executed, you can opt-out by passing `test/*.js` or
   `test/**/*.js` explicitly instead of `test/`.
-
 * CLI: Add stacktrace cleaning by omitting or greying out internal QUnit and Node.js frames in TAP reporter. [#1795](https://github.com/qunitjs/qunit/pull/1795). [#1789](https://github.com/qunitjs/qunit/pull/1789)
+
+  Learn more about [Cleaner stack traces](https://qunitjs.com//blog/2025/01/20/qunit-2-24-0/) on the QUnit Blog.
 * Core: Add [`QUnit.config.reporters.tap`](https://qunitjs.com/api/config/reporters/) for enabling TAP via preconfig. [#1711](https://github.com/qunitjs/qunit/issues/1711)
-* Core: Add support for late [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [27a33d1593](https://github.com/qunitjs/qunit/commit/27a33d15938a601716a81a638882a16c1bd7f2b9)
+* Core: Add memory to the [`runEnd` event](https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event) to allow late listeners. This helps [browser integrations](https://qunitjs.com/browser/#integrations) that only relay a summary. [27a33d1593](https://github.com/qunitjs/qunit/commit/27a33d15938a601716a81a638882a16c1bd7f2b9)
 
 ### Fixed
 
