@@ -1,0 +1,24 @@
+# command: ["qunit", "event-error-memory.js"]
+
+TAP version 13
+not ok 1 global failure
+  ---
+  message: ReferenceError: boom is not defined
+  severity: failed
+  stack: |
+    ReferenceError: boom is not defined
+        at /qunit/test/cli/fixtures/event-error-memory.js:12:3
+        at internal
+  ...
+Bail out! ReferenceError: boom is not defined
+# early error ReferenceError: boom is not defined
+# late error ReferenceError: boom is not defined
+ok 2 First > A
+ok 3 First > B
+1..3
+# pass 2
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

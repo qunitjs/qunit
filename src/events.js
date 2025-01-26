@@ -12,6 +12,7 @@ const SUPPORTED_EVENTS = [
   'runEnd'
 ];
 const MEMORY_EVENTS = [
+  'error',
   'runEnd'
 ];
 
@@ -40,7 +41,7 @@ export function emit (eventName, data) {
     callbacks[i](data);
   }
 
-  if (inArray(MEMORY_EVENTS, eventName)) {
+  if (inArray(eventName, MEMORY_EVENTS)) {
     config._event_memory[eventName] = data;
   }
 }
