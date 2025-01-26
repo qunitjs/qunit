@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-01-25T04:20:36+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-01-26T00:54:12+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.24.1 Released: Bug fixes</title><link href="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/" rel="alternate" type="text/html" title="QUnit 2.24.1 Released: Bug fixes" /><published>2025-01-25T00:00:00+00:00</published><updated>2025-01-25T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/25/qunit-2-24-1</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/"><![CDATA[<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>CLI: Fix TAP compliance for actual/expected indent and skip/todo colors. <a href="https://github.com/qunitjs/qunit/commit/b4d48fc7107936b26d84b632b2c2782e368ea64c">b4d48fc710</a></li>
+  <li>CLI: Fix TAP compliance for early errors (e.g. syntax error in test file). <a href="https://github.com/qunitjs/qunit/commit/01f7780bd8df3c21667e3920e0a4187cdf986c35">01f7780bd8</a></li>
+  <li>Core: Add memory to late <a href="https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event"><code class="language-plaintext highlighter-rouge">error</code> event</a> listeners, to improve reporting of early errors. <a href="https://github.com/qunitjs/qunit/commit/7c2f871ac339710845cee925207f5d6a62a8ad0e">7c2f871ac3</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.1">Git tag: 2.24.1</a></li>
+  <li><a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0 Released: Add memory to the “runEnd” event</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry><entry><title type="html">QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
 <ul>
   <li>✨ There is a new <a href="https://qunitjs.com/blog/">QUnit Blog</a>.
 We’re also on <a href="https://fosstodon.org/@qunit">Mastodon</a> and <a href="https://bsky.app/profile/qunitjs.com">Bluesky</a>.</li>
@@ -333,18 +346,4 @@ Source:   @/test/example.js:3:10
 
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.0">Git tag: 2.20.0</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Add type check to assert.async() parameter, add QUnit.reporters.perf, and improve performance.]]></summary></entry><entry><title type="html">QUnit 2.19.4 Released: Bug fix</title><link href="https://qunitjs.com/blog/2023/01/23/qunit-2-19-4/" rel="alternate" type="text/html" title="QUnit 2.19.4 Released: Bug fix" /><published>2023-01-23T00:00:00+00:00</published><updated>2023-01-23T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2023/01/23/qunit-2-19-4</id><content type="html" xml:base="https://qunitjs.com/blog/2023/01/23/qunit-2-19-4/"><![CDATA[<h2 id="changelog">Changelog</h2>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>Core: Fix memory leak via <code class="language-plaintext highlighter-rouge">config.timeoutHandler</code> from last async test. (Sergey Astapov) <a href="https://github.com/qunitjs/qunit/pull/1708">#1708</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.19.4">Git tag: 2.19.4</a></li>
-  <li><a href="/blog/2017/07/08/qunit-2-4-0/">QUnit 2.4.0 Released: Fix memory release in assert.deepEqual</a></li>
-  <li><a href="/blog/2017/04/10/qunit-2-3-1/">QUnit 2.3.1 Released: Fix memory leak of test instance</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Fixes a memory leak.]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Add type check to assert.async() parameter, add QUnit.reporters.perf, and improve performance.]]></summary></entry></feed>

@@ -316,7 +316,7 @@
 
 <p class="note">
 
-The <code class="language-plaintext highlighter-rouge">runEnd</code> event has <strong>memory</strong> (since QUnit 2.24). This means listening for this event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the <code class="language-plaintext highlighter-rouge">runEnd</code> event. These will be invoked immediately in that case. This removes the need for HTML scraping.
+The <code class="language-plaintext highlighter-rouge">runEnd</code> event has <strong>memory</strong> (since QUnit 2.24.0). This means listening for this event is possible, even if the event already fired. For example, if you build an integration system that automates running tests in a browser, and are unable to reliably inject a listener before tests have finished executing. You can attach a late event listeners for the <code class="language-plaintext highlighter-rouge">runEnd</code> event. These will be invoked immediately in that case. This removes the need for HTML scraping.
 
 </p>
 
@@ -384,7 +384,7 @@ The <code class="language-plaintext highlighter-rouge">runEnd</code> event has <
 
 <p class="note">
 
-The <code class="language-plaintext highlighter-rouge">error</code> event has <strong>memory</strong> (since QUnit 3.0). This means listening for this event is possible, even if the event already fired. This improves reliability of reporters in browser automations, where it might be difficult to reliably inject a listener between qunit.js and anything else.
+The <code class="language-plaintext highlighter-rouge">error</code> event has <strong>memory</strong> (since QUnit 2.24.1). This means listening for this event is possible, even if the event already fired. This improves reliability of reporters in browser automations, where it might be difficult to reliably inject a listener between qunit.js and anything else.
 
 </p>
 
