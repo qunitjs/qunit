@@ -217,6 +217,12 @@ projects:
       - name: Globalize
         href: https://github.com/globalizejs/globalize
 
+  - name: Hotwired
+    href: https://github.com/hotwired
+    sub:
+      - name: stimulus
+        href: https://github.com/hotwired/stimulus
+
   - name: Moment.js
     href: https://github.com/moment
     sub:
