@@ -37,7 +37,7 @@ You can also find support on StackOverflow. Use the ["qunit" hashtag on StackOve
 
 ## Chat
 
-If you need help, join us in our chat room on Matrix at `#qunitjs_qunit:gitter.im`:
+If you need help, or want to participate in sharing and discussing ideas, join us in the chat room on Matrix at `#qunitjs_qunit:gitter.im`:
 
 * **[Gitter web client](https://app.gitter.im/#/room/#qunitjs_qunit:gitter.im)**, browse the room as guest.
 * [Element web client](https://app.element.io/#/room/#qunitjs_qunit:gitter.im), join and log in (with GitHub, GitLab, Google, or Apple ID), or sign up.

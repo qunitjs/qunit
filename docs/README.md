@@ -12,6 +12,7 @@
 * [Assertions](./api/assert/)
 * [Callback events](./api/callbacks/)
 * [Configuration options](./api/config/)
+* [Reporters](./api/reporters/)
 * [Extension interface](./api/extension/)
 
 ## Contribute
@@ -20,14 +21,14 @@ Prerequisites:
 * [Ruby](https://www.ruby-lang.org/) 2.7 or later. Install from Apt on Linux, or [Homebrew](https://brew.sh/) on macOS.
 * [Bundler](https://bundler.io/), e.g. `gem install bundler`.
 
-To regenerate the site and serve locally at <http://localhost:4000/>.
+To regenerate the site and serve locally at <http://localhost:4000/>:
 
 ```shell
 cd qunit/docs/
 bundle update && bundle exec jekyll serve
 ```
 
-This will start the server in watch mode and regenerate the site as-needed.
+This will start the server in watch mode and regenerate the site on-the-fly.
 
 ### Update plugins page
 

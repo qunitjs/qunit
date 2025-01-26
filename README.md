@@ -11,8 +11,7 @@
 
 </div>
 
-**QUnit** is a powerful, easy-to-use JavaScript testing framework. It was originally developed for the jQuery
-project and has since evolved to test any client-side or server-side JavaScript code. QUnit has no dependencies and supports Node.js, SpiderMonkey, and all major web browsers.
+**QUnit** is a powerful, easy-to-use JavaScript testing framework. It was originally developed for the jQuery project and has since evolved to test any client-side or server-side JavaScript code. QUnit has no dependencies and supports all major desktop and mobile web browsers, Node.js, and SpiderMonkey.
 
 ## Documentation
 
@@ -25,7 +24,7 @@ project and has since evolved to test any client-side or server-side JavaScript 
 
 To report a bug or request a new feature, [open an issue](https://github.com/qunitjs/qunit/issues).
 
-If you need help using QUnit, chat with us on [Matrix](https://app.element.io/#/room/#qunitjs_qunit:gitter.im).
+If you get stuck or need help, [join the chat room](https://qunitjs.com/intro/#support) and ask us a question.
 
 ## Contribute
 

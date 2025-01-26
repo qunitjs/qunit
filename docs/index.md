@@ -86,12 +86,11 @@ These are the official [release channels](intro.md#download) for QUnit:
 
 ## Join the Community
 
-<p class="lead lead--center" markdown="1">Join us on [Mastodon](https://fosstodon.org/@qunit), [Bluesky](https://bsky.app/profile/qunitjs.com), or [Matrix chat](./intro.md#support).</p>
+<p class="lead" markdown="1">Follow us on [Mastodon](https://fosstodon.org/@qunit) or [Bluesky](https://bsky.app/profile/qunitjs.com)</p>
 
-To contribute:
-
-* [Watch the repository](https://github.com/qunitjs/qunit) to learn about release, new requests, or bug reports.
-* The source of this website, is in the ["docs/" directory](https://github.com/qunitjs/qunit/tree/main/docs).
+* [Support & Chat](./intro.md#support), for if you get stuck or need help.
+* [Watch the repository](https://github.com/qunitjs/qunit), to find out about new release.
+* The source of this website is in the ["docs/" directory](https://github.com/qunitjs/qunit/tree/main/docs).
 
 ---
 
