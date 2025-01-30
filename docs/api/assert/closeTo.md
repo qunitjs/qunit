@@ -62,3 +62,9 @@ QUnit.test('bad example', assert => {
 ## See also
 
 * Use [`assert.propContains()`](./propContains.md) to partially compare an object.
+
+## External links
+
+* Mocha [`expect.within()`](https://www.chaijs.com/api/bdd/#method_within), Jasmine [`expect().toBeCloseTo()`](https://jasmine.github.io/api/edge/matchers.html), and Deno [assertAlmostEquals](https://deno.land/std@0.210.0/testing/asserts.ts?s=assertAlmostEquals) are all similar to `assert.closeTo()` in QUnit.
+* PHPUnit [`assertEqualsWithDelta`](https://docs.phpunit.de/en/12.0/assertions.html#assertequalswithdelta), is similar to QUnit `assert.closeTo()` in JavaScript.
+* Python [`assertAlmostEqual`](https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual), is similar QUnit `assert.closeTo()` in JavaScript.
