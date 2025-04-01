@@ -1,4 +1,4 @@
-var caught = [];
+let caught = [];
 
 QUnit.on('error', function (e) {
   caught.push(e.message);

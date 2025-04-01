@@ -78,7 +78,7 @@ function normalize (actual) {
  * @param {Function} [hook]
  */
 async function execute (command, options = {}, hook) {
-  options.cwd = path.join(__dirname, '..', 'fixtures');
+  options.cwd ??= path.join(__dirname, '..', 'fixtures');
 
   // Inherit no environment by default
   // Without this, tests may fail from inheriting FORCE_COLOR=1
@@ -91,7 +91,7 @@ async function execute (command, options = {}, hook) {
   let cmd = command[0];
   const args = command.slice(1);
   if (cmd === 'qunit') {
-    cmd = '../../../bin/qunit.js';
+    cmd = path.join(__dirname, '../../../bin/qunit.js');
     args.unshift(cmd);
     cmd = process.execPath;
   }
@@ -106,15 +106,6 @@ async function execute (command, options = {}, hook) {
   }
 
   return await getProcessResult(spawned);
-}
-
-/**
- * Execute the provided command with IPC enabled, from within the fixtures directory
- *
- * @see #execute()
- */
-async function executeIpc (command, hook) {
-  return await execute(command, { stdio: [null, null, null, 'ipc'] }, hook);
 }
 
 /**
@@ -245,7 +236,7 @@ function concurrentMapKeys (input, concurrency, asyncFn) {
     return await asyncFn(input[key]);
   });
   const ret = {};
-  for (var i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     ret[keys[i]] = values[i];
   }
   return ret;
@@ -254,7 +245,6 @@ function concurrentMapKeys (input, concurrency, asyncFn) {
 module.exports = {
   normalize,
   execute,
-  executeIpc,
   executeRaw,
   concurrentMap,
   concurrentMapKeys

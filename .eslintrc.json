@@ -111,12 +111,13 @@
     // Misc overrides
     {
       "files": ["test/cli/**"],
+      "extends": [".eslintrc.base.js", "plugin:n/recommended"],
       "env": {
-        "es2020": true,
+        "es2021": true,
         "node": true
       },
       "parserOptions": {
-        "ecmaVersion": 2020
+        "ecmaVersion": 2021
       },
       "rules": {
         "compat/compat": "off"

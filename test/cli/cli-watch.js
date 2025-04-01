@@ -1,29 +1,35 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const fixturify = require('fixturify');
 
-const { executeIpc } = require('./helpers/execute.js');
+const { execute } = require('./helpers/execute.js');
 
-const fixturePath = path.join(__dirname, 'fixtures', 'watching');
+const parentPath = fs.mkdtempSync(path.join(os.tmpdir(), 'qunit-test-'));
+const fixturePath = path.join(parentPath, 'watching');
 const isWindows = (process.platform === 'win32');
+
+async function executeIpc (command, hook) {
+  return await execute(command, { cwd: parentPath, stdio: [null, null, null, 'ipc'] }, hook);
+}
 
 // TODO: Make watch tests pass on Windows. https://github.com/qunitjs/qunit/issues/1359
 QUnit.module.if('CLI Watch', !isWindows, function (hooks) {
   hooks.before(function () {
-    fs.rmSync(fixturePath, { recursive: true, force: true });
+    fs.rmSync(parentPath, { recursive: true, force: true });
   });
 
   hooks.beforeEach(function () {
-    fs.mkdirSync(path.dirname(fixturePath), { recursive: true });
+    fs.mkdirSync(parentPath, { recursive: true });
     fixturify.writeSync(fixturePath, {
       'setup.js': "QUnit.on('runEnd', function() { process.send('runEnd'); });"
     });
   });
 
   hooks.afterEach(function () {
-    fs.rmSync(fixturePath, { recursive: true, force: true });
+    fs.rmSync(parentPath, { recursive: true, force: true });
   });
 
   QUnit.test.each('no change', [
@@ -217,7 +223,6 @@ Stopping QUnit...`);
             'x.js': '-',
             'x.json': '-',
             'x.mjs': '-',
-            'x.ts': '-',
             'x.txt': '-',
 
             node_modules: {

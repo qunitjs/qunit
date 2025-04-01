@@ -10,7 +10,7 @@ function removeUnstableProperties (obj) {
       obj.runtime = 0;
     }
     delete obj.stack;
-    for (var key in obj) {
+    for (let key in obj) {
       if (Array.isArray(obj[key])) {
         obj[key].forEach(removeUnstableProperties);
       } else if (typeof obj[key] === 'object') {
