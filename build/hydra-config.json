@@ -1,9 +1,10 @@
 {
   "//": [
-    "twitter.com serves broken redirect-loop",
-    "element.io and gitter.im chat rooms render fine but oddly use HTTP 404",
-    "npmjs.com responds HTTP 429 Too Many Requests too easily",
-    "Skip trivial github.com links to hopefully avoid HTTP 429 Too Many Requests",
+    "2023-05: twitter.com serves broken redirect-loop",
+    "2024-06: npmjs.com responds HTTP 429 Too Many Requests too easily",
+    "2024-07: element.io and gitter.im chat rooms render fine but oddly use HTTP 404",
+    "2025-01: github.com responds HTTP 429 Too Many Requests for the bulk of trivial links. We can probably keep a few other GitHub links.",
+    "2025-03: codepen.io (via Cloudflare) blocks hydra-link-checker with HTTP 403",
     ""
   ],
   "exclude_scheme_prefixes": [
@@ -11,6 +12,7 @@
     "https://app.element.io/",
     "https://app.gitter.im/",
     "https://www.npmjs.com/package/",
+    "https://codepen.io/",
     "https://github.com/qunitjs/qunit/issues/",
     "https://github.com/qunitjs/qunit/pull/",
     "https://github.com/qunitjs/qunit/blob/main/docs/_posts/"

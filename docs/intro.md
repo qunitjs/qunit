@@ -26,7 +26,7 @@ Check these QUnit tutorials and examples, to make the most of your unit tests!
 1. [Assertions](./api/assert/index.md): Partial object comparison, expected exceptions, and much more.
 1. [Browser](./browser.md): Productivity tricks, Browser automation, What can the toolbar do?
 1. [CLI](./cli.md): Productivity tricks, Code coverage.
-1. [Reporter API](./callbacks/QUnit.on.md#reporter-api): Event emitter, Create your own reporter.
+1. [Reporter API](./api/callbacks/QUnit.on.md#reporter-api): Event emitter, Create your own reporter.
 1. [Theme API](./browser.md#theme-api): Create your own theme.
 
 ## Support
