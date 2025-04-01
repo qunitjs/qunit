@@ -11,8 +11,6 @@
       href: /cli/
     - name: Download
       href: /intro/#download
-    - name: Plugins
-      href: /plugins/
     - name: QUnit 2.0 Upgrade Guide
       href: /upgrade-guide-2.x/
 - name: Documentation
@@ -24,6 +22,8 @@
   sub:
     - name: Support & Chat
       href: /intro/#support
+    - name: Plugins
+      href: /plugins/
     - name: Who's using QUnit?
       href: /projects/
     - name: About QUnit

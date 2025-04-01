@@ -38,7 +38,7 @@ Whatever the cause may be, we've cut this cost by lazily rendering the menu when
 </figure>
 </div>
 
-We previously applied a 200 ms input debounce on filtering the dropdown menu. It seems a lot people type _just_ fast enough for the menu to sit idle until you stop typing. This provides a subpar user experience, because the you won't know if what you typed will find what you're looking for, until you stop typing.
+We previously applied a 200 ms input debounce on filtering the dropdown menu. It seems a lot people type _just_ fast enough for the menu to sit idle until you stop typing. This provides a subpar user experience, because you won't know if what you typed will find what you're looking for, until you stop typing.
 
 The module selector in QUnit is powered by the super fast [fuzzysort.js](https://github.com/farzher/fuzzysort) library. Fuzzysearch actually takes only ~1ms, so it should be able to keep up in real-time, even for projects with hundreds of QUnit modules defined. I considered removing this debounce entirely, but that risks causing a different kind of lag instead.
 
