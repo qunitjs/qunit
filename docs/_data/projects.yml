@@ -159,6 +159,12 @@ projects:
       - name: core-js
         href: https://github.com/zloirock/core-js
 
+  - name: DOMPurify
+    href: https://github.com/cure53/DOMPurify
+    sub:
+      - name: DOMPurify
+        href: https://github.com/cure53/DOMPurify
+
   - name: jQuery
     href: https://github.com/jquery
     sub:
