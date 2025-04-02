@@ -220,7 +220,7 @@ QUnit.module('Database connection', {
 
 ### Hooks on nested modules
 
-_Back to [§ Hook order](#hook-order)._
+_See also [§ Hook order](#hook-order)._
 
 ```js
 QUnit.module('My Group', hooks => {

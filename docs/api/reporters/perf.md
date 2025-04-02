@@ -50,7 +50,7 @@ QUnit.reporters.perf.init(QUnit);
 
 **Note:** As of 2025, the [Node.js inspector](https://nodejs.org/docs/latest/api/debugger.html#v8-inspector-integration-for-nodejs) does not yet send User Timing measures to Chrome DevTools ([upstream nodejs/node#47813](https://github.com/nodejs/node/issues/47813)).
 
-This means that you _can_ retrieve the QUnit measures from [`performance.getEntries()`](https://nodejs.org/docs/latest/api/perf_hooks.html) and export or visualise them with tooling of your own (e.g. from a [runEnd event](../callbacks/QUnit.on.md##the-runend-event), or via a PerformanceObserver).
+This means that you _can_ retrieve the QUnit measures from [`performance.getEntries()`](https://nodejs.org/docs/latest/api/perf_hooks.html) and export or visualise them with tooling of your own (e.g. from a [runEnd event](../callbacks/QUnit.on.md#the-runend-event), or via a PerformanceObserver).
 
 But, when connecting Chrome DevTools to a Node.js process, these are not currently visualised. If you currently test frontend code for browsers via jsdom in Node.js, consider [testing in a real browser](../../browser.md) instead.
 
