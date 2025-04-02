@@ -54,7 +54,7 @@ function square (x) {
   return x * x;
 }
 
-QUnit.test('square()', assert => {
+QUnit.test('square()', (assert) => {
   assert.equal(square(2), 4);
   assert.equal(square(3), 9);
 });
@@ -67,7 +67,7 @@ Following the example above, `QUnit.test` also supports JS [async functions][] s
 [async functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 ```js
-QUnit.test('Test with async-await', async assert => {
+QUnit.test('Test with async-await', async (assert) => {
   const a = await fetchSquare(2);
   const b = await fetchSquare(3);
 
@@ -81,7 +81,7 @@ Check out the [Step API](../assert/verifySteps.md) as well. If your async test i
 
 ### Example: Test with Promise
 
-In ES5 and older environments, you can also return a [Promise] from your standard test function. This also supports other then-able, values such as `jQuery.Deferred`, and Bluebird Promise.
+In ES5 and older environments, you can also return a [Promise] from your test function. This also supports other then-able, values such as `jQuery.Deferred`, and Bluebird Promise.
 
 This example returns a Promise that is resolved after waiting for 1 second.
 
@@ -99,6 +99,30 @@ function fetchSquare (x) {
 QUnit.test('Test with Promise', function (assert) {
   return fetchSquare(3).then(function (result) {
     assert.equal(result, 9);
+  });
+});
+```
+
+### Example: Test context
+
+_See also: [Test lifecycle: Test context](../../lifecycle.md#test-context)_
+
+Each test starts with an empty object used as the test context. This context is also available to hooks. At the end of a test, changes to the context are automatically discarded, and the next test will start with a fresh context.
+
+```js
+QUnit.module('Maker', function (hooks) {
+  hooks.beforeEach(function () {
+    this.parts = ['A', 'B'];
+  });
+
+  QUnit.test('make alphabet', function (assert) {
+    this.parts.push('C');
+    assert.equal(this.parts.join(''), 'ABC');
+  });
+
+  QUnit.test('make music', function (assert) {
+    this.parts.push('B', 'A');
+    assert.equal(this.parts.join(''), 'ABBA');
   });
 });
 ```

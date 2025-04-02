@@ -112,39 +112,91 @@ QUnit.module('Bread', function (hooks) {
 
 ### Hooks
 
-You can use hooks to prepare fixtures, or run other setup and teardown logic. Hooks can run around individual tests, or around a whole module.
+You can use hooks to run shared code for every test in a module.  Add hooks via the `hooks` parameter in the [module scope](#module-scope) (as demonstrated below), or via the module [options object](#options-object).
 
-* `before`: Run a callback before the first test.
-* `beforeEach`: Run a callback before each test.
-* `afterEach`: Run a callback after each test.
-* `after`: Run a callback after the last test.
+```js
+QUnit.module('example', function (hooks) {
+  hooks.before(function () {
+    // once for all tests
+  });
 
-You can add hooks via the `hooks` parameter to any [module scope](#module-scope) callback, or by setting a key in the [module `options`](#options-object). You can also create global hooks across all tests, via [QUnit.hooks](./hooks.md).
+  hooks.beforeEach(function () {
+    // before every test
+  });
 
-Hooks that are added to a module, will also apply to tests in any nested modules.
+  hooks.afterEach(function () {
+    // after every test
+  });
 
-#### Hook order
+  hooks.after(function () {
+    // once after all tests are done
+  });
 
-_See also [§ Example: Hooks on nested modules](#hooks-on-nested-modules)._
+  // define tests here...
+});
+```
 
-Hooks that run _before_ a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run any global beforeEach hooks, then the hooks of parent modules, and finally the hooks added to the current module that the test is part of.
+Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  `beforeEach()` hook instead:
 
-Hooks that run _after_ a test, are ordered from inner-most to outer-most, in the reverse order. In other words, `before` and `beforeEach` callbacks are processed in a [queue][], while `afterEach` and `after` form a [stack][].
+```js
+QUnit.module('Machine Maker', function (hooks) {
+  let parts;
+  hooks.beforeEach(function () {
+    parts = ['A', 'B'];
+  });
 
-[queue]: https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29
-[stack]: https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29
+  QUnit.test('make alphabet', function (assert) {
+    parts.push('C');
+    assert.equal(parts.join(''), 'ABC');
+  });
+
+  QUnit.test('make music', function (assert) {
+    parts.push('B', 'A');
+    assert.equal(parts.join(''), 'ABBA');
+  });
+});
+```
+
+Use [`QUnit.hooks`](./hooks.md) to apply hooks globally to all modules in a project.
+
+<figure>
+<a href="{% link lifecycle.md %}"><img src="/resources/qunit-lifecycle-hooks-order.svg" width="338" height="450" alt=""></a>
+<figcaption markdown="1">
+Learn about execution order in the [Test lifecycle](../../lifecycle.md)
+</figcaption>
+</figure>
+
+<span id="async-hook-callback"></span>
 
 #### Hook callback
-
-A hook callback may be an async function, and may return a Promise or any other then-able. QUnit will automatically wait for your hook's asynchronous work to finish before continuing to execute the tests. [§ Example: Async hook callback](#async-hook-callback).
-
-Each hook has access to the same `assert` object, and test context via `this`, as the [QUnit.test](./test.md) that the hook is running for. [§ Example: Using the test context](#using-the-test-context).
 
 | parameter | description |
 |-----------|-------------|
 | `assert` (object) | An [Assert](../assert/index.md) object. |
 
+Each hook for a given [QUnit.test](./test.md), has access to the same `assert` object, and the same `this` [test context](../../lifecycle.md#test-context), as the test function.
+
+A hook callback may be an async function, or return a Promise or other then-able. QUnit will automatically wait for your hook's asynchronous work to finish before continuing to execute the tests.
+
+```js
+QUnit.module('Database connection', function (hooks) {
+  hooks.before(async function () {
+    await MyDb.connect();
+  });
+
+  hooks.after(async function () {
+    await MyDb.disconnect();
+  });
+
+  // define tests...
+});
+```
+
+See [Test lifecycle § Async hook callback](../../lifecycle.md#example-async-hook-callback) for how to return a Promise without modern async-await syntax.
+
 <p class="note" markdown="1">It is discouraged to dynamically create a [QUnit.test](./test.md) from inside a hook. In order to satisfy the requirement for the `after` hook to only run once and to be the last hook in a module, QUnit may associate dynamically defined tests with the parent module instead, or as global test. It is recommended to define any dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md) instead.</p>
+
+<span id="hooks-via-module-options"></span>
 
 ### Options object
 
@@ -157,9 +209,24 @@ You can use the options object to add [hooks](#hooks).
 | `afterEach` (function) | Runs after each test. |
 | `after` (function) | Runs after the last test. |
 
-Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See [§ Using the test context](#using-the-test-context).
+Any other properties on the module options object are copied into the base [test context](../../lifecycle.md#test-context) for the module, which each test inherits from. See also [Test lifecycle § Example: Set context via options](../../lifecycle.md#example-set-context-via-options).
 
-Example: [§ Hooks via module options](#hooks-via-module-options).
+```js
+QUnit.module('example', {
+  before () {
+    // once for all tests
+  },
+  beforeEach () {
+    // before every test
+  },
+  afterEach () {
+    // after every test
+  },
+  after () {
+    // once after all tests are done
+  }
+});
+```
 
 ## Changelog
 
@@ -171,216 +238,60 @@ Example: [§ Hooks via module options](#hooks-via-module-options).
 
 ## Examples
 
-### Async hook callback
+### Example: Skip a module
+
+Use `QUnit.module.skip()` to treat an entire module's tests as if they used [`QUnit.test.skip`](./test.skip.md). For example, if a module is failing due to a known but unsolved problem.
 
 ```js
-QUnit.module('Database connection', function (hooks) {
-  hooks.before(async function () {
-    await MyDb.connect();
-  });
-
-  hooks.after(async function () {
-    await MyDb.disconnect();
-  });
-});
-```
-
-<span id="module-hook-with-promise"></span>Module hook with Promise:
-
-An example of handling an asynchronous `then`able Promise result in hooks. This example uses an [ES6 Promise][] interface that is fulfilled after connecting to or disconnecting from database.
-
-[ES6 Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
-```js
-QUnit.module('Database connection', {
-  before: function () {
-    return new Promise(function (resolve, reject) {
-      MyDb.connect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  },
-  after: function () {
-    return new Promise(function (resolve, reject) {
-      MyDb.disconnect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
-});
-```
-
-### Hooks on nested modules
-
-_See also [§ Hook order](#hook-order)._
-
-```js
-QUnit.module('My Group', hooks => {
-  // You may call hooks.beforeEach() multiple times to create multiple hooks.
-  hooks.beforeEach(assert => {
-    assert.ok(true, 'beforeEach called');
-  });
-
-  hooks.afterEach(assert => {
-    assert.ok(true, 'afterEach called');
-  });
-
-  QUnit.test('with hooks', assert => {
-    // 1 x beforeEach
-    // 1 x afterEach
-    assert.expect(2);
-  });
-
-  QUnit.module('Nested Child', hooks => {
-    // This will run after the parent module's beforeEach hook
-    hooks.beforeEach(assert => {
-      assert.ok(true, 'nested beforeEach called');
-    });
-
-    // This will run before the parent module's afterEach hook
-    hooks.afterEach(assert => {
-      assert.ok(true, 'nested afterEach called');
-    });
-
-    QUnit.test('with nested hooks', assert => {
-      // 2 x beforeEach (parent, child)
-      // 2 x afterEach (child, parent)
-      assert.expect(4);
-    });
-  });
-});
-```
-
-### Hooks via module options
-
-```js
-QUnit.module('module A', {
-  before: function () {
-    // prepare something once for all tests
-  },
-  beforeEach: function () {
-    // prepare something before each test
-  },
-  afterEach: function () {
-    // clean up after each test
-  },
-  after: function () {
-    // clean up once after all tests are done
-  }
-});
-```
-
-### Using the test context
-
-The test context object is also exposed to hook callbacks. Each test starts with a copy of the context object at the module level.
-
-```js
-QUnit.module('Maker', function (hooks) {
-  hooks.beforeEach(function () {
-    this.parts = ['A', 'B'];
-  });
-
-  QUnit.test('make alphabet', function (assert) {
-    this.parts.push('C');
-    assert.equal(this.parts.join(''), 'ABC');
-  });
-
-  QUnit.test('make music', function (assert) {
-    this.parts.push('B', 'A');
-    assert.equal(this.parts.join(''), 'ABBA');
-  });
-});
-```
-
-Beware that use of the `this` binding is not available in arrow functions. It might be more convenient to use JavaScript's own lexical scope instead:
-
-```js
-QUnit.module('Machine Maker', hooks => {
-  let maker;
-  let parts;
-  hooks.beforeEach(() => {
-    maker = new Maker();
-    parts = ['wheels', 'motor', 'chassis'];
-  });
-
-  QUnit.test('makes a robot', assert => {
-    parts.push('arduino');
-    assert.equal(maker.build(parts), 'robot');
-    assert.deepEqual(maker.log, ['robot']);
-  });
-
-  QUnit.test('makes a car', assert => {
-    assert.equal(maker.build(parts), 'car');
-    maker.duplicate();
-    assert.deepEqual(maker.log, ['car', 'car']);
-  });
-});
-```
-
-### Only run a subset of tests
-
-Use `QUnit.module.only()` to treat an entire module's tests as if they used [`QUnit.test.only`](./test.only.md) instead of [`QUnit.test`](./test.md).
-
-```js
-QUnit.module('Robot', hooks => {
-  // ...
-});
-
-// When developing the feature, only run these tests,
-// and skip tests from other modules.
-QUnit.module.only('Android', hooks => {
+QUnit.module.skip('Robot', (hooks) => {
   let android;
   hooks.beforeEach(() => {
-    android = new Android();
+    android = new Robot();
   });
 
-  QUnit.test('hello', assert => {
+  QUnit.test('hello', (assert) => {
     assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 });
 ```
 
-Use `QUnit.module.skip()` to treat an entire module's tests as if they used [`QUnit.test.skip`](./test.skip.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.if()`, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed.
 
 ```js
-QUnit.module('Robot', hooks => {
-  // ...
+QUnit.module.if('MyApp', typeof document !== 'undefined', (hooks) => {
+  QUnit.test('render', function (assert) {
+    assert.strictEqual(MyApp.render(), '<p>Hello world!</p>');
+  });
 });
+```
 
-// Skip this module's tests.
-// For example if the android tests are failing due to unsolved problems.
-QUnit.module.skip('Android', hooks => {
+During development you can programatically focus QUnit to only run tests that you're currently working on, by changing a call to `QUnit.module.only()`. This treats an entire module as if their tests are defined via [`QUnit.test.only`](./test.only.md).
+
+```js
+QUnit.module.only('Robot', (hooks) => {
   let android;
   hooks.beforeEach(() => {
-    android = new Android();
+    android = new Robot();
   });
 
-  QUnit.test('hello', assert => {
+  QUnit.test('hello', (assert) => {
     assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 });
 ```
 
-Use `QUnit.module.todo()` to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md) instead of [`QUnit.test`](./test.md).
+Use `QUnit.module.todo()` to mark a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module's tests as if they used [`QUnit.test.todo`](./test.todo.md).
 
 ```js
-QUnit.module.todo('Android', hooks => {
+QUnit.module.todo('Robot', (hooks) => {
   let android;
   hooks.beforeEach(() => {
-    android = new Android();
+    android = new Robot();
   });
 
-  QUnit.test('hello', assert => {
+  QUnit.test('hello', (assert) => {
     assert.strictEqual(android.hello(), 'Hello');
-    // TODO: hello
+    // TODO
     // Actual: Goodbye
     // Expected: Hello
   });

@@ -41,6 +41,8 @@ QUnit.test.if('render', typeof document !== 'undefined', function (assert) {
 This is equivalent to:
 
 ```js
+QUnit.module('MyApp');
+
 if (typeof document !== 'undefined') {
   QUnit.test('render', function (assert) {
     assert.strictEqual(MyApp.render(), '<p>Hello world!</p>');
@@ -50,7 +52,8 @@ if (typeof document !== 'undefined') {
 }
 ```
 
-### Conditional module
+<span id="conditional-module"></span>
+Use [`QUnit.module.if()`](./module.md), to conditionally skip all tests in a given module.
 
 ```js
 QUnit.module.if('MyApp', typeof document !== 'undefined');
