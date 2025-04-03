@@ -74,7 +74,7 @@
 
 <ul>
   <li>Core: A test without any assertions now fails by default, unless <a href="https://qunitjs.com/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect(0)</code></a> is called. <a href="https://github.com/qunitjs/qunit/issues/178">#178</a></li>
-  <li>Core: Add <code class="language-plaintext highlighter-rouge">QUnit.pushFailure</code> to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). <a href="https://github.com/qunitjs/qunit/issues/210">#210</a></li>
+  <li>Core: Add <code class="language-plaintext highlighter-rouge">QUnit.pushFailure</code> to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with caught exceptions (useful even in Safari). <a href="https://github.com/qunitjs/qunit/issues/210">#210</a></li>
   <li>Core: Apply <a href="https://qunitjs.com/api/config/notrycatch/"><code class="language-plaintext highlighter-rouge">notrycatch</code> option</a> to setup and teardown hooks. <a href="https://github.com/qunitjs/qunit/issues/203">#203</a> <a href="https://github.com/qunitjs/qunit/issues/204">#204</a></li>
   <li>Core: Extend exports object with QUnit properties at the end of the file to export everything.</li>
   <li>Core: Prefix test-related session-storage items to make removal more specific. <a href="https://github.com/qunitjs/qunit/issues/213">#213</a></li>

@@ -539,7 +539,7 @@ Called on "X", instead of expected "Y".
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>Another way that this might happen is if you have named them differently, or perhaps mispelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.</p>
+<p>Another way that this might happen is if you have named them differently, or perhaps misspelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyGroup</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooksOuter</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Child</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooksInner</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
