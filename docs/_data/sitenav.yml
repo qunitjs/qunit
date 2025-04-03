@@ -3,14 +3,16 @@
   sub:
     - name: Getting Started
       href: /intro/
+    - name: Download
+      href: /intro/#download
     - name: Browser Runner
       href: /browser/
     - name: Browser Support
       href: /browser/#browser-support
     - name: Command-line Interface
       href: /cli/
-    - name: Download
-      href: /intro/#download
+    - name: Test lifecycle
+      href: /lifecycle/
     - name: QUnit 2.0 Upgrade Guide
       href: /upgrade-guide-2.x/
 - name: Documentation

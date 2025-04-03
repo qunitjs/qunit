@@ -69,7 +69,7 @@ After:
 ```js
 QUnit.module('example');
 
-QUnit.test('add', assert => {
+QUnit.test('add', (assert) => {
   assert.equal(add(2, 3), 5);
 });
 ```
@@ -104,7 +104,7 @@ asyncTest('navigates to new page', function () {
 After:
 
 ```js
-QUnit.test('navigates to new page', assert => {
+QUnit.test('navigates to new page', (assert) => {
   const done = assert.async();
   router.navigate(newPage => {
     assert.equal(newPage.id, 1);
@@ -158,7 +158,7 @@ QUnit.module('router', hooks => {
     router.destroy();
   });
 
-  QUnit.test('add', assert => {
+  QUnit.test('add', (assert) => {
     assert.true(router.add('/about'));
   });
 });
@@ -225,7 +225,7 @@ This method accessed QUnit's internal fixture reset. This is now gone, without r
 Before:
 
 ```js
-QUnit.test('currentPage', assert => {
+QUnit.test('currentPage', (assert) => {
   router.refresh();
   assert.equal(router.currentPage.id, 1);
 
@@ -240,12 +240,12 @@ QUnit.test('currentPage', assert => {
 After:
 
 ```js
-QUnit.test('currentPage default', assert => {
+QUnit.test('currentPage default', (assert) => {
   router.refresh();
   assert.equal(router.currentPage.id, 1);
 });
 
-QUnit.test('currentPage after replaceState', assert => {
+QUnit.test('currentPage after replaceState', (assert) => {
   history.replaceState('/about');
   router.refresh();
   assert.equal(router.currentPage.id, 42);
@@ -283,7 +283,7 @@ The optional `expected` argument to `QUnit.test` for specifying the expected num
 Before:
 
 ```js
-QUnit.test('addition', 1, assert => {
+QUnit.test('addition', 1, (assert) => {
   assert.equal(add(2, 3), 5);
 });
 ```
@@ -291,7 +291,7 @@ QUnit.test('addition', 1, assert => {
 After:
 
 ```js
-QUnit.test('addition', assert => {
+QUnit.test('addition', (assert) => {
   assert.expect(1);
   assert.equal(add(2, 3), 5);
 });
@@ -316,7 +316,7 @@ function add (a, b) {
 Before:
 
 ```js
-QUnit.test('add', assert => {
+QUnit.test('add', (assert) => {
   assert.throws(() => {
     add();
   }, 'This is an error', 'Fail if A is undefined');
@@ -326,7 +326,7 @@ QUnit.test('add', assert => {
 After:
 
 ```js
-QUnit.test('add', assert => {
+QUnit.test('add', (assert) => {
   assert.throws(() => {
     add();
   }, /This is an error/, 'Fail if A is undefined');
@@ -334,7 +334,7 @@ QUnit.test('add', assert => {
 
 // Or
 
-QUnit.test('add', assert => {
+QUnit.test('add', (assert) => {
   assert.throws(() => {
     add();
   }, new Error('This is an error'), 'Fail if A is undefined');
