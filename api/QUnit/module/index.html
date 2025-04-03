@@ -16,7 +16,7 @@
 </form>
 </typesense-minibar>
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
@@ -201,32 +201,61 @@
 
 <h3 id="hooks">Hooks</h3>
 
-<p>You can use hooks to prepare fixtures, or run other setup and teardown logic. Hooks can run around individual tests, or around a whole module.</p>
+<p>You can use hooks to run shared code for every test in a module.  Add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter in the <a href="#module-scope">module scope</a> (as demonstrated below), or via the module <a href="#options-object">options object</a>.</p>
 
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">before</code>: Run a callback before the first test.</li>
-  <li><code class="language-plaintext highlighter-rouge">beforeEach</code>: Run a callback before each test.</li>
-  <li><code class="language-plaintext highlighter-rouge">afterEach</code>: Run a callback after each test.</li>
-  <li><code class="language-plaintext highlighter-rouge">after</code>: Run a callback after the last test.</li>
-</ul>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// once for all tests</span>
+  <span class="p">});</span>
 
-<p>You can add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter to any <a href="#module-scope">module scope</a> callback, or by setting a key in the <a href="#options-object">module <code class="language-plaintext highlighter-rouge">options</code></a>. You can also create global hooks across all tests, via <a href="/api/QUnit/hooks/">QUnit.hooks</a>.</p>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// before every test</span>
+  <span class="p">});</span>
 
-<p>Hooks that are added to a module, will also apply to tests in any nested modules.</p>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// after every test</span>
+  <span class="p">});</span>
 
-<h4 id="hook-order">Hook order</h4>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// once after all tests are done</span>
+  <span class="p">});</span>
 
-<p><em>See also <a href="#hooks-on-nested-modules">§ Example: Hooks on nested modules</a>.</em></p>
+  <span class="c1">// define tests here...</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
-<p>Hooks that run <em>before</em> a test, are ordered from outer-most to inner-most, in the order that they are added. This means that a test will first run any global beforeEach hooks, then the hooks of parent modules, and finally the hooks added to the current module that the test is part of.</p>
+<p>Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  <code class="language-plaintext highlighter-rouge">beforeEach()</code> hook instead:</p>
 
-<p>Hooks that run <em>after</em> a test, are ordered from inner-most to outer-most, in the reverse order. In other words, <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">beforeEach</code> callbacks are processed in a <a href="https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29">queue</a>, while <code class="language-plaintext highlighter-rouge">afterEach</code> and <code class="language-plaintext highlighter-rouge">after</code> form a <a href="https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29">stack</a>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Use <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.hooks</code></a> to apply hooks globally to all modules in a project.</p>
+
+<figure>
+<a href="/lifecycle/"><img src="/resources/qunit-lifecycle-hooks-order.svg" width="338" height="450" alt="" /></a>
+<figcaption>
+    <p>Learn about execution order in the <a href="/lifecycle/">Test lifecycle</a></p>
+  </figcaption>
+</figure>
+
+<p><span id="async-hook-callback"></span></p>
 
 <h4 id="hook-callback">Hook callback</h4>
-
-<p>A hook callback may be an async function, and may return a Promise or any other then-able. QUnit will automatically wait for your hook’s asynchronous work to finish before continuing to execute the tests. <a href="#async-hook-callback">§ Example: Async hook callback</a>.</p>
-
-<p>Each hook has access to the same <code class="language-plaintext highlighter-rouge">assert</code> object, and test context via <code class="language-plaintext highlighter-rouge">this</code>, as the <a href="/api/QUnit/test/">QUnit.test</a> that the hook is running for. <a href="#using-the-test-context">§ Example: Using the test context</a>.</p>
 
 <table>
   <thead>
@@ -243,7 +272,28 @@
   </tbody>
 </table>
 
+<p>Each hook for a given <a href="/api/QUnit/test/">QUnit.test</a>, has access to the same <code class="language-plaintext highlighter-rouge">assert</code> object, and the same <code class="language-plaintext highlighter-rouge">this</code> <a href="/lifecycle/#test-context">test context</a>, as the test function.</p>
+
+<p>A hook callback may be an async function, or return a Promise or other then-able. QUnit will automatically wait for your hook’s asynchronous work to finish before continuing to execute the tests.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="c1">// define tests...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>See <a href="/lifecycle/#example-async-hook-callback">Test lifecycle § Async hook callback</a> for how to return a Promise without modern async-await syntax.</p>
+
 <p class="note">It is discouraged to dynamically create a <a href="/api/QUnit/test/">QUnit.test</a> from inside a hook. In order to satisfy the requirement for the <code class="language-plaintext highlighter-rouge">after</code> hook to only run once and to be the last hook in a module, QUnit may associate dynamically defined tests with the parent module instead, or as global test. It is recommended to define any dynamic tests via <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> instead.</p>
+
+<p><span id="hooks-via-module-options"></span></p>
 
 <h3 id="options-object">Options object</h3>
 
@@ -276,9 +326,23 @@
   </tbody>
 </table>
 
-<p>Properties on the module options object are copied over to the test context object at the start of each test. Such properties can also be changed from the hook callbacks. See <a href="#using-the-test-context">§ Using the test context</a>.</p>
+<p>Any other properties on the module options object are copied into the base <a href="/lifecycle/#test-context">test context</a> for the module, which each test inherits from. See also <a href="/lifecycle/#example-set-context-via-options">Test lifecycle § Example: Set context via options</a>.</p>
 
-<p>Example: <a href="#hooks-via-module-options">§ Hooks via module options</a>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nf">before </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// once for all tests</span>
+  <span class="p">},</span>
+  <span class="nf">beforeEach </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// before every test</span>
+  <span class="p">},</span>
+  <span class="nf">afterEach </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// after every test</span>
+  <span class="p">},</span>
+  <span class="nf">after </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// once after all tests are done</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
 <h2 id="changelog">Changelog</h2>
 
@@ -309,205 +373,56 @@
 
 <h2 id="examples">Examples</h2>
 
-<h3 id="async-hook-callback">Async hook callback</h3>
+<h3 id="example-skip-a-module">Example: Skip a module</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">();</span>
-  <span class="p">});</span>
+<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code> to treat an entire module’s tests as if they used <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip</code></a>. For example, if a module is failing due to a known but unsolved problem.</p>
 
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">();</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p><span id="module-hook-with-promise"></span>Module hook with Promise:</p>
-
-<p>An example of handling an asynchronous <code class="language-plaintext highlighter-rouge">then</code>able Promise result in hooks. This example uses an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">ES6 Promise</a> interface that is fulfilled after connecting to or disconnecting from database.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">before</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="nf">resolve</span><span class="p">();</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
-  <span class="p">},</span>
-  <span class="na">after</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="nf">resolve</span><span class="p">();</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<h3 id="hooks-on-nested-modules">Hooks on nested modules</h3>
-
-<p><em>See also <a href="#hook-order">§ Hook order</a>.</em></p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Group</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="c1">// You may call hooks.beforeEach() multiple times to create multiple hooks.</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">beforeEach called</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">afterEach called</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">with hooks</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// 1 x beforeEach</span>
-    <span class="c1">// 1 x afterEach</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Nested Child</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// This will run after the parent module's beforeEach hook</span>
-    <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nf">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">nested beforeEach called</span><span class="dl">'</span><span class="p">);</span>
-    <span class="p">});</span>
-
-    <span class="c1">// This will run before the parent module's afterEach hook</span>
-    <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nf">ok</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">nested afterEach called</span><span class="dl">'</span><span class="p">);</span>
-    <span class="p">});</span>
-
-    <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">with nested hooks</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="c1">// 2 x beforeEach (parent, child)</span>
-      <span class="c1">// 2 x afterEach (child, parent)</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<h3 id="hooks-via-module-options">Hooks via module options</h3>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">module A</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">before</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// prepare something once for all tests</span>
-  <span class="p">},</span>
-  <span class="na">beforeEach</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// prepare something before each test</span>
-  <span class="p">},</span>
-  <span class="na">afterEach</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// clean up after each test</span>
-  <span class="p">},</span>
-  <span class="na">after</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// clean up once after all tests are done</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<h3 id="using-the-test-context">Using the test context</h3>
-
-<p>The test context object is also exposed to hook callbacks. Each test starts with a copy of the context object at the module level.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>Beware that use of the <code class="language-plaintext highlighter-rouge">this</code> binding is not available in arrow functions. It might be more convenient to use JavaScript’s own lexical scope instead:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">maker</span><span class="p">;</span>
-  <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Maker</span><span class="p">();</span>
-    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">wheels</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">motor</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chassis</span><span class="dl">'</span><span class="p">];</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">arduino</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">robot</span><span class="dl">'</span><span class="p">]);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">makes a car</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="nx">parts</span><span class="p">),</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">maker</span><span class="p">.</span><span class="nf">duplicate</span><span class="p">();</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">maker</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">car</span><span class="dl">'</span><span class="p">]);</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<h3 id="only-run-a-subset-of-tests">Only run a subset of tests</h3>
-
-<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code> to treat an entire module’s tests as if they used <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only</code></a> instead of <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">});</span>
-
-<span class="c1">// When developing the feature, only run these tests,</span>
-<span class="c1">// and skip tests from other modules.</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">only</span><span class="p">(</span><span class="dl">'</span><span class="s1">Android</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Android</span><span class="p">();</span>
+    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nf">hello</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello, my name is AN-2178!</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.skip()</code> to treat an entire module’s tests as if they used <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip</code></a> instead of <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
+<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code>, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="k">if</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyApp</span><span class="dl">'</span><span class="p">,</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">render</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Hello world!&lt;/p&gt;</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
+</code></pre></div></div>
 
-<span class="c1">// Skip this module's tests.</span>
-<span class="c1">// For example if the android tests are failing due to unsolved problems.</span>
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">skip</span><span class="p">(</span><span class="dl">'</span><span class="s1">Android</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<p>During development you can programatically focus QUnit to only run tests that you’re currently working on, by changing a call to <code class="language-plaintext highlighter-rouge">QUnit.module.only()</code>. This treats an entire module as if their tests are defined via <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">QUnit.test.only</code></a>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">only</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Android</span><span class="p">();</span>
+    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nf">hello</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello, my name is AN-2178!</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> to denote a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module’s tests as if they used <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo</code></a> instead of <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a>.</p>
+<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code> to mark a feature that is still under development, and is known to not yet be passing all its tests. This treats an entire module’s tests as if they used <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">Android</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nf">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">android</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Android</span><span class="p">();</span>
+    <span class="nx">android</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nf">hello</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">);</span>
-    <span class="c1">// TODO: hello</span>
+    <span class="c1">// TODO</span>
     <span class="c1">// Actual: Goodbye</span>
     <span class="c1">// Expected: Hello</span>
   <span class="p">});</span>
@@ -598,7 +513,7 @@ Called on "X", instead of expected "Y".
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#organizing-your-tests">Organizing your tests</a></li><li class="sidebar-item"><a href="#module-scope">Module scope</a></li><li class="sidebar-item"><a href="#hooks">Hooks</a></li><li class="sidebar-item"><a href="#options-object">Options object</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#async-hook-callback">Async hook callback</a></li><li class="sidebar-item"><a href="#hooks-on-nested-modules">Hooks on nested modules</a></li><li class="sidebar-item"><a href="#hooks-via-module-options">Hooks via module options</a></li><li class="sidebar-item"><a href="#using-the-test-context">Using the test context</a></li><li class="sidebar-item"><a href="#only-run-a-subset-of-tests">Only run a subset of tests</a></li><li class="sidebar-item"><a href="#E0002">Error: Cannot add hook outside the containing module</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#organizing-your-tests">Organizing your tests</a></li><li class="sidebar-item"><a href="#module-scope">Module scope</a></li><li class="sidebar-item"><a href="#hooks">Hooks</a></li><li class="sidebar-item"><a href="#options-object">Options object</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-skip-a-module">Example: Skip a module</a></li><li class="sidebar-item"><a href="#E0002">Error: Cannot add hook outside the containing module</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=b3e1162d" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>Test lifecycle | QUnit</title><meta property="og:title" content="Test lifecycle"><meta name="description" content="The order of module hooks and test context in QUnit."><meta property="og:description" content="The order of module hooks and test context in QUnit."><link rel="me" href="https://fosstodon.org/@qunit"><meta name="twitter:card" content="summary_large_image">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><typesense-minibar data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true">
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+</typesense-minibar>
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('typesense-minibar');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">Test lifecycle</h1>
+    </div>
+</section>
+<div class="main main--columns wrapper">
+<div class="content"><h2 id="diagram" class="screen-reader-text">Diagram</h2>
+
+<p class="lead">
+
+The execution order of module hooks in QUnit.
+
+</p>
+
+<figure>
+<img src="/resources/qunit-lifecycle-hooks-order.svg" width="676" height="901" alt="" title="Imagine a test suite that uses global hooks,
+and has a module called Parent that uses hooks and contains one test called Foo,
+and a nested module called Child that also uses hooks and contains one test called Bar.
+The execution order is as follows:
+1. The Parent module runs its before hook exactly once.
+2. Every test in the Parent module inherits the test context from this before hook.
+3. This repeats for every test in the Parent module: call global beforeEach, parent beforeEach, actual test (Foo), parent afterEach, and lastly the global afterEach.
+4. The Child module inherits context from the Parent's before hook, and runs its own before hook exactly once.
+5. Every test in the Child module inherits test context from this before hook.
+6. This repeats for every test in the Child module: call the global beforeEach, parent beforeEach, child beforeEach, actual test (Bar), child afterEach, parent afterEach, and lastly the global afterEach.
+" />
+</figure>
+<h2 id="module-hooks">Module hooks</h2>
+
+<p><em>See also: <a href="/api/QUnit/module/#hooks">QUnit.module § Hooks</a></em></p>
+
+<p>You can define the following hooks via <code class="language-plaintext highlighter-rouge">QUnit.module()</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">before</code>: Add a callback before the first test, once per module.</li>
+  <li><code class="language-plaintext highlighter-rouge">beforeEach</code>: Add a callback before every test.</li>
+  <li><code class="language-plaintext highlighter-rouge">afterEach</code>: Add a callback after every test.</li>
+  <li><code class="language-plaintext highlighter-rouge">after</code>: Add a callback after the last test, once per module.</li>
+</ul>
+
+<p>Hooks that run <em>before</em> a test, are executed in the order that they are added (from outer-most to inner-most). This means that utilities and fixtures provided global hooks are safe to use during all tests, and also during the beforeEach hooks of all modules. Likewise, the same is true between a parent module and its child modules.</p>
+
+<p>For example:</p>
+
+<ul>
+  <li>first, any global beforeEach hooks from <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.module()</code></a>,</li>
+  <li>then, the beforeEach hooks of any parent modules,</li>
+  <li>then, the hooks of the current module.</li>
+</ul>
+
+<p>Hooks that run <em>after</em> a test, are executed in the reverse order (from inner-most to outer-most).</p>
+
+<p>For example:</p>
+
+<ul>
+  <li>first, the hooks of the current module,</li>
+  <li>then, the afterEach hooks of any parent modules,</li>
+  <li>then, any global afterEach hooks.</li>
+</ul>
+
+<p>In technical terms, we say that <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">beforeEach</code> callbacks are processed using a <a href="https://en.wikipedia.org/wiki/Queue_%28abstract_data_type%29">queue</a> (handled in <abbr title="first-in, first-out">FIFO-order</abbr>), while <code class="language-plaintext highlighter-rouge">afterEach</code> and <code class="language-plaintext highlighter-rouge">after</code> form a <a href="https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29">stack</a> (handled in <abbr title="last-in, first-out">LIFO-order</abbr>).</p>
+
+<h3 id="example-nested-hooks">Example: Nested hooks</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Foo</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">;</span>
+
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">b</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">world</span><span class="dl">'</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="c1">// You may add as many hooks as you need.</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">globalThis</span><span class="p">.</span><span class="nx">MyApp</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nf">greeting </span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">a</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">b</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+  <span class="p">});</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="nx">globalThis</span><span class="p">.</span><span class="nx">MyApp</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="dl">'</span><span class="s1">world</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">greeting</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello world</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="nx">a</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Goodbye</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">greeting</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Goodbye world</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">// The beforeEach hook will reset "a" back from "Goodbye" to "Hello",</span>
+    <span class="c1">// before the next test begins.</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Bar Child</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">c</span><span class="p">;</span>
+
+    <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// The parent "beforeEach" hook runs first,</span>
+      <span class="c1">// so its data and utilities are safe to use here.</span>
+
+      <span class="nx">a</span> <span class="o">+=</span> <span class="dl">'</span><span class="s1"> to this</span><span class="dl">'</span><span class="p">;</span>
+      <span class="nx">c</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Stranger</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">nested example</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hello to this</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="dl">'</span><span class="s1">world</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nf">greeting</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">Hello to this world</span><span class="dl">'</span><span class="p">);</span>
+
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Stranger</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="example-async-hook-callback">Example: Async hook callback</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="c1">// define tests...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You can also define async hooks without modern async-await syntax, by returning a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> or other “then”-able object:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">before</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nf">resolve</span><span class="p">();</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">},</span>
+  <span class="na">after</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nf">resolve</span><span class="p">();</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="test-context">Test context</h2>
+
+<p>Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as <code class="language-plaintext highlighter-rouge">this</code> inside any <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> function or hook callbacks.</p>
+
+<p>At the end of every test, changes to the test context are automatically reset (e.g. changes by tests or hooks). The next test will start with a fresh context provided by the module.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">before</code> hook has access to the base object that tests and child modules inherit from. Properties set from here, are inherited without needing to re-create them on every test.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>If you use arrow functions, beware that the <code class="language-plaintext highlighter-rouge">this</code> test context is not reachable from inside an arrow function. JavaScript does have a built-in lexical scope that you can use in a similar way. This works the same as a text context for simple cases (i.e. you assign all variables together in <code class="language-plaintext highlighter-rouge">beforeEach</code>).</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-set-context-via-options">Example: Set context via options</h3>
+
+<p>The following are equivalent:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">myparts</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Is essentially equivalent to:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nf">beforeEach </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">myparts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+</div>
+<aside class="sidebar" role="complementary"><div class="toc-wrapper">
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#diagram">Diagram</a></li><li class="sidebar-item"><a href="#module-hooks">Module hooks</a><ol><li class="sidebar-item"><a href="#example-nested-hooks">Example: Nested hooks</a></li></ol></li><li class="sidebar-item"><a href="#example-async-hook-callback">Example: Async hook callback</a></li><li class="sidebar-item"><a href="#test-context">Test context</a><ol><li class="sidebar-item"><a href="#example-set-context-via-options">Example: Set context via options</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+</aside>
+
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="/intro/#support" target="_blank" rel="noopener">Chat</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://bsky.app/profile/qunitjs.com" target="_blank" rel="noopener">Bluesky</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/lifecycle.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
+</html>
