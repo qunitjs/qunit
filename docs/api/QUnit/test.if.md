@@ -60,7 +60,7 @@ QUnit.test('render', function (assert) {
 });
 ```
 
-### Legacy idom
+### Legacy idiom
 
 Prior to QUnit 2.22, the following shortcuts were sometimes used. This may be replaced by `QUnit.test.if()`.
 

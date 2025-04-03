@@ -141,7 +141,7 @@ Notice the removal of the first `qunit.js` call, which lets the trace starts cle
 
 ### Trimming traces
 
-For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happend, and would cause confusion among developers. Instead, frames we can't trim, are greyed out instead. This is similar to Node.js's own error formatter does.
+For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can't trim, are greyed out instead. This is similar to Node.js's own error formatter does.
 
 ## TAP reporter
 

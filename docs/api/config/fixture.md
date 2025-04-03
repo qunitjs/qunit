@@ -26,7 +26,7 @@ QUnit automatically resets the contents of `<div id="qunit-fixture">`. This give
 
 By starting with an empty fixture in your test HTML file, you effectively give each test a clean start, as QUnit will automatically remove anything that was added or staged there before the next test begins.
 
-If many of your tests require the same markup, you can also set it inside the fixture ahead of time. This reduces duplication between tests. QUnit guruantees that each test will start with a fresh copy of the original fixture, undoing any changes that happened during any previous tests.
+If many of your tests require the same markup, you can also set it inside the fixture ahead of time. This reduces duplication between tests. QUnit guarantees that each test will start with a fresh copy of the original fixture, undoing any changes that happened during any previous tests.
 
 You can define a custom fixture in one of two ways:
 

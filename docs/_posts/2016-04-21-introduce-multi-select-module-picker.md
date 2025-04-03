@@ -15,7 +15,7 @@ This replaces the module select dropdown with a dropdown that opens up into a mu
 * Multi-select window with checkboxes and scrolling.
 * Search box for filtering by module or test name.
 * "Apply" button to run selected tests or modules.
-* "Reset" button to clear selection, returnig to implied default of "Select all".
+* "Reset" button to clear selection, returning to implied default of "Select all".
 
 ## Accessibility
 

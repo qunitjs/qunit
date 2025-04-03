@@ -735,7 +735,7 @@ FYI:
 
 * Core: Prevent multiple "begin" events from calling `QUnit.load()`.
 * Core: Use callback-based pause/resume for better multi-pause isolation.
-* HTML Reporter: Fix apply/reset button visibilty.
+* HTML Reporter: Fix apply/reset button visibility.
 * Core: Ensure runtime for skipped tests is 0.
 * Dump: New parser for `Symbol` type.
 
@@ -1041,7 +1041,7 @@ FYI:
 ==================
 
 * Core: A test without any assertions now fails by default, unless [`assert.expect(0)`](https://qunitjs.com/api/assert/expect/) is called. [#178](https://github.com/qunitjs/qunit/issues/178)
-* Core: Add `QUnit.pushFailure` to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with catched exceptions (useful even in Safari). [#210](https://github.com/qunitjs/qunit/issues/210)
+* Core: Add `QUnit.pushFailure` to log error conditions like exceptions. Accepts stacktrace as second argument, allowing extraction with caught exceptions (useful even in Safari). [#210](https://github.com/qunitjs/qunit/issues/210)
 * Core: Apply [`notrycatch` option](https://qunitjs.com/api/config/notrycatch/) to setup and teardown hooks. [#203](https://github.com/qunitjs/qunit/issues/203) [#204](https://github.com/qunitjs/qunit/issues/204)
 * Core: Extend exports object with QUnit properties at the end of the file to export everything.
 * Core: Prefix test-related session-storage items to make removal more specific. [#213](https://github.com/qunitjs/qunit/issues/213)

@@ -415,7 +415,7 @@ QUnit.module('MyGroup', (hooks) => {
 });
 ```
 
-Another way that this might happen is if you have named them differently, or perhaps mispelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.
+Another way that this might happen is if you have named them differently, or perhaps misspelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.
 
 ```js
 QUnit.module('MyGroup', (hooksOuter) => {

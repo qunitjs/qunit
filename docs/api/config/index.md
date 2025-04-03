@@ -76,7 +76,7 @@ Preconfig allows integrations to declare configuration without needing to embed,
 
 *Version added: [QUnit 2.21.0](https://github.com/qunitjs/qunit/releases/tag/2.21.0)*.
 
-Flat preconfig allows multiple integrations to seemlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).
+Flat preconfig allows multiple integrations to seamlessly collaborate, without the risk of projects accidentally unsetting an override (as is the case with Object preconfig).
 
 In browser environments, global variables that start with `qunit_config_` may override the default value of a configuration option. The following inline script (before loading QUnit), is equivalent to setting `QUnit.config.hidepassed = true; QUnit.config.seed = 'd84af39036'; QUnit.config.testTimeout = 1000;`
 

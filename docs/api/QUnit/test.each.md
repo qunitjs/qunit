@@ -194,7 +194,7 @@ QUnit.test.each('square', [
 
 You can give each item in your data set a custom name, by wrapping the data in an object instead of an array. The object key becomes the test case name.
 
-For example, you can self-document each item to more cleary convey what aspect or behavior you want to cover with that test.
+For example, you can self-document each item to more clearly convey what aspect or behavior you want to cover with that test.
 
 ```js
 function square (x) {
