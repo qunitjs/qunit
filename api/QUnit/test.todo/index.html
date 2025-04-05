@@ -140,14 +140,14 @@
 
 <p>How to use <code class="language-plaintext highlighter-rouge">QUnit.test.todo</code> to denote code that is still under development.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="nx">hooks</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Robot</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">robot</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">robot</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Robot</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="c1">// Robot is not yet finished</span>
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">fireLazer</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">fireLazer</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">robot</span><span class="p">.</span><span class="nf">fireLazer</span><span class="p">();</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="dl">"</span><span class="s2">I'm firing my lazer!</span><span class="dl">"</span><span class="p">);</span>
   <span class="p">});</span>

@@ -115,7 +115,7 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">;</span> <span class="c1">// 0.30000000000000004</span>
 
   <span class="c1">// passing: must be between 0.299 and 0.301</span>
@@ -126,7 +126,7 @@
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="mf">20.10</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">20.7</span><span class="p">;</span>
   <span class="c1">// failing: must be between 20.0 and 20.2 inclusive</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>

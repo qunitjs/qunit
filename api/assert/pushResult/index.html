@@ -126,7 +126,7 @@
   <span class="p">});</span>
 <span class="p">};</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">between</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">'</span><span class="s1">result</span><span class="dl">'</span><span class="p">);</span>
   <span class="c1">// Example test failure</span>
@@ -139,7 +139,7 @@
 
 <p>If there isn’t a built-in QUnit assertion for something that you need to check, you can always freely express it using inline JavaScript within your test. It is recommended to, whenever possible, end your ad-hoc logic with two values that you can pass to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a>, or pass a boolean result to <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a>.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [bad]</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [bad]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
 
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span><span class="p">;</span>
@@ -150,7 +150,7 @@
   <span class="c1">// &gt; Expected: true</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [good]</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">remainder example [good]</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
 
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="nx">actual</span> <span class="o">%</span> <span class="mi">3</span><span class="p">);</span>
@@ -162,7 +162,7 @@
   <span class="c1">// &gt; Expected: 2</span>
 <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">between example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">between example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
 
   <span class="kd">const</span> <span class="nx">isBetween</span> <span class="o">=</span> <span class="nx">actual</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">actual</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span>

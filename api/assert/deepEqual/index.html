@@ -123,10 +123,10 @@
 <h2 id="examples">Examples</h2>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">makeComplexObject</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">extra</span><span class="p">,</span> <span class="nx">country</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Set</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Set</span><span class="p">();</span>
   <span class="nx">children</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">Alice</span><span class="dl">'</span><span class="p">);</span>
   <span class="nx">children</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nx">extra</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">countryToCapital</span> <span class="o">=</span> <span class="p">{</span> <span class="na">UK</span><span class="p">:</span> <span class="dl">'</span><span class="s1">London</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">countryToCapital</span> <span class="o">=</span> <span class="p">{</span> <span class="na">UK</span><span class="p">:</span> <span class="dl">'</span><span class="s1">London</span><span class="dl">'</span> <span class="p">};</span>
   <span class="k">return</span> <span class="p">{</span>
     <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
     <span class="na">children</span><span class="p">:</span> <span class="nx">children</span><span class="p">,</span>
@@ -138,7 +138,7 @@
 <span class="p">}</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">object example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nf">makeComplexObject</span><span class="p">(</span><span class="dl">'</span><span class="s1">Marty</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Bob</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">UK</span><span class="dl">'</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nf">makeComplexObject</span><span class="p">(</span><span class="dl">'</span><span class="s1">Marty</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Bob</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">UK</span><span class="dl">'</span><span class="p">);</span>
 
   <span class="c1">// Succeeds!</span>
   <span class="c1">// While each object is distinct by strict equality (identity),</span>
@@ -176,7 +176,7 @@
 <span class="kd">class</span> <span class="nc">PrimaryDimensionCoord</span> <span class="kd">extends</span> <span class="nc">BaseCoord</span> <span class="p">{}</span>
 <span class="kd">class</span> <span class="nc">UpsideDownCoord</span> <span class="kd">extends</span> <span class="nc">BaseCoord</span> <span class="p">{}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">class example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">class example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">eleven</span><span class="p">.</span><span class="nf">goto</span><span class="p">(</span><span class="dl">'</span><span class="s1">Enschede</span><span class="dl">'</span><span class="p">);</span>
   <span class="nx">eleven</span><span class="p">.</span><span class="nf">enterGate</span><span class="p">();</span>
   <span class="kd">const</span> <span class="nx">loc</span> <span class="o">=</span> <span class="nx">eleven</span><span class="p">.</span><span class="nf">getLocation</span><span class="p">();</span>
@@ -189,7 +189,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">failing example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">failing example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">a</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Albert</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">b</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Berta</span><span class="dl">'</span><span class="p">,</span>

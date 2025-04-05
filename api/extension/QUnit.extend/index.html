@@ -105,22 +105,22 @@
 
 <p>Use <code class="language-plaintext highlighter-rouge">QUnit.extend</code> to merge two objects.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">QUnit.extend</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">using extend</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">base</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="na">z</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="na">zed</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">};</span>
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">b</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
     <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="na">z</span><span class="p">:</span> <span class="kc">undefined</span>
+    <span class="na">zed</span><span class="p">:</span> <span class="kc">undefined</span>
   <span class="p">});</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Unspecified values are not modified</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Existing values are updated</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">c</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="dl">'</span><span class="s1">New values are defined</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="dl">'</span><span class="s1">z</span><span class="dl">'</span> <span class="k">in</span> <span class="nx">base</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Values specified as `undefined` are removed</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Unspecified keys remain unchanged</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">b</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Matching keys are replaced</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">base</span><span class="p">.</span><span class="nx">c</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="dl">'</span><span class="s1">New keys are added</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="dl">'</span><span class="s1">zed</span><span class="dl">'</span> <span class="k">in</span> <span class="nx">base</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Keys with the value `undefined` are removed</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 

@@ -118,7 +118,7 @@
 
 <p>Compare the property values of two objects.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nx">assert</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">class</span> <span class="nc">Foo</span> <span class="p">{</span>
     <span class="nf">constructor </span><span class="p">()</span> <span class="p">{</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
@@ -150,10 +150,10 @@
   <span class="nx">Foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">walk</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{};</span>
   <span class="nx">Foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">run</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{};</span>
 
-  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Foo</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Foo</span><span class="p">();</span>
 
   <span class="c1">// succeeds, own properties are strictly equal.</span>
-  <span class="kd">var</span> <span class="nx">expected</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">expected</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="na">y</span><span class="p">:</span> <span class="mi">2</span>
   <span class="p">};</span>
