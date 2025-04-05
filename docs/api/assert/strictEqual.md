@@ -37,7 +37,7 @@ The `strictEqual()` assertion provides the most rigid comparison of type and val
 Compare the value of two primitives, having the same value and type.
 
 ```js
-QUnit.test('strictEqual example', assert => {
+QUnit.test('strictEqual example', function (assert) {
   const result = 2;
 
   assert.strictEqual(result, 2);

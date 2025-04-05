@@ -27,7 +27,7 @@ If `assert.timeout()` is called after a different timeout is already set, the ol
 ## Examples
 
 ```js
-QUnit.test('wait for an event', assert => {
+QUnit.test('wait for an event', function (assert) {
   assert.timeout(1000); // Timeout after 1 second
   const done = assert.async();
 
@@ -41,7 +41,7 @@ QUnit.test('wait for an event', assert => {
 ```
 
 ```js
-QUnit.test('wait for an async function', async assert => {
+QUnit.test('wait for an async function', async function (assert) {
   assert.timeout(500); // Timeout after 0.5 seconds
 
   const result = await asyncAdder(5, 7);

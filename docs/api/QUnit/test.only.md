@@ -45,23 +45,23 @@ When debugging a larger area of code, you may want to expand your filter to run 
 How to use `QUnit.test.only` to filter which tests are run.
 
 ```js
-QUnit.module('robot', hooks => {
+QUnit.module('robot', (hooks) => {
   let robot;
   hooks.beforeEach(() => {
     robot = new Robot();
   });
 
-  QUnit.test('say()', assert => {
+  QUnit.test('say()', (assert) => {
     assert.true(robot.say('Hello'));
   });
 
   // Run only this test
   // For example, you are working on changing this method.
-  QUnit.test.only('laser()', assert => {
+  QUnit.test.only('laser()', (assert) => {
     assert.true(robot.laser());
   });
 
-  QUnit.test('take()', assert => {
+  QUnit.test('take()', (assert) => {
     assert.true(robot.take(5));
   });
 });

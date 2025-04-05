@@ -28,7 +28,7 @@ For the inverse of `ok()`, refer to [`assert.notOk()`](./notOk.md)
 ## Examples
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   // success
   assert.ok(true, 'boolean true');
   assert.ok('foo', 'non-empty string');

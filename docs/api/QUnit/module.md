@@ -249,7 +249,7 @@ QUnit.module.skip('Robot', (hooks) => {
     android = new Robot();
   });
 
-  QUnit.test('hello', (assert) => {
+  QUnit.test('hello', function (assert) {
     assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 });
@@ -274,7 +274,7 @@ QUnit.module.only('Robot', (hooks) => {
     android = new Robot();
   });
 
-  QUnit.test('hello', (assert) => {
+  QUnit.test('hello', function (assert) {
     assert.strictEqual(android.hello(), 'Hello, my name is AN-2178!');
   });
 });
@@ -289,7 +289,7 @@ QUnit.module.todo('Robot', (hooks) => {
     android = new Robot();
   });
 
-  QUnit.test('hello', (assert) => {
+  QUnit.test('hello', function (assert) {
     assert.strictEqual(android.hello(), 'Hello');
     // TODO
     // Actual: Goodbye

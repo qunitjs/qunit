@@ -54,7 +54,7 @@ function square (x) {
   return x * x;
 }
 
-QUnit.test('square()', (assert) => {
+QUnit.test('square()', function (assert) {
   assert.equal(square(2), 4);
   assert.equal(square(3), 9);
 });
@@ -67,7 +67,7 @@ Following the example above, `QUnit.test` also supports JS [async functions][] s
 [async functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 ```js
-QUnit.test('Test with async-await', async (assert) => {
+QUnit.test('Test with async-await', async function (assert) {
   const a = await fetchSquare(2);
   const b = await fetchSquare(3);
 

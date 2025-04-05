@@ -26,7 +26,7 @@ To strictly compare against boolean false, use [`assert.false()`](./false.md).
 ## Examples
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   // success
   assert.notOk(false, 'boolean false');
   assert.notOk('', 'empty string');

@@ -44,7 +44,7 @@ QUnit.assert.between = function (actual, from, to, message) {
   });
 };
 
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   const result = 42;
   assert.between(result, 1, 10, 'result');
   // Example test failure
@@ -58,7 +58,7 @@ QUnit.test('example', assert => {
 If there isn't a built-in QUnit assertion for something that you need to check, you can always freely express it using inline JavaScript within your test. It is recommended to, whenever possible, end your ad-hoc logic with two values that you can pass to [`assert.strictEqual()`](./strictEqual.md), or pass a boolean result to [`assert.true()`](./true.md).
 
 ```js
-QUnit.test('remainder example [bad]', assert => {
+QUnit.test('remainder example [bad]', function (assert) {
   const actual = 4;
 
   const result = (actual % 3) === 2;
@@ -69,7 +69,7 @@ QUnit.test('remainder example [bad]', assert => {
   // > Expected: true
 });
 
-QUnit.test('remainder example [good]', assert => {
+QUnit.test('remainder example [good]', function (assert) {
   const actual = 4;
 
   const result = (actual % 3);
@@ -81,7 +81,7 @@ QUnit.test('remainder example [good]', assert => {
   // > Expected: 2
 });
 
-QUnit.test('between example', assert => {
+QUnit.test('between example', function (assert) {
   const actual = 42;
 
   const isBetween = actual >= 1 && actual <= 10;

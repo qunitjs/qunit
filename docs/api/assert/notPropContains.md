@@ -30,7 +30,7 @@ This method is recursive and allows partial comparison of nested objects as well
 ## Examples
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   const result = {
     foo: 0,
     vehicle: {

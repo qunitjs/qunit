@@ -36,7 +36,7 @@ This method is recursive and can compare any nested or complex object via a plai
 Compare the property values of two objects.
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   class Foo {
     constructor () {
       this.x = 1;
@@ -69,10 +69,10 @@ QUnit.test('example', function (assert) {
   Foo.prototype.walk = function () {};
   Foo.prototype.run = function () {};
 
-  var foo = new Foo();
+  const foo = new Foo();
 
   // succeeds, own properties are strictly equal.
-  var expected = {
+  const expected = {
     x: 1,
     y: 2
   };

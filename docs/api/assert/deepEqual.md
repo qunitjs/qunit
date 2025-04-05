@@ -36,10 +36,10 @@ To assert strict equality on own properties only, refer to [`assert.propEqual()`
 
 ```js
 function makeComplexObject (name, extra, country) {
-  var children = new Set();
+  const children = new Set();
   children.add('Alice');
   children.add(extra);
-  var countryToCapital = { UK: 'London' };
+  const countryToCapital = { UK: 'London' };
   return {
     name: name,
     children: children,
@@ -51,7 +51,7 @@ function makeComplexObject (name, extra, country) {
 }
 
 QUnit.test('object example', function (assert) {
-  var result = makeComplexObject('Marty', 'Bob', 'UK');
+  const result = makeComplexObject('Marty', 'Bob', 'UK');
 
   // Succeeds!
   // While each object is distinct by strict equality (identity),
@@ -91,7 +91,7 @@ class BaseCoord {
 class PrimaryDimensionCoord extends BaseCoord {}
 class UpsideDownCoord extends BaseCoord {}
 
-QUnit.test('class example', assert => {
+QUnit.test('class example', function (assert) {
   eleven.goto('Enschede');
   eleven.enterGate();
   const loc = eleven.getLocation();
@@ -105,7 +105,7 @@ QUnit.test('class example', assert => {
 ```
 
 ```js
-QUnit.test('failing example', assert => {
+QUnit.test('failing example', function (assert) {
   const result = {
     a: 'Albert',
     b: 'Berta',

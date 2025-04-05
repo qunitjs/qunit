@@ -40,10 +40,10 @@ function fetchDouble (num, callback) {
   callback(double);
 }
 
-QUnit.test('async example', assert => {
+QUnit.test('async example', function (assert) {
   const done = assert.async();
 
-  fetchDouble(21, res => {
+  fetchDouble(21, (res) => {
     assert.strictEqual(res, 42, 'Result');
     done();
   });
@@ -54,15 +54,15 @@ QUnit.test('async example', assert => {
 Call `assert.async()` multiple times to wait for multiple async operations. Each `done` callback must be called exactly once for the test to pass.
 
 ```js
-QUnit.test('two async calls', assert => {
+QUnit.test('two async calls', function (assert) {
   const done1 = assert.async();
   const done2 = assert.async();
 
-  fetchDouble(3, res => {
+  fetchDouble(3, (res) => {
     assert.strictEqual(res, 6, 'double of 3');
     done1();
   });
-  fetchDouble(9, res => {
+  fetchDouble(9, (res) => {
     assert.strictEqual(res, 18, 'double of 9');
     done2();
   });
@@ -82,7 +82,7 @@ function uploadBatch (batch, notify, complete) {
   complete(null);
 }
 
-QUnit.test('multiple calls example', assert => {
+QUnit.test('multiple calls example', function (assert) {
   assert.timeout(1000);
 
   const notify = assert.async(3);

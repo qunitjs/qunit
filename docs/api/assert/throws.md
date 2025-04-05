@@ -41,7 +41,7 @@ The `expectedMatcher` argument can be:
 ## Examples
 
 ```js
-QUnit.test('throws example', assert => {
+QUnit.test('throws example', function (assert) {
   // simple check
   assert.throws(function () {
     throw new Error('boo');

@@ -27,7 +27,7 @@ This method is similar to the `assertTrue()` method found in xUnit-style framewo
 ## Examples
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   // success
   assert.true(true, 'boolean true');
 

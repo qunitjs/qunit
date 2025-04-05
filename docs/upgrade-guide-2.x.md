@@ -69,7 +69,7 @@ After:
 ```js
 QUnit.module('example');
 
-QUnit.test('add', (assert) => {
+QUnit.test('add', function (assert) {
   assert.equal(add(2, 3), 5);
 });
 ```
@@ -104,9 +104,9 @@ asyncTest('navigates to new page', function () {
 After:
 
 ```js
-QUnit.test('navigates to new page', (assert) => {
+QUnit.test('navigates to new page', function (assert) {
   const done = assert.async();
-  router.navigate(newPage => {
+  router.navigate(function (newPage) {
     assert.equal(newPage.id, 1);
     done();
   });
@@ -148,7 +148,7 @@ You can also use a [module scope](./api/QUnit/module.md#module-scope) as of QUni
 Example:
 
 ```js
-QUnit.module('router', hooks => {
+QUnit.module('router', function (hooks) {
   let router;
 
   hooks.beforeEach(() => {
@@ -158,7 +158,7 @@ QUnit.module('router', hooks => {
     router.destroy();
   });
 
-  QUnit.test('add', (assert) => {
+  QUnit.test('add', function (assert) {
     assert.true(router.add('/about'));
   });
 });
@@ -225,7 +225,7 @@ This method accessed QUnit's internal fixture reset. This is now gone, without r
 Before:
 
 ```js
-QUnit.test('currentPage', (assert) => {
+QUnit.test('currentPage', function (assert) {
   router.refresh();
   assert.equal(router.currentPage.id, 1);
 
@@ -240,12 +240,12 @@ QUnit.test('currentPage', (assert) => {
 After:
 
 ```js
-QUnit.test('currentPage default', (assert) => {
+QUnit.test('currentPage default', function (assert) {
   router.refresh();
   assert.equal(router.currentPage.id, 1);
 });
 
-QUnit.test('currentPage after replaceState', (assert) => {
+QUnit.test('currentPage after replaceState', function (assert) {
   history.replaceState('/about');
   router.refresh();
   assert.equal(router.currentPage.id, 42);
@@ -259,7 +259,7 @@ Originally `jsDump` was a standalone library imported into QUnit. It has since e
 Before:
 
 ```js
-QUnit.log(obj => {
+QUnit.log(function (obj) {
   const actual = QUnit.jsDump.parse(obj.actual);
   const expected = QUnit.jsDump.parse(obj.expected);
   sendMessage(obj.result, actual, expected);
@@ -269,7 +269,7 @@ QUnit.log(obj => {
 After:
 
 ```js
-QUnit.log(obj => {
+QUnit.log(function (obj) {
   const actual = QUnit.dump.parse(obj.actual);
   const expected = QUnit.dump.parse(obj.expected);
   sendMessage(obj.result, actual, expected);
@@ -283,7 +283,7 @@ The optional `expected` argument to `QUnit.test` for specifying the expected num
 Before:
 
 ```js
-QUnit.test('addition', 1, (assert) => {
+QUnit.test('addition', 1, function (assert) {
   assert.equal(add(2, 3), 5);
 });
 ```
@@ -291,7 +291,7 @@ QUnit.test('addition', 1, (assert) => {
 After:
 
 ```js
-QUnit.test('addition', (assert) => {
+QUnit.test('addition', function (assert) {
   assert.expect(1);
   assert.equal(add(2, 3), 5);
 });
@@ -316,7 +316,7 @@ function add (a, b) {
 Before:
 
 ```js
-QUnit.test('add', (assert) => {
+QUnit.test('add', function (assert) {
   assert.throws(() => {
     add();
   }, 'This is an error', 'Fail if A is undefined');
@@ -326,7 +326,7 @@ QUnit.test('add', (assert) => {
 After:
 
 ```js
-QUnit.test('add', (assert) => {
+QUnit.test('add', function (assert) {
   assert.throws(() => {
     add();
   }, /This is an error/, 'Fail if A is undefined');
@@ -334,7 +334,7 @@ QUnit.test('add', (assert) => {
 
 // Or
 
-QUnit.test('add', (assert) => {
+QUnit.test('add', function (assert) {
   assert.throws(() => {
     add();
   }, new Error('This is an error'), 'Fail if A is undefined');

@@ -34,7 +34,7 @@ The test passes if there are properties with different values, or extra properti
 Compare the values of two objects properties.
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   class Foo {
     constructor () {
       this.x = '1';

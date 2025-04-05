@@ -37,7 +37,7 @@ Note: in order to avoid confusion between the `message` and the `expectedMatcher
 ## Examples
 
 ```js
-QUnit.test('rejects example', assert => {
+QUnit.test('rejects example', function (assert) {
   // simple check
   assert.rejects(Promise.reject('some error'));
 

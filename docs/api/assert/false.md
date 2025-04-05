@@ -27,7 +27,7 @@ This method is similar to the `assertFalse()` method found in xUnit-style framew
 ## Examples
 
 ```js
-QUnit.test('example', assert => {
+QUnit.test('example', function (assert) {
   // success
   assert.false(false, 'boolean false');
 

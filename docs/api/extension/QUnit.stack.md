@@ -49,11 +49,11 @@ function add (a, b) {
   return addHelper(a, b);
 }
 
-QUnit.test('example A', assert => {
+QUnit.test('example A', function (assert) {
   assert.equal(add(2, 3), 5);
 });
 
-QUnit.test('example B', assert => {
+QUnit.test('example B', function (assert) {
   assert.true(true);
 
   console.log(QUnit.stack());

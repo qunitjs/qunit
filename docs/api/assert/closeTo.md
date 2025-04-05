@@ -31,7 +31,7 @@ To learn how floating-point numbers work internally, refer to [Double-precision 
 ## Examples
 
 ```js
-QUnit.test('good example', assert => {
+QUnit.test('good example', function (assert) {
   const x = 0.1 + 0.2; // 0.30000000000000004
 
   // passing: must be between 0.299 and 0.301
@@ -42,7 +42,7 @@ QUnit.test('good example', assert => {
   assert.closeTo(y, 20.10, 0.05);
 });
 
-QUnit.test('bad example', assert => {
+QUnit.test('bad example', function (assert) {
   const x = 20.7;
   // failing: must be between 20.0 and 20.2 inclusive
   assert.closeTo(x, 20.1, 0.1);
