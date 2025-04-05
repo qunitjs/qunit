@@ -28,21 +28,21 @@ This method will modify the `target` object to contain the "own" properties defi
 Use `QUnit.extend` to merge two objects.
 
 ```js
-QUnit.test('QUnit.extend', assert => {
+QUnit.test('using extend', function (assert) {
   const base = {
     a: 1,
     b: 2,
-    z: 3
+    zed: 3
   };
   QUnit.extend(base, {
     b: 2.5,
     c: 3,
-    z: undefined
+    zed: undefined
   });
 
-  assert.strictEqual(base.a, 1, 'Unspecified values are not modified');
-  assert.strictEqual(base.b, 2.5, 'Existing values are updated');
-  assert.strictEqual(base.c, 3, 'New values are defined');
-  assert.false('z' in base, 'Values specified as `undefined` are removed');
+  assert.strictEqual(base.a, 1, 'Unspecified keys remain unchanged');
+  assert.strictEqual(base.b, 2.5, 'Matching keys are replaced');
+  assert.strictEqual(base.c, 3, 'New keys are added');
+  assert.false('zed' in base, 'Keys with the value `undefined` are removed');
 });
 ```

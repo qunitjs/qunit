@@ -94,28 +94,23 @@ QUnit.test('rejects example', assert => {
 The `assert.rejects()` method returns a `Promise` which handles the (often asynchronous) resolution and rejection logic for test successes and failures. It is not required to `await` the returned value, since QUnit internally handles the async control for you and waits for a settled state. However, if your test code requires a consistent and more isolated state between `rejects` calls, then this should be explicitly awaited to hold back the next statements.
 
 ```js
-QUnit.test('stateful rejects example', async assert => {
+QUnit.test('stateful example', async function (assert) {
   let value;
 
-  // asynchronously resolve if value < 5, and reject otherwise
-  function asyncChecker () {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (value < 5) {
-          resolve();
-        } else {
-          reject('bad value: ' + value);
-        }
-      }, 10);
-    });
+  async function feedMe () {
+    await Promise.resolve();
+    if (value === 1) {
+      throw new Error('I want more');
+    }
+    throw new Error('Thank you');
   }
 
-  value = 8;
-  await assert.rejects(asyncChecker(), /bad value: 8/);
+  value = 5;
+  // if we don't await, then this test will fail,
+  // because `value = 1` would run too soon
+  await assert.rejects(feedMe(), /Thank you/);
 
-  // if the above was not awaited, then the next line would change the value
-  // before the previous assertion could occur, and would cause a test failure
-  value = Infinity;
-  await assert.rejects(asyncChecker(), /bad value: Infinity/);
+  value = 1;
+  await assert.rejects(feedMe(), /I want more/);
 });
 ```

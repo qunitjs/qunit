@@ -134,10 +134,10 @@ After:
 
 ```js
 QUnit.module('router', {
-  beforeEach: () => {
+  beforeEach () {
     this.router = new Router();
   },
-  afterEach: () => {
+  afterEach () {
     this.router.destroy();
   }
 });

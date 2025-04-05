@@ -75,10 +75,10 @@ The `count` parameter can be used to require multiple calls to the same callback
 
 ```js
 function uploadBatch (batch, notify, complete) {
-  batch.forEach((item) => {
+  for (const item of batch) {
     // Do something with item
     notify();
-  });
+  }
   complete(null);
 }
 
