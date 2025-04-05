@@ -15,18 +15,14 @@ The execution order of module hooks in QUnit.
 </p>
 
 <figure>
-<img src="/resources/qunit-lifecycle-hooks-order.svg" width="676" height="901" alt="" title="Imagine a test suite that uses global hooks,
-and has a module called Parent that uses hooks and contains one test called Foo,
-and a nested module called Child that also uses hooks and contains one test called Bar.
-The execution order is as follows:
-1. The Parent module runs its before hook exactly once.
-2. Every test in the Parent module inherits the test context from this before hook.
-3. This repeats for every test in the Parent module: call global beforeEach, parent beforeEach, actual test (Foo), parent afterEach, and lastly the global afterEach.
-4. The Child module inherits context from the Parent's before hook, and runs its own before hook exactly once.
-5. Every test in the Child module inherits test context from this before hook.
-6. This repeats for every test in the Child module: call the global beforeEach, parent beforeEach, child beforeEach, actual test (Bar), child afterEach, parent afterEach, and lastly the global afterEach.
+<img src="/resources/qunit-lifecycle-hooks-order.svg" width="676" height="901" alt="" title="Imagine a test suite with global hooks, and a Parent and Child module that use hooks also. The execution order is:
+1. Parent module runs the before hook.
+2. Every test in the Parent module inherits context from the before hook, and repeats as follows: call global beforeEach, parent beforeEach, the actual test, parent afterEach, and lastly the global afterEach.
+3. The Child module inherits context from the Parent before hook, and then runs its own before hook.
+4. Every test in the Child module inherits context from this before hook, and repeats as follows: call global beforeEach, parent beforeEach, child beforeEach, the actual test, child afterEach, parent afterEach, and lastly the global afterEach.
 ">
 </figure>
+
 ## Module hooks
 
 _See also: [QUnit.module § Hooks](./api/QUnit/module.md#hooks)_
@@ -38,7 +34,7 @@ You can define the following hooks via `QUnit.module()`:
 * `afterEach`: Add a callback after every test.
 * `after`: Add a callback after the last test, once per module.
 
-Hooks that run _before_ a test, are executed in the order that they are added (from outer-most to inner-most). This means that utilities and fixtures provided global hooks are safe to use during all tests, and also during the beforeEach hooks of all modules. Likewise, the same is true between a parent module and its child modules.
+Hooks that run _before_ a test, are executed in the order that they are added (from outer-most to inner-most). This means that utilities and fixtures provided by global hooks are safe to use during all tests, and also during the beforeEach hooks of all modules. Likewise, the same is true between a parent module and its child modules.
 
 For example:
 
@@ -105,7 +101,7 @@ QUnit.module('Foo', function (hooks) {
       c = 'Stranger';
     });
 
-    QUnit.test('nested example', (assert) => {
+    QUnit.test('nested example', function (assert) {
       assert.equal(a, 'Hello to this');
       assert.equal(b, 'world');
       assert.equal(MyApp.greeting(), 'Hello to this world');
@@ -163,7 +159,7 @@ QUnit.module('Database connection', {
 
 ## Test context
 
-Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as `this` inside any [`QUnit.test()`](./api/QUnit/test.md) function or hook callbacks.
+Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as `this` inside any [`QUnit.test()`](./api/QUnit/test.md) function or hook callback.
 
 At the end of every test, changes to the test context are automatically reset (e.g. changes by tests or hooks). The next test will start with a fresh context provided by the module.
 
@@ -210,30 +206,60 @@ QUnit.module('Machine Maker', function (hooks) {
 
 ### Example: Set context via options
 
-The following are equivalent:
-
 ```js
 QUnit.module('example', {
-  myparts: ['A', 'B']
-});
-
-QUnit.test('make alphabet', function (assert) {
-  this.parts.push('C');
-  assert.equal(this.parts.join(''), 'ABC');
-});
-```
-
-Is essentially equivalent to:
-
-```js
-QUnit.module('example', {
+  inventory: 'ABCDEFG',
+  makeParts (a, b) {
+    return [this.inventory[a], this.inventory[b]];
+  },
   beforeEach () {
-    this.myparts = ['A', 'B'];
+    this.parts = this.makeParts(0, 1);
   }
 });
 
 QUnit.test('make alphabet', function (assert) {
   this.parts.push('C');
   assert.equal(this.parts.join(''), 'ABC');
+});
+
+QUnit.test('make music', function (assert) {
+  this.parts.push('B', 'A');
+  assert.equal(this.parts.join(''), 'ABBA');
+});
+
+QUnit.test('make good music', function (assert) {
+  var x = this.makeParts(1, 1).join('');
+  assert.equal(x, 'BB', 'The King of the Blues');
+});
+```
+
+This is functionally equivalent to:
+
+```js
+QUnit.module('example', {
+  before () {
+    this.inventory = 'ABCDEFG';
+    this.makeParts = function (a, b) {
+      return [this.inventory[a], this.inventory[b]];
+    };
+  },
+  beforeEach () {
+    this.parts = this.makeParts(0, 1);
+  }
+});
+
+QUnit.test('make alphabet', function (assert) {
+  this.parts.push('C');
+  assert.equal(this.parts.join(''), 'ABC');
+});
+
+QUnit.test('make music', function (assert) {
+  this.parts.push('B', 'A');
+  assert.equal(this.parts.join(''), 'ABBA');
+});
+
+QUnit.test('make good music', function (assert) {
+  var x = this.makeParts(1, 1).join('');
+  assert.equal(x, 'BB', 'The King of the Blues');
 });
 ```
