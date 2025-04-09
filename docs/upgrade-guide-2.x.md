@@ -254,7 +254,7 @@ QUnit.test('currentPage after replaceState', function (assert) {
 
 ### Renamed `QUnit.jsDump` to `QUnit.dump`
 
-Originally `jsDump` was a standalone library imported into QUnit. It has since evolved further within the library. To reflect that, the property was renamed to [`QUnit.dump.parse`](./api/extension/QUnit.dump.parse.md). This should only affect custom reporter code, not regular testsuites.
+Originally `jsDump` was a standalone library imported into QUnit. It has since evolved further within the library. To reflect that, the property was renamed to [`QUnit.dump.parse`](./api/extension/QUnit.dump.parse.md). This should only affect custom reporter code, not regular test suites.
 
 Before:
 

@@ -3,7 +3,7 @@
 
 ### Added
 
-* Core: Add module context to `before` and `after` hooks. This enables inheritence between parent and child modules, and fixes leaks between last test and `after` hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
+* Core: Add module context to `before` and `after` hooks. This enables inheritance between parent and child modules, and fixes leaks between last test and `after` hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
 * Core: Add [`QUnit.config.reporters.html`](https://qunitjs.com/api/config/reporters/) for disabling the HTML Reporter. [#1711](https://github.com/qunitjs/qunit/issues/1711)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 * Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)

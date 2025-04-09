@@ -135,4 +135,4 @@ You're almost there! Make sure you update [GitHub releases](https://github.com/q
 
 That's it! If you made it this far, congratulations you have successfully released a version of QUnit!
 
-_If anything in the above was inaccurate or unclear, improve it to mmake future releases easier!_
+_If anything in the above was inaccurate or unclear, improve it to make future releases easier!_
