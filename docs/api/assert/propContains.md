@@ -31,6 +31,8 @@ This method is recursive and allows partial comparison of nested objects as well
 
 ## Examples
 
+### Example: Usage
+
 ```js
 QUnit.test('example', function (assert) {
   const result = {
@@ -48,9 +50,10 @@ QUnit.test('example', function (assert) {
     vehicle: { fluxCapacitor: 'fluxing' }
   });
 
-  function Point (x, y) {
+  function Point (x, y, z = 0) {
     this.x = x;
     this.y = y;
+    this.z = z;
   }
 
   assert.propContains(
@@ -74,4 +77,21 @@ QUnit.test('example', function (assert) {
   assert.propContains(nested, { east: { x: 10, y: 20 } });
   assert.propContains(nested, { east: { x: 10 } });
 });
+```
+
+### Example: Alternative
+
+```js
+assert.propContains(
+  new Point(10, 20, 30),
+  { x: 10, z: 30 }
+);
+```
+
+This is like the following, but without needing to describe each assertion, and without temporary variable.
+
+```js
+const myPlace = new Point(10, 20, 30);
+assert.strictEqual(myPlace.x, 10, 'x property');
+assert.strictEqual(myPlace.z, 30, 'z property');
 ```

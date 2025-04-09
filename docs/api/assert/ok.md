@@ -17,9 +17,9 @@ A boolean check that passes when the first argument is truthy.
 | name | description |
 |------|-------------|
 | `state` | Expression being tested |
-| `message` (string) | Short description |
+| `message` (string) | Optional description |
 
-This assertion requires only one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
+If the argument is true or casts to true, the assertion passes; otherwise, it fails.
 
 To strictly compare against boolean true, use [`assert.true()`](./true.md).
 

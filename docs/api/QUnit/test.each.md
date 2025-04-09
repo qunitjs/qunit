@@ -38,43 +38,76 @@ Each test case is passed one item from your dataset.
 
 The [`only`](./test.only.md), [`skip`](./test.skip.md), [`todo`](./test.todo.md), and [`if`](./test.if.md) variants are also available, as `QUnit.test.only.each`, `QUnit.test.skip.each`, `QUnit.test.todo.each`, and `QUnit.test.if.each` respectively.
 
-### Reduce code duplication
+### Benefits
 
-You can use `QUnit.test.each()` to write a single test, run once for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.
+It can be beneficial to use `QUnit.test.each()` to generate test cases, instead of duplicating code or writing your own loop: 
 
-This tends to cut unintentional, unimportant, or undocumented differences. That in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be _intentional_ and _unintentional_ differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The _unintentional_ difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is "safe" to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?
-
-By writing your tests with `QUnit.test.each()`, you write shared code only once. Any intentional differences are clearly visible through a declarative dataset. By writing it only once, it also encourages writing of code comments as you won’t have to duplicate and maintain these across multiple tests.
+* Each test case receives its own `beforeEach` and `afterEach` module [hooks](./module.md#hooks).
+* Diagnose failures more easily, with results grouped and attributed directly to a case.
+* Match [filter](../config/filter.md) on case names.
+* Re-run individual test cases from the [Browser Runner](../../browser.md#test-results-explained), <br>including to [prioritize previous failures](../config/reorder.md) on reload, and [hide passing](../config/hidepassed.md) cases.
+* Reduce fragmentation and code duplication (details at [§ Reduce code duplication](#reduce-code-duplication)).
 
 ```js
-// Without QUnit.test.each()
+// Before
+QUnit.test('number is', function (assert) {
+  const cases = [
+    0,
+    1,
+    42,
+    9007199254740991,
+    1e+100,
+    -65536
+  ];
+  for (const input of cases) {
+    assert.true(Number.isFinite(input), `${input} is finite`);
+    assert.false(Number.isNaN(input), `${input} is not NaN`);
+    assert.true(Number.isInteger(input), `${input} is int`);
+  }
+});
+```
+
+```js
+// After
+QUnit.test.each('number is', [
+  0,
+  1,
+  42,
+  9007199254740991,
+  1e+100,
+  -65536
+], function (assert, input) {
+  assert.true(Number.isFinite(input), 'finite');
+  assert.false(Number.isNaN(input), 'NaN');
+  assert.true(Number.isInteger(input), 'int');
+});
+```
+
+### Reduce code duplication
+
+You can use `QUnit.test.each()` to write a single test, and repeat it for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.
+
+This tends to cut unintentional, unimportant, or undocumented differences; which in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be _intentional_ and _unintentional_ differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The _unintentional_ difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is "safe" to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?
+
+By writing your tests with `QUnit.test.each()`, you write shared code only once. Any intentional differences are clearly visible through a declarative dataset. By writing it only once, it also encourages writing of code comments as you won't have to duplicate and maintain these across multiple tests.
+
+```js
+// Duplication without QUnit.test.each()
 
 QUnit.test('example', function (assert) {
-  const mockPage1 = {
-    title: 'Example',
-    lastModified: '2011-04-01T12:00:00Z',
-    content: 'Foo bar.'
-  };
-  const mockUser1 = {
-    name: 'Admin',
-    registered: '1991-10-18T12:00:00Z',
-    role: 'administrator'
-  };
-  APP.appendToPage(mockPage1, mockUser1, 'Added text here.');
-  assert.equal(mockPage1.content, 'Foo bar.\n\nAdded text here.');
+  const mockPage1 = { title: 'Example', created: '2011-04-01T12:00:00Z', content: 'Foo bar.' };
+  const mockUser1 = { name: 'Admin', created: '1991-10-18T12:00:00Z', role: 'administrator' };
+  assert.equal(
+    APP.createPage(mockPage1, mockUser1),
+    'Admin created a page in April 2011'
+  );
 
-  const mockUser2 = {
-    name: 'root',
-    registered: '1963-06-09T03:00:00Z',
-    role: 'administrator'
-  };
-  const mockPage2 = {
-    title: 'Example',
-    lastModified: '2011-04-01T12:00:00Z',
-    content: ''
-  };
-  APP.appendToPage(mockPage2, mockUser2, 'Added text here.');
-  assert.equal(mockPage2.content, 'Added text here.');
+  const mockUser2 = { name: 'root', created: '1963-06-09T03:00:00Z', role: 'administrator' };
+  const mockPage2 = { title: 'Example', created: '2011-04-01T12:00:00Z', content: '' };
+  assert.equal(
+    APP.createPage(mockUser2, mockPage2),
+    'root created a page in April 2011'
+  );
 });
 ```
 
@@ -82,27 +115,15 @@ Compared to:
 
 ```js
 QUnit.test.each('example', {
-  // Expect an empty line between existing content and appendage.
-  'existing content': ['Foo.', 'Added text.', 'Foo.\n\nAdded text.'],
-
-  // No extra lines if the page started empty.
-  'empty content': ['', 'Added text here.', 'Added text here.']
-
-}, function (assert, [input, appendage, expected]) {
-  const mockPage = {
-    title: 'Example',
-    lastModified: '2011-04-01T12:00:00Z',
-    content: input
-  };
-  const mockUser = {
-    name: 'Admin',
-    registered: '1991-10-18T12:00:00Z',
-    // Roles are always lowercase
-    role: 'administrator'
-  };
-  APP.appendToPage(mockPage, mockUser, appendage);
-
-  assert.equal(mockPage.content, expected);
+  'non-empty page': 'Foo bar.',
+  'empty page': ''
+}, function (assert, input) {
+  const mockPage = { title: 'Example', created: '2011-04-01T12:00:00Z', content: input };
+  const mockUser = { name: 'Admin', created: '1991-10-18T12:00:00Z', role: 'administrator' };
+  assert.equal(
+    APP.createPage(mockUser, mockPage),
+    'Admin created a page in April 2011'
+  );
 });
 ```
 
@@ -164,8 +185,6 @@ function square (x) {
   return x * x;
 }
 
-// square [0]
-// square [1]
 QUnit.test.each('square', [
   [2, 4],
   [3, 9]
@@ -239,7 +258,7 @@ async function isAsyncEven (x) {
   return isEven(x);
 }
 
-QUnit.test.each('isAsyncEven', [2, 4], async (assert, data) => {
+QUnit.test.each('isAsyncEven', [2, 4], async function (assert, data) {
   assert.true(await isAsyncEven(data), `${data} is even`);
 });
 ```

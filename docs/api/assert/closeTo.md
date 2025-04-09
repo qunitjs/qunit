@@ -31,28 +31,35 @@ To learn how floating-point numbers work internally, refer to [Double-precision 
 ## Examples
 
 ```js
-QUnit.test('good example', function (assert) {
+QUnit.test('example', function (assert) {
   const x = 0.1 + 0.2; // 0.30000000000000004
 
-  // passing: must be between 0.299 and 0.301
+  // passing: x is between 0.299 and 0.301
   assert.closeTo(x, 0.3, 0.001);
 
+  // passing: 3.14159 is between 3.140 and 3.142
+  assert.closeTo(Math.PI, 3.141, 0.001);
+
   const y = 20.13;
-  // passing: must be between 20.05 and 20.15 inclusive
+  // passing: y is between 20.05 and 20.15 inclusive
   assert.closeTo(y, 20.10, 0.05);
 });
+```
 
-QUnit.test('bad example', function (assert) {
+```js
+QUnit.test('failing example', function (assert) {
   const x = 20.7;
-  // failing: must be between 20.0 and 20.2 inclusive
   assert.closeTo(x, 20.1, 0.1);
+  // must be between 20.0 and 20.2 inclusive
+
   // message: value should be within 0.1 inclusive
   // actual  : 20.7
   // expected: 20.1
 
   const y = 2018;
-  // failing: must be between 2010 and 2014 inclusive
   assert.closeTo(y, 2012, 2);
+  // must be between 2010 and 2014 inclusive
+
   // message: value should be within 2 inclusive
   // actual  : 2018
   // expected: 2012
@@ -65,6 +72,6 @@ QUnit.test('bad example', function (assert) {
 
 ## External links
 
-* Mocha [`expect.within()`](https://www.chaijs.com/api/bdd/#method_within), Jasmine [`expect().toBeCloseTo()`](https://jasmine.github.io/api/edge/matchers.html), and Deno [assertAlmostEquals](https://deno.land/std@0.210.0/testing/asserts.ts?s=assertAlmostEquals) are all similar to `assert.closeTo()` in QUnit.
+* Mocha [`expect.within()`](https://www.chaijs.com/api/bdd/#method_within), Jasmine [`expect().toBeCloseTo()`](https://jasmine.github.io/api/edge/matchers.html), and Deno [assertAlmostEquals](https://deno.land/std@0.210.0/testing/asserts.ts?s=assertAlmostEquals) are similar to `assert.closeTo()` in QUnit.
 * PHPUnit [`assertEqualsWithDelta`](https://docs.phpunit.de/en/12.0/assertions.html#assertequalswithdelta), is similar to QUnit `assert.closeTo()` in JavaScript.
 * Python [`assertAlmostEqual`](https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual), is similar QUnit `assert.closeTo()` in JavaScript.

@@ -20,7 +20,7 @@ A strict type and value comparison.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | Short description of the actual expression |
+| `message` (string) | Optional description of the actual expression |
 
 The `strictEqual()` assertion provides the most rigid comparison of type and value with the strict equality operator (`===`).
 

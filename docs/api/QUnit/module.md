@@ -21,12 +21,12 @@ Group related tests under a common label.
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Label for this group of tests. |
-| [`options`](#options-object) (object) | Set hook callbacks. |
+| [`options`](#options-parameter) (object) | Set hook callbacks. |
 | [`scope`](#module-scope) (function) | A scope for tests, nested modules, and/or hooks. |
 
-All tests inside a module will be grouped under that module. Tests can be added to a module using the [QUnit.test](./test.md) method. Modules help organize, select, and filter tests to run.
+All tests inside a module will be grouped under that module. Tests can be added to a module using the [`QUnit.test`](./test.md) method. Modules help organize, select, and filter tests to run.
 
-Modules can be nested inside other modules via a [module scope](#module-scope). In the output, tests are generally prefixed by the names of all parent modules. E.g. "Grandparent > Parent > Child > my test".
+Modules may be nested inside the scope of another module. Test results are prefixed with the names of any parent modules. E.g. "Grandparent > Parent > Child > my test".
 
 `QUnit.module.only( name, … )`<br>
 `QUnit.module.skip( name, … )`<br>
@@ -63,9 +63,7 @@ QUnit.test('quux', function (assert) {
 
 ### Module scope
 
-The module scope can be used to group tests under a common label. These can be nested to create child modules under a common parent module.
-
-The module scope is given a `hooks` object which can be used to add [hooks](#hooks).
+The module scope can be used to group tests under a common label. These can be nested to create child modules under a common parent. The module scope can add [hooks](#hooks) by calling methods on the `hooks` parameter.
 
 | parameter | description |
 |-----------|-------------|
@@ -112,7 +110,9 @@ QUnit.module('Bread', function (hooks) {
 
 ### Hooks
 
-You can use hooks to run shared code for every test in a module.  Add hooks via the `hooks` parameter in the [module scope](#module-scope) (as demonstrated below), or via the module [options object](#options-object).
+You can use hooks to run shared code for every test in a module.  Add hooks via the `hooks` parameter in the module scope (as demonstrated below), or via the [options parameter](#options-parameter).
+
+Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  `beforeEach()` hook instead.
 
 ```js
 QUnit.module('example', function (hooks) {
@@ -136,28 +136,7 @@ QUnit.module('example', function (hooks) {
 });
 ```
 
-Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  `beforeEach()` hook instead:
-
-```js
-QUnit.module('Machine Maker', function (hooks) {
-  let parts;
-  hooks.beforeEach(function () {
-    parts = ['A', 'B'];
-  });
-
-  QUnit.test('make alphabet', function (assert) {
-    parts.push('C');
-    assert.equal(parts.join(''), 'ABC');
-  });
-
-  QUnit.test('make music', function (assert) {
-    parts.push('B', 'A');
-    assert.equal(parts.join(''), 'ABBA');
-  });
-});
-```
-
-Use [`QUnit.hooks`](./hooks.md) to apply hooks globally to all modules in a project.
+To apply a hook globally to all modules in a project, use [`QUnit.hooks`](./hooks.md).
 
 <figure>
 <a href="{% link lifecycle.md %}"><img src="/resources/qunit-lifecycle-hooks-order.svg" width="338" height="450" alt=""></a>
@@ -197,10 +176,11 @@ See [Test lifecycle § Async hook callback](../../lifecycle.md#example-async-hoo
 <p class="note" markdown="1">It is discouraged to dynamically create a [QUnit.test](./test.md) from inside a hook. In order to satisfy the requirement for the `after` hook to only run once and to be the last hook in a module, QUnit may associate dynamically defined tests with the parent module instead, or as global test. It is recommended to define any dynamic tests via [`QUnit.begin()`](../callbacks/QUnit.begin.md) instead.</p>
 
 <span id="hooks-via-module-options"></span>
+<span id="options-object"></span>
 
-### Options object
+### Options parameter
 
-You can use the options object to add [hooks](#hooks).
+You can set the following options to add [hooks](#hooks).
 
 | name | description |
 |-----------|-------------|
@@ -209,7 +189,7 @@ You can use the options object to add [hooks](#hooks).
 | `afterEach` (function) | Runs after each test. |
 | `after` (function) | Runs after the last test. |
 
-Any other properties on the module options object are copied into the base [test context](../../lifecycle.md#test-context) for the module, which each test inherits from. See also [Test lifecycle § Example: Set context via options](../../lifecycle.md#example-set-context-via-options).
+Any other properties on the `options` object are copied into the base [test context](../../lifecycle.md#test-context) for the module, which each test inherits from. See also [Test lifecycle § Example: Set context via options](../../lifecycle.md#example-set-context-via-options).
 
 ```js
 QUnit.module('example', {
@@ -237,6 +217,27 @@ QUnit.module('example', {
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `beforeEach` and `afterEach` options.<br/>The `setup` and `teardown` options were deprecated in QUnit 1.16 and removed in QUnit 2.0.
 
 ## Examples
+
+### Example: Hooks
+
+```js
+QUnit.module('Machine Maker', function (hooks) {
+  let parts;
+  hooks.beforeEach(function () {
+    parts = ['A', 'B'];
+  });
+
+  QUnit.test('make alphabet', function (assert) {
+    parts.push('C');
+    assert.equal(parts.join(''), 'ABC');
+  });
+
+  QUnit.test('make music', function (assert) {
+    parts.push('B', 'A');
+    assert.equal(parts.join(''), 'ABBA');
+  });
+});
+```
 
 ### Example: Skip a module
 

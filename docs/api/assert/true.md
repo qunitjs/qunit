@@ -16,7 +16,7 @@ A strict comparison that passes if the first argument is boolean `true`.
 | name | description |
 |------|-------------|
 | `actual` | Expression being tested |
-| `message` (string) | Short description of the actual expression |
+| `message` (string) | Optional description of the actual expression |
 
 `true()` requires just one argument. If the argument evaluates to true, the assertion passes; otherwise, it fails.
 

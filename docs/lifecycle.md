@@ -112,7 +112,7 @@ QUnit.module('Foo', function (hooks) {
 });
 ```
 
-## Example: Async hook callback
+### Example: Async hook callback
 
 ```js
 QUnit.module('Database connection', function (hooks) {

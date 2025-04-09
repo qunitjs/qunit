@@ -39,8 +39,8 @@ QUnit.test('example', function (assert) {
   finder.on('end', () => {
     assert.step('end');
   });
-  finder.on('error', message => {
-    assert.step('error: ' + message);
+  finder.on('error', (e) => {
+    assert.step('error: ' + e);
   });
 
   finder.process('Hello, 3.1. Great!');

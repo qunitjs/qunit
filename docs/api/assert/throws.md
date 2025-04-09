@@ -38,6 +38,10 @@ The `expectedMatcher` argument can be:
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
 | [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The `assert.raises()` method remains supported as an alias.
 
+## See also
+
+* Use [`assert.rejects()`](./rejects.md) for asynchronous errors.
+
 ## Examples
 
 ```js

@@ -49,7 +49,7 @@
 * Core: Remove support for PhantomJS. (Steve McClure) [#1505](https://github.com/qunitjs/qunit/pull/1505)
 * Core: Remove built-in export for AMD. You can still load your application and your QUnit tests with AMD/RequireJS. This only affects the loading of the qunit.js file itself. [Example: Loading with RequireJS](https://qunitjs.com/api/config/autostart/#loading-with-requirejs). (NullVoxPopuli) [#1729](https://github.com/qunitjs/qunit/issues/1729)
 * Core: Remove deprecated [`QUnit.load()`](https://qunitjs.com/api/QUnit/load/). [#1084](https://github.com/qunitjs/qunit/issues/1084)
-* Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [QUnit.onUncaughtException()](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
+* Core: Remove deprecated `QUnit.onError()` and `QUnit.onUnhandledRejection()` in favor of [`QUnit.onUncaughtException()`](https://qunitjs.com/api/extension/QUnit.onUncaughtException/).
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
@@ -689,7 +689,7 @@ FYI:
 * Core: Support running in a sandboxed iframe.
 * Core: New event emitter. (Trent Willis) [#1087](https://github.com/qunitjs/qunit/pull/1087)
 * Core: New `QUnit.todo()` method. (Trent Willis) [#1080](https://github.com/qunitjs/qunit/pull/1080)
-* Assert: New `assert.step()` and `assert.verifySteps()` methods. (Trent Willis)(Trent Willis) [#1075](https://github.com/qunitjs/qunit/issues/1075)
+* Assert: New `assert.step()` and `assert.verifySteps()` methods. (Trent Willis) [#1075](https://github.com/qunitjs/qunit/issues/1075)
 
 ### Changed
 

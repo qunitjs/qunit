@@ -18,7 +18,7 @@ A recursive and strict comparison, considering all own and inherited properties.
 |------|-------------|
 | `actual` | Expression being tested |
 | `expected` | Known comparison value |
-| `message` (string) | Short description of the actual expression |
+| `message` (string) | Optional description of the actual expression |
 
 This assertion compares the full objects as passed. For primitive values, a strict comparison is performed. For objects, the object identity is disregarded and instead a recursive comparison of all own and inherited properties is used. This means arrays, plain objects, and arbitrary class instance objects can all be compared in this way.
 
