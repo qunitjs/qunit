@@ -1,0 +1,12 @@
+# command: ["qunit", "perf-mark.js"]
+# env: { "qunit_config_reporters_perf": true }
+
+TAP version 13
+ok 1 foo
+ok 2 bar
+ok 3 getEntries
+1..3
+# pass 3
+# skip 0
+# todo 0
+# fail 0

@@ -47,12 +47,12 @@ QUnit.module('PerfReporter', hooks => {
     assert.deepEqual(
       perf.measures,
       [{
-        name: 'QUnit Test Run',
+        name: 'QUnit Run',
         startTime: 2,
         endTime: 11
       },
       {
-        name: 'QUnit Test Suite: Foo',
+        name: 'QUnit Module: Foo',
         startTime: 3,
         endTime: 6
       },
@@ -62,7 +62,7 @@ QUnit.module('PerfReporter', hooks => {
         endTime: 5
       },
       {
-        name: 'QUnit Test Suite: Bar',
+        name: 'QUnit Module: Bar',
         startTime: 7,
         endTime: 10
       },
@@ -83,18 +83,18 @@ QUnit.module('PerfReporter', hooks => {
     emitter.emit('testStart', { fullName: ['Foo', 'Bar', 'two'] });
     emitter.emit('testEnd', { fullName: ['Foo', 'Bar', 'two'] });
     emitter.emit('suiteEnd', { fullName: ['Foo', 'Bar'] });
-    emitter.emit('suiteEnd', { fullName: ['Fo'] });
+    emitter.emit('suiteEnd', { fullName: ['Foo'] });
     emitter.emit('runEnd', {});
 
     assert.deepEqual(
       perf.measures,
       [{
-        name: 'QUnit Test Run',
+        name: 'QUnit Run',
         startTime: 2,
         endTime: 11
       },
       {
-        name: 'QUnit Test Suite: Fo',
+        name: 'QUnit Module: Foo',
         startTime: 3,
         endTime: 10
       },
@@ -104,7 +104,7 @@ QUnit.module('PerfReporter', hooks => {
         endTime: 5
       },
       {
-        name: 'QUnit Test Suite: Foo – Bar',
+        name: 'QUnit Module: Foo – Bar',
         startTime: 6,
         endTime: 9
       },

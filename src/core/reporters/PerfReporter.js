@@ -1,19 +1,15 @@
-import { window } from '../globals.js';
+import { globalThis } from '../globals.js';
 import { prioritySymbol } from '../events.js';
 import Logger from '../logger.js';
 
-// TODO: Change from window to globalThis in QUnit 3.0, so that the reporter
-// works for Node.js as well. As this can add overhead, we should keep
-// this opt-in on the CLI.
 const nativePerf = (
-  window
-    && typeof window.performance !== 'undefined'
+  typeof globalThis.performance !== 'undefined'
     // eslint-disable-next-line compat/compat -- Checked
-    && typeof window.performance.mark === 'function'
+    && typeof globalThis.performance.mark === 'function'
     // eslint-disable-next-line compat/compat -- Checked
-    && typeof window.performance.measure === 'function'
+    && typeof globalThis.performance.measure === 'function'
 )
-  ? window.performance
+  ? globalThis.performance
   : undefined;
 
 const perf = {
@@ -61,7 +57,7 @@ export default class PerfReporter {
     const suiteName = suiteEnd.fullName.join(' – ');
 
     this.perf.mark(`qunit_suite_${suiteLevel}_end`);
-    this.perf.measure(`QUnit Test Suite: ${suiteName}`,
+    this.perf.measure(`QUnit Module: ${suiteName}`,
         `qunit_suite_${suiteLevel}_start`,
         `qunit_suite_${suiteLevel}_end`
     );
@@ -83,6 +79,6 @@ export default class PerfReporter {
 
   onRunEnd () {
     this.perf.mark('qunit_suite_0_end');
-    this.perf.measure('QUnit Test Run', 'qunit_suite_0_start', 'qunit_suite_0_end');
+    this.perf.measure('QUnit Run', 'qunit_suite_0_start', 'qunit_suite_0_end');
   }
 }

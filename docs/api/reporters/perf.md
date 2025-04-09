@@ -19,8 +19,8 @@ This uses the [performance.measure()](https://developer.mozilla.org/en-US/docs/W
 QUnit enables the perf reporter by default in [Browser](../../browser.md) environments. The measures are automatically included in Firefox Profiler and Chrome DevTools (Safari is pending [WebKit #213870](https://bugs.webkit.org/show_bug.cgi?id=213870)).
 
 ```
-QUnit Test Run
-└── QUnit Test Suite: Example
+QUnit Run
+└── QUnit Module: Example
     ├── QUnit Test: apple
     ├── QUnit Test: banana
     └── QUnit Test: citron
