@@ -1,0 +1,19 @@
+# command: ["qunit", "preconfig-flat.js"]
+# env: { "qunit_config_filter": "!foobar", "qunit_config_seed": "dummyfirstyes", "qunit_config_testtimeout": 7, "qunit_config_altertitle": "true", "qunit_config_noglobals": 1, "qunit_config_notrycatch": "false" }
+
+Running tests with seed: dummyfirstyes
+TAP version 13
+ok 1 dummy
+not ok 2 slow
+  ---
+  message: Test took longer than 7ms; test timed out.
+  severity: failed
+  ...
+ok 3 config
+1..3
+# pass 2
+# skip 0
+# todo 0
+# fail 1
+
+# exit code: 1

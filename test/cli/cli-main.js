@@ -20,62 +20,6 @@ QUnit.module('CLI Main', () => {
     }
   );
 
-  QUnit.test('preconfig-flat', async assert => {
-    const command = ['qunit', 'preconfig-flat.js'];
-    const execution = await execute(command, {
-      env: {
-        qunit_config_filter: '!foobar',
-        qunit_config_seed: 'dummyfirstyes',
-        qunit_config_testtimeout: '7',
-
-        qunit_config_altertitle: 'true',
-        qunit_config_noglobals: '1',
-        qunit_config_notrycatch: 'false'
-      }
-    });
-    assert.equal(execution.snapshot, `Running tests with seed: dummyfirstyes
-TAP version 13
-ok 1 dummy
-not ok 2 slow
-  ---
-  message: Test took longer than 7ms; test timed out.
-  severity: failed
-  ...
-ok 3 config
-1..3
-# pass 2
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
-
-  // TODO: Move to /test/cli/fixtures/
-  QUnit.test('normal trace with native source map', async assert => {
-    const command = ['qunit', 'sourcemap/source.js'];
-    const execution = await execute(command);
-
-    assert.equal(execution.snapshot, `TAP version 13
-ok 1 Example > good
-not ok 2 Example > bad
-  ---
-  message: failed
-  severity: failed
-  actual  : false
-  expected: true
-  stack: |
-        at /qunit/test/cli/fixtures/sourcemap/source.js:7:16
-  ...
-1..2
-# pass 1
-# skip 0
-# todo 0
-# fail 1
-
-# exit code: 1`);
-  });
-
   // Skip in code coverage mode, conflicting maps-on-maps change result
   QUnit.test.if('trace with native source map', !process.env.NYC_PROCESS_ID, async function (assert) {
     const command = ['qunit', 'sourcemap/source.min.js'];

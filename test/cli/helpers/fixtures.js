@@ -7,6 +7,7 @@ const { execute } = require('./execute.js');
 
 const NAME_DIRECTIVE = '# name: ';
 const CMD_DIRECTIVE = '# command: ';
+const ENV_DIRECTIVE = '# env: ';
 
 async function parseFixture (file) {
   const contents = await fsPromises.readFile(file, 'utf8');
@@ -17,12 +18,16 @@ async function parseFixture (file) {
   if (!lines[0].startsWith(CMD_DIRECTIVE)) {
     throw new Error(`Missing command declaration in ${path.basename(file)}`);
   }
-  const command = JSON.parse(lines[0].slice(CMD_DIRECTIVE.length));
+  const command = JSON.parse(lines.shift().slice(CMD_DIRECTIVE.length));
+  const env = (lines[0].startsWith(ENV_DIRECTIVE))
+    ? JSON.parse(lines.shift().slice(ENV_DIRECTIVE.length))
+    : undefined;
 
   return {
     name,
     command,
-    expected: lines.slice(1).join('\n').trim()
+    env,
+    expected: lines.join('\n').trim()
   };
 }
 
@@ -32,7 +37,7 @@ function readFixtures (dir) {
   for (const file of glob('*.tap.txt', { cwd: dir, absolute: true })) {
     fixtures[path.basename(file, '.tap.txt')] = async function runFixture () {
       const fixture = await parseFixture(file);
-      const result = await execute(fixture.command);
+      const result = await execute(fixture.command, { env: fixture.env });
       return {
         name: fixture.name,
         expected: fixture.expected,
