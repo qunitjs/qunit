@@ -27,13 +27,6 @@ QUnit.module('structure', () => {
       });
     });
 
-    QUnit.test('test/index-es5.html', assert => {
-      const contents = fs.readFileSync(path.join(__dirname, '..', 'index-es5.html'), 'utf8');
-      files.forEach(file => {
-        assert.true(contents.includes(file), file);
-      });
-    });
-
     QUnit.test('test/index-xhtml.xhtml', assert => {
       const contents = fs.readFileSync(path.join(__dirname, '..', 'index-xhtml.xhtml'), 'utf8');
       files.forEach(file => {

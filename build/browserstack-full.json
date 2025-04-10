@@ -1,11 +1,12 @@
 {
   "test_framework": "qunit",
-  "test_path": ["test/index-es5.html"],
+  "test_path": ["test/index.html"],
   "test_server_port": "8899",
   "exit_with_fail": true,
   "timeout": 600,
   "browsers": [
     "firefox_45",
+    "firefox_60",
     "firefox_78",
     "firefox_previous",
     "firefox_current",
@@ -13,7 +14,7 @@
     "ie_10",
     "ie_11",
     "edge_15",
-    "edge_18",
+    "edge_16",
     "edge_previous",
     "edge_current",
     "safari_9.1",
@@ -30,9 +31,11 @@
       "os": "OS X",
       "os_version": "Sierra"
     },
+    "opera_48",
     "opera_previous",
     "opera_current",
     "chrome_58",
+    "chrome_61",
     "chrome_previous",
     "chrome_current",
     {
