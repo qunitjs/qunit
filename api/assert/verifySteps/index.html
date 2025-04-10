@@ -99,7 +99,7 @@
 
 <p>The Step API provides an easy way to verify execution logic to a high degree of accuracy and precision, whether for asynchronous code, event-driven code, or callback-driven code.</p>
 
-<p>For example, you can mark steps to observe and validate whether parts of your code are reached correctly, or to check the frequency (how often) an asynchronous code path is executed. You can also capture any unexpected steps, which are automatically detected and shown as part of the test failure.</p>
+<p>For example, you can mark steps to observe and validate whether parts of your code are reached correctly, or to check the frequency (how often) an asynchronous code path is executed. You can also capture any unexpected steps, which are automatically detected and reported as a test failure.</p>
 
 <p>This assertion compares a given array of string values to a list of steps recorded via calls to <a href="/api/assert/step/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a>.</p>
 
@@ -124,8 +124,29 @@
 
 <p>These two examples test classes that emits event via an <code class="language-plaintext highlighter-rouge">on()</code> method. It might be based on an <a href="https://nodejs.org/api/events.html"><code class="language-plaintext highlighter-rouge">EventEmitter</code></a>, such as the one found in Node.js and in other environments:</p>
 
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">finder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordFinder</span><span class="p">();</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, 3.1. Great!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Great</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
   <span class="p">});</span>
   <span class="kd">const</span> <span class="nx">song</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">sing</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Favorite Things</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">lines</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
@@ -140,28 +161,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">finder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordFinder</span><span class="p">();</span>
-  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
-  <span class="p">});</span>
-  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">message</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="k">await</span> <span class="nx">finder</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, 3.1. Great!</span><span class="dl">'</span><span class="p">);</span>
-
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Great</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>If you approach this scenario <em>without</em> the Step API, one might be tempted to place assertions directly inside event callbacks. This is <strong>risky</strong>, because it assumes the code you’re testing has no bugs. For example, some callbacks might not run, or run multiple times, or run out of order. It is therefore generally recommended to only run assertions directly in the test function. Avoid assertions in callbacks that the test does not have control over. Such loose assurances easily produce false positives (because the subset of assertions that <em>did</em> run, passed!). It also offers virtually no debugging information during failures.</p>
+<p>If you approach this scenario <em>without</em> the Step API, one might be tempted to place assertions directly inside event callbacks. This is <strong>risky</strong>, because it assumes the code you’re testing has no bugs. For example, some callbacks might not run, or run multiple times, or run out of order. It is therefore generally recommended to only run assertions directly in the test function. Avoid assertions in callbacks that the test does not have control over. Such loose assurances easily produce false positives (when the subset of assertions that <em>did</em> run, pass!). It also offers virtually no debugging information during failures.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// WARNING: This is a BAD example</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example 1</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>

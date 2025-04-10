@@ -115,28 +115,34 @@
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">good example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">;</span> <span class="c1">// 0.30000000000000004</span>
 
-  <span class="c1">// passing: must be between 0.299 and 0.301</span>
+  <span class="c1">// passing: x is between 0.299 and 0.301</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
 
+  <span class="c1">// passing: 3.14159 is between 3.140 and 3.142</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">,</span> <span class="mf">3.141</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
+
   <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="mf">20.13</span><span class="p">;</span>
-  <span class="c1">// passing: must be between 20.05 and 20.15 inclusive</span>
+  <span class="c1">// passing: y is between 20.05 and 20.15 inclusive</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="mf">20.10</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
 <span class="p">});</span>
+</code></pre></div></div>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">bad example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">failing example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">20.7</span><span class="p">;</span>
-  <span class="c1">// failing: must be between 20.0 and 20.2 inclusive</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+  <span class="c1">// must be between 20.0 and 20.2 inclusive</span>
+
   <span class="c1">// message: value should be within 0.1 inclusive</span>
   <span class="c1">// actual  : 20.7</span>
   <span class="c1">// expected: 20.1</span>
 
   <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">2018</span><span class="p">;</span>
-  <span class="c1">// failing: must be between 2010 and 2014 inclusive</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="c1">// must be between 2010 and 2014 inclusive</span>
+
   <span class="c1">// message: value should be within 2 inclusive</span>
   <span class="c1">// actual  : 2018</span>
   <span class="c1">// expected: 2012</span>
@@ -152,7 +158,7 @@
 <h2 id="external-links">External links</h2>
 
 <ul>
-  <li>Mocha <a href="https://www.chaijs.com/api/bdd/#method_within"><code class="language-plaintext highlighter-rouge">expect.within()</code></a>, Jasmine <a href="https://jasmine.github.io/api/edge/matchers.html"><code class="language-plaintext highlighter-rouge">expect().toBeCloseTo()</code></a>, and Deno <a href="https://deno.land/std@0.210.0/testing/asserts.ts?s=assertAlmostEquals">assertAlmostEquals</a> are all similar to <code class="language-plaintext highlighter-rouge">assert.closeTo()</code> in QUnit.</li>
+  <li>Mocha <a href="https://www.chaijs.com/api/bdd/#method_within"><code class="language-plaintext highlighter-rouge">expect.within()</code></a>, Jasmine <a href="https://jasmine.github.io/api/edge/matchers.html"><code class="language-plaintext highlighter-rouge">expect().toBeCloseTo()</code></a>, and Deno <a href="https://deno.land/std@0.210.0/testing/asserts.ts?s=assertAlmostEquals">assertAlmostEquals</a> are similar to <code class="language-plaintext highlighter-rouge">assert.closeTo()</code> in QUnit.</li>
   <li>PHPUnit <a href="https://docs.phpunit.de/en/12.0/assertions.html#assertequalswithdelta"><code class="language-plaintext highlighter-rouge">assertEqualsWithDelta</code></a>, is similar to QUnit <code class="language-plaintext highlighter-rouge">assert.closeTo()</code> in JavaScript.</li>
   <li>Python <a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual"><code class="language-plaintext highlighter-rouge">assertAlmostEqual</code></a>, is similar QUnit <code class="language-plaintext highlighter-rouge">assert.closeTo()</code> in JavaScript.</li>
 </ul>

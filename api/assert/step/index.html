@@ -121,8 +121,8 @@
   <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
-  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">message</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">message</span><span class="p">);</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
   <span class="p">});</span>
 
   <span class="nx">finder</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, 3.1. Great!</span><span class="dl">'</span><span class="p">);</span>

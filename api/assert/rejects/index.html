@@ -117,7 +117,32 @@ comparison.</p>
 
 <p>Note: in order to avoid confusion between the <code class="language-plaintext highlighter-rouge">message</code> and the <code class="language-plaintext highlighter-rouge">expectedMatcher</code>, the <code class="language-plaintext highlighter-rouge">expectedMatcher</code> <strong>can not</strong> be a string.</p>
 
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li>Use <a href="/api/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a> for synchronous errors.</li>
+</ul>
+
 <h2 id="examples">Examples</h2>
+
+<h3 id="example-catch-async-error">Example: Catch async error</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="kd">function</span> <span class="nf">feedBaby</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">food</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">RangeError</span><span class="p">(</span><span class="dl">'</span><span class="s1">Do not like</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span>
+    <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">RangeError</span>
+  <span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-matcher-argument">Example: Matcher argument</h3>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">rejects example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// simple check</span>
@@ -173,7 +198,13 @@ comparison.</p>
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">assert.rejects()</code> method returns a <code class="language-plaintext highlighter-rouge">Promise</code> which handles the (often asynchronous) resolution and rejection logic for test successes and failures. It is not required to <code class="language-plaintext highlighter-rouge">await</code> the returned value, since QUnit internally handles the async control for you and waits for a settled state. However, if your test code requires a consistent and more isolated state between <code class="language-plaintext highlighter-rouge">rejects</code> calls, then this should be explicitly awaited to hold back the next statements.</p>
+<h3 id="example-await-the-assertion">Example: Await the assertion</h3>
+
+<p>When you pass a Promise (or async function call) to <code class="language-plaintext highlighter-rouge">assert.rejects()</code>, QUnit automatically tracks this as part of your test. This tracking is similar to what would happen if you manually passed <a href="/api/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a> to <code class="language-plaintext highlighter-rouge">promise.finally()</code>. This means the test is not complete until the passed Promise is also settled, and this means timeouts naturally apply as well.</p>
+
+<p>However, if two parts of your test code or subject share state within a single test, you may want to await the assertion to prevent the rest of your test from running at the same time.</p>
+
+<p>To make this easy, the <code class="language-plaintext highlighter-rouge">assert.rejects()</code> method itself can be awaited, which will wait for the given async function call or other Promise.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">stateful example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">let</span> <span class="nx">value</span><span class="p">;</span>
@@ -188,11 +219,62 @@ comparison.</p>
 
   <span class="nx">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
   <span class="c1">// if we don't await, then this test will fail,</span>
-  <span class="c1">// because `value = 1` would run too soon</span>
+  <span class="c1">// because `value = 1` would run too soon.</span>
   <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedMe</span><span class="p">(),</span> <span class="sr">/Thank you/</span><span class="p">);</span>
 
   <span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
   <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedMe</span><span class="p">(),</span> <span class="sr">/I want more/</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-workarounds">Example: Workarounds</h3>
+
+<p>Avoid using error handling callbacks, such as <code class="language-plaintext highlighter-rouge">Promise.catch</code> or <code class="language-plaintext highlighter-rouge">on('error')</code>, because:</p>
+<ul>
+  <li>Your test is likely to silently pass even if the expected error <em>does not happen</em>, or if the callback is lost or otherwise not invoked for some reason.</li>
+  <li>When an error happens, but not the error you expect, the actual value is not visible in your CI output.</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">BAD example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">e</span> <span class="k">instanceof</span> <span class="nx">RangeError</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Avoid manually tracking rejections with <a href="/api/assert/async/"><code class="language-plaintext highlighter-rouge">assert.async()</code></a>, because:</p>
+<ul>
+  <li>When you put assertions inside a callback, especially negative assertions, the test function is no longer in control over the assertions. This means the test now only works as intended if the callback is called exactly as it should. If the callback isn’t called, the test may succeed or fail/timeout in away that are hard to diagnose.</li>
+  <li>When a different error happens, the actual value is not visible in your CI output.</li>
+  <li>This requires writing more boilerplate, which is easy to get wrong and ways that don’t self-correct (i.e. pass even when it shouldn’t).</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">BAD example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">done</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="k">async</span><span class="p">();</span>
+
+  <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="dl">'</span><span class="s1">should have failed</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">e</span> <span class="k">instanceof</span> <span class="nx">RangeError</span><span class="p">);</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="k">finally</span><span class="p">(</span><span class="nx">done</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>If you want to perform additional assertions after a failure, consider performing these directly in your test function, after <code class="language-plaintext highlighter-rouge">assert.rejects()</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">p</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">catch </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
+  <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -272,7 +354,7 @@ comparison.</p>
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#examples">Examples</a></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#see-also">See also</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-catch-async-error">Example: Catch async error</a></li><li class="sidebar-item"><a href="#example-matcher-argument">Example: Matcher argument</a></li><li class="sidebar-item"><a href="#example-await-the-assertion">Example: Await the assertion</a></li><li class="sidebar-item"><a href="#example-workarounds">Example: Workarounds</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>

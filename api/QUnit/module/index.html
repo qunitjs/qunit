@@ -94,7 +94,7 @@
       <td>Label for this group of tests.</td>
     </tr>
     <tr>
-      <td><a href="#options-object"><code class="language-plaintext highlighter-rouge">options</code></a> (object)</td>
+      <td><a href="#options-parameter"><code class="language-plaintext highlighter-rouge">options</code></a> (object)</td>
       <td>Set hook callbacks.</td>
     </tr>
     <tr>
@@ -104,9 +104,9 @@
   </tbody>
 </table>
 
-<p>All tests inside a module will be grouped under that module. Tests can be added to a module using the <a href="/api/QUnit/test/">QUnit.test</a> method. Modules help organize, select, and filter tests to run.</p>
+<p>All tests inside a module will be grouped under that module. Tests can be added to a module using the <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test</code></a> method. Modules help organize, select, and filter tests to run.</p>
 
-<p>Modules can be nested inside other modules via a <a href="#module-scope">module scope</a>. In the output, tests are generally prefixed by the names of all parent modules. E.g. “Grandparent &gt; Parent &gt; Child &gt; my test”.</p>
+<p>Modules may be nested inside the scope of another module. Test results are prefixed with the names of any parent modules. E.g. “Grandparent &gt; Parent &gt; Child &gt; my test”.</p>
 
 <p><code class="language-plaintext highlighter-rouge">QUnit.module.only( name, … )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.module.skip( name, … )</code><br />
@@ -142,9 +142,7 @@
 
 <h3 id="module-scope">Module scope</h3>
 
-<p>The module scope can be used to group tests under a common label. These can be nested to create child modules under a common parent module.</p>
-
-<p>The module scope is given a <code class="language-plaintext highlighter-rouge">hooks</code> object which can be used to add <a href="#hooks">hooks</a>.</p>
+<p>The module scope can be used to group tests under a common label. These can be nested to create child modules under a common parent. The module scope can add <a href="#hooks">hooks</a> by calling methods on the <code class="language-plaintext highlighter-rouge">hooks</code> parameter.</p>
 
 <table>
   <thead>
@@ -201,7 +199,9 @@
 
 <h3 id="hooks">Hooks</h3>
 
-<p>You can use hooks to run shared code for every test in a module.  Add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter in the <a href="#module-scope">module scope</a> (as demonstrated below), or via the module <a href="#options-object">options object</a>.</p>
+<p>You can use hooks to run shared code for every test in a module.  Add hooks via the <code class="language-plaintext highlighter-rouge">hooks</code> parameter in the module scope (as demonstrated below), or via the <a href="#options-parameter">options parameter</a>.</p>
+
+<p>Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  <code class="language-plaintext highlighter-rouge">beforeEach()</code> hook instead.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
@@ -224,27 +224,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>Instead of preparing the same fixture code in every test, you can de-duplicate these steps by performing your setup steps in a  <code class="language-plaintext highlighter-rouge">beforeEach()</code> hook instead:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
-  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-
-  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>Use <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.hooks</code></a> to apply hooks globally to all modules in a project.</p>
+<p>To apply a hook globally to all modules in a project, use <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.hooks</code></a>.</p>
 
 <figure>
 <a href="/lifecycle/"><img src="/resources/qunit-lifecycle-hooks-order.svg" width="338" height="450" alt="" /></a>
@@ -293,11 +273,12 @@
 
 <p class="note">It is discouraged to dynamically create a <a href="/api/QUnit/test/">QUnit.test</a> from inside a hook. In order to satisfy the requirement for the <code class="language-plaintext highlighter-rouge">after</code> hook to only run once and to be the last hook in a module, QUnit may associate dynamically defined tests with the parent module instead, or as global test. It is recommended to define any dynamic tests via <a href="/api/callbacks/QUnit.begin/"><code class="language-plaintext highlighter-rouge">QUnit.begin()</code></a> instead.</p>
 
-<p><span id="hooks-via-module-options"></span></p>
+<p><span id="hooks-via-module-options"></span>
+<span id="options-object"></span></p>
 
-<h3 id="options-object">Options object</h3>
+<h3 id="options-parameter">Options parameter</h3>
 
-<p>You can use the options object to add <a href="#hooks">hooks</a>.</p>
+<p>You can set the following options to add <a href="#hooks">hooks</a>.</p>
 
 <table>
   <thead>
@@ -326,7 +307,7 @@
   </tbody>
 </table>
 
-<p>Any other properties on the module options object are copied into the base <a href="/lifecycle/#test-context">test context</a> for the module, which each test inherits from. See also <a href="/lifecycle/#example-set-context-via-options">Test lifecycle § Example: Set context via options</a>.</p>
+<p>Any other properties on the <code class="language-plaintext highlighter-rouge">options</code> object are copied into the base <a href="/lifecycle/#test-context">test context</a> for the module, which each test inherits from. See also <a href="/lifecycle/#example-set-context-via-options">Test lifecycle § Example: Set context via options</a>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nf">before </span><span class="p">()</span> <span class="p">{</span>
@@ -372,6 +353,26 @@
 </table>
 
 <h2 id="examples">Examples</h2>
+
+<h3 id="example-hooks">Example: Hooks</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
 <h3 id="example-skip-a-module">Example: Skip a module</h3>
 
@@ -513,7 +514,7 @@ Called on "X", instead of expected "Y".
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#organizing-your-tests">Organizing your tests</a></li><li class="sidebar-item"><a href="#module-scope">Module scope</a></li><li class="sidebar-item"><a href="#hooks">Hooks</a></li><li class="sidebar-item"><a href="#options-object">Options object</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-skip-a-module">Example: Skip a module</a></li><li class="sidebar-item"><a href="#E0002">Error: Cannot add hook outside the containing module</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#organizing-your-tests">Organizing your tests</a></li><li class="sidebar-item"><a href="#module-scope">Module scope</a></li><li class="sidebar-item"><a href="#hooks">Hooks</a></li><li class="sidebar-item"><a href="#options-parameter">Options parameter</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-hooks">Example: Hooks</a></li><li class="sidebar-item"><a href="#example-skip-a-module">Example: Skip a module</a></li><li class="sidebar-item"><a href="#E0002">Error: Cannot add hook outside the containing module</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>

@@ -134,69 +134,90 @@
 
 <p>The <a href="/api/QUnit/test.only/"><code class="language-plaintext highlighter-rouge">only</code></a>, <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">skip</code></a>, <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">todo</code></a>, and <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">if</code></a> variants are also available, as <code class="language-plaintext highlighter-rouge">QUnit.test.only.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.skip.each</code>, <code class="language-plaintext highlighter-rouge">QUnit.test.todo.each</code>, and <code class="language-plaintext highlighter-rouge">QUnit.test.if.each</code> respectively.</p>
 
+<h3 id="benefits">Benefits</h3>
+
+<p>It can be beneficial to use <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> to generate test cases, instead of duplicating code or writing your own loop:</p>
+
+<ul>
+  <li>Each test case receives its own <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> module <a href="/api/QUnit/module/#hooks">hooks</a>.</li>
+  <li>Diagnose failures more easily, with results grouped and attributed directly to a case.</li>
+  <li>Match <a href="/api/config/filter/">filter</a> on case names.</li>
+  <li>Re-run individual test cases from the <a href="/browser/#test-results-explained">Browser Runner</a>, <br />including to <a href="/api/config/reorder/">prioritize previous failures</a> on reload, and <a href="/api/config/hidepassed/">hide passing</a> cases.</li>
+  <li>Reduce fragmentation and code duplication (details at <a href="#reduce-code-duplication">§ Reduce code duplication</a>).</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Before</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">number is</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">42</span><span class="p">,</span>
+    <span class="mi">9007199254740991</span><span class="p">,</span>
+    <span class="mi">1</span><span class="nx">e</span><span class="o">+</span><span class="mi">100</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">65536</span>
+  <span class="p">];</span>
+  <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="nx">input</span> <span class="k">of</span> <span class="nx">cases</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isFinite</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">input</span><span class="p">}</span><span class="s2"> is finite`</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isNaN</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">input</span><span class="p">}</span><span class="s2"> is not NaN`</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isInteger</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">input</span><span class="p">}</span><span class="s2"> is int`</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// After</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">number is</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="mi">0</span><span class="p">,</span>
+  <span class="mi">1</span><span class="p">,</span>
+  <span class="mi">42</span><span class="p">,</span>
+  <span class="mi">9007199254740991</span><span class="p">,</span>
+  <span class="mi">1</span><span class="nx">e</span><span class="o">+</span><span class="mi">100</span><span class="p">,</span>
+  <span class="o">-</span><span class="mi">65536</span>
+<span class="p">],</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isFinite</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="dl">'</span><span class="s1">finite</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">false</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isNaN</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="dl">'</span><span class="s1">NaN</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nb">Number</span><span class="p">.</span><span class="nf">isInteger</span><span class="p">(</span><span class="nx">input</span><span class="p">),</span> <span class="dl">'</span><span class="s1">int</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
 <h3 id="reduce-code-duplication">Reduce code duplication</h3>
 
-<p>You can use <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> to write a single test, run once for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.</p>
+<p>You can use <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code> to write a single test, and repeat it for each item in a dataset. This avoids code duplication and prevents unintentional drift over time between similar tests.</p>
 
-<p>This tends to cut unintentional, unimportant, or undocumented differences. That in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be <em>intentional</em> and <em>unintentional</em> differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The <em>unintentional</em> difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is “safe” to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?</p>
+<p>This tends to cut unintentional, unimportant, or undocumented differences; which in turn improves readability and comprehension to future contributors. When multiple tests do similar things, there can be <em>intentional</em> and <em>unintentional</em> differences. The intentional difference is motivated by what you want to cover (e.g. input A and input B). The <em>unintentional</em> difference may be due to authors having their own coding style, or changing habits over time. As a contributor it can be confusing when your patch causes tests to fail. These unintentional differences make it difficult to judge if a test is “safe” to change. For example, if test A fails but B passes, and A would pass if it was written more like B, is A okay to change because it was only that way by accident? Or was this an intended alternative approach covered by that test?</p>
 
 <p>By writing your tests with <code class="language-plaintext highlighter-rouge">QUnit.test.each()</code>, you write shared code only once. Any intentional differences are clearly visible through a declarative dataset. By writing it only once, it also encourages writing of code comments as you won’t have to duplicate and maintain these across multiple tests.</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Without QUnit.test.each()</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Duplication without QUnit.test.each()</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">mockPage1</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="dl">'</span>
-  <span class="p">};</span>
-  <span class="kd">const</span> <span class="nx">mockUser1</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
-  <span class="p">};</span>
-  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage1</span><span class="p">,</span> <span class="nx">mockUser1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage1</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="se">\n\n</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">mockPage1</span> <span class="o">=</span> <span class="p">{</span> <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockUser1</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span>
+    <span class="nx">APP</span><span class="p">.</span><span class="nf">createPage</span><span class="p">(</span><span class="nx">mockPage1</span><span class="p">,</span> <span class="nx">mockUser1</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">Admin created a page in April 2011</span><span class="dl">'</span>
+  <span class="p">);</span>
 
-  <span class="kd">const</span> <span class="nx">mockUser2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1963-06-09T03:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
-  <span class="p">};</span>
-  <span class="kd">const</span> <span class="nx">mockPage2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">content</span><span class="p">:</span> <span class="dl">''</span>
-  <span class="p">};</span>
-  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage2</span><span class="p">,</span> <span class="nx">mockUser2</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage2</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">mockUser2</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1963-06-09T03:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockPage2</span> <span class="o">=</span> <span class="p">{</span> <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">content</span><span class="p">:</span> <span class="dl">''</span> <span class="p">};</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span>
+    <span class="nx">APP</span><span class="p">.</span><span class="nf">createPage</span><span class="p">(</span><span class="nx">mockUser2</span><span class="p">,</span> <span class="nx">mockPage2</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">root created a page in April 2011</span><span class="dl">'</span>
+  <span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Compared to:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="c1">// Expect an empty line between existing content and appendage.</span>
-  <span class="dl">'</span><span class="s1">existing content</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Foo.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Foo.</span><span class="se">\n\n</span><span class="s1">Added text.</span><span class="dl">'</span><span class="p">],</span>
-
-  <span class="c1">// No extra lines if the page started empty.</span>
-  <span class="dl">'</span><span class="s1">empty content</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Added text here.</span><span class="dl">'</span><span class="p">]</span>
-
-<span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">appendage</span><span class="p">,</span> <span class="nx">expected</span><span class="p">])</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">mockPage</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">lastModified</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">content</span><span class="p">:</span> <span class="nx">input</span>
-  <span class="p">};</span>
-  <span class="kd">const</span> <span class="nx">mockUser</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">registered</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span>
-    <span class="c1">// Roles are always lowercase</span>
-    <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span>
-  <span class="p">};</span>
-  <span class="nx">APP</span><span class="p">.</span><span class="nf">appendToPage</span><span class="p">(</span><span class="nx">mockPage</span><span class="p">,</span> <span class="nx">mockUser</span><span class="p">,</span> <span class="nx">appendage</span><span class="p">);</span>
-
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">mockPage</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span> <span class="nx">expected</span><span class="p">);</span>
+  <span class="dl">'</span><span class="s1">non-empty page</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Foo bar.</span><span class="dl">'</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">empty page</span><span class="dl">'</span><span class="p">:</span> <span class="dl">''</span>
+<span class="p">},</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">mockPage</span> <span class="o">=</span> <span class="p">{</span> <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Example</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2011-04-01T12:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">content</span><span class="p">:</span> <span class="nx">input</span> <span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">mockUser</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Admin</span><span class="dl">'</span><span class="p">,</span> <span class="na">created</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1991-10-18T12:00:00Z</span><span class="dl">'</span><span class="p">,</span> <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">administrator</span><span class="dl">'</span> <span class="p">};</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span>
+    <span class="nx">APP</span><span class="p">.</span><span class="nf">createPage</span><span class="p">(</span><span class="nx">mockUser</span><span class="p">,</span> <span class="nx">mockPage</span><span class="p">),</span>
+    <span class="dl">'</span><span class="s1">Admin created a page in April 2011</span><span class="dl">'</span>
+  <span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -266,8 +287,6 @@
   <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c1">// square [0]</span>
-<span class="c1">// square [1]</span>
 <span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">square</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
   <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
   <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
@@ -339,7 +358,7 @@
   <span class="k">return</span> <span class="nf">isEven</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="k">async </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">QUnit</span><span class="p">.</span><span class="nx">test</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="dl">'</span><span class="s1">isAsyncEven</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">isAsyncEven</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="s2">`</span><span class="p">${</span><span class="nx">data</span><span class="p">}</span><span class="s2"> is even`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -407,7 +426,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li><li class="sidebar-item"><a href="#reduce-code-duplication">Reduce code duplication</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#data-provider">Data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#callback-parameters">Callback parameters</a></li><li class="sidebar-item"><a href="#benefits">Benefits</a></li><li class="sidebar-item"><a href="#reduce-code-duplication">Reduce code duplication</a></li></ol></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#data-provider">Data provider</a></li><li class="sidebar-item"><a href="#array-data-provider">Array data provider</a></li><li class="sidebar-item"><a href="#object-data-provider">Object data provider</a></li><li class="sidebar-item"><a href="#async-functions-with-each">Async functions with each()</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>
