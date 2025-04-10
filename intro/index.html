@@ -16,7 +16,7 @@
 </form>
 </typesense-minibar>
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/browser/#browser-support">Browser Support</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#compatibility">Compatibility</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
@@ -94,6 +94,32 @@
   <li><a href="/api/callbacks/QUnit.on/#reporter-api">Reporter API</a>: Event emitter, Create your own reporter.</li>
   <li><a href="/browser/#theme-api">Theme API</a>: Create your own theme.</li>
 </ol>
+
+<h2 id="compatibility">Compatibility</h2>
+
+<p>QUnit supports the following browsers and runtime environments:</p>
+
+<table>
+<thead>
+<tr><td></td><th>QUnit 1</th><th>QUnit&nbsp;2</th><th>QUnit&nbsp;3</th><th>QUnit 3 (ESM)</th></tr>
+</thead>
+<tbody>
+<tr><th>Internet Explorer</th><td>IE 6-11</td><td colspan="2">IE 9-11</td><td>&mdash;</td></tr>
+<tr><th>Edge</th><td>1+</td><td colspan="2">15+<sup><abbr title="both legacy MSEdge and Chromium-based Edge">[?]</abbr></sup></td><td>16+</td></tr>
+<tr><th>Firefox</th><td>3.6+</td><td colspan="2">45+</td><td>60+</td></tr>
+<tr><th>Safari</th><td>4.0+</td><td colspan="2">9.1+</td><td>10.1+</td></tr>
+<tr><th>Chrome</th><td>1+</td><td colspan="2">58+</td><td>61+</td></tr>
+<tr><th>Chrome Mobile</th><td>&mdash;</td><td colspan="2">49+ (Android 4.4+)</td><td>61+ (Android 7+)</td></tr>
+<tr><th>Opera</th><td>11+</td><td colspan="2">36+</td><td>48+</td></tr>
+<tr><th>Android Browser</th><td>2.3 - 5.0</td><td colspan="2">4.3 - 5.0</td><td>&mdash;</td></tr>
+<tr><th>iOS (Mobile Safari)</th><td>4.0+</td><td colspan="2">7.0+</td><td>10.3+</td></tr>
+<tr><th>PhantomJS</th><td colspan="2">1.x</td><td colspan="2">&mdash;</td></tr>
+<tr><th>Node.js</th><td>&mdash;</td><td>10+</td><td colspan="2">18+</td></tr>
+<tr><th>SpiderMonkey</th><td>&mdash;</td><td colspan="3">68+<sup><abbr title="since QUnit 2.14">[?]</abbr></sup></td></tr>
+</tbody>
+</table>
+
+<p>You can download QUnit 1.x and QUnit 2.x from the <a href="https://releases.jquery.com/qunit/">release archives</a>.</p>
 
 <h2 id="support">Support</h2>
 
@@ -191,7 +217,7 @@ curl <span class="nt">-o</span> qunit.js <span class="s1">'https://code.jquery.c
 </ul>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#in-nodejs">In Node.js</a></li><li class="sidebar-item"><a href="#in-the-browser">In the browser</a></li><li class="sidebar-item"><a href="#guides">Guides</a></li><li class="sidebar-item"><a href="#support">Support</a></li><li class="sidebar-item"><a href="#chat">Chat</a></li><li class="sidebar-item"><a href="#social-media">Social media</a></li><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#download">Download</a></li><li class="sidebar-item"><a href="#further-reading">Further reading</a></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#in-nodejs">In Node.js</a></li><li class="sidebar-item"><a href="#in-the-browser">In the browser</a></li><li class="sidebar-item"><a href="#guides">Guides</a></li><li class="sidebar-item"><a href="#compatibility">Compatibility</a></li><li class="sidebar-item"><a href="#support">Support</a></li><li class="sidebar-item"><a href="#chat">Chat</a></li><li class="sidebar-item"><a href="#social-media">Social media</a></li><li class="sidebar-item"><a href="#linting">Linting</a></li><li class="sidebar-item"><a href="#download">Download</a></li><li class="sidebar-item"><a href="#further-reading">Further reading</a></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>
