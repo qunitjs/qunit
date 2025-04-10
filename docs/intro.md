@@ -29,6 +29,32 @@ Check these QUnit tutorials and examples, to make the most of your unit tests!
 1. [Reporter API](./api/callbacks/QUnit.on.md#reporter-api): Event emitter, Create your own reporter.
 1. [Theme API](./browser.md#theme-api): Create your own theme.
 
+## Compatibility
+
+QUnit supports the following browsers and runtime environments:
+
+<table>
+<thead>
+<tr><td></td><th>QUnit 1</th><th>QUnit&nbsp;2</th><th>QUnit&nbsp;3</th><th>QUnit 3 (ESM)</th></tr>
+</thead>
+<tbody>
+<tr><th>Internet Explorer</th><td>IE 6-11</td><td colspan=2>IE 9-11</td><td>&mdash;</td></tr>
+<tr><th>Edge</th><td>1+</td><td colspan=2>15+<sup><abbr title="both legacy MSEdge and Chromium-based Edge">[?]</abbr></sup></td><td>16+</td></tr>
+<tr><th>Firefox</th><td>3.6+</td><td colspan=2>45+</td><td>60+</td></tr>
+<tr><th>Safari</th><td>4.0+</td><td colspan=2>9.1+</td><td>10.1+</td></tr>
+<tr><th>Chrome</th><td>1+</td><td colspan=2>58+</td><td>61+</td></tr>
+<tr><th>Chrome Mobile</th><td>&mdash;</td><td colspan=2>49+ (Android 4.4+)</td><td>61+ (Android 7+)</td></tr>
+<tr><th>Opera</th><td>11+</td><td colspan=2>36+</td><td>48+</td></tr>
+<tr><th>Android Browser</th><td>2.3 - 5.0</td><td colspan=2>4.3 - 5.0</td><td>&mdash;</td></tr>
+<tr><th>iOS (Mobile Safari)</th><td>4.0+</td><td colspan=2>7.0+</td><td>10.3+</td></tr>
+<tr><th>PhantomJS</th><td colspan=2>1.x</td><td colspan=2>&mdash;</td></tr>
+<tr><th>Node.js</th><td>&mdash;</td><td>10+</td><td colspan=2>18+</td></tr>
+<tr><th>SpiderMonkey</th><td>&mdash;</td><td colspan=3>68+<sup><abbr title="since QUnit 2.14">[?]</abbr></sup></td></tr>
+</tbody>
+</table>
+
+You can download QUnit 1.x and QUnit 2.x from the [release archives](https://releases.jquery.com/qunit/).
+
 ## Support
 
 To report a bug, request a new feature, or ask a question [open an issue](https://github.com/qunitjs/qunit/issues) on GitHub.

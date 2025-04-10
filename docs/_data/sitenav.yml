@@ -7,10 +7,10 @@
       href: /intro/#download
     - name: Browser Runner
       href: /browser/
-    - name: Browser Support
-      href: /browser/#browser-support
     - name: Command-line Interface
       href: /cli/
+    - name: Compatibility
+      href: /intro/#compatibility
     - name: Test lifecycle
       href: /lifecycle/
     - name: QUnit 2.0 Upgrade Guide

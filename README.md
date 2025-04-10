@@ -17,7 +17,7 @@
 
 * [API documentation](https://qunitjs.com/api/)
 * [Guides how-to](https://qunitjs.com/guides/)
-* [Browser support](https://qunitjs.com/browser/#browser-support)
+* [Browser support](https://qunitjs.com/intro/#compatibility)
 * [Browser automation](https://qunitjs.com/browser/#integrations)
 
 ## Support
