@@ -106,7 +106,7 @@ The execution order of module hooks in QUnit.
 <p>For example:</p>
 
 <ul>
-  <li>first, any global beforeEach hooks from <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.module()</code></a>,</li>
+  <li>first, any global beforeEach hooks from <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.hooks</code></a>,</li>
   <li>then, the beforeEach hooks of any parent modules,</li>
   <li>then, the hooks of the current module.</li>
 </ul>
@@ -224,7 +224,7 @@ The execution order of module hooks in QUnit.
 
 <h2 id="test-context">Test context</h2>
 
-<p>Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as <code class="language-plaintext highlighter-rouge">this</code> inside any <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> function or hook callback.</p>
+<p>Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as <code class="language-plaintext highlighter-rouge">this</code> inside the <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a> function and hook callbacks.</p>
 
 <p>At the end of every test, changes to the test context are automatically reset (e.g. changes by tests or hooks). The next test will start with a fresh context provided by the module.</p>
 
