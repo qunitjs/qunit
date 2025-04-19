@@ -14,7 +14,7 @@ jobs:
           - name: "Linux: Node 18"
             # Includes 'firefox', 'chromium', and more.
             # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 18.x
             script: npm test
 
@@ -25,12 +25,11 @@ jobs:
 
           - name: "Linux: Node 22"
             os: ubuntu-24.04
-            # Pinned because of https://github.com/npm/cli/issues/7657
-            node: 22.4
+            node: 22.x
             script: npm run test
 
           - name: "Demos"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 18.x
             script: npm run test-demos
 
@@ -69,44 +68,6 @@ jobs:
 
       - name: Tests
         run: ${{ matrix.script }}
-
-  # To reproduce SpiderMonkey 68 builds locally:
-  #
-  # ```
-  # you:/qunit$ npm run build
-  #
-  # you:/qunit$ export MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:20.04 -c "cd /$MNT;bash"
-  # ```
-  # ```
-  # root@ubuntu:/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
-  # root@ubuntu:/qunit$ js68 test/mozjs.js
-  # ```
-  mozjs-68:
-    name: SpiderMonkey 68
-    runs-on: ubuntu-20.04
-    env:
-      PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
-      - name: Use Node.js 18
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-      - name: Install mozjs
-        run: |
-          sudo apt-fast install -y libmozjs-68-dev
-      - run: npm install
-      - run: npm run build
-      - name: Test mozjs.js
-        run: js68 test/mozjs.js
-      - name: Test mozjs.mjs
-        run: js68 -m test/mozjs.mjs
 
   # To reproduce SpiderMonkey 102 builds locally:
   #
