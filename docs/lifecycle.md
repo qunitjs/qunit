@@ -38,7 +38,7 @@ Hooks that run _before_ a test, are executed in the order that they are added (f
 
 For example:
 
-* first, any global beforeEach hooks from [`QUnit.module()`](./api/QUnit/hooks.md),
+* first, any global beforeEach hooks from [`QUnit.hooks`](./api/QUnit/hooks.md),
 * then, the beforeEach hooks of any parent modules,
 * then, the hooks of the current module.
 
@@ -159,7 +159,7 @@ QUnit.module('Database connection', {
 
 ## Test context
 
-Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as `this` inside any [`QUnit.test()`](./api/QUnit/test.md) function or hook callback.
+Each test starts with a fresh copy of the test context as provided by the module. This is generally an empty object. The test context is available as `this` inside the [`QUnit.test()`](./api/QUnit/test.md) function and hook callbacks.
 
 At the end of every test, changes to the test context are automatically reset (e.g. changes by tests or hooks). The next test will start with a fresh context provided by the module.
 
