@@ -6,7 +6,7 @@ jobs:
   run:
     name: Code coverage
     if: ${{ github.repository == 'qunitjs/qunit' }} # skip on forks, needs secret
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
       FORCE_COLOR: "1"

@@ -12,14 +12,14 @@ jobs:
       matrix:
         include:
           - name: "Linux: Node 18"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 18.x
             script: npm run test-nolint
 
           - name: "Linux: Node 16"
             # Includes 'firefox', 'chromium', and more.
             # https://github.com/actions/virtual-environments/blob/ubuntu20/20220410.2/images/linux/Ubuntu2004-Readme.md
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 16.x
             # Run the lint step only once because, in March 2022, GitHub began
             # automatically extracting ESLint warnings from build logs and turning them into
@@ -27,22 +27,22 @@ jobs:
             script: npm test
 
           - name: "Linux: Node 14"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 14.x
             script: npm run test-nolint
 
           - name: "Linux: Node 12"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 12.x
             script: npm run test-nolint
 
           - name: "Linux: Node 10"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 10.x
             script: npm run test-nolint
 
           - name: "Integration"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             node: 16.x
             script: npm run test-integration
 
@@ -81,42 +81,6 @@ jobs:
 
       - name: Tests
         run: ${{ matrix.script }}
-
-  # To reproduce SpiderMonkey 68 builds locally:
-  #
-  # ```
-  # you:/qunit$ npm run build
-  #
-  # you:/qunit$ export MNT=$(basename "$PWD"); docker run --rm --interactive --tty --mount type=bind,source="$PWD",target="/$MNT",readonly --entrypoint /bin/sh ubuntu:20.04 -c "cd /$MNT;bash"
-  # ```
-  # ```
-  # root@ubuntu:/qunit$ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y libmozjs-68-dev
-  # root@ubuntu:/qunit$ js68 test/mozjs.js
-  # ```
-  mozjs-68:
-    name: SpiderMonkey 68
-    runs-on: ubuntu-20.04
-    env:
-      PUPPETEER_DOWNLOAD_PATH: "${{ github.workspace }}/.puppeteer_download"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/.puppeteer_download
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Use Node.js 18
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-      - name: Install mozjs
-        run: |
-          sudo apt-fast install -y libmozjs-68-dev
-      - run: npm ci
-      - run: npm run build
-      - name: Tests
-        run: js68 test/mozjs.js
 
   # To reproduce SpiderMonkey 102 builds locally:
   #
