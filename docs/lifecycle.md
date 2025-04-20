@@ -115,13 +115,14 @@ QUnit.module('Foo', function (hooks) {
 ### Example: Async hook callback
 
 ```js
-QUnit.module('Database connection', function (hooks) {
+QUnit.module('Database', function (hooks) {
   hooks.before(async function () {
-    await MyDb.connect();
+    this.conn = MyDb.createConnection();
+    await this.conn.open();
   });
 
   hooks.after(async function () {
-    await MyDb.disconnect();
+    await this.conn.close();
   });
 
   // define tests...
@@ -131,29 +132,56 @@ QUnit.module('Database connection', function (hooks) {
 You can also define async hooks without modern async-await syntax, by returning a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) or other "then"-able object:
 
 ```js
-QUnit.module('Database connection', {
+QUnit.module('Database', {
   before: function () {
-    return new Promise(function (resolve, reject) {
-      MyDb.connect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    this.conn = MyDb.createConnection();
+    return this.conn.open();
   },
   after: function () {
-    return new Promise(function (resolve, reject) {
-      MyDb.disconnect(function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    return this.conn.close();
   }
+});
+```
+
+### Example: Sharing hooks
+
+If you have multiple components that extend or call the same feature, you may find yourself wanting to reuse a set of mocks, test fixtures, or utility functions across different QUnit modules.
+
+You can do this by providing a set of re-usable hooks, which you can effectively "merge" into your module.
+
+If your setup only needs to run once, consider placing it in a [bootstrap script](./api/config/index.md) instead, along any other configuration.
+
+If your setup should run for all test modules, use a global [`QUnit.hooks`](./api/QUnit/hooks.md) which applies automatically without any per-module setup.
+
+```js
+export function setupFruit (hooks) {
+  hooks.before(function () {
+    this.fruit = new Fruit('Apple');
+  });
+  hooks.afterEach(function () {
+    this.fruit.detach();
+    this.fruit.clean();
+  });
+}
+```
+
+```js
+import { setupFruit } from './setup.fruit.js';
+
+QUnit.module('Painting', function (hooks) {
+  setupFruit(hooks);
+
+  hooks.beforeEach(function () {
+    this.canvas = new Painting();
+  });
+
+  QUnit.test('The Son of Man', function (assert) {
+    const face = new Face();
+    this.canvas.append(face);
+    this.canvas.append(this.fruit);
+
+    assert.equal(this.canvas.getVisibility(face), 'obscured');
+  });
 });
 ```
 
@@ -167,8 +195,12 @@ The `before` hook has access to the base object that tests and child modules inh
 
 ```js
 QUnit.module('Maker', function (hooks) {
+  hooks.before(function () {
+    this.inventory = 'ABCDEFG';
+  });
+
   hooks.beforeEach(function () {
-    this.parts = ['A', 'B'];
+    this.parts = [this.inventory[0], this.inventory[1]];
   });
 
   QUnit.test('make alphabet', function (assert) {
@@ -186,10 +218,12 @@ QUnit.module('Maker', function (hooks) {
 If you use arrow functions, beware that the `this` test context is not reachable from inside an arrow function. JavaScript does have a built-in lexical scope that you can use in a similar way. This works the same as a text context for simple cases (i.e. you assign all variables together in `beforeEach`).
 
 ```js
-QUnit.module('Machine Maker', function (hooks) {
+QUnit.module('Maker', function (hooks) {
+  const inventory = 'ABCDEFG';
+
   let parts;
   hooks.beforeEach(function () {
-    parts = ['A', 'B'];
+    parts = [inventory[0], inventory[1]];
   });
 
   QUnit.test('make alphabet', function (assert) {
@@ -236,30 +270,30 @@ QUnit.test('make good music', function (assert) {
 This is functionally equivalent to:
 
 ```js
-QUnit.module('example', {
-  before () {
+QUnit.module('example', function (hooks) {
+  hooks.before(function () {
     this.inventory = 'ABCDEFG';
     this.makeParts = function (a, b) {
       return [this.inventory[a], this.inventory[b]];
     };
-  },
-  beforeEach () {
+  });
+  hooks.beforeEach(function () {
     this.parts = this.makeParts(0, 1);
-  }
-});
+  });
 
-QUnit.test('make alphabet', function (assert) {
-  this.parts.push('C');
-  assert.equal(this.parts.join(''), 'ABC');
-});
+  QUnit.test('make alphabet', function (assert) {
+    this.parts.push('C');
+    assert.equal(this.parts.join(''), 'ABC');
+  });
 
-QUnit.test('make music', function (assert) {
-  this.parts.push('B', 'A');
-  assert.equal(this.parts.join(''), 'ABBA');
-});
+  QUnit.test('make music', function (assert) {
+    this.parts.push('B', 'A');
+    assert.equal(this.parts.join(''), 'ABBA');
+  });
 
-QUnit.test('make good music', function (assert) {
-  var x = this.makeParts(1, 1).join('');
-  assert.equal(x, 'BB', 'The King of the Blues');
+  QUnit.test('make good music', function (assert) {
+    var x = this.makeParts(1, 1).join('');
+    assert.equal(x, 'BB', 'The King of the Blues');
+  });
 });
 ```

@@ -160,11 +160,11 @@ A hook callback may be an async function, or return a Promise or other then-able
 ```js
 QUnit.module('Database connection', function (hooks) {
   hooks.before(async function () {
-    await MyDb.connect();
+    this.conn = await MyDb.createConnection().open();
   });
 
   hooks.after(async function () {
-    await MyDb.disconnect();
+    await this.conn.close();
   });
 
   // define tests...
