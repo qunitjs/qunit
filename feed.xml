@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-04-20T18:19:53+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.24.1 Released: Bug fixes</title><link href="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/" rel="alternate" type="text/html" title="QUnit 2.24.1 Released: Bug fixes" /><published>2025-01-25T00:00:00+00:00</published><updated>2025-01-25T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/25/qunit-2-24-1</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/"><![CDATA[<h3 id="fixed">Fixed</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-04-20T20:34:14+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Test lifecycle diagram</title><link href="https://qunitjs.com/blog/2025/04/20/test-lifecycle/" rel="alternate" type="text/html" title="Test lifecycle diagram" /><published>2025-04-20T00:00:00+00:00</published><updated>2025-04-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/04/20/test-lifecycle</id><content type="html" xml:base="https://qunitjs.com/blog/2025/04/20/test-lifecycle/"><![CDATA[<p>Ever wondered how beforeEach works in unit test frameworks?</p>
+
+<h2 id="test-lifecycle">Test lifecycle</h2>
+
+<figure>
+<img src="/resources/qunit-lifecycle-hooks-order.svg" width="676" height="901" alt="" title="Imagine a test suite with global hooks, and a Parent and Child module that use hooks also. The execution order is:
+1. Parent module runs the before hook.
+2. Every test in the Parent module inherits context from the before hook, and repeats as follows: call global beforeEach, parent beforeEach, the actual test, parent afterEach, and lastly the global afterEach.
+3. The Child module inherits context from the Parent before hook, and then runs its own before hook.
+4. Every test in the Child module inherits context from this before hook, and repeats as follows: call global beforeEach, parent beforeEach, child beforeEach, the actual test, child afterEach, parent afterEach, and lastly the global afterEach.
+" />
+<figcaption>
+    <p>Learn about the execution on the new <a href="https://qunitjs.com/lifecycle/">Test lifecycle</a> page.</p>
+  </figcaption>
+</figure>
+
+<h2 id="why">Why</h2>
+
+<p>An experienced developer will find that test hooks work more or less the same in every JavaScript unit test framework. The execution order is also intuitive enough that most people answer correctly when they guess. So why explain it?</p>
+
+<p>You shouldn’t have to guess!</p>
+
+<p>I think it’s worth laying out explicitly, even if this is not unique to QUnit, because a new developer is going to encounter this for the first time.</p>
+
+<p>But more importantly, by demonstrating that the order is stable and guaranteed, I hope this gives you the confidence to lean into it. Build on it! The new <a href="https://qunitjs.com/lifecycle/">Test lifecycle</a> page showcases what’s possible when you depend on this with intent: Nesting hooks, sharing hooks, <a href="https://qunitjs.com/api/QUnit/hooks/">global hooks</a>, and extending test context.</p>
+
+<h2 id="thanks">Thanks</h2>
+
+<p>Thanks to FND, Jan D, and NullVoxPopuli for reviewing, improving, and promoting this work!</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://qunitjs.com/api/QUnit/module/">QUnit.module()</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/issues/1358">Issue #1358</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Ever wondered how beforeEach works in unit test frameworks?]]></summary></entry><entry><title type="html">QUnit 2.24.1 Released: Bug fixes</title><link href="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/" rel="alternate" type="text/html" title="QUnit 2.24.1 Released: Bug fixes" /><published>2025-01-25T00:00:00+00:00</published><updated>2025-01-25T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/25/qunit-2-24-1</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/"><![CDATA[<h3 id="fixed">Fixed</h3>
 
 <ul>
   <li>CLI: Fix TAP compliance for actual/expected indent and skip/todo colors. <a href="https://github.com/qunitjs/qunit/commit/b4d48fc7107936b26d84b632b2c2782e368ea64c">b4d48fc710</a></li>
@@ -175,11 +210,11 @@ Source:   @/test/example.js:3:10
 <figure><img src="/resources/2025-stacktrace-error-after.png" width="540" height="288" alt="Failed to load file example.js. TypeError: eventName must be a string. at example.js, at node:internal/cjs/loader." /><figcaption>QUnit 2.24.0</figcaption></figure>
 </div>
 
-<p>Notice the removal of the first <code class="language-plaintext highlighter-rouge">qunit.js</code> call, which lets the trace starts cleanly at <code class="language-plaintext highlighter-rouge">example.js</code>. The other internal calls are greyed out.</p>
+<p>Notice the removal of the first <code class="language-plaintext highlighter-rouge">Object.on (qunit/qunit.js)</code> line, so that the trace starts cleanly at your <code class="language-plaintext highlighter-rouge">example.js</code> file. The other internal calls are greyed out.</p>
 
 <h3 id="trimming-traces">Trimming traces</h3>
 
-<p>For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can’t trim, are greyed out instead. This is similar to Node.js’s own error formatter does.</p>
+<p>For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can’t trim, are greyed out instead. This works similar to Node.js’ error handler.</p>
 
 <h2 id="tap-reporter">TAP reporter</h2>
 
@@ -317,33 +352,4 @@ Source:   @/test/example.js:3:10
 
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.1">Git tag: 2.20.1</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Fix IE compat with sinon.useFakeTimers, and fix hanging assert.async().]]></summary></entry><entry><title type="html">QUnit 2.20.0 Released: Improve diagnostics</title><link href="https://qunitjs.com/blog/2023/09/23/qunit-2-20-0/" rel="alternate" type="text/html" title="QUnit 2.20.0 Released: Improve diagnostics" /><published>2023-09-23T00:00:00+00:00</published><updated>2023-09-23T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2023/09/23/qunit-2-20-0</id><content type="html" xml:base="https://qunitjs.com/blog/2023/09/23/qunit-2-20-0/"><![CDATA[<p>Add type check to <code class="language-plaintext highlighter-rouge">assert.async()</code> parameter, add <code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code>, and improve performance.</p>
-
-<p>Welcome Zixin and Hareesh as first-time QUnit contributions!</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<h3 id="added">Added</h3>
-
-<ul>
-  <li>Core: Add <code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/pull/1714">#1714</a></li>
-</ul>
-
-<h3 id="changed">Changed</h3>
-
-<ul>
-  <li>Assert: Add type check for <code class="language-plaintext highlighter-rouge">assert.async()</code> parameter. (Zixin Yin) <a href="https://github.com/qunitjs/qunit/issues/1721">#1721</a></li>
-  <li>HTML Reporter: Remove units for 0 values in qunit.css. (Hareesh) <a href="https://github.com/qunitjs/qunit/pull/1715">#1715</a></li>
-</ul>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>Core: Faster <code class="language-plaintext highlighter-rouge">inArray</code> by using Array.prototype.includes when possible. (Izel Nakri)</li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.0">Git tag: 2.20.0</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Add type check to assert.async() parameter, add QUnit.reporters.perf, and improve performance.]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Fix IE compat with sinon.useFakeTimers, and fix hanging assert.async().]]></summary></entry></feed>
