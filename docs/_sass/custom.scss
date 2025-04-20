@@ -90,7 +90,7 @@ h3 a {
   .figure-row {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     gap: $box-spacing;
     // "pop out"

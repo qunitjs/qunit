@@ -137,11 +137,11 @@ qunit example.js
 <figure><img src="/resources/2025-stacktrace-error-after.png" width="540" height="288" alt="Failed to load file example.js. TypeError: eventName must be a string. at example.js, at node:internal/cjs/loader."><figcaption>QUnit 2.24.0</figcaption></figure>
 </div>
 
-Notice the removal of the first `qunit.js` call, which lets the trace starts cleanly at `example.js`. The other internal calls are greyed out.
+Notice the removal of the first `Object.on (qunit/qunit.js)` line, so that the trace starts cleanly at your `example.js` file. The other internal calls are greyed out.
 
 ### Trimming traces
 
-For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can't trim, are greyed out instead. This is similar to Node.js's own error formatter does.
+For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can't trim, are greyed out instead. This works similar to Node.js' error handler.
 
 ## TAP reporter
 
