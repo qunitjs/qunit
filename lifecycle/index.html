@@ -181,13 +181,14 @@ The execution order of module hooks in QUnit.
 
 <h3 id="example-async-hook-callback">Example: Async hook callback</h3>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span> <span class="o">=</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">createConnection</span><span class="p">();</span>
+    <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">open</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">();</span>
+    <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="c1">// define tests...</span>
@@ -196,29 +197,54 @@ The execution order of module hooks in QUnit.
 
 <p>You can also define async hooks without modern async-await syntax, by returning a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> or other “then”-able object:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">before</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="nf">resolve</span><span class="p">();</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span> <span class="o">=</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">createConnection</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">open</span><span class="p">();</span>
   <span class="p">},</span>
   <span class="na">after</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nc">Promise</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nf">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="nf">resolve</span><span class="p">();</span>
-        <span class="p">}</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
   <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="example-sharing-hooks">Example: Sharing hooks</h3>
+
+<p>If you have multiple components that extend or call the same feature, you may find yourself wanting to reuse a set of mocks, test fixtures, or utility functions across different QUnit modules.</p>
+
+<p>You can do this by providing a set of re-usable hooks, which you can effectively “merge” into your module.</p>
+
+<p>If your setup only needs to run once, consider placing it in a <a href="/api/config/">bootstrap script</a> instead, along any other configuration.</p>
+
+<p>If your setup should run for all test modules, use a global <a href="/api/QUnit/hooks/"><code class="language-plaintext highlighter-rouge">QUnit.hooks</code></a> which applies automatically without any per-module setup.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nf">setupFruit</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">fruit</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Fruit</span><span class="p">(</span><span class="dl">'</span><span class="s1">Apple</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">afterEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">fruit</span><span class="p">.</span><span class="nf">detach</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">fruit</span><span class="p">.</span><span class="nf">clean</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">setupFruit</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./setup.fruit.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Painting</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">setupFruit</span><span class="p">(</span><span class="nx">hooks</span><span class="p">);</span>
+
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Painting</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">The Son of Man</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">face</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Face</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nx">face</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fruit</span><span class="p">);</span>
+
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nf">getVisibility</span><span class="p">(</span><span class="nx">face</span><span class="p">),</span> <span class="dl">'</span><span class="s1">obscured</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -231,8 +257,12 @@ The execution order of module hooks in QUnit.
 <p>The <code class="language-plaintext highlighter-rouge">before</code> hook has access to the base object that tests and child modules inherit from. Properties set from here, are inherited without needing to re-create them on every test.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">inventory</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">ABCDEFG</span><span class="dl">'</span><span class="p">;</span>
+  <span class="p">});</span>
+
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
   <span class="p">});</span>
 
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
@@ -249,10 +279,12 @@ The execution order of module hooks in QUnit.
 
 <p>If you use arrow functions, beware that the <code class="language-plaintext highlighter-rouge">this</code> test context is not reachable from inside an arrow function. JavaScript does have a built-in lexical scope that you can use in a similar way. This works the same as a text context for simple cases (i.e. you assign all variables together in <code class="language-plaintext highlighter-rouge">beforeEach</code>).</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Machine Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Maker</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">inventory</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">ABCDEFG</span><span class="dl">'</span><span class="p">;</span>
+
   <span class="kd">let</span> <span class="nx">parts</span><span class="p">;</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">];</span>
+    <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span><span class="nx">inventory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">inventory</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
   <span class="p">});</span>
 
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
@@ -297,36 +329,36 @@ The execution order of module hooks in QUnit.
 
 <p>This is functionally equivalent to:</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nf">before </span><span class="p">()</span> <span class="p">{</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">inventory</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">ABCDEFG</span><span class="dl">'</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">makeParts</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">[</span><span class="nx">a</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">[</span><span class="nx">b</span><span class="p">]];</span>
     <span class="p">};</span>
-  <span class="p">},</span>
-  <span class="nf">beforeEach </span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">});</span>
+  <span class="nx">hooks</span><span class="p">.</span><span class="nf">beforeEach</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">parts</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">makeParts</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
+  <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">});</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make alphabet</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">C</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABC</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">});</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">B</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">A</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">parts</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">),</span> <span class="dl">'</span><span class="s1">ABBA</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 
-<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make good music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">makeParts</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="dl">'</span><span class="s1">BB</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The King of the Blues</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">make good music</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">makeParts</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="dl">'</span><span class="s1">BB</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The King of the Blues</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
 </div>
 <aside class="sidebar" role="complementary"><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#diagram">Diagram</a></li><li class="sidebar-item"><a href="#module-hooks">Module hooks</a><ol><li class="sidebar-item"><a href="#example-nested-hooks">Example: Nested hooks</a></li><li class="sidebar-item"><a href="#example-async-hook-callback">Example: Async hook callback</a></li></ol></li><li class="sidebar-item"><a href="#test-context">Test context</a><ol><li class="sidebar-item"><a href="#example-set-context-via-options">Example: Set context via options</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#diagram">Diagram</a></li><li class="sidebar-item"><a href="#module-hooks">Module hooks</a><ol><li class="sidebar-item"><a href="#example-nested-hooks">Example: Nested hooks</a></li><li class="sidebar-item"><a href="#example-async-hook-callback">Example: Async hook callback</a></li><li class="sidebar-item"><a href="#example-sharing-hooks">Example: Sharing hooks</a></li></ol></li><li class="sidebar-item"><a href="#test-context">Test context</a><ol><li class="sidebar-item"><a href="#example-set-context-via-options">Example: Set context via options</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>

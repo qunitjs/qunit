@@ -258,11 +258,11 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">Database connection</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">connect</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">createConnection</span><span class="p">().</span><span class="nf">open</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="nx">hooks</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="k">async</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">MyDb</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">();</span>
+    <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
   <span class="p">});</span>
 
   <span class="c1">// define tests...</span>
