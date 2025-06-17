@@ -38,7 +38,7 @@ Result    This is actual.
 Source:   @/test/example.js:3:10
 "></figure>
 
-The "real" stack trace is actually quite a bit longer, but we rebase it to become trace for your assertion. We remove lines before your assertion point (i.e. QUnit calling your test function), and remove any calls after that point (i.e. code inside an assert function).
+The "real" stack trace is actually quite a bit longer, but we rebase it to become the trace to your assertion. We remove lines before your assertion point (i.e. QUnit calling your test function), and remove any calls after that point (i.e. code inside an assertion method).
 
 This works well in browsers. But, when it comes to Node.js, we can do better!
 
@@ -46,7 +46,7 @@ This works well in browsers. But, when it comes to Node.js, we can do better!
 
 Web browsers generally don't expose their own internals to stack traces at all. For example, the internals of `fetch()`, or `setTimeout()`. [^2] Node.js implements many of its internals in JavaScript, which are sometimes visible in a stack trace.
 
-Let's look a slow example test:
+Let's look at an example test:
 
 ```js
 QUnit.test('slow example', function (assert) {
@@ -80,7 +80,7 @@ Notice the function calls inside the virtual `note:internal` module?
 
 ### Hide internal frames
 
-While these functions are not called inside QUnit, we hide them because this timer is scheduled by QUnit. In this case, there are other stack frames and we can omit the trace entirely, for an even cleaner result. The same result in QUnit 2.24.0:
+While these functions are not called inside QUnit, we hide them because this timer is scheduled by QUnit. In this case, there are no other stack frames and we can omit the trace entirely, for an even cleaner result. The same result in QUnit 2.24.0:
 
 ```tap
 TAP version 13
@@ -141,7 +141,7 @@ Notice the removal of the first `Object.on (qunit/qunit.js)` line, so that the t
 
 ### Trimming traces
 
-For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can't trim, are greyed out instead. This works similar to Node.js' error handler.
+For both assertion failures and uncaught exceptions, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can't trim, are greyed out. This works similar to Node.js' error handler.
 
 ## TAP reporter
 

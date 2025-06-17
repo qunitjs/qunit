@@ -29,9 +29,9 @@ The `expectedMatcher` argument can be:
 * An Error object.
 * An Error constructor, evaluated as `errorValue instanceof expectedMatcher`.
 * A RegExp that matches (or partially matches) the string representation.
-* A callback Function that must return `true` to pass the assertion check.
+* A callback with your own custom validation, that returns `true` or `false`.
 
-<p class="note" markdown="1">In very few environments, like Closure Compiler, `throws` may cause an error. There you can use `assert.raises()`. It has the same signature and behaviour, just a different name.</p>
+<p class="note" markdown="1">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use `assert.raises()`, which is an alias for `assert.throws()`. It has the same signature and behaviour.</p>
 
 ## Changelog
 
