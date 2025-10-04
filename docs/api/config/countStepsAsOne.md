@@ -30,4 +30,4 @@ in QUnit 3.0. Omit assert.expect() from tests that use assert.step(),
 or enable QUnit.config.countStepsAsOne to prepare for the upgrade.
 ```
 
-Refer to [assert.expect(): Migration guide](../assert/expect.md#migration-guide) for before and after examples.
+Refer to [assert.expect(): Migration guide](../assert/expect.md#migration-countstepsasone) for before and after examples.

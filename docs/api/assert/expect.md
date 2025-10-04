@@ -26,53 +26,8 @@ It is recommended to test asynchronous code with the [`assert.verifySteps()`](./
 
 ## Changelog
 
+| [QUnit 2.21.1](https://github.com/qunitjs/qunit/releases/tag/2.21.1) | Warn if `assert.expect()` is used with `assert.verifySteps()`.<br>See also [§ Migration: countStepsAsOne](#migration-countstepsasone).
 | UNRELEASED | `assert.expect()` now counts [`assert.verifySteps()`](./verifySteps.md) as one assertion. Steps no longer count separately.
-
-## Migration guide
-
-If you use `assert.expect()` in combination with `assert.step()` and [`assert.verifySteps()`](../assert/verifySteps.md) in the same test, you previously counted both the steps and the verification of the steps. In QUnit 3.0 this changes to count `assert.verifySteps()` as one assertion instead ([#1226](https://github.com/qunitjs/qunit/issues/1226)).
-
-Before, on QUnit 2.x without [QUnit.config.countStepsAsOne](../config/countStepsAsOne.md):
-
-```js
-QUnit.test('example', async function (assert) {
-  assert.expect(6);
-
-  MyVoice.on('noun', function (word) {
-    assert.step(word); // 1, 2, 3, 4
-  });
-  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
-
-  assert.true(song.finished, 'finished'); // 5
-  assert.verifySteps([ // 6
-    'Raindrops',
-    'roses',
-    'whiskers',
-    'kittens'
-  ]);
-});
-```
-
-After:
-
-```js
-QUnit.test('example', async function (assert) {
-  assert.expect(2);
-
-  MyVoice.on('noun', function (word) {
-    assert.step(word);
-  });
-  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
-
-  assert.true(song.finished, 'finished'); // 1
-  assert.verifySteps([ // 2
-    'Raindrops',
-    'roses',
-    'whiskers',
-    'kittens'
-  ]);
-});
-```
 
 ## Examples
 
@@ -131,5 +86,59 @@ QUnit.test('example', function (assert) {
   });
 
   assert.strictEqual(result, 4, '2 squared equals 4');
+});
+```
+
+## Migration: countStepsAsOne
+
+If you use `assert.expect()` in combination with `assert.step()` and [`assert.verifySteps()`](../assert/verifySteps.md) in the same test, you previously counted both the steps and the verification as assertions. In QUnit 3.0 this changes to count `assert.verifySteps()` as one assertion instead ([#1226](https://github.com/qunitjs/qunit/issues/1226)).
+
+In QUnit 2.21.1 the following warning is introduced:
+
+```
+Counting each assert.step() for assert.expect() is changing
+in QUnit 3.0. Omit assert.expect() from tests that use assert.step(),
+or enable QUnit.config.countStepsAsOne to prepare for the upgrade.
+```
+
+Before: QUnit 2.x without `QUnit.config.countStepsAsOne`:
+
+```js
+QUnit.test('example', async function (assert) {
+  assert.expect(6);
+
+  MyVoice.on('noun', function (word) {
+    assert.step(word); // 1, 2, 3, 4
+  });
+  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
+
+  assert.true(song.finished, 'finished'); // 5
+  assert.verifySteps([ // 6
+    'Raindrops',
+    'roses',
+    'whiskers',
+    'kittens'
+  ]);
+});
+```
+
+After: QUnit 2.x with [`QUnit.config.countStepsAsOne`](../config/countStepsAsOne.md) enabled, or on QUnit 3.0:
+
+```js
+QUnit.test('example', async function (assert) {
+  assert.expect(2);
+
+  MyVoice.on('noun', function (word) {
+    assert.step(word);
+  });
+  var song = await MyVoice.sing('My Favorite Things', { lines: 1 });
+
+  assert.true(song.finished, 'finished'); // 1
+  assert.verifySteps([ // 2
+    'Raindrops',
+    'roses',
+    'whiskers',
+    'kittens'
+  ]);
 });
 ```

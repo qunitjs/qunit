@@ -23,7 +23,7 @@ The Step API provides an easy way to verify execution logic to a high degree of 
 
 ## Changelog
 
-| UNRELEASED | [assert.expect()](./expect.md) now counts [assert.verifySteps()](./verifySteps.md) as one assertion. Steps no longer count separately.
+| UNRELEASED | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
 
 ## Examples
 
