@@ -104,55 +104,15 @@
 <table>
   <tbody>
     <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.1">QUnit 2.21.1</a></td>
+      <td>Warn if <code class="language-plaintext highlighter-rouge">assert.expect()</code> is used with <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code>.<br />See also <a href="#migration-countstepsasone">§ Migration: countStepsAsOne</a>.</td>
+    </tr>
+    <tr>
       <td>UNRELEASED</td>
       <td><code class="language-plaintext highlighter-rouge">assert.expect()</code> now counts <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> as one assertion. Steps no longer count separately.</td>
     </tr>
   </tbody>
 </table>
-
-<h2 id="migration-guide">Migration guide</h2>
-
-<p>If you use <code class="language-plaintext highlighter-rouge">assert.expect()</code> in combination with <code class="language-plaintext highlighter-rouge">assert.step()</code> and <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> in the same test, you previously counted both the steps and the verification of the steps. In QUnit 3.0 this changes to count <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code> as one assertion instead (<a href="https://github.com/qunitjs/qunit/issues/1226">#1226</a>).</p>
-
-<p>Before, on QUnit 2.x without <a href="/api/config/countStepsAsOne/">QUnit.config.countStepsAsOne</a>:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-
-  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span> <span class="c1">// 1, 2, 3, 4</span>
-  <span class="p">});</span>
-  <span class="kd">var</span> <span class="nx">song</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">sing</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Favorite Things</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">lines</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
-
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">song</span><span class="p">.</span><span class="nx">finished</span><span class="p">,</span> <span class="dl">'</span><span class="s1">finished</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// 5</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span> <span class="c1">// 6</span>
-    <span class="dl">'</span><span class="s1">Raindrops</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">roses</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">whiskers</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">kittens</span><span class="dl">'</span>
-  <span class="p">]);</span>
-<span class="p">});</span>
-</code></pre></div></div>
-
-<p>After:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-
-  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
-  <span class="p">});</span>
-  <span class="kd">var</span> <span class="nx">song</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">sing</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Favorite Things</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">lines</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
-
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">song</span><span class="p">.</span><span class="nx">finished</span><span class="p">,</span> <span class="dl">'</span><span class="s1">finished</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// 1</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span> <span class="c1">// 2</span>
-    <span class="dl">'</span><span class="s1">Raindrops</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">roses</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">whiskers</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">kittens</span><span class="dl">'</span>
-  <span class="p">]);</span>
-<span class="p">});</span>
-</code></pre></div></div>
 
 <h2 id="examples">Examples</h2>
 
@@ -208,6 +168,57 @@
   <span class="p">});</span>
 
   <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2 squared equals 4</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="migration-countstepsasone">Migration: countStepsAsOne</h2>
+
+<p>If you use <code class="language-plaintext highlighter-rouge">assert.expect()</code> in combination with <code class="language-plaintext highlighter-rouge">assert.step()</code> and <a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.verifySteps()</code></a> in the same test, you previously counted both the steps and the verification as assertions. In QUnit 3.0 this changes to count <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code> as one assertion instead (<a href="https://github.com/qunitjs/qunit/issues/1226">#1226</a>).</p>
+
+<p>In QUnit 2.21.1 the following warning is introduced:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counting each assert.step() for assert.expect() is changing
+in QUnit 3.0. Omit assert.expect() from tests that use assert.step(),
+or enable QUnit.config.countStepsAsOne to prepare for the upgrade.
+</code></pre></div></div>
+
+<p>Before: QUnit 2.x without <code class="language-plaintext highlighter-rouge">QUnit.config.countStepsAsOne</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span> <span class="c1">// 1, 2, 3, 4</span>
+  <span class="p">});</span>
+  <span class="kd">var</span> <span class="nx">song</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">sing</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Favorite Things</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">lines</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">song</span><span class="p">.</span><span class="nx">finished</span><span class="p">,</span> <span class="dl">'</span><span class="s1">finished</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// 5</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span> <span class="c1">// 6</span>
+    <span class="dl">'</span><span class="s1">Raindrops</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">roses</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">whiskers</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">kittens</span><span class="dl">'</span>
+  <span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>After: QUnit 2.x with <a href="/api/config/countStepsAsOne/"><code class="language-plaintext highlighter-rouge">QUnit.config.countStepsAsOne</code></a> enabled, or on QUnit 3.0:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+  <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">noun</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="nx">word</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="kd">var</span> <span class="nx">song</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">MyVoice</span><span class="p">.</span><span class="nf">sing</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Favorite Things</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">lines</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">song</span><span class="p">.</span><span class="nx">finished</span><span class="p">,</span> <span class="dl">'</span><span class="s1">finished</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// 1</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span> <span class="c1">// 2</span>
+    <span class="dl">'</span><span class="s1">Raindrops</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">roses</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">whiskers</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">kittens</span><span class="dl">'</span>
+  <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -287,7 +298,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#migration-guide">Migration guide</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-no-assertions">Example: No assertions</a></li><li class="sidebar-item"><a href="#example-custom-assert">Example: Custom assert</a></li><li class="sidebar-item"><a href="#example-explicit-count">Example: Explicit count</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a></li><li class="sidebar-item"><a href="#changelog">Changelog</a></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#example-no-assertions">Example: No assertions</a></li><li class="sidebar-item"><a href="#example-custom-assert">Example: Custom assert</a></li><li class="sidebar-item"><a href="#example-explicit-count">Example: Explicit count</a></li></ol></li><li class="sidebar-item"><a href="#migration-countstepsasone">Migration: countStepsAsOne</a></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>
