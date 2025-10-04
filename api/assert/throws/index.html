@@ -110,10 +110,10 @@
   <li>An Error object.</li>
   <li>An Error constructor, evaluated as <code class="language-plaintext highlighter-rouge">errorValue instanceof expectedMatcher</code>.</li>
   <li>A RegExp that matches (or partially matches) the string representation.</li>
-  <li>A callback Function that must return <code class="language-plaintext highlighter-rouge">true</code> to pass the assertion check.</li>
+  <li>A callback with your own custom validation, that returns <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</li>
 </ul>
 
-<p class="note">In very few environments, like Closure Compiler, <code class="language-plaintext highlighter-rouge">throws</code> may cause an error. There you can use <code class="language-plaintext highlighter-rouge">assert.raises()</code>. It has the same signature and behaviour, just a different name.</p>
+<p class="note">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use <code class="language-plaintext highlighter-rouge">assert.raises()</code>, which is an alias for <code class="language-plaintext highlighter-rouge">assert.throws()</code>. It has the same signature and behaviour.</p>
 
 <h2 id="changelog">Changelog</h2>
 

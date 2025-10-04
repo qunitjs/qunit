@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-04-20T20:34:14+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Test lifecycle diagram</title><link href="https://qunitjs.com/blog/2025/04/20/test-lifecycle/" rel="alternate" type="text/html" title="Test lifecycle diagram" /><published>2025-04-20T00:00:00+00:00</published><updated>2025-04-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/04/20/test-lifecycle</id><content type="html" xml:base="https://qunitjs.com/blog/2025/04/20/test-lifecycle/"><![CDATA[<p>Ever wondered how beforeEach works in unit test frameworks?</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-10-04T20:57:23+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Test lifecycle diagram</title><link href="https://qunitjs.com/blog/2025/04/20/test-lifecycle/" rel="alternate" type="text/html" title="Test lifecycle diagram" /><published>2025-04-20T00:00:00+00:00</published><updated>2025-04-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/04/20/test-lifecycle</id><content type="html" xml:base="https://qunitjs.com/blog/2025/04/20/test-lifecycle/"><![CDATA[<p>Ever wondered how beforeEach works in unit test frameworks?</p>
 
 <h2 id="test-lifecycle">Test lifecycle</h2>
 
@@ -117,7 +117,7 @@ Result    This is actual.
 Source:   @/test/example.js:3:10
 " /></figure>
 
-<p>The “real” stack trace is actually quite a bit longer, but we rebase it to become trace for your assertion. We remove lines before your assertion point (i.e. QUnit calling your test function), and remove any calls after that point (i.e. code inside an assert function).</p>
+<p>The “real” stack trace is actually quite a bit longer, but we rebase it to become the trace to your assertion. We remove lines before your assertion point (i.e. QUnit calling your test function), and remove any calls after that point (i.e. code inside an assertion method).</p>
 
 <p>This works well in browsers. But, when it comes to Node.js, we can do better!</p>
 
@@ -125,7 +125,7 @@ Source:   @/test/example.js:3:10
 
 <p>Web browsers generally don’t expose their own internals to stack traces at all. For example, the internals of <code class="language-plaintext highlighter-rouge">fetch()</code>, or <code class="language-plaintext highlighter-rouge">setTimeout()</code>. <sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">[2]</a></sup> Node.js implements many of its internals in JavaScript, which are sometimes visible in a stack trace.</p>
 
-<p>Let’s look a slow example test:</p>
+<p>Let’s look at an example test:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">slow example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
@@ -157,7 +157,7 @@ Source:   @/test/example.js:3:10
 
 <h3 id="hide-internal-frames">Hide internal frames</h3>
 
-<p>While these functions are not called inside QUnit, we hide them because this timer is scheduled by QUnit. In this case, there are other stack frames and we can omit the trace entirely, for an even cleaner result. The same result in QUnit 2.24.0:</p>
+<p>While these functions are not called inside QUnit, we hide them because this timer is scheduled by QUnit. In this case, there are no other stack frames and we can omit the trace entirely, for an even cleaner result. The same result in QUnit 2.24.0:</p>
 
 <div class="language-tap highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">TAP version 13
 </span><span class="gr">not ok</span> <span class="mi">1</span> slow example
@@ -214,7 +214,7 @@ Source:   @/test/example.js:3:10
 
 <h3 id="trimming-traces">Trimming traces</h3>
 
-<p>For assertion failures and uncaught exceptions alike, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can’t trim, are greyed out instead. This works similar to Node.js’ error handler.</p>
+<p>For both assertion failures and uncaught exceptions, we only trim internal frames from the start or end of a stack. Removing frames from the middle would falsely present a call relationship that never happened, and would cause confusion among developers. Instead, frames we can’t trim, are greyed out. This works similar to Node.js’ error handler.</p>
 
 <h2 id="tap-reporter">TAP reporter</h2>
 
