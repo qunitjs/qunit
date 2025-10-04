@@ -30,7 +30,7 @@ In addition, QUnit 1.16 contains several improvements and new features:
 * [QUnit.skip](https://api.qunitjs.com/QUnit.skip/): This method can be used to define tests that aren't executed, as placeholders or to temporarily disable an existing test (instead of commenting it out). The skipped test is still displayed in the HTML reporter, marked prominently as "SKIPPED".
 * `testId` URL parameter: When clicking the "Rerun" link for a single test, a hash of the test name is now used to reference the test, called `testId`, instead of the previous `testNumber`. Using a hash makes sure that the order of tests can change, and QUnit will still rerun the same test you've selected before.
 * [CommonJS exports](https://github.com/jquery/qunit/blob/1.16.0/test/rhino-test.js): QUnit now also looks for a `exports` object and uses that to export itself, making QUnit usable on Rhino with the `-require` option.
-* There are a few more minor changes. For a full list, [check out the changelog](https://github.com/jquery/qunit/blob/1.16.0/History.md).
+* There are a few more minor changes. For a full list, [check out the changelog]({% post_url 2014-12-03-qunit-1-16-0 %}).
 
 ## Roadmap
 

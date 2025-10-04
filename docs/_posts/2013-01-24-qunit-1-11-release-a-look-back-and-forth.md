@@ -6,13 +6,13 @@ tags:
 - feature
 ---
 		
-Earlier this week, we released a new version of [QUnit](http://qunitjs.com/), jQuery's solution for unit testing JavaScript. Along with some details on the new release, I wanted to take this opportunity to tell you a bit more about QUnit, where it came from and where it is going. [I'm also looking for your input](https://docs.google.com/spreadsheet/viewform?formkey=dDBzQl9TWmQzbDdXS08wMTBuLTlObXc6MQ#gid=0), to help us shape the future of JavaScript testing.
+Earlier this week, we [released]({% post_url 2013-01-20-qunit-1-11-0 %})  a new version of [QUnit](http://qunitjs.com/), jQuery's solution for unit testing JavaScript. Along with some details on the new release, I wanted to take this opportunity to tell you a bit more about QUnit, where it came from and where it is going. [I'm also looking for your input](https://docs.google.com/spreadsheet/viewform?formkey=dDBzQl9TWmQzbDdXS08wMTBuLTlObXc6MQ#gid=0), to help us shape the future of JavaScript testing.
 
 ## New in 1.11
 
 The most visible change (aside from our new purple logo) is a runtime display for individual tests. Before, QUnit would show you how long it took to run a full test suite. Now it'll also show individual times for each test, making it easy to spot slow tests in your test suite. Since it's useful to have unit tests finish within seconds, tuning tests now becomes a bit easier.
 
-Other changes are mostly bug fixes to built-in features, and various improvements to&nbsp;[add-ons](http://qunitjs.com/addons/). There's&nbsp;[a new theme](http://jquery.github.com/qunit/addons/themes/ninja.html), a overhaul of the&nbsp;[PhantomJS add-on](https://github.com/jquery/qunit/tree/master/addons/phantomjs) to use its [callback system](https://github.com/ariya/phantomjs/wiki/API-Reference#wiki-webpage-onCallback) and more. Check out the [changelog](https://github.com/jquery/qunit/blob/v1.11.0/History.md) for a full list of changes.
+Other changes are mostly bug fixes to built-in features, and various improvements to&nbsp;[add-ons](http://qunitjs.com/addons/). There's&nbsp;[a new theme](https://github.com/Krinkle/qunit-theme-ninja), a overhaul of the&nbsp;[PhantomJS add-on](https://github.com/qunitjs/qunit/tree/1.13.0/addons/phantomjs) to use its [callback system](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#webpage-onCallback) and more. Check out the [changelog]({% post_url 2013-01-20-qunit-1-11-0 %}) for a full list of changes.
 
 ## QUnit's Evolution
 
