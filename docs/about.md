@@ -27,11 +27,11 @@ QUnit should be opinionated with a lean API to support being easy-to-use, yet hi
 
 Between API design, feature implementation, ticket triage, bug fixing, and everything else, there’s a lot of work that goes into QUnit, and all of it is done by volunteers. While we value all of our contributors, there are a few who contribute frequently, provide high-level direction for the project, and are responsible for its overall maintenance, and we recognize them below.
 
-For a full list of contributors, see the [authors list](https://github.com/qunitjs/qunit/blob/master/AUTHORS.txt).
+For a full list of contributors, see the [authors list](https://github.com/qunitjs/qunit/blob/main/AUTHORS.txt).
 
 ### [Timo Tijhof](https://timotijhof.net/) - Project Lead
 
-Timo is a senior engineer at [Wikimedia Foundation](https://www.wikimedia.org/) where he is on the [Architecture Committee](https://www.mediawiki.org/wiki/Architecture_committee), the technical committee that governs the integrity and stability of Wikimedia software projects. He has been contributing to jQuery Foundation projects since 2011, joined the QUnit Team in 2012, and became the project lead in mid-2020.
+Timo is a principal engineer at [Wikimedia Foundation](https://www.wikimedia.org/). He has been contributing to jQuery Foundation projects since 2011, joined the QUnit Team in 2012, and became the project lead in mid-2020.
 
 ### [Richard Gibson](https://twitter.com/gibson042)
 
@@ -50,7 +50,7 @@ Jörn is a freelance web developer, consultant, and trainer, residing in Cologne
 * [James M. Greene](https://jamesmgreene.github.io/)
 * [John Resig](https://johnresig.com/)
 * [Kevin Partington](https://github.com/platinumazure)
-* [Leo Balter](https://twitter.com/leobalter)
+* [Leo Balter](https://twitter.com/leobalter) (project lead 2015-2017)
 * [Scott González](http://nemikor.com/)
 
 ## History
