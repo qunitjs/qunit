@@ -51,6 +51,11 @@ h3 a {
   height: auto;
 }
 
+.main iframe {
+  width: revert-layer;
+  max-width: 100%;
+}
+
 .content figure {
   margin: $size-spacing 0;
   text-align: center;
