@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-10-04T22:55:39+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Test lifecycle diagram</title><link href="https://qunitjs.com/blog/2025/04/20/test-lifecycle/" rel="alternate" type="text/html" title="Test lifecycle diagram" /><published>2025-04-20T00:00:00+00:00</published><updated>2025-04-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/04/20/test-lifecycle</id><content type="html" xml:base="https://qunitjs.com/blog/2025/04/20/test-lifecycle/"><![CDATA[<p>Ever wondered how beforeEach works in unit test frameworks?</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-10-07T08:59:40+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Link: Use QUnit to test your SAPUI5 applications</title><link href="https://qunitjs.com/blog/2025/08/19/sapui5-qunit/" rel="alternate" type="text/html" title="Link: Use QUnit to test your SAPUI5 applications" /><published>2025-08-19T00:00:00+00:00</published><updated>2025-08-19T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/08/19/sapui5-qunit</id><content type="html" xml:base="https://qunitjs.com/blog/2025/08/19/sapui5-qunit/"><![CDATA[<p>Ansgar Lichter wrote <a href="https://community.sap.com/t5/technology-blog-posts-by-sap/how-to-use-latest-qunit-and-sinon-to-test-your-sapui5-applications/ba-p/14156476">How to use latest QUnit and Sinon to test your SAPUI5 applications</a> on the SAP Technology Blog:</p>
+
+<blockquote>
+  <p>In this post, we’ll walk you through a setup that allows you to integrate the latest versions of Sinon and QUnit into your SAPUI5 project, unlocking its latest features, superior type-safety, and a much-improved developer experience. Let’s get started! […]</p>
+</blockquote>
+
+<p>(via <a href="https://bsky.app/profile/scntechblogs.marianzeis.de/post/3lwqmys6cvz27">@scntechblogs.marianzeis.de on Bluesky</a>)</p>]]></content><author><name>Timo Tijhof</name></author><category term="link" /><summary type="html"><![CDATA[Ansgar Lichter wrote How to use latest QUnit and Sinon to test your SAPUI5 applications on the SAP Technology Blog:]]></summary></entry><entry><title type="html">Test lifecycle diagram</title><link href="https://qunitjs.com/blog/2025/04/20/test-lifecycle/" rel="alternate" type="text/html" title="Test lifecycle diagram" /><published>2025-04-20T00:00:00+00:00</published><updated>2025-04-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/04/20/test-lifecycle</id><content type="html" xml:base="https://qunitjs.com/blog/2025/04/20/test-lifecycle/"><![CDATA[<p>Ever wondered how beforeEach works in unit test frameworks?</p>
 
 <h2 id="test-lifecycle">Test lifecycle</h2>
 
@@ -46,7 +52,15 @@
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.1">Git tag: 2.24.1</a></li>
   <li><a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0 Released: Add memory to the “runEnd” event</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry><entry><title type="html">QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry><entry><title type="html">Link: WebdriverIO QUnit Service</title><link href="https://qunitjs.com/blog/2025/01/22/wdio-qunit-service/" rel="alternate" type="text/html" title="Link: WebdriverIO QUnit Service" /><published>2025-01-22T00:00:00+00:00</published><updated>2025-01-22T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/22/wdio-qunit-service</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/22/wdio-qunit-service/"><![CDATA[<p>Mauricio Lauffer demo’ing the new <a href="https://webdriver.io/docs/wdio-qunit-service/">wdio-qunit-service</a> package:</p>
+
+<blockquote>
+  <p>WebdriverIO QUnit Service now supports all sort of QUnit usage in SAP Fiori and UI5 apps! Whatever UI5/QUnit testing method you’re using, you can run it with wdio-qunit-service.
+All you need is a wdio.conf.js file. Have a look at an example:
+<a href="https://github.com/UI5/sample-app/pull/263">https://github.com/UI5/sample-app/pull/263</a></p>
+</blockquote>
+
+<p>(via <a href="https://bsky.app/profile/mauriciolauffer.bsky.social/post/3lgdbcls73c2s">@mauriciolauffer on Bluesky</a>)</p>]]></content><author><name>Timo Tijhof</name></author><category term="link" /><summary type="html"><![CDATA[Mauricio Lauffer demo’ing the new wdio-qunit-service package:]]></summary></entry><entry><title type="html">QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
 <ul>
   <li>✨ There is a new <a href="https://qunitjs.com/blog/">QUnit Blog</a>.
 We’re also on <a href="https://fosstodon.org/@qunit">Mastodon</a> and <a href="https://bsky.app/profile/qunitjs.com">Bluesky</a>.</li>
@@ -311,45 +325,4 @@ Source:   @/test/example.js:3:10
 
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.1">Git tag: 2.21.1</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Various bug fixes, and improved stack trace formatting.]]></summary></entry><entry><title type="html">QUnit 2.21.0 Released: Add assert.closeTo</title><link href="https://qunitjs.com/blog/2024/05/29/qunit-2-21-0/" rel="alternate" type="text/html" title="QUnit 2.21.0 Released: Add assert.closeTo" /><published>2024-05-29T00:00:00+00:00</published><updated>2024-05-29T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/05/29/qunit-2-21-0</id><content type="html" xml:base="https://qunitjs.com/blog/2024/05/29/qunit-2-21-0/"><![CDATA[<p>Introduce <a href="https://qunitjs.com/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a> to make number comparisons easy. Credit to James M. Greene for the original <a href="https://github.com/JamesMGreene/qunit-assert-close/">qunit-assert-close plugin</a>!</p>
-
-<p>This release deprecates tests that don’t set a timeout but take longer than 3 seconds. See also <a href="https://qunitjs.com/api/config/testTimeout/#deprecated-no-timeout-set">How to set a timeout</a>.</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<h3 id="added">Added</h3>
-
-<ul>
-  <li>Assert: Add <a href="https://qunitjs.com/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a> for float-friendly number comparisons. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1735">#1735</a></li>
-  <li>Core: Add support for <a href="https://qunitjs.com/api/config/">flat preconfig</a> via environment/global variables. (Timo Tijhof)</li>
-</ul>
-
-<h3 id="deprecated">Deprecated</h3>
-
-<ul>
-  <li>Core: Deprecate <code class="language-plaintext highlighter-rouge">QUnit.load()</code> and document migration path at <a href="https://qunitjs.com/api/QUnit/load/">https://qunitjs.com/api/QUnit/load/</a>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/pull/1743">#1743</a></li>
-  <li>Core: Deprecate unset <a href="https://qunitjs.com/api/config/testTimeout/#deprecated-no-timeout-set">testTimeout</a> for tests taking longer than 3 seconds. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1483">#1483</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.21.0">Git tag: 2.21.0</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Introduce assert.closeTo() to make number comparisons easy. Credit to James M. Greene for the original qunit-assert-close plugin!]]></summary></entry><entry><title type="html">QUnit 2.20.1 Released: Bug fixes</title><link href="https://qunitjs.com/blog/2024/02/15/qunit-2-20-1/" rel="alternate" type="text/html" title="QUnit 2.20.1 Released: Bug fixes" /><published>2024-02-15T00:00:00+00:00</published><updated>2024-02-15T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/02/15/qunit-2-20-1</id><content type="html" xml:base="https://qunitjs.com/blog/2024/02/15/qunit-2-20-1/"><![CDATA[<p>Fix IE compat with <code class="language-plaintext highlighter-rouge">sinon.useFakeTimers</code>, and fix hanging <code class="language-plaintext highlighter-rouge">assert.async()</code>.</p>
-
-<p>Welcome Timmy Willison as QUnit contributor!</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>Core: Fix compatibility with <code class="language-plaintext highlighter-rouge">sinon.useFakeTimers</code> in IE 10 and IE 11. (Timmy Willison) <a href="https://github.com/qunitjs/qunit/pull/1738">#1738</a></li>
-  <li>Core: Fix hanging <code class="language-plaintext highlighter-rouge">assert.async()</code> after <code class="language-plaintext highlighter-rouge">assert.timeout()</code>. (Timo Tijhof) <a href="https://github.com/qunitjs/qunit/issues/1705">#1705</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.20.1">Git tag: 2.20.1</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Fix IE compat with sinon.useFakeTimers, and fix hanging assert.async().]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Various bug fixes, and improved stack trace formatting.]]></summary></entry></feed>
