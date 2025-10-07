@@ -51,11 +51,6 @@ h3 a {
   height: auto;
 }
 
-.main iframe {
-  width: revert-layer;
-  max-width: 100%;
-}
-
 .content figure {
   margin: $size-spacing 0;
   text-align: center;
@@ -114,6 +109,18 @@ h3 a {
 
 .content a.footnote {
   text-decoration: none;
+}
+
+/* Home */
+
+.example-result iframe {
+    width: 100%;
+    border-radius: 3px;
+}
+
+.example-result iframe,
+.example-result pre {
+    height: 360px;
 }
 
 /* Browser */
