@@ -4,6 +4,7 @@
     "2024-06: npmjs.com responds HTTP 429 Too Many Requests too easily",
     "2024-07: element.io and gitter.im chat rooms render fine but oddly use HTTP 404",
     "2025-01: github.com responds HTTP 429 Too Many Requests for the bulk of trivial links. We can probably keep a few other GitHub links.",
+    "2025-10: github.com now responds HTTP 429 Too Many Requests even when only a handful.",
     ""
   ],
   "exclude_scheme_prefixes": [
@@ -11,8 +12,9 @@
     "https://app.element.io/",
     "https://app.gitter.im/",
     "https://www.npmjs.com/package/",
-    "https://github.com/qunitjs/qunit/issues/",
-    "https://github.com/qunitjs/qunit/pull/",
-    "https://github.com/qunitjs/qunit/blob/main/docs/_posts/"
+    "https://npmjs.com/package/",
+    "https://www.npmjs.com/search",
+    "https://npmjs.com/search",
+    "https://github.com/"
   ]
 }
