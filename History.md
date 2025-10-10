@@ -55,6 +55,13 @@
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
+2.24.2 / 2025-10-09
+==================
+
+### Fixed
+
+* CLI: Fix TAP compliance for colon in unquoted YAML diag. [dbc02fb9fe](https://github.com/qunitjs/qunit/commit/dbc02fb9fe001a4544b04a6d1b5db2a1a1f6fa7b)
+
 2.24.1 / 2025-01-25
 ==================
 
