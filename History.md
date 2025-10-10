@@ -1,3 +1,11 @@
+
+2.24.2 / 2025-10-09
+==================
+
+### Fixed
+
+* CLI: Fix TAP compliance for colon in unquoted YAML diag. [dbc02fb9fe](https://github.com/qunitjs/qunit/commit/dbc02fb9fe001a4544b04a6d1b5db2a1a1f6fa7b)
+
 2.24.1 / 2025-01-25
 ==================
 
