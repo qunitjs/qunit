@@ -3,14 +3,14 @@
 TAP version 13
 not ok 1 global hook throws
   ---
-  message: Global beforeEach failed on global hook throws: Error: banana
+  message: "Global beforeEach failed on global hook throws: Error: banana"
   severity: failed
   stack: |
     Error: banana
         at /qunit/test/cli/fixtures/hooks-global-throw.js:3:11
   ...
   ---
-  message: Global afterEach failed on global hook throws: Error: apple
+  message: "Global afterEach failed on global hook throws: Error: apple"
   severity: failed
   stack: |
     Error: apple

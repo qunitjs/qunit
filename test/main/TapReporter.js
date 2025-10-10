@@ -182,7 +182,7 @@ QUnit.module('TapReporter', function (hooks) {
 
     assert.strictEqual(buffer, 'not ok 1 global failure\n'
 + '  ---\n'
-+ '  message: ReferenceError: Boo is not defined\n'
++ '  message: "ReferenceError: Boo is not defined"\n'
 + '  severity: failed\n'
 + '  stack: |\n'
 + '        at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'

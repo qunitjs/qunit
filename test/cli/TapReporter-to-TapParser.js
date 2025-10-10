@@ -118,6 +118,40 @@ QUnit.module('TapReporter-to-TapParser', hooks => {
     });
   });
 
+  QUnit.test('Quoting [colon]', async (assert) => {
+    emitter.emit('runStart');
+    emitter.emit('testEnd', {
+      fullName: ['example'],
+      status: 'failed',
+      runtime: 0,
+      errors: [{
+        message: 'behold: the colon'
+      }]
+    });
+    emitter.emit('runEnd', {
+      testCounts: {
+        total: 1,
+        passed: 0,
+        failed: 1,
+        skipped: 0,
+        todo: 0
+      }
+    });
+
+    assert.propContains(await getParseResult(), {
+      ok: false,
+      failures: [
+        {
+          ok: false,
+          name: 'example',
+          diag: {
+            message: 'behold: the colon'
+          }
+        }
+      ]
+    });
+  });
+
   QUnit.test('Deep equal failure', async (assert) => {
     emitter.emit('runStart');
     emitter.emit('testEnd', {

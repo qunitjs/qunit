@@ -61,7 +61,10 @@ function prettyYamlValue (value, indent = 2) {
     // cause data loss or invalid YAML syntax.
     //
     // - Quotes, escapes, line breaks, or JSON-like stuff.
-    const rSpecialJson = /['"\\/[{}\]\r\n]/;
+    // - Not allowed in YAML unquoted strings per https://yaml.org/spec/1.2.2/#733-plain-style
+    //   * ": " (colon followed by space)
+    //   * " #" (space followed by hash)
+    const rSpecialJson = /['"\\/[{}\]\r\n|:#]/;
 
     // - Characters that are special at the start of a YAML value
     const rSpecialYaml = /[-?:,[\]{}#&*!|=>'"%@`]/;

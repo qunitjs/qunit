@@ -4,7 +4,7 @@ TAP version 13
 FOUND Unhandled Rejection: bad things happen
 not ok 1 example > passing test
   ---
-  message: global failure: bad things happen
+  message: "global failure: bad things happen"
   severity: failed
   stack: |
         at internal

@@ -4,7 +4,7 @@
 TAP version 13
 not ok 1 adds global var
   ---
-  message: Introduced global variable(s): dummyGlobal
+  message: "Introduced global variable(s): dummyGlobal"
   severity: failed
   ...
 1..1

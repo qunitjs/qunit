@@ -3,7 +3,7 @@
 TAP version 13
 not ok 1 global failure
   ---
-  message: Error: No tests were run.
+  message: "Error: No tests were run."
   severity: failed
   stack: |
     Error: No tests were run.

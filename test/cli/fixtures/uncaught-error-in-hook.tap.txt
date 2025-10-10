@@ -4,7 +4,7 @@
 TAP version 13
 not ok 1 contains a hard error in hook > contains a hard error
   ---
-  message: before failed on contains a hard error: expected error thrown in hook
+  message: "before failed on contains a hard error: expected error thrown in hook"
   severity: failed
   stack: |
     Error: expected error thrown in hook
