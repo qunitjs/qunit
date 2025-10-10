@@ -74,11 +74,11 @@ ok 1 add > two numbers
 
 ## Current Release
 
-<p class="lead lead--center">v2.24.1 (<a href="https://github.com/qunitjs/qunit/blob/2.24.1/History.md">changelog</a>)</p>
+<p class="lead lead--center">v2.24.2 (<a href="https://github.com/qunitjs/qunit/blob/2.24.2/History.md">changelog</a>)</p>
 
 These are the official [release channels](intro.md#download) for QUnit:
 
-* Download: [`qunit-2.24.1.js`](https://code.jquery.com/qunit/qunit-2.24.1.js) and [`qunit-2.24.1.css`](https://code.jquery.com/qunit/qunit-2.24.1.css)
+* Download: [`qunit-2.24.2.js`](https://code.jquery.com/qunit/qunit-2.24.2.js) and [`qunit-2.24.2.css`](https://code.jquery.com/qunit/qunit-2.24.2.css)
 * npm: `npm install --save-dev qunit`
 * Yarn: `yarn add --dev qunit`
 
