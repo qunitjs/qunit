@@ -10,7 +10,7 @@ ok 1 module1 > test1
 # fail 0
 Bail out! Error: No dice
   ---
-  message: Error: No dice
+  message: "Error: No dice"
   severity: failed
   stack: |
     Error: No dice

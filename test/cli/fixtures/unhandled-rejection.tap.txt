@@ -4,7 +4,7 @@
 TAP version 13
 not ok 1 global failure
   ---
-  message: Error: outside of a test context
+  message: "Error: outside of a test context"
   severity: failed
   stack: |
     Error: outside of a test context
@@ -16,7 +16,7 @@ not ok 1 global failure
 Bail out! Error: outside of a test context
 not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promise
   ---
-  message: global failure: Error: Error thrown in non-returned promise!
+  message: "global failure: Error: Error thrown in non-returned promise!"
   severity: failed
   stack: |
     Error: Error thrown in non-returned promise!

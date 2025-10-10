@@ -4,7 +4,7 @@
 TAP version 13
 not ok 1 global failure
   ---
-  message: Error: No dice
+  message: "Error: No dice"
   severity: failed
   stack: |
     Error: No dice

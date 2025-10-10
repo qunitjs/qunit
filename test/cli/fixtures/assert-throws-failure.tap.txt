@@ -6,7 +6,7 @@ not ok 1 Throws match > bad
   ---
   message: match error
   severity: failed
-  actual  : Error: Match me with a pattern
+  actual  : "Error: Match me with a pattern"
   expected: "/incorrect pattern/"
   stack: |
         at /qunit/test/cli/fixtures/assert-throws-failure.js:3:12

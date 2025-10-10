@@ -180,7 +180,7 @@ Bail out! Boo
 
     assert.strictEqual(buffer, `not ok 1 global failure
   ---
-  message: ReferenceError: Boo is not defined
+  message: "ReferenceError: Boo is not defined"
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
