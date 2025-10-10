@@ -1,4 +1,3 @@
-const kleur = require('kleur');
 const { EventEmitter } = require('events');
 
 function mockStack (error) {
@@ -29,7 +28,14 @@ QUnit.module('TapReporter', hooks => {
   let last;
   let buffer;
 
+  function stripAsciEscapes (text) {
+    // eslint-disable-next-line no-control-regex
+    return text.replace(/\x1b\[[0-9]+m/g, '');
+  }
+
   function log (str) {
+    // Test independently of stdout.isTTY or env.FORCE_COLOR
+    str = stripAsciEscapes(str);
     buffer += str + '\n';
     last = str;
   }
@@ -69,7 +75,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output ok for a skipped test', assert => {
-    const expected = 'ok 1 ' + kleur.yellow('name') + ' # SKIP';
+    const expected = 'ok 1 name # SKIP';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -84,7 +90,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output not ok for a todo test', assert => {
-    const expected = 'not ok 1 ' + kleur.cyan('name') + ' # TODO';
+    const expected = 'not ok 1 name # TODO';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -99,7 +105,7 @@ QUnit.module('TapReporter', hooks => {
   });
 
   QUnit.test('output not ok for a failing test', assert => {
-    const expected = 'not ok 1 ' + kleur.red('name');
+    const expected = 'not ok 1 name';
 
     emitter.emit('testEnd', {
       name: 'name',
@@ -127,13 +133,13 @@ QUnit.module('TapReporter', hooks => {
       assertions: []
     });
 
-    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('name') + `
+    assert.strictEqual(buffer, `not ok 1 name
   ---
   message: first error
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
+        at require (internal/helpers.js:22:18)
         at /dev/null/src/example/foo.js:220:27
   ...
   ---
@@ -141,7 +147,7 @@ QUnit.module('TapReporter', hooks => {
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
+        at require (internal/helpers.js:22:18)
         at /dev/null/src/example/foo.js:220:27
   ...
 `
@@ -154,7 +160,7 @@ QUnit.module('TapReporter', hooks => {
 
     emitter.emit('error', 'Boo');
 
-    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + `
+    assert.strictEqual(buffer, `not ok 1 global failure
   ---
   message: Boo
   severity: failed
@@ -172,13 +178,13 @@ Bail out! Boo
     mockStack(err);
     emitter.emit('error', err);
 
-    assert.strictEqual(buffer, 'not ok 1 ' + kleur.red('global failure') + `
+    assert.strictEqual(buffer, `not ok 1 global failure
   ---
   message: ReferenceError: Boo is not defined
   severity: failed
   stack: |
         at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)
-    ${kleur.grey('    at require (internal/helpers.js:22:18)')}
+        at require (internal/helpers.js:22:18)
         at /dev/null/src/example/foo.js:220:27
   ...
 Bail out! ReferenceError: Boo is not defined
@@ -427,9 +433,9 @@ Bail out! ReferenceError: Boo is not defined
 
     assert.strictEqual(buffer, `1..6
 # pass 3
-# ${kleur.yellow('skip 1')}
-# ${kleur.cyan('todo 0')}
-# ${kleur.red('fail 2')}
+# skip 1
+# todo 0
+# fail 2
 `
     );
   });

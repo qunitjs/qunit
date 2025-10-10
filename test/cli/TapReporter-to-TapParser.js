@@ -5,8 +5,14 @@ QUnit.module('TapReporter-to-TapParser', hooks => {
   let emitter;
   let buffer = '';
 
+  function stripAsciEscapes (text) {
+    // eslint-disable-next-line no-control-regex
+    return text.replace(/\x1b\[[0-9]+m/g, '');
+  }
+
   function log (str) {
-    buffer += str + '\n';
+    // Test independently of stdout.isTTY or env.FORCE_COLOR
+    buffer += stripAsciEscapes(str) + '\n';
   }
 
   async function getParseResult () {
@@ -99,7 +105,7 @@ QUnit.module('TapReporter-to-TapParser', hooks => {
       failures: [
         {
           ok: false,
-          name: '\u001b[31mexample\u001b[39m',
+          name: 'example',
           diag: {
             message: 'equal',
             severity: 'failed',
@@ -150,7 +156,7 @@ QUnit.module('TapReporter-to-TapParser', hooks => {
       failures: [
         {
           ok: false,
-          name: '\u001b[31mexample\u001b[39m',
+          name: 'example',
           diag: {
             message: 'deepEqual',
             severity: 'failed',
@@ -205,7 +211,7 @@ QUnit.module('TapReporter-to-TapParser', hooks => {
         name: 'example'
       }, {
         ok: true,
-        name: '\u001b[33mhello\u001b[39m'
+        name: 'hello'
       }]
     });
   });
