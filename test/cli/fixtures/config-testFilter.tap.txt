@@ -1,0 +1,11 @@
+# name: config.testFilter
+# command: ["qunit", "config-testFilter.js"]
+
+TAP version 13
+ok 1 testFilter demo > stable test
+ok 2 testFilter demo > another stable test
+1..2
+# pass 2
+# skip 0
+# todo 0
+# fail 0
