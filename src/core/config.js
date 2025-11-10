@@ -25,6 +25,11 @@ const config = {
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: '',
 
+  // Programmatic callback to filter tests
+  // Receives testInfo: { testId, testName, module, skip }
+  // Return true to run test, false to skip it
+  testFilter: null,
+
   fixture: undefined,
 
   // HTML Reporter: Hide results of passed tests.
