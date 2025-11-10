@@ -29,6 +29,8 @@ const config = {
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: undefined,
 
+  testFilter: null,
+
   // TODO: Make explicit in QUnit 3.
   // fixture: undefined,
 

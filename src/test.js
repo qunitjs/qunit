@@ -881,15 +881,34 @@ Test.prototype = {
     }
 
     const filter = config.filter;
-    if (!filter) {
-      return true;
+    if (filter) {
+      const regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec(filter);
+      const fullName = (this.module.name + ': ' + this.testName);
+      if (regexFilter) {
+        if (!this.regexFilter(!!regexFilter[1], regexFilter[2], regexFilter[3], fullName)) {
+          return false;
+        }
+      } else if (!this.stringFilter(filter, fullName)) {
+        return false;
+      }
     }
 
-    const regexFilter = /^(!?)\/([\w\W]*)\/(i?$)/.exec(filter);
-    const fullName = (this.module.name + ': ' + this.testName);
-    return regexFilter
-      ? this.regexFilter(!!regexFilter[1], regexFilter[2], regexFilter[3], fullName)
-      : this.stringFilter(filter, fullName);
+    if (typeof config.testFilter === 'function') {
+      const testInfo = {
+        testId: this.testId,
+        testName: this.testName,
+        module: this.module.name,
+        skip: !!this.skip
+      };
+      try {
+        return !!config.testFilter(testInfo);
+      } catch (error) {
+        Logger.warn('Error in QUnit.config.testFilter callback: ', error);
+        return false;
+      }
+    }
+
+    return true;
   },
 
   regexFilter: function (exclude, pattern, flags, fullName) {
