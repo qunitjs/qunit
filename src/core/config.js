@@ -29,6 +29,11 @@ const config = {
   // Select by pattern or case-insensitive substring match against "moduleName: testName"
   filter: undefined,
 
+  // Programmatic callback to filter tests
+  // Receives testInfo: { testId, testName, module, skip }
+  // Return true to run test, false to skip it
+  testFilter: null,
+
   // TODO: Make explicit in QUnit 3.
   // fixture: undefined,
 
