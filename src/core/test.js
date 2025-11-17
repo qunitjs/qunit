@@ -956,7 +956,7 @@ function runEach (data, eachFn) {
       //   space hack.
       // * Unambigious. While technical uniqueness is a hard requirement above,
       //   we also want the labels to be obvious and unambiguous to humans.
-      //   For example, abbrebating "foobar" and "foobaz" to "f" and "fo" is
+      //   For example, abbreviating "foobar" and "foobaz" to "f" and "fo" is
       //   technically unique, but ambigious to humans which one is which.
       // * Short and readable. Where possible we omit the array index numbers
       //   so that in most cases, the value is simply shown as-is.
