@@ -256,7 +256,7 @@ QUnit.module.skip('Robot', (hooks) => {
 });
 ```
 
-Use `QUnit.module.if()`, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed.
+Use `QUnit.module.if()`, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed. See also [`QUnit.test.if()`](./test.if.md).
 
 ```js
 QUnit.module.if('MyApp', typeof document !== 'undefined', (hooks) => {

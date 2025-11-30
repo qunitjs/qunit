@@ -23,16 +23,37 @@ If the condition is true, this is equivalent to calling [`QUnit.test()`](./test.
 
 If the conditional is false, this is equivalent to calling [`QUnit.test.skip()`](./test.skip.md), and test will not run. Instead, it will be listed in the results as a "skipped" test.
 
-As a codebase becomes bigger, you may need to conditionally skip an entire group of tests. You can use [`QUnit.module.if()`](./module.md) to recursively skip all tests in a module based on a given requirement.
+Use cases:
+* Skip tests for a feature not supported in an older browser, when cross-browser testing in CI.
+* Skip tests for code that relies on an optional dependency.
+* Skip tests for an optional integration on one operating system, when testing a cross-platform application on Linux, macOS, and Windows.
+
+You can use [`QUnit.module.if()`](./module.md) to skip several tests or nested modules at once, without repeating the same condition.
 
 ## Examples
 
-### Skip a test
+### Feature test
+
+This is an example that automatically skips a test in environments where [WebGL](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial) is unsupported. For example, if you do cross-browser testing in CI and support older browsers in your project, you can use this to cover optional features for newer browsers that are expected to fail in older browsers.
 
 ```js
 QUnit.module('MyApp');
 
-// Skip if executed without a DOM
+QUnit.test.if('drawCanvas [red square]', typeof WebGLRenderingContext !== 'undefined', function (assert) {
+  const canvas = MyApp.drawCanvas();
+  assert.pixelEqual(canvas, 10, 10, 255, 0, 0);
+  assert.pixelEqual(canvas, 20, 20, 255, 0, 0);
+});
+```
+
+### Skip a test
+
+This example is for a library that targets both browsers and Node.js, where this test is for a feature that is only meant to work in browsers, and naturally skipped when the test suite is run in Node.js.
+
+```js
+QUnit.module('MyApp');
+
+// Browser-only test, skipped if executed without a DOM
 QUnit.test.if('render', typeof document !== 'undefined', function (assert) {
   assert.strictEqual(MyApp.render(), '<p>Hello world!</p>');
 });
