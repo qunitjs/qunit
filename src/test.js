@@ -2,6 +2,7 @@ import { globalThis, setTimeout, clearTimeout, StringMap } from './globals';
 import { emit } from './events';
 import Assert from './assert';
 import Logger from './logger';
+import { clearSuiteReports } from './module';
 import Promise from './promise';
 
 import config from './core/config';
@@ -979,6 +980,8 @@ function addOnlyTest (settings) {
   }
   if (!focused) {
     config.queue.length = 0;
+    clearSuiteReports(config.currentModule);
+
     focused = true;
   }
 

@@ -4,8 +4,8 @@
 TAP version 13
 ok 1 run this test
 ok 2 all tests with only run
-1..3
-# pass 3
+1..2
+# pass 2
 # skip 0
 # todo 0
 # fail 0

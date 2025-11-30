@@ -135,6 +135,41 @@ function processModule (name, options, scope, modifiers = {}) {
   }
 }
 
+/**
+ * Clear the SuiteReport tree of all tests and leave only current module as child suite
+ *
+ * This should be called before defining the first module.only() or test.only()
+ * because otherwise:
+ * - `runEnd.testCounts` is too high.
+ * - UI (HtmlReporter) and TAP (TapReporter) display totals too high.
+ * - Test runners like QTap might timeout because the TAP plan
+ *   would be printed as "1..9" even if only 2 tests are run,
+ *   which means tap-finished will wait for 3-9.
+ */
+export function clearSuiteReports (currentModule) {
+  let childSuite = null;
+  let suiteReport = currentModule.suiteReport;
+  while (suiteReport) {
+    suiteReport.tests.length = 0;
+    const i = suiteReport.childSuites.indexOf(childSuite);
+    if (i === -1) {
+      suiteReport.childSuites.length = 0;
+    } else {
+      // Reduce in-place to just currentModule.suiteReport or its intermediary
+      suiteReport.childSuites.splice(0, i);
+      suiteReport.childSuites.splice(1);
+    }
+
+    if (suiteReport === runSuite) {
+      suiteReport = null;
+    } else {
+      childSuite = suiteReport;
+      currentModule = currentModule.parentModule;
+      suiteReport = (currentModule && currentModule.suiteReport) || runSuite;
+    }
+  }
+}
+
 let focused = false; // indicates that the "only" filter was used
 
 export function module (name, options, scope) {
@@ -149,6 +184,7 @@ module.only = function (...args) {
     // delete any and all previously registered modules and tests.
     config.modules.length = 0;
     config.queue.length = 0;
+    clearSuiteReports(config.currentModule);
 
     // Ignore any tests declared after this block within the same
     // module parent. https://github.com/qunitjs/qunit/issues/1645
