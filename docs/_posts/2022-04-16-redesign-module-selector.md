@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Redesign module selector - Fast & Fuzzy"
+image: https://user-images.githubusercontent.com/156867/162635924-ddaacfc5-4817-46ea-81a8-024048954668.gif
 author: krinkle
 tags:
 - feature

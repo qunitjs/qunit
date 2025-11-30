@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link: QUnit Hacking in Brazil"
+image: /resources/2014-brazil-hacking.jpg
 author: jzaefferer
 tags:
 - link

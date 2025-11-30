@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link: We have CLI support!"
+image: /resources/2017-qunit-cli-demo.jpg
 author: trentmwillis
 tags:
 - link

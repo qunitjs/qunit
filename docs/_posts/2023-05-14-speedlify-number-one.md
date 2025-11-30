@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link: #1 on Speedlify"
+image: /resources/2023-speedlify-leaderboard.png
 author: krinkle
 tags:
 - link

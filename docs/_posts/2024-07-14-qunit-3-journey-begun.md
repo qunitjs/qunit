@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Link: The journey to QUnit 3 has begun!"
+image: /resources/2024-qunit-3-alpha-4-demo.png
 author: krinkle
 tags:
 - link

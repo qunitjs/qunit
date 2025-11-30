@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Cleaner stack traces in QUnit"
+image: /resources/2025-stacktrace-assert-html.png
 author: krinkle
 tags:
 - feature

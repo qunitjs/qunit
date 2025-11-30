@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Introduce multi-select module picker"
+image: https://github.com/user-attachments/assets/fcfd3fb2-3b43-4177-a8cf-b89f0b1eea88
 author: Maciej Lato, Richard Gibson
 tags:
 - feature

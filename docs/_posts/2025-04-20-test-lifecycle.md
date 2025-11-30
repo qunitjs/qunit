@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Test lifecycle diagram"
+image: /resources/qunit-lifecycle-hooks-order.svg
 author: krinkle
 tags:
 - feature
