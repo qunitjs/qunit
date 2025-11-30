@@ -1,4 +1,11 @@
 
+2.24.3 / 2025-11-29
+==================
+
+### Fixed
+
+* CLI: Fix TAP compliance for test plan when using `QUnit.test.only()`. [4b87bc6aa5](https://github.com/qunitjs/qunit/commit/4b87bc6aa54afdcbb4e2c0c8c5ed277b68171507)
+
 2.24.2 / 2025-10-09
 ==================
 
