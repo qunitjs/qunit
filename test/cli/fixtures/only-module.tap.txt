@@ -16,8 +16,8 @@ ok 3 module B > Only this module should run > normal test
 ok 4 module D > test D
 ok 5 module E > module F > test F
 ok 6 module E > test E
-1..8
-# pass 6
+1..6
+# pass 4
 # skip 1
 # todo 1
 # fail 0

@@ -5,6 +5,7 @@ import dump from './dump.js';
 import { emit } from './events.js';
 import { globalThis, setTimeout, clearTimeout, StringMap } from './globals.js';
 import Logger from './logger.js';
+import { clearSuiteReports } from './module.js';
 import Promise from './promise.js';
 import TestReport from './reports/test.js';
 import { extractStacktrace, sourceFromStacktrace } from './stacktrace.js';
@@ -912,6 +913,8 @@ function addOnlyTest (settings) {
   }
   if (!focused) {
     config.queue.length = 0;
+    clearSuiteReports(config.currentModule);
+
     focused = true;
   }
 
