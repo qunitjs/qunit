@@ -390,7 +390,7 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code>, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed.</p>
+<p>Use <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code>, to conditionally skip an entire module. For example, if these tests are only meant to run in certain environments, operating systems, or when certain optional dependencies are installed. See also <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="k">if</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyApp</span><span class="dl">'</span><span class="p">,</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">hooks</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">render</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
