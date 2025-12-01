@@ -32,9 +32,8 @@ To learn how floating-point numbers work internally, refer to [Double-precision 
 
 ```js
 QUnit.test('example', function (assert) {
-  const x = 0.1 + 0.2; // 0.30000000000000004
-
   // passing: x is between 0.299 and 0.301
+  const x = 0.1 + 0.2; // 0.30000000000000004
   assert.closeTo(x, 0.3, 0.001);
 
   // passing: 3.14159 is between 3.140 and 3.142

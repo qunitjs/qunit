@@ -2,7 +2,7 @@
 layout: page-api
 title: QUnit.reporters.perf
 excerpt: |
-  The perf reporter measures each QUnit test, to then access or visualize in the browser devtools.
+  Find slow tests and visualize them in browser DevTools.
 
   <img alt="QUnit profiling in Chrome DevTools Performance tab" src="/resources/perf-chrome.png">
 groups:
@@ -10,7 +10,7 @@ groups:
 version_added: "2.7.0"
 ---
 
-The **perf** reporter measures the duration of each QUnit test and each module, which you can then access in the browser dev tools to understand where time is spent during your test run.
+The **perf** reporter measures the duration of each QUnit test and each module, and lets you access them in the browser DevTools to find slow tests and understand where time is spent during a test run.
 
 This uses the [performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) method of the User Timing API, which adds each measure to the Performance Timeline.
 

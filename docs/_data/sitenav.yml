@@ -13,6 +13,8 @@
       href: /intro/#compatibility
     - name: Test lifecycle
       href: /lifecycle/
+    - name: QUnit 3.0 Upgrade Guide
+      href: /upgrade-guide-3.x/
     - name: QUnit 2.0 Upgrade Guide
       href: /upgrade-guide-2.x/
 - name: Documentation

@@ -301,17 +301,18 @@ QUnit.module.todo('Robot', (hooks) => {
 
 ### Error: Cannot add hook outside the containing module {#E0002}
 
-If you encounter this error, it means you have called `hooks.beforeEach()` or `hooks.afterEach()` on the "hooks" parameter of a module outside the current module scope. Detection of this issue was [introduced](https://github.com/qunitjs/qunit/issues/1576) in QUnit 3.0.
+If you encounter this error, it means you have called `hooks.beforeEach()` or `hooks.afterEach()` on the "hooks" parameter of a module outside the current module scope. Detection of this issue was [introduced](https://github.com/qunitjs/qunit/issues/1576) in QUnit 2.15, and became an error in QUnit 3.
 
 ```
-Error: Cannot add beforeEach hook outside the containing module.
+Warning: The beforeEach hook was called inside the wrong module (`X`).
+Instead, use hooks provided by the callback to the containing module (`Y`).
 ```
 ```
 Error: Cannot add afterEach hook outside the containing module.
 Called on "X", instead of expected "Y".
 ```
 
-This can happen if you use a module scope and forget to specify the `hooks` parameter on the inner scope:
+This can happen if you use a scoped module and forget to specify the `hooks` parameter on the inner scope:
 
 ```js
 QUnit.module('MyGroup', (hooks) => {
@@ -327,7 +328,7 @@ QUnit.module('MyGroup', (hooks) => {
 });
 ```
 
-Another way that this might happen is if you have named them differently, or perhaps misspelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one always, thus avoiding any mistake.
+Another way that this might happen is if you have named them differently, or perhaps misspelled one, and are referring to the outer parameter from the inner module. Is is recommended to name hooks parameters the same, as this will naturally refer to the correct and closest one, avoiding this mistake.
 
 ```js
 QUnit.module('MyGroup', (hooksOuter) => {
