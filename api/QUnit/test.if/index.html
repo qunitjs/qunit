@@ -3,9 +3,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="/assets/styles.css?v=c0249d08" media="screen">
+<link rel="stylesheet" href="/assets/styles.css?v=7f81612b" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>QUnit.test.if() | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit.test.if()"><meta name="description" content="Add a test that may be skipped."><meta property="og:description" content="Add a test that may be skipped."><link rel="me" href="https://fosstodon.org/@qunit">
+<title>QUnit.test.if() | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit.test.if()"><meta name="description" content="Define a test that is automatically skipped when a condition is false."><meta property="og:description" content="Define a test that is automatically skipped when a condition is false."><link rel="me" href="https://fosstodon.org/@qunit">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -76,7 +76,7 @@
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.if( name, condition, callback )</code></p>
 
-<p>Add a test that only runs if a condition is true.</p>
+<p>Define a test that is automatically skipped when a condition is false.</p>
 
 <table>
   <thead>
@@ -103,7 +103,7 @@
 
 <p>If the condition is true, this is equivalent to calling <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>.</p>
 
-<p>If the conditional is false, this is equivalent to calling <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a>, and test will not run. Instead, it will be listed in the results as a “skipped” test.</p>
+<p>If the conditional is false, this is equivalent to calling <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a>, and the test will not run. Instead, it will be listed in the results as a “skipped” test.</p>
 
 <p>Use cases:</p>
 <ul>

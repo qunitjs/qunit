@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="/assets/styles.css?v=c0249d08" media="screen">
+<link rel="stylesheet" href="/assets/styles.css?v=7f81612b" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
 <title>assert.rejects() | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="assert.rejects()"><meta name="description" content="Test if the provided promise rejects."><meta property="og:description" content="Test if the provided promise rejects."><link rel="me" href="https://fosstodon.org/@qunit">
 <body>
@@ -135,10 +135,11 @@ comparison.</p>
 <span class="p">}</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span>
-    <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span>
-    <span class="nx">RangeError</span>
-  <span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
