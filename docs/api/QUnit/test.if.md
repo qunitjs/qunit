@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.test.if()
-excerpt: Add a test that may be skipped.
+excerpt: Define a test that is automatically skipped when a condition is false.
 groups:
   - main
 redirect_from:
@@ -11,7 +11,7 @@ version_added: "2.22.0"
 
 `QUnit.test.if( name, condition, callback )`
 
-Add a test that only runs if a condition is true.
+Define a test that is automatically skipped when a condition is false.
 
 | parameter | description |
 |-----------|-------------|
@@ -21,7 +21,7 @@ Add a test that only runs if a condition is true.
 
 If the condition is true, this is equivalent to calling [`QUnit.test()`](./test.md).
 
-If the conditional is false, this is equivalent to calling [`QUnit.test.skip()`](./test.skip.md), and test will not run. Instead, it will be listed in the results as a "skipped" test.
+If the conditional is false, this is equivalent to calling [`QUnit.test.skip()`](./test.skip.md), and the test will not run. Instead, it will be listed in the results as a "skipped" test.
 
 Use cases:
 * Skip tests for a feature not supported in an older browser, when cross-browser testing in CI.

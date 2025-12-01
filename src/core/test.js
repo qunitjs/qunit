@@ -410,10 +410,6 @@ Test.prototype = {
       passed: this.assertions.length - bad,
       total: this.assertions.length,
       runtime: skipped ? 0 : this.runtime,
-
-      // HTML Reporter use
-      // TODO: Remove "assertions". It is no longer used as of QUnit 3.0.
-      // It was only used to calculate assertions.length which is identical to "total".
       assertions: this.assertions,
       testId: this.testId,
 

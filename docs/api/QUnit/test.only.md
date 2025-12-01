@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.test.only()
-excerpt: Add a test that is exclusively run.
+excerpt: Define a test that is exclusively run.
 groups:
   - main
 redirect_from:
@@ -14,7 +14,7 @@ version_added: "1.20.0"
 `QUnit.test.only( name, callback )`<br>
 `QUnit.only( name, callback )`
 
-Add a test that is exclusively run, preventing other tests from running unless they are also defined in this way.
+Define a test that is exclusively run, preventing other tests from running unless they are also defined in this way.
 
 | parameter | description |
 |-----------|-------------|

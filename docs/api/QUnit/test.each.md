@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.test.each()
-excerpt: Add tests using a data provider.
+excerpt: Define tests using a data provider.
 groups:
   - main
 redirect_from:

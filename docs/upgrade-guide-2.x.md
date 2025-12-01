@@ -3,12 +3,6 @@ layout: page
 title: QUnit 2.0 Upgrade Guide
 ---
 
-<!--
-  Follow semistandard in code examples.
-
-  <https://github.com/standard/semistandard>
-  <https://standardjs.com/rules.html>
--->
 <p class="lead" markdown="1">This guide will assist you in upgrading from QUnit 1 to QUnit 2.</p>
 
 ## Overview

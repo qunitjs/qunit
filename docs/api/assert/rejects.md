@@ -51,10 +51,11 @@ async function feedBaby (food) {
 }
 
 QUnit.test('example', async function (assert) {
-  await assert.rejects(
-    feedBaby('sprouts'),
-    RangeError
-  );
+  assert.true(feedBaby('apple'));
+
+  await assert.rejects(feedBaby('sprouts'), RangeError);
+
+  assert.true(feedBaby('cucumber'), RangeError);
 });
 ```
 

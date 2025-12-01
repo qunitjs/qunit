@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: assert.timeout()
-excerpt: How long to wait for async operations.
+excerpt: How long a test may spend in async operations.
 groups:
   - assert
   - async
@@ -12,7 +12,7 @@ version_added: "2.4.0"
 
 `timeout( duration )`
 
-Set how long to wait for async operations to finish.
+Set how long a test may wait for async operations to finish.
 
 | name | description |
 |------|-------------|

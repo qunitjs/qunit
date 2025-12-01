@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.test.skip()
-excerpt: Add a test that will be skipped.
+excerpt: Define a test that will be skipped.
 groups:
   - main
 redirect_from:
@@ -16,7 +16,7 @@ version_added: "1.16.0"
 `QUnit.skip( name )`<br/>
 `QUnit.skip( name, callback )`
 
-Add a test that will be skipped during the run.
+Define a test that will be skipped during the run.
 
 | parameter | description |
 |-----------|-------------|

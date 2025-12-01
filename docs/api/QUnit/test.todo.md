@@ -1,7 +1,7 @@
 ---
 layout: page-api
 title: QUnit.test.todo()
-excerpt: Add a test which expects at least one failing assertion.
+excerpt: Define a test that is not yet expected to pass.
 groups:
   - main
 redirect_from:
@@ -14,7 +14,7 @@ version_added: "2.2.0"
 `QUnit.test.todo( name, callback )`<br>
 `QUnit.todo( name, callback )`
 
-Add a test which expects at least one failing assertion or exception during its run.
+Define a test that is not yet expected to pass, because the test has one or more failing assertions or throws an exception.
 
 | parameter | description |
 |-----------|-------------|
