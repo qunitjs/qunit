@@ -52,7 +52,7 @@ jobs:
             script: npm run test-nolint
 
           - name: "macOS: Node 16"
-            os: macos-13
+            os: macos-15-intel
             node: 16.x
             script: npm run test-nolint
 
