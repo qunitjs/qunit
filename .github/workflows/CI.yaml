@@ -39,7 +39,7 @@ jobs:
             script: npm run test-nolint
 
           - name: "macOS: Node 18"
-            os: macos-13
+            os: macos-latest
             node: 18.x
             script: npm run test-nolint
 
