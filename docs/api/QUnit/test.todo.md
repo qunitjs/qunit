@@ -14,7 +14,7 @@ version_added: "2.2.0"
 `QUnit.test.todo( name, callback )`<br>
 `QUnit.todo( name, callback )`
 
-Define a test that is not yet expected to pass, because the test has one or more failing assertions or throws an exception.
+Define a test that is not yet expected to pass. Use this for tests of unfinished code.
 
 | parameter | description |
 |-----------|-------------|
@@ -27,11 +27,13 @@ Define a test that is not yet expected to pass, because the test has one or more
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 
-Use this method to test a unit of code that is still under development (in a "todo" state). The "todo" test will pass as long as there is at least one assertion still failing, or if an exception is thrown.
+In [test-driven development](https://en.wikipedia.org/wiki/Test-driven_development), you can specify how code should work with tests, and then work towards making these tests pass. When collaborating in a larger project, you can share tests for unfinished features as "todo" tests so that CI passes while your feature is under development. You can also use this method to disable a known broken test, where the code may be working but the test is incomplete.
 
-When all assertions are passing, the "todo" test will fail, thus signaling that `QUnit.test.todo()` should be changed to [`QUnit.test()`](./test.md).
+"Todo" tests will pass as long as there is at least one assertion still failing, or if an exception is thrown.
 
-You can also use [`QUnit.module.todo()`](./module.md) to manage the "todo" state for all tests within a module at once.
+Once all assertions are passing, the "todo" test will fail, thus reminding you that `QUnit.test.todo()` should be changed to [`QUnit.test()`](./test.md). If a test should be skipped unconditionally, use [`QUnit.test.skip()`](./test.skip.md) instead.
+
+You can use [`QUnit.module.todo()`](./module.md) to manage the "todo" state for all tests within a module at once.
 
 ## Changelog
 

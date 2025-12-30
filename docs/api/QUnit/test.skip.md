@@ -16,18 +16,16 @@ version_added: "1.16.0"
 `QUnit.skip( name )`<br/>
 `QUnit.skip( name, callback )`
 
-Define a test that will be skipped during the run.
+Define a test that will be skipped. Use this to disable a known broken or "flaky" test case.
 
 | parameter | description |
 |-----------|-------------|
 | `name` (string) | Title of unit |
 | `callback` (function) | Optional, function that would perform the test |
 
-Use this method to disable a [`QUnit.test()`](./test.md), as alternative to commenting out the test.
+The callback and any module hooks do not run for a skipped test. The name of your test will be included in results as a "skipped" test. This serves as a reminder to contributors. This is often preferred over the alternative of commenting out a test, because the code in the test will remain discoverable through static analysis and code search, and encourages inclusion during refactors and IDE automation.
 
-This test will be listed in the results as a "skipped" test. The callback and the respective module's hooks will not run.
-
-As a codebase becomes bigger, you may sometimes want to temporarily disable an entire group of tests at once. You can use [`QUnit.module.skip()`](./module.md) to recursively skip all tests in the same module.
+In larger codebases, you may need to temporarily disable a group of tests at once. You can use [`QUnit.module.skip()`](./module.md) to recursively skip all tests in a module.
 
 ## See also
 
