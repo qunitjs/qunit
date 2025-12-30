@@ -1,4 +1,11 @@
 
+2.25.0 / 2025-12-30
+==================
+
+### Added
+
+* Core: Add `QUnit.config.testFilter` to programmatically filter tests. (Sebastian Gbudje) [#1814](https://github.com/qunitjs/qunit/issues/1814)
+
 2.24.3 / 2025-11-29
 ==================
 
