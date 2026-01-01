@@ -77,7 +77,7 @@
 <p><code class="language-plaintext highlighter-rouge">QUnit.test.todo( name, callback )</code><br />
 <code class="language-plaintext highlighter-rouge">QUnit.todo( name, callback )</code></p>
 
-<p>Define a test that is not yet expected to pass, because the test has one or more failing assertions or throws an exception.</p>
+<p>Define a test that is not yet expected to pass. Use this for tests of unfinished code.</p>
 
 <table>
   <thead>
@@ -115,11 +115,13 @@
   </tbody>
 </table>
 
-<p>Use this method to test a unit of code that is still under development (in a “todo” state). The “todo” test will pass as long as there is at least one assertion still failing, or if an exception is thrown.</p>
+<p>In <a href="https://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a>, you can specify how code should work with tests, and then work towards making these tests pass. When collaborating in a larger project, you can share tests for unfinished features as “todo” tests so that CI passes while your feature is under development. You can also use this method to disable a known broken test, where the code may be working but the test is incomplete.</p>
 
-<p>When all assertions are passing, the “todo” test will fail, thus signaling that <code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code> should be changed to <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>.</p>
+<p>“Todo” tests will pass as long as there is at least one assertion still failing, or if an exception is thrown.</p>
 
-<p>You can also use <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code></a> to manage the “todo” state for all tests within a module at once.</p>
+<p>Once all assertions are passing, the “todo” test will fail, thus reminding you that <code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code> should be changed to <a href="/api/QUnit/test/"><code class="language-plaintext highlighter-rouge">QUnit.test()</code></a>. If a test should be skipped unconditionally, use <a href="/api/QUnit/test.skip/"><code class="language-plaintext highlighter-rouge">QUnit.test.skip()</code></a> instead.</p>
+
+<p>You can use <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code></a> to manage the “todo” state for all tests within a module at once.</p>
 
 <h2 id="changelog">Changelog</h2>
 
