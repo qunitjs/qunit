@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-01-01T05:43:04+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.24.3 Released: Bug fix</title><link href="https://qunitjs.com/blog/2025/11/29/qunit-2-24-3/" rel="alternate" type="text/html" title="QUnit 2.24.3 Released: Bug fix" /><published>2025-11-29T00:00:00+00:00</published><updated>2025-11-29T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/11/29/qunit-2-24-3</id><content type="html" xml:base="https://qunitjs.com/blog/2025/11/29/qunit-2-24-3/"><![CDATA[<h3 id="fixed">Fixed</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-01-01T10:58:23+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 2.25.0 Released: Add callback filter</title><link href="https://qunitjs.com/blog/2025/12/30/qunit-2-25-0/" rel="alternate" type="text/html" title="QUnit 2.25.0 Released: Add callback filter" /><published>2025-12-30T00:00:00+00:00</published><updated>2025-12-30T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/12/30/qunit-2-25-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/12/30/qunit-2-25-0/"><![CDATA[<h3 id="added">Added</h3>
+
+<ul>
+  <li>Core: Add <a href="https://qunitjs.com/api/config/testFilter/"><code class="language-plaintext highlighter-rouge">QUnit.config.testFilter</code></a> to programmatically filter tests. (NullVoxPopuli, Sebastian Gbudje) <a href="https://github.com/qunitjs/qunit/issues/1814">#1814</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.25.0">Git tag: 2.25.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Introduce QUnit.config.testFilter to programmatically filter tests.]]></summary></entry><entry><title type="html">QUnit 2.24.3 Released: Bug fix</title><link href="https://qunitjs.com/blog/2025/11/29/qunit-2-24-3/" rel="alternate" type="text/html" title="QUnit 2.24.3 Released: Bug fix" /><published>2025-11-29T00:00:00+00:00</published><updated>2025-11-29T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/11/29/qunit-2-24-3</id><content type="html" xml:base="https://qunitjs.com/blog/2025/11/29/qunit-2-24-3/"><![CDATA[<h3 id="fixed">Fixed</h3>
 
 <ul>
   <li>CLI: Fix TAP compliance for test plan when using <code class="language-plaintext highlighter-rouge">QUnit.test.only()</code>. <a href="https://github.com/qunitjs/qunit/commit/4b87bc6aa54afdcbb4e2c0c8c5ed277b68171507">4b87bc6aa5</a></li>
@@ -294,18 +304,4 @@ Source:   @/test/example.js:3:10
 
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.23.1">Git tag: 2.23.1</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Various improvements to the CLI and HTML Reporter.]]></summary></entry><entry><title type="html">QUnit 2.23.0 Released: Automatic labels</title><link href="https://qunitjs.com/blog/2024/12/03/qunit-2-23-0/" rel="alternate" type="text/html" title="QUnit 2.23.0 Released: Automatic labels" /><published>2024-12-03T00:00:00+00:00</published><updated>2024-12-03T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2024/12/03/qunit-2-23-0</id><content type="html" xml:base="https://qunitjs.com/blog/2024/12/03/qunit-2-23-0/"><![CDATA[<p>Your data can now directly serve as its own label for test cases, because <a href="https://qunitjs.com/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> now automatically assigns labels to each array item.</p>
-
-<h2 id="changelog">Changelog</h2>
-
-<h3 id="added">Added</h3>
-
-<ul>
-  <li>Core: Add automatic labels in <a href="https://qunitjs.com/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> to simple array values. <a href="https://github.com/qunitjs/qunit/issues/1733">#1733</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.23.0">Git tag: 2.23.0</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Your data can now directly serve as its own label for test cases, because QUnit.test.each() now automatically assigns labels to each array item.]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Various improvements to the CLI and HTML Reporter.]]></summary></entry></feed>
