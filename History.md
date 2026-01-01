@@ -49,6 +49,13 @@
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
 * Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
+2.25.0 / 2025-12-30
+==================
+
+### Added
+
+* Core: Add `QUnit.config.testFilter` to programmatically filter tests. (NullVoxPopuli, Sebastian Gbudje) [#1814](https://github.com/qunitjs/qunit/issues/1814)
+
 2.24.3 / 2025-11-29
 ==================
 
