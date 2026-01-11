@@ -39,22 +39,26 @@
     "chrome_previous",
     "chrome_current",
     {
-      "device": "Samsung Galaxy S20",
-      "real_mobile": true,
       "os": "android",
-      "os_version": "10.0"
+      "os_version": "10.0",
+      "real_mobile": true,
+      "device": "Samsung Galaxy S20"
     },
     {
       "os": "android",
-      "os_version": "7.0",
-      "device": "Samsung Galaxy S8",
-      "real_mobile": true
+      "os_version": "8.1",
+      "real_mobile": true,
+      "device": "Samsung Galaxy Note 9"
     },
     {
-      "device": "iPhone XS",
-      "real_mobile": true,
       "os": "ios",
-      "os_version": "12"
+      "os_version": "15.0",
+      "real_mobile": true,
+      "device": "iPhone SE 2022"
+    },
+    {
+      "os": "ios",
+      "os_version": "12.0"
     },
     {
       "os": "ios",
