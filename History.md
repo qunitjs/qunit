@@ -1,4 +1,4 @@
-3.0.0 (UNRELEASED)
+3.0.0-rc1 / 2026-01-11
 ==================
 
 ### Added
@@ -25,6 +25,7 @@
   * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
   * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
   * Change runtime in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Fix color constrast of details in failed test results. [#1803](https://github.com/qunitjs/qunit/pull/1803)
   * Fix text selection to exclude "Rerun" link. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
   * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Fix adding `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)

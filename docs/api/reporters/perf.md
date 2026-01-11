@@ -56,5 +56,5 @@ But, when connecting Chrome DevTools to a Node.js process, these are not current
 
 ## Changelog
 
-| UNRELEASED | Exposed separately via `qunit --reporter` on the CLI, via `QUnit.reporters.perf` for programmatic use in Node.js, and declaratively via [`QUnit.config.reporters`](../config/reporters.md).
+| UNRELEASED | Exposed via `QUnit.reporters.perf` for programmatic use in Node.js ([85716a9714](https://github.com/qunitjs/qunit/commit/85716a9714)), and declaratively via [`QUnit.config.reporters.perf`](../config/reporters.md).
 | [QUnit 2.7.0](https://github.com/qunitjs/qunit/releases/tag/2.7.0) | Introduced as part of the HTML Reporter, always enabled.

@@ -43,3 +43,8 @@ Or, via [QUnit.config](../config/index.md):
 // Set from any inline script or JS file after qunit.js
 QUnit.config.reporters.tap = true;
 ```
+
+## Changelog
+
+| UNRELEASED | And support for `QUnit.config.reporters.perf` and `QUnit.config.reporters.html`.
+| [QUnit 2.24.0](https://github.com/qunitjs/qunit/releases/tag/2.24.0) | Introduce `QUnit.config.reporters`, limited to `tap` and `console`.

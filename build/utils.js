@@ -78,10 +78,10 @@ function cleanDir (dirPath) {
 }
 
 function isValidVersion (version) {
-  return /^\d+\.\d+\.\d+(-alpha\.\d+)?$/.test(version);
+  return /^\d+\.\d+\.\d+(-alpha\.\d+|-rc\d+)?$/.test(version);
 }
 
-const versionAnywhereRegPattern = '\\d+\\.\\d+\\.\\d+(-alpha\\.\\d+)?';
+const versionAnywhereRegPattern = '\\d+\\.\\d+\\.\\d+(-alpha\\.\\d+|-rc\\d+)?';
 
 // Turn invisible chars and non-ASCII chars into escape sequences.
 //

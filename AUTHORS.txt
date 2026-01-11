@@ -77,7 +77,7 @@ Dave K. Smith <dave.k.smith@gmail.com>
 David Vollbracht <david.vollbracht@gmail.com>
 Katie Gengler <katie@kmg.io>
 Joshua Peek <josh@joshpeek.com>
-Leonardo Balter <leonardo.balter@gmail.com>
+Leo Balter <leonardo.balter@gmail.com>
 Jeff Cooper <jeff@kickstorming.com>
 Nathan Dauber <nathan@radialogica.com>
 Michał Gołębiowski-Owczarek <m.goleb@gmail.com>
@@ -188,3 +188,5 @@ Hareesh <hareesh.hsr289@gmail.com>
 Zixin Yin <zixinyin20@gmail.com>
 Timmy Willison <timmywil@users.noreply.github.com>
 NullVoxPopuli <199018+NullVoxPopuli@users.noreply.github.com>
+Ed Sanders <ejsanders@gmail.com>
+Sebastian Gbudje <gbudjeakp@gmail.com>
