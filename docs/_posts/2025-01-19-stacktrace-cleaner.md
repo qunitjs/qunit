@@ -110,6 +110,7 @@ QUnit.test('assert example', function (assert) {
   });
 });
 ```
+
 <div class="figure-row">
 <figure><img src="/resources/2025-stacktrace-assert-tap-before.png" width="463" height="241" alt="not ok 1 assert example. actual: true. expected: false. stack: at assert-example.js, at node:internal/timers, at node:internal/timers"><figcaption>QUnit 2.23.0</figcaption></figure>
 <figure><img src="/resources/2025-stacktrace-assert-tap-after.png" width="463" height="241" alt=""><figcaption>QUnit 2.24.0</figcaption></figure>
