@@ -1,6 +1,6 @@
 // In a single Node.js process, if different parts or dependencies
 // of a project mix ESM and CJS, avoid a split-brain state by making
-// sure both import and re-use the same instance via this wrapper.
+// sure "import" and "require" re-use the same instance via this wrapper.
 //
 // Node.js 12+ can import a CommonJS file from ESM.
 import QUnit from '../qunit.js';
