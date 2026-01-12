@@ -33,6 +33,10 @@ The callback will be called once, before QUnit runs any tests.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Added `details.modules` property, containing `{ name: string }` objects.
 | [QUnit 1.15](https://github.com/qunitjs/qunit/releases/tag/1.15.0) | Added `details.totalTests` property.
 
+## See also
+
+* [`QUnit.start()`](../QUnit/start.md)
+
 ## Examples
 
 Get total number of tests known at the start.
