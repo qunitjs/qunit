@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Link: Welcome Leo Balter as project lead"
+title: "Welcome Leo Balter as project lead"
 author: jzaefferer
 tags:
 - link

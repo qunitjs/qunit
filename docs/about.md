@@ -37,7 +37,7 @@ Timo is a principal engineer at [Wikimedia Foundation](https://www.wikimedia.org
 
 Richard is an architect at [Dyn](http://dyn.com/) in New Hampshire, USA. He has been contributing to jQuery Foundation projects since 2011 (QUnit since 2012) and can be spotted on a large handful of open source repositories.
 
-### [Trent Willis](https://twitter.com/trentmwillis)
+### [Trent Willis](https://trentwillis.com/)
 
 Trent is a Senior UI Engineer at [Netflix](https://www.netflix.com) in Los Gatos, CA. He has been contributing to QUnit since 2015 and served as the project lead from early 2017 to mid-2020.
 

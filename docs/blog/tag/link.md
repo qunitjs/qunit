@@ -1,7 +1,7 @@
 ---
 layout: posts-tag
 tag: link
-title: Linked
+title: Notes
 amethyst:
   exclude_tag_from_recent: true
 ---
