@@ -24,6 +24,11 @@ Instruct QUnit to wait for an asynchronous operation.
 
 `assert.async()` returns a callback function and pauses test processing until the callback function is called. The callback will throw an `Error` if it is invoked more often than the required call count.
 
+Since [QUnit 1.16][], it is usually better to write asynchronous tests as [async functions][]. This ensures that tests fail early, rather than timing out, if an exception causes the `done` callback to not be called.
+
+[QUnit 1.16]: https://github.com/qunitjs/qunit/releases/tag/1.16.0
+[async functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+
 ## See also
 
 * [Migration guide](../../upgrade-guide-2.x.md#introducing-assertasync) from QUnit 1.x `stop()` and `start()`.
@@ -49,6 +54,16 @@ QUnit.test('async example', function (assert) {
   });
 });
 ```
+
+Alternatively, this test can be written like this:
+
+```js
+QUnit.test('async function example', async function (assert) {
+  const res = await new Promise((resolve) => fetchDouble(21, resolve));
+  assert.strictEqual(res, 42, 'Result');
+});
+```
+
 ### Wait for multiple callbacks
 
 Call `assert.async()` multiple times to wait for multiple async operations. Each `done` callback must be called exactly once for the test to pass.
