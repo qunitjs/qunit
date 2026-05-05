@@ -64,7 +64,7 @@ Open your HTML file in a browser to find a detailed report. Live example ([open 
 
 Don't worry about DOM changes from one test affecting other tests, because QUnit will automatically reset the markup after each test. As long as you append or insert your elements inside the fixture, you will never have to manually clean up after your tests.
 
-This helps keep your tests them atomic!
+This helps keep your tests atomic!
 
 Find examples and learn more at [`QUnit.config.fixture`](./api/config/fixture.md).
 
