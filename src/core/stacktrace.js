@@ -26,7 +26,7 @@
 // vendor/bundler that may be higher up the stack.
 //
 // Stripping :<line>:<column> is not for prettiness, it is essential for the
-// match needle to work, since this sample trace will by definitions not be the
+// match needle to work, since this sample trace will by definition not be the
 // same line as e.g. the QUnit.test() call we're trying to identify.
 //
 // See also:
