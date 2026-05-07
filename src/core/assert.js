@@ -206,7 +206,7 @@ class Assert {
 
     // The expected parameter is usually a plain object, but clone it for
     // consistency with propEqual(), and to make it easy to explain that
-    // inheritence is not considered (on either side), and to support
+    // inheritance is not considered (on either side), and to support
     // recursively checking subsets of nested objects.
     expected = objectValues(expected, false);
 

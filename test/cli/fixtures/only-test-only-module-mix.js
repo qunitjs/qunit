@@ -1,5 +1,5 @@
 // This currently runs 0 tests because stuff cancels out.
-// The intent is ambigious and outcome doesn't really matter.
+// The intent is ambiguous and outcome doesn't really matter.
 // It's covered as regression test against a past crash:
 //
 // * module A:

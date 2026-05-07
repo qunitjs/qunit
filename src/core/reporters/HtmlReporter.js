@@ -174,7 +174,7 @@ export default class HtmlReporter {
       // It's important that we don't listen for onError until after
       // this.element is found and populated by appendInterface(), as
       // otherwise it will fail in appendTest() to display error details.
-      // We've given on() a memory for "error" events to accomodate
+      // We've given on() a memory for "error" events to accommodate
       // late listening.
       QUnit.on('error', this.onError.bind(this), prioritySymbol);
     };
@@ -532,7 +532,7 @@ export default class HtmlReporter {
       // Use a debounce with a ~0ms timeout. This is effectively instantaneous,
       // but is better than undebounced because it avoids an ever-growing
       // backlog of unprocessed now-outdated input events if fuzzysearch or
-      // drodown DOM is slow (e.g. very large test suite).
+      // dropdown DOM is slow (e.g. very large test suite).
       window.clearTimeout(searchInputTimeout);
       searchInputTimeout = window.setTimeout(() => {
         dropDownList.innerHTML = filterModules(moduleSearch.value);
@@ -912,7 +912,7 @@ export default class HtmlReporter {
         expected.indexOf('[object Array]') !== -1
         || expected.indexOf('[object Object]') !== -1
       ) {
-        // To test this interatively, use /demos/qunit-config-maxDepth.html
+        // To test this interactively, use /demos/qunit-config-maxDepth.html
         message += '<tr class="test-message"><th>Message: </th><td>'
           + 'Diff suppressed because the object is more than ' + this.config.maxDepth
           + ' levels deep.<p>Hint: Use <code>QUnit.config.maxDepth</code> to '

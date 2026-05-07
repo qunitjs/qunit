@@ -155,7 +155,7 @@ export default QUnit;
 
 if (window && document) {
   // In browsers, throw if QUnit is loaded a second time.
-  // This must not throw if a global called "QUnit" exists for preconfigurion,
+  // This must not throw if a global called "QUnit" exists for preconfiguring,
   // in that case we simply upgrade/replace it with the proper export.
   // Such preconfig global would only have QUnit.config set, not e.g. QUnit.version.
   if (globalThis.QUnit && globalThis.QUnit.version) {

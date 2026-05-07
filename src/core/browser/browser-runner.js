@@ -5,7 +5,7 @@ export function initBrowser (QUnit, window, document) {
   // Report uncaught exceptions to QUnit.
   //
   // Wrap and preserve any pre-existing window.onerror.
-  // An existing handller can "accepts" the erorr by returning true.
+  // An existing handler can "accepts" the error by returning true.
   //
   // Returning true from window.onerror suppresses the browser's default error
   // reporting. Likewise, we will also not report it in that case.
@@ -104,7 +104,7 @@ export function initBrowser (QUnit, window, document) {
   // * Is is important to set up HTML Reporter (if enabled) before calling QUnit.start(),
   //   as otherwise it will miss the first few or even all synchronous events.
   //
-  // Priot to QUnit 3.0, the reporter was initialised here, between error handler (above),
+  // Prior to QUnit 3.0, the reporter was initialised here, between error handler (above),
   // and start (below). As of QUnit 3.0, reporters are initialized by doStart() within
   // QUnit.start(), which is logically the same place, but decoupled from initBrowser().
 

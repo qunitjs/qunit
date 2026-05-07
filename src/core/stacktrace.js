@@ -20,13 +20,13 @@
 // QUnit will obtain one example trace (once per process/pageload suffices),
 // strip off any :<line> and :<line>:<column>, and use that as match needle,
 // to the first QUnit-internal frames, and then stop at that point.
-// Any later frames, including those that are outside QUnit again, will be ommitted
+// Any later frames, including those that are outside QUnit again, will be omitted
 // as being uninteresting to the test, since QUnit will have either started or
 // resumed the test. This we also clean away browser built-ins, or other
 // vendor/bundler that may be higher up the stack.
 //
-// Stripping :<line>:<column> is not for prettyness, it is essential for the
-// match needle to work, since this sample trace will by definitin not be the
+// Stripping :<line>:<column> is not for prettiness, it is essential for the
+// match needle to work, since this sample trace will by definitions not be the
 // same line as e.g. the QUnit.test() call we're trying to identify.
 //
 // See also:

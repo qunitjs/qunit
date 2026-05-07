@@ -20,7 +20,7 @@ module.exports = function requireQUnit (resolve = require.resolve) {
     // - QUnit is installed both as local dependency in the current project,
     //   and also globally installed via npm by the end-user.
     //   If the user (accidentally) ran the CLI command from their global
-    //   install, then we prefer to stil use the qunit library file from the
+    //   install, then we prefer to still use the qunit library file from the
     //   current project's dependency.
     //
     // NOTE: We can't use require.resolve() because, despite it taking a 'paths'
@@ -28,7 +28,7 @@ module.exports = function requireQUnit (resolve = require.resolve) {
     // this src/cli/require-qunit.js file). The documentation doesn't say it,
     // but in practice the "paths" option only overrides how step 6 (LOAD_NODE_MODULES)
     // traverses directories. It does not influence step 5 (LOAD_PACKAGE_SELF) which
-    // looks explicilty relative to the current file (regardless of `process.cwd`,
+    // looks explicitly relative to the current file (regardless of `process.cwd`,
     // and regardless of `paths` passed to require.resolve). This wasn't an issue
     // until QUnit 3.0 because LOAD_PACKAGE_SELF only looks for cases where
     // package.json uses "exports", which QUnit 3.0 adopted for ESM support.

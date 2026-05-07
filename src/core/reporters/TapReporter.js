@@ -8,7 +8,7 @@ import kleur from 'kleur';
  *
  * YAML is a superset of JSON that supports all the same data
  * types and syntax, and more. As such, it is always possible
- * to fallback to JSON.stringfify, but we generally avoid
+ * to fallback to JSON.stringify, but we generally avoid
  * that to make output easier to read for humans.
  *
  * Supported data types:
@@ -32,7 +32,7 @@ import kleur from 'kleur';
  * - JSON (quoted text), for complex one-line strings.
  * - YAML Block, for complex multi-line strings.
  *
- * Objects with cyclical references will be stringifed as
+ * Objects with cyclical references will be stringified as
  * "[Circular]" as they cannot otherwise be represented.
  */
 function prettyYamlValue (value, indent = 2) {

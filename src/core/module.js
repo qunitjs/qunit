@@ -51,7 +51,7 @@ function createModule (name, testEnvironment, modifiers, suiteReport) {
       after: []
     },
     testEnvironment: extend(
-      // Live inheritence as of QUnit 3. https://github.com/qunitjs/qunit/pull/1762
+      // Live inheritance as of QUnit 3. https://github.com/qunitjs/qunit/pull/1762
       (parentModule ? Object.create(parentModule.testEnvironment || {}) : {}),
       testEnvironment
     ),
@@ -70,7 +70,7 @@ function createModule (name, testEnvironment, modifiers, suiteReport) {
     stats: null,
 
     // Pass along `skip` and `todo` properties from parent module, in case
-    // there is one, to childs. And use own otherwise.
+    // there is one, to children. And use own otherwise.
     // This property will be used to mark own tests and tests of child suites
     // as either `skipped` or `todo`.
     skip: skip,

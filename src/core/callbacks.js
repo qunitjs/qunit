@@ -29,8 +29,8 @@ export function runLoggingCallbacks (key, arg) {
 
   // Handling 'log' callbacks separately. Unlike the other callbacks,
   // the log callback is not controlled by the processing queue,
-  // but rather used by asserts. Hence to promisfy the 'log' callback
-  // would mean promisfying each step of a test
+  // but rather used by asserts. Hence to promisify the 'log' callback
+  // would mean promisifying each step of a test
   if (key === 'log') {
     callbacks.map(callback => callback(arg));
     return;

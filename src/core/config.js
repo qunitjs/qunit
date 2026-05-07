@@ -114,7 +114,7 @@ const config = {
   //   it never existed, and thus never exposed to the events and callbacks API.
   //
   //   Note that this unnamed initial module is not a "root" module, it is not an ancestor
-  //   to any other modules. Doing so would negatively impact developer experience by ading
+  //   to any other modules. Doing so would negatively impact developer experience by adding
   //   needless indentation, indirection, and other visible noise in test results (or require
   //   workarounds to prevent that). Since the unnamed module is a regular module, it will
   //   "end" after the last global test (i.e. before the first named module), and not e.g.

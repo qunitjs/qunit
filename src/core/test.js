@@ -646,7 +646,7 @@ Test.prototype = {
    *   or when no test is currently running.
    *
    *   This is close to impossible because this error only happens if the original test
-   *   succesfully finished first (since other failure scenarios kill pauses and ignore
+   *   successfully finished first (since other failure scenarios kill pauses and ignore
    *   late calls). It can happen if a test ended exactly as expected, but has some
    *   external or shared state continuing to hold a reference to the release callback,
    *   and either the same test scheduled another call to it in the future, or a later test
@@ -972,10 +972,10 @@ function runEach (data, eachFn) {
       //   This way each test name will hash to a unique testId with Rerun link,
       //   without having to rely on Test class enforcing uniqueness with invisible
       //   space hack.
-      // * Unambigious. While technical uniqueness is a hard requirement above,
+      // * Unambiguous. While technical uniqueness is a hard requirement above,
       //   we also want the labels to be obvious and unambiguous to humans.
       //   For example, abbreviating "foobar" and "foobaz" to "f" and "fo" is
-      //   technically unique, but ambigious to humans which one is which.
+      //   technically unique, but ambiguous to humans which one is which.
       // * Short and readable. Where possible we omit the array index numbers
       //   so that in most cases, the value is simply shown as-is.
       //   We prefer "example [foo], example [bar]"
@@ -1132,7 +1132,7 @@ function collectTests (module) {
 }
 
 // This returns true after all executable and skippable tests
-// in a module have been proccessed, and informs 'suiteEnd'
+// in a module have been processed, and informs 'suiteEnd'
 // and moduleDone().
 function allTestsExecuted (module) {
   return module.testsRun + module.testsIgnored === collectTests(module).length;

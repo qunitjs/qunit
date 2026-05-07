@@ -53,7 +53,7 @@ function doStart () {
   const modulesLog = [];
   for (let i = 0; i < config.modules.length; i++) {
     // Always omit the unnamed module from the list of module names
-    // for UI plugins, even if there were glboal tests defined.
+    // for UI plugins, even if there were global tests defined.
     if (config.modules[i].name !== '') {
       modulesLog.push({
         name: config.modules[i].name,
