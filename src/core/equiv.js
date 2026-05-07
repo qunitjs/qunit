@@ -211,7 +211,7 @@ const entryTypeCallbacks = {
     const bObjType = objectType(b);
     if (aObjType !== 'object' || bObjType !== 'object') {
       // Handle literal `null`
-      // Handle: Array, Map/Set, Date, Regexp/Function, boxed primitives
+      // Handle: Array, Map/Set, Date, RegExp/Function, boxed primitives
       return aObjType === bObjType && objTypeCallbacks[aObjType](a, b);
     }
 
