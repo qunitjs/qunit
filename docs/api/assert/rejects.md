@@ -11,33 +11,32 @@ version_added: "2.5.0"
 ---
 
 `rejects( promise, message = "" )`<br>
-`rejects( promise, expectedMatcher, message = "" )`<br>
+`rejects( promise, expected, message = "" )`<br>
 `rejectionValue = await rejects( promise, message = "" )`
 
 Test if the provided promise rejects, and optionally compare the rejection value.
 
-| name | description |
+| parameter | description |
 |------|-------------|
-| `promise` (thenable) | Promise to test for rejection |
-| `expectedMatcher` | Rejection value matcher |
-| `message` (string) | Short description of the assertion |
+| `promise` (thenable) | Promise to check for rejection |
+| `expected` | Expected rejection or matcher |
+| `message` (string) | Short description of the promise |
 
-When testing code that is expected to return a rejected promise based on a
-specific set of circumstances, use `assert.rejects()` for testing and
-comparison.
+Use `assert.rejects()` to test async functions that should throw, and any other function call that should return a promise that will reject.
 
-The `expectedMatcher` argument can be:
+The optional `expected` parameter can be one of these types (see [§ Examples](#examples)):
 
-* A function that returns `true` when the assertion should be considered passing.
-* An Error object.
-* A base constructor, evaluated as `rejectionValue instanceof expectedMatcher`.
-* A RegExp that matches (or partially matches) `rejectionValue.toString()`.
+* Error object, to strictly compare the `message` and `name` properties, and check that the rejection value is an instance of this object's constructor.
+* RegExp, to match (or partially match) the string representation.
+* Error constructor, to confirm that the rejection value is an instance of this constructor.
+* Custom validation function, to write your own logic returning `true` or `false`.
 
-Note: in order to avoid confusion between the `message` and the `expectedMatcher`, the `expectedMatcher` **can not** be a string.
+The returned promise from `assert.rejects()` is resolved with the rejection value (since QUnit 2.26). This can be used instead of an `expected` argument, to run other assertions against your your rejection value, such as [assert.propEqual()](./propEqual.md).
 
-`assert.rejects()` returns a promise which is resolved with the rejection value from the provided
-promise. This can be used instead of `expectedMatcher` to assert other facts about the expected
-failure.
+## Changelog
+
+| [QUnit 2.26](https://github.com/qunitjs/qunit/releases/tag/2.26.0) | Added the rejection value.
+| [QUnit 2.5](https://github.com/qunitjs/qunit/releases/tag/2.5.0) | Introduced `assert.rejects()`.
 
 ## See also
 
@@ -56,75 +55,92 @@ async function feedBaby (food) {
 }
 
 QUnit.test('example', async function (assert) {
-  assert.true(feedBaby('apple'));
+  assert.true(await feedBaby('apple'));
+
+  await assert.rejects(feedBaby('sprouts'));
 
   await assert.rejects(feedBaby('sprouts'), RangeError);
 
-  assert.true(feedBaby('cucumber'), RangeError);
+  assert.true(await feedBaby('cucumber'));
 });
 ```
 
 ### Example: Matcher argument
 
 ```js
-QUnit.test('rejects example', async function (assert) {
-  // simple check
-  assert.rejects(Promise.reject('some error'));
-
-  // simple check
-  assert.rejects(
-    Promise.reject('some error'),
-    'optional description here'
-  );
-
-  // match pattern on actual error
-  assert.rejects(
-    Promise.reject(new Error('some error')),
-    /some error/,
-    'optional description here'
-  );
-
-  // Using a custom error constructor
-  function CustomError (message) {
+class CustomError {
+  constructor (message, code = 500) {
     this.message = message;
+    this.code = code;
   }
-  CustomError.prototype.toString = function () {
-    return this.message;
-  };
 
-  // actual error is an instance of the expected constructor
+  getStatusCode () {
+    return this.code;
+  }
+}
+
+QUnit.test('rejects example', async function (assert) {
+  // default check
+  assert.rejects(Promise.reject('boo'));
+
+  // default check
   assert.rejects(
-    Promise.reject(new CustomError('some error')),
+    Promise.reject('boo'),
+    'optional description here'
+  );
+
+  // Error object, evaluated as:
+  // - `err instance of Error`
+  // - strictly equal `err.message`
+  // - strictly equal `err.name`
+  assert.rejects(
+    Promise.reject(new Error('boo')),
+    new Error('boo')
+  );
+
+  // RegExp match against err.toString()
+  assert.rejects(
+    Promise.reject(new Error('My very specific error about something')),
+    /about something/
+  );
+
+  assert.rejects(
+    Promise.reject(new TypeError('Delta argument is required')),
+    /TypeError: Delta argument/
+  );
+
+  // Error constructor, evaluated as `err instance of TypeError`
+  assert.rejects(
+    Promise.reject(new TypeError('Delta argument is required')),
+    TypeError
+  );
+
+  // Error constructor: evaluated as `err instanceof CustomError`
+  assert.rejects(
+    Promise.reject(new CustomError('something')),
     CustomError
   );
 
-  // actual error has strictly equal `constructor`, `name` and `message` properties
-  // of the expected error object
+  // Custom validation arrow function
   assert.rejects(
-    Promise.reject(new CustomError('some error')),
-    new CustomError('some error')
+    Promise.reject(new CustomError('not found', 404)),
+    (err) => err.getStatusCode() === 404
   );
 
-  // custom validation arrow function
+  // Custom validation function
   assert.rejects(
-    Promise.reject(new CustomError('some error')),
-    (err) => err.toString() === 'some error'
-  );
-
-  // custom validation function
-  assert.rejects(
-    Promise.reject(new CustomError('some error')),
+    Promise.reject(new CustomError('not found', 404)),
     function (err) {
-      return err.toString() === 'some error';
+      return err.getStatusCode() === 404;
     }
   );
 
-  // custom validation using return value
+  // Custom validation via the return value
   const err = await assert.rejects(
-    Promise.reject(new CustomError('some error'))
+    Promise.reject(new CustomError('not found', 404))
   );
   assert.true(err instanceof CustomError);
-  assert.strictEqual(err.toString(), 'some error');
+  assert.strictEqual(err.getStatusCode(), 404);
 });
 ```
 

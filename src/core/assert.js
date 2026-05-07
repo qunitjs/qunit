@@ -374,6 +374,8 @@ function validateExpectedExceptionArgs (expected, message, assertionMethod) {
       expected = undefined;
       return [expected, message];
     } else {
+      // To avoid ambiguity between the `message` and the `expected` argument,
+      // we cannot support a string as expected value in assert.throws() and assert.rejects().
       throw new Error(
         'assert.' + assertionMethod + ' does not accept a string value for the expected argument.\n'
           + 'Use a non-string object value (e.g. RegExp or validator function) instead if necessary.'

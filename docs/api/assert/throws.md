@@ -12,34 +12,35 @@ version_added: "1.0.0"
 ---
 
 `throws( blockFn, message = "" )`<br>
-`throws( blockFn, expectedMatcher, message = "" )`<br>
+`throws( blockFn, expected, message = "" )`<br>
 `thrownValue = throws( blockFn, message = "" )`
 
 Test if a callback throws an exception, and optionally compare the thrown error.
 
-| name | description |
+| parameter | description |
 |------|-------------|
 | `blockFn` (function) | Function to execute |
-| `expectedMatcher` | Expected error matcher |
-| `message` (string) | Short description of the assertion |
+| `expected` | Expected error or matcher |
+| `message` (string) | Short description of the function |
 
-When testing code that is expected to throw an exception based on a specific set of circumstances, use `assert.throws()` to catch the error object for testing and comparison.
+Use `assert.throws()` when testing code that should throw an exception, to catch the error object and optionally match it against an expected error.
 
-The `expectedMatcher` argument can be:
+By default, `assert.throws()` passes if anything is thrown by the callback, and fails if the function runs to completion without throwing.
 
-* An Error object.
-* An Error constructor, evaluated as `errorValue instanceof expectedMatcher`.
-* A RegExp that matches (or partially matches) the string representation.
-* A callback with your own custom validation, that returns `true` or `false`.
+The optional `expected` parameter can be one of these types (see [§ Examples](#examples)):
 
-`assert.throws()` returns the value which was thrown from the provided
-function. This can be used instead of `expectedMatcher` to assert other facts about the expected
-failure.
+* Error object, to strictly compare the `message` and `name` properties, and check that the thrown value is an instance of this object's constructor.
+* RegExp, to match (or partially match) the string representation.
+* Error constructor, to confirm that the thrown value is an instance of this constructor.
+* Custom validation function, to write your own logic returning `true` or `false`.
 
-<p class="note" markdown="1">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use `assert.raises()`, which is an alias for `assert.throws()`. It has the same signature and behaviour.</p>
+`assert.throws()` returns the caught value back to your test (since QUnit 2.26). This can be used instead of an `expected` argument, to run other assertions against your caught value, such as [assert.propEqual()](./propEqual.md).
+
+<p class="note" markdown="1">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use **`assert.raises()`**, which is an alias for `assert.throws()` with the same signature and behaviour.</p>
 
 ## Changelog
 
+| [QUnit 2.26](https://github.com/qunitjs/qunit/releases/tag/2.26.0) | Added the return value.
 | [QUnit 2.12](https://github.com/qunitjs/qunit/releases/tag/2.12.0) | Added support for arrow functions as `expectedMatcher` callback function.
 | [QUnit 1.9](https://github.com/qunitjs/qunit/releases/tag/v1.9.0) | `assert.raises()` was renamed to `assert.throws()`.<br>The `assert.raises()` method remains supported as an alias.
 
@@ -50,77 +51,96 @@ failure.
 ## Examples
 
 ```js
+class CustomError {
+  constructor (message, code = 500) {
+    this.message = message;
+    this.code = code;
+  }
+
+  getStatusCode () {
+    return this.code;
+  }
+}
+
 QUnit.test('throws example', function (assert) {
-  // simple check
+  // default check
   assert.throws(function () {
     throw new Error('boo');
   });
 
-  // simple check
+  // default check
   assert.throws(
     function () {
       throw new Error('boo');
     },
-    'optional description here'
+    'optional message here'
   );
 
-  // match pattern on actual error
+  // Error object, evaluated as:
+  // - `err instance of Error`
+  // - strictly equal `err.message`
+  // - strictly equal `err.name`
   assert.throws(
     function () {
-      throw new Error('some error');
+      throw new Error('boo');
     },
-    /some error/,
-    'optional description here'
+    new Error('boo')
   );
 
-  // using a custom error constructor
-  function CustomError (message) {
-    this.message = message;
-  }
-  CustomError.prototype.toString = function () {
-    return this.message;
-  };
-
-  // actual error is an instance of the expected constructor
+  // RegExp match against err.toString()
   assert.throws(
     function () {
-      throw new CustomError('some error');
+      throw new Error('My very specific error about something');
+    },
+    /about something/
+  );
+
+  assert.throws(
+    function () {
+      throw new TypeError('Delta argument is required');
+    },
+    /TypeError: Delta argument/
+  );
+
+  // Error constructor, evaluated as `err instance of TypeError`
+  assert.throws(
+    function () {
+      throw new TypeError('Delta argument is required');
+    },
+    TypeError
+  );
+
+  // Error constructor: evaluated as `err instanceof CustomError`
+  assert.throws(
+    function () {
+      throw new CustomError('something');
     },
     CustomError
   );
 
-  // actual error has strictly equal `constructor`, `name` and `message` properties
-  // of the expected error object
+  // Custom validation arrow function
   assert.throws(
     function () {
-      throw new CustomError('some error');
+      throw new CustomError('not found', 404);
     },
-    new CustomError('some error')
+    (err) => err.getStatusCode() === 404
   );
 
-  // custom validation arrow function
+  // Custom validation function
   assert.throws(
     function () {
-      throw new CustomError('some error');
-    },
-    (err) => err.toString() === 'some error'
-  );
-
-  // custom validation function
-  assert.throws(
-    function () {
-      throw new CustomError('some error');
+      throw new CustomError('not found', 404);
     },
     function (err) {
-      return err.toString() === 'some error';
+      return err.getStatusCode() === 404;
     }
   );
 
-  // custom validation using return value
+  // Custom validation via the return value
   const err = assert.throws(function () {
-    throw new CustomError('some error');
+    throw new CustomError('not found', 404);
   });
   assert.true(err instanceof CustomError);
-  assert.strictEqual(err.toString(), 'some error');
+  assert.strictEqual(err.getStatusCode(), 404);
 });
 ```
