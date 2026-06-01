@@ -18,7 +18,9 @@ let running = false;
 let restartDebounceTimer;
 
 function onUnhandledRejection (reason, _promise) {
-  QUnit.onUncaughtException(reason);
+  if (!QUnit.config.ignoreUnhandledRejections) {
+    QUnit.onUncaughtException(reason);
+  }
 }
 function onUncaughtException (error, _origin) {
   QUnit.onUncaughtException(error);

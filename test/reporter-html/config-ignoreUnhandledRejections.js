@@ -1,8 +1,10 @@
 /* eslint-env browser */
 /* global Promise */
 
-// Detect if the current browser supports `onunhandledrejection`
-// (avoiding errors in browsers without the capability)
+// Same as unhandled-rejection.js but with this enabled and no capture and no expected failure.
+// This test run fails without this line.
+QUnit.config.ignoreUnhandledRejections = true;
+
 var HAS_UNHANDLED_REJECTION_HANDLER = ('onunhandledrejection' in window && typeof Promise === 'function');
 
 QUnit.module.if('Unhandled Rejections', HAS_UNHANDLED_REJECTION_HANDLER, function () {
@@ -10,14 +12,6 @@ QUnit.module.if('Unhandled Rejections', HAS_UNHANDLED_REJECTION_HANDLER, functio
     assert.true(true);
 
     var done = assert.async();
-
-    var captured;
-    var originalPushResult = assert.pushResult;
-    // Capture one call so that can test failing assertions
-    assert.pushResult = function (resultInfo) {
-      captured = resultInfo;
-      assert.pushResult = originalPushResult;
-    };
 
     // eslint-disable-next-line compat/compat -- Checked
     Promise.resolve().then(function () {
@@ -27,11 +21,6 @@ QUnit.module.if('Unhandled Rejections', HAS_UNHANDLED_REJECTION_HANDLER, functio
     // wait until unhandled rejection fires
     setTimeout(function () {
       done();
-
-      assert.propContains(captured, {
-        message: 'global failure: Error: Boo during test',
-        result: false
-      }, 'resultInfo');
     }, 10);
   });
 });

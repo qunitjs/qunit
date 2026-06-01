@@ -1,25 +1,22 @@
-# name: unhandled rejection
-# command: ["qunit","unhandled-rejection.js"]
+# command: ["qunit", "unhandled-rejection.js"]
 
 TAP version 13
 not ok 1 global failure
   ---
-  message: "Error: outside of a test context"
+  message: "Error: Boo before first test"
   severity: failed
   stack: |
-    Error: outside of a test context
-        at /qunit/test/cli/fixtures/unhandled-rejection.js:17:18
-        at qunit.js
-        at /qunit/test/cli/fixtures/unhandled-rejection.js:3:7
+    Error: Boo before first test
+        at /qunit/test/cli/fixtures/unhandled-rejection.js:18:16
         at internal
   ...
-Bail out! Error: outside of a test context
-not ok 2 Unhandled Rejections > test passes just fine, but has a rejected promise
+Bail out! Error: Boo before first test
+not ok 2 Unhandled Rejections > example
   ---
-  message: "global failure: Error: Error thrown in non-returned promise!"
+  message: "global failure: Error: Boo during test"
   severity: failed
   stack: |
-    Error: Error thrown in non-returned promise!
+    Error: Boo during test
         at /qunit/test/cli/fixtures/unhandled-rejection.js:10:13
   ...
 1..2

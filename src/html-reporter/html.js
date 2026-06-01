@@ -1142,6 +1142,8 @@ const stats = {
   };
 
   window.addEventListener('unhandledrejection', function (event) {
-    QUnit.onUncaughtException(event.reason);
+    if (!QUnit.config.ignoreUnhandledRejections) {
+      QUnit.onUncaughtException(event.reason);
+    }
   });
 }());
