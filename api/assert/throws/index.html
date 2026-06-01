@@ -75,7 +75,7 @@
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/1.0.0">1.0.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
 <p><code class="language-plaintext highlighter-rouge">throws( blockFn, message = "" )</code><br />
-<code class="language-plaintext highlighter-rouge">throws( blockFn, expectedMatcher, message = "" )</code><br />
+<code class="language-plaintext highlighter-rouge">throws( blockFn, expected, message = "" )</code><br />
 <code class="language-plaintext highlighter-rouge">thrownValue = throws( blockFn, message = "" )</code></p>
 
 <p>Test if a callback throws an exception, and optionally compare the thrown error.</p>
@@ -83,7 +83,7 @@
 <table>
   <thead>
     <tr>
-      <th>name</th>
+      <th>parameter</th>
       <th>description</th>
     </tr>
   </thead>
@@ -93,37 +93,41 @@
       <td>Function to execute</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">expectedMatcher</code></td>
-      <td>Expected error matcher</td>
+      <td><code class="language-plaintext highlighter-rouge">expected</code></td>
+      <td>Expected error or matcher</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">message</code> (string)</td>
-      <td>Short description of the assertion</td>
+      <td>Short description of the function</td>
     </tr>
   </tbody>
 </table>
 
-<p>When testing code that is expected to throw an exception based on a specific set of circumstances, use <code class="language-plaintext highlighter-rouge">assert.throws()</code> to catch the error object for testing and comparison.</p>
+<p>Use <code class="language-plaintext highlighter-rouge">assert.throws()</code> when testing code that should throw an exception, to catch the error object and optionally match it against an expected error.</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">expectedMatcher</code> argument can be:</p>
+<p>By default, <code class="language-plaintext highlighter-rouge">assert.throws()</code> passes if anything is thrown by the callback, and fails if the function runs to completion without throwing.</p>
+
+<p>The optional <code class="language-plaintext highlighter-rouge">expected</code> parameter can be one of these types (see <a href="#examples">§ Examples</a>):</p>
 
 <ul>
-  <li>An Error object.</li>
-  <li>An Error constructor, evaluated as <code class="language-plaintext highlighter-rouge">errorValue instanceof expectedMatcher</code>.</li>
-  <li>A RegExp that matches (or partially matches) the string representation.</li>
-  <li>A callback with your own custom validation, that returns <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</li>
+  <li>Error object, to strictly compare the <code class="language-plaintext highlighter-rouge">message</code> and <code class="language-plaintext highlighter-rouge">name</code> properties, and check that the thrown value is an instance of this object’s constructor.</li>
+  <li>RegExp, to match (or partially match) the string representation.</li>
+  <li>Error constructor, to confirm that the thrown value is an instance of this constructor.</li>
+  <li>Custom validation function, to write your own logic returning <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>.</li>
 </ul>
 
-<p><code class="language-plaintext highlighter-rouge">assert.throws()</code> returns the value which was thrown from the provided
-function. This can be used instead of <code class="language-plaintext highlighter-rouge">expectedMatcher</code> to assert other facts about the expected
-failure.</p>
+<p><code class="language-plaintext highlighter-rouge">assert.throws()</code> returns the caught value back to your test (since QUnit 2.26). This can be used instead of an <code class="language-plaintext highlighter-rouge">expected</code> argument, to run other assertions against your caught value, such as <a href="/api/assert/propEqual/">assert.propEqual()</a>.</p>
 
-<p class="note">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use <code class="language-plaintext highlighter-rouge">assert.raises()</code>, which is an alias for <code class="language-plaintext highlighter-rouge">assert.throws()</code>. It has the same signature and behaviour.</p>
+<p class="note">If you need to comply with classic ES3 syntax, such as in early versions of Closure Compiler, you can use <strong><code class="language-plaintext highlighter-rouge">assert.raises()</code></strong>, which is an alias for <code class="language-plaintext highlighter-rouge">assert.throws()</code> with the same signature and behaviour.</p>
 
 <h2 id="changelog">Changelog</h2>
 
 <table>
   <tbody>
+    <tr>
+      <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.26.0">QUnit 2.26</a></td>
+      <td>Added the return value.</td>
+    </tr>
     <tr>
       <td><a href="https://github.com/qunitjs/qunit/releases/tag/2.12.0">QUnit 2.12</a></td>
       <td>Added support for arrow functions as <code class="language-plaintext highlighter-rouge">expectedMatcher</code> callback function.</td>
@@ -143,78 +147,97 @@ failure.</p>
 
 <h2 id="examples">Examples</h2>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">throws example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// simple check</span>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CustomError</span> <span class="p">{</span>
+  <span class="nf">constructor </span><span class="p">(</span><span class="nx">message</span><span class="p">,</span> <span class="nx">code</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="nx">code</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nf">getStatusCode </span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">throws example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// default check</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">);</span>
   <span class="p">});</span>
 
-  <span class="c1">// simple check</span>
+  <span class="c1">// default check</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
     <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
       <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="dl">'</span><span class="s1">optional description here</span><span class="dl">'</span>
+    <span class="dl">'</span><span class="s1">optional message here</span><span class="dl">'</span>
   <span class="p">);</span>
 
-  <span class="c1">// match pattern on actual error</span>
+  <span class="c1">// Error object, evaluated as:</span>
+  <span class="c1">// - `err instance of Error`</span>
+  <span class="c1">// - strictly equal `err.message`</span>
+  <span class="c1">// - strictly equal `err.name`</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
     <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="sr">/some error/</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">optional description here</span><span class="dl">'</span>
+    <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">boo</span><span class="dl">'</span><span class="p">)</span>
   <span class="p">);</span>
 
-  <span class="c1">// using a custom error constructor</span>
-  <span class="kd">function</span> <span class="nf">CustomError</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nx">CustomError</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
-  <span class="p">};</span>
-
-  <span class="c1">// actual error is an instance of the expected constructor</span>
+  <span class="c1">// RegExp match against err.toString()</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
     <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">My very specific error about something</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="sr">/about something/</span>
+  <span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
+    <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">TypeError</span><span class="p">(</span><span class="dl">'</span><span class="s1">Delta argument is required</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="sr">/TypeError: Delta argument/</span>
+  <span class="p">);</span>
+
+  <span class="c1">// Error constructor, evaluated as `err instance of TypeError`</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
+    <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">TypeError</span><span class="p">(</span><span class="dl">'</span><span class="s1">Delta argument is required</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">TypeError</span>
+  <span class="p">);</span>
+
+  <span class="c1">// Error constructor: evaluated as `err instanceof CustomError`</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
+    <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">something</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">},</span>
     <span class="nx">CustomError</span>
   <span class="p">);</span>
 
-  <span class="c1">// actual error has strictly equal `constructor`, `name` and `message` properties</span>
-  <span class="c1">// of the expected error object</span>
+  <span class="c1">// Custom validation arrow function</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
     <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">not found</span><span class="dl">'</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
     <span class="p">},</span>
-    <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">err</span><span class="p">.</span><span class="nf">getStatusCode</span><span class="p">()</span> <span class="o">===</span> <span class="mi">404</span>
   <span class="p">);</span>
 
-  <span class="c1">// custom validation arrow function</span>
+  <span class="c1">// Custom validation function</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
     <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
-    <span class="p">},</span>
-    <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">err</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span>
-  <span class="p">);</span>
-
-  <span class="c1">// custom validation function</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span>
-    <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">not found</span><span class="dl">'</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
     <span class="p">},</span>
     <span class="nf">function </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">err</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nx">err</span><span class="p">.</span><span class="nf">getStatusCode</span><span class="p">()</span> <span class="o">===</span> <span class="mi">404</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">);</span>
 
-  <span class="c1">// custom validation using return value</span>
+  <span class="c1">// Custom validation via the return value</span>
   <span class="kd">const</span> <span class="nx">err</span> <span class="o">=</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">throws</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">CustomError</span><span class="p">(</span><span class="dl">'</span><span class="s1">not found</span><span class="dl">'</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
   <span class="p">});</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">err</span> <span class="k">instanceof</span> <span class="nx">CustomError</span><span class="p">);</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nf">toString</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">some error</span><span class="dl">'</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nf">getStatusCode</span><span class="p">(),</span> <span class="mi">404</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
