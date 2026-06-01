@@ -1,4 +1,13 @@
 
+2.26.0 / 2026-05-31
+==================
+
+### Added
+
+* Assert: Return error value from `assert.rejects()` and `assert.throws()`. (Bartosz Dziewoński) [#1824](https://github.com/qunitjs/qunit/issues/1824)
+* CLI: Add support for `--reporter` with local script. (Jordan Kasper, Timo Tijhof) [#1823](https://github.com/qunitjs/qunit/issues/1823)
+* Core: Introduce `QUnit.config.ignoreUnhandledRejections`. (Timo Tijhof) [#1829](https://github.com/qunitjs/qunit/issues/1829)
+
 2.25.0 / 2025-12-30
 ==================
 
