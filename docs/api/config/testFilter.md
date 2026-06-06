@@ -32,6 +32,19 @@ The callback receives a `testInfo` object and must return a boolean:
 
 If the callback throws an error, the error is logged as a warning and the test is skipped.
 
+## Filter hierarchy
+
+The `testFilter` callback runs as part of a layered filtering system:
+
+1. **Test-level filters** run first: [`test.only()`](../QUnit/test.only.md), [`test.skip()`](../QUnit/test.skip.md), [`test.if()`](../QUnit/test.if.md)
+2. **Programmatic filter** runs next: `QUnit.config.testFilter`
+3. **CLI/URL filters** run last: [`--filter`](./filter.md), [`--module`](./module.md), [`--moduleId`](./moduleId.md), [`--testId`](./testId.md)
+
+This layering enables:
+* Test authors to control test execution via `test.only()`, `test.skip()`, `test.if()`
+* Project maintainers to implement dynamic filtering via `testFilter`
+* Developers to manually filter tests via CLI or browser URL parameters
+
 ## Parameters
 
 ### `testInfo` (object)
@@ -92,5 +105,30 @@ QUnit.config.testFilter = function (testInfo) {
   // Assign test to worker
   const assignedWorker = hash % TOTAL_WORKERS;
   return assignedWorker === WORKER_ID;
+};
+```
+
+### Combine multiple conditions
+
+```js
+const quarantined = ['flaky test'];
+
+QUnit.config.testFilter = function (testInfo) {
+  // Skip quarantined tests
+  if (quarantined.some(function (p) { return testInfo.testName.indexOf(p) !== -1; })) {
+    return false;
+  }
+
+  // Skip slow tests in quick mode
+  if (process.env.QUICK_RUN && testInfo.testName.indexOf('slow') !== -1) {
+    return false;
+  }
+
+  // Filter by module if specified
+  if (process.env.TEST_MODULE && testInfo.module.indexOf(process.env.TEST_MODULE) === -1) {
+    return false;
+  }
+
+  return true;
 };
 ```
