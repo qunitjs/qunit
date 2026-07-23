@@ -24,6 +24,8 @@ This assertion compares the full objects as passed. For primitive values, a stri
 
 The deep comparison includes built-in support for Date objects, regular expressions (RegExp), NaN, as well as ES6 features such as Symbol, Set, and Map objects.
 
+This comparison is powered by [`QUnit.equiv()`](../extension/QUnit.equiv.md), which you can call directly from custom assertions or helpers.
+
 To assert strict equality on own properties only, refer to [`assert.propEqual()`](./propEqual.md) instead.
 
 [`assert.notDeepEqual()`](./notDeepEqual.md) can be used to check for inequality instead.
