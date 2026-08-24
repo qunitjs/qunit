@@ -23,6 +23,7 @@ QUnit releases are standalone and require no runtime dependencies for use in the
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
 <title>QUnit</title>
 <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.26.0.css">
 <body>
