@@ -18,15 +18,17 @@
 * Core: Promote "No tests were run." from fake test to native error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
 * Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` calls from count. (Kyle Simpson) [#1226](https://github.com/qunitjs/qunit/issues/1226)
 * HTML Reporter: New design with fresh color palette and improved color contrast. View demos in [#1774](https://github.com/qunitjs/qunit/pull/1774).
-  * Faster UI rendering, now instantly instead of after DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
+  * Faster UI via [instant render](https://qunitjs.com/blog/2026/09/11/instant-render/) instead of after DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
   * Faster headless execution, when [`id=qunit` element](https://qunitjs.com/browser/) does not exist. [#1711](https://github.com/qunitjs/qunit/issues/1711)
-  * Add support for displaying early errors. [#1786](https://github.com/qunitjs/qunit/pull/1786)
-  * Change assertion count in toolbar to test count. [#1760](https://github.com/qunitjs/qunit/pull/1760)
-  * Change `#qunit-banner` from H2 to DIV, to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
-  * Change `#qunit-testresult` from P to DIV, to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
-  * Change runtime in toolbar from milliseconds to seconds. [#1760](https://github.com/qunitjs/qunit/pull/1760)
+  * Faster "Hide passed" toggling on large test suites. [a729421411](https://github.com/qunitjs/qunit/commit/a7294214116ab5ec0e111b37c00cc7e2c16b4e1b)
+  * Add displaying of [early errors](https://qunitjs.com/blog/2026/09/11/instant-render/). [#1786](https://github.com/qunitjs/qunit/pull/1786)
+  * Change assertion count in toolbar to test count. [dbeab48c25](https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817)
+  * Change `#qunit-banner` from empty `<h2>` to `<div>` to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
+  * Change `#qunit-testresult` from `<p>` to `<div>` to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
+  * Change runtime in toolbar from milliseconds to seconds. [170acc0311d3dea4684b4ed39d1445fbbf522554](https://github.com/qunitjs/qunit/commit/170acc0311)
   * Fix color constrast of details in failed test results. [#1803](https://github.com/qunitjs/qunit/pull/1803)
   * Fix text selection to exclude "Rerun" link. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
+  * Fix layout shift in toolbar at the end of the run. [#1774](https://github.com/qunitjs/qunit/pull/1774)
   * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
   * Fix adding `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
 
@@ -36,7 +38,7 @@
 * Core: Fix internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
-* Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995) test suites. [a729421411](https://github.com/qunitjs/qunit/commit/a7294214116ab5ec0e111b37c00cc7e2c16b4e1b)
+* Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995) test suites.
 
 ### Removed
 

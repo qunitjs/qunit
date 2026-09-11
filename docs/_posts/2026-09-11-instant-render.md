@@ -2,7 +2,7 @@
 layout: post
 title: "Instant render and early errors with QUnit 3"
 author: krinkle
-excerpt: Early errors.
+excerpt: QUnit 3 renders the UI significantly faster.
 tags:
 - feature
 ---
