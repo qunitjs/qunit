@@ -184,7 +184,7 @@ Test JavaScript code in a real browser with QUnit.
 
 <p>QUnit requires no HTML markup in order to run tests. The above “Getting started” example is recommended for new projects, but you can customize this as-needed.</p>
 
-<p>To display test results, the only markup necessary is a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with <code class="language-plaintext highlighter-rouge">id="qunit"</code>. Without this, the tests will run with the <a href="#html-reporter">HTML Reporter</a> disabled.</p>
+<p>To display test results, the only markup necessary is a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with <code class="language-plaintext highlighter-rouge">id="qunit"</code>. Without this, the tests will run headless with the <a href="/api/reporters/html/">HTML Reporter disabled</a>.</p>
 
 <p><a href="#integrations">Browser automations</a> that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a <a href="/api/reporters/tap/">TAP reporter</a>, or <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on()</code></a> to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).</p>
 

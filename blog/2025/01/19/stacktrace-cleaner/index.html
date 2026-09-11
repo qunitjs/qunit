@@ -68,7 +68,7 @@
 <div class="content" role="main">
 <article>
 	<header>
-		<h1>Cleaner stack traces in QUnit</h1><p class="post-meta byline">Posted on <time pubdate datetime="2025-01-19T00:00:00+00:00">19 January 2025</time> by <span class="author vcard"><a rel="author" class="url fn n" href="/blog/author/krinkle/">Timo Tijhof</a></span></p>
+		<h1>Cleaner stack traces in QUnit</h1><p class="post-meta byline">Posted on <time pubdate datetime="2025-01-19T00:00:00+00:00">19 January 2025</time> by <span class="author vcard"><a rel="author" class="url fn n" href="/blog/author/krinkle/">Timo Tijhof</a></span> in <a rel="tag" class="post-tag" href="/blog/tag/feature/">Feature</a></p>
 	</header>
 	<p>Stack traces shown in the QUnit CLI now remove or grey out internal calls by Node.js and QUnit.</p>
 
@@ -167,6 +167,7 @@ Source:   @/test/example.js:3:10
   <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
+
 <div class="figure-row">
 <figure><img src="/resources/2025-stacktrace-assert-tap-before.png" width="463" height="241" alt="not ok 1 assert example. actual: true. expected: false. stack: at assert-example.js, at node:internal/timers, at node:internal/timers" /><figcaption>QUnit 2.23.0</figcaption></figure>
 <figure><img src="/resources/2025-stacktrace-assert-tap-after.png" width="463" height="241" alt="" /><figcaption>QUnit 2.24.0</figcaption></figure>
@@ -232,6 +233,8 @@ Source:   @/test/example.js:3:10
 
 	<h4 class="sidebar-title-open"><a href="/blog/">Recent blog posts</a></h4>
 	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/2026/09/11/instant-render/">Instant render and early errors with QUnit 3</a>
+	</li><li class="sidebar-item">
 		<a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26.0 Released: Return from assert.rejects</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2025/12/30/qunit-2-25-0/">QUnit 2.25.0 Released: Add callback filter</a>
@@ -239,8 +242,6 @@ Source:   @/test/example.js:3:10
 		<a href="/blog/2025/11/29/qunit-2-24-3/">QUnit 2.24.3 Released: Bug fix</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2025/10/09/qunit-2-24-2/">QUnit 2.24.2 Released: Bug fix</a>
-	</li><li class="sidebar-item">
-		<a href="/blog/2025/04/20/test-lifecycle/">Test lifecycle diagram</a>
 	</li></ul>
 
 	<h4 class="sidebar-title-open">Tags</h4>
