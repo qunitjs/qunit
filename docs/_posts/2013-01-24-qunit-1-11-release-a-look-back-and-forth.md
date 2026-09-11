@@ -5,7 +5,7 @@ author: jzaefferer
 tags:
 - feature
 ---
-		
+
 Earlier this week, we [released]({% post_url 2013-01-20-qunit-1-11-0 %})  a new version of [QUnit](http://qunitjs.com/), jQuery's solution for unit testing JavaScript. Along with some details on the new release, I wanted to take this opportunity to tell you a bit more about QUnit, where it came from and where it is going. [I'm also looking for your input](https://docs.google.com/spreadsheet/viewform?formkey=dDBzQl9TWmQzbDdXS08wMTBuLTlObXc6MQ#gid=0), to help us shape the future of JavaScript testing.
 
 ## New in 1.11

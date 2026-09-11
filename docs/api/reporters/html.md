@@ -15,7 +15,7 @@ The HTML Reporter is documented in detail at [Browser § HTML Reporter](../../br
 
 By default, the [HTML Reporter](../../browser.md#lead) is automatically enabled in browser environments if a `<div id="qunit">` element exists. If such element doesn't exist, it remains disabled ("headless").
 
-You can override this and disable the HTML Reporter even if the element does exist. For example, to share and reuse the same HTML file for CI, debugging, and manual testing; but disable the HTML Reporter in CI for improved performance.
+You can override this and disable the HTML Reporter even if the element does exist. For example, to share and reuse the same HTML file between CI, debugging, and manual testing; while still disabling the HTML Reporter in CI for improved performance.
 
 ### Example
 

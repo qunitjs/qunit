@@ -118,7 +118,7 @@ Example projects:
 
 QUnit requires no HTML markup in order to run tests. The above "Getting started" example is recommended for new projects, but you can customize this as-needed.
 
-To display test results, the only markup necessary is a `<div>` with `id="qunit"`. Without this, the tests will run with the [HTML Reporter](#html-reporter) disabled.
+To display test results, the only markup necessary is a `<div>` with `id="qunit"`. Without this, the tests will run headless with the [HTML Reporter disabled](./api/reporters/html.md).
 
 [Browser automations](#integrations) that run tests for you from the command-line, might enable other reporters or event listeners instead. For example, they might use a [TAP reporter](./api/reporters/tap.md), or [`QUnit.on()`](./api/callbacks/QUnit.on.md) to automatically extract results in a machine-readable way, and use it to set the build status of a continuous integration job (CI).
 
