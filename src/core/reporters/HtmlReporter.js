@@ -836,7 +836,7 @@ export default class HtmlReporter {
     this.elementDisplay.innerHTML = [
       details.previousFailure
         ? 'Rerunning previously failed test: <br />'
-        : `Running test ${this.stats.completed} of ${this.stats.defined}: <br />`,
+        : `Running test ${this.stats.completed + 1} of ${this.stats.defined}: <br />`,
       getNameHtml(details.name, details.module),
       this.getRerunFailedHtml(this.stats.failedTests)
     ].join('');

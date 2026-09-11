@@ -141,7 +141,7 @@ QUnit.test('testresult-display [testStart]', function (assert) {
 
   var display = element.querySelector('#qunit-testresult-display');
   assert.equal(display.className, 'running', 'display class');
-  assert.equal(display.textContent, 'Running test 1 of 4: B', 'display text');
+  assert.equal(display.textContent, 'Running test 2 of 4: B', 'display text');
 
   var testOutput = element.querySelector('#qunit-test-output-00A');
   assert.equal(
