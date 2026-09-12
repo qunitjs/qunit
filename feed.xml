@@ -1,4 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-11T11:03:47+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">Instant render and early errors with QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/11/instant-render/" rel="alternate" type="text/html" title="Instant render and early errors with QUnit 3" /><published>2026-09-11T00:00:00+00:00</published><updated>2026-09-11T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/11/instant-render</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/11/instant-render/"><![CDATA[<p>QUnit 3 renders the UI significantly faster, and can now display early errors within the UI.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-12T06:15:38+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">First Look at the QUnit 3 Theme</title><link href="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/" rel="alternate" type="text/html" title="First Look at the QUnit 3 Theme" /><published>2026-09-12T00:00:00+00:00</published><updated>2026-09-12T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/12/qunit-3-theme</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/"><![CDATA[<p>A deep dive into the accessibility and usability improvements to the default theme in QUnit 3.</p>
+
+<figure><img src="/resources/2026-theme-qunit-3-compared.png" width="603" height="335" alt="QUnit 2.25 and 3.0 side-by-side running a passing test. Differences include: Higher contrast in colors with a more vibrant green and deeper black, less clutter, more space for test results, and an edge-to-edge design instead of white padding around the page." /><figcaption><a href="/resources/q4000.html" target="_blank">Try it here: <strong>Demo</strong></a></figcaption></figure>
+
+<figure><video src="/resources/2026-theme-qunit-3-vid-before.mp4" width="380" height="215" loop="" muted="" autoplay="" playsinline="" disablepictureinpicture="" controlslist="nodownload" preload="auto" style="vertical-align: top; cursor: pointer;" onclick="this.requestFullscreen();"></video><video src="/resources/2026-theme-qunit-3-vid-after.mp4" width="380" height="241" loop="" muted="" autoplay="" playsinline="" disablepictureinpicture="" controlslist="nodownload" preload="auto" style="vertical-align: top; cursor: pointer;" onclick="this.requestFullscreen();"></video></figure>
+
+<h2 id="accessibility--legibility">Accessibility &amp; Legibility</h2>
+
+<p>The updated theme favors deeper and more vibrant colors, with higher contrast against respective backgrounds. We’ve also removed any text shadows and adopted the system-ui font. This makes text clearer and easier to read.</p>
+
+<p>This new color palette is based on <a href="https://blog.ignacemaes.com/how-to-use-the-new-ember-theme-for-qunit/">qunit-theme-ember</a> by Ignace Maes (available via <code class="language-plaintext highlighter-rouge">theme: 'ember'</code> in <a href="https://github.com/emberjs/ember-qunit/pull/1166">ember-qunit v8.1</a>) which in turn is based on the <a href="https://ember-styleguide.netlify.app/">Ember styleguide</a>.</p>
+
+<p>The simpler palette utilizes fewer colors overall, and the remaining colors carry a consistent meaning.</p>
+
+<p>For example, the toolbar no longer re-uses green for checkbox labels, and blue backgrounds are now reserved for passing tests. Previously, the summary block shared the same shade of blue. This made sense in QUnit 1 where the page itself essentially had a blue background, and the summary was part of the page flow. See also the introduction of a fixed header in <a href="/blog/2021/01/12/qunit-2-14-0/">QUnit 2.14</a>.</p>
+
+<figure><img src="/resources/2026-theme-qunit-3-failure-compared.png" width="795" height="593" alt="Failing test example, QUnit 2.25 and 3.0 side-by-side." /><figcaption><a href="/resources/example-fail.html" target="_blank">Try it here: <strong>Example failure</strong></a></figcaption></figure>
+
+<h3 id="focus">Focus</h3>
+
+<p>The old rounded corners and blank space around the page make way for a tighter <strong>edge-to-edge design</strong>, leaving more space for test results and assertion details—the stuff that matters.</p>
+
+<p>Assertion indicators are now flush with the edge against a lighter background, making them stand out more. The change does not sacrifice any whitespace or line height around text.</p>
+
+<p>The user agent string moves to the title bar, in a muted font. This new placement remains prominent, but no longer demands your attention, and frees some vertical space.</p>
+
+<p>The summary now reports total duration in seconds, instead of milliseconds (<a href="https://github.com/qunitjs/qunit/commit/170acc0311d3dea4684b4ed39d1445fbbf522554">170acc0</a>). This is a more human-scale number, especially for large projects. For those of you proud to have test suites that complete in under a second, we still preserve one digit of precision. Small numbers are happy numbers!</p>
+
+<p>QUnit 2.x:</p>
+
+<blockquote>
+  <p>257 tests completed in 512 milliseconds, with 0 failed, 7 skipped, and 4 todo.<br />
+825 assertions of 829 passed, 4 failed.</p>
+</blockquote>
+
+<p>QUnit 3.0:</p>
+
+<blockquote>
+  <p>257 tests completed in 0.5 seconds.<br />
+246 passed, 0 failed, 7 skipped, and 4 todo.</p>
+</blockquote>
+
+<p>The summary no longer reports on low-level assertion counts. The assertion counts were distracting and inactionable in practice. For example, a passing <a href="/api/QUnit/test.todo/">“todo” test</a> expects failing assertions and these counted towards the internal “failed” assertion count despite not failing the run (<a href="https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817">dbeab48</a>, <a href="https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c">8f25f26</a>).</p>
+
+<h3 id="color-blindness">Color blindness</h3>
+
+<p>We refined the Ember theme slightly to comply with <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast">WCAG guidelines</a>, and to increase contrast under color blind conditions. Especially for deuteranopia, where greens and reds are hard to distinguish, we tweaked our greens be brighter and closer to yellow. Details in <a href="https://github.com/qunitjs/qunit/pull/1803#issuecomment-2552148092">Pull Request #1803</a>.</p>
+
+<p>Shout out to Firefox Dev Tools, which made this a breeze!</p>
+
+<figure><a href="/resources/2026-theme-qunit-3-firefox-a11y-devtools.png"><img src="/resources/2026-theme-qunit-3-firefox-a11y-devtools.png" width="540" height="267" alt="Simulate deuteranopia (no green), protanopia (no red), and other color blindnesses in the Acessibility tab of Firefox Dev Tools." /></a></figure>
+<figure><a href="/resources/2026-theme-qunit-3-colorblind-before.png" title="Open in new window"><img src="/resources/2026-theme-qunit-3-colorblind-before.png" width="675" height="296" alt="" /></a><figcaption>QUnit 2.25 (before) simulated with deuteranopia</figcaption></figure>
+<figure><a href="/resources/2026-theme-qunit-3-colorblind-ember.png"><img src="/resources/2026-theme-qunit-3-colorblind-ember.png" width="675" height="323" alt="" /></a><figcaption>Ember theme</figcaption></figure>
+<figure><a href="/resources/2026-theme-qunit-3-colorblind-after.png"><img src="/resources/2026-theme-qunit-3-colorblind-after.png" width="675" height="323" alt="" /></a><figcaption>QUnit 3.0 (after)</figcaption></figure>
+
+<h2 id="usability-fixes">Usability fixes</h2>
+
+<ul>
+  <li>Fix module selector buttons to use logical order in the DOM, improving tab order for keyboard navigation and screen readers. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Fix WCAG compliance by changing <code class="language-plaintext highlighter-rouge">#qunit-banner</code> from empty <code class="language-plaintext highlighter-rouge">&lt;h2&gt;</code> to <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>. <a href="https://github.com/qunitjs/qunit/issues/1427">#1427</a></li>
+  <li>Fix HTML serialization by changing <code class="language-plaintext highlighter-rouge">#qunit-testresult</code> wrapper from <code class="language-plaintext highlighter-rouge">&lt;p&gt;</code> to <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>. <a href="https://github.com/qunitjs/qunit/issues/1301">#1301</a></li>
+  <li>Fix text selection to exclude “Rerun” link, reducing noise in text you copy to the clipboard. <a href="https://github.com/qunitjs/qunit/commit/6becc199e081b14b7b1ae72b96fee75cf3efb56f">6becc19</a></li>
+  <li>Fix “todo” and “skipped” labels to include a space character in the DOM, separating them from the test name. The separation used to be only visual (with CSS margin), causing “todo” and the first word of your test name to be read as one word by screen readers, and in clipboard text. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Fix unusually wide glyphs in the assertion counts (due to <code class="language-plaintext highlighter-rouge">&lt;b&gt;</code> inside <code class="language-plaintext highlighter-rouge">&lt;strong&gt;</code>, multiplying the font-weight “bolder” rule from the user agent stylesheet). <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Exclude page title from fixed header to leave more vertical space for test results. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Fix layout shift in toolbar at the end of the run. The toolbar now occupies the same height during the “running” and “completed” states. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Fix unexpected pointer cursor on “Source” label. <a href="https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249">52bfa69</a></li>
+  <li>Fix overflow and scrollbar issues, by re-implementing the fixed header with <code class="language-plaintext highlighter-rouge">position: sticky</code>. This creates a regular page-level scrollbar for the test results, and the page now naturally flows under the toolbar. Until now, the test results had their own scrollable area. This fixes various layout quirks with fixtures and other content you may have on the test page, which could previously get squished or pushed outside the viewport. This fixes a regression that started in QUnit 2.14. <a href="https://github.com/qunitjs/qunit/issues/1603">#1603</a></li>
+  <li>Move “Abort” button to the left. This button previously floated somewhat randomly to the right.</li>
+  <li>Animate test execution with a new progress bar. The <code class="language-plaintext highlighter-rouge">#qunit-banner</code> used to be blank until it turned green or red.</li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="/blog/2026/09/11/instant-render/">Blog: Instant render and early errors in QUnit 3</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1774">New design for QUnit 3 · Pull Request #1774</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/pull/1803">Increase contrast in test results and diff colors · Pull Request #1803</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Accessibility, a refined color palette, and various usability improvements.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://qunitjs.com/resources/2026-theme-qunit-3-compared.png" /><media:content medium="image" url="https://qunitjs.com/resources/2026-theme-qunit-3-compared.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Instant render and early errors with QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/11/instant-render/" rel="alternate" type="text/html" title="Instant render and early errors with QUnit 3" /><published>2026-09-11T00:00:00+00:00</published><updated>2026-09-11T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/11/instant-render</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/11/instant-render/"><![CDATA[<p>QUnit 3 renders the UI significantly faster, and can now display early errors within the UI.</p>
 
 <h2 id="comparison">Comparison</h2>
 
@@ -89,7 +167,7 @@
   <li><a href="/blog/2022/04/28/qunit-2-19-0/">Blog: QUnit 2.19.0 - Faster HTML startup</a></li>
   <li><a href="/blog/2022/04/17/qunit-2-18-2/">Blog: QUnit 2.18.2 - Instant module filter</a></li>
   <li><a href="/blog/2018/10/10/qunit-2-7-0/">Blog: QUnit 2.7.0 - HTML Reporter Performance</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Early errors.]]></summary></entry><entry><title type="html">QUnit 2.26.0 Released: Return from assert.rejects</title><link href="https://qunitjs.com/blog/2026/05/31/qunit-2-26-0/" rel="alternate" type="text/html" title="QUnit 2.26.0 Released: Return from assert.rejects" /><published>2026-05-31T00:00:00+00:00</published><updated>2026-05-31T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/05/31/qunit-2-26-0</id><content type="html" xml:base="https://qunitjs.com/blog/2026/05/31/qunit-2-26-0/"><![CDATA[<h3 id="added">Added</h3>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[QUnit 3 renders the UI significantly faster.]]></summary></entry><entry><title type="html">QUnit 2.26.0 Released: Return from assert.rejects</title><link href="https://qunitjs.com/blog/2026/05/31/qunit-2-26-0/" rel="alternate" type="text/html" title="QUnit 2.26.0 Released: Return from assert.rejects" /><published>2026-05-31T00:00:00+00:00</published><updated>2026-05-31T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/05/31/qunit-2-26-0</id><content type="html" xml:base="https://qunitjs.com/blog/2026/05/31/qunit-2-26-0/"><![CDATA[<h3 id="added">Added</h3>
 
 <ul>
   <li>Assert: Return error value from <a href="/api/assert/rejects/"><code class="language-plaintext highlighter-rouge">assert.rejects()</code></a> and <a href="/api/assert/throws/"><code class="language-plaintext highlighter-rouge">assert.throws()</code></a>, for example to run other assertions against your rejection value. (Bartosz Dziewoński) <a href="https://github.com/qunitjs/qunit/issues/1824">#1824</a></li>
@@ -193,45 +271,4 @@ All you need is a wdio.conf.js file. Have a look at an example:
 <a href="https://github.com/UI5/sample-app/pull/263">https://github.com/UI5/sample-app/pull/263</a></p>
 </blockquote>
 
-<p>(via <a href="https://bsky.app/profile/mauriciolauffer.bsky.social/post/3lgdbcls73c2s">@mauriciolauffer on Bluesky</a>)</p>]]></content><author><name>Timo Tijhof</name></author><category term="link" /><summary type="html"><![CDATA[Mauricio Lauffer demo’ing the new wdio-qunit-service package:]]></summary></entry><entry><title type="html">QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions</title><link href="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/" rel="alternate" type="text/html" title="QUnit 2.24.0 Released: Cleaner traces and new CLI file extensions" /><published>2025-01-20T00:00:00+00:00</published><updated>2025-01-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/20/qunit-2-24-0</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/20/qunit-2-24-0/"><![CDATA[<p>FYI:</p>
-<ul>
-  <li>✨ There is a new <a href="https://qunitjs.com/blog/">QUnit Blog</a>.
-We’re also on <a href="https://fosstodon.org/@qunit">Mastodon</a> and <a href="https://bsky.app/profile/qunitjs.com">Bluesky</a>.</li>
-  <li>📗 There are <a href="https://qunitjs.com/intro/">new Guides, Support, and Chat sections</a>. <br />Including best practices and examples for async tests, callbacks, and event-based code.</li>
-</ul>
-
-<h3 id="added">Added</h3>
-
-<ul>
-  <li>
-    <p>CLI: Add <code class="language-plaintext highlighter-rouge">.mjs</code> and <code class="language-plaintext highlighter-rouge">.cjs</code> to the default file extensions when reading a test directory.</p>
-
-    <p>These have been monitored by watch mode since QUnit 2.18, but were not loaded or executed
-unless you passed them as individual files, or used your own glob like <code class="language-plaintext highlighter-rouge">test/*.{js,mjs,cjs}</code>.</p>
-
-    <p>If you currently pass a directory to the QUnit CLI and have matching <code class="language-plaintext highlighter-rouge">.mjs</code> or <code class="language-plaintext highlighter-rouge">.cjs</code>
-files that should not be executed, you can opt-out by passing <code class="language-plaintext highlighter-rouge">test/*.js</code> or
-<code class="language-plaintext highlighter-rouge">test/**/*.js</code> explicitly instead of <code class="language-plaintext highlighter-rouge">test/</code>.</p>
-  </li>
-  <li>
-    <p>CLI: Add stacktrace cleaning by omitting or greying out internal QUnit and Node.js frames in TAP reporter. <a href="https://github.com/qunitjs/qunit/pull/1795">#1795</a>. <a href="https://github.com/qunitjs/qunit/pull/1789">#1789</a></p>
-
-    <p>Learn more about <a href="https://qunitjs.com/blog/2025/01/19/stacktrace-cleaner/">Cleaner stack traces</a> on the QUnit Blog.</p>
-  </li>
-  <li>Core: Add <a href="https://qunitjs.com/api/config/reporters/"><code class="language-plaintext highlighter-rouge">QUnit.config.reporters.tap</code></a> for enabling TAP via preconfig. <a href="https://github.com/qunitjs/qunit/issues/1711">#1711</a></li>
-  <li>Core: Add memory to the <a href="https://qunitjs.com/api/callbacks/QUnit.on/#the-runend-event"><code class="language-plaintext highlighter-rouge">runEnd</code> event</a> to allow late listeners. This helps <a href="https://qunitjs.com/browser/#integrations">browser integrations</a> that only relay a summary. <a href="https://github.com/qunitjs/qunit/commit/27a33d15938a601716a81a638882a16c1bd7f2b9">27a33d1593</a></li>
-</ul>
-
-<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>HTML Reporter: Fix unexpected pointer cursor on “Source:” label. <a href="https://github.com/qunitjs/qunit/commit/f8cce2bb06396561e0cdcbf58c4e83ddf7a1f27f">f8cce2bb06</a></li>
-  <li>HTML Reporter: Faster “Hide passed” toggling on large test suites. <a href="https://github.com/qunitjs/qunit/commit/b13ade0fd7c3baf4d0e68abe04f7d1609f686877">b13ade0fd7</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.0">Git tag: 2.24.0</a></li>
-  <li><a href="/blog/2025/01/19/stacktrace-cleaner/">Blog: Cleaner stack traces in QUnit</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[New stacktrace cleaning, CLI file extensions, and various performance improvements and bug fixes.]]></summary></entry></feed>
+<p>(via <a href="https://bsky.app/profile/mauriciolauffer.bsky.social/post/3lgdbcls73c2s">@mauriciolauffer on Bluesky</a>)</p>]]></content><author><name>Timo Tijhof</name></author><category term="link" /><summary type="html"><![CDATA[Mauricio Lauffer demo’ing the new wdio-qunit-service package:]]></summary></entry></feed>
