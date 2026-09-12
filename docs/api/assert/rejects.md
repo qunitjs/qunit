@@ -31,7 +31,7 @@ The optional `expected` parameter can be one of these types (see [§ Examples](#
 * Error constructor, to confirm that the rejection value is an instance of this constructor.
 * Custom validation function, to write your own logic returning `true` or `false`.
 
-The returned promise from `assert.rejects()` is resolved with the rejection value (since QUnit 2.26). This can be used instead of an `expected` argument, to run other assertions against your your rejection value, such as [assert.propEqual()](./propEqual.md).
+The returned promise from `assert.rejects()` is resolved with the rejection value (since QUnit 2.26). This can be used instead of an `expected` argument, to run other assertions against your rejection value, such as [assert.propEqual()](./propEqual.md).
 
 ## Changelog
 

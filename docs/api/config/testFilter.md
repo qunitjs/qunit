@@ -1,13 +1,13 @@
 ---
 layout: page-api
 title: QUnit.config.testFilter
-excerpt: Programmatically filter which tests to run.
+excerpt: Programatically filter which tests to run.
 groups:
   - config
 version_added: "2.25.0"
 ---
 
-Programmatically filter which tests to run.
+Programatically filter which tests to run.
 
 <table>
 <tr>
