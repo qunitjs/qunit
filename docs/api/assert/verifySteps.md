@@ -30,7 +30,7 @@ Refer to the below examples to learn how to use the Step API in your test suite.
 
 ## Changelog
 
-| UNRELEASED | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
 
 ## Examples
 

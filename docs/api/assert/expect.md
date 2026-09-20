@@ -27,7 +27,7 @@ It is recommended to test asynchronous code with the [`assert.verifySteps()`](./
 ## Changelog
 
 | [QUnit 2.21.1](https://github.com/qunitjs/qunit/releases/tag/2.21.1) | Warn if `assert.expect()` is used with `assert.verifySteps()`.<br>See also [§ Migration: countStepsAsOne](#migration-countstepsasone).
-| UNRELEASED | `assert.expect()` now counts [`assert.verifySteps()`](./verifySteps.md) as one assertion. Steps no longer count separately.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | `assert.expect()` now counts [`assert.verifySteps()`](./verifySteps.md) as one assertion. Steps no longer count separately.
 
 ## Examples
 

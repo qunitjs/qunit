@@ -28,6 +28,6 @@ This is used by [`QUnit.dump.parse()`](../extension/QUnit.dump.parse.md).
 
 ## Changelog
 
-| UNRELEASED | Make `QUnit.dump.maxDepth` an alias for `QUnit.config.maxDepth`, allowing both to be read and changed at runtime.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | Make `QUnit.dump.maxDepth` an alias for `QUnit.config.maxDepth`, allowing both to be read and changed at runtime.
 | [QUnit 1.18](https://github.com/qunitjs/qunit/releases/tag/1.18.0) | Introduce `QUnit.config.maxDepth` to enable setting via [preconfig](./index.md). Temporary changes at runtime must change `QUnit.dump.maxDepth` instead.
 | [QUnit 1.16](https://github.com/qunitjs/qunit/releases/tag/1.16.0) | Introduce `QUnit.dump.maxDepth`.

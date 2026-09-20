@@ -32,7 +32,7 @@ QUnit.urlParams.thing; // [ "xx", "yyy" ]
 
 ## Changelog
 
-| UNRELEASED | Available unconditionally.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | Available unconditionally.
 | [QUnit 1.23.0](https://github.com/qunitjs/qunit/releases/tag/1.23.0)| Now undefined in non-browser environments.
 | [QUnit 1.0.0](https://github.com/qunitjs/qunit/releases/tag/1.0.0) | Introduced.
 

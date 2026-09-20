@@ -1,36 +1,26 @@
-3.0.0-rc1 / 2026-01-11
+3.0.0 / 2026-09-25
 ==================
+
+📗 Check out the **[QUnit 3.0 Upgrade Guide](https://qunitjs.com/upgrade-guide-3.x/)**
 
 ### Added
 
 * Release: Add native ESM distribution, used automatically by Node.js when using the `import` keyword. [#1551](https://github.com/qunitjs/qunit/issues/1551)
-* Core: Add module context to `before` and `after` hooks. This enables inheritance between parent and child modules, and fixes leaks between last test and `after` hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
+* Core: Add module context to `before` and `after` hooks. This enables [inheritance between parent and child modules,](http://localhost:4000/lifecycle/), and fixes leaks between last test and `after` hooks. (Ray Cohen) [#1328](https://github.com/qunitjs/qunit/issues/1328)
 * Core: Add [`QUnit.config.reporters.html`](https://qunitjs.com/api/config/reporters/) for disabling the HTML Reporter. [#1711](https://github.com/qunitjs/qunit/issues/1711)
 * Core: Export [`QUnit.urlParams`](https://qunitjs.com/api/extension/QUnit.urlParams/) unconditionally. [57c2dbcffc](https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862)
 * Core: Export `QUnit` global unconditionally. [#1771](https://github.com/qunitjs/qunit/pull/1771)
+* HTML Reporter: Add [instant render and display for early errors](https://qunitjs.com/blog/2026/09/11/instant-render/).
+* Theme: Refine the color palette for [improved accessibilty](https://qunitjs.com/blog/2026/09/12/qunit-3-theme/).
 
 ### Changed
 
 * Core: Enable a default [test timeout](https://qunitjs.com/api/config/testTimeout/) of 3 seconds. [#1483](https://github.com/qunitjs/qunit/issues/1483)
-* Core: Promote warning "[Cannot add … hook outside the containing module](https://qunitjs.com/api/QUnit/module/#E0002)" to error. (Ray Cohen) [#1576](https://github.com/qunitjs/qunit/issues/1576)
-* Core: Promote warning "QUnit.module() callback must not be async" to error. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
+* Core: Promote warning "[Cannot add hook outside the containing module](https://qunitjs.com/api/QUnit/module/#E0002)" to error. (Ray Cohen) [#1576](https://github.com/qunitjs/qunit/issues/1576)
 * Core: Promote warning "[Unexpected test after runEnd](https://qunitjs.com/api/config/autostart/#E0001)" to error. [#1377](https://github.com/qunitjs/qunit/issues/1377)
+* Core: Promote warning "QUnit.module() callback must not be async" to error. (Ray Cohen) [#1600](https://github.com/qunitjs/qunit/issues/1600)
 * Core: Promote "No tests were run." from fake test to native error. [#1790](https://github.com/qunitjs/qunit/pull/1790)
-* Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` calls from count. (Kyle Simpson) [#1226](https://github.com/qunitjs/qunit/issues/1226)
-* HTML Reporter: New design with fresh color palette and improved color contrast. View demos in [#1774](https://github.com/qunitjs/qunit/pull/1774).
-  * Faster UI via [instant render](https://qunitjs.com/blog/2026/09/11/instant-render/) instead of after DOM-ready. [#1793](https://github.com/qunitjs/qunit/pull/1793)
-  * Faster headless execution, when [`id=qunit` element](https://qunitjs.com/browser/) does not exist. [#1711](https://github.com/qunitjs/qunit/issues/1711)
-  * Faster "Hide passed" toggling on large test suites. [a729421411](https://github.com/qunitjs/qunit/commit/a7294214116ab5ec0e111b37c00cc7e2c16b4e1b)
-  * Add displaying of [early errors](https://qunitjs.com/blog/2026/09/11/instant-render/). [#1786](https://github.com/qunitjs/qunit/pull/1786)
-  * Change assertion count in toolbar to test count. [dbeab48c25](https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817)
-  * Change `#qunit-banner` from empty `<h2>` to `<div>` to fix WCAG compliance. [#1427](https://github.com/qunitjs/qunit/issues/1427)
-  * Change `#qunit-testresult` from `<p>` to `<div>` to fix HTML serialization. [#1301](https://github.com/qunitjs/qunit/issues/1301)
-  * Change runtime in toolbar from milliseconds to seconds. [170acc0311d3dea4684b4ed39d1445fbbf522554](https://github.com/qunitjs/qunit/commit/170acc0311)
-  * Fix color constrast of details in failed test results. [#1803](https://github.com/qunitjs/qunit/pull/1803)
-  * Fix text selection to exclude "Rerun" link. [6becc199e0](https://github.com/qunitjs/qunit/commit/6becc199e0)
-  * Fix layout shift in toolbar at the end of the run. [#1774](https://github.com/qunitjs/qunit/pull/1774)
-  * Fix overflow and scrollbar issues. [#1603](https://github.com/qunitjs/qunit/issues/1603)
-  * Fix adding `running` class to test items. [1551120536](https://github.com/qunitjs/qunit/commit/1551120536f6f572a3bb5656db566f0a1bb217d8)
+* Assert: Change [`assert.expect()`](https://qunitjs.com/api/assert/expect/) to exclude `assert.step()` from count. (Kyle Simpson) [#1226](https://github.com/qunitjs/qunit/issues/1226)
 
 ### Fixed
 
@@ -38,7 +28,7 @@
 * Core: Fix internal `QUnit.config.currentModule` for the initial unnamed module to be a complete object. [5812597b7f](https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b)
 * Core: Fix crash when "bad thenable" is returned from global module hook. [3209462b88](https://github.com/qunitjs/qunit/commit/3209462b88)
 * Core: Fix crash when mixing test.only() with module.only(). [99aee51a8a](https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886)
-* Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995) test suites.
+* Core: Fix [QUnit.config.maxDepth](https://qunitjs.com/api/config/maxDepth/) to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to `QUnit.config.maxDepth`. [0a26e2c883](https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995)
 
 ### Removed
 

@@ -23,7 +23,7 @@ The Step API provides an easy way to verify execution logic to a high degree of 
 
 ## Changelog
 
-| UNRELEASED | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | [assert.expect()](./expect.md) now counts `assert.verifySteps()` as one assertion. Steps no longer count separately.
 
 ## Examples
 
