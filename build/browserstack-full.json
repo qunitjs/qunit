@@ -46,12 +46,6 @@
       "device": "Samsung Galaxy S20"
     },
     {
-      "os": "android",
-      "os_version": "8.1",
-      "real_mobile": true,
-      "device": "Samsung Galaxy Note 9"
-    },
-    {
       "os": "ios",
       "os_version": "15.0",
       "real_mobile": true,
