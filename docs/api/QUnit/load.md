@@ -9,7 +9,7 @@ redirect_from:
   - "/QUnit/load/"
 version_added: "1.0.0"
 version_deprecated: "2.21.0"
-version_removed: "unreleased"
+version_removed: "3.0.0"
 ---
 
 `QUnit.load()`
@@ -24,7 +24,7 @@ As of [QUnit 2.1.1](https://github.com/qunitjs/qunit/releases/tag/2.1.1), calls 
 
 ## Changelog
 
-| UNRELEASED | Removed.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | Removed.
 | [QUnit 2.21.0](https://github.com/qunitjs/qunit/releases/tag/2.21.0) | Deprecated. Use [`QUnit.start()`](./start.md) instead.
 | [QUnit 2.1.1](https://github.com/qunitjs/qunit/releases/tag/2.1.1) | `QUnit.start()` no longer requires calling `QUnit.load()` first.
 

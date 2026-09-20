@@ -32,5 +32,5 @@ QUnit.config.reporters.html = false;
 
 ## Changelog
 
-| UNRELEASED | Toggle declaratively via [`QUnit.config.reporters`](../config/reporters.md).
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | Toggle declaratively via [`QUnit.config.reporters`](../config/reporters.md).
 | [QUnit 1.0.0](https://github.com/qunitjs/qunit/releases/tag/1.0.0) | Initial release.

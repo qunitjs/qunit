@@ -46,5 +46,5 @@ QUnit.config.reporters.tap = true;
 
 ## Changelog
 
-| UNRELEASED | And support for `QUnit.config.reporters.perf` and `QUnit.config.reporters.html`.
+| [QUnit 3.0.0](https://github.com/qunitjs/qunit/releases/tag/3.0.0) | And support for `QUnit.config.reporters.perf` and `QUnit.config.reporters.html`.
 | [QUnit 2.24.0](https://github.com/qunitjs/qunit/releases/tag/2.24.0) | Introduce `QUnit.config.reporters`, limited to `tap` and `console`.
