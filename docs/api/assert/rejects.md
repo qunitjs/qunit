@@ -153,7 +153,7 @@ However, if two parts of your test code or subject share state within a single t
 To make this easy, the `assert.rejects()` method itself can be awaited, which will wait for the given async function call or other Promise.
 
 ```js
-QUnit.test('stateful example', async function (assert) {
+QUnit.test('example with state', async function (assert) {
   let value;
 
   async function feedMe () {
@@ -174,14 +174,27 @@ QUnit.test('stateful example', async function (assert) {
 });
 ```
 
+### Example: Validate return value
+
+Perform additional assertions on the returned rejection value directly in your test function:
+
+```js
+QUnit.test('example', async function (assert) {
+  const p = feedMe();
+  const e = await assert.rejects(p, RangeError);
+  assert.deepEqual(e.somedata, { foo: 'bar' });
+});
+```
+
 ### Example: Workarounds
 
-Avoid using error handling callbacks, such as `Promise.catch` or `on('error')`, because:
+Avoid nesting assertions inside error handling callbacks, such as `Promise.catch` or `on('error')`, because:
+
 * Your test is likely to silently pass even if the expected error *does not happen*, or if the callback is lost or otherwise not invoked for some reason.
 * When an error happens, but not the error you expect, the actual value is not visible in your CI output.
 
 ```js
-QUnit.test('BAD example', function (assert) {
+QUnit.test('Bad example', function (assert) {
   return feedBaby('sprouts')
     .catch((e) => {
       assert.true(e instanceof RangeError);
@@ -190,12 +203,13 @@ QUnit.test('BAD example', function (assert) {
 ```
 
 Avoid manually tracking rejections with [`assert.async()`](./async.md), because:
-* When you put assertions inside a callback, especially negative assertions, the test function is no longer in control over the assertions. This means the test now only works as intended if the callback is called exactly as it should. If the callback isn't called, the test may succeed or fail/timeout in away that are hard to diagnose.
+
+* When you nest assertions in a callback, especially negative assertions, the test function is no longer in control of the assertions. This means the test now only works as intended if the callback is called exactly as it should. If the callback isn't called, the test may succeed or fail/timeout in away that is hard to diagnose.
 * When a different error happens, the actual value is not visible in your CI output.
-* This requires writing more boilerplate, which is easy to get wrong and ways that don't self-correct (i.e. pass even when it shouldn't).
+* This requires writing more boilerplate, which is easy to get wrong in ways that don't self-correct (i.e. pass even when it shouldn't).
 
 ```js
-QUnit.test('BAD example', function (assert) {
+QUnit.test('Bad example', function (assert) {
   const done = assert.async();
 
   feedBaby('sprouts')
@@ -209,12 +223,10 @@ QUnit.test('BAD example', function (assert) {
 });
 ```
 
-If you want to perform additional assertions after a failure, consider performing these directly in your test function, after `await assert.rejects()`:
+Use `assert.rejects()` instead:
 
 ```js
 QUnit.test('example', async function (assert) {
-  const p = feedMe();
-  const e = await assert.rejects(p, RangeError);
-  assert.deepEqual(e.somedata, { foo: 'bar' });
+  await assert.rejects(feedBaby('sprouts'), RangeError);
 });
 ```
