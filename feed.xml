@@ -1,4 +1,174 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-20T16:01:26+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">First Look at the QUnit 3 Theme</title><link href="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/" rel="alternate" type="text/html" title="First Look at the QUnit 3 Theme" /><published>2026-09-12T00:00:00+00:00</published><updated>2026-09-12T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/12/qunit-3-theme</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/"><![CDATA[<p>A deep dive into the accessibility and usability improvements to the default theme in QUnit 3.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-20T16:04:59+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">The Road to QUnit 3: New features</title><link href="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/" rel="alternate" type="text/html" title="The Road to QUnit 3: New features" /><published>2026-09-20T00:00:00+00:00</published><updated>2026-09-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/"><![CDATA[<p>Check out the <a href="/blog/archive/">blog archive</a> or <a href="https://github.com/qunitjs/qunit/blob/2.26.0/History.md">repository changelog</a> for a more detailed history.</p>
+
+<h2 id="step-api">Step API</h2>
+
+<p>The <a href="/api/assert/verifySteps/">Step API</a> provides a complete and strict way to verify asynchronous or event-driven code. You use it via the <code class="language-plaintext highlighter-rouge">assert.step()</code> and <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code> methods. It was introduced in <a href="/blog/2017/03/11/qunit-2-2-0/">QUnit 2.2</a>.</p>
+
+<p>By simply recording and verifying steps, you achieve comprehensive and strict coverage for async or even-driven code. It naturally observes what is called, how it is called, in which order, and how often. You can also detect unexpected steps, which are reported as test failures.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">finder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordFinder</span><span class="p">();</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">data: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">word</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">e</span><span class="p">));</span>
+
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, 2026. Great!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">data: Hello</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">data: Great</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="testtodo">test.todo()</h2>
+
+<p>QUnit 2.2 adds <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a> to natively recognise tests that intentionally fail because the implementation is not yet finished. QUnit 2.4 later added <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code></a> to mark a group of tests, e.g. a nested sub-module or entire module.</p>
+
+<p>If you write tests before the feature implementation, e.g. as part of a <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a> practice, this method encourages sharing a specification or design early on by committing it to source control. You can then collaborate on that feature, and gradually enable tests and make them pass.</p>
+
+<h2 id="asserttimeout">assert.timeout()</h2>
+
+<p>Since QUnit 2.4, you can override the default timeout on a per-test basis with <a href="/api/assert/timeout/"><code class="language-plaintext highlighter-rouge">assert.timeout()</code></a>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">wait for an async function</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span> <span class="c1">// Timeout after 0.5 seconds</span>
+
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">asyncAdder</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="assertrejects">assert.rejects()</h2>
+
+<p>QUnit 2.5 adds <a href="/api/assert/rejects/"><code class="language-plaintext highlighter-rouge">assert.rejects()</code></a> as asynchronous version of <code class="language-plaintext highlighter-rouge">assert.throws()</code>. It allows for a simple and readable way to match an expected error from any async function or rejected Promise. No more <a href="/api/assert/rejects/#example-workarounds">workarounds</a>!</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="kd">function</span> <span class="nf">feedBaby</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">food</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">RangeError</span><span class="p">(</span><span class="dl">'</span><span class="s1">Do not like</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You can perform additional assertions on the rejection value via the return value, since <a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26</a>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="performance-timeline">Performance Timeline</h2>
+
+<p>QUnit 2.7 adds integration with browser DevTools to understand where your tests spend time. This feature measures the duration of every test, and adds them to the  Performance Timeline in Firefox Profiler or Chrome DevTools. It is enabled by default when running tests in a browser.</p>
+
+<p>See also <a href="/api/reporters/perf/"><code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code></a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUnit Run
+└── QUnit Module: Example
+    ├── QUnit Test: apple
+    ├── QUnit Test: banana
+    └── QUnit Test: citron
+</code></pre></div></div>
+
+<figure>
+  <img alt="QUnit profiling in Chrome DevTools Performance tab" src="/resources/perf-chrome.png" />
+</figure>
+
+<h2 id="asserttrue-and-assertfalse">assert.true() and assert.false()</h2>
+
+<p>The new strict boolean <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a> and <a href="/api/assert/false/"><code class="language-plaintext highlighter-rouge">assert.false()</code></a> methods arrived in QUnit 2.11. These methods provide a shortcut to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a> with <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> as the expected value.</p>
+
+<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which were shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but involve type casting.</p>
+
+<h2 id="data-providers">Data providers</h2>
+
+<p>QUnit 2.16 introduced <a href="/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> to generate multiple test cases from a single template and a data provider. This removes the need to duplicate code across many similar tests, and removes the need for ad-hoc loops and other (often, untested) custom abstractions.</p>
+
+<h2 id="assertpropcontains">assert.propContains()</h2>
+
+<p>QUnit 2.18 added <a href="/api/assert/propContains/"><code class="language-plaintext highlighter-rouge">assert.propContains()</code></a> to partially compare an object against expected key-value pairs, whilst ignoring other properties. This complements the <a href="/api/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> method.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">'</span><span class="s1">on</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">fluxing</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">engine</span><span class="p">:</span> <span class="dl">'</span><span class="s1">running</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="na">quux</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">};</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">propContains</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span> <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">fluxing</span><span class="dl">'</span> <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="assertcloseto">assert.closeTo()</h2>
+
+<p>QUnit 2.21 introduced <a href="/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a>, which checks that a number is within a range or tolerance from an expected number.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// passing: x is between 0.299 and 0.301</span>
+  <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">;</span> <span class="c1">// 0.30000000000000004</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
+
+  <span class="c1">// passing: 3.14159 is between 3.140 and 3.142</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">,</span> <span class="mf">3.141</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
+
+  <span class="c1">// passing: y is between 2010 and 2014 inclusive</span>
+  <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">2014</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="conditional-skip">Conditional skip</h2>
+
+<p>QUnit 2.22 introduced <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a> and <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code> to automatically skip a test when a certain condition is false. For example, to skip a test for a feature that is not available in older browsers.</p>
+
+<h2 id="features-for-test-runners-and-plugins">Features for test runners and plugins</h2>
+
+<h3 id="preconfiguration">Preconfiguration</h3>
+
+<p>QUnit 2.1 introduced support for a predefined <a href="/api/config/"><code class="language-plaintext highlighter-rouge">QUnit.config</code></a>.</p>
+
+<h3 id="event-emitter">Event emitter</h3>
+
+<p>QUnit 2.2 introduced the <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on()</code></a> event emitter, which lets you create custom reporters. These can be loaded in the browser, or in the <a href="/cli/">QUnit CLI</a> via <code class="language-plaintext highlighter-rouge">--reporter</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">runEnd</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Passed: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Failed: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">failed</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Skipped: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">skipped</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Todo: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">todo</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Total: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="qunit-cli">QUnit CLI</h3>
+
+<p>QUnit 2.3 introduced the <a href="/cli/">QUnit CLI</a>, with the <code class="language-plaintext highlighter-rouge">--require</code> option arriving in 2.6, and the <code class="language-plaintext highlighter-rouge">--module</code> option in 2.19.</p>
+
+<h3 id="global-hooks">Global hooks</h3>
+
+<p>QUnit 2.18 introduced <a href="/api/QUnit/hooks/">QUnit.hooks</a> to globally add <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> hooks on all tests.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Step API, data providers, conditional skip, global hooks, and more.]]></summary></entry><entry><title type="html">First Look at the QUnit 3 Theme</title><link href="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/" rel="alternate" type="text/html" title="First Look at the QUnit 3 Theme" /><published>2026-09-12T00:00:00+00:00</published><updated>2026-09-12T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/12/qunit-3-theme</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/12/qunit-3-theme/"><![CDATA[<p>A deep dive into the accessibility and usability improvements to the default theme in QUnit 3.</p>
 
 <figure><img src="/resources/2026-theme-qunit-3-compared.png" width="603" height="335" alt="QUnit 2.25 and 3.0 side-by-side running a passing test. Differences include: Higher contrast in colors with a more vibrant green and deeper black, less clutter, more space for test results, and an edge-to-edge design instead of white padding around the page." /><figcaption><a href="/resources/q4000.html" target="_blank">Try it here: <strong>Demo</strong></a></figcaption></figure>
 
@@ -263,12 +433,4 @@
 <ul>
   <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.1">Git tag: 2.24.1</a></li>
   <li><a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0 Released: Add memory to the “runEnd” event</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry><entry><title type="html">Link: WebdriverIO QUnit Service</title><link href="https://qunitjs.com/blog/2025/01/22/wdio-qunit-service/" rel="alternate" type="text/html" title="Link: WebdriverIO QUnit Service" /><published>2025-01-22T00:00:00+00:00</published><updated>2025-01-22T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/22/wdio-qunit-service</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/22/wdio-qunit-service/"><![CDATA[<p>Mauricio Lauffer demo’ing the new <a href="https://webdriver.io/docs/wdio-qunit-service/">wdio-qunit-service</a> package:</p>
-
-<blockquote>
-  <p>WebdriverIO QUnit Service now supports all sort of QUnit usage in SAP Fiori and UI5 apps! Whatever UI5/QUnit testing method you’re using, you can run it with wdio-qunit-service.
-All you need is a wdio.conf.js file. Have a look at an example:
-<a href="https://github.com/UI5/sample-app/pull/263">https://github.com/UI5/sample-app/pull/263</a></p>
-</blockquote>
-
-<p>(via <a href="https://bsky.app/profile/mauriciolauffer.bsky.social/post/3lgdbcls73c2s">@mauriciolauffer on Bluesky</a>)</p>]]></content><author><name>Timo Tijhof</name></author><category term="link" /><summary type="html"><![CDATA[Mauricio Lauffer demo’ing the new wdio-qunit-service package:]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry></feed>

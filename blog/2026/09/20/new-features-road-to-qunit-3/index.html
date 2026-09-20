@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=5be6d483" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>The Road to QUnit 3: New features | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="The Road to QUnit 3: New features"><meta name="description" content="Step API, data providers, conditional skip, global hooks, and more."><meta property="og:description" content="Step API, data providers, conditional skip, global hooks, and more."><link rel="me" href="https://fosstodon.org/@qunit"><meta property="og:type" content="article"><meta property="article:published_time" content="2026-09-20T00:00:00+00:00"><meta name="author" content="Timo Tijhof"><meta property="twitter:card" content="summary_large_image"><meta property="og:image" content="/resources/post-image-default.png">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><typesense-minibar data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true">
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+</typesense-minibar>
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#compatibility">Compatibility</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('typesense-minibar');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="main main--columns wrapper">
+<div class="content" role="main">
+<article>
+	<header>
+		<h1>The Road to QUnit 3: New features</h1><p class="post-meta byline">Posted on <time pubdate datetime="2026-09-20T00:00:00+00:00">20 September 2026</time> by <span class="author vcard"><a rel="author" class="url fn n" href="/blog/author/krinkle/">Timo Tijhof</a></span> in <a rel="tag" class="post-tag" href="/blog/tag/feature/">Feature</a></p>
+	</header>
+	<p>Check out the <a href="/blog/archive/">blog archive</a> or <a href="https://github.com/qunitjs/qunit/blob/2.26.0/History.md">repository changelog</a> for a more detailed history.</p>
+
+<h2 id="step-api">Step API</h2>
+
+<p>The <a href="/api/assert/verifySteps/">Step API</a> provides a complete and strict way to verify asynchronous or event-driven code. You use it via the <code class="language-plaintext highlighter-rouge">assert.step()</code> and <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code> methods. It was introduced in <a href="/blog/2017/03/11/qunit-2-2-0/">QUnit 2.2</a>.</p>
+
+<p>By simply recording and verifying steps, you achieve comprehensive and strict coverage for async or even-driven code. It naturally observes what is called, how it is called, in which order, and how often. You can also detect unexpected steps, which are reported as test failures.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">finder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WordFinder</span><span class="p">();</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">data: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">word</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="dl">'</span><span class="s1">error: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">e</span><span class="p">));</span>
+
+  <span class="nx">finder</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello, 2026. Great!</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">verifySteps</span><span class="p">([</span><span class="dl">'</span><span class="s1">start</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">data: Hello</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">data: Great</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">]);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="testtodo">test.todo()</h2>
+
+<p>QUnit 2.2 adds <a href="/api/QUnit/test.todo/"><code class="language-plaintext highlighter-rouge">QUnit.test.todo()</code></a> to natively recognise tests that intentionally fail because the implementation is not yet finished. QUnit 2.4 later added <a href="/api/QUnit/module/"><code class="language-plaintext highlighter-rouge">QUnit.module.todo()</code></a> to mark a group of tests, e.g. a nested sub-module or entire module.</p>
+
+<p>If you write tests before the feature implementation, e.g. as part of a <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a> practice, this method encourages sharing a specification or design early on by committing it to source control. You can then collaborate on that feature, and gradually enable tests and make them pass.</p>
+
+<h2 id="asserttimeout">assert.timeout()</h2>
+
+<p>Since QUnit 2.4, you can override the default timeout on a per-test basis with <a href="/api/assert/timeout/"><code class="language-plaintext highlighter-rouge">assert.timeout()</code></a>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">wait for an async function</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">timeout</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span> <span class="c1">// Timeout after 0.5 seconds</span>
+
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">asyncAdder</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">strictEqual</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="assertrejects">assert.rejects()</h2>
+
+<p>QUnit 2.5 adds <a href="/api/assert/rejects/"><code class="language-plaintext highlighter-rouge">assert.rejects()</code></a> as asynchronous version of <code class="language-plaintext highlighter-rouge">assert.throws()</code>. It allows for a simple and readable way to match an expected error from any async function or rejected Promise. No more <a href="/api/assert/rejects/#example-workarounds">workarounds</a>!</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="kd">function</span> <span class="nf">feedBaby</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">food</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">RangeError</span><span class="p">(</span><span class="dl">'</span><span class="s1">Do not like</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You can perform additional assertions on the rejection value via the return value, since <a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26</a>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
+  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="performance-timeline">Performance Timeline</h2>
+
+<p>QUnit 2.7 adds integration with browser DevTools to understand where your tests spend time. This feature measures the duration of every test, and adds them to the  Performance Timeline in Firefox Profiler or Chrome DevTools. It is enabled by default when running tests in a browser.</p>
+
+<p>See also <a href="/api/reporters/perf/"><code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code></a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUnit Run
+└── QUnit Module: Example
+    ├── QUnit Test: apple
+    ├── QUnit Test: banana
+    └── QUnit Test: citron
+</code></pre></div></div>
+
+<figure>
+  <img alt="QUnit profiling in Chrome DevTools Performance tab" src="/resources/perf-chrome.png" />
+</figure>
+
+<h2 id="asserttrue-and-assertfalse">assert.true() and assert.false()</h2>
+
+<p>The new strict boolean <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a> and <a href="/api/assert/false/"><code class="language-plaintext highlighter-rouge">assert.false()</code></a> methods arrived in QUnit 2.11. These methods provide a shortcut to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a> with <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> as the expected value.</p>
+
+<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which were shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but involve type casting.</p>
+
+<h2 id="data-providers">Data providers</h2>
+
+<p>QUnit 2.16 introduced <a href="/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> to generate multiple test cases from a single template and a data provider. This removes the need to duplicate code across many similar tests, and removes the need for ad-hoc loops and other (often, untested) custom abstractions.</p>
+
+<h2 id="assertpropcontains">assert.propContains()</h2>
+
+<p>QUnit 2.18 added <a href="/api/assert/propContains/"><code class="language-plaintext highlighter-rouge">assert.propContains()</code></a> to partially compare an object against expected key-value pairs, whilst ignoring other properties. This complements the <a href="/api/assert/propEqual/"><code class="language-plaintext highlighter-rouge">assert.propEqual()</code></a> method.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">timeCircuits</span><span class="p">:</span> <span class="dl">'</span><span class="s1">on</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">fluxing</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">engine</span><span class="p">:</span> <span class="dl">'</span><span class="s1">running</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="na">quux</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">};</span>
+
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">propContains</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">vehicle</span><span class="p">:</span> <span class="p">{</span> <span class="na">fluxCapacitor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">fluxing</span><span class="dl">'</span> <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="assertcloseto">assert.closeTo()</h2>
+
+<p>QUnit 2.21 introduced <a href="/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a>, which checks that a number is within a range or tolerance from an expected number.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// passing: x is between 0.299 and 0.301</span>
+  <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">;</span> <span class="c1">// 0.30000000000000004</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
+
+  <span class="c1">// passing: 3.14159 is between 3.140 and 3.142</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">,</span> <span class="mf">3.141</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">);</span>
+
+  <span class="c1">// passing: y is between 2010 and 2014 inclusive</span>
+  <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">2014</span><span class="p">;</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">closeTo</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="conditional-skip">Conditional skip</h2>
+
+<p>QUnit 2.22 introduced <a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a> and <code class="language-plaintext highlighter-rouge">QUnit.module.if()</code> to automatically skip a test when a certain condition is false. For example, to skip a test for a feature that is not available in older browsers.</p>
+
+<h2 id="features-for-test-runners-and-plugins">Features for test runners and plugins</h2>
+
+<h3 id="preconfiguration">Preconfiguration</h3>
+
+<p>QUnit 2.1 introduced support for a predefined <a href="/api/config/"><code class="language-plaintext highlighter-rouge">QUnit.config</code></a>.</p>
+
+<h3 id="event-emitter">Event emitter</h3>
+
+<p>QUnit 2.2 introduced the <a href="/api/callbacks/QUnit.on/"><code class="language-plaintext highlighter-rouge">QUnit.on()</code></a> event emitter, which lets you create custom reporters. These can be loaded in the browser, or in the <a href="/cli/">QUnit CLI</a> via <code class="language-plaintext highlighter-rouge">--reporter</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">runEnd</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Passed: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">passed</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Failed: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">failed</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Skipped: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">skipped</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Todo: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">todo</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Total: </span><span class="p">${</span><span class="nx">runEnd</span><span class="p">.</span><span class="nx">total</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="qunit-cli">QUnit CLI</h3>
+
+<p>QUnit 2.3 introduced the <a href="/cli/">QUnit CLI</a>, with the <code class="language-plaintext highlighter-rouge">--require</code> option arriving in 2.6, and the <code class="language-plaintext highlighter-rouge">--module</code> option in 2.19.</p>
+
+<h3 id="global-hooks">Global hooks</h3>
+
+<p>QUnit 2.18 introduced <a href="/api/QUnit/hooks/">QUnit.hooks</a> to globally add <code class="language-plaintext highlighter-rouge">beforeEach</code> and <code class="language-plaintext highlighter-rouge">afterEach</code> hooks on all tests.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></li>
+</ul>
+
+</article></div>
+<aside class="sidebar" role="complementary">
+
+	<h4 class="sidebar-title-open"><a href="/blog/">Recent blog posts</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item sidebar-item-active">
+		<a href="/blog/2026/09/20/new-features-road-to-qunit-3/">The Road to QUnit 3: New features</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2026/09/12/qunit-3-theme/">First Look at the QUnit 3 Theme</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2026/09/11/instant-render/">Instant render and early errors with QUnit 3</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26.0 Released: Return from assert.rejects</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2025/12/30/qunit-2-25-0/">QUnit 2.25.0 Released: Add callback filter</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open">Tags</h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/tag/feature/">Feature</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/tag/link/">Notes</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/tag/release/">Release</a>
+	</li></ul>
+
+	<h4 class="sidebar-title-open"><a href="/blog/archive/">Archives</a></h4>
+	<ul class="sidebar-list"><li class="sidebar-item">
+		<a href="/blog/2026/">2026</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2025/">2025</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2024/">2024</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2023/">2023</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2022/">2022</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2021/">2021</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2020/">2020</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2019/">2019</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2018/">2018</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2017/">2017</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2016/">2016</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2015/">2015</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2014/">2014</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2013/">2013</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2012/">2012</a>
+	</li><li class="sidebar-item">
+		<a href="/blog/2011/">2011</a>
+	</li></ul>
+</aside>
+
+</div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="/intro/#support" target="_blank" rel="noopener">Chat</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://bsky.app/profile/qunitjs.com" target="_blank" rel="noopener">Bluesky</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/_posts/2026-09-20-new-features-road-to-qunit-3.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
+</html>

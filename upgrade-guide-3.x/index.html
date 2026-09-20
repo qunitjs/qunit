@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css?v=5be6d483" media="screen">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
+<title>QUnit 3.0 Upgrade Guide | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit 3.0 Upgrade Guide"><link rel="me" href="https://fosstodon.org/@qunit">
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-header-wrapper wrapper">
+            <a class="site-logo" href="/"><img src="/img/logo-with-colored-text.svg" alt="QUnit" width="250" height="72"></a><typesense-minibar data-origin="https://typesense.jquery.com" data-collection="qunitjs_com" data-key="Zh8mMgohXECel9wjPwqT7lekLSG3OCgz" data-foot="true">
+<form role="search" action="https://duckduckgo.com">
+    <input type="search" name="q" aria-label="Search" placeholder="Search..." autocomplete="off">
+    <input type="hidden" name="sites" value="qunitjs.com">
+</form>
+</typesense-minibar>
+<nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#compatibility">Compatibility</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
+            <div class="site-toggles">
+                <button class="search-toggle toggle" aria-expanded="false">
+                    <span class="screen-reader-text">Search</span>
+                    <svg class="icon aa-input-icon" aria-hidden="true" viewBox="654 -372 1664 1664" height="20">
+                        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z"/>
+                    </svg>
+                </button>
+                <button class="nav-toggle toggle" data-opens=".site-nav" aria-expanded="false">
+                    <span class="screen-reader-text">Menu</span>
+                    <svg class="icon icon-nav-toggle" aria-hidden="true" viewBox="0 0 100 100" height="20">
+                        <path d="M5,16h90v16H5z"/>
+                        <path d="M5,48h90v16H5z"/>
+                        <path d="M5,80h90v16H5z"/>
+                    </svg>
+                </button>
+                <script type="module">
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchForm = document.querySelector('typesense-minibar');
+                const searchInput = searchForm.querySelector('input[type=search]');
+                function searchFn(newState) {
+                    searchToggle.setAttribute('aria-expanded', String(newState));
+                    searchForm.style.display = newState ? 'block' : '';
+                    if (newState) {
+                        searchInput.focus();
+                    }
+                }
+                const navToggle = document.querySelector('.nav-toggle');
+                const navToggleOpens = document.querySelector(navToggle.dataset.opens);
+                function navFn(newState) {
+                    navToggle.classList.toggle('opened', newState);
+                    navToggleOpens.classList.toggle('opened', newState);
+                    navToggle.setAttribute('aria-expanded', String(newState));
+                    navToggleOpens.setAttribute('aria-expanded', String(newState));
+                }
+                searchToggle.addEventListener('click', () => {
+                    navFn(false);
+                    searchFn(searchToggle.getAttribute('aria-expanded') !== 'true');
+                });
+                navToggle.addEventListener('click', () => {
+                    searchFn(false);
+                    navFn(!navToggle.classList.contains('opened'));
+                });
+                </script>
+            </div>
+        </div>
+    </header>
+    
+<section class="hero">
+    <div class="wrapper">
+        <h1 class="hero-title">QUnit 3.0 Upgrade Guide</h1>
+    </div>
+</section>
+<div class="main wrapper content"><p class="lead">If your tests pass without warnings on QUnit 2.24, you can upgrade to QUnit 3 without changes.</p>
+
+<p>The QUnit 3.0 release only removes deprecated methods, and promotes warnings to errors. If your tests pass on QUnit 2.24 or later without warnings, then you should be able to upgrade to QUnit 3 without changes.</p>
+
+<p>As is our tradition, no significant features are introduced in major releases. The new features that you may informally associate with “QUnit 3” have been gradually in the QUnit 2.x series. Learn about new features introduced since QUnit 2.0 in <a href="/blog/2026/09/20/new-features-road-to-qunit-3/">The Road to QUnit 3</a>.</p>
+
+<h2 id="changes">Changes</h2>
+
+<ul>
+  <li><a href="#new-features">New features</a></li>
+  <li><a href="#new-theme">New theme</a></li>
+  <li><a href="#deprecation-warnings">Deprecation warnings</a></li>
+  <li><a href="#remove-qunitload">Remove QUnit.load</a></li>
+  <li><a href="remove-qunitonerror-and-qunitonunhandledrejection">Remove QUnit.onError and QUnit.onUnhandledRejection</a></li>
+  <li><a href="#remove-support-for-legacy-markup">Remove support for legacy markup</a></li>
+  <li><a href="#remove-support-for-nodejs-10-16">Remove support for Node.js 10-16</a></li>
+  <li><a href="#remove-support-for-phantomjs">Remove support for PhantomJS</a></li>
+  <li><a href="#remove-bower-distribution">Remove Bower distribution</a></li>
+  <li><a href="#remove-amd-export">Remove AMD export</a></li>
+</ul>
+
+<h3 id="new-features">New features</h3>
+
+<p>Check out <a href="/blog/2026/09/20/new-features-road-to-qunit-3/">The Road to QUnit 3</a> to learn more about features introduced between QUnit 2.1 and QUnit 2.24, such as:</p>
+
+<ul>
+  <li><a href="/api/assert/verifySteps/"><code class="language-plaintext highlighter-rouge">assert.step()</code></a> provides a complete and strict way to verify asynchronous or event-driven code.</li>
+  <li><a href="/api/assert/timeout/"><code class="language-plaintext highlighter-rouge">assert.timeout()</code></a> to control the allowed duration of an async test.</li>
+  <li><a href="/api/assert/rejects/"><code class="language-plaintext highlighter-rouge">assert.rejects()</code></a> to cleanly wait for and match an expected error from any async function or rejected Promise.</li>
+  <li><a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a> and <a href="/api/assert/false/"><code class="language-plaintext highlighter-rouge">assert.false()</code></a> shortcuts.</li>
+  <li><a href="/api/assert/propContains/"><code class="language-plaintext highlighter-rouge">assert.propContains()</code></a> to partially compare an object while ignoring other properties.</li>
+  <li><a href="/api/assert/closeTo/"><code class="language-plaintext highlighter-rouge">assert.closeTo()</code></a> to expect a number within a certain range or tolerance.</li>
+  <li><a href="/api/QUnit/test.each/"><code class="language-plaintext highlighter-rouge">QUnit.test.each()</code></a> to generate test cases via a data provider.</li>
+  <li><a href="/api/QUnit/test.if/"><code class="language-plaintext highlighter-rouge">QUnit.test.if()</code></a> to automatically skip a test when a condition is false.</li>
+  <li><a href="/api/reporters/perf/"><code class="language-plaintext highlighter-rouge">QUnit.reporters.perf</code></a> to find and analyze slow tests in your browser DevTools.</li>
+</ul>
+
+<h3 id="new-theme">New theme</h3>
+
+<p>The default theme in QUnit 3 is faster, more accessible, and includes better error reporting.</p>
+
+<p>Read <a href="/blog/2026/09/12/qunit-3-theme/">First look at the QUnit 3 theme</a> and <a href="/blog/2026/09/11/instant-render/">Instant render with QUnit 3</a> on the QUnit Blog.</p>
+
+<h3 id="deprecation-warnings">Deprecation warnings</h3>
+
+<h4 id="hook-on-wrong-module">Hook on wrong module</h4>
+
+<p>This warning was introduced in QUnit 2.15 (<a href="https://github.com/qunitjs/qunit/issues/1576">#1576</a>) and has been promoted to <a href="/api/QUnit/module/#E0002">an error</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: The beforeEach hook was called inside the wrong module.
+</code></pre></div></div>
+
+<h4 id="async-module-scope">Async module scope</h4>
+
+<p>This warning was introduced in QUnit 2.16 (<a href="https://github.com/qunitjs/qunit/issues/1600">#1600</a>) and has been promoted to an error:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Returning a promise from a module callback is not supported.
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: QUnit.module() callback must not be async. For async module setup, use hooks.
+</code></pre></div></div>
+
+<h4 id="unexpected-test-after-runend">Unexpected test after runEnd</h4>
+
+<p>This warning was introduced in QUnit 2.17 (<a href="https://github.com/qunitjs/qunit/issues/1377">#1377</a>) and has been promoted to <a href="https://qunitjs.com/api/config/autostart/#E0001">an error</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Unexpected test after runEnd.
+</code></pre></div></div>
+
+<h4 id="default-test-timeout">Default test timeout</h4>
+
+<p>If a test takes longer than 3 seconds and you have no timeout set, the following deprecation warning is logged (since QUnit 2.21, <a href="https://github.com/qunitjs/qunit/issues/1483">#1483</a>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Test {name} took longer than 3000ms, but no timeout was set.
+</code></pre></div></div>
+
+<p>QUnit 3 enables a default test timeout of 3 seconds. Check <a href="/api/config/testTimeout/#deprecated-no-timeout-set">config.testTimeout</a> for how to address this warning before upgrading to QUnit 3.</p>
+
+<h4 id="change-assertexpect-counting">Change <code class="language-plaintext highlighter-rouge">assert.expect()</code> counting</h4>
+
+<p>QUnit 3 excludes <code class="language-plaintext highlighter-rouge">assert.step()</code> calls from the assertion count. QUnit 2.21 added this warning:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Counting each assert.step() for assert.expect() is changing in QUnit 3.0.
+Omit assert.expect() from tests that use assert.step(), or enable QUnit.config.countStepsAsOne.
+</code></pre></div></div>
+
+<p>Review <a href="/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect()</code></a> and decide if you still need to count assertions. See also <a href="https://discuss.emberjs.com/t/the-value-and-benefit-of-assert-expect/20145">The value and benefit of assert.expect()</a> on the Ember Discuss forum, which resulted in a recommendation and ESLint rule to discourages assertion counting, especially because <code class="language-plaintext highlighter-rouge">assert.verifySteps()</code> already counts the steps. If you prefer to keep counting assertions, check <a href="/api/assert/expect/#migration-countstepsasone">Migration: countStepsAsOne</a>.</p>
+
+<h3 id="remove-qunitload">Remove <code class="language-plaintext highlighter-rouge">QUnit.load()</code></h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">QUnit.load()</code> method was used by some test runners and CI plugins to customize loading of scripts.</p>
+
+<p>This is deprecated in favor of the simpler <code class="language-plaintext highlighter-rouge">QUnit.start()</code>. Refer to <a href="/api/QUnit/load/"><code class="language-plaintext highlighter-rouge">QUnit.load()</code></a> for a migration guide.</p>
+
+<h3 id="remove-qunitonerror-and-qunitonunhandledrejection">Remove <code class="language-plaintext highlighter-rouge">QUnit.onError()</code> and <code class="language-plaintext highlighter-rouge">QUnit.onUnhandledRejection()</code></h3>
+
+<p>The undocumented <code class="language-plaintext highlighter-rouge">QUnit.onError()</code> and <code class="language-plaintext highlighter-rouge">QUnit.onUnhandledRejection()</code> callbacks could be used by an integration plugin or custom test runner. These are deprecated in favor of <a href="/api/extension/QUnit.onUncaughtException/"><code class="language-plaintext highlighter-rouge">QUnit.onUncaughtException()</code></a> since <a href="/blog/2021/09/05/qunit-2-17-0/">QUnit 2.17</a>.</p>
+
+<h3 id="remove-support-for-legacy-markup">Remove support for legacy markup</h3>
+
+<p>Prior to QUnit 1.2, test pages used the following markup:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">"qunit-header"</span><span class="nt">&gt;</span>Tests<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">"qunit-banner"</span><span class="nt">&gt;&lt;/h2&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit-testrunner-toolbar"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">"qunit-userAgent"</span><span class="nt">&gt;&lt;/h2&gt;</span>
+  <span class="nt">&lt;ol</span> <span class="na">id=</span><span class="s">"qunit-tests"</span><span class="nt">&gt;&lt;/ol&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>Since QUnit 1.3, released in 2012, this markup is automatically created and inserted into a <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> element on the page.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"qunit"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>QUnit 1.x and 2.x supported manual creation of this markup for backwards compatibility. This has now been removed. Use <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> instead. Learn about HTML test file markup on the <a href="/browser/">Browser Runner</a> page.</p>
+
+<h3 id="remove-support-for-nodejs-10-16">Remove support for Node.js 10-16</h3>
+
+<p>Support for Node.js 10-16 was removed. The QUnit CLI now requires Node.js 18 or later.</p>
+
+<h3 id="remove-support-for-phantomjs">Remove support for PhantomJS</h3>
+
+<p>QUnit no longer supports running tests in the PhantomJS browser. This was deprecated in <a href="/blog/2020/11/29/qunit-2-13-0/">QUnit 2.13</a>.</p>
+
+<p>Other browser support remains unchanged. View the support table for browsers and other runtimes at <a href="/intro/#compatibility">Getting Started § Compatibility</a>.</p>
+
+<h3 id="remove-bower-distribution">Remove Bower distribution</h3>
+
+<p>Future QUnit releases are no longer published to the Bower registry. QUnit 1.x and 2.x packages remain available via the Bower CLI.</p>
+
+<p>Refer to <a href="/intro/#download">Download</a> or <a href="/intro/">Getting started</a>.</p>
+
+<h3 id="remove-amd-export">Remove AMD export</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">qunit.js</code> distribution no longer exports the QUnit API via AMD.</p>
+
+<p>This change only affects the loading of the <code class="language-plaintext highlighter-rouge">qunit.js</code> file. You can continue to load your application source code and QUnit test files via AMD or RequireJS. See <a href="/api/config/autostart/#loading-with-requirejs">Example: Loading with RequireJS</a>.</p>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="/blog/2026/09/20/new-features-road-to-qunit-3/">Blog: The Road to QUnit 3</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/blob/3.0.0-rc1/History.md">QUnit 3.0.0 Full changelog</a></li>
+</ul>
+</div>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p class="external-links">
+                <a href="https://github.com/qunitjs" target="_blank" rel="noopener">GitHub</a>
+                <a href="/intro/#support" target="_blank" rel="noopener">Chat</a>
+                <a href="https://fosstodon.org/@qunit" target="_blank" rel="noopener">Mastodon</a>
+                
+                <a href="https://bsky.app/profile/qunitjs.com" target="_blank" rel="noopener">Bluesky</a>
+                
+                <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
+                </p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/upgrade-guide-3.x.md">Edit this page</a></p>
+        </div>
+    </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
+</html>

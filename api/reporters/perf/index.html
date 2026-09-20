@@ -5,7 +5,7 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=5be6d483" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>QUnit.reporters.perf | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit.reporters.perf"><meta name="description" content="The perf reporter measures each QUnit test, to then access or visualize in the browser devtools."><meta property="og:description" content="The perf reporter measures each QUnit test, to then access or visualize in the browser devtools."><link rel="me" href="https://fosstodon.org/@qunit">
+<title>QUnit.reporters.perf | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit.reporters.perf"><meta name="description" content="Find slow tests and visualize them in browser DevTools."><meta property="og:description" content="Find slow tests and visualize them in browser DevTools."><link rel="me" href="https://fosstodon.org/@qunit">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -16,7 +16,7 @@
 </form>
 </typesense-minibar>
 <nav class="site-nav"><ul class="site-nav-list"><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Guides</span>
-                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#compatibility">Compatibility</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
+                        <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/">Getting Started</a></li><li><a class="site-sub-nav-link" href="/intro/#download">Download</a></li><li><a class="site-sub-nav-link" href="/browser/">Browser Runner</a></li><li><a class="site-sub-nav-link" href="/cli/">Command-line Interface</a></li><li><a class="site-sub-nav-link" href="/intro/#compatibility">Compatibility</a></li><li><a class="site-sub-nav-link" href="/lifecycle/">Test lifecycle</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></li><li><a class="site-sub-nav-link" href="/upgrade-guide-2.x/">QUnit 2.0 Upgrade Guide</a></li></ul></li><li class="site-nav-item"><a class="site-nav-link" href="/api/">Documentation</a></li><li class="site-nav-item"><a class="site-nav-link" href="/blog/">Blog</a></li><li class="site-nav-item has-sub-list"><span class="site-nav-link has-sub-list" tabindex="0">Community</span>
                         <ul class="site-nav-sub-list"><li><a class="site-sub-nav-link" href="/intro/#support">Support &amp; Chat</a></li><li><a class="site-sub-nav-link" href="/plugins/">Plugins</a></li><li><a class="site-sub-nav-link" href="/projects/">Who&#39;s using QUnit?</a></li><li><a class="site-sub-nav-link" href="/about/">About QUnit</a></li><li><a class="site-sub-nav-link" href="/badge/">Badge</a></li><li><a class="site-sub-nav-link" href="/brand/">Brand Guidelines</a></li></ul></li></ul></nav>
             <div class="site-toggles">
                 <button class="search-toggle toggle" aria-expanded="false">
@@ -74,7 +74,7 @@
     <p class="version-details">
             version added: <a href="https://github.com/qunitjs/qunit/releases/tag/2.7.0">2.7.0</a><span class="sep">.</span></p>
     <h2 id="description" class="screen-reader-text h-api-desc">Description</h2>
-<p>The <strong>perf</strong> reporter measures the duration of each QUnit test and each module, which you can then access in the browser dev tools to understand where time is spent during your test run.</p>
+<p>The <strong>perf</strong> reporter measures the duration of each QUnit test and each module, and lets you access them in the browser DevTools to find slow tests and understand where time is spent during a test run.</p>
 
 <p>This uses the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure">performance.measure()</a> method of the User Timing API, which adds each measure to the Performance Timeline.</p>
 
