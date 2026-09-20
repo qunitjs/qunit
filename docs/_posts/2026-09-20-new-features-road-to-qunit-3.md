@@ -1,13 +1,15 @@
 ---
 layout: post
-title: "The Road to QUnit 3: New features"
+title: "The Road to QUnit 3"
 author: krinkle
-excerpt: Step API, data providers, conditional skip, global hooks, and more.
+excerpt: What's new since QUnit 2.0? Step API, data providers, assert.propContains(), global hooks, and more.
 tags:
 - feature
 ---
 
-Check out the [blog archive]({% link blog/archive.md %}) or [repository changelog](https://github.com/qunitjs/qunit/blob/2.26.0/History.md) for a more detailed history.
+What's new since QUnit 2.0?
+
+As is our tradition, no significant features are introduced in major releases. The new features that you may informally associate with "QUnit 3" have been gradually in the QUnit 2.x series.
 
 ## Step API
 
@@ -183,4 +185,6 @@ QUnit 2.18 introduced [QUnit.hooks]({% link api/QUnit/hooks.md %}) to globally a
 
 ## See also
 
-* [QUnit 3.0 Upgrade Guide]({% link upgrade-guide-3.x.md %})
+Get ready for QUnit 3 with the [QUnit 3.0 Upgrade Guide]({% link upgrade-guide-3.x.md %}).
+
+Check out the [blog archive]({% link blog/archive.md %}) or [repository changelog](https://github.com/qunitjs/qunit/blob/2.26.0/History.md) for a complete history.
