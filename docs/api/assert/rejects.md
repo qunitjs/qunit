@@ -180,8 +180,7 @@ Perform additional assertions on the returned rejection value directly in your t
 
 ```js
 QUnit.test('example', async function (assert) {
-  const p = feedMe();
-  const e = await assert.rejects(p, RangeError);
+  const e = await assert.rejects(feedBaby('sprouts'), RangeError);
   assert.deepEqual(e.somedata, { foo: 'bar' });
 });
 ```
@@ -198,6 +197,7 @@ QUnit.test('Bad example', function (assert) {
   return feedBaby('sprouts')
     .catch((e) => {
       assert.true(e instanceof RangeError);
+      assert.true(e.somedata, { foo: 'bar' });
     });
 });
 ```

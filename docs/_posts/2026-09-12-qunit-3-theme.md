@@ -46,11 +46,11 @@ QUnit 3.0:
 > 257 tests completed in 0.5 seconds.<br>
 > 246 passed, 0 failed, 7 skipped, and 4 todo.
 
-The summary no longer reports on low-level assertion counts. The assertion counts were distracting and inactionable in practice. For example, a passing ["todo" test]({% link api/QUnit/test.todo.md %}) expects failing assertions and these counted towards the internal "failed" assertion count despite not failing the run ([dbeab48](https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817), [8f25f26](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)).
+The summary no longer reports on low-level assertion counts. The assertion counts were distracting and inactionable in practice. For example, a passing ["todo" test]({% link api/QUnit/test.todo.md %}) expects failing assertions and these counted towards the internal "failed" assertion count despite not failing the test ([dbeab48](https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817), [8f25f26](https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c)).
 
 ### Color blindness
 
-We refined the Ember theme slightly to comply with [WCAG guidelines](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast), and to increase contrast under color blind conditions. Especially for deuteranopia, where greens and reds are hard to distinguish, we tweaked our greens be brighter and closer to yellow. Details in [Pull Request #1803](https://github.com/qunitjs/qunit/pull/1803#issuecomment-2552148092).
+We refined the Ember theme slightly to comply with [WCAG guidelines](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast), and to increase contrast under color blind conditions. Especially for deuteranopia, where greens and reds are hard to distinguish, we tweaked our greens to be brighter and closer to yellow. Details in [Pull Request #1803](https://github.com/qunitjs/qunit/pull/1803#issuecomment-2552148092).
 
 Shout out to Firefox Dev Tools, which made this a breeze!
 
@@ -71,8 +71,8 @@ Shout out to Firefox Dev Tools, which made this a breeze!
 * Fix layout shift in toolbar at the end of the run. The toolbar now occupies the same height during the "running" and "completed" states. [#1774](https://github.com/qunitjs/qunit/pull/1774)
 * Fix unexpected pointer cursor on "Source" label. [52bfa69](https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249)
 * Fix overflow and scrollbar issues, by re-implementing the fixed header with `position: sticky`. This creates a regular page-level scrollbar for the test results, and the page now naturally flows under the toolbar. Until now, the test results had their own scrollable area. This fixes various layout quirks with fixtures and other content you may have on the test page, which could previously get squished or pushed outside the viewport. This fixes a regression that started in QUnit 2.14. [#1603](https://github.com/qunitjs/qunit/issues/1603)
-* Move "Abort" button to the left. This button previously floated somewhat randomly to the right.
-* Animate test execution with a new progress bar. The `#qunit-banner` used to be blank until it turned green or red.
+* Move "Abort" button to the left. This button previously floated somewhat randomly to the right. [#1774](https://github.com/qunitjs/qunit/pull/1774)
+* Animate test execution with a new progress bar. The `#qunit-banner` used to be blank until it turned green or red. [#1774](https://github.com/qunitjs/qunit/pull/1774)
 
 ## See also
 

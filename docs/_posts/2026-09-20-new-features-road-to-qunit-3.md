@@ -63,11 +63,13 @@ async function feedBaby (food) {
 }
 
 QUnit.test('example', async function (assert) {
-  assert.true(feedBaby('apple'));
+  assert.true(await feedBaby('apple'));
+
+  await assert.rejects(feedBaby('sprouts'));
 
   await assert.rejects(feedBaby('sprouts'), RangeError);
 
-  assert.true(feedBaby('cucumber'));
+  assert.true(await feedBaby('cucumber'));
 });
 ```
 
@@ -75,8 +77,7 @@ You can perform additional assertions on the rejection value via the return valu
 
 ```js
 QUnit.test('example', async function (assert) {
-  const p = feedMe();
-  const e = await assert.rejects(p, RangeError);
+  const e = await assert.rejects(feedBaby('sprouts'), RangeError);
   assert.deepEqual(e.somedata, { foo: 'bar' });
 });
 ```
@@ -103,7 +104,7 @@ QUnit Run
 
 The new strict boolean [`assert.true()`]({% link api/assert/true.md %}) and [`assert.false()`]({% link api/assert/false.md %}) methods arrived in QUnit 2.11. These methods provide a shortcut to [`assert.strictEqual()`]({% link api/assert/strictEqual.md %}) with `true` or `false` as the expected value.
 
-The new methods promote strict equality by providing an appealing alternative to [`assert.ok()`]({% link api/assert/ok.md %}) and [`assert.equal(,true)`]({% link api/assert/equal.md %}), which were shorter than `assert.strictEqual()` but involve type casting.
+The new methods promote strict equality by providing an appealing alternative to [`assert.ok()`]({% link api/assert/ok.md %}) and [`assert.equal(,true)`]({% link api/assert/equal.md %}), which are shorter than `assert.strictEqual()` but tolerate type casting.
 
 ## Data providers
 

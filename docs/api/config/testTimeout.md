@@ -47,13 +47,13 @@ You can address this warning before upgrading to QUnit 3 as follows:
   });
   ```
 
-* Or, set `QUnit.config.testTimeout` once from an [HTML or bootstrap script](../config/index.md).
+* Or, set `QUnit.config.testTimeout` once from an [HTML script or bootstrap file](../config/index.md).
 
   ```js
   QUnit.config.testTimeout = 60000; // 1 minute
   ```
 
-* Or, set `qunit_config_testtimeout` via [preconfig](../config/index.md) as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).
+* Or, set `qunit_config_testtimeout` via [preconfig](../config/index.md) as environment variable (for Node.js), or global variable (browser environment).
 
 * Or, your test runner of choice may offer other ways to set configuration.
 
