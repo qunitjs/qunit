@@ -117,7 +117,7 @@
 
 <h4 id="hook-on-wrong-module">Hook on wrong module</h4>
 
-<p>This warning was introduced in QUnit 2.15 (<a href="https://github.com/qunitjs/qunit/issues/1576">#1576</a>) and has been promoted to <a href="/api/QUnit/module/#E0002">an error</a>:</p>
+<p>This warning was introduced in QUnit 2.15 (<a href="https://github.com/qunitjs/qunit/issues/1576">#1576</a>) and has been promoted to an error (<a href="/api/QUnit/module/#E0002">learn more</a>):</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: The beforeEach hook was called inside the wrong module.
 </code></pre></div></div>
@@ -132,7 +132,7 @@
 
 <h4 id="unexpected-test-after-runend">Unexpected test after runEnd</h4>
 
-<p>This warning was introduced in QUnit 2.17 (<a href="https://github.com/qunitjs/qunit/issues/1377">#1377</a>) and has been promoted to <a href="https://qunitjs.com/api/config/autostart/#E0001">an error</a>:</p>
+<p>This warning was introduced in QUnit 2.17 (<a href="https://github.com/qunitjs/qunit/issues/1377">#1377</a>) and has been promoted to an error (<a href="/api/config/autostart/#E0001">learn more</a>):</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Unexpected test after runEnd.
 </code></pre></div></div>
@@ -160,7 +160,7 @@ Omit assert.expect() from tests that use assert.step(), or enable QUnit.config.c
 
 <p>The <code class="language-plaintext highlighter-rouge">QUnit.load()</code> method was used by some test runners and CI plugins to customize loading of scripts.</p>
 
-<p>This is deprecated in favor of the simpler <code class="language-plaintext highlighter-rouge">QUnit.start()</code>. Refer to <a href="/api/QUnit/load/"><code class="language-plaintext highlighter-rouge">QUnit.load()</code></a> for a migration guide.</p>
+<p>This is deprecated and can usually be removed without replacement. Refer to <a href="/api/QUnit/load/"><code class="language-plaintext highlighter-rouge">QUnit.load()</code></a> for a migration guide.</p>
 
 <h3 id="remove-qunitonerror-and-qunitonunhandledrejection">Remove <code class="language-plaintext highlighter-rouge">QUnit.onError()</code> and <code class="language-plaintext highlighter-rouge">QUnit.onUnhandledRejection()</code></h3>
 

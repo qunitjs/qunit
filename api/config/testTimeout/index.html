@@ -113,13 +113,13 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Or, set <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once from an <a href="/api/config/">HTML or bootstrap script</a>.</p>
+    <p>Or, set <code class="language-plaintext highlighter-rouge">QUnit.config.testTimeout</code> once from an <a href="/api/config/">HTML script or bootstrap file</a>.</p>
 
     <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">testTimeout</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">;</span> <span class="c1">// 1 minute</span>
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Or, set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variables (for Node.js), or as global variables for HTML/browser environments (before QUnit is loaded).</p>
+    <p>Or, set <code class="language-plaintext highlighter-rouge">qunit_config_testtimeout</code> via <a href="/api/config/">preconfig</a> as environment variable (for Node.js), or global variable (browser environment).</p>
   </li>
   <li>
     <p>Or, your test runner of choice may offer other ways to set configuration.</p>

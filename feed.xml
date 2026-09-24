@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-24T03:45:40+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">The Road to QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/" rel="alternate" type="text/html" title="The Road to QUnit 3" /><published>2026-09-20T00:00:00+00:00</published><updated>2026-09-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/"><![CDATA[<p>What’s new since QUnit 2.0?</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-24T04:12:36+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">The Road to QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/" rel="alternate" type="text/html" title="The Road to QUnit 3" /><published>2026-09-20T00:00:00+00:00</published><updated>2026-09-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/"><![CDATA[<p>What’s new since QUnit 2.0?</p>
 
 <p>As is our tradition, no significant features are introduced in major releases. The new features that you may informally associate with “QUnit 3” have been gradually in the QUnit 2.x series.</p>
 
@@ -51,19 +51,20 @@
 <span class="p">}</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">));</span>
 
   <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>You can perform additional assertions on the rejection value via the return value, since <a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26</a>:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
-  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -89,7 +90,7 @@
 
 <p>The new strict boolean <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a> and <a href="/api/assert/false/"><code class="language-plaintext highlighter-rouge">assert.false()</code></a> methods arrived in QUnit 2.11. These methods provide a shortcut to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a> with <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> as the expected value.</p>
 
-<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which were shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but involve type casting.</p>
+<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which are shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but tolerate type casting.</p>
 
 <h2 id="data-providers">Data providers</h2>
 
@@ -212,11 +213,11 @@
 246 passed, 0 failed, 7 skipped, and 4 todo.</p>
 </blockquote>
 
-<p>The summary no longer reports on low-level assertion counts. The assertion counts were distracting and inactionable in practice. For example, a passing <a href="/api/QUnit/test.todo/">“todo” test</a> expects failing assertions and these counted towards the internal “failed” assertion count despite not failing the run (<a href="https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817">dbeab48</a>, <a href="https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c">8f25f26</a>).</p>
+<p>The summary no longer reports on low-level assertion counts. The assertion counts were distracting and inactionable in practice. For example, a passing <a href="/api/QUnit/test.todo/">“todo” test</a> expects failing assertions and these counted towards the internal “failed” assertion count despite not failing the test (<a href="https://github.com/qunitjs/qunit/commit/dbeab48c2592e92eae12f9f157624996de5f8817">dbeab48</a>, <a href="https://github.com/qunitjs/qunit/commit/8f25f26264812689476298c99c586122ab3add9c">8f25f26</a>).</p>
 
 <h3 id="color-blindness">Color blindness</h3>
 
-<p>We refined the Ember theme slightly to comply with <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast">WCAG guidelines</a>, and to increase contrast under color blind conditions. Especially for deuteranopia, where greens and reds are hard to distinguish, we tweaked our greens be brighter and closer to yellow. Details in <a href="https://github.com/qunitjs/qunit/pull/1803#issuecomment-2552148092">Pull Request #1803</a>.</p>
+<p>We refined the Ember theme slightly to comply with <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable/Color_contrast">WCAG guidelines</a>, and to increase contrast under color blind conditions. Especially for deuteranopia, where greens and reds are hard to distinguish, we tweaked our greens to be brighter and closer to yellow. Details in <a href="https://github.com/qunitjs/qunit/pull/1803#issuecomment-2552148092">Pull Request #1803</a>.</p>
 
 <p>Shout out to Firefox Dev Tools, which made this a breeze!</p>
 
@@ -238,8 +239,8 @@
   <li>Fix layout shift in toolbar at the end of the run. The toolbar now occupies the same height during the “running” and “completed” states. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
   <li>Fix unexpected pointer cursor on “Source” label. <a href="https://github.com/qunitjs/qunit/commit/52bfa69645ca1e83787eee450c4025f05d9bb249">52bfa69</a></li>
   <li>Fix overflow and scrollbar issues, by re-implementing the fixed header with <code class="language-plaintext highlighter-rouge">position: sticky</code>. This creates a regular page-level scrollbar for the test results, and the page now naturally flows under the toolbar. Until now, the test results had their own scrollable area. This fixes various layout quirks with fixtures and other content you may have on the test page, which could previously get squished or pushed outside the viewport. This fixes a regression that started in QUnit 2.14. <a href="https://github.com/qunitjs/qunit/issues/1603">#1603</a></li>
-  <li>Move “Abort” button to the left. This button previously floated somewhat randomly to the right.</li>
-  <li>Animate test execution with a new progress bar. The <code class="language-plaintext highlighter-rouge">#qunit-banner</code> used to be blank until it turned green or red.</li>
+  <li>Move “Abort” button to the left. This button previously floated somewhat randomly to the right. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
+  <li>Animate test execution with a new progress bar. The <code class="language-plaintext highlighter-rouge">#qunit-banner</code> used to be blank until it turned green or red. <a href="https://github.com/qunitjs/qunit/pull/1774">#1774</a></li>
 </ul>
 
 <h2 id="see-also">See also</h2>

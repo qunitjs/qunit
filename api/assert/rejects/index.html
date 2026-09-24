@@ -271,8 +271,7 @@
 <p>Perform additional assertions on the returned rejection value directly in your test function:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
-  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -290,6 +289,7 @@
   <span class="k">return</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
       <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">e</span> <span class="k">instanceof</span> <span class="nx">RangeError</span><span class="p">);</span>
+      <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>

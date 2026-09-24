@@ -123,19 +123,20 @@
 <span class="p">}</span>
 
 <span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">));</span>
+
+  <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">));</span>
 
   <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
 
-  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
+  <span class="nx">assert</span><span class="p">.</span><span class="nf">true</span><span class="p">(</span><span class="k">await</span> <span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">cucumber</span><span class="dl">'</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>You can perform additional assertions on the rejection value via the return value, since <a href="/blog/2026/05/31/qunit-2-26-0/">QUnit 2.26</a>:</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">QUnit</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nf">function </span><span class="p">(</span><span class="nx">assert</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nf">feedMe</span><span class="p">();</span>
-  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">RangeError</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">assert</span><span class="p">.</span><span class="nf">rejects</span><span class="p">(</span><span class="nf">feedBaby</span><span class="p">(</span><span class="dl">'</span><span class="s1">sprouts</span><span class="dl">'</span><span class="p">),</span> <span class="nx">RangeError</span><span class="p">);</span>
   <span class="nx">assert</span><span class="p">.</span><span class="nf">deepEqual</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">somedata</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -161,7 +162,7 @@
 
 <p>The new strict boolean <a href="/api/assert/true/"><code class="language-plaintext highlighter-rouge">assert.true()</code></a> and <a href="/api/assert/false/"><code class="language-plaintext highlighter-rouge">assert.false()</code></a> methods arrived in QUnit 2.11. These methods provide a shortcut to <a href="/api/assert/strictEqual/"><code class="language-plaintext highlighter-rouge">assert.strictEqual()</code></a> with <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> as the expected value.</p>
 
-<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which were shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but involve type casting.</p>
+<p>The new methods promote strict equality by providing an appealing alternative to <a href="/api/assert/ok/"><code class="language-plaintext highlighter-rouge">assert.ok()</code></a> and <a href="/api/assert/equal/"><code class="language-plaintext highlighter-rouge">assert.equal(,true)</code></a>, which are shorter than <code class="language-plaintext highlighter-rouge">assert.strictEqual()</code> but tolerate type casting.</p>
 
 <h2 id="data-providers">Data providers</h2>
 
