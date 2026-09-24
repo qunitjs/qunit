@@ -63,6 +63,7 @@
     "@babel/core": "7.29.7",
     "@babel/plugin-external-helpers": "7.29.7",
     "@babel/preset-env": "7.29.7",
+    "@babel/compat-data": "7.29.7",
     "@qunitjs/browserstack-runner": "0.9.5-qunitjs.2",
     "@rollup/plugin-babel": "6.1.0",
     "@rollup/plugin-commonjs": "29.0.3",

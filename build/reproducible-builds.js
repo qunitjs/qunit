@@ -42,9 +42,13 @@ const SRC_REPO = 'https://github.com/qunitjs/qunit.git';
  * - The package-lock.json file was a few commits behind what was actually released,
  *   thus reproducing it uees a slightly Rollup/Babel version that outputs with slightly
  *   different code formatting.
+ *
+ * QUnit 3.0.0-alpha.4 - 3.0.0-rc1:
+ * - package.json failed to pin @babel/compat-data, and newer versions changed favor
+ *   modern syntax in more places, even for the same @babel/preset-env targets.
  */
 const VERIFY_COUNT = 5;
-const EXCLUDE = ['3.0.0-alpha.3'];
+const EXCLUDE = ['3.0.0-alpha.3', '3.0.0-alpha.4', '3.0.0-rc1'];
 
 async function buildRelease (version, cacheDir = null) {
   console.log(`... ${version}: checking out the source`);
