@@ -50,7 +50,7 @@
 * Core: Remove undocumented `details.modules[].tests` from QUnit.begin() event.
 * Core: Remove undocumented `QUnit.dump.HTML` and `QUnit.dump.multiline`. [8e881f5087](https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834)
 * HTML Reporter: Remove support for legacy markup. Use `<div id="qunit">` instead. Check [Browser Runner § Getting started](https://qunitjs.com/browser/).
-* Build: Discontinue publication to Bower for future releases. Check [How to install](https://qunitjs.com/intro/#download) or [Getting started](https://qunitjs.com/intro/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
+* Build: Discontinue publishing to the Bower registry for new releases. Review [How to install](https://qunitjs.com/intro/#download) or [Getting Started in the browser](https://qunitjs.com/browser/). [#1677](https://github.com/qunitjs/qunit/issues/1677)
 
 2.26.0 / 2026-05-31
 ==================

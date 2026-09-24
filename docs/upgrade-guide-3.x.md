@@ -137,9 +137,9 @@ Other browser support remains unchanged. View the support table for browsers and
 
 ### Remove Bower distribution
 
-Future QUnit releases are no longer published to the Bower registry. QUnit 1.x and 2.x packages remain available via the Bower CLI.
+Future QUnit releases are no longer published to the Bower registry. QUnit 1.x and 2.x packages remain available via the [Bower CLI](https://bower.io/).
 
-Refer to [Download](./intro.md#download) or [Getting started](./intro.md).
+Review [supported installation methods](./intro.md#download), or follow [Getting Started in the browser](./browser.md).
 
 ### Remove AMD export
 
