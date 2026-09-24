@@ -18,7 +18,7 @@ A deep dive into the accessibility and usability improvements to the default the
 
 The updated theme favors deeper and more vibrant colors, with higher contrast against respective backgrounds. We've also removed any text shadows and adopted the system-ui font. This makes text clearer and easier to read.
 
-This new color palette is based on [qunit-theme-ember](https://blog.ignacemaes.com/how-to-use-the-new-ember-theme-for-qunit/) by Ignace Maes (available via `theme: 'ember'` in [ember-qunit v8.1](https://github.com/emberjs/ember-qunit/pull/1166)) which in turn is based on the [Ember styleguide](https://ember-styleguide.netlify.app/).
+This new color palette is based on [qunit-theme-ember](https://blog.ignacemaes.com/how-to-use-the-new-ember-theme-for-qunit/) by Ignace Maes (available via `theme: 'ember'` in [ember-qunit v8.1](https://github.com/emberjs/ember-qunit/pull/1166)) which in turn is based on the [Ember styleguide](https://ember-styleguide.netlify.app/). It also builds on previous [color contrast fixes in QUnit 2.16]({% post_url 2021-06-06-qunit-2-16-0 %}).
 
 The simpler palette utilizes fewer colors overall, and the remaining colors carry a consistent meaning.
 
@@ -77,5 +77,6 @@ Shout out to Firefox Dev Tools, which made this a breeze!
 ## See also
 
 * [Blog: Instant render and early errors in QUnit 3]({% post_url 2026-09-11-instant-render %})
+* [Blog: QUnit 2.16 - Color contrast fixes]({% post_url 2021-06-06-qunit-2-16-0 %})
 * [New design for QUnit 3 · Pull Request #1774](https://github.com/qunitjs/qunit/pull/1774)
 * [Increase contrast in test results and diff colors · Pull Request #1803](https://github.com/qunitjs/qunit/pull/1803)
