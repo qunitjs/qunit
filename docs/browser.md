@@ -77,8 +77,10 @@ QUnit's [reorder feature](./api/config/reorder.md) automatically remembers faili
 When building out a larger feature, you can use the [module selector](#module-selector) to re-run only the tests (and nested modules) under one or more selected module names.
 
 ## Browser support
+{:.no-docsearch}
 
 _The browser support table was moved to [Compatibility](./intro.md#compatibility)_.
+{:.no-docsearch}
 
 ## Integrations
 

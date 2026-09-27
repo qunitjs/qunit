@@ -11,7 +11,7 @@
     "lvl3": "h4:not(.screen-reader-text)",
     "lvl4": "h5:not(.screen-reader-text)",
     "lvl5": "h6:not(.screen-reader-text)",
-    "text": ".content p, .content li, .content tr, .content pre"
+    "text": ".content p, .content li, .content caption, .content tr, .content pre"
   },
   "custom_settings": {
     "token_separators": ["_", "-", "."]
@@ -19,7 +19,8 @@
   "selectors_exclude": [
     ".posts",
     "aside.sidebar",
-    ".toc-wrapper"
+    ".toc-wrapper",
+    ".no-docsearch"
   ],
   "scrape_start_urls": false
 }

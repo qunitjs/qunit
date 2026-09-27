@@ -714,7 +714,7 @@ FYI:
 
 ### Added
 
-* Core: Support running in a sandboxed iframe.
+* Core: Support running in a sandboxed iframe. [#1090](https://github.com/qunitjs/qunit/issues/1090)
 * Core: New event emitter. (Trent Willis) [#1087](https://github.com/qunitjs/qunit/pull/1087)
 * Core: New `QUnit.todo()` method. (Trent Willis) [#1080](https://github.com/qunitjs/qunit/pull/1080)
 * Assert: New `assert.step()` and `assert.verifySteps()` methods. (Trent Willis) [#1075](https://github.com/qunitjs/qunit/issues/1075)
