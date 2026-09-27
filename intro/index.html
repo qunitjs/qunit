@@ -97,25 +97,37 @@
 
 <h2 id="compatibility">Compatibility</h2>
 
-<p>QUnit supports the following browsers and runtime environments:</p>
+<p>QUnit supports the following runtime environments:</p>
 
 <table>
+<caption>Desktop and mobile browser support</caption>
 <thead>
-<tr><td></td><th>QUnit 1</th><th>QUnit&nbsp;2</th><th>QUnit&nbsp;3</th><th>QUnit 3 (ESM)</th></tr>
+<tr><th></th><th>QUnit 1</th><th>QUnit&nbsp;2</th><th>QUnit&nbsp;3</th><th>QUnit 3 (ESM)</th></tr>
 </thead>
 <tbody>
 <tr><th>Internet Explorer</th><td>IE 6-11</td><td colspan="2">IE 9-11</td><td>&mdash;</td></tr>
-<tr><th>Edge</th><td>1+</td><td colspan="2">15+<sup><abbr title="both legacy MSEdge and Chromium-based Edge">[?]</abbr></sup></td><td>16+</td></tr>
+<tr><th>Microsoft Edge</th><td>1+</td><td colspan="2">15+<sup><abbr title="both legacy MSEdge and Chromium-based Edge">[?]</abbr></sup></td><td>16+</td></tr>
 <tr><th>Firefox</th><td>3.6+</td><td colspan="2">45+</td><td>60+</td></tr>
 <tr><th>Safari</th><td>4.0+</td><td colspan="2">9.1+</td><td>10.1+</td></tr>
+<tr><th>Mobile Safari (iOS)</th><td>4.0+</td><td colspan="2">7.0+</td><td>10.3+</td></tr>
 <tr><th>Chrome</th><td>1+</td><td colspan="2">58+</td><td>61+</td></tr>
 <tr><th>Chrome Mobile</th><td>&mdash;</td><td colspan="2">49+ (Android 4.4+)</td><td>61+ (Android 7+)</td></tr>
 <tr><th>Opera</th><td>11+</td><td colspan="2">36+</td><td>48+</td></tr>
 <tr><th>Android Browser</th><td>2.3 - 5.0</td><td colspan="2">4.3 - 5.0</td><td>&mdash;</td></tr>
-<tr><th>iOS (Mobile Safari)</th><td>4.0+</td><td colspan="2">7.0+</td><td>10.3+</td></tr>
+</tbody>
+</table>
+
+<p>QUnit can also be run in a sandboxed iframe (<a href="/blog/2017/03/11/qunit-2-2-0/">since 2.2</a>), and in Web Worker threads (<a href="/blog/2017/06/02/qunit-2-3-3/">since 2.3</a>).</p>
+
+<table>
+<caption>Server runtime support</caption>
+<thead>
+<tr><th></th><th>QUnit 1</th><th>QUnit&nbsp;2</th><th>QUnit&nbsp;3</th><th>QUnit 3 (ESM)</th></tr>
+</thead>
+<tbody>
 <tr><th>PhantomJS</th><td colspan="2">1.x</td><td colspan="2">&mdash;</td></tr>
 <tr><th>Node.js</th><td>&mdash;</td><td>10+</td><td colspan="2">18+</td></tr>
-<tr><th>SpiderMonkey</th><td>&mdash;</td><td colspan="3">68+<sup><abbr title="since QUnit 2.14">[?]</abbr></sup></td></tr>
+<tr><th>SpiderMonkey (mozjs)</th><td>&mdash;</td><td colspan="3">68+<sup><abbr title="since QUnit 2.14">[?]</abbr></sup></td></tr>
 </tbody>
 </table>
 
