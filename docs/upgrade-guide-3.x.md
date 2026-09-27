@@ -145,7 +145,7 @@ Review [supported installation methods](./intro.md#download), or follow [Getting
 
 The `qunit.js` distribution no longer exports the QUnit API via AMD.
 
-This change only affects the loading of the `qunit.js` file. You can continue to load your application source code and QUnit test files via AMD or RequireJS. See [Example: Loading with RequireJS](./api/config/autostart.md#loading-with-requirejs).
+This change only affects the loading of the `qunit.js` file. You can continue to load your application source code and QUnit test files via AMD or RequireJS. See [Example: Loading with RequireJS](./api/config/autostart.md#loading-with-requirejs) and [Migrate a UMD-defined QUnit plugin](./api/config/autostart.md#migration-umd-defined-qunit-plugin).
 
 ## See also
 

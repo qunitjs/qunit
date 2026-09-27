@@ -95,3 +95,53 @@ require(
   }
 );
 ```
+
+### Migration: UMD-defined QUnit plugin
+
+QUnit 3.0 and later no exports the QUnit API via AMD.
+
+If you define a QUnit plugin through a UMD factory, it is recommended to remove the UMD wrapper and use the QUnit global directly. So long as projects load `qunit.js` before RequireJS (per [the above](#loading-with-requirejs)) this maintains backwards compatibility, because the QUnit global is unconditionally available in browser environments in both QUnit 2 and QUnit 3.
+
+Before:
+
+```js
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    require(['qunit'], factory);
+  } else {
+    factory(QUnit);
+  }
+}(function (QUnit) {
+  QUnit.on('runEnd', function () {
+    console.log('QUnit complete', runEnd.status);
+  });
+}));
+```
+
+After:
+
+```js
+(function () {
+  QUnit.on('runEnd', function (runEnd) {
+    console.log('QUnit complete', runEnd.status);
+  });
+}());
+```
+
+NOTE: QUnit 2.x had edge case where if you (or your users) load `qunit.js` with RequireJS, and you run this outside a browser (e.g. in Node.js), then the QUnit API would be exclusively defined via AMD and the QUnit global remained undefined. This is fixed in QUnit 3.0.
+
+If you need to maintain compatibility with this QUnit 2 edge case, you can check for the global first. This way your plugin won't require an undefined `qunit` module with QUnit 3:
+
+```js
+(function (factory) {
+  if (typeof define === 'function' && define.amd && !globalThis.QUnit) {
+    require(['qunit'], factory);
+  } else {
+    factory(QUnit);
+  }
+}(function (QUnit) {
+  QUnit.on('runEnd', function () {
+    console.log('QUnit complete', runEnd.status);
+  });
+}));
+```
