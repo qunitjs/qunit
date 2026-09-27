@@ -1,4 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-27T21:00:50+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">The Road to QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/" rel="alternate" type="text/html" title="The Road to QUnit 3" /><published>2026-09-20T00:00:00+00:00</published><updated>2026-09-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/"><![CDATA[<p>What’s new since QUnit 2.0?</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://qunitjs.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://qunitjs.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2026-09-27T21:26:41+00:00</updated><id>https://qunitjs.com/feed.xml</id><title type="html">QUnit</title><subtitle>The powerful, easy-to-use JavaScript testing framework.</subtitle><entry><title type="html">QUnit 3.0.0 Released</title><link href="https://qunitjs.com/blog/2026/09/27/qunit-3-0-0/" rel="alternate" type="text/html" title="QUnit 3.0.0 Released" /><published>2026-09-27T00:00:00+00:00</published><updated>2026-09-27T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/27/qunit-3-0-0</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/27/qunit-3-0-0/"><![CDATA[<p>📗 Check out the <strong><a href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></strong></p>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>Release: Add native ESM distribution, used automatically by Node.js when using the <code class="language-plaintext highlighter-rouge">import</code> keyword. <a href="https://github.com/qunitjs/qunit/issues/1551">#1551</a></li>
+  <li>Core: Add module context to <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">after</code> hooks. This enables <a href="/lifecycle/">inheritance between parent and child modules</a>, and fixes leaks between last test and <code class="language-plaintext highlighter-rouge">after</code> hooks. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1328">#1328</a></li>
+  <li>Core: Add <a href="/api/config/reporters/"><code class="language-plaintext highlighter-rouge">QUnit.config.reporters.html</code></a> for disabling the HTML Reporter. <a href="https://github.com/qunitjs/qunit/issues/1711">#1711</a></li>
+  <li>Core: Export <a href="/api/extension/QUnit.urlParams/"><code class="language-plaintext highlighter-rouge">QUnit.urlParams</code></a> unconditionally. <a href="https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862">57c2dbcffc</a></li>
+  <li>Core: Export <code class="language-plaintext highlighter-rouge">QUnit</code> global unconditionally. <a href="https://github.com/qunitjs/qunit/pull/1771">#1771</a></li>
+  <li>HTML Reporter: Default <a href="/blog/2026/09/12/qunit-3-theme/">theme design update</a> for improved accessibilty, and lots of other fixes.</li>
+  <li>HTML Reporter: Add <a href="/blog/2026/09/11/instant-render/">instant render and display for early errors</a>.</li>
+</ul>
+
+<h3 id="changed">Changed</h3>
+
+<ul>
+  <li>Core: Enable a default <a href="/api/config/testTimeout/">test timeout</a> of 3 seconds. <a href="https://github.com/qunitjs/qunit/issues/1483">#1483</a></li>
+  <li>Core: Promote warning “<a href="/api/QUnit/module/#E0002">Cannot add hook outside the containing module</a>” to error. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1576">#1576</a></li>
+  <li>Core: Promote warning “<a href="/api/config/autostart/#E0001">Unexpected test after runEnd</a>” to error. <a href="https://github.com/qunitjs/qunit/issues/1377">#1377</a></li>
+  <li>Core: Promote warning “QUnit.module() callback must not be async” to error. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1600">#1600</a></li>
+  <li>Core: Promote “No tests were run.” from fake test to native error. <a href="https://github.com/qunitjs/qunit/pull/1790">#1790</a></li>
+  <li>Assert: Change <a href="/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect()</code></a> to exclude <code class="language-plaintext highlighter-rouge">assert.step()</code> from count. (Kyle Simpson) <a href="https://github.com/qunitjs/qunit/issues/1226">#1226</a></li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>CLI: Fix confusing “No tests” message after an early uncaught error. <a href="https://github.com/qunitjs/qunit/pull/1790">#1790</a></li>
+  <li>Core: Fix internal <code class="language-plaintext highlighter-rouge">QUnit.config.currentModule</code> for the initial unnamed module to be a complete object. <a href="https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b">5812597b7f</a></li>
+  <li>Core: Fix crash when “bad thenable” is returned from global module hook. <a href="https://github.com/qunitjs/qunit/commit/3209462b88">3209462b88</a></li>
+  <li>Core: Fix crash when mixing test.only() with module.only(). <a href="https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886">99aee51a8a</a></li>
+  <li>Core: Fix <a href="/api/config/maxDepth/">QUnit.config.maxDepth</a> to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to <code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code>. <a href="https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995">0a26e2c883</a></li>
+</ul>
+
+<h3 id="removed">Removed</h3>
+
+<ul>
+  <li>Core: Remove support for Node.js 10-16. Node.js 18 or later is required. (NullVoxPopuli) <a href="https://github.com/qunitjs/qunit/issues/1727">#1727</a></li>
+  <li>Core: Remove support for PhantomJS. (Steve McClure) <a href="https://github.com/qunitjs/qunit/pull/1505">#1505</a></li>
+  <li>Core: Remove built-in export for AMD. You can continue to load your application and your QUnit tests with AMD/RequireJS. This change only affects the loading of the qunit.js file itself. <a href="/api/config/autostart/#loading-with-requirejs">Example: Loading with RequireJS</a>. (NullVoxPopuli) <a href="https://github.com/qunitjs/qunit/issues/1729">#1729</a></li>
+  <li>Core: Remove deprecated <a href="/api/QUnit/load/"><code class="language-plaintext highlighter-rouge">QUnit.load()</code></a>. <a href="https://github.com/qunitjs/qunit/issues/1084">#1084</a></li>
+  <li>Core: Remove deprecated <code class="language-plaintext highlighter-rouge">QUnit.onError()</code> and <code class="language-plaintext highlighter-rouge">QUnit.onUnhandledRejection()</code> in favor of <a href="/api/extension/QUnit.onUncaughtException/"><code class="language-plaintext highlighter-rouge">QUnit.onUncaughtException()</code></a>.</li>
+  <li>Core: Remove undocumented <code class="language-plaintext highlighter-rouge">details.modules[].tests</code> from QUnit.begin() event.</li>
+  <li>Core: Remove undocumented <code class="language-plaintext highlighter-rouge">QUnit.dump.HTML</code> and <code class="language-plaintext highlighter-rouge">QUnit.dump.multiline</code>. <a href="https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834">8e881f5087</a></li>
+  <li>HTML Reporter: Remove support for legacy markup. Use <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> instead. Check <a href="/browser/">Browser Runner § Getting started</a>.</li>
+  <li>Build: Discontinue publishing to the Bower registry for new releases. Review <a href="/intro/#download">How to install</a> or <a href="/browser/">Getting Started in the browser</a>. <a href="https://github.com/qunitjs/qunit/issues/1677">#1677</a></li>
+</ul>
+
+<h2 id="see-also">See also</h2>
+
+<ul>
+  <li><a href="/blog/2026/09/11/instant-render/">Blog: Instant render and early errors in QUnit 3</a></li>
+  <li><a href="/blog/2026/09/12/qunit-3-theme/">Blog: First look at the QUnit 3 theme</a></li>
+  <li><a href="/lifecycle/">Test lifecycle diagram - Module inheritence</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/3.0.0">Git tag: 3.0.0</a></li>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[Improve the default theme, promote warnings to errors, add ESM distribution.]]></summary></entry><entry><title type="html">The Road to QUnit 3</title><link href="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/" rel="alternate" type="text/html" title="The Road to QUnit 3" /><published>2026-09-20T00:00:00+00:00</published><updated>2026-09-20T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3</id><content type="html" xml:base="https://qunitjs.com/blog/2026/09/20/new-features-road-to-qunit-3/"><![CDATA[<p>What’s new since QUnit 2.0?</p>
 
 <p>As is our tradition, no significant features are introduced in major releases. The new features that you may informally associate with “QUnit 3” have been gradually in the QUnit 2.x series.</p>
 
@@ -424,17 +480,4 @@
 <ul>
   <li><a href="https://qunitjs.com/api/QUnit/module/">QUnit.module()</a></li>
   <li><a href="https://github.com/qunitjs/qunit/issues/1358">Issue #1358</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Ever wondered how beforeEach works in unit test frameworks?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://qunitjs.com/resources/qunit-lifecycle-hooks-order.svg" /><media:content medium="image" url="https://qunitjs.com/resources/qunit-lifecycle-hooks-order.svg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">QUnit 2.24.1 Released: Bug fixes</title><link href="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/" rel="alternate" type="text/html" title="QUnit 2.24.1 Released: Bug fixes" /><published>2025-01-25T00:00:00+00:00</published><updated>2025-01-25T00:00:00+00:00</updated><id>https://qunitjs.com/blog/2025/01/25/qunit-2-24-1</id><content type="html" xml:base="https://qunitjs.com/blog/2025/01/25/qunit-2-24-1/"><![CDATA[<h3 id="fixed">Fixed</h3>
-
-<ul>
-  <li>CLI: Fix TAP compliance for actual/expected indent and skip/todo colors. <a href="https://github.com/qunitjs/qunit/commit/b4d48fc7107936b26d84b632b2c2782e368ea64c">b4d48fc710</a></li>
-  <li>CLI: Fix TAP compliance for early errors (e.g. syntax error in test file). <a href="https://github.com/qunitjs/qunit/commit/01f7780bd8df3c21667e3920e0a4187cdf986c35">01f7780bd8</a></li>
-  <li>Core: Add memory to late <a href="https://qunitjs.com/api/callbacks/QUnit.on/#the-error-event"><code class="language-plaintext highlighter-rouge">error</code> event</a> listeners, to improve reporting of early errors. <a href="https://github.com/qunitjs/qunit/commit/7c2f871ac339710845cee925207f5d6a62a8ad0e">7c2f871ac3</a></li>
-</ul>
-
-<h2 id="see-also">See also</h2>
-
-<ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/2.24.1">Git tag: 2.24.1</a></li>
-  <li><a href="/blog/2025/01/20/qunit-2-24-0/">QUnit 2.24.0 Released: Add memory to the “runEnd” event</a></li>
-</ul>]]></content><author><name>Timo Tijhof</name></author><category term="release" /><summary type="html"><![CDATA[More TAP compliance fixes, and memory for "error" events.]]></summary></entry></feed>
+</ul>]]></content><author><name>Timo Tijhof</name></author><category term="feature" /><summary type="html"><![CDATA[Ever wondered how beforeEach works in unit test frameworks?]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://qunitjs.com/resources/qunit-lifecycle-hooks-order.svg" /><media:content medium="image" url="https://qunitjs.com/resources/qunit-lifecycle-hooks-order.svg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

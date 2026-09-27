@@ -5,7 +5,7 @@
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/styles.css?v=5be6d483" media="screen">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="QUnit">
-<title>QUnit 1.16.0 Released: Async testing and skip | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit 1.16.0 Released: Async testing and skip"><meta name="description" content="Changelog"><meta property="og:description" content="Changelog"><link rel="me" href="https://fosstodon.org/@qunit"><meta property="og:type" content="article"><meta property="article:published_time" content="2014-12-03T00:00:00+00:00"><meta name="author" content="Jörn Zaefferer"><meta property="twitter:card" content="summary_large_image"><meta property="og:image" content="/resources/post-image-default.png">
+<title>QUnit 3.0.0 Released | QUnit</title><meta property="og:site_name" content="QUnit"><meta property="og:title" content="QUnit 3.0.0 Released"><meta name="description" content="Improve the default theme, promote warnings to errors, add ESM distribution."><meta property="og:description" content="Improve the default theme, promote warnings to errors, add ESM distribution."><link rel="me" href="https://fosstodon.org/@qunit"><meta property="og:type" content="article"><meta property="article:published_time" content="2026-09-27T00:00:00+00:00"><meta name="author" content="Timo Tijhof"><meta property="twitter:card" content="summary_large_image"><meta property="og:image" content="/resources/post-image-default.png">
 <body>
     <header class="site-header" role="banner">
         <div class="site-header-wrapper wrapper">
@@ -68,52 +68,71 @@
 <div class="content" role="main">
 <article>
 	<header>
-		<h1>QUnit 1.16.0 Released: Async testing and skip</h1><p class="post-meta byline">Posted on <time pubdate datetime="2014-12-03T00:00:00+00:00"> 3 December 2014</time> by <span class="author vcard"><a rel="author" class="url fn n" href="/blog/author/jzaefferer/">Jörn Zaefferer</a></span> in <a rel="tag" class="post-tag" href="/blog/tag/release/">Release</a></p>
+		<h1>QUnit 3.0.0 Released</h1><p class="post-meta byline">Posted on <time pubdate datetime="2026-09-27T00:00:00+00:00">27 September 2026</time> by <span class="author vcard"><a rel="author" class="url fn n" href="/blog/author/krinkle/">Timo Tijhof</a></span> in <a rel="tag" class="post-tag" href="/blog/tag/release/">Release</a></p>
 	</header>
-	<h2 id="changelog">Changelog</h2>
+	<p>📗 Check out the <strong><a href="/upgrade-guide-3.x/">QUnit 3.0 Upgrade Guide</a></strong></p>
 
 <h3 id="added">Added</h3>
 
 <ul>
-  <li>Assert: New <code class="language-plaintext highlighter-rouge">assert.async()</code>  method. (James M. Greene) <a href="https://github.com/qunitjs/qunit/issues/534">#534</a></li>
-  <li>Assert: Add alias for throws called <code class="language-plaintext highlighter-rouge">assert.raises()</code>.</li>
-  <li>Core: New <code class="language-plaintext highlighter-rouge">QUnit.skip()</code> method. (Leo Balter) <a href="https://github.com/qunitjs/qunit/issues/637">#637</a></li>
-  <li>Core: Add runtime property to <code class="language-plaintext highlighter-rouge">QUnit.moduleDone()</code> data.</li>
-  <li>Core: <code class="language-plaintext highlighter-rouge">QUnit.test()</code> now supports returning Promise and async functions. (James M. Greene) <a href="https://github.com/qunitjs/qunit/issues/632">#632</a></li>
-  <li>HTML Reporter: Add runtime of each assertion to result output.</li>
+  <li>Release: Add native ESM distribution, used automatically by Node.js when using the <code class="language-plaintext highlighter-rouge">import</code> keyword. <a href="https://github.com/qunitjs/qunit/issues/1551">#1551</a></li>
+  <li>Core: Add module context to <code class="language-plaintext highlighter-rouge">before</code> and <code class="language-plaintext highlighter-rouge">after</code> hooks. This enables <a href="/lifecycle/">inheritance between parent and child modules</a>, and fixes leaks between last test and <code class="language-plaintext highlighter-rouge">after</code> hooks. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1328">#1328</a></li>
+  <li>Core: Add <a href="/api/config/reporters/"><code class="language-plaintext highlighter-rouge">QUnit.config.reporters.html</code></a> for disabling the HTML Reporter. <a href="https://github.com/qunitjs/qunit/issues/1711">#1711</a></li>
+  <li>Core: Export <a href="/api/extension/QUnit.urlParams/"><code class="language-plaintext highlighter-rouge">QUnit.urlParams</code></a> unconditionally. <a href="https://github.com/Krinkle/qunit/commit/57c2dbcffc694bf3a0b5d1d57e7f43f16ff29862">57c2dbcffc</a></li>
+  <li>Core: Export <code class="language-plaintext highlighter-rouge">QUnit</code> global unconditionally. <a href="https://github.com/qunitjs/qunit/pull/1771">#1771</a></li>
+  <li>HTML Reporter: Default <a href="/blog/2026/09/12/qunit-3-theme/">theme design update</a> for improved accessibilty, and lots of other fixes.</li>
+  <li>HTML Reporter: Add <a href="/blog/2026/09/11/instant-render/">instant render and display for early errors</a>.</li>
 </ul>
 
 <h3 id="changed">Changed</h3>
 
 <ul>
-  <li>Core: Change <code class="language-plaintext highlighter-rouge">url()</code> helper to output <code class="language-plaintext highlighter-rouge">?foo</code> instead of <code class="language-plaintext highlighter-rouge">?foo=true</code>.</li>
-  <li>Core: Rename config.module to config.moduleFilter.</li>
+  <li>Core: Enable a default <a href="/api/config/testTimeout/">test timeout</a> of 3 seconds. <a href="https://github.com/qunitjs/qunit/issues/1483">#1483</a></li>
+  <li>Core: Promote warning “<a href="/api/QUnit/module/#E0002">Cannot add hook outside the containing module</a>” to error. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1576">#1576</a></li>
+  <li>Core: Promote warning “<a href="/api/config/autostart/#E0001">Unexpected test after runEnd</a>” to error. <a href="https://github.com/qunitjs/qunit/issues/1377">#1377</a></li>
+  <li>Core: Promote warning “QUnit.module() callback must not be async” to error. (Ray Cohen) <a href="https://github.com/qunitjs/qunit/issues/1600">#1600</a></li>
+  <li>Core: Promote “No tests were run.” from fake test to native error. <a href="https://github.com/qunitjs/qunit/pull/1790">#1790</a></li>
+  <li>Assert: Change <a href="/api/assert/expect/"><code class="language-plaintext highlighter-rouge">assert.expect()</code></a> to exclude <code class="language-plaintext highlighter-rouge">assert.step()</code> from count. (Kyle Simpson) <a href="https://github.com/qunitjs/qunit/issues/1226">#1226</a></li>
 </ul>
 
 <h3 id="fixed">Fixed</h3>
 
 <ul>
-  <li>Assert: Fail assertions after existing <code class="language-plaintext highlighter-rouge">assert.async()</code> flows are resolved.</li>
-  <li>Core: Restore and warn if some logging callback gets modified.</li>
-  <li>Core: Throws an error on non-function params for logging methods.</li>
-  <li>Core: Defer begin event till tests actually starts.</li>
-  <li>Core: Detail modules and tests names in the logging callbacks.</li>
-  <li>Core: Use <code class="language-plaintext highlighter-rouge">Error#stack</code> without throwing when available.</li>
-  <li>Dump: Configurable limit for object depth.</li>
+  <li>CLI: Fix confusing “No tests” message after an early uncaught error. <a href="https://github.com/qunitjs/qunit/pull/1790">#1790</a></li>
+  <li>Core: Fix internal <code class="language-plaintext highlighter-rouge">QUnit.config.currentModule</code> for the initial unnamed module to be a complete object. <a href="https://github.com/qunitjs/qunit/commit/5812597b7f086e6afafef947ebff5231c0011f6b">5812597b7f</a></li>
+  <li>Core: Fix crash when “bad thenable” is returned from global module hook. <a href="https://github.com/qunitjs/qunit/commit/3209462b88">3209462b88</a></li>
+  <li>Core: Fix crash when mixing test.only() with module.only(). <a href="https://github.com/qunitjs/qunit/commit/99aee51a8a4dfce3fa87559e171398fdf72c6886">99aee51a8a</a></li>
+  <li>Core: Fix <a href="/api/config/maxDepth/">QUnit.config.maxDepth</a> to allow changes at runtime. QUnit.dump.maxDepth is now a live alias to <code class="language-plaintext highlighter-rouge">QUnit.config.maxDepth</code>. <a href="https://github.com/qunitjs/qunit/commit/0a26e2c883ab49831b19ebc34a4b7caac573d995">0a26e2c883</a></li>
+</ul>
+
+<h3 id="removed">Removed</h3>
+
+<ul>
+  <li>Core: Remove support for Node.js 10-16. Node.js 18 or later is required. (NullVoxPopuli) <a href="https://github.com/qunitjs/qunit/issues/1727">#1727</a></li>
+  <li>Core: Remove support for PhantomJS. (Steve McClure) <a href="https://github.com/qunitjs/qunit/pull/1505">#1505</a></li>
+  <li>Core: Remove built-in export for AMD. You can continue to load your application and your QUnit tests with AMD/RequireJS. This change only affects the loading of the qunit.js file itself. <a href="/api/config/autostart/#loading-with-requirejs">Example: Loading with RequireJS</a>. (NullVoxPopuli) <a href="https://github.com/qunitjs/qunit/issues/1729">#1729</a></li>
+  <li>Core: Remove deprecated <a href="/api/QUnit/load/"><code class="language-plaintext highlighter-rouge">QUnit.load()</code></a>. <a href="https://github.com/qunitjs/qunit/issues/1084">#1084</a></li>
+  <li>Core: Remove deprecated <code class="language-plaintext highlighter-rouge">QUnit.onError()</code> and <code class="language-plaintext highlighter-rouge">QUnit.onUnhandledRejection()</code> in favor of <a href="/api/extension/QUnit.onUncaughtException/"><code class="language-plaintext highlighter-rouge">QUnit.onUncaughtException()</code></a>.</li>
+  <li>Core: Remove undocumented <code class="language-plaintext highlighter-rouge">details.modules[].tests</code> from QUnit.begin() event.</li>
+  <li>Core: Remove undocumented <code class="language-plaintext highlighter-rouge">QUnit.dump.HTML</code> and <code class="language-plaintext highlighter-rouge">QUnit.dump.multiline</code>. <a href="https://github.com/qunitjs/qunit/commit/8e881f50876b93836dc585e8509641454bcdb834">8e881f5087</a></li>
+  <li>HTML Reporter: Remove support for legacy markup. Use <code class="language-plaintext highlighter-rouge">&lt;div id="qunit"&gt;</code> instead. Check <a href="/browser/">Browser Runner § Getting started</a>.</li>
+  <li>Build: Discontinue publishing to the Bower registry for new releases. Review <a href="/intro/#download">How to install</a> or <a href="/browser/">Getting Started in the browser</a>. <a href="https://github.com/qunitjs/qunit/issues/1677">#1677</a></li>
 </ul>
 
 <h2 id="see-also">See also</h2>
 
 <ul>
-  <li><a href="https://github.com/qunitjs/qunit/releases/tag/1.16.0">Git tag: 1.16.0</a></li>
-  <li><a href="/blog/2014/12/10/qunit-1-16-release-and-roadmap/">Blog: QUnit 1.16 Release and Roadmap</a></li>
+  <li><a href="/blog/2026/09/11/instant-render/">Blog: Instant render and early errors in QUnit 3</a></li>
+  <li><a href="/blog/2026/09/12/qunit-3-theme/">Blog: First look at the QUnit 3 theme</a></li>
+  <li><a href="/lifecycle/">Test lifecycle diagram - Module inheritence</a></li>
+  <li><a href="https://github.com/qunitjs/qunit/releases/tag/3.0.0">Git tag: 3.0.0</a></li>
 </ul>
 
 </article></div>
 <aside class="sidebar" role="complementary">
 
 	<h4 class="sidebar-title-open"><a href="/blog/">Recent blog posts</a></h4>
-	<ul class="sidebar-list"><li class="sidebar-item">
+	<ul class="sidebar-list"><li class="sidebar-item sidebar-item-active">
 		<a href="/blog/2026/09/27/qunit-3-0-0/">QUnit 3.0.0 Released</a>
 	</li><li class="sidebar-item">
 		<a href="/blog/2026/09/20/new-features-road-to-qunit-3/">The Road to QUnit 3</a>
@@ -183,7 +202,7 @@
                 
                 <a href="https://twitter.com/qunitjs" target="_blank" rel="noopener">Twitter</a>
                 </p>
-            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/_posts/2014-12-03-qunit-1-16-0.md">Edit this page</a></p>
+            <p class="copyright">Copyright <a href="https://openjsf.org/" target="_blank" rel="noopener">OpenJS Foundation</a> and contributors.<br><a href="https://github.com/qunitjs/qunit/blob/main/docs/_posts/2026-09-27-qunit-3-0-0.md">Edit this page</a></p>
         </div>
     </footer><script defer type="module" src="/assets/typesense-minibar.js?v=830f1ee1"></script></body>
 </html>
