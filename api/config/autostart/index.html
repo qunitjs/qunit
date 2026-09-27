@@ -156,6 +156,53 @@
 <span class="p">);</span>
 </code></pre></div></div>
 
+<h3 id="migration-umd-defined-qunit-plugin">Migration: UMD-defined QUnit plugin</h3>
+
+<p>QUnit 3.0 and later no exports the QUnit API via AMD.</p>
+
+<p>If you define a QUnit plugin through a UMD factory, it is recommended to remove the UMD wrapper and use the QUnit global directly. So long as projects load <code class="language-plaintext highlighter-rouge">qunit.js</code> before RequireJS (per <a href="#loading-with-requirejs">the above</a>) this maintains backwards compatibility, because the QUnit global is unconditionally available in browser environments in both QUnit 2 and QUnit 3.</p>
+
+<p>Before:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">factory</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">function</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">require</span><span class="p">([</span><span class="dl">'</span><span class="s1">qunit</span><span class="dl">'</span><span class="p">],</span> <span class="nx">factory</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nf">factory</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}(</span><span class="nf">function </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">QUnit complete</span><span class="dl">'</span><span class="p">,</span> <span class="nx">runEnd</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}));</span>
+</code></pre></div></div>
+
+<p>After:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">runEnd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">QUnit complete</span><span class="dl">'</span><span class="p">,</span> <span class="nx">runEnd</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}());</span>
+</code></pre></div></div>
+
+<p>NOTE: QUnit 2.x had edge case where if you (or your users) load <code class="language-plaintext highlighter-rouge">qunit.js</code> with RequireJS, and you run this outside a browser (e.g. in Node.js), then the QUnit API would be exclusively defined via AMD and the QUnit global remained undefined. This is fixed in QUnit 3.0.</p>
+
+<p>If you need to maintain compatibility with this QUnit 2 edge case, you can check for the global first. This way your plugin won’t require an undefined <code class="language-plaintext highlighter-rouge">qunit</code> module with QUnit 3:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">factory</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">function</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">globalThis</span><span class="p">.</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">require</span><span class="p">([</span><span class="dl">'</span><span class="s1">qunit</span><span class="dl">'</span><span class="p">],</span> <span class="nx">factory</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nf">factory</span><span class="p">(</span><span class="nx">QUnit</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}(</span><span class="nf">function </span><span class="p">(</span><span class="nx">QUnit</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">QUnit</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">runEnd</span><span class="dl">'</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">QUnit complete</span><span class="dl">'</span><span class="p">,</span> <span class="nx">runEnd</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}));</span>
+</code></pre></div></div>
+
 </article>
 </div>
 <aside class="sidebar" role="complementary">
@@ -238,7 +285,7 @@
 
 	<h4><a href="/api/removed/">Removed methods</a></h4>
 	<hr><div class="toc-wrapper">
-		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#E0001">Error: Unexpected test after runEnd</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#esm-dynamic-imports">ESM Dynamic imports</a></li><li class="sidebar-item"><a href="#loading-with-requirejs">Loading with RequireJS</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
+		<h4>Table of contents</h4><ol class="toc"><li class="sidebar-item"><a href="#description">Description</a><ol><li class="sidebar-item"><a href="#E0001">Error: Unexpected test after runEnd</a></li></ol></li><li class="sidebar-item"><a href="#examples">Examples</a><ol><li class="sidebar-item"><a href="#esm-dynamic-imports">ESM Dynamic imports</a></li><li class="sidebar-item"><a href="#loading-with-requirejs">Loading with RequireJS</a></li><li class="sidebar-item"><a href="#migration-umd-defined-qunit-plugin">Migration: UMD-defined QUnit plugin</a></li></ol></li></ol></div><script defer type="module" src="/assets/toc.js?v=348e5a95"></script>
 </aside>
 
 </div>
