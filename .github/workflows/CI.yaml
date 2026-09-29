@@ -33,6 +33,11 @@ jobs:
             node: 24.x
             script: npm run test
 
+          - name: "Linux: Node 26"
+            os: ubuntu-24.04
+            node: 26.x
+            script: npm run test
+
           - name: "Demos"
             os: ubuntu-22.04
             node: 22.x
