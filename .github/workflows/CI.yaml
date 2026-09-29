@@ -28,19 +28,24 @@ jobs:
             node: 22.x
             script: npm run test
 
+          - name: "Linux: Node 24"
+            os: ubuntu-24.04
+            node: 24.x
+            script: npm run test
+
           - name: "Demos"
             os: ubuntu-22.04
-            node: 18.x
+            node: 22.x
             script: npm run test-demos
 
-          - name: "Windows: Node 18"
+          - name: "Windows: Node 24"
             os: windows-latest
-            node: 18.x
+            node: 22.x
             script: npm run test-nolint
 
-          - name: "macOS: Node 18"
+          - name: "macOS: Node 24"
             os: macos-latest
-            node: 18.x
+            node: 24.x
             script: npm run test-nolint
 
     name: ${{ matrix.name }}
@@ -51,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         if: ${{ runner.os != 'Windows' }}
         with:
           path: |
@@ -87,16 +92,16 @@ jobs:
       PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
-          node-version: 18.x
+          node-version: 22.x
       - name: Install mozjs
         run: |
           sudo apt-get install -y libmozjs-102-dev
@@ -125,16 +130,16 @@ jobs:
       PUPPETEER_CACHE_DIR: "${{ github.workspace }}/.puppeteer_download"
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: |
             ~/.npm
             ${{ github.workspace }}/.puppeteer_download
           key: ${{ runner.os }}-${{ hashFiles('**/package.json') }}
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
-          node-version: 18.x
+          node-version: 22.x
       - name: Install mozjs
         run: |
           sudo apt-get install -y libmozjs-115-dev

@@ -308,6 +308,8 @@ Stopping QUnit...`);
 
     assert.equal(result.code, 0);
     assert.equal(result.stderr, '');
+    // NOTE: On Node 22 (macOS), the "File update" entries are sometimes in a different order
+    // This doesn't matter functionally, but to avoid flaky CI, we test on Node 24 instead.
     assert.equal(result.stdout, `TAP version 13
 ok 1 foo
 1..1

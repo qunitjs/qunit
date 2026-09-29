@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "nyc": "15.1.0",
+    "nyc": "18.0.0",
     "qunit": "file:../.."
   },
   "scripts": {

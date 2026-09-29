@@ -14,9 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
-          node-version: 18.x
+          node-version: 22.x
 
       - run: node build/reproducible-builds.js

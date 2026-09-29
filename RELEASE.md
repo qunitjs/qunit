@@ -13,7 +13,7 @@ QUnit aims for its releases to be reproducible. Recent releases are automaticall
 >
 > System prerequisites:
 >
-> * Node.js 18, or later.
+> * Node.js 22, or later.
 > * Git 2.11, or later.
 
 Ensure that all changes for this release have been merged into the main branch. For patch releases, try landing any other bug fixes; for minor releases, ensure new features have been documented and tested. Major releases likely have their own checklist. Make sure the [full browsers-full job](https://github.com/qunitjs/qunit/actions/workflows/browsers-full.yaml) has run and is passing against the latest commit in the main branch. It runs every few days, but if you've made changes since, you can use "Run workflow" to trigger it now.
