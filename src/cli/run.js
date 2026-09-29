@@ -86,32 +86,40 @@ async function run (args, options) {
     try {
       // QUnit supports passing ESM files to the 'qunit' command when used on
       // Node.js 12 or later. The dynamic import() keyword supports both CommonJS files
-      // (.js, .cjs) and ESM files (.mjs), so we could simply use that unconditionally on
-      // newer Node versions, regardless of the given file path.
+      // (.js, .cjs) and ESM files (.mjs), so we in theory we'd want to use that
+      // unconditionally on, regardless of the file type.
       //
       // But:
-      // - Node.js 12 emits a confusing "ExperimentalWarning" when using import(),
-      //   even if just to load a non-ESM file. So we should try to avoid it on non-ESM.
-      // - This Node.js feature is still considered experimental so to avoid unexpected
-      //   breakage we should continue using require(). Consider flipping once stable and/or
-      //   as part of QUnit 3.0.
       // - Plugins and CLI bootstrap scripts may be hooking into require.extensions to modify
       //   or transform code as it gets loaded. For compatibility with that, we should
       //   support that until at least QUnit 3.0.
       // - File extensions are not sufficient to differentiate between CJS and ESM.
       //   Use of ".mjs" is optional, as a package may configure Node to default to ESM
       //   and optionally use ".cjs" for CJS files.
+      // - import() tends to obscure the location of a SyntaxError
+      //   https://github.com/nodejs/node/issues/49441
       //
       // https://nodejs.org/docs/v12.7.0/api/modules.html#modules_addenda_the_mjs_extension
       // https://nodejs.org/docs/v12.7.0/api/esm.html#esm_code_import_code_expressions
       // https://github.com/qunitjs/qunit/issues/1465
+      //
+      // And, Node.js v23.0.0 (v22.12.0, v20.19.0) changed this again by introducing
+      // support for trivial/synchronous ESM in require() *and* changing the error
+      // code for non-trivial ESM modes to "ERR_REQUIRE_ASYNC_MODULE".
+      //
+      // https://nodejs.org/docs/latest/api/errors.html#err_require_esm
+      // https://github.com/nodejs/node/pull/51977
       try {
         require(filePath);
       } catch (e) {
         if (
-          (e.code === 'ERR_REQUIRE_ESM'
-          || (e instanceof SyntaxError
-            && e.message === 'Cannot use import statement outside a module'))
+          (
+            e.code === 'ERR_REQUIRE_ESM'
+            || e.code === 'ERR_REQUIRE_ASYNC_MODULE'
+            || (
+              e instanceof SyntaxError
+              && e.message === 'Cannot use import statement outside a module')
+          )
           && (!nodeVint || nodeVint >= 72)
         ) {
           // filePath is an absolute file path here (per path.resolve above).
