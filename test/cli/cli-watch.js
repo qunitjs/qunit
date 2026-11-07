@@ -220,9 +220,12 @@ Stopping QUnit...`);
         execution.once('message', () => {
           fixturify.writeSync(fixturePath, {
             'x.cjs': '-',
+            'x.cts': '-',
             'x.js': '-',
             'x.json': '-',
             'x.mjs': '-',
+            'x.mts': '-',
+            'x.ts': '-',
             'x.txt': '-',
 
             node_modules: {
@@ -257,9 +260,12 @@ ok 1 foo
 # todo 0
 # fail 0
 File update: watching/x.cjs
+File update: watching/x.cts
 File update: watching/x.js
 File update: watching/x.json
 File update: watching/x.mjs
+File update: watching/x.mts
+File update: watching/x.ts
 File update: watching/tests/foo.js
 File update: watching/tests/setup.js
 Restarting...

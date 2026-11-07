@@ -205,16 +205,19 @@ run.watch = function watch (args, options) {
   requireQUnit();
   options.requires.forEach(requireFromCWD);
 
-  // Include TypeScript when in use (automatically via require.extensions),
+  // Include TypeScript when in use (automatically via require.extensions with e.g. ts-node,
+  // or natively via Node.js 22+ type stripping),
   // https://github.com/qunitjs/qunit/issues/1669.
+  // https://github.com/qunitjs/qunit/issues/1837.
   //
   // Include ".json" (part of require.extensions) for test suites that use a data files,
   // and for changes to package.json that may affect how a file is parsed (e.g. type=module).
   //
-  // Include ".cjs" and ".mjs", which Node.js doesn't expose via require.extensions by default.
+  // Include ".cjs", ".mjs", and TypeScript extensions (".ts", ".cts", ".mts"),
+  // which Node.js doesn't expose via require.extensions by default.
   //
   // eslint-disable-next-line n/no-deprecated-api
-  const includeExts = Object.keys(require.extensions).concat(['.cjs', '.mjs']);
+  const includeExts = Object.keys(require.extensions).concat(['.cjs', '.mjs', '.ts', '.cts', '.mts']);
   const ignoreDirs = ['.git', 'node_modules'];
 
   const watcher = watch(baseDir, {
