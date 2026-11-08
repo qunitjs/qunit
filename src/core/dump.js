@@ -130,6 +130,10 @@ export default (function () {
         return 'node';
       } else if (isArray(obj)) {
         return 'array';
+      } else if (is('map', obj)) {
+        return 'map';
+      } else if (is('set', obj)) {
+        return 'set';
       } else if (obj.constructor === Error.prototype.constructor) {
         return 'error';
       }
@@ -222,7 +226,6 @@ export default (function () {
         keys.sort();
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
-          // eslint-disable-next-line compat/compat -- https://github.com/amilajack/eslint-plugin-compat/issues/688
           const val = map[key];
           ret.push(dump.parse(key, 'key') + ': '
             + dump.parse(val, undefined, stack));
@@ -291,6 +294,33 @@ export default (function () {
       boolean: literal,
       symbol: function (sym) {
         return sym.toString();
+      },
+      set: function (set, stack) {
+        if (config.maxDepth && dump.depth > config.maxDepth) {
+          return '[object Set]';
+        }
+
+        const ret = [];
+        dump.up();
+        set.forEach(function (val) {
+          ret.push(dump.parse(val, undefined, stack));
+        });
+        dump.down();
+        return join('Set{', ret, '}');
+      },
+      map: function (map, stack) {
+        if (config.maxDepth && dump.depth > config.maxDepth) {
+          return '[object Map]';
+        }
+
+        const ret = [];
+        dump.up();
+        map.forEach(function (val, key) {
+          ret.push(dump.parse(key, undefined, stack) + ': '
+            + dump.parse(val, undefined, stack));
+        });
+        dump.down();
+        return join('Map{', ret, '}');
       }
     },
 
