@@ -1,4 +1,4 @@
-/* globals document, Symbol */
+/* globals document, Symbol, Map, Set */
 
 QUnit.module('dump', {
   beforeEach: function () {
@@ -336,3 +336,55 @@ QUnit.test('object [circular reference]', function (assert) {
   assert.equal(a.children(), barr);
   assert.deepEqual(a.children(), [b]);
 });
+
+/* eslint-disable compat/compat */
+QUnit.test.if('map [basic]', typeof Map === 'function', function (assert) {
+  assert.equal(QUnit.dump.parse(new Map()), 'Map{}');
+  assert.equal(
+    QUnit.dump.parse(new Map([['a', 'b'], ['c', 'd']])),
+    'Map{\n  "a": "b",\n  "c": "d"\n}'
+  );
+  assert.equal(
+    QUnit.dump.parse(new Map([[1, { foo: 'bar' }]])),
+    'Map{\n  1: {\n    "foo": "bar"\n  }\n}'
+  );
+});
+
+QUnit.test.if('map [shallow]', typeof Map === 'function', function (assert) {
+  var map = new Map([
+    ['nested', new Map([['key', 'val']])]
+  ]);
+  QUnit.config.maxDepth = 1;
+  assert.equal(QUnit.dump.parse(map), 'Map{\n  "nested": [object Map]\n}');
+});
+
+QUnit.test.if('map [recursion]', typeof Map === 'function', function (assert) {
+  var map = new Map();
+  map.set('self', map);
+  assert.equal(QUnit.dump.parse(map), 'Map{\n  "self": recursion(-1)\n}');
+});
+
+QUnit.test.if('set [basic]', typeof Set === 'function', function (assert) {
+  assert.equal(QUnit.dump.parse(new Set()), 'Set{}');
+  assert.equal(
+    QUnit.dump.parse(new Set([1, 'two', 3])),
+    'Set{\n  1,\n  "two",\n  3\n}'
+  );
+  assert.equal(
+    QUnit.dump.parse(new Set([{ foo: 'bar' }])),
+    'Set{\n  {\n    "foo": "bar"\n  }\n}'
+  );
+});
+
+QUnit.test.if('set [shallow]', typeof Set === 'function', function (assert) {
+  var set = new Set([new Set([1, 2])]);
+  QUnit.config.maxDepth = 1;
+  assert.equal(QUnit.dump.parse(set), 'Set{\n  [object Set]\n}');
+});
+
+QUnit.test.if('set [recursion]', typeof Set === 'function', function (assert) {
+  var set = new Set();
+  set.add(set);
+  assert.equal(QUnit.dump.parse(set), 'Set{\n  recursion(-1)\n}');
+});
+/* eslint-enable compat/compat */
