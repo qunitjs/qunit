@@ -29,6 +29,7 @@ Add tests using a data provider.
 |-----------|-------------|
 | `assert` (object) | A new instance object with the [assertion methods](../assert/index.md) |
 | `data` (any) | Data item |
+| `key` (string or number) | Key or index of the data item within the dataset |
 
 Use this method to define many similar tests, with different data passed in.
 

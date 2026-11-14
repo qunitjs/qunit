@@ -29,6 +29,7 @@ export default function Test (settings) {
   this.stepsCount = 0;
   this.timeout = undefined;
   this.data = undefined;
+  this.dataKey = undefined;
   this.withData = false;
   this.pauses = new StringMap();
   this.nextPauseId = 1;
@@ -176,12 +177,12 @@ Test.prototype = {
     let promise;
     if (config.notrycatch) {
       promise = (this.withData)
-        ? this.callback.call(this.testEnvironment, this.assert, this.data)
+        ? this.callback.call(this.testEnvironment, this.assert, this.data, this.dataKey)
         : this.callback.call(this.testEnvironment, this.assert);
     } else {
       try {
         promise = (this.withData)
-          ? this.callback.call(this.testEnvironment, this.assert, this.data)
+          ? this.callback.call(this.testEnvironment, this.assert, this.data, this.dataKey)
           : this.callback.call(this.testEnvironment, this.assert);
       } catch (e) {
         this.pushFailure('Died on test #' + (this.assertions.length + 1) + ': '
@@ -996,11 +997,11 @@ function runEach (data, eachFn) {
           );
         }
       }
-      eachFn(value, testKey);
+      eachFn(value, testKey, i);
     }
   } else if (typeof data === 'object' && data !== null) {
     for (let key in data) {
-      eachFn(data[key], key);
+      eachFn(data[key], key, key);
     }
   } else {
     throw new TypeError(
@@ -1024,27 +1025,29 @@ extend(test, {
     addOnlyTest({ testName, callback });
   },
   each: function (testName, dataset, callback) {
-    runEach(dataset, (data, testKey) => {
+    runEach(dataset, (data, testKey, rawKey) => {
       addTest({
         testName: makeEachTestName(testName, testKey),
         callback,
         withData: true,
         stackOffset: 5,
-        data
+        data,
+        dataKey: rawKey
       });
     });
   }
 });
 
 test.todo.each = function (testName, dataset, callback) {
-  runEach(dataset, (data, testKey) => {
+  runEach(dataset, (data, testKey, rawKey) => {
     addTest({
       testName: makeEachTestName(testName, testKey),
       callback,
       todo: true,
       withData: true,
       stackOffset: 5,
-      data
+      data,
+      dataKey: rawKey
     });
   });
 };
@@ -1058,25 +1061,27 @@ test.skip.each = function (testName, dataset) {
   });
 };
 test.if.each = function (testName, condition, dataset, callback) {
-  runEach(dataset, (data, testKey) => {
+  runEach(dataset, (data, testKey, rawKey) => {
     addTest({
       testName: makeEachTestName(testName, testKey),
       callback,
       withData: true,
       stackOffset: 5,
       skip: !condition,
-      data: condition ? data : undefined
+      data: condition ? data : undefined,
+      dataKey: condition ? rawKey : undefined
     });
   });
 };
 test.only.each = function (testName, dataset, callback) {
-  runEach(dataset, (data, testKey) => {
+  runEach(dataset, (data, testKey, rawKey) => {
     addOnlyTest({
       testName: makeEachTestName(testName, testKey),
       callback,
       withData: true,
       stackOffset: 5,
-      data
+      data,
+      dataKey: rawKey
     });
   });
 };
