@@ -19,14 +19,27 @@ QUnit.module('test.each', function () {
   QUnit.module('arguments', function (hooks) {
     var todoArgs;
     hooks.after(function (assert) {
-      assert.strictEqual(todoArgs, 2, 'test.each.todo() callback args');
+      assert.strictEqual(todoArgs, 3, 'test.each.todo() callback args');
     });
 
-    QUnit.test.each('test.each() callback', [1], function (assert) {
-      assert.strictEqual(arguments.length, 2);
+    QUnit.test.each('test.each() callback', [1], function (assert, value, key) {
+      assert.strictEqual(arguments.length, 3);
+      assert.strictEqual(value, 1);
+      assert.strictEqual(key, 0);
     });
-    QUnit.test.each('test.each() callback with undefined', [undefined], function (assert) {
-      assert.strictEqual(arguments.length, 2);
+    QUnit.test.each('test.each() callback with undefined', [undefined], function (assert, value, key) {
+      assert.strictEqual(arguments.length, 3);
+      assert.strictEqual(value, undefined);
+      assert.strictEqual(key, 0);
+    });
+    QUnit.test.each('test.each() callback with object', { foo: 'bar', baz: 42 }, function (assert, value, key) {
+      assert.strictEqual(arguments.length, 3);
+      if (key === 'foo') {
+        assert.strictEqual(value, 'bar');
+      } else {
+        assert.strictEqual(key, 'baz');
+        assert.strictEqual(value, 42);
+      }
     });
     QUnit.test.todo.each('test.each.todo() callback', [1], function (assert) {
       // Captured and asserted later since todo() is expected to fail
