@@ -138,6 +138,48 @@ function prettyYamlValue (value, indent = 2) {
     .join('\n');
 }
 
+function readProperty (object, key) {
+  try {
+    return { ok: true, value: object[key] };
+  } catch (err) {
+    // Same failure mode as QUnit.dump: a getter that throws must not
+    // abort TAP output for a failed assert.equal.
+    // https://github.com/qunitjs/qunit/issues/1782
+    return { ok: false, error: err };
+  }
+}
+
+function isBoxedPrimitive (object, type) {
+  try {
+    if (type === 'boolean') {
+      Boolean.prototype.valueOf.call(object);
+      return true;
+    }
+    if (type === 'number') {
+      Number.prototype.valueOf.call(object);
+      return true;
+    }
+    if (type === 'string') {
+      String.prototype.valueOf.call(object);
+      return true;
+    }
+  } catch (err) {
+    // Spoofed Symbol.toStringTag on a non-primitive object.
+  }
+  return false;
+}
+
+function cloneObjectProperties (object, ancestors) {
+  ancestors.push(object);
+  const clone = {};
+  Object.keys(object).forEach(function (key) {
+    const read = readProperty(object, key);
+    clone[key] = read.ok ? decycledShallowClone(read.value, ancestors) : '[Getter]';
+  });
+  ancestors.pop();
+  return clone;
+}
+
 /**
  * Creates a shallow clone of an object where cycles have
  * been replaced with "[Circular]".
@@ -147,10 +189,23 @@ function decycledShallowClone (object, ancestors = []) {
     return '[Circular]';
   }
 
-  const type = Object.prototype.toString
-    .call(object)
-    .replace(/^\[.+\s(.+?)]$/, '$1')
-    .toLowerCase();
+  let type;
+  try {
+    type = Object.prototype.toString
+      .call(object)
+      .replace(/^\[.+\s(.+?)]$/, '$1')
+      .toLowerCase();
+  } catch (err) {
+    // A Symbol.toStringTag getter can throw before object properties are
+    // read. Fall back to plain object traversal so remaining properties
+    // still render.
+    // https://github.com/qunitjs/qunit/issues/1782
+    type = typeof object;
+  }
+
+  if (type === 'array' && !Array.isArray(object)) {
+    type = typeof object;
+  }
 
   let clone;
 
@@ -163,14 +218,16 @@ function decycledShallowClone (object, ancestors = []) {
       ancestors.pop();
       break;
     case 'object':
-      ancestors.push(object);
-      clone = {};
-      Object.keys(object).forEach(function (key) {
-        clone[key] = decycledShallowClone(object[key], ancestors);
-      });
-      ancestors.pop();
+      clone = cloneObjectProperties(object, ancestors);
       break;
     default:
+      if (object !== null && typeof object === 'object') {
+        const toJSON = readProperty(object, 'toJSON');
+        if (!toJSON.ok || (typeof toJSON.value !== 'function' && !isBoxedPrimitive(object, type))) {
+          clone = cloneObjectProperties(object, ancestors);
+          break;
+        }
+      }
       clone = object;
   }
 

@@ -66,6 +66,17 @@ export default (function () {
     return join('[', ret, ']');
   }
 
+  // Reading a getter can throw. Formatting must not let that escape as
+  // "Died on test", which is what happened for assert.equal failures.
+  // https://github.com/qunitjs/qunit/issues/1782
+  function readProperty (map, key) {
+    try {
+      return { ok: true, value: map[key] };
+    } catch (err) {
+      return { ok: false, error: err };
+    }
+  }
+
   function isArray (obj) {
     return (
       // Native Arrays
@@ -109,29 +120,34 @@ export default (function () {
       return '[ERROR: Missing QUnit.dump formatter for type ' + objType + ']';
     },
     typeOf: function (obj) {
-      if (obj === null) {
-        return 'null';
-      }
-      if (typeof obj === 'undefined') {
-        return 'undefined';
-      } else if (is('regexp', obj)) {
-        return 'regexp';
-      } else if (is('date', obj)) {
-        return 'date';
-      } else if (is('function', obj)) {
-        return 'function';
-      } else if (obj.setInterval !== undefined
-          && obj.document !== undefined
-          && obj.nodeType === undefined) {
-        return 'window';
-      } else if (obj.nodeType === 9) {
-        return 'document';
-      } else if (obj.nodeType) {
-        return 'node';
-      } else if (isArray(obj)) {
-        return 'array';
-      } else if (obj.constructor === Error.prototype.constructor) {
-        return 'error';
+      try {
+        if (obj === null) {
+          return 'null';
+        }
+        if (typeof obj === 'undefined') {
+          return 'undefined';
+        } else if (is('regexp', obj)) {
+          return 'regexp';
+        } else if (is('date', obj)) {
+          return 'date';
+        } else if (is('function', obj)) {
+          return 'function';
+        } else if (obj.setInterval !== undefined
+            && obj.document !== undefined
+            && obj.nodeType === undefined) {
+          return 'window';
+        } else if (obj.nodeType === 9) {
+          return 'document';
+        } else if (obj.nodeType) {
+          return 'node';
+        } else if (isArray(obj)) {
+          return 'array';
+        } else if (obj.constructor === Error.prototype.constructor) {
+          return 'error';
+        }
+      } catch (err) {
+        // A classification getter may throw before the object formatter can
+        // render it as [Getter]. Fall back to formatting the object's keys.
       }
       return typeof obj;
     },
@@ -172,8 +188,12 @@ export default (function () {
     parsers: {
       window: '[Window]',
       document: '[Document]',
-      error: function (error) {
-        return 'Error("' + error.message + '")';
+      error: function (error, stack) {
+        const read = readProperty(error, 'message');
+        if (!read.ok) {
+          return dump.parsers.object.call(this, error, stack);
+        }
+        return 'Error("' + read.value + '")';
       },
 
       // This has been unused since QUnit 1.0.0.
@@ -222,42 +242,50 @@ export default (function () {
         keys.sort();
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
-          // eslint-disable-next-line compat/compat -- https://github.com/amilajack/eslint-plugin-compat/issues/688
-          const val = map[key];
+          const read = readProperty(map, key);
+          if (!read.ok) {
+            ret.push(dump.parse(key, 'key') + ': [Getter]');
+            continue;
+          }
+          const val = read.value;
           ret.push(dump.parse(key, 'key') + ': '
             + dump.parse(val, undefined, stack));
         }
         dump.down();
         return join('{', ret, '}');
       },
-      node: function (node) {
-        const open = '<';
-        const close = '>';
-        const tag = node.nodeName.toLowerCase();
-        let ret = open + tag;
-        const attrs = node.attributes;
+      node: function (node, stack) {
+        try {
+          const open = '<';
+          const close = '>';
+          const tag = node.nodeName.toLowerCase();
+          let ret = open + tag;
+          const attrs = node.attributes;
 
-        if (attrs) {
-          for (let i = 0; i < attrs.length; i++) {
-            const val = attrs[i].nodeValue;
+          if (attrs) {
+            for (let i = 0; i < attrs.length; i++) {
+              const val = attrs[i].nodeValue;
 
-            // IE6 includes all attributes in .attributes, even ones not explicitly
-            // set. Those have values like undefined, null, 0, false, "" or
-            // "inherit".
-            if (val && val !== 'inherit') {
-              ret += ' ' + attrs[i].nodeName + '='
-                + dump.parse(val, 'attribute');
+              // IE6 includes all attributes in .attributes, even ones not explicitly
+              // set. Those have values like undefined, null, 0, false, "" or
+              // "inherit".
+              if (val && val !== 'inherit') {
+                ret += ' ' + attrs[i].nodeName + '='
+                  + dump.parse(val, 'attribute');
+              }
             }
           }
-        }
-        ret += close;
+          ret += close;
 
-        // Show content of TextNode or CDATASection
-        if (node.nodeType === 3 || node.nodeType === 4) {
-          ret += node.nodeValue;
-        }
+          // Show content of TextNode or CDATASection
+          if (node.nodeType === 3 || node.nodeType === 4) {
+            ret += node.nodeValue;
+          }
 
-        return ret + open + '/' + tag + close;
+          return ret + open + '/' + tag + close;
+        } catch (err) {
+          return dump.parsers.object.call(this, node, stack);
+        }
       },
 
       // Function calls it internally, it's the arguments part of the function

@@ -1,3 +1,8 @@
+/* globals Symbol */
+
+// eslint-disable-next-line compat/compat -- Checked before use
+var hasToStringTag = typeof Symbol === 'function' && Symbol.toStringTag;
+
 function mockStack (error) {
   error.stack = ''
     + '    at Object.<anonymous> (/dev/null/test/unit/data.js:6:5)\n'
@@ -415,6 +420,134 @@ QUnit.module('TapReporter', function (hooks) {
 + '      "example": "value"\n'
 + '    },\n'
 + '    "c": "unique"\n'
++ '  }\n'
++ '  expected: expected\n'
++ '  ...'
+    );
+  });
+
+  QUnit.test('output actual value with a throwing getter', function (assert) {
+    var actual = {
+      get x () { throw 42; },
+      y: 1
+    };
+    emitter.emit('testEnd', makeFailingTestEnd(actual));
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '    "x": "[Getter]",\n'
++ '    "y": 1\n'
++ '  }\n'
++ '  expected: expected\n'
++ '  ...'
+    );
+  });
+
+  QUnit.test.if('output actual value with a throwing Symbol.toStringTag getter', hasToStringTag, function (assert) {
+    var actual = { y: 1 };
+    Object.defineProperty(actual, hasToStringTag, {
+      get: function () { throw 42; }
+    });
+    emitter.emit('testEnd', makeFailingTestEnd(actual));
+    emitter.emit('testEnd', {
+      name: 'Following',
+      suiteName: null,
+      fullName: ['Following'],
+      status: 'passed',
+      runtime: 0,
+      errors: [],
+      assertions: []
+    });
+    emitter.emit('runEnd', {
+      testCounts: {
+        total: 2,
+        passed: 1,
+        failed: 1,
+        skipped: 0,
+        todo: 0
+      }
+    });
+    assert.strictEqual(buffer, 'not ok 1 Failing\n'
++ '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '    "y": 1\n'
++ '  }\n'
++ '  expected: expected\n'
++ '  ...\n'
++ 'ok 2 Following\n'
++ '1..2\n'
++ '# pass 1\n# skip 0\n# todo 0\n# fail 1\n'
+    );
+  });
+
+  QUnit.test.if('output actual value with custom Symbol.toStringTag and a throwing getter', hasToStringTag, function (assert) {
+    var actual = {
+      get x () { throw 42; },
+      y: 1
+    };
+    Object.defineProperty(actual, hasToStringTag, {
+      value: 'Custom'
+    });
+    emitter.emit('testEnd', makeFailingTestEnd(actual));
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '    "x": "[Getter]",\n'
++ '    "y": 1\n'
++ '  }\n'
++ '  expected: expected\n'
++ '  ...'
+    );
+  });
+
+  QUnit.test.if('output actual value with spoofed Array Symbol.toStringTag', hasToStringTag, function (assert) {
+    var actual = {
+      get x () { throw 42; },
+      y: 1
+    };
+    Object.defineProperty(actual, hasToStringTag, {
+      value: 'Array'
+    });
+    emitter.emit('testEnd', makeFailingTestEnd(actual));
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '    "x": "[Getter]",\n'
++ '    "y": 1\n'
++ '  }\n'
++ '  expected: expected\n'
++ '  ...'
+    );
+  });
+
+  QUnit.test('output actual value with a throwing toJSON getter on a Date', function (assert) {
+    emitter.emit('testEnd', makeFailingTestEnd(new Date('2020-11-10T03:24:00.000Z')));
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : "2020-11-10T03:24:00.000Z"\n'
++ '  expected: expected\n'
++ '  ...'
+    );
+
+    var badDate = new Date('2020-11-10T03:24:00.000Z');
+    badDate.y = 1;
+    Object.defineProperty(badDate, 'toJSON', {
+      enumerable: true,
+      get: function () { throw 42; }
+    });
+    emitter.emit('testEnd', makeFailingTestEnd(badDate));
+    assert.strictEqual(last, '  ---\n'
++ '  message: failed\n'
++ '  severity: failed\n'
++ '  actual  : {\n'
++ '    "y": 1,\n'
++ '    "toJSON": "[Getter]"\n'
 + '  }\n'
 + '  expected: expected\n'
 + '  ...'
