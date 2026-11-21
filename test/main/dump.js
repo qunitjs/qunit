@@ -16,6 +16,148 @@ QUnit.test('basic', function (assert) {
   assert.equal(QUnit.dump.parse({ top: 5, left: 0 }), '{\n  "left": 0,\n  "top": 5\n}');
 });
 
+// Regression: https://github.com/qunitjs/qunit/issues/1782
+QUnit.test('object [throwing getter]', function (assert) {
+  var object = {
+    get x () { throw 42; },
+    y: 1
+  };
+
+  // Same reference. == does not read properties, so this must not throw.
+  assert.equal(object, object);
+
+  assert.equal(
+    QUnit.dump.parse(object),
+    '{\n  "x": [Getter],\n  "y": 1\n}'
+  );
+
+  var safe = {
+    get x () { return 2; }
+  };
+  assert.equal(QUnit.dump.parse(safe), '{\n  "x": 2\n}');
+
+  var proto = {};
+  Object.defineProperty(proto, 'hidden', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var child = Object.create(proto);
+  child.y = 1;
+  assert.equal(
+    QUnit.dump.parse(child),
+    '{\n  "hidden": [Getter],\n  "y": 1\n}'
+  );
+});
+
+QUnit.test('object [throwing getter for length]', function (assert) {
+  var object = { y: 1 };
+  Object.defineProperty(object, 'length', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"length": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('object [throwing getter for constructor]', function (assert) {
+  var object = { y: 1 };
+  Object.defineProperty(object, 'constructor', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"constructor": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('object [throwing getter for setInterval]', function (assert) {
+  var object = { y: 1 };
+  Object.defineProperty(object, 'setInterval', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"setInterval": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('object [throwing getter for document]', function (assert) {
+  var object = { y: 1 };
+  object.setInterval = 1;
+  Object.defineProperty(object, 'document', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"document": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('object [throwing getter for nodeType]', function (assert) {
+  var object = { y: 1 };
+  Object.defineProperty(object, 'nodeType', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"nodeType": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('object [throwing getter for item]', function (assert) {
+  var object = { y: 1 };
+  object.length = 0;
+  Object.defineProperty(object, 'item', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"item": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+// eslint-disable-next-line compat/compat -- Checked before use
+var hasToStringTag = typeof Symbol === 'function' && Symbol.toStringTag;
+
+QUnit.test.if('object [throwing getter for Symbol.toStringTag]', hasToStringTag, function (assert) {
+  var object = { y: 1 };
+  Object.defineProperty(object, hasToStringTag, {
+    get: function () { throw 42; }
+  });
+  assert.strictEqual(QUnit.dump.parse(object), '{\n  "y": 1\n}');
+});
+
+QUnit.test('error [throwing getter for message]', function (assert) {
+  var err = new Error('boom');
+  Object.defineProperty(err, 'message', {
+    get: function () { throw 42; }
+  });
+  var errOutput = QUnit.dump.parse(err);
+  assert.notStrictEqual(errOutput.indexOf('"message": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(errOutput.indexOf('"name": "Error"'), -1, 'error name still renders');
+
+  var fakeError = { constructor: Error, y: 1 };
+  Object.defineProperty(fakeError, 'message', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var fakeOutput = QUnit.dump.parse(fakeError);
+  assert.notStrictEqual(fakeOutput.indexOf('"message": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(fakeOutput.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
+QUnit.test('node [throwing getter for nodeName]', function (assert) {
+  var object = { nodeType: 1, y: 1 };
+  Object.defineProperty(object, 'nodeName', {
+    enumerable: true,
+    get: function () { throw 42; }
+  });
+  var output = QUnit.dump.parse(object);
+  assert.notStrictEqual(output.indexOf('"nodeName": [Getter]'), -1, 'getter is marked');
+  assert.notStrictEqual(output.indexOf('"y": 1'), -1, 'later properties still render');
+});
+
 QUnit.test('object [shallow]', function (assert) {
   var obj = {
     top: {
