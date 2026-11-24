@@ -68,6 +68,8 @@ This helps keep your tests them atomic!
 
 Find examples and learn more at [`QUnit.config.fixture`](./api/config/fixture.md).
 
+To set up JavaScript data before each test, see the [test context example](./lifecycle.md#test-context).
+
 ## Efficient development
 
 As your project grows, you may reach a point where the complete test suite takes more than a second or two to run. QUnit provides several automatic and optional ways to maintain a good feedback cycle.
